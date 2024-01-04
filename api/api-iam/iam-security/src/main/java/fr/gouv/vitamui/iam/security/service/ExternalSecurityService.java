@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.security.service;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -174,5 +175,10 @@ public class ExternalSecurityService {
 
     public boolean userIsRootLevel() {
         return StringUtils.equals(getLevel(), StringUtils.EMPTY);
+    }
+
+    public InternalHttpContext getInternalHttpContext() {
+        return InternalHttpContext
+            .buildFromExternalHttpContext(getHttpContext());
     }
 }

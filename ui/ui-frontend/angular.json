@@ -53,7 +53,21 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "projects/identity/ngsw-config.json"
+              "ngswConfigPath": "projects/identity/ngsw-config.json",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "projects/identity/src/assets/",
+                  "ignore": ["config-dev.json"],
+                  "output": "/assets"
+                },
+                "projects/identity/src/favicon.ico",
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ui-frontend-common/assets",
+                  "output": "/assets"
+                }
+              ]
             },
             "en": {
               "aot": true,
@@ -161,7 +175,21 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "projects/portal/ngsw-config.json"
+              "ngswConfigPath": "projects/portal/ngsw-config.json",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "projects/portal/src/assets/",
+                  "ignore": ["config-dev.json"],
+                  "output": "/assets"
+                },
+                "projects/portal/src/favicon.ico",
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ui-frontend-common/assets",
+                  "output": "/assets"
+                }
+              ]
             },
             "en": {
               "aot": true,
@@ -322,8 +350,8 @@
             "tsConfig": "projects/referential/tsconfig.app.json",
             "aot": false,
             "assets": [
-              "projects/referential/src/favicon.ico",
               "projects/referential/src/assets",
+              "projects/referential/src/favicon.ico",
               {
                 "glob": "**/*",
                 "input": "node_modules/ui-frontend-common/assets",
@@ -357,6 +385,20 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "13mb"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "projects/referential/src/assets/",
+                  "ignore": ["config-dev.json"],
+                  "output": "/assets"
+                },
+                "projects/referential/src/favicon.ico",
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ui-frontend-common/assets",
+                  "output": "/assets"
                 }
               ]
             }
@@ -521,7 +563,7 @@
           "options": {
             "browserTarget": "starter-kit:build",
             "host": "dev.vitamui.com",
-            "port": 4203
+            "port": 4201
           },
           "configurations": {
             "production": {

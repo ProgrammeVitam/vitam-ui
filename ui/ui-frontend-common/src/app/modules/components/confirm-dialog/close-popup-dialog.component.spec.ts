@@ -36,8 +36,8 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
-
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 
 describe('ClosePopupDialogComponent', () => {
@@ -47,10 +47,13 @@ describe('ClosePopupDialogComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ ClosePopupDialogComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [ClosePopupDialogComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,6 +8,8 @@ import {of} from 'rxjs';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {OntologyService} from '../../ontology.service';
 import {OntologyInformationTabComponent} from './ontology-information-tab.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 describe('OntologyInformationTabComponent',() => {
@@ -41,6 +43,8 @@ describe('OntologyInformationTabComponent',() => {
         ReactiveFormsModule,
         VitamUICommonTestModule,
         NoopAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
         MatSelectModule
       ],
       declarations: [OntologyInformationTabComponent],

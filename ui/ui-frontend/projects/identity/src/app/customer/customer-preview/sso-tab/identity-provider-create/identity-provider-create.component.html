@@ -146,6 +146,9 @@
             <vitamui-common-slide-toggle formControlName="authnRequestSigned" class="col-12">
               <span>{{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}</span>
             </vitamui-common-slide-toggle>
+            <vitamui-common-slide-toggle formControlName="propagateLogout" class="col-12">
+              <span>{{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}</span>
+            </vitamui-common-slide-toggle>
           </div>
         </div>
 
@@ -218,16 +221,19 @@
             </div>
             <div class="oidc-row mt-2 ml-4">
               <div class="row">
-                <vitamui-common-slide-toggle formControlName="useState" class="mr-4">
+                <vitamui-common-slide-toggle formControlName="useState" class="col-6">
                   <span>{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</span>
                 </vitamui-common-slide-toggle>
-                <vitamui-common-slide-toggle formControlName="usePkce" class="mr-4">
+                <vitamui-common-slide-toggle formControlName="usePkce" class="col-6">
                   <span>{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</span>
                 </vitamui-common-slide-toggle>
               </div>
               <div class="row">
-                <vitamui-common-slide-toggle formControlName="useNonce">
+                <vitamui-common-slide-toggle class="col-6" formControlName="useNonce">
                   <span>{{ 'CUSTOMER.SSO.USE_NONCE' | translate }}</span>
+                </vitamui-common-slide-toggle>
+                <vitamui-common-slide-toggle class="col-6" formControlName="propagateLogout">
+                  <span>{{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}</span>
                 </vitamui-common-slide-toggle>
               </div>
             </div>

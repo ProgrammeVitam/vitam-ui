@@ -1,4 +1,4 @@
-import { Option } from '../../components/vitamui-autocomplete';
+import { Option } from '../../components/autocomplete';
 
 export interface UserAlerts {
   count: number;

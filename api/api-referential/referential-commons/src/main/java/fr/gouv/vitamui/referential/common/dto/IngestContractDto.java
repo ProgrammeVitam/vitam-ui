@@ -37,6 +37,8 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.opencsv.bean.CsvBindAndSplitByName;
+import com.opencsv.bean.CsvBindByName;
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
@@ -57,45 +59,61 @@ public class IngestContractDto extends IdDto implements Serializable {
 
     private Integer version;
 
+    @CsvBindByName(column = "Name*", required = true)
     private String name;
 
+    @CsvBindByName(column = "Identifier")
     private String identifier;
 
+    @CsvBindByName(column = "Description")
     private String description;
 
+    @CsvBindByName(column = "Status")
     private ActivationStatus status;
 
-    private String creationdate;
+    private String creationDate;
 
-    private String lastupdate;
+    private String lastUpdate;
 
-    private String activationdate;
+    private String activationDate;
 
-    private String deactivationdate;
+    private String deactivationDate;
 
+    @CsvBindByName(column = "CheckParentLink")
     private String checkParentLink;
 
+    @CsvBindByName(column = "LinkParentId")
     private String linkParentId;
 
+    @CsvBindAndSplitByName(column = "CheckParentId", elementType = String.class, splitOn = "[ |]+")
     private Set<String> checkParentId;
 
-    private boolean masterMandatory;
+    @CsvBindByName(column = "MasterMandatory")
+    private boolean masterMandatory = true;
 
-    private boolean formatUnidentifiedAuthorized;
+    @CsvBindByName(column = "FormatUnidentifiedAuthorized")
+    private boolean formatUnidentifiedAuthorized = false;
 
-    private boolean everyFormatType;
+    @CsvBindByName(column = "EveryFormatType")
+    private boolean everyFormatType = true;
 
+    @CsvBindAndSplitByName(column = "FormatType", elementType = String.class, splitOn = "[ |]+")
     private Set<String> formatType = new HashSet<>();
 
-    private boolean everyDataObjectVersion;
+    @CsvBindByName(column = "EveryDataObjectVersion")
+    private boolean everyDataObjectVersion = false;
 
+    @CsvBindAndSplitByName(column = "DataObjectVersion", elementType = String.class, splitOn = "[ |]+")
     private Set<String> dataObjectVersion;
 
+    @CsvBindAndSplitByName(column = "ArchiveProfiles", elementType = String.class, splitOn = "[ |]+")
     private Set<String> archiveProfiles = new HashSet<>();
 
+    @CsvBindByName(column = "ManagementContractId")
     private String managementContractId;
 
-    private boolean computeInheritedRulesAtIngest;
+    @CsvBindByName(column = "ComputedInheritedRulesAtIngest")
+    private boolean computeInheritedRulesAtIngest = false;
 
     private SignaturePolicyDto signaturePolicy;
 }

@@ -249,7 +249,7 @@ public class CasInternalService {
     }
 
     private User checkUserInformations(final String email) {
-        final User user = userRepository.findByEmail(email);
+        final User user = userRepository.findByEmailIgnoreCase(email);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
@@ -345,7 +345,7 @@ public class CasInternalService {
             email = providedUser.get().getEmail();
         }
 
-        final boolean userExist = userRepository.existsByEmail(email);
+        final boolean userExist = userRepository.existsByEmailIgnoreCase(email);
         // Try to update user
         if(userExist) {
             final UserDto user = internalUserService.findUserByEmail(email);
@@ -515,7 +515,9 @@ public class CasInternalService {
         } else {
             ttlInMinutes = tokenTtl;
         }
-        final Date nowPlusXMinutes = DateUtils.addMinutes(new Date(), ttlInMinutes);
+        Date currentDate = new Date();
+        token.setCreatedDate(currentDate);
+        final Date nowPlusXMinutes = DateUtils.addMinutes(currentDate, ttlInMinutes);
         token.setUpdatedDate(nowPlusXMinutes);
         token.setId(TICKET_GENERATOR.getNewTicketId(TOKEN_PREFIX));
         token.setSurrogation(isSubrogation);

@@ -230,7 +230,7 @@ public class AgencyInternalService {
 
     public boolean delete(VitamContext context, String id) {
         try {
-            
+
             return vitamAgencyService.deleteAgency(context, id);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
             throw new InternalServerException("Unable to delete agency", e);
@@ -253,9 +253,9 @@ public class AgencyInternalService {
         }
     }
 
-    public JsonNode importAgencies(VitamContext context, String fileName, MultipartFile file) {
+    public RequestResponse importAgencies(VitamContext context, String fileName, MultipartFile file) {
         try {
-            return vitamAgencyService.importAgencies(context, fileName, file).toJsonNode();
+            return vitamAgencyService.importAgencies(context, fileName, file);
         } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
             LOGGER.error("Unable to import agency file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import agency file " + fileName + " : ", e);

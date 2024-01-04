@@ -1,105 +1,91 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th>
-        <div class="vitamui-table-header">
-          <button
-            class="vitamui-filter-button"
-            [vitamuiCommonTableFilter]="statusFilterTemplate"
-            [class.active]="filterMap['status'] && filterMap['status'].length > 0"
-          >
-            <i class="material-icons vitamui-row-icon">filter_list</i>
-          </button>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center">
+        <i class="vitamui-icon vitamui-icon-securite mr-2"></i>
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate">
+          <i class="material-icons">filter_list</i>
+        </button>
+      </div>
 
-          <ng-template #statusFilterTemplate>
-            <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
-              <vitamui-common-table-filter-option value="ACTIVE">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option value="INACTIVE">
-                <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Désactivé
-                </div>
-              </vitamui-common-table-filter-option>
-            </vitamui-common-table-filter>
-          </ng-template>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <span>{{ 'CONTEXTS_APP.HOME.ARRAY.IDENTIFIER' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
 
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
-          <vitamui-common-order-by-button
-            orderByKey="Status"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
+      <div class="col-4 d-flex align-items-center justify-content-between">
+        <span>{{ 'CONTEXTS_APP.HOME.ARRAY.NAME' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="Name"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-4 d-flex align-items-center justify-content-between">
+        <span>{{ 'CONTEXTS_APP.HOME.ARRAY.CREATION_DATE' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="CreationDate"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let context of dataSource; let index = index" (click)="contextClick.emit(context)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-securite" [ngClass]="context?.status == 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"></i>
+          </div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ context?.identifier }}</div>
+          <div class="col-4" vitamuiCommonEllipsis>{{ context?.name }}</div>
+          <div class="col-4" vitamuiCommonEllipsis>{{ context?.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
         </div>
-      </th>
+      </div>
+    </div>
 
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Context name column header@@contextListContextNameHeader">Nom</span>
-          <vitamui-common-order-by-button
-            orderByKey="Name"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Context id column header@@contextListIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button
-            orderByKey="Identifier"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Context desc column header@@contextListCreationDateHeader">Date de création</span>
-          <vitamui-common-order-by-button
-            orderByKey="CreationDate"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let context of dataSource; let index = index">
-      <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
-
-      <tr class="vitamui-table-row">
-        <td>
-          <i
-            class="vitamui-icon vitamui-icon-securite vitamui-row-icon status-badge"
-            [ngClass]="{ 'status-badge-green': context?.status == 'ACTIVE', 'status-badge-grey': context?.status == 'INACTIVE' }"
-          ></i>
-          <!--i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i-->
-        </td>
-        <td class="clickable" (click)="contextClick.emit(context)">{{ context?.name }}</td>
-        <td class="clickable" (click)="contextClick.emit(context)">{{ context?.identifier }}</td>
-        <td class="clickable" (click)="contextClick.emit(context)">{{ context?.creationDate | dateTime: 'dd/MM/yyyy' }}</td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
-
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && contextService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !contextService.canLoadMore">Fin des résultats</span>
+    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && contextService.canLoadMore && !pending then loadMore"></div>
+  </div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="contextService.loadMore()">
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #statusFilterTemplate>
+  <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+    <vitamui-common-table-filter-option value="ACTIVE">
+      <div class="table-filter-icon">
+        <span class="badge-state">{{'CONTEXTS_APP.HOME.ARRAY.ACTIVE' | translate}}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+
+    <vitamui-common-table-filter-option value="INACTIVE">
+      <div class="table-filter-icon">
+        <span class="badge-state">{{'CONTEXTS_APP.HOME.ARRAY.INACTIVE' | translate}}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+  </vitamui-common-table-filter>
+</ng-template>

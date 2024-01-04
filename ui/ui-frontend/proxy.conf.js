@@ -102,6 +102,7 @@ const PROXY_CONFIG = [
       '^/referential-api/operation': '/referential/v1/operations',
       '^/referential-api/search/filingplan': '/units/filingplan',
       '^/referential-api/search/units': '/units',
+      '^/referential-api/static': '',
       '^/referential-api': '/referential/v1',
     },
   },

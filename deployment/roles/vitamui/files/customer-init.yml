@@ -54,7 +54,7 @@ customer-init:
         - ROLE_CREATE_INGEST_CONTRACTS
         - ROLE_UPDATE_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
         - ROLE_GET_FILE_FORMATS
         - ROLE_GET_UNITS
@@ -68,8 +68,11 @@ customer-init:
       roles:
         - ROLE_GET_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name:  Profil gestion des services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour

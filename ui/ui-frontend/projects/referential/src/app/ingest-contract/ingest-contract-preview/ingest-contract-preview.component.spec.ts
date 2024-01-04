@@ -34,26 +34,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { IngestContractService } from '../ingest-contract.service';
-import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
+import {IngestContractService} from '../ingest-contract.service';
+import {IngestContractPreviewComponent} from './ingest-contract-preview.component';
+import {TranslateModule} from "@ngx-translate/core";
+import {NO_ERRORS_SCHEMA} from '@angular/compiler';
+import {IngestContract} from "ui-frontend-common";
 
 describe('IngestContractPreviewComponent', () => {
   let component: IngestContractPreviewComponent;
   let fixture: ComponentFixture<IngestContractPreviewComponent>;
 
+  const ingestContractValue: IngestContract = {
+    tenant: 0,
+    version: 1,
+    description: 'desc',
+    status: 'ACTIVE',
+    id: 'vitam_id',
+    name: 'Name',
+    identifier: 'SP-000001',
+    everyDataObjectVersion: true,
+    dataObjectVersion: ['test'],
+    creationDate: '01-01-20',
+    lastUpdate: '01-01-20',
+    activationDate: '01-01-20',
+    deactivationDate: '01-01-20',
+    checkParentLink: '',
+    linkParentId: '',
+    checkParentId: [''],
+    masterMandatory: true,
+    formatUnidentifiedAuthorized: true,
+    everyFormatType: true,
+    formatType: [''],
+    archiveProfiles: [],
+    managementContractId: 'MC-000001',
+    computeInheritedRulesAtIngest: false,
+    signaturePolicy: undefined,
+  };
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
         declarations: [IngestContractPreviewComponent],
         providers: [
           { provide: MatDialog, useValue: {} },
           { provide: IngestContractService, useValue: {} },
         ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
   );
@@ -61,6 +90,7 @@ describe('IngestContractPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractPreviewComponent);
     component = fixture.componentInstance;
+    component.ingestContract = ingestContractValue;
     fixture.detectChanges();
   });
 

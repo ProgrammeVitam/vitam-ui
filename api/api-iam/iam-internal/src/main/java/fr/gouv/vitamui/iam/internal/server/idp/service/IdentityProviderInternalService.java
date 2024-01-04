@@ -63,13 +63,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -347,6 +342,11 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     entity.setAuthnRequestSigned(CastUtils.toBoolean(entry.getValue()));
                     generateMetadata = true;
                     break;
+                case "propagateLogout":
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.PROPAGATE_LOGOUT, entity.isPropagateLogout(), entry.getValue()));
+                    entity.setPropagateLogout(CastUtils.toBoolean(entry.getValue()));
+                    generateMetadata = true;
+                    break;
                 case "wantsAssertionsSigned":
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.WANTS_ASSERTIONS_SIGNED, entity.getWantsAssertionsSigned(), entry.getValue()));
                     entity.setWantsAssertionsSigned(CastUtils.toBoolean(entry.getValue()));
@@ -481,6 +481,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         dto.setTechnicalName(provider.getTechnicalName());
         dto.setWantsAssertionsSigned(provider.getWantsAssertionsSigned());
         dto.setAuthnRequestSigned(provider.getAuthnRequestSigned());
+        dto.setPropagateLogout(provider.isPropagateLogout());
         dto.setMaximumAuthenticationLifetime(provider.getMaximumAuthenticationLifetime());
         return spMetadataGenerator.generate(dto);
     }

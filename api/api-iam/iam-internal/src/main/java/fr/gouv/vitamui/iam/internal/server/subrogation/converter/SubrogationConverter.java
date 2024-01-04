@@ -71,7 +71,7 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
     }
 
     private String getUserId(final String email) {
-        final User u = userRepository.findByEmail(email);
+        final User u = userRepository.findByEmailIgnoreCase(email);
         return u.getIdentifier();
     }
 

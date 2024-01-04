@@ -22,11 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
- * This is {@link SmsModeSmsSender}.
- * To be removed when original SmsMode Service is fixed (accessToken is not added to Sms API call)
- *
- * @author Jérôme Rautureau
- * @since 6.5.0
+ * To be removed when upgrading to CAS version >= 7.0.0.
  */
 @Getter
 @RequiredArgsConstructor
@@ -55,6 +51,7 @@ public class SmsModeSmsSender implements SmsSender {
                 "Content-Type", MediaType.APPLICATION_JSON_VALUE,
                 "Accept", MediaType.APPLICATION_JSON_VALUE,
                 "X-Api-Key", properties.getAccessToken());
+            headers.putAll(properties.getHeaders());
             val exec = HttpUtils.HttpExecutionRequest.builder()
                 .method(HttpMethod.POST)
                 .url(properties.getUrl())

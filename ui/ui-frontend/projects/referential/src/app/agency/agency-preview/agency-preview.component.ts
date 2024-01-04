@@ -35,93 +35,32 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { Agency } from 'ui-frontend-common';
-import { AgencyService } from '../agency.service';
-import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
 @Component({
   selector: 'app-agency-preview',
   templateUrl: './agency-preview.component.html',
   styleUrls: ['./agency-preview.component.scss'],
 })
-export class AgencyPreviewComponent implements AfterViewInit {
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+export class AgencyPreviewComponent {
   @Input() agency: Agency;
+  @Input() tenantIdentifier: number;
 
-  isPopup: boolean;
+  @Output() previewClose = new EventEmitter<void>();
 
-  tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  public selectedIndex = 0;
 
-  tabLinks: Array<AgencyInformationTabComponent> = [];
-  @ViewChild('infoTab', { static: false }) infoTab: AgencyInformationTabComponent;
+  constructor() {}
 
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      event.preventDefault();
-      this.checkBeforeExit();
-      return '';
-    }
-  }
-
-  constructor(private matDialog: MatDialog, private agencyService: AgencyService) {}
-
-  ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
-  }
-
-  updatedChange(updated: boolean, index: number) {
-    this.tabUpdated[index] = updated;
-  }
-
-  async checkBeforeExit() {
-    if (await this.confirmAction()) {
-      // TODO rename
-      const submitAccessContractUpdate: Observable<Agency> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
-
-      submitAccessContractUpdate.subscribe(() => {
-        this.agencyService.get(this.agency.identifier).subscribe((response) => {
-          this.agency = response;
-        });
-      });
-    } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.agency);
-    }
-  }
-
-  async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
-
-    const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
-  }
-
-  async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
-    dialog.componentInstance.dialogType = 'changeTab';
-    return await dialog.afterClosed().toPromise();
-  }
-
-  filterEvents(event: any): boolean {
+  public filterEvents(event: any): boolean {
     return (
       event.outDetail &&
       (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
     );
   }
 
-  async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
+  public emitClose(): void {
     this.previewClose.emit();
   }
 }

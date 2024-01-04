@@ -7,22 +7,14 @@
     type="text"
     [placeholder]="placeholder"
     [disabled]="disabled"
+    (keydown.enter)="onSearch()"
+    (keydown.escape)="reset()"
+    (keydown)="$event.stopPropagation()"
   />
-  <button
-    *ngIf="searchValue"
-    type="button"
-    class="btn-reset"
-    (click)="reset()"
-    [disabled]="disabled"
-  >
+  <button *ngIf="searchValue" type="button" class="btn-reset" (click)="reset()" [disabled]="disabled">
     <i class="material-icons">clear</i>
   </button>
-  <button
-    type="button"
-    class="btn btn-circle btn-search secondary small"
-    (click)="onSearch()"
-    [disabled]="disabled"
-  >
+  <button type="button" class="btn btn-circle btn-search secondary small" (click)="onSearch()" [disabled]="disabled">
     <i class="material-icons">search</i>
   </button>
 </div>

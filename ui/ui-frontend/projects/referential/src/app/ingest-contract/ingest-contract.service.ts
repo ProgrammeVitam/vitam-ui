@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -86,16 +86,16 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.check(context, this.headers);
   }
 
-  patch(data: { id: string; [key: string]: any }): Observable<IngestContract> {
+  patch(data: { id: string;[key: string]: any }): Observable<IngestContract> {
     return this.ingestContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
         (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
-              translateParams: {
-                name: response.name,
-              },
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },
@@ -112,9 +112,9 @@ export class IngestContractService extends SearchService<IngestContract> {
         (response: IngestContract) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
-              translateParams:{
-                name: response.name,
-              },
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },
@@ -123,5 +123,13 @@ export class IngestContractService extends SearchService<IngestContract> {
         }
       )
     );
+  }
+
+  public downloadImportFileModel(): Observable<HttpResponse<Blob>> {
+    return this.ingestContractApi.getImportFileModel();
+  }
+
+  public exportIngestContracts(): Observable<HttpResponse<Blob>> {
+    return this.ingestContractApi.exportIngestContracts();
   }
 }

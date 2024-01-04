@@ -68,6 +68,7 @@ import org.springframework.http.HttpHeaders;
 
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapping;
@@ -157,32 +158,79 @@ public class LogbookService {
     public RequestResponse<LogbookOperation> findEventsByIdentifierAndCollectionNames(final String identifier, final String collectionNames,
             final VitamContext vitamContext) throws VitamClientException {
         LOGGER.debug("findEventsByIdentifierAndCollectionNames for : identifier {}, collection {}, vitamContext {}", identifier, collectionNames,
-                vitamContext);
-        final ObjectNode select = buildOperationQuery(identifier, collectionNames);
+            vitamContext);
+        final ObjectNode select = buildOperationQuery(buildQuery(identifier, collectionNames));
         LOGGER.debug("selectOperations : select query {}, vitamContext {}", select, vitamContext);
         final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
     }
 
-    private ObjectNode buildOperationQuery(final String obId, final String obIdReq) {
-        final Select select = new Select();
-        final BooleanQuery andQuery;
-        final CompareQuery obIdQuery;
-        final CompareQuery obIdReqQuery;
+    public RequestResponse<LogbookOperation> findEvents(final List<String> ids,
+                                                        String collectionName,
+                                                        final VitamContext vitamContext) {
+        LOGGER.debug("findEventsByIdentifiersAndCollectionName for : identifier {}, collection {}, vitamContext {}", ids, collectionName,
+            vitamContext);
+
         try {
+            final Select select = new Select();
             select.addUsedProjection("events", "evIdAppSession");
-            andQuery = QueryHelper.and();
-            obIdQuery = QueryHelper.eq("events.obId", obId);
-            obIdReqQuery = QueryHelper.eq("events.obIdReq", obIdReq);
-            andQuery.add(obIdQuery, obIdReqQuery);
-            select.setQuery(andQuery);
+            select.setQuery(buildOrQuery(ids, collectionName));
+            select.addOrderByDescFilter("events.evDateTime");
+            final ObjectNode resultSelect = select.getFinalSelect();
+            final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, resultSelect);
+            VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+            return response;
+        } catch (final InvalidCreateOperationException | InvalidParseOperationException | VitamClientException e) {
+            throw new ApplicationServerException("An error occurred while fetching logbook operations", e);
+        }
+    }
+
+    private ObjectNode buildOperationQuery(BooleanQuery query) {
+        try {
+            final Select select = new Select();
+            select.addUsedProjection("events", "evIdAppSession");
+            select.setQuery(query);
+            select.addOrderByDescFilter("events.evDateTime");
+            return select.getFinalSelect();
         } catch (final InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new ApplicationServerException("An error occured while creating vitam query", e);
         }
 
-        return select.getFinalSelect();
     }
+
+    private static BooleanQuery buildQuery(String obId, String obIdReq) {
+        try {
+            final CompareQuery obIdQuery = QueryHelper.eq("events.obId", obId);
+            final CompareQuery obIdReqQuery = QueryHelper.eq("events.obIdReq", obIdReq);
+            final BooleanQuery andQuery = QueryHelper.and();
+            andQuery.add(obIdQuery, obIdReqQuery);
+            return andQuery;
+        } catch (InvalidCreateOperationException exception) {
+            throw new ApplicationServerException("An error occured while creating vitam query", exception);
+        }
+    }
+
+    private BooleanQuery buildOrQuery(List<String> identifiers, String collectionName){
+        try {
+            final BooleanQuery obIdQuery = QueryHelper.or();
+            for (String identifier : identifiers) {
+                obIdQuery.add(QueryHelper.eq("events.obId", identifier));
+            }
+            final CompareQuery obIdReqQuery = QueryHelper.eq("events.obIdReq", collectionName);
+            final BooleanQuery andQuery = QueryHelper.and();
+            andQuery.add(obIdQuery, obIdReqQuery);
+            return andQuery;
+        } catch (InvalidCreateOperationException e) {
+            throw new ApplicationServerException("An error occured while creating vitam query", e);
+        }
+    }
+
+    public ObjectNode buildQuery(List<String> userIdentifiers, String collectionName) {
+        BooleanQuery query = buildOrQuery(userIdentifiers, collectionName);
+        return buildOperationQuery(query);
+    }
+
 
     public RequestResponse checkTraceability(final VitamContext context, final JsonNode query) throws AccessExternalClientServerException, InvalidParseOperationException, AccessUnauthorizedException {
         return adminExternalClient.checkTraceabilityOperation(context, query);

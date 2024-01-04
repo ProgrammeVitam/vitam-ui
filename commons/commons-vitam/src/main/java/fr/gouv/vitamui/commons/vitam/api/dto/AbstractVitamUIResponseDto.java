@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -41,10 +41,13 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookSearchService } from '../logbook-search.service';
-import { EventTypeBadgeClassPipe } from './event-type-badge-class.pipe';
-import { EventTypeColorClassPipe } from './event-type-color-class.pipe';
-import { LastEventPipe } from './last-event.pipe';
 import { LogbookOperationListComponent } from './logbook-operation-list.component';
+import {TranslateModule} from "@ngx-translate/core";
+import {TableFilterDirective} from "ui-frontend-common";
+import {OverlayModule} from "@angular/cdk/overlay";
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
 
 describe('LogbookOperationListComponent', () => {
   let component: LogbookOperationListComponent;
@@ -52,7 +55,14 @@ describe('LogbookOperationListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe],
+      imports: [TranslateModule.forRoot(), OverlayModule],
+      declarations: [
+        LogbookOperationListComponent,
+        LastEventPipe,
+        EventTypeColorClassPipe,
+        EventTypeBadgeClassPipe,
+        TableFilterDirective
+      ],
       providers: [
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
@@ -85,20 +95,6 @@ describe('LogbookOperationListComponent', () => {
     expect(response).toEqual(operationLabel);
   });
 
-  it('should have details about transfer reply', () => {
-    // Given
-    component.operationCategoriesFilterOptions = [];
-
-    // When
-    component.refreshOperationCategoriesOptions();
-
-    // Then
-    expect(component.operationCategoriesFilterOptions).toBeDefined();
-    expect(component.operationCategoriesFilterOptions).not.toBeNull();
-    expect(component.operationCategoriesFilterOptions.find((category) => category.label === 'Acquittement de transfert')).toBeDefined();
-    expect(component.operationCategoriesFilterOptions.find((category) => category.label === 'Acquittement de transfert')).not.toBeNull();
-  });
-
   it('should return the given value', () => {
     // Given
     const type = 'TRANSFER_REPLY';
@@ -112,33 +108,16 @@ describe('LogbookOperationListComponent', () => {
     expect(response).toEqual(operationLabel);
   });
 
-  it('should return 15 as array length', () => {
-    // Given
-    component.operationCategoriesFilterOptions = [];
-
-    // When
-    component.refreshOperationCategoriesOptions();
-
-    // Then
-    expect(component.operationCategoriesFilterOptions).toBeDefined();
-    expect(component.operationCategoriesFilterOptions).not.toBeNull();
-    expect(component.operationCategoriesFilterOptions.length).toEqual(15);
-  });
-
   describe('DOM', () => {
-    it('should have 1 table and 1 footer', () => {
-      const tableFooterHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table-footer');
+    it('should have 1 table', () => {
       const vitamUiTableHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table');
-
-      expect(tableFooterHtmlElements).toBeTruthy();
-      expect(tableFooterHtmlElements.length).toBe(1);
 
       expect(vitamUiTableHtmlElements).toBeTruthy();
       expect(vitamUiTableHtmlElements.length).toBe(1);
     });
 
     it('should have 7 different columns', () => {
-      const tableHeaderrHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table-header');
+      const tableHeaderrHtmlElements = fixture.nativeElement.querySelectorAll('.vitamui-table-head > div');
 
       expect(tableHeaderrHtmlElements).toBeTruthy();
       expect(tableHeaderrHtmlElements.length).toBe(7);

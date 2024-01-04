@@ -144,7 +144,8 @@ describe('IdentityProviderCreateComponent', () => {
         protocoleType: 'SAML',
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
-        authnRequestSigned: true
+        authnRequestSigned: true,
+        propagateLogout: false
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -188,7 +189,8 @@ describe('IdentityProviderCreateComponent', () => {
         protocoleType:'SAML',
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
-        authnRequestSigned: true
+        authnRequestSigned: true,
+        propagateLogout: false
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -245,7 +247,8 @@ describe('IdentityProviderCreateComponent', () => {
         protocoleType: 'SAML',
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
-        authnRequestSigned: true
+        authnRequestSigned: true,
+        propagateLogout: false
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

@@ -49,7 +49,7 @@ import { ENVIRONMENT, WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { StartupService } from './startup.service';
 
-import { VitamUISnackBarService } from './components/vitamui-snack-bar';
+import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
 
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';

@@ -61,7 +61,6 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
 
   disabled: boolean;
 
-  @Input() small: boolean;
   @Input() forceDisabled: boolean;
 
   // tslint:disable-next-line:variable-name

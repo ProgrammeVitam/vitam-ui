@@ -7,7 +7,9 @@
     &.event-error {
         .history-event-date,
         .history-event-outcome,
-        .history-event-type {
+        .history-event-title,
+        .history-event-outmessage,
+        .history-event-details {
             color: #EA0101;
         }
     }
@@ -15,7 +17,9 @@
     &.event-warning {
         .history-event-date,
         .history-event-outcome,
-        .history-event-type {
+        .history-event-title,
+        .history-event-outmessage,
+        .history-event-details {
             color: #FFA610;
         }
     }
@@ -59,7 +63,7 @@
         left: 7px;
         top: 9px;
         width: 0px;
-        height: 999px;
+        height: 100%;
         border-color: var(--vitamui-grey-400);
         border-style: solid;
         border-width: 1px 0 0 1px;

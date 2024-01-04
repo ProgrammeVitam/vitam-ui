@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {of} from 'rxjs';
-
-import {ProbativeValueService} from '../probative-value.service';
-import {ProbativeValueListComponent} from './probative-value-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { ProbativeValueListComponent } from './probative-value-list.component';
+import { ProbativeValueService } from '../probative-value.service';
 
 describe('ProbativeValueListComponent', () => {
   let component: ProbativeValueListComponent;
@@ -50,9 +50,10 @@ describe('ProbativeValueListComponent', () => {
       search: () => of(null)
     };
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [ProbativeValueListComponent],
       providers: [
-        {provide: ProbativeValueService, useValue: probativeValueServiceMock}
+        { provide: ProbativeValueService, useValue: probativeValueServiceMock }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

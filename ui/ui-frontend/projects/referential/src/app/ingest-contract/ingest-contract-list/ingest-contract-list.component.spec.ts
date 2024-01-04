@@ -39,6 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractListComponent } from './ingest-contract-list.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 describe('IngestContractListComponent', () => {
   let component: IngestContractListComponent;
@@ -58,6 +59,7 @@ describe('IngestContractListComponent', () => {
       };
 
       TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
         declarations: [IngestContractListComponent],
         providers: [
           { provide: IngestContractService, useValue: ingestContractServiceMock },

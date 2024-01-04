@@ -119,7 +119,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setAnalytics(user.getAnalytics());
         setSiteCode(user.getSiteCode());
         setInternalCode(user.getInternalCode());
-        setCenterCode(user.getCenterCode());
+        setCenterCodes(user.getCenterCodes());
         setAutoProvisioningEnabled(user.isAutoProvisioningEnabled());
         setUserInfoId(user.getUserInfoId());
     }
@@ -256,8 +256,8 @@ public class AuthUserDto extends UserDto implements UserDetails {
                     case SITE_CODE :
                         setSiteCode((String) value);
                         break;
-                    case CENTER_CODE :
-                        setCenterCode((String) value);
+                    case CENTER_CODES:
+                        setCenterCodes((List<String>) value);
                         break;
                     case INTERNAL_CODE :
                         setInternalCode((String) value);
@@ -318,7 +318,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setGroupId(getGroupId());
         user.setAnalytics(getAnalytics());
         user.setSiteCode(getSiteCode());
-        user.setCenterCode(getCenterCode());
+        user.setCenterCodes(getCenterCodes());
         user.setAutoProvisioningEnabled(isAutoProvisioningEnabled());
         user.setUserInfoId(getUserInfoId());
         return user;

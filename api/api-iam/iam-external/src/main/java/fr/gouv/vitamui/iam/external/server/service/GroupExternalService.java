@@ -53,6 +53,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -201,4 +203,9 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
     public List<String> getLevels(Optional<String> criteria) {
         return getClient().getLevels(getInternalHttpContext(), checkAuthorization(criteria));
     }
+
+    public ResponseEntity<Resource> exportProfileGroups() {
+        return getClient().exportProfileGroups(getInternalHttpContext(), checkAuthorization(Optional.empty()));
+    }
+
 }

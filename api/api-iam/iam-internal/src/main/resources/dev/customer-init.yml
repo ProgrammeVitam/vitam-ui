@@ -80,6 +80,13 @@ customer-init:
   # If you add multiple profiles on the same app, put first in this list the admin profile.
   # Only the first profile by app will be added to the admin's group
   tenant-profiles:
+    - name: Registre des fonds
+      description: Visualisation de l'ensemble des données du registre des fonds
+      app-name: ACCESSION_REGISTER_APP
+      level:
+      roles:
+        - ROLE_GET_ACCESSION_REGISTER_DETAIL
+
     - name: Profil pour la gestion des contrats d'accès
       description: Gestion des contrats d'accès dans Vitam
       app-name: ACCESS_APP
@@ -99,8 +106,11 @@ customer-init:
         - ROLE_CREATE_INGEST_CONTRACTS
         - ROLE_UPDATE_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name: Profil consultation des contrats d'entrée
       description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats
@@ -109,8 +119,11 @@ customer-init:
       roles:
         - ROLE_GET_INGEST_CONTRACTS
         - ROLE_GET_FILLING_PLAN_ACCESS
-        - ROLE_GET_MANAGEMENT_CONTRACTS
+        - ROLE_GET_MANAGEMENT_CONTRACT
         - ROLE_GET_ARCHIVE_PROFILES
+        - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_UNITS
+        - ROLE_GET_EXTERNAL_PARAMS
 
     - name: Profil pour les services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour

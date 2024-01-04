@@ -62,12 +62,16 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
  */
 public class ServicesData {
 
+    protected ServicesData() { }
+
     //------------------------------------ USERS -------------------------------------------
     public static final String SERVICE_USERS = "USERS";
 
     public static final String SERVICE_USERS_PROFILES_NAMES = "Profil pour la gestion des utilisateurs";
 
     public static final String ROLE_GET_USERS = GET_ROLE_PREFIX + SERVICE_USERS;
+
+    public static final String ROLE_GET_USERS_ALL_CUSTOMERS = ROLE_GET_USERS + "_ALL_CUSTOMERS";
 
     public static final String ROLE_CREATE_USERS = CREATE_ROLE_PREFIX + SERVICE_USERS;
 
@@ -115,9 +119,21 @@ public class ServicesData {
 
     public static final String SERVICE_TENANTS = "TENANTS";
 
+    /**
+     * Get authorized tenants
+     */
     public static final String ROLE_GET_TENANTS = GET_ROLE_PREFIX + SERVICE_TENANTS;
 
+    /**
+     * GET all instance tenants for superadmin
+     */
     public static final String ROLE_GET_ALL_TENANTS = GET_ROLE_PREFIX + "ALL_" + SERVICE_TENANTS;
+
+    /**
+     * Get all customer tenants. A restriction key for each customer will be added to the request.
+     * Users can retrieve all customer tenants even if they do not have access to.
+     */
+    public static final String ROLE_GET_TENANTS_MY_CUSTOMER = GET_ROLE_PREFIX + SERVICE_TENANTS + "_MY_CUSTOMER";
 
     public static final String ROLE_CREATE_TENANTS = CREATE_ROLE_PREFIX + SERVICE_TENANTS;
 
@@ -350,6 +366,8 @@ public class ServicesData {
 
     public static final String ROLE_CREATE_ONTOLOGIES = CREATE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
+    public static final String ROLE_UPDATE_ONTOLOGIES = UPDATE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
@@ -506,9 +524,9 @@ public class ServicesData {
     //------------------------------------ MANAGEMENT CONTRACT -------------------------------------------
     public static final String SERVICE_MANAGEMENT_CONTRACT = "MANAGEMENT_CONTRACT";
 
-    public static final String ROLE_GET_MANAGEMENT_CONTRACT = CREATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+    public static final String ROLE_GET_MANAGEMENT_CONTRACT = GET_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
-    public static final String ROLE_CREATE_MANAGEMENT_CONTRACT = GET_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+    public static final String ROLE_CREATE_MANAGEMENT_CONTRACT = CREATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
     public static final String ROLE_DELETE_MANAGEMENT_CONTRACT = DELETE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
@@ -530,6 +548,7 @@ public class ServicesData {
         ROLE_GET_CUSTOMERS,
         ROLE_CREATE_CUSTOMERS,
         ROLE_UPDATE_CUSTOMERS,
+        ROLE_GET_USERS_ALL_CUSTOMERS,
 
         ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
         ROLE_GET_ALL_TENANTS,
@@ -598,6 +617,7 @@ public class ServicesData {
 
         ROLE_GET_ONTOLOGIES,
         ROLE_CREATE_ONTOLOGIES,
+        ROLE_UPDATE_ONTOLOGIES,
         ROLE_DELETE_ONTOLOGIES,
 
         ROLE_GET_AUDITS,
@@ -674,6 +694,7 @@ public class ServicesData {
 
     private static final List<String> ROLE_NAMES = Arrays.asList(
         ROLE_GET_USERS, ROLE_CREATE_USERS,
+        ROLE_GET_USERS_ALL_CUSTOMERS,
         ROLE_UPDATE_USERS,
         ROLE_UPDATE_STANDARD_USERS,
         ROLE_GENERIC_USERS,
@@ -695,6 +716,7 @@ public class ServicesData {
         ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
         ROLE_UPDATE_TENANTS,
         ROLE_GET_ALL_TENANTS,
+        ROLE_GET_TENANTS_MY_CUSTOMER,
         ROLE_UPDATE_TENANTS_ALL_CUSTOMERS,
 
         ROLE_GET_PROVIDERS,
@@ -773,6 +795,7 @@ public class ServicesData {
 
         ROLE_GET_ONTOLOGIES,
         ROLE_CREATE_ONTOLOGIES,
+        ROLE_UPDATE_ONTOLOGIES,
         ROLE_DELETE_ONTOLOGIES,
 
         ROLE_GET_AUDITS,

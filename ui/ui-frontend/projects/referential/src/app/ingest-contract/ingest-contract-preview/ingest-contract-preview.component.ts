@@ -34,16 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { Observable } from 'rxjs';
-import { IngestContract } from 'ui-frontend-common';
+import { Observable } from 'rxjs'; import { IngestContract } from 'ui-frontend-common';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
-import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
-import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
+import {
+  IngestContractHeritageTabComponent
+} from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
+import {
+  IngestContractInformationTabComponent
+} from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 
 @Component({
@@ -57,17 +70,17 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   @Input() tenantIdentifier: number;
   @Input() readOnly: boolean;
 
+
   isPopup: boolean;
 
   tabUpdated: boolean[] = [false, false, false, false, false, false];
+  tabValid: boolean[] = [false, false, false, true, true, true];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
-  tabLinks: Array<
-    | IngestContractInformationTabComponent
+  tabLinks: Array<| IngestContractInformationTabComponent
     | IngestContractFormatTabComponent
     | IngestContractObjectTabComponent
-    | IngestContractHeritageTabComponent
-  > = [];
+    | IngestContractHeritageTabComponent> = [];
   @ViewChild('infoTab', { static: false }) infoTab: IngestContractInformationTabComponent;
   @ViewChild('formatsTab', { static: false }) formatsTab: IngestContractFormatTabComponent;
   @ViewChild('objectsTab', { static: false }) objectsTab: IngestContractObjectTabComponent;
@@ -75,20 +88,22 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
       await this.checkBeforeExit();
       return '';
     }
   }
 
-  constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) {}
+  constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {
       this.ingestContract = changes.ingestContract.currentValue;
     }
   }
+
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -100,6 +115,10 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   updatedChange(updated: boolean, index: number) {
     this.tabUpdated[index] = updated;
+  }
+
+  formTabValidityChange(isFormTabValid: boolean, index: number) {
+    this.tabValid[index] = isFormTabValid;
   }
 
   async checkBeforeExit() {
@@ -117,7 +136,7 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();
     }
 
@@ -139,9 +158,13 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   }
 
   async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();
     }
     this.previewClose.emit();
+  }
+
+  updatedIngestContract(ingestContract: IngestContract) {
+    this.ingestContract = ingestContract;
   }
 }

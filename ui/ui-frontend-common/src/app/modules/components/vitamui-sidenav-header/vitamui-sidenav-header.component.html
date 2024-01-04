@@ -21,15 +21,14 @@
         </i>
 
         <div
-          *ngIf="hasToolTipOnTitle && toolTipTitleText && toolTipTitleDuration"
-          matTooltip="{{ toolTipTitleText }}"
-          matTooltipClass="vitamui-tooltip"
-          [matTooltipShowDelay]="toolTipTitleDuration"
+          *ngIf="hasToolTipOnTitle && toolTipTitleText"
+          vitamuiCommonToolTip="{{ toolTipTitleText }}"
+          vitamuiCommonToolTipPosition="BOTTOM"
         >
           <h5 class="m-0 text-primary">{{ title }}</h5>
           <p class="text large light m-0">{{ subtitle }}</p>
         </div>
-        <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText || !toolTipTitleDuration">
+        <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText">
           <h5 class="m-0">{{ title }}</h5>
           <p class="text medium m-0">{{ subtitle }}</p>
         </div>

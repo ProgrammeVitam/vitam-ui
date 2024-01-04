@@ -38,9 +38,9 @@ public final class SpMetadataGeneratorTest {
     @Test
     public void testRealProvider() throws Exception {
         final IdentityProviderDto provider = new IdentityProviderBuilder("google", "idp0", true, false, null,
-                new ClassPathResource("test-idp/sp-test-keystore.jks"), "password", "password", new ClassPathResource("test-idp/idp-test-metadata.xml"),
-                "clientId", false, "mailAttribute", "identifierAttribute", 1000, AuthnRequestBindingEnum.POST, true, true, false, null, null,
-            null,null,null,null,null,null,null,null).build();
+            new ClassPathResource("test-idp/sp-test-keystore.jks"), "password", "password", new ClassPathResource("test-idp/idp-test-metadata.xml"),
+            "clientId", false, "mailAttribute", "identifierAttribute", 1000, AuthnRequestBindingEnum.POST, true, true,false, false, null, null, null,
+            null, null, null, null, null, null, null).build();
         final SpMetadataGenerator generator = new SpMetadataGenerator();
         generator.setPac4jClientBuilder(builder);
         final String metadata = generator.generate(provider);

@@ -51,10 +51,13 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,8 +70,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -156,5 +161,21 @@ public class IngestContractInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
         return ingestContractInternalService.findHistoryByIdentifier(vitamContext, id);
+    }
+
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public ResponseEntity<Void> importIngestContracts(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("importing ingest contracts file {}", fileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestContractInternalService.importIngestContracts(vitamContext, file);
+    }
+
+    @ApiOperation(value = "Export ingest contracts to a csv file")
+    @GetMapping(path = RestApi.EXPORT_CSV)
+    public ResponseEntity<Resource> exportIngestContracts() throws IOException {
+        LOGGER.debug("export all ingest contracts to csv file");
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        final Resource exportedResult = ingestContractInternalService.exportIngestContracts(vitamContext);
+        return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 }

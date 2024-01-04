@@ -184,8 +184,9 @@ public class LogbookInternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the manifest for the following Vitam operation : {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantIdentifier);
-        final Response vitamResponse = logbookService.downloadManifest(id, vitamContext);
-        VitamRestUtils.writeFileResponse(vitamResponse, response);
+        try (final Response vitamResponse = logbookService.downloadManifest(id, vitamContext)) {
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
     }
 
     @ApiOperation(value = "Download the ATR for a given operation")
@@ -199,8 +200,9 @@ public class LogbookInternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the ATR file for the following Vitam operation : {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantIdentifier);
-        final Response vitamResponse = logbookService.downloadAtr(id, vitamContext);
-        VitamRestUtils.writeFileResponse(vitamResponse, response);
+        try (final Response vitamResponse = logbookService.downloadAtr(id, vitamContext)) {
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
     }
 
     @ApiOperation(value = "Download the report file for a given operation")

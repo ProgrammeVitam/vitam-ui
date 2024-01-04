@@ -40,6 +40,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Status } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
+import { AccessContract, Status } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { AgencyService } from '../../../agency/agency.service';
 import { AccessContractService } from '../../access-contract.service';
@@ -95,8 +96,8 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
       declarations: [AccessContractUsageAndServicesTabComponent],
       providers: [
         FormBuilder,
-        { provide: AccessContractService, useValue: { patch: (_data: any) => of(null) } },
-        { provide: AgencyService, useValue: { getAll: () => of([]) } },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: AgencyService, useValue: agencyServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -105,12 +106,8 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractUsageAndServicesTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue({
-      everyOriginatingAgency: true,
-      originatingAgencies: ['test'],
-      everyDataObjectVersion: true,
-      dataObjectVersion: ['test'],
-    });
+    component.form.setValue(accessContractValue);
+    component.previousValue = (): AccessContract => previousValue;
     fixture.detectChanges();
   });
 

@@ -47,6 +47,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 
 import {RouterModule} from '@angular/router';
 import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 import {SharedModule} from '../shared/shared.module';
 import {AccessContractCreateModule} from './access-contract-create';
@@ -72,7 +73,8 @@ import {AccessContractComponent} from './access-contract.component';
     AccessContractRoutingModule,
     AccessContractCreateModule,
     AccessContractPreviewModule,
-    TableFilterModule
+    TableFilterModule,
+    ImportDialogModule
   ],
   declarations: [
     AccessContractComponent,

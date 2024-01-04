@@ -1,4 +1,3 @@
-import { Category } from './application/category.interface';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,6 +34,8 @@ import { Category } from './application/category.interface';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Ui, VitamConfiguration } from './application';
+import { Category } from './application/category.interface';
 
 export interface AppConfiguration {
   PORTAL_URL: string;
@@ -57,5 +58,7 @@ export interface AppConfiguration {
   ALLOWED_URLS: string[];
   OIDC_CONFIG: any;
   CATEGORY_CONFIGURATION: Category[];
-  UI: any;
+  UI: Ui;
+  VITAM: VitamConfiguration;
+  VITAM_ADMIN_TENANT?: number;
 }
