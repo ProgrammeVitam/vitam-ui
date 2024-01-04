@@ -75,12 +75,8 @@ export class IngestContractObjectTabComponent implements OnInit {
     if (!this._ingestContract.dataObjectVersion) {
       this._ingestContract.dataObjectVersion = [];
     }
-    this.resetForm(this.ingestContract);
+    this.resetForm(this.previousValue());
     this.updated.emit(false);
-  }
-
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
   }
 
   @Input()

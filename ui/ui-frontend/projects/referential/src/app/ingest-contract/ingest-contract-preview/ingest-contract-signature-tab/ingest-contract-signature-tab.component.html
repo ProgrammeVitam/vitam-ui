@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="row">
-    <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate}}</p>
+    <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate }}</p>
   </div>
   <div class="row">
     <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup"
@@ -20,7 +20,7 @@
     </mat-button-toggle-group>
   </div>
   <div class="row">
-    <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate}}</p>
+    <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</p>
   </div>
   <div class="row">
     <div class="col">
@@ -58,7 +58,8 @@
   </div>
   <div class="row separator"></div>
   <div class="row">
-    <button type="submit" class="btn primary" [disabled]="signaturePolicyUnchanged()"><!-- dirty // pristine ?-->
+    <button type="submit" class="btn primary" [disabled]="submitting || signaturePolicyUnchanged()">
+      <!-- dirty // pristine ?-->
       {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
