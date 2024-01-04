@@ -9,7 +9,12 @@ db.profiles.updateMany(
   {
     $addToSet: {
       roles: {
-        name: 'ROLE_GET_MANAGEMENT_CONTRACT'
+        $each : [
+          { name : "ROLE_GET_MANAGEMENT_CONTRACT"},
+          { name : "ROLE_GET_FILE_FORMATS"},
+          { name : "ROLE_GET_UNITS"},
+          { name : "ROLE_GET_EXTERNAL_PARAMS"}
+        ]
       }
     }
   }

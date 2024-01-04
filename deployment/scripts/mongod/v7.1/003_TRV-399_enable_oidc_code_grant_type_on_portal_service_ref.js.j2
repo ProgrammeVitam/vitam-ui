@@ -4,6 +4,9 @@ db = db.getSiblingDB("cas");
 
 print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
 
+
+db.services.deleteOne({ "clientId": "{{ vitamui.portal.clientId | default('portal') }}" });
+
 var serviceWithMaxId = db.services.aggregate([
     { $sort: { _id: -1 } },
     { $limit: 1 }
