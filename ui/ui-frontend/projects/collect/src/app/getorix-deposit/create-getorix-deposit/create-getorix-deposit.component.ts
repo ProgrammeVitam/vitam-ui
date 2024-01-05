@@ -125,12 +125,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       target: 'volumeDetails',
       isSelected: false,
     },
-    {
-      operationCategory: 'FURNITURE',
-      isError: false,
-      target: 'furniture',
-      isSelected: false,
-    },
   ];
   depositFormError: DepositFormError[] = [
     {
@@ -294,8 +288,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     saveLastCondition: '',
     materialStatus: '',
     archiveVolume: '',
-    furniture: '',
-    furnitureComment: '',
     archaeologistGetorixAddress: {
       placeName: '',
       department: '',
@@ -519,8 +511,8 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
 
   scrollToElement(htmlElementId: string) {
     this.operationCategoryList.map((element) => (element.isSelected = false));
-    if (htmlElementId === 'furniture') {
-      const element = document.getElementById('volumeDetails');
+    if (htmlElementId === 'volumeDetails') {
+      const element = document.getElementById('archiveStatus');
       element.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else {
       const element = document.getElementById(htmlElementId);
@@ -645,8 +637,6 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
       saveLastCondition: [''],
       materialStatus: [''],
       archiveVolume: ['', [Validators.required, Validators.pattern(this.NUMERIC_REGEX), Validators.minLength(1)]],
-      furniture: [false],
-      furnitureComment: [''],
       archaeologistGetorixAddress: this.formBuilder.group({
         placeName: [''],
         department: ['', [Validators.required, Validators.minLength(2), Validators.pattern(this.ALPHA_NUMERIC_REGEX)]],

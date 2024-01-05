@@ -1,12 +1,35 @@
 {
   "GETORIX_DEPOSIT" : {
+    "PORTAL" : {
+      "OPERATION_LIST_CLICK" : "Voir toutes les opérations",
+      "MY_OPERATIONS" : "Mes opérations",
+      "TITLE" : "ESPACE D’ARCHIVAGE",
+      "SUB_TITLE_1" : "Déposez simplement vos archives ",
+      "SUB_TITLE_2" : "en 3 étapes",
+      "BOX_TITLE_1" : "Triez vos archives",
+      "BOX_TITLE_2" : "Commencez le dépôt",
+      "BOX_TITLE_3" : "Échangez avec l’archiviste",
+      "FIRST_BOX_TEXT_1" : "Cette étape est capitale pour que votre versement soit accepté rapidement. Nous vous aidons à :",
+      "FIRST_BOX_TEXT_2" : "sélectionner le contenu représentatif de votre raisonnement scientifique.",
+      "FIRST_BOX_TEXT_3" : "trier le contenu pour ne garder que l'essentiel.",
+      "FIRST_BOX_TEXT_4" : "renommer vos fichiers selon les préconisations de nommage.",
+      "FIRST_BOX_TEXT_LINK" : "Voir le guide d’archivage",
+      "SECOND_BOX_TEXT_1" : "Vous allez déposer les archives scientifiques de votre opération (terrain et post-fouille, ainsi que le rapport en haute définition).",
+      "SECOND_BOX_TEXT_2" : "Laissez-vous guider à chaque étape pour :",
+      "SECOND_BOX_TEXT_3" : "renseigner le formulaire de description de vos archives.",
+      "SECOND_BOX_TEXT_4" : "importer vos archives.",
+      "SECOND_BOX_TEXT_5" : "notifier l'archiviste de votre dépôt.",
+      "THIRD_BOX_TEXT_1" : "Directement dans cette plateforme vous pourrez :",
+      "THIRD_BOX_TEXT_2" : "poser vos questions.",
+      "THIRD_BOX_TEXT_3" : "répondre aux questions de l'archiviste.",
+      "THIRD_BOX_TEXT_4" : "finaliser avec l'archiviste le contenu à valider et à verser dans le système de conservation.",
+      "THIRD_BOX_TEXT_5" : "Plus vous avez soigné l'étape 1, plus cette étape sera rapide à réaliser !",
+      "OPERATION" : "Opération",
+      "STATUS" : "Statut",
+      "NUMBER" : "Numéro"
+    },
     "APP_BREADCRUMB" :"Préparation des versementGetorix",
-    "CREATE_DEPOSIT" : "Commencer le dépôt",
-    "GUIDE" : "Guidez-moi",
-    "ARCHIVE_SPACE" :"Mon espace d'archivage",
-    "DEPOSIT_QUESTION" : "Vous avez rendu le rapport et souhaitez passer aux dépôt de vos archives ? Par ici :",
-    "STEPS_TO_FOLLOW" : "Les étapes à suivre",
-    "GUIDE_TO_SHOW" :"Consultez notre guide pour vous accompagner pas à pas dans le versement de vos archives :",
+    "CREATE_DEPOSIT" : "Commencer le dépôt", 
     "BREAD_CRUMB" : {
       "ARCHIVAL_SPACE" : "Mon espace d'archivage",
       "NEW_PROJECT" : "Nouveau projet",
@@ -141,10 +164,10 @@
       "MANDATORY_FIELDS_MESSAGE" : "Les champs marqués du symbole * sont obligatoires",
       "INCOMPLETED_DATA" :"Saisie incomplète",
       "INPUT_WITH_ERRORS" :"champ(s) en erreur :",
-      "VERSATILE_SERVICE_MESSAGE" :"Le service versant des archives est différent du service titulaire",
+      "VERSATILE_SERVICE_MESSAGE" :"Le service versant les archives est différent du service titulaire",
       "ADD_OFFICER" :"Ajouter un responsable",
       "DELETE_OFFICER":"Supprimer le deuxieme responsable",
-      "OPERATION_NAME_MESSAGE" :"Reprendre celui présent sur le rapport de fouille.",
+      "OPERATION_NAME_MESSAGE" :"Reprendre celui présent sur le rapport d'opération.",
       "PERSCRIPTION_NUMBER_MESSAGE" :"Si vous avez plusieurs arrêtés, notez tous les numéros.",
       "OPERATION_TYPE" : {
         "OTHER" :"Autre",
@@ -168,15 +191,14 @@
         "SECOND" :"exemple : déménagement, ajouts successifs, perte de documents ou dégradations…",
         "THIRD" :"A remplir si vous avez l’information."
       },
-      "FURNITURE_QUESTION" :"Le mobilier a-t-il déjà versé ?",
       "YES" :"Oui",
       "NO":"Non"
     },
     "INPUT_NAMES":{
       "ORGANISATION_NAME" :"Nom de l'organisme titulaire de l'opération",
       "VERSATILE_SERVICE" : "Nom de l'organisme versant les archives",
-      "OFFICER_FIRST_NAME" :"Prénom du résponsable scientifique de l opération (ou RO)",
-      "OFFICER_LAST_NAME" :"Nom du résponsable scientifique de l opération (ou RO)",
+      "OFFICER_FIRST_NAME" :"Prénom  ",
+      "OFFICER_LAST_NAME" :"Nom  ",
       "OPRATION_NAME" : "Nom de l'opération",
       "OPERATION_TYPE":"Type de l'opération",
       "INTERN_ADMINISTRATOR_NUMBER":"Numéro administratif interne",
@@ -208,8 +230,7 @@
       "DATES":"Dates de l'opération",
       "DOCUMENT_DATES" :"Dates des documents",
       "ARCHIVE_STATUS" :"Etat des archives papiers",
-      "VOLUME_DETAILS":"Volumétrie des archives",
-      "FURNITURE" :"Mobilier"
+      "VOLUME_DETAILS":"Volumétrie des archives"
     }
   },
   "COLLECT": {

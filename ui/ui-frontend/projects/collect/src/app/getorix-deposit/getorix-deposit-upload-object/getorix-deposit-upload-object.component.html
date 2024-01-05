@@ -1,5 +1,12 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav class="custom-sidenav" #panel mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
+  <mat-sidenav
+    class="custom-sidenav"
+    #panel
+    mode="side"
+    [fixedInViewport]="true"
+    [opened]="show && searchHasResults"
+    vitamuiCommonResizeSidebar="left"
+  >
     <getorix-tree-plan-schema
       [searchHasMatches]="searchHasResults"
       (searchUnitsOfNode)="searchUnitsOfNode($event)"
@@ -43,12 +50,12 @@
       <div class="row row justify-content-around tree-btn">
         <div class="col-12">
           <button
-            *ngIf="!show"
+            *ngIf="!show || !searchHasResults"
             type="button"
             class="btn btn-css right-arround left-not-arround"
             (click)="hideTreeBlock(show)"
             matTooltip="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.SHOW_TREES_PLANS' | translate }}"
-            matTooltipClass="vitamui-tooltip"
+            matTooltipClass="getorix-node-tooltip"
             [matTooltipShowDelay]="300"
           >
             <i class="material-icons icon-size">chevron_right</i>
@@ -67,7 +74,7 @@
       <div class="my-archives" *ngIf="nodeParentsFullPath.length > 0 && nodeParentsFullPath.length < 5 && !pending && !isLoadUnitPath">
         <ng-container *ngFor="let element of nodeParentsFullPath; let lastItem = last">
           <span class="path-archive clickable" (click)="getUnitsOfNode(element)" *ngIf="!lastItem && element.id !== 'ORPHANS_NODE'"
-            >{{ element.title | truncate : 26 }}
+            >{{ element.title | truncate: 26 }}
           </span>
           <span class="path-archive clickable" (click)="getUnitsOfNode(element)" *ngIf="element.id === 'ORPHANS_NODE'">{{
             'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES' | translate
@@ -88,17 +95,17 @@
             <span *ngFor="let nodeElement of nodeParentsFullPath.slice(1, nodeParentsFullPath.length - 2)" [ngStyle]="{ width: '100%' }">
               <button mat-menu-item (click)="getUnitsOfNode(nodeElement)">
                 <i class="vitamui-icon vitamui-icon-folder" [ngStyle]="{ 'padding-right': '10px' }"></i>
-                {{ nodeElement.title | truncate : 36 }}
+                {{ nodeElement.title | truncate: 36 }}
               </button>
             </span>
           </mat-menu>
         </span>
         <span class="path-archive"> / </span>
         <span class="path-archive clickable" (click)="getUnitsOfNode(nodeParentsFullPath[nodeParentsFullPath.length - 2])">{{
-          nodeParentsFullPath[nodeParentsFullPath.length - 2].title | truncate : 26
+          nodeParentsFullPath[nodeParentsFullPath.length - 2].title | truncate: 26
         }}</span>
         <span class="path-archive"> / </span>
-        <span>{{ nodeParentsFullPath[nodeParentsFullPath.length - 1].title | truncate : 26 }}</span>
+        <span>{{ nodeParentsFullPath[nodeParentsFullPath.length - 1].title | truncate: 26 }}</span>
       </div>
 
       <!--When parent node selected-->
