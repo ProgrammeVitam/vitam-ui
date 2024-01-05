@@ -27,11 +27,27 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { SchemaApiService } from './schema-api.service';
-import { SchemaService } from './schema.service';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient } from '../base-http-client';
+import { BASE_URL } from '../injection-tokens';
+import { Collection, Ontology, Schema } from '../models';
 
-@NgModule({
-  providers: [SchemaApiService, SchemaService],
+@Injectable({
+  providedIn: 'root',
 })
-export class SchemaModule {}
+export class SchemaApiService extends BaseHttpClient<Ontology> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, `${baseUrl}/schemas`);
+  }
+
+  public getSchemas(collections: Collection[]): Observable<Schema[]> {
+    return this.http.get<Schema[]>(this.apiUrl, { params: { collections } });
+  }
+
+  public getSchema(collection: Collection): Observable<Schema> {
+    return this.getSchemas([collection]).pipe(map((schemas) => schemas[0]));
+  }
+}

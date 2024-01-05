@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -97,12 +97,15 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getDownloadObjectFromUnitUrl(unitId: string, tenantId: number, qualifier?: string, version?: number): string {
-    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}?tenantId=${tenantId}`;
+  downloadObjectFromUnit(unitId: string, qualifier?: string, version?: number): Observable<HttpResponse<Blob>> {
+    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}?`;
     if (qualifier && version) {
-      url += `&qualifier=${qualifier}&version=${version}`;
+      url += `&usage=${qualifier}&version=${version}`;
     }
-    return url;
+    return this.http.get(url, {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {

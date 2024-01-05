@@ -1,10 +1,10 @@
 {
   "GATEWAY_ENABLED": true,
-  "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
+  "REFERENTIAL_URL": "https://dev.vitamui.com:4202/referential",
   "VERSION_RELEASE": "6.4",
   "PLATFORM_NAME": "VITAM-UI",
-  "INGEST_URL": null,
-  "PORTAL_TITLE": "Portail des applications de Vitam",
+  "INGEST_URL": "https://dev.vitamui.com:4208/ingest",
+  "PORTAL_TITLE": "Portail des applications de l'archivage",
   "MAX_STREET_LENGTH": 250,
   "THEME_COLORS": {
     "vitamui-primary": "#702382",
@@ -14,15 +14,15 @@
     "vitamui-background": "#F5F7FC"
   },
   "PORTAL_MESSAGE": "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics.",
-  "UI_URL": "https://dev.vitamui.com:4201",
+  "UI_URL": "https://dev.vitamui.com:4209",
   "ARCHIVES_SEARCH_URL": "https://dev.vitamui.com:4209/archive-search",
   "PORTAL_URL": "https://dev.vitamui.com:4200",
-  "ALLOWED_URLS": ["/identity-api"],
+  "ALLOWED_URLS": ["/archive-search-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
     "redirectUri": "?",
-    "postLogoutRedirectUri": "https://dev.vitamui.com:4201/user",
-    "clientId": "identity",
+    "postLogoutRedirectUri": "https://dev.vitamui.com:4209/archive-search",
+    "clientId": "archive-search",
     "responseType": "code",
     "scope": "openid",
     "showDebugInformation": true

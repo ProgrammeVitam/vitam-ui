@@ -31,32 +31,52 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
+import fr.gouv.vitam.common.model.objectgroup.VersionsModel;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeType;
 import reactor.core.publisher.Mono;
 
+import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+
+import static fr.gouv.vitamui.commons.rest.util.RestUtils.CONTENT_DISPOSITION;
+import static java.util.Comparator.comparing;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Optional.empty;
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
 /**
@@ -99,12 +119,13 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto query) {
+    public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         if (thresholdOpt.isPresent()) {
             query.setThreshold(thresholdOpt.get());
         }
-        return getClient().searchArchiveUnitsByCriteria(getInternalHttpContext(), query);
+        ArchiveUnitsDto archiveUnitsDto = getClient().searchArchiveUnitsByCriteria(getInternalHttpContext(), query);
+        return archiveUnitsDto == null ? null : archiveUnitsDto.getArchives();
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id) {
@@ -120,8 +141,92 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
+        // Logic moved here from ui-archive-search
+        String fileName = null;
+        ResultsDto got = findObjectById(id).getBody();
+        if (nonNull(got)) {
+            QualifiersDto qualifier;
+            if (isEmpty(usage)) {
+                // find the best qualifier for download
+                qualifier = getLastObjectQualifier(got);
+            } else {
+                String finalUsage = usage;
+                qualifier = got.getQualifiers().stream()
+                    .filter(q -> finalUsage.equals(q.getQualifier()))
+                    .findFirst()
+                    .orElse(null);
+            }
+            if (nonNull(qualifier)) {
+                usage = qualifier.getQualifier();
+                VersionsDto versionsDto;
+                if (isNull(version)) {
+                    // find the latest version for the qualifier
+                    versionsDto = getLastVersion(qualifier);
+                } else {
+                    Integer finalVersion = version;
+                    versionsDto = qualifier.getVersions().stream()
+                        .filter(v -> finalVersion.equals(extractVersion(v)))
+                        .findFirst()
+                        .orElse(null);
+                }
+                if (nonNull(versionsDto)) {
+                    version = extractVersion(versionsDto);
+                    fileName = getFilename(versionsDto);
+                }
+            }
+        }
         return archiveSearchInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
+            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext(), fileName);
+    }
+
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
+            }
+        }
+        return null;
+    }
+
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        return qualifier.getVersions().stream()
+            .max(comparing(ArchivesSearchExternalService::extractVersion))
+            .orElse(null);
+    }
+
+    @NotNull
+    private static Integer extractVersion(VersionsDto versionsDto) {
+        return Integer.parseInt(versionsDto.getDataObjectVersion().split("_")[1]);
+    }
+
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || StringUtils.isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
+    }
+
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
