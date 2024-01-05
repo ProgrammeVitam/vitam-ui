@@ -40,7 +40,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['launchDownloadObjectFromUnit', 'getObjectById']);
+  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['downloadObjectFromUnit', 'getObjectById']);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -87,12 +87,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     } as Event;
     const preventDefaultSpy = spyOn(event, 'stopPropagation');
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
-    expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
-      'archiveUnitTestID',
-      1,
-      ObjectQualifierType.BINARYMASTER,
-      1,
-    );
+    expect(archiveServiceSpy.downloadObjectFromUnit).toHaveBeenCalledWith('archiveUnitTestID', ObjectQualifierType.BINARYMASTER, 1);
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 

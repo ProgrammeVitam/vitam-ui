@@ -29,11 +29,12 @@
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Collection } from './model/collection.enum';
-import { Schema } from './model/schema.interface';
-import { SchemaApiService } from './schema-api.service';
+import { SchemaApiService } from '../api/schema-api.service';
+import { Collection, Schema } from '../models';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SchemaService {
   constructor(private api: SchemaApiService) {}
 

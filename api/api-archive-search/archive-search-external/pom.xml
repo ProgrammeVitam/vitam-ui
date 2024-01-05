@@ -55,7 +55,10 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+        </dependency>
         <!-- SPRING BOOT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -49,3 +49,13 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.referential }}"
+
+
+- hosts: hosts_ui_archive_search
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - { role: assets_copy, when: gateway.enabled | default(False) }
+    - { role: nginx_webapp, when: gateway.enabled | default(False) }
+  vars:
+    vitamui_struct: "{{ vitamui.archive_search }}"

@@ -30,9 +30,9 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -146,11 +146,11 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
+        VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
         Mockito
             .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
             .thenReturn(expectedResponse);
-        ArchiveUnitsDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
+        VitamUIArchiveUnitResponseDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 
@@ -164,7 +164,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         nodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
         nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
+        VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
         Mockito
             .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
             .thenReturn(expectedResponse);

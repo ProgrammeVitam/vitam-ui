@@ -88,7 +88,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     receiveDownloadProgressSubject: () => of(true),
     updateUnit: () => of({}),
     openSnackBarForWorkflow: () => of({}),
-    launchDownloadObjectFromUnit: () => of({}),
+    downloadObjectFromUnit: () => of({}),
   };
 
   const startUpServiceMock = {
@@ -349,7 +349,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     expect(archiveServiceMock.updateUnit).toHaveBeenCalled();
   });
 
-  it('should call launchDownloadObjectFromUnit of archiveService ', () => {
+  it('should call downloadObjectFromUnit of archiveService ', () => {
     // Given
     const unit: Unit = {
       '#allunitups': [],
@@ -361,13 +361,13 @@ describe('ArchiveUnitInformationTabComponent', () => {
       Title: 'test tets',
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
-    spyOn(archiveServiceMock, 'launchDownloadObjectFromUnit').and.callThrough();
+    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
 
     // When
     component.onDownloadObjectFromUnit(unit);
 
     // Then
-    expect(archiveServiceMock.launchDownloadObjectFromUnit).toHaveBeenCalled();
+    expect(archiveServiceMock.downloadObjectFromUnit).toHaveBeenCalled();
   });
 
   it('unsetAction should have two items  ', () => {

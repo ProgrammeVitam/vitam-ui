@@ -27,7 +27,4 @@
  *
  */
 
-export * from './model/index';
-export * from './schema-api.service';
-export * from './schema.module';
 export * from './schema.service';

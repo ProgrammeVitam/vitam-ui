@@ -4,12 +4,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SchemaApiService } from '../../../api/schema-api.service';
 import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger';
+import { Collection, Schema } from '../../../models';
 import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module';
 import { MockSchemaService } from '../../../object-viewer/services/mock-schema.service';
-import { Collection, Schema, SchemaService } from '../../../schema';
-import { SchemaApiService } from '../../../schema/schema-api.service';
+import { SchemaService } from '../../../schema';
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
 
 describe('ArchiveUnitViewerComponent', () => {

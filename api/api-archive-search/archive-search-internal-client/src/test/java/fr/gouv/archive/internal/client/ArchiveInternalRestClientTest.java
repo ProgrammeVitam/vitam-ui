@@ -50,7 +50,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
@@ -63,7 +62,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
     String baseUrl = "https://tests" + RestApi.ARCHIVE_SEARCH_PATH;
     InternalHttpContext defaultContext = new InternalHttpContext(9, "", "", "", "", "", "", "");
-    private ArchiveInternalRestClient archivesSearchExternalRestClient;
+    private ArchiveInternalRestClient archiveInternalRestClient;
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
 
@@ -72,13 +71,13 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
     @BeforeEach
     public void setUp() {
-        archivesSearchExternalRestClient = new ArchiveInternalRestClient(restTemplate, baseUrl);
+        archiveInternalRestClient = new ArchiveInternalRestClient(restTemplate, baseUrl);
     }
 
     @Test
     public void sampleArchiveTest() {
-        Assertions.assertNotNull(archivesSearchExternalRestClient);
-        Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archivesSearchExternalRestClient.getPathUrl());
+        Assertions.assertNotNull(archiveInternalRestClient);
+        Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archiveInternalRestClient.getPathUrl());
     }
 
 
@@ -94,7 +93,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
                 eq(ArchiveUnitsDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         ArchiveUnitsDto response =
-            archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
+            archiveInternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
         Assertions.assertEquals(response, responseEntity);
     }
 
@@ -106,7 +105,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         VitamUISearchResponseDto response =
-            archivesSearchExternalRestClient.getFilingHoldingScheme(defaultContext);
+            archiveInternalRestClient.getFilingHoldingScheme(defaultContext);
         Assertions.assertEquals(response, responseEntity);
     }
 
@@ -121,7 +120,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
         Resource response =
-            archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, defaultContext);
+            archiveInternalRestClient.exportCsvArchiveUnitsByCriteria(query, defaultContext);
 
 
         Assertions.assertEquals(response, resource);
@@ -132,12 +131,12 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
         PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
-        URI uri = new URI(archivesSearchExternalRestClient.getBaseUrl() + archivesSearchExternalRestClient.getPathUrl()
+        URI uri = new URI(archiveInternalRestClient.getBaseUrl() + archiveInternalRestClient.getPathUrl()
             + RestApi.UNITS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
             .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveInternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
         Assertions.assertEquals(persistentIdentifierResponse, result);
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
