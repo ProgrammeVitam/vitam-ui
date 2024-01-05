@@ -1,30 +1,109 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
     <div class="vitamui-content">
-      <div></div>
-      <div class="mt-3">
-        <div class="title-design">{{ 'GETORIX_DEPOSIT.ARCHIVE_SPACE' | translate }}</div>
-        <div class="subTitle-design">
-          <p>
-            {{ 'GETORIX_DEPOSIT.DEPOSIT_QUESTION' | translate }}
+      <div class="archive-space">{{ 'GETORIX_DEPOSIT.PORTAL.TITLE' | translate }}</div>
+      <div class="deposit-space" [ngStyle]="{ 'padding-top': '20px' }">{{ 'GETORIX_DEPOSIT.PORTAL.SUB_TITLE_1' | translate }}</div>
+      <div class="deposit-space">{{ 'GETORIX_DEPOSIT.PORTAL.SUB_TITLE_2' | translate }}</div>
+      <br />
+      <br />
+      <br />
+
+      <div class="row">
+        <!-- first box-->
+        <div class="col-3-5 box-details">
+          <div class="box-number">1</div>
+          <div class="box-title">{{ 'GETORIX_DEPOSIT.PORTAL.BOX_TITLE_1' | translate }}</div>
+          <p class="center-text text-padding">
+            {{ 'GETORIX_DEPOSIT.PORTAL.FIRST_BOX_TEXT_1' | translate }}
           </p>
-        </div>
-
-        <button class="btn primary" (click)="startDepositCreation()">
-          <span>{{ 'GETORIX_DEPOSIT.CREATE_DEPOSIT' | translate }}</span>
-        </button>
-        <div class="guide-design">
-          <span class="vertical-line"></span>
-          <div class="steps">{{ 'GETORIX_DEPOSIT.STEPS_TO_FOLLOW' | translate }}</div>
-          <div class="subTitle-design more-css" [ngStyle]="{ 'padding-top': '10px', 'padding-bottom': '20px' }">
-            <span>{{ 'GETORIX_DEPOSIT.GUIDE_TO_SHOW' | translate }}</span>
-            <div></div>
-
-            <br />
-            <button class="btn second-confirm" (click)="showGuide()">
-              <span>{{ 'GETORIX_DEPOSIT.GUIDE' | translate }}</span>
-            </button>
+          <ul class="center-text ul-margin">
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.FIRST_BOX_TEXT_2' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.FIRST_BOX_TEXT_3' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.FIRST_BOX_TEXT_4' | translate }}</li>
+          </ul>
+          <div class="padding-div text-padding">
+            <span class="link-download"> {{ 'GETORIX_DEPOSIT.PORTAL.FIRST_BOX_TEXT_LINK' | translate }}</span>
           </div>
+        </div>
+        <div class="col"></div>
+
+        <!-- second box-->
+        <div class="col-3-5 box-details">
+          <div class="box-number">2</div>
+          <div class="box-title">{{ 'GETORIX_DEPOSIT.PORTAL.BOX_TITLE_2' | translate }}</div>
+          <p class="center-text text-padding">{{ 'GETORIX_DEPOSIT.PORTAL.SECOND_BOX_TEXT_1' | translate }}</p>
+          <p class="center-text text-padding">{{ 'GETORIX_DEPOSIT.PORTAL.SECOND_BOX_TEXT_2' | translate }}</p>
+
+          <ul class="center-text ul-margin">
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.SECOND_BOX_TEXT_3' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.SECOND_BOX_TEXT_4' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.SECOND_BOX_TEXT_5' | translate }}</li>
+          </ul>
+        </div>
+        <div class="col"></div>
+
+        <!-- third box-->
+        <div class="col-3-5 box-details">
+          <div class="box-number">3</div>
+          <div class="box-title">{{ 'GETORIX_DEPOSIT.PORTAL.BOX_TITLE_3' | translate }}</div>
+
+          <p class="center-text text-padding">{{ 'GETORIX_DEPOSIT.PORTAL.THIRD_BOX_TEXT_1' | translate }}</p>
+
+          <ul class="center-text ul-margin">
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.THIRD_BOX_TEXT_2' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.THIRD_BOX_TEXT_3' | translate }}</li>
+            <li>{{ 'GETORIX_DEPOSIT.PORTAL.THIRD_BOX_TEXT_4' | translate }}</li>
+          </ul>
+
+          <p class="center-text text-padding">{{ 'GETORIX_DEPOSIT.PORTAL.THIRD_BOX_TEXT_5' | translate }}</p>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col center">
+          <button class="btn primary" (click)="startDepositCreation()">
+            <span>{{ 'GETORIX_DEPOSIT.CREATE_DEPOSIT' | translate }}</span>
+          </button>
+        </div>
+      </div>
+
+      <br />
+      <br />
+      <br />
+
+      <div class="my-operations">{{ 'GETORIX_DEPOSIT.PORTAL.MY_OPERATIONS' | translate }}</div>
+      <br />
+      <br />
+      <div>
+        <div class="vitamui-table">
+          <div class="vitamui-table-head">
+            <div class="col-6 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.OPERATION' | translate }}</div>
+            <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.NUMBER' | translate }}</div>
+            <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.STATUS' | translate }}</div>
+          </div>
+
+          <div class="vitamui-table-body">
+            <div class="vitamui-table-rows" *ngFor="let operation of staticData">
+              <div class="vitamui-row d-flex align-items-center clickable table-text">
+                <div class="col-6 d-flex align-items-center">{{ operation?.operationName }}</div>
+                <div class="col-3 d-flex align-items-center">{{ operation?.nationalNumber }}</div>
+                <div class="col-3 d-flex align-items-center">{{ operation?.depositStatus }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col center">
+          <button (click)="showOperationList()" class="btn list-operation">
+            {{ 'GETORIX_DEPOSIT.PORTAL.OPERATION_LIST_CLICK' | translate }}
+          </button>
         </div>
       </div>
     </div>

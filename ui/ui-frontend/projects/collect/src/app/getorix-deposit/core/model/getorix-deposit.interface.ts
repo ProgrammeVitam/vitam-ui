@@ -47,8 +47,6 @@ export interface GetorixDeposit {
   saveLastCondition: string;
   materialStatus: string;
   archiveVolume: number;
-  furnitureComment: string;
-  furniture: boolean;
   depositStatus: DepositStatus;
   tenantIdentifier: number;
   userId: string;
