@@ -48,3 +48,21 @@
 .not-clickable {
   cursor: auto;
 }
+
+::ng-deep .getorix-node-tooltip.mat-tooltip {
+  background: #fff;
+  padding: 5px 8px;
+  position: relative;
+  overflow: visible;
+  white-space: pre-line;
+  border-radius: 5px;
+  border: 1px solid var(--vitamui-primary);
+  color: var(--vitamui-primary);
+  text-align: center;
+  font-family: Mulish;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+}

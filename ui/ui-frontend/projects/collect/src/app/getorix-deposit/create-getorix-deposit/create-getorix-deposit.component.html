@@ -310,14 +310,15 @@
                 <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '10px', 'margin-bottom': '10px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg">
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NAME_MESSAGE' | translate }}
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -378,19 +379,8 @@
                   class="col-12 px-0"
                   formControlName="internalAdministratorNumber"
                   minlength="1"
-                  required
                   placeholder="  {{ 'GETORIX_DEPOSIT.INPUT_NAMES.INTERN_ADMINISTRATOR_NUMBER' | translate }}"
                 >
-                  <vitamui-common-input-error
-                    *ngIf="showInputErrorFrame && getorixDepositform?.get('internalAdministratorNumber')?.hasError('required')"
-                  >
-                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.REQUIRED' | translate }}</vitamui-common-input-error
-                  >
-                  <vitamui-common-input-error
-                    *ngIf="showInputErrorFrame && getorixDepositform?.get('internalAdministratorNumber')?.hasError('pattern')"
-                  >
-                    {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_ALPHA_NUM' | translate }}</vitamui-common-input-error
-                  >
                 </vitamui-common-input>
                 <vitamui-common-input
                   class="col-12 px-0"
@@ -413,17 +403,18 @@
                 <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg2">
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NUMBER_MESSAGE.FIRST' | translate }}
-                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                          <p class="mrg-top">
                             {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.OPERATION_NUMBER_MESSAGE.SECOND' | translate }}
                           </p>
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -454,14 +445,15 @@
                 <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '10px', 'margin-bottom': '10px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg">
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PERSCRIPTION_NUMBER_MESSAGE' | translate }}
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -564,18 +556,19 @@
                 <div class="col-12 px-0">
                   <div class="guide-design" [ngStyle]="{ 'margin-top': '20px' }">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg2">
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PARTICULARITIES_MESSAGE.FIRST' | translate }}
 
-                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                          <p class="mrg-top">
                             {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.PARTICULARITIES_MESSAGE.SECOND' | translate }}
                           </p>
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -584,7 +577,7 @@
               <!-- Dates de l'opération -->
               <div id="operationDates" class="form-title" (mousemove)="onMouseMove('operationDates')">
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DATES' | translate }}</p>
-                <div class="col-12 px-0">
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-bottom': '-10px' }">
                   <div class="vitamui-input" (click)="pickerSatrDate.open()">
                     <span
                       *ngIf="!getorixDepositform.get('operationStartDate').value; else showOperationStartDate"
@@ -662,7 +655,7 @@
               <div id="documentDates" class="form-title" (mousemove)="onMouseMove('documentDates')">
                 <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.DOCUMENT_DATES' | translate }}</p>
 
-                <div class="col-12 px-0">
+                <div class="col-12 px-0" [ngStyle]="{ 'margin-bottom': '-10px' }">
                   <div class="vitamui-input" (click)="documentPickerSatrtDate.open()">
                     <span
                       *ngIf="!getorixDepositform.get('documentStartDate').value; else showDocumentStartDate"
@@ -736,17 +729,18 @@
                 <div class="col-12 px-0">
                   <div class="guide-design" [ngStyle]="{ 'margin-top': '20px' }">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg">
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DOCUMENT_DATES_MESSAGE.FIRST' | translate }}
-                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                          <p class="mrg-top">
                             {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.DOCUMENT_DATES_MESSAGE.SECOND' | translate }}
                           </p>
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -773,22 +767,23 @@
                 <div class="col-12 px-0">
                   <div class="guide-design">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col">
                         <span class="vertical-line"></span>
                       </div>
                       <div class="col-11">
-                        <div [ngStyle]="{ 'margin-top': '12px', 'font-weight': 'normal', 'font-size': '15px' }">
+                        <div class="advise-msg2">
                           <p [ngStyle]="{ 'margin-bottom': '0px' }">
                             {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.THIRD' | translate }}
                           </p>
 
                           {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.FIRST' | translate }}
 
-                          <p [ngStyle]="{ 'margin-top': '0px' }">
+                          <p class="mrg-top">
                             {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.ARCHIVE_STATUS_MESSAGE.SECOND' | translate }}
                           </p>
                         </div>
                       </div>
+                      <div class="col"></div>
                     </div>
                   </div>
                 </div>
@@ -812,32 +807,6 @@
                     {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.WRONG_FORMAT_NUM' | translate }}</vitamui-common-input-error
                   >
                 </vitamui-common-input>
-              </div>
-
-              <!-- Mobiler -->
-              <div id="furniture" class="form-title" (mousemove)="onMouseMove('furniture')">
-                <p class="title-padding">{{ 'GETORIX_DEPOSIT.OPERATION_CATEGORY.FURNITURE' | translate }}</p>
-
-                <p [ngStyle]="{ 'font-size': '16px' }">{{ 'GETORIX_DEPOSIT.CREATION_PROCESS.FURNITURE_QUESTION' | translate }}</p>
-
-                <div class="radio-group">
-                  <mat-radio-group formControlName="furniture">
-                    <mat-radio-button class="mr-2" [value]="true">{{
-                      'GETORIX_DEPOSIT.CREATION_PROCESS.YES' | translate
-                    }}</mat-radio-button>
-                    <br />
-                    <mat-radio-button class="mr-2" [value]="false">
-                      {{ 'GETORIX_DEPOSIT.CREATION_PROCESS.NO' | translate }}</mat-radio-button
-                    >
-                  </mat-radio-group>
-                </div>
-
-                <vitamui-common-textarea
-                  class="col-12 px-0"
-                  formControlName="furnitureComment"
-                  placeholder="{{ 'GETORIX_DEPOSIT.INPUT_NAMES.COMMENT' | translate }}"
-                >
-                </vitamui-common-textarea>
               </div>
             </div>
           </form>
