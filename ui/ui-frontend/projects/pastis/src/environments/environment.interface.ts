@@ -39,4 +39,5 @@ export interface Environment {
   production: boolean;
   standalone?: boolean;
   apiServerUrl?: string;
+  configUrls?: string[];
 }

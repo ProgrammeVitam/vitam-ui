@@ -66,6 +66,10 @@
         </exclusion>
         <exclusion>
           <groupId>fr.gouv.vitamui</groupId>
+          <artifactId>referential-internal-client</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>fr.gouv.vitamui</groupId>
           <artifactId>iam-security</artifactId>
         </exclusion>
         <exclusion>

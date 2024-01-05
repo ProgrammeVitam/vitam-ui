@@ -292,6 +292,7 @@ cas.http-web-request.cors.allow-origins:
   - "https://dev.vitamui.com:4208"
   - "https://dev.vitamui.com:4209"
   - "https://dev.vitamui.com:4210"
+  - "https://dev.vitamui.com:4251"
   - "https://localhost:4200"
   - "https://localhost:4201"
   - "https://localhost:4202"
@@ -301,4 +302,5 @@ cas.http-web-request.cors.allow-origins:
   - "https://localhost:4208"
   - "https://localhost:4209"
   - "https://localhost:4210"
+  - "https://localhost:4251"
   - "https://localhost"

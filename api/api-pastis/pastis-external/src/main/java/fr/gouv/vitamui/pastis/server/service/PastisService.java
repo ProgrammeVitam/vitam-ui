@@ -253,13 +253,31 @@ public class PastisService {
         return profileResponse;
     }
 
+    public ElementProperties loadProfilePA(Resource resource) {
+        try {
+            return loadProfilePA(resource.getInputStream());
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
+
     public ElementProperties loadProfilePA(MultipartFile file) {
+        try {
+            return loadProfilePA(file.getInputStream());
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
+
+    public ElementProperties loadProfilePA(InputStream inputStream) {
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
         ElementProperties elementProperties;
 
         try {
-            InputSource inputSource = new InputSource(file.getInputStream());
+            InputSource inputSource = new InputSource(inputStream);
             XMLReader xmlReader = createXmlReader(handler);
             xmlReader.parse(inputSource);
             elementProperties = getJson.getJsonParsedTree(handler.getElementRNGRoot());

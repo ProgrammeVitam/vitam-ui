@@ -115,7 +115,14 @@ spring:
               /archive-search-api/userinfos/**,
               /archive-search-api/users/analytics,
               /archive-search-api/logbooks/operations/**,
-              /archive-search-api/accesscontracts/**
+              /archive-search-api/accesscontracts/**,
+
+              /pastis-api/ui/**,
+              /pastis-api/security,
+              /pastis-api/userinfos/**,
+              /pastis-api/users/analytics,
+              /pastis-api/logbooks/operations/**,
+              /pastis-api/accesscontracts/**
 
           filters:
             # Portal IAM API
@@ -146,6 +153,13 @@ spring:
             - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
             - RewritePath=/archive-search-api/(?<segment>.*),/v1/$\{segment}
+
+            # Pastis IAM API
+            - RewritePath=/pastis-api/security(?<segment>.*),/iam/v1/security$\{segment},
+            - RewritePath=/pastis-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
+            - RewritePath=/pastis-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/pastis-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/pastis-api/(?<segment>.*),/v1/$\{segment}
 
         - id: referential-external-service
           uri: {{ 'https' if vitamui.referential_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}
@@ -198,6 +212,16 @@ spring:
             - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment}
 
+        - id: pastis-external-service
+          uri: {{ 'https' if vitamui.pastis_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis_external.host }}:{{ vitamui.pastis_external.port_service }}
+          predicates:
+            - >
+              Path=
+              /pastis-api/pastis/**
+
+          filters:
+            # Pastis API
+            - RewritePath=/pastis-api/,/
 
     discovery:
       enabled: false
