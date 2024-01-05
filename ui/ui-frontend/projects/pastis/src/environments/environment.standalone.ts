@@ -45,6 +45,7 @@ export const environment: Environment = {
   production: false,
   apiServerUrl: 'http://localhost:8096',
   standalone: true,
+  configUrls: ['./assets/config-dev.json'],
 };
 
 /*

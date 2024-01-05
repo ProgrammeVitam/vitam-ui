@@ -44,6 +44,7 @@ import { Environment } from './environment.interface';
 export const environment: Environment = {
   production: false,
   standalone: false,
+  configUrls: ['./assets/config-dev.json'],
 };
 
 /*

@@ -178,7 +178,72 @@ const PROXY_CONFIG = [
       '^/archive-search-api/archive-search/filingholdingscheme': '/archives-search/filling-holding-schema',
       '^/archive-search-api/archive-search/': '/archives-search/',
     },
-  }
+  },
+  {
+    // archive-search to Referential External Backend
+    context: [
+      '/pastis-api/archival-profile',
+      '/pastis-api/profile',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8087,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-pastis.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/pastis-api/archival-profile': '/referential/v1/archival-profile',
+      '^/pastis-api/profile': '/referential/v1/profile',
+    },
+  },
+  {
+    // pastis to IAM External Backend
+    context: [
+      '/pastis-api/ui',
+      '/pastis-api/security',
+      '/pastis-api/userinfos/me',
+      '/pastis-api/users/analytics',
+      '/pastis-api/logbooks/operations',
+      '/pastis-api/accesscontracts',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8083,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-pastis.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/pastis-api/security': '/iam/v1/security',
+      '^/pastis-api/userinfos': '/iam/v1/userinfos',
+      '^/pastis-api/ui/applications': '/iam/v1/applications',
+      '^/pastis-api/users': '/iam/v1/users',
+      '^/pastis-api': '/v1',
+    },
+  },
+  {
+    context: ['/pastis-api/pastis/'],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8015,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-pastis.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/pastis-api/': '/',
+    },
+  },
 ];
 
 module.exports = PROXY_CONFIG;
