@@ -10,6 +10,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.test.rest.AbstractRestControllerMockMvcTest;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
@@ -21,6 +22,7 @@ import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.server.ApiPastisServerApplication;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,11 +54,17 @@ public class PastisControllerTest extends ControllerTest {
     @MockBean
     private PastisService service;
 
+    @MockBean
+    private ExternalSecurityService externalSecurityService;
+
+    @MockBean
+    private ProfileInternalRestClient profileInternalRestClient;
+
     private PastisController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new PastisController(service);
+        controller = new PastisController(externalSecurityService, service, profileInternalRestClient);
     }
 
 

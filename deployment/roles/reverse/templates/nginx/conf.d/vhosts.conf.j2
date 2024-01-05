@@ -93,7 +93,12 @@ server {
 {% if groups['hosts_ui_pastis']|length > 0 %}
   # UI PASTIS
   location /pastis {
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /pastis/(.*) /$1  break;
+    proxy_pass https://PASTIS;
+    {% else %}
     proxy_pass https://PASTIS/pastis;
+    {% endif %}
     include /etc/nginx/conf.d/proxy_params;
   }
 {% endif %}
