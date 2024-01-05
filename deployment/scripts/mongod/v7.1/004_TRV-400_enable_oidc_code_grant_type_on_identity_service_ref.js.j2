@@ -1,4 +1,4 @@
-{% if gateway.enabled | default(False) %}
+{% if gateway.enabled | default(False) is sameas true %}
 
 db = db.getSiblingDB("cas");
 

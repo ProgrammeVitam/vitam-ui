@@ -108,7 +108,6 @@ import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
 import { ObjectViewerModule } from './object-viewer/object-viewer.module';
 import { PipesModule } from './pipes/pipes.module';
-import { SchemaModule } from './schema/schema.module';
 import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
@@ -212,7 +211,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ArchiveModule,
     UserAlertCardModule,
     ApplicationCardModule,
-    SchemaModule,
     VitamUISnackBarModule,
     VitamUITenantSelectModule,
   ],
@@ -279,7 +277,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiTreeNodeModule,
     ArchiveModule,
     ApplicationCardModule,
-    SchemaModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
