@@ -34,15 +34,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./getorix-deposit.component.scss'],
 })
 export class GetorixDepositComponent implements OnInit {
+  staticData = [
+    {
+      operationName: 'first Operation',
+      nationalNumber: '05_6124',
+      depositStatus: 'En cours',
+    },
+    {
+      operationName: 'new operation 55',
+      nationalNumber: '05_788874',
+      depositStatus: 'Terminée',
+    },
+    {
+      operationName: 'Operation name 4',
+      nationalNumber: '05_68455741',
+      depositStatus: 'Versée',
+    },
+  ];
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
-  showGuide() {
-    console.log('show the guide book');
-  }
-
   startDepositCreation() {
     this.router.navigate([this.router.url, 'create']);
+  }
+
+  showOperationList() {
+    console.log('show operation List');
   }
 }

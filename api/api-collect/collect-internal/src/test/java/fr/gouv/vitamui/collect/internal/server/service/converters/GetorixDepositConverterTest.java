@@ -79,7 +79,6 @@ class GetorixDepositConverterTest {
         getorixDepositDto.setNationalNumber("abcd_157486");
         getorixDepositDto.setUserId("userId");
         getorixDepositDto.setCreationDate(OffsetDateTime.now());
-        getorixDepositDto.setFurniture(true);
         getorixDepositDto.setTenantIdentifier(15);
         getorixDepositDto.setArchiveVolume(1975);
         getorixDepositDto.setPrescriptionOrderNumber("56");
@@ -109,7 +108,6 @@ class GetorixDepositConverterTest {
         getorixDepositModel.setNationalNumber("abcd_157486");
         getorixDepositModel.setUserId("userId");
         getorixDepositModel.setCreationDate(OffsetDateTime.now());
-        getorixDepositModel.setFurniture(true);
         getorixDepositModel.setTenantIdentifier(15);
         getorixDepositModel.setArchiveVolume(1975);
         getorixDepositModel.setPrescriptionOrderNumber("56");

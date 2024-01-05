@@ -173,6 +173,13 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
         this.getorixDepositService.getGetorixDepositById(params.operationIdentifier).subscribe(
           (data: GetorixDeposit) => {
             this.getorixDepositDetails = data;
+            this.criteriaSearchList.push({
+              criteria: UNIT_UPS,
+              operator: CriteriaOperator.MISSING,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [],
+              dataType: CriteriaDataType.STRING,
+            });
             this.searchUnits(true);
             this.getorixDepositDetailsFound = true;
             this.getorixDepositSharedDateService.emitTransactionId(this.getorixDepositDetails.transactionId);
@@ -213,6 +220,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
   ngOnDestroy() {
     this.operationIdentifierSubscription?.unsubscribe();
     this.subscriptions?.unsubscribe();
+    this.uploadService.reinitializeZip();
   }
 
   uploadNewObject() {
@@ -365,6 +373,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
               duration: 10000,
             });
             setTimeout(() => {
+              this.uploadService.reinitializeZip();
               const node = { id: 'ORPHANS_NODE' } as FilingHoldingSchemeNode;
               this.searchUnitsOfNode(node, true);
             }, 3000);
@@ -538,6 +547,14 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum.FIELDS,
         values: [{ id: selectedUnitFolder.id, value: selectedUnitFolder.id }],
+        dataType: CriteriaDataType.STRING,
+      });
+    } else {
+      this.criteriaSearchList.push({
+        criteria: UNIT_UPS,
+        operator: CriteriaOperator.MISSING,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [],
         dataType: CriteriaDataType.STRING,
       });
     }

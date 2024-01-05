@@ -17,11 +17,11 @@
   id="enable{{ node?.id }}"
   [disabled]="node?.disabled"
   matTooltip="{{ node?.title }}"
-  matTooltipClass="vitamui-tooltip"
+  matTooltipClass="getorix-node-tooltip"
   [matTooltipShowDelay]="300"
 >
   <label class="node-label" (click)="onLabelClick(node)" [ngClass]="icon !== 'vitamui-icon-file' ? 'clickable' : 'not-clickable'">
     <i class="pad vitamui-icon {{ icon }}"></i>
-    {{ node?.title | truncate : 30 }}
+    {{ node?.title | truncate : 60 }}
   </label>
 </mat-checkbox>

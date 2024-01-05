@@ -153,7 +153,6 @@ class GetorixDepositInternalServiceTest {
 
         GetorixDepositDto result = new GetorixDepositDto();
         result.setUserId(created.getUserId());
-        result.setFurniture(created.isFurniture());
         result.setTransactionId(created.getTransactionId());
         result.setDepositStatus(created.getDepositStatus());
         result.setTenantIdentifier(created.getTenantIdentifier());
@@ -647,7 +646,6 @@ class GetorixDepositInternalServiceTest {
         getorixDepositModel.setNationalNumber("abcd_157486");
         getorixDepositModel.setUserId("userId");
         getorixDepositModel.setCreationDate(OffsetDateTime.now());
-        getorixDepositModel.setFurniture(true);
         getorixDepositModel.setTenantIdentifier(15);
         getorixDepositModel.setArchiveVolume(1975);
         getorixDepositModel.setPrescriptionOrderNumber("56");

@@ -46,7 +46,7 @@ $dark-red: #ea0101;
   border-radius: 10px;
   font-size: 12px;
   padding: 1.5rem;
-  padding-top: 70px;
+  padding-top: 80px;
 }
 
 .return {
@@ -60,7 +60,6 @@ $dark-red: #ea0101;
   border-radius: 5px;
   gap: 10px;
   background: #e8edff;
-  //background: var(--vitamui-secondary);
   box-shadow: 0px 1px 4px 0px #2121210d;
   box-shadow: 0px 0px 2px 0px #21212133;
   padding-left: 20px;
@@ -80,9 +79,13 @@ $dark-red: #ea0101;
   color: var(--vitamui-primary);
   display: flex;
   align-items: center;
-  font-weight: 700;
   border-radius: 10px;
-  font-size: 16px;
+  font-family: Mulish;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
@@ -247,6 +250,7 @@ $dark-red: #ea0101;
   letter-spacing: 0px;
   text-align: left;
 }
+
 .pop-title {
   font-family: Mulish;
   font-size: 20px;
@@ -261,7 +265,7 @@ $dark-red: #ea0101;
 }
 .second-confirm {
   color: var(--vitamui-primary);
-  background-color: var(--vitamui-secondary);
+  background-color: transparent;
   border-color: var(--vitamui-primary);
   margin-right: 30px;
 }
@@ -351,4 +355,21 @@ $dark-red: #ea0101;
   font-style: normal;
   font-weight: 700;
   line-height: 24px;
+}
+
+.advise-msg {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.advise-msg2 {
+  margin-top: 10px;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.mrg-top {
+  margin-top: 0px;
 }

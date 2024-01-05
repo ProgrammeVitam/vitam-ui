@@ -1,12 +1,35 @@
 {
-    "GETORIX_DEPOSIT" : {
+  "GETORIX_DEPOSIT" : {
+    "PORTAL" : {
+      "OPERATION_LIST_CLICK" : "See all operations",
+      "MY_OPERATIONS" : "My operation",
+      "TITLE" : "ARCHIVING SPACE",
+      "SUB_TITLE_1" : "Simply drop off your archives",
+      "SUB_TITLE_2" : "in 3 steps",
+      "BOX_TITLE_1" : "Sort your archives",
+      "BOX_TITLE_2" : "Start deposit",
+      "BOX_TITLE_3" : "Exchange with the archivist",
+      "FIRST_BOX_TEXT_1" : "This step is essential so that your payment is accepted quickly. We help you :",
+      "FIRST_BOX_TEXT_2" : "select content representative of your scientific reasoning.",
+      "FIRST_BOX_TEXT_3" : "sort the content to keep only the essentials.",
+      "FIRST_BOX_TEXT_4" : "rename your files according to the naming recommendations.",
+      "FIRST_BOX_TEXT_LINK" : "See the archiving guide",
+      "SECOND_BOX_TEXT_1" : "You will submit the scientific archives of your operation (field and post-excavation, as well as the high definition report).",
+      "SECOND_BOX_TEXT_2" : "Let yourself be guided at each step to :",
+      "SECOND_BOX_TEXT_3" : "complete the description form for your archives.",
+      "SECOND_BOX_TEXT_4" : "import your archives.",
+      "SECOND_BOX_TEXT_5" : "notify the archivist of your deposit.",
+      "THIRD_BOX_TEXT_1" : "Directly in this platform you will be able to :",
+      "THIRD_BOX_TEXT_2" : "ask your questions.",
+      "THIRD_BOX_TEXT_3" : "answer the archivist's questions.",
+      "THIRD_BOX_TEXT_4" : "finalize with the archivist the content to be validated and included in the conservation system.",
+      "THIRD_BOX_TEXT_5" : "The more careful you are with step 1, the quicker this step will be to complete !",
+      "OPERATION" : "Operation",
+      "STATUS" : "Status",
+      "NUMBER" : "Number"
+    },
     "APP_BREADCRUMB" :"Versementgetorix preparation",
-    "CREATE_DEPOSIT" : "Start the deposit",
-    "GUIDE" : "Guide me",
-    "ARCHIVE_SPACE" :"My archive space",
-    "DEPOSIT_QUESTION" : "You have submitted the report and would like to deposit your archives? Here:",
-    "STEPS_TO_FOLLOW" : "The steps to follow",
-    "GUIDE_TO_SHOW" :"Consult our guide to assist you step by step in uploading your archives :",
+    "CREATE_DEPOSIT" : "Start the deposit", 
     "BREAD_CRUMB" : {
       "ARCHIVAL_SPACE" : "My archive space",
       "NEW_PROJECT" : "New project",
@@ -143,7 +166,7 @@
       "VERSATILE_SERVICE_MESSAGE" :"The service providing the archives is different from the holding service",
       "ADD_OFFICER" :"Add an officer",
       "DELETE_OFFICER":"Delete the second officer",
-      "OPERATION_NAME_MESSAGE" :"Take the one present on the search report.",
+      "OPERATION_NAME_MESSAGE" :"Take the one present on the operation report.",
       "PERSCRIPTION_NUMBER_MESSAGE" :"If you have several orders, write down all the numbers.",
       "OPERATION_TYPE" : {
         "OTHER" :"Other",
@@ -167,15 +190,14 @@
         "SECOND" :"example: moving, successive additions, loss of documents or damage…",
         "THIRD" :"To be completed if you have the information."
       },
-      "FURNITURE_QUESTION" :"Has the furniture already been deposited?",
       "YES" :"Yes",
       "NO":"No"
     },
     "INPUT_NAMES":{
       "ORGANISATION_NAME" :"Name of the organization holding the operation",
       "VERSATILE_SERVICE" : "Name of the organization providing the archives",
-      "OFFICER_FIRST_NAME" :"First name of the scientific manager of the operation (or OR)",
-      "OFFICER_LAST_NAME" :"Last name of the scientific manager of the operation (or OR)",
+      "OFFICER_FIRST_NAME" :"First name  ",
+      "OFFICER_LAST_NAME" :"Last name  ",
       "OPRATION_NAME" : "Operation name",
       "OPERATION_TYPE":"Operation type",
       "INTERN_ADMINISTRATOR_NUMBER":"Internal administrative number",
@@ -207,8 +229,7 @@
       "DATES":"Operation dates",
       "DOCUMENT_DATES" :"Document dates",
       "ARCHIVE_STATUS" :"Status of paper archives",
-      "VOLUME_DETAILS":"Archive volume",
-      "FURNITURE" :"Furniture"
+      "VOLUME_DETAILS":"Archive volume"
     }
   },
   "COLLECT": {

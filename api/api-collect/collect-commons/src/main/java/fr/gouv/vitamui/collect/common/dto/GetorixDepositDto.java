@@ -100,10 +100,6 @@ public class GetorixDepositDto extends IdDto {
 
     private Integer archiveVolume;
 
-    private boolean furniture;
-
-    private String furnitureComment;
-
     private String userId;
 
     private String projectId;

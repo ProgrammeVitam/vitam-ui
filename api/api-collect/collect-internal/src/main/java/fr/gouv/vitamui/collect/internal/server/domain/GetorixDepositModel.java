@@ -113,10 +113,6 @@ public class GetorixDepositModel extends IdDocument {
     @NotNull
     private Integer archiveVolume;
 
-    private boolean furniture;
-
-    private String furnitureComment;
-
     private String userId;
 
     private String projectId;
