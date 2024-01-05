@@ -72,9 +72,8 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
-    return this.archiveService.launchDownloadObjectFromUnit(
+    return this.archiveService.downloadObjectFromUnit(
       this.archiveUnit['#id'],
-      this.tenantIdentifier,
       versionWithQualifier.qualifier,
       versionWithQualifier.version,
     );

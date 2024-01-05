@@ -55,10 +55,18 @@ spring:
               /referential-api/subrogations/**,
               /referential-api/logbooks/operations/**,
               /referential-api/tenants/**,
-              /referential-api/customers/**,
               /referential-api/accesscontracts/**,
               /referential-api/profiles/**,
               /referential-api/externalparameters/**,
+
+              /archive-search-api/ui/applications/**,
+              /archive-search-api/externalparameters/**,
+              /archive-search-api/security,
+              /archive-search-api/tenants/**,
+              /archive-search-api/userinfos/**,
+              /archive-search-api/users/analytics,
+              /archive-search-api/logbooks/operations/**,
+              /archive-search-api/accesscontracts/**
 
           filters:
             # Portal IAM API
@@ -77,6 +85,14 @@ spring:
             - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
             - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
 
+            # Archive Search IAM API
+            - RewritePath=/archive-search-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/archive-search-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/archive-search-api/security(?<segment>.*),/iam/v1/security$\{segment},
+            - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
+            - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/archive-search-api/(?<segment>.*),/v1/$\{segment}
+
         - id: referential-external-service
           uri: https://localhost:8087  # URL REFERENTIAL EXTERNAL
           predicates:
@@ -89,7 +105,6 @@ spring:
               /referential-api/fileformat/**,
               /referential-api/operation/**,
               /referential-api/logbook-management-operation/**,
-              /referential-api/customers/**,
               /referential-api/accession-register/**,
               /referential-api/archival-profile/**,
               /referential-api/security-profile/**,
@@ -98,7 +113,10 @@ spring:
               /referential-api/profile/**,
               /referential-api/search/**,
               /referential-api/rules/**,
-              /referential-api/customers/**
+
+              /archive-search-api/security-profile/**,
+              /archive-search-api/ontology/**,
+              /archive-search-api/schemas
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
@@ -107,6 +125,24 @@ spring:
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
+
+            # Archive Search Referential API
+            - RewritePath=/archive-search-api/schemas,/schemas
+            - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
+
+        - id: archive-search-external-service
+          uri: https://localhost:8089  # URL ARCHIVE-SEARCH EXTERNAL
+          predicates:
+            - >
+              Path=
+              /archive-search-api/archive-search/**
+
+          filters:
+            # Archive search API
+            - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
+            - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
+            - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment}
+
 
 logging:
   level:

@@ -80,7 +80,12 @@ server {
 {% if groups['hosts_ui_archive_search']|length > 0 %}
   # UI ARCHIVE_SEARCH
   location /archive-search {
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /archive-search/(.*) /$1  break;
+    proxy_pass https://ARCHIVE_SEARCH;
+    {% else %}
     proxy_pass https://ARCHIVE_SEARCH/archive-search;
+    {% endif %}
     include /etc/nginx/conf.d/proxy_params;
   }
 {% endif %}

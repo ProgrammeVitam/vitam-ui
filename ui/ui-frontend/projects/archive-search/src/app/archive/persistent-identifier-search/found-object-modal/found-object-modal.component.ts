@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { ApiUnitObject, TenantSelectionService } from 'ui-frontend-common';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
@@ -44,12 +44,7 @@ export class FoundObjectModalComponent {
 
   async downloadObject() {
     this.downloading = true;
-    await this.archiveService.launchDownloadObjectFromUnit(
-      this.unitId,
-      this.tenantSelectionService.getSelectedTenant().identifier,
-      this.qualifier,
-      this.qualifierVersion,
-    );
+    return this.archiveService.downloadObjectFromUnit(this.unitId, this.qualifier, this.qualifierVersion);
     this.downloading = false;
   }
 
