@@ -66,6 +66,10 @@ pastis-external:
     server-host: localhost
     server-port: 7083
     secure: false
+  referential-internal-client:
+    server-host: localhost
+    server-port: 7087
+    secure: false
 
 # Jaeger
 opentracing:
@@ -83,3 +87,17 @@ logging:
     fr.gouv.vitamui.iam.security: DEBUG
     #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
+
+---
+spring:
+  config:
+    activate:
+      on-profile: gateway
+
+gateway:
+  enabled: true
+
+server:
+  ssl:
+    client-auth: want
+    client-certificate-header-name: x-ssl-cert

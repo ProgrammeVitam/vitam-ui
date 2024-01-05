@@ -49,6 +49,8 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ReferentialInternalRestClientFactory;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -97,12 +99,28 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public ReferentialInternalRestClientFactory referentialInternalRestClientFactory(
+        final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+
+        return new ReferentialInternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getReferentialInternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    public ProfileInternalRestClient profileInternalRestClient(
+        final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
+        return referentialInternalRestClientFactory.getProfileInternalRestClient();
+    }
+
+
+    @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder) {
         return new IamInternalRestClientFactory(apiArchiveExternalApplicationProperties.getIamInternalClient(),
             restTemplateBuilder);
-
     }
 
     @Bean

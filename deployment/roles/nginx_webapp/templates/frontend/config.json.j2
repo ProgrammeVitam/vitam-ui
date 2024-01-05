@@ -25,8 +25,11 @@
   "UI_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
   {% elif vitamui_struct.vitamui_component == 'ui-archive-search' %}
   "UI_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-pastis' %}
+  "UI_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
   {% endif %}
   "ARCHIVES_SEARCH_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
+  "PASTIS_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
   "PORTAL_URL": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
   {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
   "ALLOWED_URLS": ["/identity-api"],
