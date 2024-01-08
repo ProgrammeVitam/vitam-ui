@@ -38,6 +38,8 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
+import fr.gouv.vitam.common.model.dip.QualifierVersion;
 import fr.gouv.vitam.common.model.export.dip.DipRequestParameters;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import lombok.Getter;
@@ -45,6 +47,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 @ToString
@@ -52,9 +55,9 @@ import java.util.Set;
 @Setter
 @Getter
 public class ExportDipCriteriaDto implements Serializable {
-
     private DipRequestParameters dipRequestParameters;
     private SearchCriteriaDto exportDIPSearchCriteria;
-    private Set<String> dataObjectVersions;
+    private Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns;
     private boolean lifeCycleLogs;
+    private String sedaVersion;
 }
