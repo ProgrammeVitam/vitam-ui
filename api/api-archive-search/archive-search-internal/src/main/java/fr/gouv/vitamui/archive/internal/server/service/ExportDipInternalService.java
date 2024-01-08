@@ -72,13 +72,14 @@ public class ExportDipInternalService {
         DipRequest dipRequest = new DipRequest();
 
         if (exportDipCriteriaDto != null) {
-            DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
-            dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
+            final DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
+            dataObjectVersionToExport.setDataObjectVersionsPatterns(exportDipCriteriaDto.getDataObjectVersionsPatterns());
             dipRequest.setExportWithLogBookLFC(exportDipCriteriaDto.isLifeCycleLogs());
             dipRequest.setDslRequest(dslQuery);
             dipRequest.setDipExportType(DipExportType.FULL);
             dipRequest.setDataObjectVersionToExport(dataObjectVersionToExport);
             dipRequest.setDipRequestParameters(exportDipCriteriaDto.getDipRequestParameters());
+            dipRequest.setSedaVersion(exportDipCriteriaDto.getSedaVersion());
         }
         return dipRequest;
     }
@@ -93,8 +94,6 @@ public class ExportDipInternalService {
             .prepareDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
         LOGGER.debug("Export DIP final DSL query {} ", dslQuery);
 
-        DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
-        dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
         DipRequest dipRequest = prepareDipRequestBody(exportDipCriteriaDto, dslQuery);
 
         JsonNode response = exportDIP(vitamContext, dipRequest);
