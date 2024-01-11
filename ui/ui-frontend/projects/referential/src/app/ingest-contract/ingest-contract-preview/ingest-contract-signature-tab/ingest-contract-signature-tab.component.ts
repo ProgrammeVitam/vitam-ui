@@ -46,7 +46,6 @@ import { IngestContractService } from '../../ingest-contract.service';
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
 })
 export class IngestContractSignatureTabComponent {
-
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -65,30 +64,11 @@ export class IngestContractSignatureTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,
-  ) {
-  }
+  ) {}
 
   previousValue = (): SignaturePolicy => {
     return this._ingestContract.signaturePolicy;
   };
-
-  ngOnChangesUnused(): void {
-    if (this.ingestContract.signaturePolicy) {
-      this.form = this.formBuilder.group({
-        signedDocument: [this.ingestContract.signaturePolicy.signedDocument],
-        declaredSignature: [this.ingestContract.signaturePolicy.declaredSignature],
-        declaredTimestamp: [this.ingestContract.signaturePolicy.declaredTimestamp],
-        declaredAdditionalProof: [this.ingestContract.signaturePolicy.declaredAdditionalProof],
-      });
-    } else {
-      this.form = this.formBuilder.group({
-        signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
-        declaredSignature: [false],
-        declaredTimestamp: [false],
-        declaredAdditionalProof: [false],
-      });
-    }
-  }
 
   signaturePolicyUnchanged() {
     const actual = this.form.value as SignaturePolicy;
@@ -103,10 +83,16 @@ export class IngestContractSignatureTabComponent {
       return EMPTY;
     }
     const signaturePolicy = this.form.value as SignaturePolicy;
+    const isForbidden = signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
     const formData = {
       id: this._ingestContract.id,
       identifier: this._ingestContract.identifier,
-      signaturePolicy,
+      signaturePolicy: {
+        signedDocument: signaturePolicy.signedDocument,
+        declaredSignature: isForbidden ? undefined : !!signaturePolicy.declaredSignature,
+        declaredTimestamp: isForbidden ? undefined : !!signaturePolicy.declaredTimestamp,
+        declaredAdditionalProof: isForbidden ? undefined : !!signaturePolicy.declaredAdditionalProof,
+      },
     };
     return this.ingestContractService.patch(formData);
   }
@@ -121,7 +107,7 @@ export class IngestContractSignatureTabComponent {
       (error) => {
         this.submitting = false;
         console.error(error);
-      }
+      },
     );
   }
 
@@ -160,5 +146,4 @@ export class IngestContractSignatureTabComponent {
       });
     }
   }
-
 }
