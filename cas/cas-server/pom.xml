@@ -60,9 +60,9 @@
         </dependency>
 
         <!-- Consul -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <version>${spring.cloud.consul.version}</version>
             <scope>runtime</scope>
             <exclusions>
@@ -72,16 +72,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-commons</artifactId>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
             <version>${spring.cloud.consul.version}</version>
-		</dependency>
-         <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
             <version>${spring.cloud.consul.version}</version>
-		</dependency>
+        </dependency>
 
         <!-- CAS server -->
         <dependency>
@@ -517,7 +517,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-ui</artifactId>
-            <version>1.12.1</version>
+            <version>1.13.2</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -643,9 +643,11 @@
                             <artifactId>cas-server-webapp-tomcat</artifactId>
                         </exclude>
                     </excludes>
-					<arguments>
-						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
-					</arguments>
+                    <arguments>
+                        <argument>
+                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                        </argument>
+                    </arguments>
                 </configuration>
                 <executions>
                     <execution>
