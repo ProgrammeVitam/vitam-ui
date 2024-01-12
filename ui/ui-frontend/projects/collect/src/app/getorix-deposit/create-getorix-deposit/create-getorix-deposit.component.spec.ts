@@ -113,6 +113,13 @@ describe('CreateGetorixDepositComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should validate the operation creation', () => {
+    component.validateCreation();
+    expect(component).toBeTruthy();
+    expect(component.showForm).toBeTruthy();
+    expect(component.pending).toBeFalsy();
+  });
+
   it('should the creation of second officer to be enabled', () => {
     component.addNewScientificOfficer();
     expect(component.showSecondScientifOfficer).toBeTruthy();
@@ -157,6 +164,13 @@ describe('CreateGetorixDepositComponent', () => {
     expect(excpectedObject).toEqual(result);
   });
 
+  it('should update the operation information', () => {
+    component.operationId = 'operationId';
+    component.validateCreation();
+    expect(component).toBeTruthy();
+    expect(component.pending).toBeFalsy();
+  });
+
   it('should versatileServiceDisabled have the correct value', () => {
     component.versatileServiceDisabled = false;
     component.checkVersatileServiceBoxChange();
@@ -195,5 +209,26 @@ describe('CreateGetorixDepositComponent', () => {
     component.deleteSecondScientificOfficer();
     expect(component.showSecondScientifOfficer).toBeFalsy();
     expect(component.showOfficerAction).toBeTruthy();
+  });
+
+  it('should open the correct item', () => {
+    const titleCode = 'WICH_CONTENT';
+    component.showDetails(titleCode);
+    expect(component).toBeTruthy();
+  });
+
+  it('should scroll to the specific element', () => {
+    const htmlElementId = 'volumeDetails';
+    component.scrollToElement(htmlElementId);
+    expect(component).toBeTruthy();
+  });
+
+  it('should validate the operation creation when other type is chosen', () => {
+    component.getorixDepositform.patchValue({ operationType: 'OTHER' });
+    component.operationType = 'operationType';
+    component.validateCreation();
+    expect(component).toBeTruthy();
+    expect(component.showForm).toBeTruthy();
+    expect(component.pending).toBeFalsy();
   });
 });

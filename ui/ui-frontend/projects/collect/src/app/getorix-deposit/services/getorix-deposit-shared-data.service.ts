@@ -29,7 +29,6 @@ import { Injectable } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto } from 'ui-frontend-common';
-import { NodeData } from '../../collect/core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -42,13 +41,11 @@ export class GetorixDepositSharedDataService {
   private lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
   private totalResultsSubject = new BehaviorSubject<number>(null);
   private targetNode = new BehaviorSubject<string>('');
-  private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
-  private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private selectedNodeSubject = new BehaviorSubject<FilingHoldingSchemeNode>(this.defaulfSelectedNode);
 
   private nestedDataSourceLeavesSubject = new BehaviorSubject<MatTreeNestedDataSource<FilingHoldingSchemeNode>>(
-    new MatTreeNestedDataSource()
+    new MatTreeNestedDataSource(),
   );
 
   constructor() {}
@@ -93,20 +90,8 @@ export class GetorixDepositSharedDataService {
     return this.totalResultsSubject.asObservable();
   }
 
-  emitNodeTarget(nodeId: string) {
-    this.targetNode.next(nodeId);
-  }
-
   getNodesTarget(): Observable<string> {
     return this.targetNode.asObservable();
-  }
-
-  emitNode(node: NodeData) {
-    this.sourceNode.next(node);
-  }
-
-  getNodes(): Observable<NodeData> {
-    return this.sourceNode.asObservable();
   }
 
   emitFacets(facets: ResultFacet[]) {
@@ -115,14 +100,6 @@ export class GetorixDepositSharedDataService {
 
   getFacets(): Observable<ResultFacet[]> {
     return this.facetsSubject.asObservable();
-  }
-
-  emitFilingHoldingNodes(node: FilingHoldingSchemeNode[]) {
-    this.filingHoldingNodesSubject.next(node);
-  }
-
-  getFilingHoldingNodes(): Observable<FilingHoldingSchemeNode[]> {
-    return this.filingHoldingNodesSubject.asObservable();
   }
 
   emitHasResult(hasResult: boolean) {
