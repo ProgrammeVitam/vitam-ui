@@ -28,7 +28,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { FilingHoldingSchemeNode, UnitType } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode, UnitType } from 'ui-frontend-common';
 import { GetorixTreeNodeComponent } from './getorix-tree-node.component';
 
 describe('GetorixTreeNodeComponent', () => {
@@ -69,5 +69,61 @@ describe('GetorixTreeNodeComponent', () => {
 
   it('component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('nodeSelected should be checked and search is starting when ORPHANS_NODE', () => {
+    let node: FilingHoldingSchemeNode = {
+      id: 'ORPHANS_NODE',
+      title: 'label',
+      type: 'RecordGroup',
+      children: [],
+      vitamId: 'vitamId',
+      checked: false,
+      hidden: true,
+      hasObject: false,
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.COLLECTION,
+    };
+
+    component.onLabelClick(node);
+    expect(component).toBeTruthy();
+    expect(node.checked).toBeTruthy();
+  });
+
+  it('component should work correctly when the descriptionLevel is ITEM', () => {
+    let node: FilingHoldingSchemeNode = {
+      id: 'id',
+      title: 'label',
+      type: 'RecordGroup',
+      children: [],
+      vitamId: 'vitamId',
+      checked: true,
+      hidden: true,
+      hasObject: false,
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.ITEM,
+    };
+
+    component.onLabelClick(node);
+    expect(component).toBeTruthy();
+  });
+
+  it('nodeSelected should be checked and search is starting', () => {
+    let node: FilingHoldingSchemeNode = {
+      id: 'id',
+      title: 'label',
+      type: 'RecordGroup',
+      children: [],
+      vitamId: 'vitamId',
+      checked: false,
+      hidden: true,
+      hasObject: false,
+      unitType: UnitType.INGEST,
+      descriptionLevel: DescriptionLevel.COLLECTION,
+    };
+
+    component.onLabelClick(node);
+    expect(component).toBeTruthy();
+    expect(node.checked).toBeTruthy();
   });
 });

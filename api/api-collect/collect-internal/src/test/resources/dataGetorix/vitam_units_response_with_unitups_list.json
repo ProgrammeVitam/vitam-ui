@@ -1,0 +1,92 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 10,
+    "offset": 0,
+    "limit": 10000,
+    "size": 10
+  },
+  "$results": [
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "title title of unit",
+      "Description": "ça va bien se passer",
+      "AcquiredDate": "2015-12-04T09:02:25",
+      "StartDate": "2015-12-04T09:02:25",
+      "EndDate": "2016-06-02T15:32:29",
+      "Event": [
+        {
+          "evDateTime": "2013-11-04T09:02:25"
+        }
+      ],
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+      "#tenant": 0,
+      "#unitups": ["aeaqaaaaaahmnykxabnagalrcg7878iaaaabq"],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "AccessRule": {
+          "Rules": [
+            {
+              "Rule": "ACC-00002",
+              "StartDate": "2015-11-19",
+              "EndDate": "2040-11-19"
+            }
+          ]
+        },
+        "DisseminationRule": {
+          "Rules": [
+            {
+              "Rule": "DIS-00002",
+              "StartDate": "2016-12-04",
+              "EndDate": "2091-12-04"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#object": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      }
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$query": [
+      {
+        "$or": [
+          {
+            "$in": {
+              "#id": [
+                "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+                "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+              ]
+            }
+          },
+          {
+            "$in": {
+              "#allunitups": [
+                "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+                "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "$filter": {},
+    "$projection": {}
+  }
+}

@@ -141,7 +141,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
     private archiveUnitCollectService: ArchiveCollectService,
     private getorixDepositSharedDateService: GetorixDepositSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
-    private archiveHelperService: ArchiveSearchHelperService
+    private archiveHelperService: ArchiveSearchHelperService,
   ) {
     super(route, globalEventService);
   }
@@ -187,8 +187,8 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
           (error) => {
             this.loggerService.error('error while searching for this operation', error);
             this.router.navigate([this.router.url.replace('/create', '').replace('upload-object', '').replace(this.operationId, '')]);
-          }
-        )
+          },
+        ),
       );
     });
 
@@ -197,13 +197,13 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
         .subscribe(() => {
           this.searchSubmit();
-        })
+        }),
     );
 
     this.subscriptions.add(
       this.getorixDepositSharedDateService.getToggle().subscribe((hidden) => {
         this.show = hidden;
-      })
+      }),
     );
   }
 
@@ -256,16 +256,6 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
       this.isIndeterminate = false;
       this.selectedItemsList = [];
       this.selectedItemsListOver = [];
-    }
-  }
-
-  checkParentBoxChangeJ(event: any) {
-    const { checked } = event.target;
-
-    this.isAllChecked = checked;
-    this.numberOfSelectedElements = checked ? this.totalResults : 0;
-    if (!checked) {
-      this.isIndeterminate = false;
     }
   }
 
@@ -343,20 +333,6 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
     this.fileSearch.nativeElement.click();
   }
 
-  removeFolder(file: CollectUploadFile) {
-    this.uploadService.removeFolder(file);
-  }
-
-  deleteAllFiles() {
-    this.subscriptions.add(
-      this.uploadFiles$.subscribe((data) => {
-        data.forEach((file) => {
-          this.removeFolder(file);
-        });
-      })
-    );
-  }
-
   async sendFilesToVitam() {
     return this.uploadService
       .uploadZip(this.getorixDepositDetails.tenantIdentifier, this.getorixDepositDetails.transactionId)
@@ -377,7 +353,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
               const node = { id: 'ORPHANS_NODE' } as FilingHoldingSchemeNode;
               this.searchUnitsOfNode(node, true);
             }, 3000);
-          }
+          },
         );
       })
       .catch((error) => {
@@ -452,8 +428,8 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
           this.canLoadMore = false;
           this.pending = false;
           this.isLoadUnitPath = false;
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -585,7 +561,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
         this.getorixDepositService.getUnitFullPath(selectedUnitFolder.id).subscribe((data) => {
           this.nodeParentsFullPath = data;
           this.isLoadUnitPath = false;
-        })
+        }),
       );
     }
   }
