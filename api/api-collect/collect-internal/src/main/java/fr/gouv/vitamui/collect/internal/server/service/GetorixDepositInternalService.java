@@ -129,7 +129,7 @@ public class GetorixDepositInternalService  extends
         }
         if(Objects.isNull(getorixDepositDto)) {
             LOGGER.error("The Getorix deposit information are not provided");
-            throw new BadRequestException("The Getorix deposit information are not provided ");
+            throw new BadRequestException("The Getorix deposit information are not provided");
         }
         if(!authUserDto.getId().equals(getorixDepositDto.getUserId())) {
             LOGGER.error(NOT_ALLOWED_TO_CREATE_DEPOSIT);

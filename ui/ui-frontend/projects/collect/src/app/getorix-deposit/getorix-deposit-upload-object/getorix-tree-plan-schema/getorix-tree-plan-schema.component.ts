@@ -73,7 +73,7 @@ export class GetorixTreePlanSchemaComponent implements OnInit, OnChanges, OnDest
   constructor(
     private translateService: TranslateService,
     private getorixDepositSharedDataService: GetorixDepositSharedDataService,
-    private archiveService: ArchiveCollectService
+    private archiveService: ArchiveCollectService,
   ) {}
 
   ngOnInit() {
@@ -108,42 +108,6 @@ export class GetorixTreePlanSchemaComponent implements OnInit, OnChanges, OnDest
     this.subscriptions?.unsubscribe();
   }
 
-  private subscribeOnNodeSelectionToSetCheck() {
-    this.subscriptions.add(
-      this.getorixDepositSharedDataService.getNodesTarget().subscribe((nodeId) => {
-        if (nodeId == null) {
-          this.switchViewAllNodes();
-          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
-        } else {
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
-          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
-        }
-      })
-    );
-  }
-
-  private subscribeOnFacetsChanges() {
-    this.subscriptions.add(
-      this.getorixDepositSharedDataService.getFacets().subscribe((facets) => {
-        this.requestResultFacets = facets;
-
-        this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
-        this.getorixDepositSharedDataService.getTotalResults().subscribe((data) => {
-          this.searchRequestTotalResults = data;
-          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
-          if (this.searchRequestTotalResults > 0 && isEmpty(this.attachmentNodes)) {
-            FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-              this.nestedDataSourceLeaves.data,
-              this.translateService.instant('GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES'),
-              this.searchRequestTotalResults
-            );
-            this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
-          }
-        });
-      })
-    );
-  }
   loadAttachementUnits() {
     const sortingCriteria = { criteria: 'Title', sorting: Direction.ASCENDANT };
     const criteriaWithId: SearchCriteriaEltDto = {
@@ -168,6 +132,73 @@ export class GetorixTreePlanSchemaComponent implements OnInit, OnChanges, OnDest
     });
   }
 
+  disableNodesRecursive(nodes: FilingHoldingSchemeNode[]) {
+    nodes.forEach((node) => {
+      node.disabled = true;
+      if (node.children) {
+        this.disableNodesRecursive(node.children);
+      }
+    });
+  }
+
+  switchViewAllNodes() {
+    this.showEveryNodes = !this.showEveryNodes;
+  }
+
+  searchUnits(selectedUnit: FilingHoldingSchemeNode) {
+    this.searchUnitsOfNode.emit(selectedUnit);
+  }
+
+  private subscribeOnTotalResultsChange() {
+    this.subscriptions.add(
+      this.getorixDepositSharedDataService.getTotalResults().subscribe((totalResults) => {
+        this.searchRequestTotalResults = totalResults;
+        if (this.nestedDataSourceLeaves.data.length === 1 && this.nestedDataSourceLeaves.data[0].count + 1 !== totalResults) {
+          this.nestedDataSourceLeaves.data[0].count = totalResults;
+
+          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
+        }
+      }),
+    );
+  }
+
+  private subscribeOnFacetsChanges() {
+    this.subscriptions.add(
+      this.getorixDepositSharedDataService.getFacets().subscribe((facets) => {
+        this.requestResultFacets = facets;
+
+        this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+        this.getorixDepositSharedDataService.getTotalResults().subscribe((data) => {
+          this.searchRequestTotalResults = data;
+          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
+          if (this.searchRequestTotalResults > 0 && isEmpty(this.attachmentNodes)) {
+            FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+              this.nestedDataSourceLeaves.data,
+              this.translateService.instant('GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES'),
+              this.searchRequestTotalResults,
+            );
+            this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
+          }
+        });
+      }),
+    );
+  }
+
+  private subscribeOnNodeSelectionToSetCheck() {
+    this.subscriptions.add(
+      this.getorixDepositSharedDataService.getNodesTarget().subscribe((nodeId) => {
+        if (nodeId == null) {
+          this.switchViewAllNodes();
+          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
+        } else {
+          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
+          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
+          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
+        }
+      }),
+    );
+  }
+
   private setAttachmentNodes() {
     if (isEmpty(this.fullNodes) || isEmpty(this.attachmentUnits)) {
       return;
@@ -184,34 +215,5 @@ export class GetorixTreePlanSchemaComponent implements OnInit, OnChanges, OnDest
       node;
       this.attachmentNodes.push(node);
     }
-  }
-
-  disableNodesRecursive(nodes: FilingHoldingSchemeNode[]) {
-    nodes.forEach((node) => {
-      node.disabled = true;
-      if (node.children) {
-        this.disableNodesRecursive(node.children);
-      }
-    });
-  }
-
-  switchViewAllNodes() {
-    this.showEveryNodes = !this.showEveryNodes;
-  }
-  private subscribeOnTotalResultsChange() {
-    this.subscriptions.add(
-      this.getorixDepositSharedDataService.getTotalResults().subscribe((totalResults) => {
-        this.searchRequestTotalResults = totalResults;
-        if (this.nestedDataSourceLeaves.data.length === 1 && this.nestedDataSourceLeaves.data[0].count + 1 !== totalResults) {
-          this.nestedDataSourceLeaves.data[0].count = totalResults;
-
-          this.getorixDepositSharedDataService.emitNestedDataSourceLeavesSubject(this.nestedDataSourceLeaves);
-        }
-      })
-    );
-  }
-
-  searchUnits(selectedUnit: FilingHoldingSchemeNode) {
-    this.searchUnitsOfNode.emit(selectedUnit);
   }
 }
