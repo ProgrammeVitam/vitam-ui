@@ -105,7 +105,7 @@
     }
   },
   "APPLICATION": {
-    "ARK_SEARCH_APP": {
+    "PERSISTENT_IDENTIFIER_SEARCH_APP": {
       "NAME": "Search by permanent identifier"
     },
     "PORTAL_APP": {
@@ -3921,7 +3921,7 @@
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     },
-    "ARK_SEARCH": {
+    "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Search by permanent identifier"
     }
   },
@@ -4489,7 +4489,7 @@
     "SUBSERIES": "Subseries",
     "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
   },
-  "ARK_SEARCH": {
+  "PERSISTENT_IDENTIFIER_SEARCH": {
     "SEARCH_PLACEHOLDER": "Search for an archive unit by permanent identifier"
   },
   "SEDA": {

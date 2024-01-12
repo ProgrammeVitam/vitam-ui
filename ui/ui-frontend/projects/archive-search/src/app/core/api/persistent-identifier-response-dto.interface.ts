@@ -26,23 +26,34 @@
  *
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL } from 'ui-frontend-common';
-import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
+import { Unit } from 'ui-frontend-common';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PersistentIdentifierApiService extends BaseHttpClient<any> {
+export interface PersistentIdentifierResponseDto {
+  results?: Unit[];
+  history?: PurgedPersistentIdentifierDto[];
+}
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/archive-search');
-  }
 
-  findByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
-    return this.http.get<any>(this.apiUrl + '/persistent-identifier' + '?id=' + id, { headers });
-  }
+export interface PurgedPersistentIdentifierDto {
+  id: string;
+  tenant: number;
+  version: number;
+  type: string;
+  operationId: string;
+  operationType: PurgedPersistentOperationType;
+  operationLastPersistentDate: string;
+  objectGroupId: string;
+  persistentIdentifier: PersistentIdentifierDto[];
+}
 
+export interface PersistentIdentifierDto {
+  persistentIdentifierType: string;
+  persistentIdentifierOrigin: string;
+  persistentIdentifierReference: string;
+  persistentIdentifierContent: string;
+}
+
+export enum PurgedPersistentOperationType {
+  TRANSFERRED = 'TRANSFERRED',
+  ELIMINATED = 'ELIMINATED'
 }

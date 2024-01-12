@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.archive.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -52,7 +51,6 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -60,6 +58,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
@@ -94,6 +93,7 @@ public class ArchiveSearchInternalService {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
+    private static final String HISTORY = "$history";
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
@@ -458,14 +458,12 @@ public class ArchiveSearchInternalService {
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
 
-    public List<ResultsDto> findByPersitentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
+    public PersistentIdentifierResponseDto findByPersitentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
         LOGGER.debug("Persistent identifier : {}", identifier);
         RequestResponse<JsonNode> response = persistentIdentifierService.findUnitsByPersistentIdentifier(identifier, vitamContext);
-        String results = response.toJsonNode()
-            .get(ARCHIVE_UNIT_DETAILS).toString();
         try {
-            return objectMapper.readValue(results, new TypeReference<List<ResultsDto>>() {
-            });
+            PersistentIdentifierResponseDto persistentIdentifierResponseDto = objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
+            return persistentIdentifierResponseDto;
         } catch (JsonProcessingException e) {
             LOGGER.error("Response not in godd format {}", e);
             throw new VitamClientException("Unable to find the UA", e);

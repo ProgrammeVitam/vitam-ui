@@ -65,8 +65,9 @@ const routes: Route[] = [
     canActivate: [ActiveTenantGuard],
   },
   {
-    path: 'ark-search',
-    loadChildren: () => import('./ark-search/ark-search.module').then((m) => m.ArkSearchModule),
+    path: 'persistent-identifier-search',
+    loadChildren: () => import('./persistent-identifier-search/persistent-identifier-search.module')
+      .then((m) => m.PersistentIdentifierSearchModule),
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' },
   },

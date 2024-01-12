@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
@@ -364,15 +365,15 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Find the unit or the object associated to this ARK ID")
     @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
     @ResponseStatus(HttpStatus.OK)
-    public List<ResultsDto> findByPersistentIdentifier(
+    public PersistentIdentifierResponseDto findByPersistentIdentifier(
         final @RequestParam("id") String arkId
     ) throws PreconditionFailedException {
         //        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, arkId);
         //        SanityChecker.checkSecureParameter(arkId);
         LOGGER.debug("Find the Archive Units with persistent identifier {}", arkId);
-        List<ResultsDto> list = archivesSearchService.findByPersistentIdentifier(arkId, buildUiHttpContext());
-        LOGGER.debug("[INTERNAL] : list = {}", list);
-        return list;
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchService.findByPersistentIdentifier(arkId, buildUiHttpContext());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
     }
 
 }

@@ -34,7 +34,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -157,15 +156,15 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     public void findByPersistentIdentifier_ok() throws URISyntaxException {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
-        List<ResultsDto> result = List.of(new ResultsDto());
+        PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
         URI uri = new URI(archiveSearchExternalRestClient.getBaseUrl() + archiveSearchExternalRestClient.getPathUrl()
             + RestApi.PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
             .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        List<ResultsDto> units = archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, defaultContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, defaultContext);
         // Then
-        Assertions.assertEquals(units, result);
+        Assertions.assertEquals(persistentIdentifierResponse, result);
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(ArrayList.class));
     }
 

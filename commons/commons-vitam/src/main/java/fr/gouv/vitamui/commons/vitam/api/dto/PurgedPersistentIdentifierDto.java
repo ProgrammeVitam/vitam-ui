@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,26 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ArkSearchComponent } from './ark-search.component';
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-const routes: Route[] = [
-  {
-    path: '',
-    component: ArkSearchComponent,
-    canActivate: []
-  }
-];
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)],
-  exports: [
-    RouterModule
-  ],
-})
-export class ArkSearchRoutingModule {}
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class PurgedPersistentIdentifierDto {
+
+    private String id;
+
+    private Integer tenant;
+
+    private Integer version;
+
+    private String type;
+
+    private String operationId;
+
+    private String operationType;
+
+    private String operationLastPersistentDate;
+
+    private String objectGroupId;
+
+    private List<PersistentIdentifierDto> persistentIdentifier;
+
+}

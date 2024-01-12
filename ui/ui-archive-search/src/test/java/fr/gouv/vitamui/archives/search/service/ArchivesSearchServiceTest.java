@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
@@ -66,7 +67,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -462,7 +462,7 @@ public class ArchivesSearchServiceTest {
     public void findByPersistentIdentifier() {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
-        Mockito.when(archiveSearchExternalRestClient.findByPersistentIdentifier(eq(arkId), eq(defaultContext))).thenReturn(Collections.emptyList());
+        Mockito.when(archiveSearchExternalRestClient.findByPersistentIdentifier(eq(arkId), eq(defaultContext))).thenReturn(new PersistentIdentifierResponseDto());
         // When
         archivesSearchService.findByPersistentIdentifier(arkId, defaultContext);
         // Then

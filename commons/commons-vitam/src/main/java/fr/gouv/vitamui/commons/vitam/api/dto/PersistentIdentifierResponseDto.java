@@ -1,4 +1,14 @@
 /*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ /*
+ /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,25 +34,31 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  *
+ *
  */
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL } from 'ui-frontend-common';
-import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PersistentIdentifierApiService extends BaseHttpClient<any> {
+import java.util.ArrayList;
+import java.util.List;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/archive-search');
-  }
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PersistentIdentifierResponseDto extends AbstractVitamUIResponseDto<ResultsDto> {
 
-  findByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
-    return this.http.get<any>(this.apiUrl + '/persistent-identifier' + '?id=' + id, { headers });
-  }
+    @JsonProperty("$history")
+    private List<PurgedPersistentIdentifierDto> history = new ArrayList<>();
+
 
 }

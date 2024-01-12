@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
@@ -287,7 +288,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getExternalOntologyFieldsList(context);
     }
 
-    public List<ResultsDto> findByPersistentIdentifier(String arkId, ExternalHttpContext context) {
+    public PersistentIdentifierResponseDto findByPersistentIdentifier(String arkId, ExternalHttpContext context) {
         return archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, context);
     }
 

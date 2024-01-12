@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
@@ -270,13 +271,13 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
-    public List<ResultsDto> findByPersistentIdentifier(
+    public PersistentIdentifierResponseDto findByPersistentIdentifier(
         final @RequestParam(value = "id") String arkId
     ) {
         LOGGER.debug("[EXTERNAL] : Get by persistent identifier {}", arkId);
-        List<ResultsDto> list = archivesSearchExternalService.findByPersistentIdentifier(arkId);
-        LOGGER.debug("[EXTERNAL] : list = {}", list);
-        return list;
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalService.findByPersistentIdentifier(arkId);
+        LOGGER.debug("[EXTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
     }
 
 }

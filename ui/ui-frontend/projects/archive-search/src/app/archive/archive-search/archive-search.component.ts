@@ -1248,6 +1248,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   goToPersistentIdentifierSearchPage(): void {
     // this.router.navigate(['archive-search/tenant/' + this.tenantIdentifier + '/units', transaction.projectId, transaction.id], {
-    this.router.navigate(['archive-search/ark-search'], {});
+    this.router.navigate(['archive-search/persistent-identifier-search'], {});
   }
 }

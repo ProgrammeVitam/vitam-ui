@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -259,10 +260,10 @@ public class ArchiveInternalRestClient
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
-    public List<ResultsDto> findByPersistentIdentifier(String identifier, final InternalHttpContext context) {
+    public PersistentIdentifierResponseDto findByPersistentIdentifier(String identifier, final InternalHttpContext context) {
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.PERSISTENT_IDENTIFIER).queryParam("id", identifier);
-        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
+        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class).getBody();
     }
 
 }

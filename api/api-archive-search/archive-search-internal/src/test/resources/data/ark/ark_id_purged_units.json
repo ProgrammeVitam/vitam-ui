@@ -1,0 +1,31 @@
+{
+  "httpCode": 0,
+  "$hits": {
+    "total": 0,
+    "offset": 0,
+    "limit": 10000,
+    "size": 0
+  },
+  "$results": [],
+  "$facetResults": [],
+  "$history": [
+    {
+      "id": "aeaqaaaaaeechwidabqcqamm7fpntviaaaba",
+      "tenant": 1,
+      "version": 0,
+      "type": "Unit",
+      "operationId": "aeeaaaaaagechwidabt22amm7fqepwyaaaaq",
+      "operationType": "ELIMINATION_ACTION",
+      "operationLastPersistentDate": "2024-01-11T16:34:48.029",
+      "objectGroupId": "aebaaaaaaeechwidabqcqamm7fpns2yaaaaq",
+      "persistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": null,
+          "PersistentIdentifierReference": null,
+          "PersistentIdentifierContent": "ark:/2778447/1234567xyz"
+        }
+      ]
+    }
+  ]
+}

@@ -105,7 +105,7 @@
     }
   },
   "APPLICATION": {
-    "ARK_SEARCH_APP": {
+    "PERSISTENT_IDENTIFIER_SEARCH_APP": {
       "NAME": "Recherche par identifiant pérenne"
     },
     "PORTAL_APP": {
@@ -5333,11 +5333,11 @@
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
     },
-    "ARK_SEARCH": {
+    "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Recherche par identifiant pérenne"
     }
   },
-  "ARK_SEARCH": {
+  "PERSISTENT_IDENTIFIER_SEARCH": {
     "SEARCH_PLACEHOLDER": "Rechercher une unité archivistique par identifiant pérenne",
     "MODAL": {
       "TITLE": "",

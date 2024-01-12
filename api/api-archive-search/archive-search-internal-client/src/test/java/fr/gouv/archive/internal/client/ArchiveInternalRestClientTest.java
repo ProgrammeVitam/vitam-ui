@@ -31,6 +31,7 @@ import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.junit.jupiter.api.Assertions;
@@ -132,15 +133,15 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     public void findByPersistentIdentifier_ok() throws URISyntaxException {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
-        List<ResultsDto> result = List.of(new ResultsDto());
+        PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
         URI uri = new URI(archivesSearchExternalRestClient.getBaseUrl() + archivesSearchExternalRestClient.getPathUrl()
             + RestApi.PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
             .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        List<ResultsDto> units = archivesSearchExternalRestClient.findByPersistentIdentifier(arkId, defaultContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findByPersistentIdentifier(arkId, defaultContext);
         // Then
-        Assertions.assertEquals(units, result);
+        Assertions.assertEquals(persistentIdentifierResponse, result);
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(ArrayList.class));
     }
 

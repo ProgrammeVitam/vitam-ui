@@ -54,6 +54,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -340,13 +341,13 @@ public class ArchiveSearchInternalController {
     }
 
     @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
-    public List<ResultsDto> findByPersistentIdentifier(
+    public PersistentIdentifierResponseDto findByPersistentIdentifier(
         final @RequestParam("id") String arkId
     ) throws VitamClientException {
         LOGGER.debug("[INTERNAL] : Get by persistent identifier {}", arkId);
-        List<ResultsDto> list = archiveInternalService.findByPersitentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
-        LOGGER.debug("[INTERNAL] : list = {}", list);
-        return list;
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveInternalService.findByPersitentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
     }
 
 }

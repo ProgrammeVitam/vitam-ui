@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorResponseModalComponent } from './error-response-modal.component';
+import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal.component';
 
 describe('ErrorResponseModalComponent', () => {
-  let component: ErrorResponseModalComponent;
-  let fixture: ComponentFixture<ErrorResponseModalComponent>;
+  let component: PurgedPersistentIdentifierModalComponent;
+  let fixture: ComponentFixture<PurgedPersistentIdentifierModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorResponseModalComponent ]
+      declarations: [ PurgedPersistentIdentifierModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorResponseModalComponent);
+    fixture = TestBed.createComponent(PurgedPersistentIdentifierModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
