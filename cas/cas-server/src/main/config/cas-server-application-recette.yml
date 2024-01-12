@@ -44,6 +44,7 @@ cas.authn.accept.users:
 cas.message-bundle.base-names: classpath:overriden_messages,classpath:messages
 
 
+cas.host.name: cas
 cas.tgc.path: /cas
 cas.tgc.secure: true
 cas.tgc.crypto.enabled: false
