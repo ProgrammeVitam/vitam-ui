@@ -32,8 +32,18 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import {
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  InjectorModule,
+  LoggerModule,
+  ManagementRule,
+  PagedResult,
+  ResultFacet,
+  UnitType,
+} from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../collect/archive-search-collect/archive-collect.service';
+import { GetorixDepositSharedDataService } from '../../services/getorix-deposit-shared-data.service';
 import { GetorixTreePlanSchemaComponent } from './getorix-tree-plan-schema.component';
 
 describe('GetorixTreePlanSchemaComponent', () => {
@@ -94,9 +104,157 @@ describe('GetorixTreePlanSchemaComponent', () => {
   ];
   const nodes = [rootNode];
 
+  const filingHoldingSchemeNode = {
+    id: 'id',
+    title: 'title_unit',
+    unitType: UnitType.INGEST,
+    descriptionLevel: DescriptionLevel.ITEM,
+    children: [],
+    vitamId: 'id',
+    disabled: false,
+    checked: true,
+    count: 95874,
+    isLoadingChildren: false,
+    toggled: false,
+    hasObject: true,
+  } as FilingHoldingSchemeNode;
+
+  const filingHoldingSchemeNodeChildren1 = {
+    id: 'children_id_1',
+    title: 'title_unit',
+    unitType: UnitType.INGEST,
+    descriptionLevel: DescriptionLevel.ITEM,
+    children: [],
+    vitamId: 'id',
+    disabled: false,
+    checked: true,
+    count: 95874,
+    isLoadingChildren: false,
+    toggled: false,
+    hasObject: true,
+  } as FilingHoldingSchemeNode;
+
+  const filingHoldingSchemeNodeChildren2 = {
+    id: 'children_id_2',
+    title: 'title_unit',
+    unitType: UnitType.INGEST,
+    descriptionLevel: DescriptionLevel.ITEM,
+    children: [],
+    vitamId: 'id',
+    disabled: false,
+    checked: true,
+    count: 95874,
+    isLoadingChildren: false,
+    toggled: false,
+    hasObject: true,
+  } as FilingHoldingSchemeNode;
+
+  const updateOperation = {
+    SystemId: 'id_id',
+  };
+  const management = {
+    UpdateOperation: updateOperation,
+  } as ManagementRule;
+
+  const vitamSearchResult: PagedResult = {
+    pageNumbers: 1,
+    totalResults: 55,
+    results: [
+      {
+        id: 'aeaqaaaaaehgnz5dabg42amave3wcliaaaba',
+        Title: '009734_20130456_0001_20120229_DI.pdf',
+        DescriptionLevel: 'Item',
+        OriginatingAgencyArchiveUnitIdentifier: [''],
+        TransactedDate: '2012-10-22T13:28:02',
+        '#tenant': 1,
+        '#object': 'aebaaaaaaehgnz5dabg42amave3wcgyaaabq',
+        '#unitups': ['aeaqaaaaaehgnz5dabg42amave3wclqaaaba'],
+        '#min': 1,
+        '#max': 5,
+        '#allunitups': [
+          'aeaqaaaaaehgnz5dabg42amave3wclqaaaba',
+          'aeaqaaaaaehgnz5dabg42amave3wcmiaaaca',
+          'aeaqaaaaaehgnz5dabg42amave3wcmiaaaba',
+          'aeaqaaaaaehgnz5dabg42amave3wcmiaaada',
+        ],
+        '#unitType': 'INGEST',
+        '#operations': [
+          'aeeaaaaaaghefnffaaykaamave3vaaqaaaaq',
+          'aeeaaaaaaghefnffaaxrwamavumc2baaaaaq',
+          'aeeaaaaaaghefnffaaxrwamavumxooaaaaaq',
+          'aeeaaaaaaghefnffaaxrwamavupqsyyaaaaq',
+        ],
+        '#opi': 'aeeaaaaaaghefnffaaykaamave3vaaqaaaaq',
+        '#originating_agency': 'Vitam',
+        '#originating_agencies': ['Vitam'],
+        '#management': management,
+        Xtag: [''],
+        Vtag: [''],
+        '#storage': {
+          strategyId: 'default',
+        },
+        '#qualifiers': [''],
+        OriginatingSystemId: [''],
+        PhysicalAgency: [''],
+        PhysicalStatus: [''],
+        PhysicalType: [''],
+        Keyword: [''],
+        originating_agencyName: 'Equipe projet interministérielle Vitam',
+      },
+    ],
+
+    facets: [
+      {
+        name: 'COUNT_BY_NODE',
+        buckets: [
+          {
+            value: 'aeaqaaaaaehgnz5dabg42amave3wclqaaaba',
+            count: 1,
+          },
+          {
+            value: 'aeaqaaaaaehgnz5dabg42amave3wcmiaaaba',
+            count: 1,
+          },
+          {
+            value: 'aeaqaaaaaehgnz5dabg42amave3wcmiaaaca',
+            count: 1,
+          },
+          {
+            value: 'aeaqaaaaaehgnz5dabg42amave3wcmiaaada',
+            count: 1,
+          },
+        ],
+      },
+    ],
+  };
+
+  const resultFacet: ResultFacet[] = [
+    { node: 'node1', count: 10 },
+    { node: 'node2', count: 6547851 },
+    { node: 'node3', count: 23 },
+    { node: 'node4', count: 2 },
+  ];
+
   const archiveCollectServiceMock = {
     loadFilingHoldingSchemeTree: () => of(nodes),
-    searchArchiveUnitsByCriteria: () => of(),
+    searchArchiveUnitsByCriteria: () => of(vitamSearchResult),
+  };
+  let targetedNode: string = 'targetedNode';
+  const getorixDepositSharedDataServiceMock = {
+    emitToggle: () => of(),
+    getTransactionId: () => of('transactionId'),
+    emitTransactionId: () => of(),
+    getNodesTarget: () => of(targetedNode),
+    emitNodesTarget: () => of(),
+    getTotalResults: () => of(8574),
+    emitTotalResults: () => of(),
+    getHasResult: () => of(true),
+    emitHasResult: () => of(),
+    getFacets: () => of(resultFacet),
+    emitFacets: () => of(),
+
+    getNestedDataSourceLeavesSubject: () => of({}),
+    emitNestedDataSourceLeavesSubject: () => of(),
   };
 
   beforeEach(async () => {
@@ -105,6 +263,7 @@ describe('GetorixTreePlanSchemaComponent', () => {
       imports: [HttpClientTestingModule, TranslateModule.forRoot(), InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
+        { provide: GetorixDepositSharedDataService, useValue: getorixDepositSharedDataServiceMock },
         { provide: environment, useValue: environment },
       ],
     }).compileComponents();
@@ -118,5 +277,57 @@ describe('GetorixTreePlanSchemaComponent', () => {
 
   it('component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('show all nodes should be false', () => {
+    component.switchViewAllNodes();
+    expect(component.showEveryNodes).toBeFalsy();
+  });
+
+  it('should get All nodes disabled and noot checkable', () => {
+    const filingHoldingSchemeNodes: FilingHoldingSchemeNode[] = [];
+    component.nestedDataSourceFull.data = filingHoldingSchemeNodes;
+    component.switchViewAllNodes();
+    component.nestedDataSourceFull.data.forEach((node) => {
+      expect(node.disabled).toBeTruthy();
+    });
+  });
+
+  it('should disable Node', () => {
+    let nodes = filingHoldingSchemeNode;
+    component.disableNodesRecursive([nodes]);
+    expect(nodes.disabled).toBeTruthy();
+  });
+
+  it('should disable Node and his children', () => {
+    let nodes = filingHoldingSchemeNode;
+    nodes.children = [filingHoldingSchemeNodeChildren1, filingHoldingSchemeNodeChildren2];
+
+    component.disableNodesRecursive([nodes]);
+    expect(nodes.disabled).toBeTruthy();
+    expect(nodes.children[0].disabled).toBeTruthy();
+    expect(nodes.children[1].disabled).toBeTruthy();
+  });
+
+  it('should attachmentUnits have the correct values', () => {
+    component.loadAttachementUnits();
+    expect(component.attachmentUnits).not.toBeNull();
+    expect(component.attachmentUnits.length).toEqual(1);
+  });
+
+  it('component should be created after some changes', () => {
+    component.ngOnChanges({});
+    expect(component).toBeTruthy();
+  });
+
+  it('should call emitToggle of GetorixDepositSharedDataService', () => {
+    spyOn(getorixDepositSharedDataServiceMock, 'emitToggle').and.callThrough();
+    component.emitClose();
+    expect(getorixDepositSharedDataServiceMock.emitToggle).toHaveBeenCalled();
+  });
+
+  it('should attachmentUnitsLoaded be true', () => {
+    component.loadAttachementUnits();
+    expect(component.attachmentUnitsLoaded).toBeTruthy;
   });
 });

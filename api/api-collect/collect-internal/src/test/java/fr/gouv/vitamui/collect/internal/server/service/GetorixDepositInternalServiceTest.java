@@ -28,17 +28,21 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.ArchaeologistGetorixAddressDto;
 import fr.gouv.vitamui.collect.common.dto.DepositStatus;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
+import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.internal.server.dao.GetorixDepositRepository;
 import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
@@ -65,7 +69,10 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -95,6 +102,14 @@ class GetorixDepositInternalServiceTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     final PodamFactory factory = new PodamFactoryImpl();
+
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT =
+        "dataGetorix/vitam_units_response.json";
+
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_UNITUPS_LIST =
+        "dataGetorix/vitam_units_response_with_unitups_list.json";
+
+
 
     @BeforeEach
     public void setup() {
@@ -622,6 +637,81 @@ class GetorixDepositInternalServiceTest {
         assertThatCode(() ->getorixDepositInternalService.getUnitFullPath(unitId, vitamContext))
             .isInstanceOf(VitamClientException.class)
             .hasMessage("EXCEPTION : Archive Unit not found");
+    }
+
+    @Test
+    void getUnitFullPath_shouldPasseWithSuccessWithListOfParentWhenFindArchiveUnitById_OK()
+        throws VitamClientException, IOException, InvalidParseOperationException {
+        // GIVEN
+        String unitId = "id";
+        VitamContext vitamContext = new VitamContext(1);
+
+        // WHEN
+        when(collectService.findUnitById(unitId, vitamContext))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_UNITUPS_LIST));
+
+        when(collectService.findUnitById("aeaqaaaaaahmnykxabnagalrcg7878iaaaabq", vitamContext))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+
+        List<UnitFullPath> unitFullPathList = getorixDepositInternalService.getUnitFullPath(unitId, vitamContext);
+        // THEN
+        assertThatCode(() ->getorixDepositInternalService.getUnitFullPath(unitId, vitamContext))
+            .doesNotThrowAnyException();
+
+        assertThat(unitFullPathList).hasSize(3);
+        assertThat(unitFullPathList.get(1).getId()).isEqualTo("aeaqaaaaaahmnykxabnagalrcg7878iaaaabq");
+        assertThat(unitFullPathList.get(0).getId()).isEqualTo("ORPHANS_NODE");
+        assertThat(unitFullPathList.get(0).getTitle()).isEqualTo("Mes Archives");
+        assertThat(unitFullPathList.get(0).getUnitType()).isNull();
+        assertThat(unitFullPathList.get(1).getTitle()).isEqualTo("Liste des Métros de Tokyo");
+        assertThat(unitFullPathList.get(2).getTitle()).isEqualTo("title title of unit");
+    }
+
+    @Test
+    void getUnitFullPath_shouldPasseWithSuccessWithoutParentWhenFindArchiveUnitById_OK()
+        throws VitamClientException, IOException, InvalidParseOperationException {
+        // GIVEN
+        String unitId = "id";
+        VitamContext vitamContext = new VitamContext(1);
+        when(collectService.findUnitById(unitId, vitamContext))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+
+        List<UnitFullPath> unitFullPathList = getorixDepositInternalService.getUnitFullPath(unitId, vitamContext);
+        // THEN
+        assertThatCode(() ->getorixDepositInternalService.getUnitFullPath(unitId, vitamContext))
+            .doesNotThrowAnyException();
+
+        assertThat(unitFullPathList).hasSize(2);
+        assertThat(unitFullPathList.get(1).getId()).isEqualTo("aeaqaaaaaahmnykxabnagalrcg7878iaaaabq");
+        assertThat(unitFullPathList.get(0).getId()).isEqualTo("ORPHANS_NODE");
+        assertThat(unitFullPathList.get(0).getTitle()).isEqualTo("Mes Archives");
+        assertThat(unitFullPathList.get(0).getUnitType()).isNull();
+        assertThat(unitFullPathList.get(1).getTitle()).isEqualTo("Liste des Métros de Tokyo");
+    }
+
+    @Test
+    void testCreateGetorixDeposit_ko_when_getorixDepositDto_is_null() {
+
+        VitamContext vitamContext = new VitamContext(155);
+        final AuthUserDto user = buildAuthUserDto();
+
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        assertThatCode(()-> getorixDepositInternalService.createGetorixDeposit(null, vitamContext))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage("The Getorix deposit information are not provided");
+    }
+
+
+    private RequestResponseOK<JsonNode> buildUnitMetadataResponse(String fileName)
+        throws IOException, InvalidParseOperationException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream = GetorixDepositInternalServiceTest.class.getClassLoader()
+            .getResourceAsStream(fileName);
+        assertThat(inputStream).isNotNull();
+        return RequestResponseOK
+            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
     private AuthUserDto buildAuthUserDto() {

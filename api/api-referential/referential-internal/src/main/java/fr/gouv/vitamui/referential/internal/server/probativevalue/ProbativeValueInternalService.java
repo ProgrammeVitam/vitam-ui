@@ -36,25 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.server.probativevalue;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
-import fr.gouv.vitamui.commons.utils.SecurePathUtils;
-import fr.gouv.vitamui.commons.utils.SecureZipUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -67,6 +49,8 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.PdfFileGenerator;
+import fr.gouv.vitamui.commons.utils.SecurePathUtils;
+import fr.gouv.vitamui.commons.utils.SecureZipUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -75,6 +59,25 @@ import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeOpe
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeReportDto;
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ReportEntryDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A service to access a probative value report.
@@ -83,13 +86,15 @@ import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 @Service
 public class ProbativeValueInternalService {
 
-	private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
+	private static final String TEMPLATE_PROBATIVE_VALUE_REPORT_ODT = "templates/probativevaluereport.ftl.odt";
+
+    private static final String JSON = ".json";
 
 	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProbativeValueInternalService.class);
 
-	final private VitamBatchReportService vitamBatchReportService;
+	private final  VitamBatchReportService vitamBatchReportService;
 
-	final private UnitService unitService;
+	private final UnitService unitService;
 
 	@Autowired
 	ProbativeValueInternalService(VitamBatchReportService vitamBatchReportService, UnitService unitService) {
@@ -120,7 +125,7 @@ public class ProbativeValueInternalService {
 	private void getProbativeValueReportJson(final VitamContext vitamContext, final String operationId,
 			final String workspaceOperationPath) {
 		try (InputStream reportStream = vitamBatchReportService.downloadBatchReport(vitamContext, operationId)) {
-			File file = new File(workspaceOperationPath, operationId + ".json");
+			File file = new File(workspaceOperationPath, operationId + JSON);
 			FileUtils.copyInputStreamToFile(reportStream, file);
 		} catch (VitamClientException e) {
 			LOGGER.error("Error while getting probative value report from Vitam", e.getMessage());
@@ -136,23 +141,14 @@ public class ProbativeValueInternalService {
 			final String workspaceOperationPath) {
 
 		try {
-			File jsonReport = new File(workspaceOperationPath, operationId + ".json");
+			File jsonReport = new File(workspaceOperationPath, operationId + JSON);
 			ProbativeReportDto report = JsonHandler.getFromFile(jsonReport, ProbativeReportDto.class);
 			reportEntriesConsolidation(vitamContext, report);
 
-			File pdffile = new File(workspaceOperationPath, operationId + ".pdf");
+			File pdfFile = new File(workspaceOperationPath, operationId + ".pdf");
 
-			try (InputStream odtTemplate = getClass().getClassLoader()
-					.getResourceAsStream(TEMPLATE_PROBATIVEVALUEREPORT_ODT);
-					OutputStream pdfOutputStream = new java.io.FileOutputStream(pdffile);) {
+            createPDFReport(report, pdfFile);
 
-				Map<String, Object> dataMap = new HashMap<>();
-				dataMap.put("report", report);
-				PdfFileGenerator.createPdf(odtTemplate, pdfOutputStream, dataMap);
-			} catch (Exception e) {
-				LOGGER.error("Unable to create PDF from Probative Value Report template ODT", e.getMessage());
-				throw new InternalServerException("Unable to create PDF from Probative Value Report template ODT", e);
-			}
 		} catch (InvalidParseOperationException | VitamClientException exc) {
 			LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc.getMessage());
 			throw new InternalServerException("Unable to create PDF from Probative Value Report Json value", exc);
@@ -160,12 +156,26 @@ public class ProbativeValueInternalService {
 
 	}
 
+    private void createPDFReport(ProbativeReportDto probativeReportDto , File pdfFile) {
+        try (InputStream odtTemplate = getClass().getClassLoader()
+            .getResourceAsStream(TEMPLATE_PROBATIVE_VALUE_REPORT_ODT);
+            OutputStream pdfOutputStream = new java.io.FileOutputStream(pdfFile);) {
+
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("report", probativeReportDto);
+            PdfFileGenerator.createPdf(odtTemplate, pdfOutputStream, dataMap);
+        } catch (Exception exception) {
+            LOGGER.error("Unable to create PDF from Probative Value Report template ODT", exception.getMessage());
+            throw new InternalServerException("Unable to create PDF from Probative Value Report template ODT", exception);
+        }
+    }
+
 	private void generateZip(final String operationId, final String workspaceOperationPath,
 			final OutputStream outputStream) {
         try {
             final List<Path> filesPaths = new ArrayList<>();
 
-            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".json")));
+            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + JSON)));
             filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".pdf")));
 
             SecureZipUtils.zipFiles(filesPaths, outputStream);
@@ -192,7 +202,7 @@ public class ProbativeValueInternalService {
 				if (resultUnit.isPresent()) {
 					unitWithLabel.setLabel(resultUnit.get().getTitle());
 				}
-				if (reportEntry.getUnitIdWithLabels() == null) {
+				if (Objects.isNull(reportEntry.getUnitIdWithLabels())) {
 					reportEntry.setUnitIdWithLabels(new ArrayList<>());
 				}
 				reportEntry.getUnitIdWithLabels().add(unitWithLabel);
@@ -218,7 +228,7 @@ public class ProbativeValueInternalService {
 
 			// extract operations infos from JsonNode RightsStatementIdentifier
 			for (ProbativeOperationDto operation : reportEntry.getOperations()) {
-				if (operation.getRightsStatementIdentifier() != null) {
+				if (Objects.nonNull(operation.getRightsStatementIdentifier())) {
 					if (operation.getRightsStatementIdentifier().has("ArchivalAgreement")) {
 						operation.setArchivalAgreement(
 								operation.getRightsStatementIdentifier().get("ArchivalAgreement").asText());

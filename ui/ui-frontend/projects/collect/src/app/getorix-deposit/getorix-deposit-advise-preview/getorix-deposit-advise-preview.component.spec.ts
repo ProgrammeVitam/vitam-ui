@@ -52,4 +52,20 @@ describe('GetorixDepositAdvisePreviewComponent', () => {
   it('component should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('component should emit close event', () => {
+    component.emitClose();
+    expect(component).toBeTruthy();
+  });
+
+  it('should return the title translated value', () => {
+    const titleCode = 'WICH_CONTENT';
+    const expectedResponse = 'GETORIX_DEPOSIT.CREATION_PROCESS.SUCCESS.WICH_CONTENT';
+
+    const response = component.getTitleValue(titleCode);
+
+    expect(response).not.toBeNull();
+    expect(response).toBeDefined();
+    expect(response).toEqual(expectedResponse);
+  });
 });

@@ -59,14 +59,14 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
   searchCriterias: SearchCriteriaDto;
   leavesTreeService: LeavesTreeService;
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
 
   private subscriptions: Subscription = new Subscription();
 
   constructor(
     private getorixDepositSharedDataService: GetorixDepositSharedDataService,
-    private archiveCollectService: ArchiveCollectService
+    private archiveCollectService: ArchiveCollectService,
   ) {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
   }
@@ -89,13 +89,13 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
               this.leavesTreeService.setTransactionId(this.transactionId);
             }
           }
-        })
+        }),
       );
     }
     this.subscriptions.add(
       this.getorixDepositSharedDataService.getSelectedNode().subscribe((data) => {
         this.selectedNode = data;
-      })
+      }),
     );
   }
 
@@ -210,7 +210,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes, facets).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -228,7 +228,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.searchUnderNode(parentNode).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -236,7 +236,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -244,7 +244,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.searchAtNodeWithSearchCriterias(parentNode).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -252,7 +252,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.searchOrphans(parentNode).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -260,7 +260,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.add(
       this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode).subscribe(() => {
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -269,7 +269,7 @@ export class GetorixLeavesTreeComponent implements OnInit, OnChanges, OnDestroy 
       this.getorixDepositSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
         this.searchCriterias = searchCriteriaDto;
-      })
+      }),
     );
   }
 }
