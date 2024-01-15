@@ -179,7 +179,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
         const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
           this.data.tenantIdentifier
         }?guid=${response}`;
-        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
+        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_MESSAGE'), serviceUrl);
         this.formGroups.forEach((fg) => fg.reset());
       },
       (error: any) => {

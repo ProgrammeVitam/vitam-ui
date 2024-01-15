@@ -193,7 +193,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
           this.data.tenantIdentifier
         }?guid=${response}`;
 
-        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
+        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.DIP_REQUEST_MESSAGE'), serviceUrl);
       },
       (error: any) => {
         this.logger.error('Error message :', error);
