@@ -209,7 +209,7 @@ public class ProbativeValueInternalService {
 						.filter(item -> usage.equals(item.getQualifier())).findFirst();
 				if (qualifierObject.isPresent()) {
 					Optional<VersionsModel> qualifierVersionObject = qualifierObject.get().getVersions().stream()
-							.filter(item -> version.equals(String.valueOf(item.getDataVersion()))).findFirst();
+							.filter(item -> version.equals(String.valueOf(item.getVersion()))).findFirst();
 					if (qualifierVersionObject.isPresent()) {
 						reportEntry.setObjectLabel(qualifierVersionObject.get().getFileInfoModel().getFilename());
 					}
