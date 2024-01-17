@@ -57,7 +57,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
   @ViewChild('storageTab', { static: false }) storageTab: ManagementContractStorageTabComponent;
   @ViewChild('identificationTab', { static: false }) identificationTab: ManagementContractIdentificationTabComponent;
 
-  private tabUpdated: boolean[] = [false, false, false, false];
+  tabUpdated: boolean[] = [false, false, false, false];
   private tabLinks: Array<
     ManagementContractInformationTabComponent | ManagementContractStorageTabComponent | ManagementContractIdentificationTabComponent
   > = [];
@@ -115,7 +115,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
         .pipe(
           tap((managementContract) => {
             this.inputManagementContract = managementContract;
-          })
+          }),
         )
         .subscribe(() => subscription.unsubscribe());
     } else {
