@@ -108,7 +108,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         persistentIdentifierPolicyType: [null, Validators.required],
         persistentIdentifierUnit: [false],
         persistentIdentifierObject: [false],
-        persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^[0-9]{5,9}$')]],
+        persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^([0-9]{5}|[0-9]{9})$')]],
         persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()]),
       }),
     });
