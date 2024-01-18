@@ -70,7 +70,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   private buildPolicyGroup(policy: PersistentIdentifierPolicy): FormGroup {
     return this.formBuilder.group({
       policyTypeOption: [policy.persistentIdentifierPolicyType],
-      authority: [policy.persistentIdentifierAuthority, [Validators.required, Validators.pattern('^[0-9]{5,9}$')]],
+      authority: [policy.persistentIdentifierAuthority, [Validators.required, Validators.pattern('^([0-9]{5}|[0-9]{9})$')]],
       shouldConcernArchiveUnits: [policy.persistentIdentifierUnit],
       shouldConcernObjects: [Boolean(policy.persistentIdentifierUsages.length)],
       objectUsagePolicies: this.formBuilder.array(
