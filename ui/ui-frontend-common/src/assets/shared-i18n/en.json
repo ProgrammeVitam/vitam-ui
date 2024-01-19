@@ -4490,7 +4490,13 @@
     "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
   },
   "PERSISTENT_IDENTIFIER_SEARCH": {
-    "SEARCH_PLACEHOLDER": "Search for an archive unit by permanent identifier"
+    "SEARCH_PLACEHOLDER": "Search for an archive unit by permanent identifier",
+    "MODAL": {
+      "TITLE": "",
+      "SEARCH_BY_ID": "Search by permanent identifier",
+      "TRANSFERRED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been transferred to another EDRMS, on {{date}}",
+      "DELETED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been eliminated from the system, on {{date}}"
+    }
   },
   "SEDA": {
     "MEASUREMENT_TYPE": {

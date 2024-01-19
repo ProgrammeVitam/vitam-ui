@@ -29,10 +29,9 @@
 import { Unit } from 'ui-frontend-common';
 
 export interface PersistentIdentifierResponseDto {
-  results?: Unit[];
-  history?: PurgedPersistentIdentifierDto[];
+  $results?: Unit[];
+  $history?: PurgedPersistentIdentifierDto[];
 }
-
 
 export interface PurgedPersistentIdentifierDto {
   id: string;
@@ -54,6 +53,6 @@ export interface PersistentIdentifierDto {
 }
 
 export enum PurgedPersistentOperationType {
-  TRANSFERRED = 'TRANSFERRED',
-  ELIMINATED = 'ELIMINATED'
+  TRANSFERRED = 'TRANSFERRED', // FIXME: quel est la valeur attendue ????
+  DELETE_GOT_VERSIONS = 'DELETE_GOT_VERSIONS',
 }

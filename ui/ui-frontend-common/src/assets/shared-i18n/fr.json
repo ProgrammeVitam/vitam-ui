@@ -5341,7 +5341,9 @@
     "SEARCH_PLACEHOLDER": "Rechercher une unité archivistique par identifiant pérenne",
     "MODAL": {
       "TITLE": "",
-      "SEARCH_BY_ID": "Recherche par identifiant pérenne"
+      "SEARCH_BY_ID": "Recherche par identifiant pérenne",
+      "TRANSFERRED_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été transférée vers un autre SAE, le {{date}}",
+      "DELETED_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été éliminée du système, le {{date}}"
     }
   },
   "SEDA": {

@@ -5,18 +5,7 @@
 
   <h2 class="title">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</h2>
   <h4 class="subtitle">
-    {{ 'L’unité archivistique associée à l’identifiant pérenne' | translate }}<br/>
-    <span id="persistent-identifier-search-id-value">{{ data.id }}</span><br/>
-    <span id="persistent-identifier-search-error-detail">
-      <ng-container [ngSwitch]="data.operationType">
-        <ng-container *ngSwitchCase="PurgedPersistentOperationType.TRANSFERRED">
-          {{ 'a été transférée vers un autre SAE, le ' | translate }} JJ/MM/AA
-        </ng-container>
-        <ng-container *ngSwitchCase="PurgedPersistentOperationType.ELIMINATED">
-          {{ 'a été éliminée du système, le ' | translate }} JJ/MM/AA
-        </ng-container>
-      </ng-container>
-    </span>
+    {{ messageKey | translate:{ ark: data.ark, date: data.purgedPersistentIdentifier.operationLastPersistentDate | date:'dd/MM/yyyy' } }}<br/>
   </h4>
 
   <div class="main-content">
