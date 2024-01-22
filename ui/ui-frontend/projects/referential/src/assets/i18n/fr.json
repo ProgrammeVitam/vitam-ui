@@ -30,7 +30,8 @@
       "OBJECT_STRATEGY": "Pour les fichiers numériques (objets binaires)",
       "SUBMIT": "Confirmer",
       "MANAGEMENT_CONTRACT_CREATED": "Le contrat de gestion est bien créé",
-      "MANAGEMENT_CONTRACT_UPDATED": "Le contrat de gestion est bien mis à jour"
+      "MANAGEMENT_CONTRACT_UPDATED": "Le contrat de gestion est bien mis à jour",
+      "SELECT_MANAGEMENT_CONTRACT": "Sélectionnez un contrat de gestion"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Identifiant du contrat",
