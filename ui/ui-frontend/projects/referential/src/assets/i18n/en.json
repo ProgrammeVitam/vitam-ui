@@ -4,7 +4,9 @@
     "SUBMIT": "Confirm",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED": "Required field"
+    "REQUIRED": "Required field",
+    "MIN_LENGTH": "Minimum length is {{minlength.requiredLength}}, currently {{minlength.actualLength}}",
+    "MAX_LENGTH": "Maximum length is {{maxlength.requiredLength}}, currently {{maxlength.actualLength}}"
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
@@ -32,7 +34,7 @@
       "SUBMIT": "Confirm",
       "MANAGEMENT_CONTRACT_CREATED": "Management contract created successfully",
       "MANAGEMENT_CONTRACT_UPDATED": "The management contract is successfully updated",
-      "NAMING_AUTORITY": "Naming authority",
+      "NAMING_AUTHORITY": "Naming authority",
       "ADD_LINE": "Add an usage",
       "REMOVE_USAGE": "delete this line",
       "TECHNICAL_OBJECT": "Technical Object",
@@ -83,9 +85,14 @@
       "TITLE": "Persistent identifier settings",
       "IDENTIFIER_TYPE": "Identifier type",
       "CHOOSE_IDENTIFIER_TYPE": "Choose identifier type",
-      "NAMING_AUTORITY": "Naming authority",
+      "NAMING_AUTHORITY": "Naming authority",
       "ERROR_MESSAGES": {
-        "INVALID_OBJECT_USAGE_POLICY": "Invalid object usage policy"
+        "INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET": "Persistent identifier policy required at least one target",
+        "INVALID_OBJECT_USAGE_POLICY": "Invalid object usage policy",
+        "INVALID_AUTHORITY": "Naming authority must have 5 ou 9 digit",
+        "INVALID_PERSISTENT_IDENTIFIER_POLICY_FEATURE": {
+          "REMOVE": "Is not possible to remove a persistent identifier policy already defined in a management contract"
+        }
       },
       "POSITIONING_TITLE": "Positioning title",
       "ARCHIVAL_UNIT": "Archival unit",

@@ -3,9 +3,9 @@ h5 {
   font-weight: 700;
 }
 
-.header {
+.r-header {
   margin: 0.5rem 0;
-  padding: 1rem;
+  padding: 1rem !important;
   background-color: white;
   border-radius: 5px;
   font-weight: 700;
@@ -63,7 +63,11 @@ h5 {
   padding-bottom: 0;
 }
 
-.error {
-  padding-top: 0.5rem;
-  color: var(#c10000) !important;
+.dark-background {
+  background-color: #f6f3fc;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
 }

@@ -4,7 +4,9 @@
     "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications ",
-    "REQUIRED": "Champ requis"
+    "REQUIRED": "Champ requis",
+    "MIN_LENGTH": "La taille minimale est {{minlength.requiredLength}}, actuellement {{minlength.actualLength}}",
+    "MAX_LENGTH": "La taille maximale est {{maxlength.requiredLength}}, actuellement {{maxlength.actualLength}}"
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
@@ -32,7 +34,7 @@
       "SUBMIT": "Confirmer",
       "MANAGEMENT_CONTRACT_CREATED": "Le contrat de gestion est bien créé",
       "MANAGEMENT_CONTRACT_UPDATED": "Le contrat de gestion est bien mis à jour",
-      "NAMING_AUTORITY": "Autorité nommante",
+      "NAMING_AUTHORITY": "Autorité nommante",
       "ADD_LINE": "Ajouter un usage",
       "REMOVE_USAGE": "Supprimer cette ligne",
       "TECHNICAL_OBJECT": "Objet technique",
@@ -83,9 +85,14 @@
       "TITLE": "Paramétrage d'identification pérenne",
       "IDENTIFIER_TYPE": "Type d'identifiant",
       "CHOOSE_IDENTIFIER_TYPE": "Choisissez un type d'identifiant",
-      "NAMING_AUTORITY": "Autorité nommante",
+      "NAMING_AUTHORITY": "Autorité nommante",
       "ERROR_MESSAGES": {
-        "INVALID_OBJECT_USAGE_POLICY": "La règle sur l'objet d'usage n'est pas valide"
+        "INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET": "La règle sur l'identifier pérenne nécessite au moins une cible",
+        "INVALID_OBJECT_USAGE_POLICY": "La règle sur l'objet d'usage n'est pas valide",
+        "INVALID_AUTHORITY": "L'autorité nommante doit contenir 5 ou 9 chiffres",
+        "INVALID_PERSISTENT_IDENTIFIER_POLICY_FEATURE": {
+          "REMOVE": "Il n'est pas possible de supprimer une stratégie d'identifiant pérenne déjà définie sur un contrat de gestion"
+        }
       },
       "POSITIONING_TITLE": "Positionnement des identifiants",
       "ARCHIVAL_UNIT": "Unité archivistique",

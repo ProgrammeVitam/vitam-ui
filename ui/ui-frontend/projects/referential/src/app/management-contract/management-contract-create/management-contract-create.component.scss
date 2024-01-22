@@ -1,18 +1,22 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
-h4 {
-  font-size: 16px;
-  line-height: 26px;
+.title {
+  font-size: 1rem;
+  font-weight: 500;
   color: var(--vitamui-grey-600);
 }
 
-h5 {
-  font-size: 22px;
-  line-height: 46px;
-}
+.subtitle {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 
-.btn {
-  min-width: 152.22px;
+  .icon {
+    transform: scale(1.2) translate(0.6rem);
+    color: var(--vitamui-primary);
+  }
 }
 
 .form-persistent-identifier {
@@ -65,4 +69,8 @@ h5 {
       color: var(--vitamui-primary);
     }
   }
+}
+
+.vitamui-mat-select {
+  padding-bottom: 0;
 }

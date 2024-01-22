@@ -39,11 +39,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { PersistentIdentifierFormComponent } from './persistent-identifier-form.component';
+import { UpdatePersistentIdentifierPolicyFormComponent } from './update-persistent-identifier-policy-form.component';
 
 @NgModule({
-  declarations: [PersistentIdentifierFormComponent],
-  entryComponents: [PersistentIdentifierFormComponent],
+  declarations: [UpdatePersistentIdentifierPolicyFormComponent],
+  entryComponents: [UpdatePersistentIdentifierPolicyFormComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -61,6 +61,6 @@ import { PersistentIdentifierFormComponent } from './persistent-identifier-form.
     VitamUICommonModule,
     VitamUILibraryModule,
   ],
-  exports: [PersistentIdentifierFormComponent],
+  exports: [UpdatePersistentIdentifierPolicyFormComponent],
 })
 export class PersistentIdentifierFormModule {}

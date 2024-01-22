@@ -26,6 +26,10 @@
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ManagementContractValidationErrors,
+  ManagementContractValidators,
+} from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
 import { PersistentIdentifierPolicyTypeEnum } from 'ui-frontend-common';
 
 interface PersistentIdentifierPolicyTypeOption {
@@ -40,14 +44,16 @@ interface ObjectUsageOption {
 }
 
 @Component({
-  selector: 'app-persistent-identifier-form',
-  templateUrl: './persistent-identifier-form.component.html',
-  styleUrls: ['./persistent-identifier-form.component.scss'],
+  selector: 'app-update-persistent-identifier-policy-form',
+  templateUrl: './update-persistent-identifier-policy-form.component.html',
+  styleUrls: ['./update-persistent-identifier-policy-form.component.scss'],
 })
-export class PersistentIdentifierFormComponent implements OnChanges {
+export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
   @Input() form: FormGroup;
   @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output() objectUsagePolicyRemoved: EventEmitter<void> = new EventEmitter<void>();
+
+  readonly INVALID_AUTHORITY = ManagementContractValidationErrors.INVALID_AUTHORITY;
 
   policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
     { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
@@ -64,14 +70,17 @@ export class PersistentIdentifierFormComponent implements OnChanges {
     { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.THUMBNAIL.LABEL', value: 'Thumbnail', disabled: false },
   ];
 
-  objectUsagePoliciesToggle = true;
+  objectUsagePoliciesToggle = false;
   addButtonDisabled = false;
+  isExistingTypeOption = false;
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.form) {
       this.updateAddButtonState();
+      this.isExistingTypeOption = this.form.get('policyTypeOption').value !== '';
+      this.objectUsagePoliciesToggle = this.form.get('shouldConcernObjects').value;
 
       this.form.get('shouldConcernObjects').valueChanges.subscribe((shouldConcernObjects) => {
         this.objectUsagePoliciesToggle = shouldConcernObjects;
@@ -86,6 +95,14 @@ export class PersistentIdentifierFormComponent implements OnChanges {
         if (formArray.length === 0 && shouldConcernObjects) {
           this.addObjectUsagePolicy();
         }
+      });
+
+      this.form.get('objectUsagePolicies').valueChanges.subscribe((objectUsagePolicies) => {
+        this.form.get('shouldConcernObjects').setValue(objectUsagePolicies.length > 0);
+      });
+
+      this.form.get('policyTypeOption').valueChanges.subscribe((policyTypeOption: string) => {
+        this.isExistingTypeOption = policyTypeOption !== '';
       });
     }
   }
@@ -117,7 +134,7 @@ export class PersistentIdentifierFormComponent implements OnChanges {
         initialVersion: [true, Validators.required],
         intermediaryVersion: ['ALL', Validators.required],
       },
-      { validators: [this.objectUsagePolicyValidator] },
+      { validators: [ManagementContractValidators.objectUsagePolicyValidator] },
     );
 
     this.objectUsagePolicies.push(objectUsagePolicy);
@@ -145,16 +162,5 @@ export class PersistentIdentifierFormComponent implements OnChanges {
 
   private updateAddButtonState(): void {
     this.addButtonDisabled = this.objectUsagePolicies.length >= this.objectUsageOptions.length;
-  }
-
-  private objectUsagePolicyValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const initialVersion = control.get('initialVersion');
-    const intermediaryVersion = control.get('intermediaryVersion');
-
-    if (initialVersion.value === false && intermediaryVersion.value === 'NONE') {
-      return { invalidObjectUsagePolicy: true };
-    }
-
-    return null;
   }
 }

@@ -1,16 +1,42 @@
+<h5>{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.TITLE' | translate }}</h5>
 <form [formGroup]="contractForm" (ngSubmit)="submit()">
-  <div formArrayName="persistentIdentifiers">
-    <div *ngFor="let persistentIdentifier of getPersistentIdentifiers().controls">
-      <app-persistent-identifier-form
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="vitamui-mat-select w-100">
+        <mat-label>{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.IDENTIFIER_TYPE' | translate }}</mat-label>
+        <mat-select
+          formControlName="policyTypeOption"
+          placeholder="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.CHOOSE_IDENTIFIER_TYPE' | translate }}"
+          panelclass="vitamui-mat-select"
+        >
+          <mat-option *ngFor="let policyTypeOption of policyTypeOptions" [value]="policyTypeOption.value">{{
+            policyTypeOption.label | translate
+          }}</mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
+      <!-- FIXME: add an API able to remove patch a management contract -->
+      <vitamui-common-input-error *ngIf="contractForm.get('policyTypeOption').hasError('required')" class="vitamui-input-errors">
+        {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_FEATURE.REMOVE' | translate }}
+      </vitamui-common-input-error>
+    </div>
+  </div>
+
+  <div formArrayName="persistentIdentifierPolicies">
+    <div *ngFor="let persistentIdentifier of getPersistentIdentifierPolicies().controls">
+      <app-update-persistent-identifier-policy-form
         [form]="persistentIdentifier"
         (objectUsagePolicyAdded)="contractForm.markAsDirty()"
         (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
-      ></app-persistent-identifier-form>
+      ></app-update-persistent-identifier-policy-form>
     </div>
   </div>
-  <mat-error *ngFor="let error of contractForm.errors">
+  <vitamui-common-input-error *ngFor="let error of contractForm.errors">
     {{ error }}
-  </mat-error>
+  </vitamui-common-input-error>
   <div class="row">
     <div *ngIf="!sending" class="col">
       <button

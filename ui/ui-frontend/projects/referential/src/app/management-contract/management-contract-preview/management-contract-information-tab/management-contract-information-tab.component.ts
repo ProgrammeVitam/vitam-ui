@@ -25,12 +25,11 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { Observable, of, Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, ManagementContract } from 'ui-frontend-common';
+import { ManagementContract, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { ManagementContractService } from '../../management-contract.service';
 
@@ -39,13 +38,11 @@ import { ManagementContractService } from '../../management-contract.service';
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
 })
-export class ManagementContractInformationTabComponent implements OnInit, OnDestroy {
+export class ManagementContractInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
   submitting = false;
-
-  statusControlValueChangesSubscribe: Subscription;
 
   @Input()
   set inputManagementContract(managementContract: ManagementContract) {
@@ -54,17 +51,9 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
     if (!managementContract.description) {
       this._inputManagementContract.description = '';
     }
-    this.form.controls.status.setValue(managementContract.status);
-    this.statusControl = new FormControl(managementContract.status === 'ACTIVE');
+
     this.resetForm(this.inputManagementContract);
     this.updated.emit(false);
-
-    if (this.statusControlValueChangesSubscribe) {
-      this.statusControlValueChangesSubscribe.unsubscribe();
-    }
-    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value: boolean) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
   }
 
   get inputManagementContract(): ManagementContract {
@@ -72,11 +61,6 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
   }
 
   _inputManagementContract: ManagementContract;
-  statusControl = new FormControl();
-
-  previousValue = (): ManagementContract => {
-    return this._inputManagementContract;
-  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,15 +69,20 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
     this.form = this.formBuilder.group({
       identifier: [{ value: null, disabled: true }, Validators.required],
       name: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [''],
       status: [null],
     });
   }
 
   ngOnInit(): void {}
 
+  previousValue = (): any => {
+    return { ...this._inputManagementContract, status: this._inputManagementContract.status === 'ACTIVE' };
+  };
+
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const differences = diff(this.form.getRawValue(), this.previousValue());
+    const unchanged = JSON.stringify(differences) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -104,17 +93,23 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
-        if (formData.status) {
-          if (formData.status === 'ACTIVE') {
-            formData.activationDate = new Date();
-            formData.deactivationDate = null;
-          } else {
-            formData.status = 'INACTIVE';
-            formData.activationDate = null;
-            formData.deactivationDate = new Date();
-          }
+        const partialManagementContract = { ...formData };
+        const date = new Date().toISOString();
+        const statusIsConsistent = formData.status !== undefined && formData.status !== null;
+
+        if (statusIsConsistent && formData.status) {
+          partialManagementContract.activationDate = date;
+          partialManagementContract.deactivationDate = null;
+          partialManagementContract.status = 'ACTIVE';
         }
-        return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
+
+        if (statusIsConsistent && !formData.status) {
+          partialManagementContract.activationDate = null;
+          partialManagementContract.deactivationDate = date;
+          partialManagementContract.status = 'INACTIVE';
+        }
+
+        return this.managementContractService.patch(partialManagementContract).pipe(catchError(() => of(null)));
       }),
     );
   }
@@ -135,10 +130,6 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
   }
 
   resetForm(managementContract: ManagementContract) {
-    this.form.reset(managementContract, { emitEvent: false });
-  }
-
-  ngOnDestroy() {
-    this.statusControlValueChangesSubscribe?.unsubscribe();
+    this.form.reset({ ...managementContract, status: managementContract.status === 'ACTIVE' }, { emitEvent: false });
   }
 }

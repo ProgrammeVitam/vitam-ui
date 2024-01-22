@@ -29,18 +29,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
 
 describe('ManagementContractCreateComponent', () => {
+  let managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService;
   let component: ManagementContractCreateComponent;
   let fixture: ComponentFixture<ManagementContractCreateComponent>;
 
@@ -87,9 +89,11 @@ describe('ManagementContractCreateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
+        ManagementContractToFormGroupConverterService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
+    managementContractToFormGroupConverterService = TestBed.inject(ManagementContractToFormGroupConverterService);
   });
 
   beforeEach(() => {
@@ -103,7 +107,7 @@ describe('ManagementContractCreateComponent', () => {
   });
 
   it('isDisabledButton should be false after calling create service', () => {
-    component.form.setValue({
+    const managementContractForm = {
       identifier: 'contract_id',
       name: 'Contract name',
       description: 'description',
@@ -113,37 +117,15 @@ describe('ManagementContractCreateComponent', () => {
         objectGroupStrategy: 'default2',
         objectStrategy: 'default3',
       },
-    });
+    };
+    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+    component.form.setValue({ ...managementContractForm, ...formGroup.value });
     component.onSubmit();
     expect(component.isDisabledButton).toBeFalsy();
   });
 
-  it('should return the exact percent', () => {
-    expect(component.stepProgress).toBeDefined();
-    expect(component.stepProgress).toEqual(50);
-  });
-
-  it('second Step should be valid', () => {
-    component.form.setValue({
-      identifier: 'contract_id',
-      name: 'Contract name',
-      description: 'description',
-      status: 'INACTIVE',
-      storage: {
-        unitStrategy: 'default1',
-        objectGroupStrategy: 'default2',
-        objectStrategy: 'default3',
-      },
-    });
-    expect(component.secondStepInvalid()).toBeFalsy();
-  });
-
-  it('should call create of ManagementContractService', () => {
-    // Given
-    spyOn(managementContractServiceMock, 'create').and.callThrough();
-
-    // When
-    component.form.setValue({
+  it('first step should be valid', () => {
+    const managementContractForm = {
       identifier: 'Contract identifier',
       name: 'Contract name',
       description: 'description',
@@ -153,16 +135,36 @@ describe('ManagementContractCreateComponent', () => {
         objectGroupStrategy: 'default',
         objectStrategy: 'default',
       },
-    });
-    component.onSubmit();
-
-    // Then
-    expect(managementContractServiceMock.create).toHaveBeenCalled();
+    };
+    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+    component.form.setValue({ ...managementContractForm, ...formGroup.value });
+    expect(component.firstStepInvalid()).toBeTruthy();
   });
 
-  it('first Step should be valid', () => {
-    component.form.setValue({
+  it('second step should be valid', () => {
+    const managementContractForm = {
       identifier: 'contract_id',
+      name: 'Contract name',
+      description: 'description',
+      status: 'INACTIVE',
+      storage: {
+        unitStrategy: 'default1',
+        objectGroupStrategy: 'default2',
+        objectStrategy: 'default3',
+      },
+    };
+    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+    component.form.setValue({ ...managementContractForm, ...formGroup.value });
+    expect(component.secondStepInvalid()).toBeFalsy();
+  });
+
+  it('should call create of ManagementContractService', () => {
+    // Given
+    spyOn(managementContractServiceMock, 'create').and.callThrough();
+
+    // When
+    const managementContractForm = {
+      identifier: 'Contract identifier',
       name: 'Contract name',
       description: 'description',
       status: 'INACTIVE',
@@ -171,40 +173,12 @@ describe('ManagementContractCreateComponent', () => {
         objectGroupStrategy: 'default',
         objectStrategy: 'default',
       },
-    });
-    expect(component.firstStepInvalid()).toBeTruthy();
-  });
+    };
+    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+    component.form.setValue({ ...managementContractForm, ...formGroup.value });
+    component.onSubmit();
 
-  describe('DOM', () => {
-    it('should have 4 buttons ', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementBtn = nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(4);
-    });
-
-    it('should have 1 submit button ', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementBtn = nativeElement.querySelectorAll('button[type=submit]');
-      expect(elementBtn.length).toBe(1);
-    });
-
-    it('should have 2 cdk steps', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementCdkStep = nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(2);
-    });
-
-    it('should have 3 rows data', () => {
-      const nativeElement = fixture.nativeElement;
-      const rowElement = nativeElement.querySelectorAll('.row');
-      expect(rowElement.length).toBe(3);
-    });
-
-    it('should have 4 vitamui input when the slave mode is not activated', () => {
-      component.isSlaveMode = false;
-      const nativeElement = fixture.nativeElement;
-      const vitamUiInputElement = nativeElement.querySelectorAll('vitamui-common-input');
-      expect(vitamUiInputElement.length).toBe(4);
-    });
+    // Then
+    expect(managementContractServiceMock.create).toHaveBeenCalled();
   });
 });

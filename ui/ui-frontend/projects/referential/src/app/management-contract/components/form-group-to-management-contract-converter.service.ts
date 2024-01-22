@@ -27,18 +27,14 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage, VersionRetentionPolicy } from 'ui-frontend-common';
+import { Converter } from './converter';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ContractFormConverterService {
-  constructor() {}
-
-  // Convertir le formulaire en objet ManagementContract
-  convertToManagementContract(form: FormGroup): ManagementContract {
-    const contractFormValue = form.value;
-
-    const persistentIdentifierPolicyList: PersistentIdentifierPolicy[] = contractFormValue.persistentIdentifiers
+export class FormGroupToManagementContractConverterService implements Converter<FormGroup, ManagementContract> {
+  convert(source: FormGroup): ManagementContract {
+    const persistentIdentifierPolicyList: PersistentIdentifierPolicy[] = source.value.persistentIdentifierPolicies
       .filter((policyFormValue: any) => policyFormValue.policyTypeOption)
       .map((policyFormValue: any) => {
         const persistentIdentifierUsages: PersistentIdentifierUsage[] = policyFormValue.objectUsagePolicies.map((usageFormValue: any) => {
@@ -58,32 +54,31 @@ export class ContractFormConverterService {
       });
 
     const managementContract: ManagementContract = {
-      // Ajoutez les propriétés nécessaires ici
       id: null,
-      tenant: contractFormValue.tenant,
-      version: contractFormValue.version,
-      name: contractFormValue.name,
-      identifier: contractFormValue.identifier,
-      description: contractFormValue.description,
-      status: contractFormValue.status,
-      creationDate: contractFormValue.creationDate,
-      lastUpdate: contractFormValue.lastUpdate,
-      activationDate: contractFormValue.activationDate,
-      deactivationDate: contractFormValue.deactivationDate,
-      storage: contractFormValue.storage,
-      versionRetentionPolicy: this.extractVersionRetentionPolicy(contractFormValue),
+      tenant: source.value.tenant,
+      version: source.value.version,
+      name: source.value.name,
+      identifier: source.value.identifier,
+      description: source.value.description,
+      status: source.value.status ? 'ACTIVE' : 'INACTIVE',
+      creationDate: source.value.creationDate,
+      lastUpdate: source.value.lastUpdate,
+      activationDate: source.value.activationDate,
+      deactivationDate: source.value.deactivationDate,
+      storage: source.value.storage,
+      versionRetentionPolicy: this.extractVersionRetentionPolicy(source.value),
       persistentIdentifierPolicyList: persistentIdentifierPolicyList,
     };
 
     return managementContract;
   }
 
-  private extractVersionRetentionPolicy(contractFormValue: any): VersionRetentionPolicy | undefined {
-    if (contractFormValue.versionRetentionPolicy) {
+  private extractVersionRetentionPolicy(object: any): VersionRetentionPolicy | undefined {
+    if (object.versionRetentionPolicy) {
       return {
-        initialVersion: contractFormValue.versionRetentionPolicy.initialVersion,
-        intermediaryVersionEnum: contractFormValue.versionRetentionPolicy.intermediaryVersionEnum,
-        usages: new Set(contractFormValue.versionRetentionPolicy.usages),
+        initialVersion: object.versionRetentionPolicy.initialVersion,
+        intermediaryVersionEnum: object.versionRetentionPolicy.intermediaryVersionEnum,
+        usages: new Set(object.versionRetentionPolicy.usages),
       };
     }
 
