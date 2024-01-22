@@ -46,7 +46,8 @@
       "LAST": "Dernière",
       "NONE": "Aucune",
       "YES": "Oui",
-      "NO": "Non"
+      "NO": "Non",
+      "SELECT_MANAGEMENT_CONTRACT": "Sélectionnez un contrat de gestion"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Identifiant du contrat",
