@@ -1,6 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+import { BASE_URL } from 'ui-frontend-common';
 
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
+
+const translations: any = { TEST: 'Mock translate test' };
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
 
 describe('PersistentIdentifierSearchComponent', () => {
   let component: PersistentIdentifierSearchComponent;
@@ -8,9 +21,17 @@ describe('PersistentIdentifierSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PersistentIdentifierSearchComponent]
-    })
-      .compileComponents();
+      declarations: [PersistentIdentifierSearchComponent],
+      imports: [
+        MatDialogModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+      ],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

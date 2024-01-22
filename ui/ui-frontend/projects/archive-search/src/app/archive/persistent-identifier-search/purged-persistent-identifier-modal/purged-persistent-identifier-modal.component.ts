@@ -20,10 +20,11 @@ export class PurgedPersistentIdentifierModalComponent implements OnInit {
 
   ngOnInit(): void {
     switch (this.data.purgedPersistentIdentifier.operationType) {
-      case PurgedPersistentOperationType.TRANSFERRED:
+      case PurgedPersistentOperationType.TRANSFER_REPLY:
         this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.TRANSFERRED_MESSAGE`;
         break;
       case PurgedPersistentOperationType.DELETE_GOT_VERSIONS:
+      case PurgedPersistentOperationType.ELIMINATION_ACTION:
         this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.DELETED_MESSAGE`;
         break;
     }

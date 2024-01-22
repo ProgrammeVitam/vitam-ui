@@ -40,6 +40,9 @@ export class PersistentIdentifierSearchComponent implements OnInit {
         } else {
           const extras: NavigationExtras = {
             state: { units: persistentIdentifierResponse.$results },
+            queryParams: {
+              ark: id,
+            },
           };
           this.router.navigate(['/archive-search/tenant/', this.tenantSelectionService.getSelectedTenant().identifier], extras);
         }

@@ -53,6 +53,7 @@ export interface PersistentIdentifierDto {
 }
 
 export enum PurgedPersistentOperationType {
-  TRANSFERRED = 'TRANSFERRED', // FIXME: quel est la valeur attendue ????
+  TRANSFER_REPLY = 'TRANSFER_REPLY',
   DELETE_GOT_VERSIONS = 'DELETE_GOT_VERSIONS',
+  ELIMINATION_ACTION = 'ELIMINATION_ACTION',
 }
