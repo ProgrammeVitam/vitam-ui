@@ -206,8 +206,8 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
         return archiveInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
 
-    public PersistentIdentifierResponseDto findByPersistentIdentifier(String arkId) {
-        return archiveInternalRestClient.findByPersistentIdentifier(arkId, getInternalHttpContext());
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String arkId) {
+        return archiveInternalRestClient.findUnitsByPersistentIdentifier(arkId, getInternalHttpContext());
     }
 
 }

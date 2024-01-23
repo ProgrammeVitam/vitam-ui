@@ -153,16 +153,16 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     }
 
     @Test
-    public void findByPersistentIdentifier_ok() throws URISyntaxException {
+    public void findUnitsByPersistentIdentifier_ok() throws URISyntaxException {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
         PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
         URI uri = new URI(archiveSearchExternalRestClient.getBaseUrl() + archiveSearchExternalRestClient.getPathUrl()
-            + RestApi.PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
+            + RestApi.UNITS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
             .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, defaultContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
         Assertions.assertEquals(persistentIdentifierResponse, result);
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(ArrayList.class));

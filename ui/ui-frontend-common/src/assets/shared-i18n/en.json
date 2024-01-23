@@ -3768,7 +3768,7 @@
         "ID_DUA": "Id",
         "ID_REUSE": "Identifier",
         "NODE": "Node",
-        "PERMANENT_IDENTIFIER": "Permanent identifier",
+        "PersistentIdentifier.PersistentIdentifierContent": "Permanent identifier",
         "ORIGIN": {
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Define at least one DUA rule",

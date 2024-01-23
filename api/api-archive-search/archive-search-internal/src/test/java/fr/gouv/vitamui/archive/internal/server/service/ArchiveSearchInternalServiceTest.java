@@ -399,13 +399,13 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-    void findByPersitentIdentifier_return_units() throws Exception {
+    void findUnitsByPersistentIdentifier_return_units() throws Exception {
         // Given
         String arkId = "ark:/22567/001a957db5eadaac";
         when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
             .thenReturn(responseFromFile("data/ark/unit_with_ark_id.json"));
         // When
-        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
         Assertions.assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(4);
@@ -415,13 +415,13 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-    void findByPersitentIdentifier_return_history() throws Exception {
+    void findUnitsByPersistentIdentifier_return_history() throws Exception {
         // Given
         String arkId = "ark:/2778447/1234567xyz";
         when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
             .thenReturn(responseFromFile("data/ark/ark_id_purged_units.json"));
         // When
-        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
         Assertions.assertThat(persistentIdentifierResponseDto.getResults()).isEmpty();
@@ -431,26 +431,26 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-    void findByPersitentIdentifier_with_no_results_should_return_empty_list() throws Exception {
+    void findUnitsByPersistentIdentifier_with_no_results_should_return_empty_list() throws Exception {
         // Given
         String arkId = "ark:/22567/001a957db5eadaac";
         when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
             .thenReturn(responseFromFile("data/ark/bad_ark_id.json"));
         // When Then
-        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
         Assertions.assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(0);
     }
 
     @Test
-    void findByPersitentIdentifier_whith_client_error_should_throw() throws Exception {
+    void findUnitsByPersistentIdentifier_whith_client_error_should_throw() throws Exception {
         // Given
         String arkId = "ark:/22567/001a957db5eadaac";
         when(persistentIdentifierService.findUnitsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
             .thenThrow(new VitamClientException("exception thrown by client"));
         // When Then
-        assertThatThrownBy(() -> archiveSearchInternalService.findByPersitentIdentifier(arkId, defaultVitamContext))
+        assertThatThrownBy(() -> archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext))
             .isInstanceOf(VitamClientException.class)
             .hasMessage("exception thrown by client");
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));

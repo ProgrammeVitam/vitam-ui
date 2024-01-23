@@ -44,7 +44,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Observable, of, Subject, Subscription } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ArchiveSearchResultFacets,
@@ -70,7 +70,6 @@ import {
   UnitType,
   VitamuiRoles,
 } from 'ui-frontend-common';
-import { PersistentIdentifierResponseDto } from '../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -81,7 +80,6 @@ import { ArchiveUnitEliminationService } from '../common-services/archive-unit-e
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
 import { ActionsRules } from '../models/ruleAction.interface';
-import { PersistentIdentifierService } from '../persistent-identifier.service';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
@@ -92,7 +90,7 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
-const PERMANENT_IDENTIFIER = 'PERMANENT_IDENTIFIER';
+const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
 
 @Component({
   selector: 'app-archive-search',
@@ -209,7 +207,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private computeInheritedRulesService: ComputeInheritedRulesService,
     private archiveUnitDipService: ArchiveUnitDipService,
     private cdr: ChangeDetectorRef,
-    private persistentIdentifierService: PersistentIdentifierService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -396,7 +393,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.searchCriterias = new Map();
         this.addCriteria(
           PERMANENT_IDENTIFIER,
-          { value: ark, id: PERMANENT_IDENTIFIER },
+          { value: ark, id: ark },
           ark,
           true,
           CriteriaOperator.EQ,
@@ -540,46 +537,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         SearchCriteriaStatusEnum.NOT_INCLUDED,
         SearchCriteriaStatusEnum.INCLUDED,
       );
-      (history.state.units
-        ? of(history.state.units)
-        : this.persistentIdentifierService
-            .findByPersistentIdentifier(ark)
-            .pipe(map((persistentIdentifierResponse: PersistentIdentifierResponseDto) => persistentIdentifierResponse.$results))
-      ).subscribe((archiveUnits) => {
-        this.archiveUnits = archiveUnits;
-        this.pending = false;
-        this.totalResults = archiveUnits?.length;
+    }
+    this.initializeSelectionParams();
+    this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
+    this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-        // const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-        // const searchCriterias = {
-        //   criteriaList: this.criteriaSearchList,
-        //   pageNumber: this.currentPage,
-        //   size: PAGE_SIZE,
-        //   sortingCriteria,
-        //   trackTotalHits: false,
-        //   computeFacets: true,
-        // };
-        // this.archiveSharedDataService.emitSearchCriterias(searchCriterias);
-        // this.archiveSharedDataService.emitTotalResults(this.totalResults);
-        //
-        // this.archiveSharedDataService.emitFacets([]);
-      });
-    } else {
-      this.initializeSelectionParams();
-      this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
-      this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
-
-      // tslint:disable-next-line:forin
-      for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
-        this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
-      }
-      if (this.hasSearchCriterias()) {
-        this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
-        this.rulesFacetsComputed = false;
-        this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
-        this.callVitamApiService(this.rulesFacetsCanBeComputed);
-        this.showingFacets = this.rulesFacetsCanBeComputed;
-      }
+    // tslint:disable-next-line:forin
+    for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
+      this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
+    }
+    if (this.hasSearchCriterias()) {
+      this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
+      this.rulesFacetsComputed = false;
+      this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
+      this.callVitamApiService(this.rulesFacetsCanBeComputed);
+      this.showingFacets = this.rulesFacetsCanBeComputed;
     }
   }
 

@@ -260,9 +260,9 @@ public class ArchiveInternalRestClient
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
-    public PersistentIdentifierResponseDto findByPersistentIdentifier(String identifier, final InternalHttpContext context) {
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String identifier, final InternalHttpContext context) {
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.PERSISTENT_IDENTIFIER).queryParam("id", identifier);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UNITS_PERSISTENT_IDENTIFIER).queryParam("id", identifier);
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class).getBody();
     }
 

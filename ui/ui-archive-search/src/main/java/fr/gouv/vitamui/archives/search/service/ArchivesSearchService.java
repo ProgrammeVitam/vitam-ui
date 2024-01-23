@@ -288,8 +288,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getExternalOntologyFieldsList(context);
     }
 
-    public PersistentIdentifierResponseDto findByPersistentIdentifier(String arkId, ExternalHttpContext context) {
-        return archiveSearchExternalRestClient.findByPersistentIdentifier(arkId, context);
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String arkId, ExternalHttpContext context) {
+        return archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, context);
     }
 
 }

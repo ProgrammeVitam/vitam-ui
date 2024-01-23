@@ -270,12 +270,12 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.getExternalOntologiesList();
     }
 
-    @GetMapping(RestApi.PERSISTENT_IDENTIFIER)
-    public PersistentIdentifierResponseDto findByPersistentIdentifier(
+    @GetMapping(RestApi.UNITS_PERSISTENT_IDENTIFIER)
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
         final @RequestParam(value = "id") String arkId
     ) {
         LOGGER.debug("[EXTERNAL] : Get by persistent identifier {}", arkId);
-        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalService.findByPersistentIdentifier(arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalService.findUnitsByPersistentIdentifier(arkId);
         LOGGER.debug("[EXTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
         return persistentIdentifierResponse;
     }

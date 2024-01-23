@@ -36,12 +36,10 @@ import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifi
   providedIn: 'root',
 })
 export class PersistentIdentifierService {
-
   constructor(private persistentIdentifierApiService: PersistentIdentifierApiService) {}
 
-  findByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto> {
+  findUnitsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-    return this.persistentIdentifierApiService.findByPersistentIdentifier(id, headers);
+    return this.persistentIdentifierApiService.findUnitsByPersistentIdentifier(id, headers);
   }
-
 }

@@ -36,13 +36,11 @@ import { PersistentIdentifierResponseDto } from './persistent-identifier-respons
   providedIn: 'root',
 })
 export class PersistentIdentifierApiService extends BaseHttpClient<any> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/archive-search');
   }
 
-  findByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
-    return this.http.get<any>(this.apiUrl + '/persistent-identifier' + '?id=' + id, { headers });
+  findUnitsByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
+    return this.http.get<any>(this.apiUrl + '/units-by-persistent-identifier' + '?id=' + id, { headers });
   }
-
 }

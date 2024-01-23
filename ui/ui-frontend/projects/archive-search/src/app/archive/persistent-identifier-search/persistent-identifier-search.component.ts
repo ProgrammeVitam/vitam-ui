@@ -32,14 +32,13 @@ export class PersistentIdentifierSearchComponent implements OnInit {
   ngOnInit() {}
 
   onSearch(id: string) {
-    this.persistentIdentifierService.findByPersistentIdentifier(id).subscribe(
+    this.persistentIdentifierService.findUnitsByPersistentIdentifier(id).subscribe(
       (persistentIdentifierResponse: PersistentIdentifierResponseDto) => {
         if (persistentIdentifierResponse.$history?.length > 0) {
           const purgedPersistentIdentifier: PurgedPersistentIdentifierDto = persistentIdentifierResponse.$history.slice(-1)[0];
           this.openDialog(id, purgedPersistentIdentifier);
         } else {
           const extras: NavigationExtras = {
-            state: { units: persistentIdentifierResponse.$results },
             queryParams: {
               ark: id,
             },

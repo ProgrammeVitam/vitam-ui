@@ -459,14 +459,14 @@ public class ArchivesSearchServiceTest {
     }
 
     @Test
-    public void findByPersistentIdentifier() {
+    public void findUnitsByPersistentIdentifier() {
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
-        Mockito.when(archiveSearchExternalRestClient.findByPersistentIdentifier(eq(arkId), eq(defaultContext))).thenReturn(new PersistentIdentifierResponseDto());
+        Mockito.when(archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(eq(arkId), eq(defaultContext))).thenReturn(new PersistentIdentifierResponseDto());
         // When
-        archivesSearchService.findByPersistentIdentifier(arkId, defaultContext);
+        archivesSearchService.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
-        verify(archiveSearchExternalRestClient).findByPersistentIdentifier(eq(arkId), eq(defaultContext));
+        verify(archiveSearchExternalRestClient).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultContext));
     }
 
 }

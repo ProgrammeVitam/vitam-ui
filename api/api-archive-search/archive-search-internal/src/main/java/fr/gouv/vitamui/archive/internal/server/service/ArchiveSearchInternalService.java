@@ -458,14 +458,13 @@ public class ArchiveSearchInternalService {
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
 
-    public PersistentIdentifierResponseDto findByPersitentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
         LOGGER.debug("Persistent identifier : {}", identifier);
         RequestResponse<JsonNode> response = persistentIdentifierService.findUnitsByPersistentIdentifier(identifier, vitamContext);
         try {
-            PersistentIdentifierResponseDto persistentIdentifierResponseDto = objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
-            return persistentIdentifierResponseDto;
+            return objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Response not in godd format {}", e);
+            LOGGER.error("Response not in good format {}", e);
             throw new VitamClientException("Unable to find the UA", e);
         }
     }

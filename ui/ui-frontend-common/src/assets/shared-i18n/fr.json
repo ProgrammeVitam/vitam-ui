@@ -5048,7 +5048,7 @@
         "WAITING_RECALCULATE": "En attente de recalcul",
         "ORIGIN_WAITING_RECALCULATE": "Oui",
         "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Identifiant technique de l'analyse d'élimination",
-        "PERMANENT_IDENTIFIER": "Identifiant pérenne",
+        "PersistentIdentifier.PersistentIdentifierContent": "Identifiant pérenne",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
