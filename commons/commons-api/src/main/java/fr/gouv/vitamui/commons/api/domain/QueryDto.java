@@ -36,24 +36,22 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import fr.gouv.vitamui.commons.api.deserializer.CriterionAndQueryDtoDeserializer;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Query DTO.
@@ -195,8 +193,8 @@ public class QueryDto {
     private void setCriteria(final List<Object> criteria) {
         // Criterion and CriteriaDto items are in the same list called "criteria" in json format,
         // but are separated into two different list in the POJO
-        criterionList = criteria.stream().filter(c -> c instanceof Criterion).map(Criterion.class::cast).collect(Collectors.toList());
-        subQueries = criteria.stream().filter(c -> c instanceof QueryDto).map(QueryDto.class::cast).collect(Collectors.toList());
+        criterionList = criteria.stream().filter(Criterion.class::isInstance).map(Criterion.class::cast).collect(Collectors.toList());
+        subQueries = criteria.stream().filter(QueryDto.class::isInstance).map(QueryDto.class::cast).collect(Collectors.toList());
     }
 
     /**

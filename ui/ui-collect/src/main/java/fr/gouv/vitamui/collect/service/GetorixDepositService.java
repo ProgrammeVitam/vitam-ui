@@ -88,4 +88,9 @@ public class GetorixDepositService extends AbstractPaginateService<GetorixDeposi
         return getorixDepositExternalRestClient.getUnitFullPath(unitId, context).getBody();
     }
 
+    public List<GetorixDepositDto> getLastThreeOperations(ExternalHttpContext context) {
+        LOGGER.debug("[UI] :Get the last 3 created deposits");
+        return getorixDepositExternalRestClient.getLastThreeOperations(context).getBody();
+    }
+
 }

@@ -25,45 +25,20 @@
  * accept its terms.
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
-import { GetorixDeposit } from '../model/getorix-deposit.interface';
-import { GetorixUnitFullPath } from '../model/getorix-unit-full-path.interface';
+package fr.gouv.vitamui.collect.internal.server.service.externalParameters;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class GetorixDepositApiService extends BaseHttpClient<any> {
-  baseUrl: string;
+import fr.gouv.vitamui.collect.common.dto.AccessContractVitamDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/getorix-deposit');
-    this.baseUrl = baseUrl;
-  }
+public class AccessContractConverter {
 
-  getBaseUrl() {
-    return this.baseUrl;
-  }
+    public AccessContractVitamDto convertVitamUIDtoToVitamDto(final AccessContractDto dto) {
+        return VitamUIUtils.copyProperties(dto, new AccessContractVitamDto());
+    }
 
-  createGetorixDeposit(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
-    return this.http.post<any>(`${this.apiUrl}`, getorixDeposit);
-  }
+    public AccessContractDto convertVitamDtoToVitamUIDto(final AccessContractVitamDto accessContract) {
+        return VitamUIUtils.copyProperties(accessContract, new AccessContractDto());
+    }
 
-  getGetorixDepositById(getorixDepositId: string): Observable<GetorixDeposit> {
-    return this.http.get<GetorixDeposit>(`${this.apiUrl}/` + getorixDepositId);
-  }
-
-  updateGetorixDepositInformations(getorixDeposit: GetorixDeposit): Observable<GetorixDeposit> {
-    return this.http.put<GetorixDeposit>(`${this.apiUrl}/${getorixDeposit.id}`, getorixDeposit);
-  }
-
-  getUnitFullPath(unitId: string, headers?: HttpHeaders): Observable<GetorixUnitFullPath[]> {
-    return this.http.get<GetorixUnitFullPath[]>(this.apiUrl + '/' + unitId + '/full-path', { headers });
-  }
-
-  getLastThreeOperations(headers?: HttpHeaders): Observable<GetorixDeposit[]> {
-    return this.http.get<GetorixDeposit[]>(this.apiUrl + '/last-three-operations', { headers });
-  }
 }

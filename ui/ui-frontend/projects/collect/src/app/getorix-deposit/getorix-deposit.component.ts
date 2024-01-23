@@ -25,36 +25,42 @@
  * accept its terms.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Logger, StartupService } from 'ui-frontend-common';
+import { DepositStatus, GetorixDeposit } from './core/model/getorix-deposit.interface';
+import { GetorixDepositService } from './getorix-deposit.service';
 
 @Component({
   selector: 'getorix-deposit',
   templateUrl: './getorix-deposit.component.html',
   styleUrls: ['./getorix-deposit.component.scss'],
 })
-export class GetorixDepositComponent implements OnInit {
-  staticData = [
-    {
-      operationName: 'first Operation',
-      nationalNumber: '05_6124',
-      depositStatus: 'En cours',
-    },
-    {
-      operationName: 'new operation 55',
-      nationalNumber: '05_788874',
-      depositStatus: 'Terminée',
-    },
-    {
-      operationName: 'Operation name 4',
-      nationalNumber: '05_68455741',
-      depositStatus: 'Versée',
-    },
-  ];
+export class GetorixDepositComponent implements OnInit, OnDestroy {
+  getorixDepositList: GetorixDeposit[] = [];
+  pending = false;
 
-  constructor(private router: Router) {}
+  tenantIdentifier: string;
+  subscriptions: Subscription = new Subscription();
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    private getorixDepositService: GetorixDepositService,
+    private logger: Logger,
+    private startupService: StartupService,
+    private route: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
+    this.subscriptions.add(
+      this.route.params.subscribe((params) => {
+        this.tenantIdentifier = params.tenantIdentifier;
+      }),
+    );
+
+    this.getLastThreeOperations();
+  }
 
   startDepositCreation() {
     this.router.navigate([this.router.url, 'create']);
@@ -62,5 +68,44 @@ export class GetorixDepositComponent implements OnInit {
 
   showOperationList() {
     console.log('show operation List');
+  }
+
+  getLastThreeOperations() {
+    this.getorixDepositList = [];
+    this.pending = true;
+    this.subscriptions.add(
+      this.getorixDepositService.getLastThreeOperations().subscribe(
+        (response: GetorixDeposit[]) => {
+          this.getorixDepositList = response;
+          this.pending = false;
+        },
+        (error) => {
+          this.logger.error('error while searching the first deposits operations', error);
+          this.pending = false;
+        },
+      ),
+    );
+  }
+
+  OpenGetorixOperationDetails(getorixOperation: GetorixDeposit) {
+    if (getorixOperation) {
+      console.log('salam operation details', getorixOperation);
+      if (getorixOperation.depositStatus === DepositStatus.DRAFT) {
+        this.router.navigate([this.router.url, 'create'], {
+          queryParams: { operationId: getorixOperation.id },
+        });
+      } else {
+        window.location.href =
+          this.startupService.getCollectUrl() +
+          '/getorix-deposit/tenant/' +
+          this.tenantIdentifier +
+          '/create/upload-object/' +
+          getorixOperation.id;
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions?.unsubscribe();
   }
 }

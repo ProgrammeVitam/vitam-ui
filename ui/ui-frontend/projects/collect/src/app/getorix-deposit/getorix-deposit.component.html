@@ -77,25 +77,7 @@
       <div class="my-operations">{{ 'GETORIX_DEPOSIT.PORTAL.MY_OPERATIONS' | translate }}</div>
       <br />
       <br />
-      <div>
-        <div class="vitamui-table">
-          <div class="vitamui-table-head">
-            <div class="col-6 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.OPERATION' | translate }}</div>
-            <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.NUMBER' | translate }}</div>
-            <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.STATUS' | translate }}</div>
-          </div>
-
-          <div class="vitamui-table-body">
-            <div class="vitamui-table-rows" *ngFor="let operation of staticData">
-              <div class="vitamui-row d-flex align-items-center clickable table-text">
-                <div class="col-6 d-flex align-items-center">{{ operation?.operationName }}</div>
-                <div class="col-3 d-flex align-items-center">{{ operation?.nationalNumber }}</div>
-                <div class="col-3 d-flex align-items-center">{{ operation?.depositStatus }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div *ngIf="!pending; then showResults; else inProgressSpinner"></div>
       <br />
       <br />
 
@@ -109,3 +91,31 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<ng-template #inProgressSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner large"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #showResults>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-6 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.OPERATION' | translate }}</div>
+      <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.NUMBER' | translate }}</div>
+      <div class="col-3 d-flex align-items-center">{{ 'GETORIX_DEPOSIT.PORTAL.STATUS' | translate }}</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let operation of getorixDepositList">
+        <div class="vitamui-row d-flex align-items-center clickable table-text" (click)="OpenGetorixOperationDetails(operation)">
+          <div class="col-6 d-flex align-items-center">{{ operation?.operationName }}</div>
+          <div class="col-3 d-flex align-items-center">{{ operation?.nationalNumber }}</div>
+          <div class="col-3 d-flex align-items-center">
+            {{ 'GETORIX_DEPOSIT.PORTAL.DEPOSIT_STATUS.' + operation?.depositStatus | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

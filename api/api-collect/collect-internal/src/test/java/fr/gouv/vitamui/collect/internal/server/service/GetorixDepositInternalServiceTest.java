@@ -46,6 +46,9 @@ import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.internal.server.dao.GetorixDepositRepository;
 import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
+import fr.gouv.vitamui.collect.internal.server.service.externalParameters.AccessContractInternalService;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -57,12 +60,14 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.TitleDto;
+import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -86,6 +91,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class GetorixDepositInternalServiceTest {
 
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT =
+        "dataGetorix/vitam_units_response.json";
+
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_UNITUPS_LIST =
+        "dataGetorix/vitam_units_response_with_unitups_list.json";
+
+    public static final String ACCESS_CONTRACT_IDENTIFIER = "ACCESS_CONTRACT_IDENTIFIER";
+
     private GetorixDepositInternalService getorixDepositInternalService;
 
     private final GetorixDepositRepository getorixDepositRepository =
@@ -103,19 +116,27 @@ class GetorixDepositInternalServiceTest {
 
     final PodamFactory factory = new PodamFactoryImpl();
 
-    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT =
-        "dataGetorix/vitam_units_response.json";
 
-    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_UNITUPS_LIST =
-        "dataGetorix/vitam_units_response_with_unitups_list.json";
+    private final ExternalParametersService externalParametersService =
+        mock(ExternalParametersService.class);
 
+    private final AccessContractInternalService accessContractInternalService =
+        mock(AccessContractInternalService.class);
+
+    @MockBean(name = "externalParametersInternalRestClient")
+    private ExternalParametersInternalRestClient externalParametersInternalRestClient;
+
+    @MockBean(name = "securityService")
+    private InternalSecurityService securityService;
 
 
     @BeforeEach
     public void setup() {
 
         getorixDepositInternalService = new GetorixDepositInternalService(sequenceRepository, getorixDepositRepository,
-            getorixDepositConverter, internalSecurityService, collectService, objectMapper);
+            getorixDepositConverter, internalSecurityService, collectService, objectMapper, accessContractInternalService,
+            externalParametersService
+            );
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -702,6 +723,37 @@ class GetorixDepositInternalServiceTest {
             .hasMessage("The Getorix deposit information are not provided");
     }
 
+    @Test
+    void testGetLastThreeOperations_ko_when_user_not_connected() {
+
+        VitamContext vitamContext = new VitamContext(10);
+        Mockito.when(internalSecurityService.getUser()).thenReturn(null);
+
+        assertThatCode(()-> getorixDepositInternalService.getLastThreeOperations(vitamContext))
+            .isInstanceOf(UnAuthorizedException.class)
+            .hasMessage("You are not authorized to get the last 3 created deposits");
+    }
+
+    @Test
+    void testGetLastThreeOperations_ok_when_user_connected_and_externalParameter_found() {
+
+        VitamContext vitamContext = new VitamContext(10);
+
+        ExternalParametersDto myExternalParameter = new ExternalParametersDto();
+        ParameterDto parameterDto = new ParameterDto();
+        parameterDto.setValue(ACCESS_CONTRACT_IDENTIFIER);
+        parameterDto.setKey(ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME);
+        myExternalParameter.setParameters(List.of(parameterDto));
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
+            .thenReturn(myExternalParameter);
+
+        AuthUserDto user = buildAuthUserDto();
+
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        assertThatCode(()-> getorixDepositInternalService.getLastThreeOperations(vitamContext))
+            .doesNotThrowAnyException();
+    }
 
     private RequestResponseOK<JsonNode> buildUnitMetadataResponse(String fileName)
         throws IOException, InvalidParseOperationException {

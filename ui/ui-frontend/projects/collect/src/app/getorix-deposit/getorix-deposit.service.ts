@@ -52,4 +52,8 @@ export class GetorixDepositService {
   getUnitFullPath(unitId: string): Observable<GetorixUnitFullPath[]> {
     return this.getorixDepositApiService.getUnitFullPath(unitId);
   }
+
+  getLastThreeOperations(): Observable<GetorixDeposit[]> {
+    return this.getorixDepositApiService.getLastThreeOperations();
+  }
 }
