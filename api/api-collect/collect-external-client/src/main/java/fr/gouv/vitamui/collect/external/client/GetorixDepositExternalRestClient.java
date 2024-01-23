@@ -97,4 +97,16 @@ public class GetorixDepositExternalRestClient extends
         return restTemplate.exchange(uriBuilder.build(unitId), HttpMethod.GET, request, getUnitFullPathListClass());
     }
 
+    public ResponseEntity<List<GetorixDepositDto>> getLastThreeOperations(final ExternalHttpContext context) {
+        LOGGER.debug("Get the last 3 created deposits");
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl()
+            + CommonConstants.LAST_THREE_OPERATIONS);
+
+        final ResponseEntity<List<GetorixDepositDto>> response = restTemplate.exchange(uriBuilder.toUriString(),
+            HttpMethod.GET, request, getDtoListClass());
+        checkResponse(response);
+        return response;
+    }
 }

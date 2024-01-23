@@ -32,6 +32,8 @@ import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
@@ -45,6 +47,9 @@ import java.util.List;
 
 public class GetorixDepositInternalRestClient extends
     BasePaginatingAndSortingRestClient<GetorixDepositDto, InternalHttpContext> {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        GetorixDepositInternalRestClient.class);
 
     public GetorixDepositInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -82,5 +87,17 @@ public class GetorixDepositInternalRestClient extends
             UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + CommonConstants.FULL_PATH);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(unitId), HttpMethod.GET, request, getUnitFullPathListClass());
+    }
+
+    public ResponseEntity<List<GetorixDepositDto>> getLastThreeOperations(final InternalHttpContext context) {
+        LOGGER.debug("Get the last 3 created deposits");
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.LAST_THREE_OPERATIONS);
+
+        final ResponseEntity<List<GetorixDepositDto>> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
+        checkResponse(response);
+        return response;
     }
 }

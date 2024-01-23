@@ -115,4 +115,13 @@ public class GetorixDepositController extends AbstractUiRestController {
         LOGGER.debug("[UI] : Get the full Path of the unit with Id : {}", unitId);
         return getorixDepositService.getUnitFullPath(unitId, buildUiHttpContext());
     }
+
+    @ApiOperation(value = "Get the last three operations")
+    @GetMapping(CommonConstants.LAST_THREE_OPERATIONS)
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetorixDepositDto> getLastThreeOperations() {
+
+        LOGGER.debug("[UI] :Get the last 3 created deposits");
+        return getorixDepositService.getLastThreeOperations(buildUiHttpContext());
+    }
 }

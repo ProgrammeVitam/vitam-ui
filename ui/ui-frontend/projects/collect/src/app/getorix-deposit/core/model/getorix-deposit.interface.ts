@@ -56,9 +56,15 @@ export interface GetorixDeposit {
 
 export enum DepositStatus {
   DRAFT = 'DRAFT',
-  IN_PROGRESS = 'IN_PROGRESS',
-  VALIDATED = 'VALIDATED',
-  COMPLETED = 'COMPLETED',
+  IN_PROGRESS = 'IN_PROGRESS', // OPEN in VITAM
+  VALIDATED = 'VALIDATED', // READY in VITAM
+  SENT = 'SENT',
+  SENDING = 'SENDING',
+  ACK_KO = 'ACK_KO',
+  ACK_OK = 'ACK_OK',
+  ACK_WARNING = 'ACK_WARNING',
+  ABORTED = 'ABORTED',
+  KO = 'KO',
 }
 
 export interface ArchaeologistGetorixAddress {

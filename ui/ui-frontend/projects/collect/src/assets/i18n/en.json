@@ -2,7 +2,7 @@
   "GETORIX_DEPOSIT" : {
     "PORTAL" : {
       "OPERATION_LIST_CLICK" : "See all operations",
-      "MY_OPERATIONS" : "My operation",
+      "MY_OPERATIONS" : "My deposits",
       "TITLE" : "ARCHIVING SPACE",
       "SUB_TITLE_1" : "Simply drop off your archives",
       "SUB_TITLE_2" : "in 3 steps",
@@ -26,7 +26,19 @@
       "THIRD_BOX_TEXT_5" : "The more careful you are with step 1, the quicker this step will be to complete !",
       "OPERATION" : "Operation",
       "STATUS" : "Status",
-      "NUMBER" : "Number"
+      "NUMBER" : "Number",
+      "DEPOSIT_STATUS": {
+        "IN_PROGRESS": "Open for editing",
+        "ABORTED": "Aborted",
+        "VALIDATED": "Validated",
+        "SENDING": "Preparing and sending the SIP",
+        "SENT": "Sent, SAE processing",
+        "ACK_OK": "Deposited in success",
+        "ACK_WARNING": "Deposited",
+        "ACK_KO": "Deposit failure",
+        "KO": "Technical error",
+        "DRAFT" : "Draft"
+      }
     },
     "APP_BREADCRUMB" :"Versementgetorix preparation",
     "CREATE_DEPOSIT" : "Start the deposit", 

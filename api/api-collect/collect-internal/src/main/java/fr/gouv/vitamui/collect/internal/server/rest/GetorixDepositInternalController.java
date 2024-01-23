@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.internal.server.rest;
 
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.GetorixDepositDto;
 import fr.gouv.vitamui.collect.common.dto.UnitFullPath;
@@ -120,5 +121,13 @@ public class GetorixDepositInternalController {
         LOGGER.debug("[INTERNAL] : Get the full Path of the unit with Id : {}", unitId);
         return getorixDepositInternalService.getUnitFullPath(unitId, externalParametersService
             .buildVitamContextFromExternalParam());
+    }
+
+    @ApiOperation(value = "Get the last three operations")
+    @GetMapping(CommonConstants.LAST_THREE_OPERATIONS)
+    public List<GetorixDepositDto> getLastThreeOperations() {
+        LOGGER.debug("[INTERNAL] Get the last 3 created deposits");
+        final VitamContext vitamContext =  externalParametersService.buildVitamContextFromExternalParam();
+        return getorixDepositInternalService.getLastThreeOperations(vitamContext);
     }
 }

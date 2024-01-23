@@ -33,7 +33,13 @@ package fr.gouv.vitamui.collect.common.dto;
 public enum DepositStatus {
     DRAFT,
     IN_PROGRESS,
-    COMPLETED,
-    VALIDATED
+    VALIDATED,
+    SENT,
+    SENDING,
+    ACK_KO,
+    ACK_OK,
+    ACK_WARNING,
+    ABORTED,
+    KO,
 
 }

@@ -42,6 +42,7 @@ package fr.gouv.vitamui.commons.api;
 public class CommonConstants {
 
     public static final String FULL_PATH = "/full-path";
+    public static final String LAST_THREE_OPERATIONS = "/last-three-operations";
 
     public static final String ERROR_INVALID_PAGE_SIZE = "ERROR_INVALID_PAGE_SIZE";
 

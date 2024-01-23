@@ -57,6 +57,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @Getter
@@ -93,25 +94,26 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     }
 
     /**
-     * Retrieve the external parameters associated to the authenticated user.
+     * Retrieve the external parameter associated to the authenticated user.
      *
-     * @return
+     * @return ExternalParametersDto
      */
     public ExternalParametersDto getMyExternalParameters() {
-        LOGGER.debug("GetMyExternalParameters");
+
+        LOGGER.debug("Get My ExternalParameter");
         final AuthUserDto authUserDto = internalSecurityService.getUser();
 
-        if (authUserDto == null) {
+        if (Objects.isNull(authUserDto)) {
             LOGGER.warn("AuthUser is null");
 
             return null;
         }
-        if (authUserDto.getProfileGroup() == null) {
+        if (Objects.isNull(authUserDto.getProfileGroup())) {
             LOGGER.warn("AuthUser has no profile group");
 
             return null;
         }
-        if (authUserDto.getProfileGroup().getProfiles() == null) {
+        if (Objects.isNull(authUserDto.getProfileGroup().getProfiles())) {
             LOGGER.warn("AuthUser profile group has no profiles");
 
             return null;
@@ -122,7 +124,6 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
                 .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
                 .findFirst();
 
-
         if (optionalExternalParamsProfileDto.isEmpty()) {
             LOGGER.warn("External parameter profile not found");
 
@@ -131,7 +132,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
 
         final ProfileDto externalParametersProfile = optionalExternalParamsProfileDto.orElseThrow();
 
-        if (externalParametersProfile.getExternalParamId() == null) {
+        if (Objects.isNull(externalParametersProfile.getExternalParamId())) {
             LOGGER.warn("External parameter profile have no external parameter id");
 
             return null;
