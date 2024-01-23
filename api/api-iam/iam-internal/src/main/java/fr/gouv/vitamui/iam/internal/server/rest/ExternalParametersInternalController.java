@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +76,10 @@ public class ExternalParametersInternalController {
      * Retrieve the external parameters associated to the authenticated user.
      * @return
      */
+    @ApiOperation(value = "Get My ExternalParameter")
     @GetMapping(CommonConstants.PATH_ME)
     public ExternalParametersDto getMyExternalParameters() {
-        LOGGER.debug("GetMyExternalParameters");
+        LOGGER.debug("Get My ExternalParameter");
         return externalParametersInternalService.getMyExternalParameters();
     }
 }

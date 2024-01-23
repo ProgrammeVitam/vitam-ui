@@ -117,4 +117,14 @@ public class GetorixDepositExternalController {
         LOGGER.debug("[EXTERNAL] : Get the full Path of the unit with Id : {}", unitId);
         return getorixDepositExternalService.getUnitFullPath(unitId);
     }
+
+
+    @ApiOperation(value = "Get the three last operations")
+    @Secured(ServicesData.ROLE_GET_GETORIX_DEPOSIT)
+    @GetMapping( CommonConstants.LAST_THREE_OPERATIONS)
+    public List<GetorixDepositDto> getLastThreeOperations() {
+
+        LOGGER.debug("[EXTERNAL] : Get the last 3 created deposits");
+        return getorixDepositExternalService.getLastThreeOperations();
+    }
 }

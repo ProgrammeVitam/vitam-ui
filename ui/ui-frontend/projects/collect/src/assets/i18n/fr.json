@@ -2,7 +2,7 @@
   "GETORIX_DEPOSIT" : {
     "PORTAL" : {
       "OPERATION_LIST_CLICK" : "Voir toutes les opérations",
-      "MY_OPERATIONS" : "Mes opérations",
+      "MY_OPERATIONS" : "Mes dépôts",
       "TITLE" : "ESPACE D’ARCHIVAGE",
       "SUB_TITLE_1" : "Déposez simplement vos archives ",
       "SUB_TITLE_2" : "en 3 étapes",
@@ -26,7 +26,19 @@
       "THIRD_BOX_TEXT_5" : "Plus vous avez soigné l'étape 1, plus cette étape sera rapide à réaliser !",
       "OPERATION" : "Opération",
       "STATUS" : "Statut",
-      "NUMBER" : "Numéro"
+      "NUMBER" : "Numéro",
+      "DEPOSIT_STATUS": {
+        "IN_PROGRESS": "Ouvert en édition",
+        "ABORTED": "Abandonné",
+        "VALIDATED": "Validé",
+        "SENDING": "Préparation et envoi du SIP",
+        "SENT": "Envoyé, en cours de traitement du SAE",
+        "ACK_OK": "Versé en succès",
+        "ACK_WARNING": "Versé",
+        "ACK_KO": "Échec du versement",
+        "KO": "Erreur technique",
+        "DRAFT" : "Brouillon"
+      }
     },
     "APP_BREADCRUMB" :"Préparation des versementGetorix",
     "CREATE_DEPOSIT" : "Commencer le dépôt", 

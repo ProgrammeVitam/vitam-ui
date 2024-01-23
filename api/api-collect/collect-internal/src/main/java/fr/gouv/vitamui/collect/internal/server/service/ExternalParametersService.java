@@ -30,6 +30,9 @@ package fr.gouv.vitamui.collect.internal.server.service;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -43,6 +46,8 @@ import java.util.Objects;
  */
 @Service
 public class ExternalParametersService {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
@@ -56,23 +61,28 @@ public class ExternalParametersService {
     }
 
     /**
-     * Service to return the access contract defined on profil using external parameters
+     * Service to return the access contract defined on profile using external parameters
      *
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
+        LOGGER.debug("retrieve Access Contract From ExternalParam");
         ExternalParametersDto myExternalParameter =
             externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
-            throw new IllegalArgumentException("No external profile defined for access contract defined");
+            LOGGER.error("No external profile defined for access contract defined");
+            throw new NotFoundException("No external profile defined for access contract defined");
         }
 
         ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
                 parameter -> PARAM_ACCESS_CONTRACT_NAME
                     .equals(parameter.getKey()))
             .findFirst().orElse(null);
+
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
-            throw new IllegalArgumentException("No access contract defined");
+            LOGGER.error("No access contract defined");
+            throw new NotFoundException("No access contract defined");
         }
         return parameterAccessContract.getValue();
     }
@@ -80,9 +90,10 @@ public class ExternalParametersService {
     /**
      * This function create a VitamContext
      *
-     * @return
+     * @return a VitamContext
      */
     public VitamContext buildVitamContextFromExternalParam() {
+        LOGGER.debug("Build VitamContext From ExternalParam");
         return new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
                 retrieveAccessContractFromExternalParam())
             .setApplicationSessionId(securityService.getApplicationId());

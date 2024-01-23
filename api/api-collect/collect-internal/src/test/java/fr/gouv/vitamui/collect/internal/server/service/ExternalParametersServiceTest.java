@@ -32,6 +32,7 @@ package fr.gouv.vitamui.collect.internal.server.service;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -48,12 +49,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-public class ExternalParametersServiceTest {
+class ExternalParametersServiceTest {
 
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
-    @MockBean(name = "exteralParametersInternalRestClient")
-    private ExternalParametersInternalRestClient exteralParametersInternalRestClient;
+    @MockBean(name = "externalParametersInternalRestClient")
+    private ExternalParametersInternalRestClient externalParametersInternalRestClient;
 
     @MockBean(name = "securityService")
     private InternalSecurityService securityService;
@@ -67,7 +68,7 @@ public class ExternalParametersServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         externalParametersService =
-            new ExternalParametersService(exteralParametersInternalRestClient, securityService);
+            new ExternalParametersService(externalParametersInternalRestClient, securityService);
     }
 
     @Test
@@ -77,10 +78,10 @@ public class ExternalParametersServiceTest {
         parameterDto.setValue("ANY_VALUE");
         parameterDto.setKey("ANY_PARAM");
         myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
             .thenReturn(myExternalParameter);
 
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NotFoundException thrown = Assertions.assertThrows(NotFoundException.class, () -> {
             externalParametersService.retrieveAccessContractFromExternalParam();
         });
 
@@ -91,10 +92,10 @@ public class ExternalParametersServiceTest {
     void shouldThrowAnotherIllegalArgumentExceptionWhenNoAccessContract() {
         ExternalParametersDto myExternalParameter = new ExternalParametersDto();
         myExternalParameter.setParameters(Lists.emptyList());
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
             .thenReturn(myExternalParameter);
 
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NotFoundException thrown = Assertions.assertThrows(NotFoundException.class, () -> {
             externalParametersService.retrieveAccessContractFromExternalParam();
         });
 
@@ -108,7 +109,7 @@ public class ExternalParametersServiceTest {
         parameterDto.setValue(SOME_ACCESS_CONTRACT);
         parameterDto.setKey(ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME);
         myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
             .thenReturn(myExternalParameter);
 
         String accessContractFound = externalParametersService.retrieveAccessContractFromExternalParam();
@@ -123,7 +124,7 @@ public class ExternalParametersServiceTest {
         parameterDto.setKey(ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME);
         myExternalParameter.setParameters(List.of(parameterDto));
 
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
             .thenReturn(myExternalParameter);
         Mockito.when(securityService.getTenantIdentifier())
             .thenReturn(SOME_TENANT);

@@ -47,8 +47,12 @@ import fr.gouv.vitamui.collect.internal.server.domain.GetorixDepositModel;
 import fr.gouv.vitamui.collect.internal.server.service.converters.GetorixDepositConverter;
 import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.collect.internal.server.service.externalParameters.AccessContractInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -71,8 +75,11 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiCollectProjectDto;
 
@@ -106,16 +113,23 @@ public class GetorixDepositInternalService  extends
 
     List<UnitFullPath> unitFullPaths = new ArrayList<>();
 
+    private final AccessContractInternalService accessContractInternalService;
+    private final ExternalParametersService externalParametersService;
+
     @Autowired
     public GetorixDepositInternalService(final CustomSequenceRepository sequenceRepository,
         GetorixDepositRepository getorixDepositRepository, GetorixDepositConverter getorixDepositConverter,
-        InternalSecurityService internalSecurityService, CollectService collectService, ObjectMapper objectMapper) {
+        InternalSecurityService internalSecurityService, CollectService collectService, ObjectMapper objectMapper,
+        AccessContractInternalService accessContractInternalService,
+        ExternalParametersService externalParametersService) {
         super(sequenceRepository);
         this.getorixDepositRepository = getorixDepositRepository;
         this.getorixDepositConverter = getorixDepositConverter;
         this.internalSecurityService = internalSecurityService;
         this.collectService = collectService;
         this.objectMapper = objectMapper;
+        this.accessContractInternalService = accessContractInternalService;
+        this.externalParametersService = externalParametersService;
     }
 
     public GetorixDepositDto createGetorixDeposit(GetorixDepositDto getorixDepositDto, VitamContext vitamContext) {
@@ -242,6 +256,8 @@ public class GetorixDepositInternalService  extends
     }
 
     public String fetchTitle(String title, TitleDto titleDto) {
+        LOGGER.debug("fetch Archive Unit Title");
+
         if(Objects.nonNull(title)) {
             return title;
         } else {
@@ -254,6 +270,89 @@ public class GetorixDepositInternalService  extends
             }
         }
         return null;
+    }
+
+    public List<GetorixDepositDto> getLastThreeOperations(VitamContext vitamContext) {
+        final String getorixArchivistProfileName = "Getorix deposit : Archivist Profile";
+        List<GetorixDepositDto> getorixDepositDtoList;
+        String accessContractFound = null;
+
+        LOGGER.debug("Get the last 3 created deposits");
+        AuthUserDto authUserDto = internalSecurityService.getUser();
+
+        if(Objects.isNull(authUserDto)) {
+            LOGGER.error("You are not authorized to get the last 3 created deposits");
+            throw new UnAuthorizedException("You are not authorized to get the last 3 created deposits");
+        }
+
+        try {
+            LOGGER.debug("retrieve Access Contract From ExternalParam");
+            accessContractFound =
+                externalParametersService.retrieveAccessContractFromExternalParam();
+        } catch (NotFoundException exception) {
+            LOGGER.warn("No access contract defined {}", exception.getMessage());
+        }
+
+        Optional<ProfileDto> optionalArchivistProfileDto = Optional.empty();
+
+        if(authUserDto.getProfileGroup() != null) {
+            optionalArchivistProfileDto = authUserDto.getProfileGroup().getProfiles().stream().filter(profile ->
+                profile.getName().equals(getorixArchivistProfileName)).findFirst();
+        }
+
+        Set<String> originatingAgencies = new HashSet<>();
+        boolean everyOriginatingAgency = false;
+
+        if(Objects.nonNull(accessContractFound)) {
+            LOGGER.debug("The user Access Contract found is : {}", accessContractFound);
+            Optional<AccessContractDto>
+                accessContractDtoOpt = accessContractInternalService.getOne(vitamContext, accessContractFound);
+            if (accessContractDtoOpt.isPresent()) {
+                LOGGER.debug("Get the originating agencies list");
+                originatingAgencies = accessContractDtoOpt.get().getOriginatingAgencies();
+                everyOriginatingAgency = accessContractDtoOpt.get().getEveryOriginatingAgency();
+            }
+        }
+
+        if(everyOriginatingAgency || optionalArchivistProfileDto.isPresent()) {
+
+            LOGGER.debug("search operations by tenantIdentifier");
+            String tenantIdentifierJsonCriteria = "{\"criteria\":[{\"key\":\"tenantIdentifier\",\"value\":"
+                + vitamContext.getTenantId()
+                + ",\"operator\":\"EQUALS\"}]}";
+
+            getorixDepositDtoList = new ArrayList<>(
+                this.getAllPaginated(0, 3, Optional.of(tenantIdentifierJsonCriteria), Optional.of("creationDate"),
+                    Optional.of(DirectionDto.DESC), Optional.empty()).getValues());
+        }
+        else {
+            LOGGER.debug("search operations by the originating agencies found");
+            if(!originatingAgencies.isEmpty()) {
+
+                StringBuilder originatingAgenciesStringBuilder = new StringBuilder("{\"criteria\":[{\"queryOperator\":\"OR\",\"criteria\":[");
+                originatingAgencies.forEach(originatingAgency -> {
+
+                    final String originatingAgencyCriteria =
+                        "{\"key\":\"originatingAgency\",\"value\":\"" + originatingAgency +"\",\"operator\":\"EQUALS\"}";
+
+                    originatingAgenciesStringBuilder.append(originatingAgencyCriteria);
+                    originatingAgenciesStringBuilder.append(",");
+                });
+
+                originatingAgenciesStringBuilder.deleteCharAt(originatingAgenciesStringBuilder.length() - 1);
+                originatingAgenciesStringBuilder.append("]}]}");
+
+                getorixDepositDtoList = new ArrayList<>(
+                    this.getAllPaginated(0, 3, Optional.of(originatingAgenciesStringBuilder.toString()),
+                        Optional.of("creationDate"), Optional.of(DirectionDto.DESC), Optional.empty()).getValues());
+
+            } else {
+                LOGGER.debug("send empty list to the client side");
+                getorixDepositDtoList = new ArrayList<>();
+            }
+        }
+        return getorixDepositDtoList;
+
     }
 
     private ResultsDto findArchiveUnitById(String id, VitamContext vitamContext) throws VitamClientException {

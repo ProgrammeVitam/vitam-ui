@@ -93,4 +93,10 @@ public class GetorixDepositExternalService extends
         return getorixDepositInternalRestClient.getUnitFullPath(unitId, getInternalHttpContext())
             .getBody();
     }
+
+    public List<GetorixDepositDto> getLastThreeOperations() {
+        LOGGER.debug("[EXTERNAL] : Get the last 3 created deposits");
+        return getorixDepositInternalRestClient.getLastThreeOperations(getInternalHttpContext())
+            .getBody();
+    }
 }
