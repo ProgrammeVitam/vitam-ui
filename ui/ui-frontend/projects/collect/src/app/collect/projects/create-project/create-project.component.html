@@ -15,8 +15,7 @@
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</h2>
         <div class="main-content">
-          <mat-button-toggle-group formControlName="selectedWorkflow" #group="matButtonToggleGroup"
-                                   class="vitamui-button-toggle-group">
+          <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
               {{'COLLECT.MODAL.MANUAL_WORKFLOW' | translate}}
             </mat-button-toggle>
@@ -293,9 +292,8 @@
       <div class="content">
         <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
         <h2>{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</h2>
-        <div class="main-content">
-          <mat-button-toggle-group formControlName="selectedFlowType" #group="matButtonToggleGroup"
-                                   class="vitamui-button-toggle-group">
+        <div class="main-content gap-20">
+          <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
               {{'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate}}
             </mat-button-toggle>
@@ -303,6 +301,17 @@
               {{'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
+          <div class="hgap-10">
+            <span>{{'COLLECT.MODAL.AUTO_INGEST' | translate}}</span>
+            <mat-button-toggle-group formControlName="automaticIngest" class="vitamui-button-toggle-group">
+              <mat-button-toggle [value]="true">
+                {{'COLLECT.MODAL.AUTO_INGEST_TRUE' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="false">
+                {{'COLLECT.MODAL.AUTO_INGEST_FALSE' | translate}}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
         </div>
         <div class="actions">
           <div class="line">

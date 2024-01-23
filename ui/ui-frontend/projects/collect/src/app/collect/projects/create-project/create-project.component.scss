@@ -309,3 +309,25 @@ h4 {
     }
   }
 }
+
+@mixin gap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@mixin hgap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: row;
+  align-items: center;
+}
+
+.gap-20 {
+  @include gap(20px);
+}
+
+.hgap-10 {
+  @include hgap(10px);
+}

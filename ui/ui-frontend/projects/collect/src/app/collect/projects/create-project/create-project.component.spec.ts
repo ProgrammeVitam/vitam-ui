@@ -37,18 +37,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  Project,
-  ProjectStatus,
-  WINDOW_LOCATION
-} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, Project, WINDOW_LOCATION } from 'ui-frontend-common';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { ProjectsService } from '../projects.service';
+import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
+import SpyObj = jasmine.SpyObj;
 
 @Pipe({name: 'fileSize'})
 export class MockFileSizePipe implements PipeTransform {
@@ -64,12 +58,19 @@ describe('CreateProjectComponent', () => {
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
-  const projectsServiceMock = jasmine.createSpyObj('ProjectsService', {
-    create: () => of({}),
-    updateProject: () => of({}),
-  });
+  let projectsServiceMock: SpyObj<ProjectsService>;
+  let transactionServiceMock: SpyObj<TransactionsService>;
 
   beforeEach(waitForAsync(() => {
+    projectsServiceMock = jasmine.createSpyObj<ProjectsService>('ProjectsService', {
+      create: of({}),
+      updateProject: of({} as Project),
+    });
+
+    transactionServiceMock = jasmine.createSpyObj<TransactionsService>('TransactionsService', {
+      create: of({}),
+    });
+
     TestBed.configureTestingModule({
       imports: [
         InjectorModule,
@@ -89,6 +90,7 @@ describe('CreateProjectComponent', () => {
         {provide: MatDialog, useValue: matDialogSpy},
         {provide: WINDOW_LOCATION, useValue: window.location},
         {provide: ProjectsService, useValue: projectsServiceMock},
+        {provide: TransactionsService, useValue: transactionServiceMock},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -121,61 +123,61 @@ describe('CreateProjectComponent', () => {
     expect(matDialogSpyTest.close).toHaveBeenCalled();
   });
 
-  it('should call create', () => {
+  it('should call "create" with project having unitUp and no automatic ingest', () => {
     // Given
-    const project: Project = {
-      id: 'id',
-      archivalAgreement: 'string',
-      messageIdentifier: 'string',
-      archivalAgencyIdentifier: 'id id id',
-      transferringAgencyIdentifier: '787878dfdferer454dfd2fd1f21d',
-      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
-      submissionAgencyIdentifier: 'string',
-      archivalProfile: 'test',
-      unitUp: 'sdfsdf54sd5f4ds5f4',
-      comment: 'test test',
-      status: ProjectStatus.OPEN,
-    } as Project;
+    const form = {
+      messageIdentifier: 'abcd',
+      linkParentIdControl: {
+        included: ['inc']
+      }
+    };
+
+    component.selectedWorkflow = Workflow.MANUAL;
+    component.selectedFlowType = FlowType.FIX;
+    component.projectForm.patchValue(form);
 
     // When
-    component.createdProject = project;
-    component.createProjectAndTransactionAndUpload();
-
-    // Then
-    expect(projectsServiceMock.create).toHaveBeenCalled();
-  });
-
-  it('should createProject with form', () => {
-    // Given
-    component.selectedWorkflow = Workflow.FLOW
-    component.selectedFlowType = FlowType.FIX
-    component.initForm();
-    const project: Project = {
-      id: 'id',
-      archivalAgreement: 'string',
-      messageIdentifier: 'string',
-      archivalAgencyIdentifier: 'id id id',
-      transferringAgencyIdentifier: '787878dfdferer454dfd2fd1f21d',
-      originatingAgencyIdentifier: 'originatingAgencyIdentifier',
-      submissionAgencyIdentifier: 'string',
-      archivalProfile: 'test',
-      unitUp: 'sdfsdf54sd5f4ds5f4',
-      comment: 'test test',
-      status: ProjectStatus.OPEN,
-    } as Project;
-    expect(component.stepIndex).toEqual(0);
-
-    // When
-    component.createdProject = project;
     component.validateAndCreateProject();
 
     // Then
     expect(projectsServiceMock.create).toHaveBeenCalled();
-    expect(component.stepIndex).toEqual(1);
+    expect(transactionServiceMock.create).toHaveBeenCalled();
+    const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
+    expect(arg.name).toBe(form.messageIdentifier);
+    expect(arg.messageIdentifier).toBe(form.messageIdentifier);
+    expect(arg.unitUp).toBe(form.linkParentIdControl.included[0]);
+    expect(arg.unitUps).toBeUndefined();
+    expect(arg.automaticIngest).toBeFalsy();
+  });
+
+  it('should call "create" with project having no unitUp and automatic ingest', () => {
+    // Given
+    const form = {
+      messageIdentifier: 'abcd',
+      linkParentIdControl: {
+        included: ['inc']
+      },
+      automaticIngest: true
+    };
+
+    component.selectedWorkflow = Workflow.FLOW;
+    component.selectedFlowType = FlowType.RULES;
+    component.projectForm.patchValue(form);
+
+    // When
+    component.validateAndCreateProject();
+
+    // Then
+    expect(projectsServiceMock.create).toHaveBeenCalled();
+    expect(transactionServiceMock.create).not.toHaveBeenCalled();
+    const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
+    expect(arg.name).toBe(form.messageIdentifier);
+    expect(arg.messageIdentifier).toBe(form.messageIdentifier);
+    expect(arg.unitUp).toBeUndefined();
+    expect(arg.automaticIngest).toBeTruthy();
   });
 
   describe('DOM', () => {
-
     it('should have an input file', () => {
       const nativeElement = fixture.nativeElement;
       const elInput = nativeElement.querySelector('input[type=file]');

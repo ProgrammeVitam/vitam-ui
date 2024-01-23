@@ -31,6 +31,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   ExternalParameters,
   ExternalParametersService,
@@ -39,7 +40,8 @@ import {
   Ontology,
   OntologyService,
   Project,
-  ProjectStatus, Transaction,
+  ProjectStatus,
+  Transaction,
   TransactionStatus,
 } from 'ui-frontend-common';
 
@@ -83,8 +85,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   zippedFile$: Observable<CollectZippedUploadFile>;
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
-  createdProject: Project;
-  createdTransaction: Transaction;
   ontologies: Ontology[];
 
   acquisitionInformationsList = [
@@ -126,7 +126,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
-    private ontologyService: OntologyService
+    private ontologyService: OntologyService,
   ) {}
 
   get linkParentIdControl() {
@@ -269,15 +269,13 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   /*** Step 5 : Téléchargements ***/
   close() {
     this.dialogRef.close(true);
-    this.createdProject = null;
   }
 
   /*** All Steps ***/
-  initForm() {
+  private initForm() {
     this.projectForm = this.formBuilder.group({
       accessContractSelect: [null],
-      selectedWorkflow: [null, Validators.required],
-      selectedFlowType: [null],
+      automaticIngest: [true],
       referentialCheckup: [false],
 
       archivalAgreement: [null, Validators.required],
@@ -299,7 +297,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     });
   }
 
-  formToProject(): Project {
+  private formToProject(): Project {
     const project: Project = {
       name: this.projectForm.value.messageIdentifier,
       archivalAgreement: this.projectForm.value.archivalAgreement,
@@ -314,6 +312,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       legalStatus: this.projectForm.value.legalStatus,
       comment: this.projectForm.value.comment,
       status: ProjectStatus.OPEN,
+      automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
       project.unitUp = this.linkParentIdControl.value.included[0];
@@ -360,7 +359,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.rulesParams.removeAt(index);
   }
 
-  async validateAndCreateProject() {
+  validateAndCreateProject() {
     if (this.selectedWorkflow === Workflow.MANUAL) {
       this.createProjectAndTransactionAndUpload();
     } else {
@@ -368,11 +367,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     }
   }
 
-  async createProject() {
+  private createProject() {
     this.pending = true;
     const project: Project = this.formToProject();
     this.moveToNextStep();
-    await this.projectsService.create(project).subscribe(
+    this.projectsService.create(project).subscribe(
       (_result) => {
         this.pending = false;
         this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
@@ -386,51 +385,42 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 
-  async createProjectAndTransactionAndUpload() {
+  private createProjectAndTransactionAndUpload() {
+    this.uploadZipCompleted = false;
     this.pending = true;
     const project: Project = this.formToProject();
-    const transaction = {
-      status: TransactionStatus.OPEN,
-    } as Transaction;
-    this.uploadZipCompleted = false;
     this.moveToNextStep();
-    await this.projectsService
+
+    this.projectsService
       .create(project)
-      .toPromise()
-      .then((createProjectResponse) => {
-        this.createdProject = createProjectResponse;
-        transaction.projectId = this.createdProject.id;
-        this.transactionsService
-          .create(transaction)
-          .toPromise()
-          .then((createTransactionResponse) => {
-            this.createdTransaction = createTransactionResponse;
-            return this.uploadService.uploadZip(this.tenantIdentifier, this.createdTransaction.id);
-          })
-          .then((uploadOperation) => {
-            uploadOperation.subscribe(
-              () => {},
-              (error: any) => {
-                this.logger.error(error);
-              },
-              () => {
-                this.uploadZipCompleted = true;
-                this.pending = false;
-                this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
-                  panelClass: 'vitamui-snack-bar',
-                  duration: 10000,
-                });
-              }
-            );
-          })
-          .catch((error) => {
-            this.logger.error(error);
+      .pipe(
+        map((createProjectResponse) => createProjectResponse.id as string),
+        map(
+          (createdProjectId) =>
+            ({
+              status: TransactionStatus.OPEN,
+              projectId: createdProjectId,
+            }) as Transaction,
+        ),
+        switchMap((transaction) => this.transactionsService.create(transaction)),
+        map((createTransactionResponse) => createTransactionResponse.id as string),
+        switchMap((createTransactionId) => this.uploadService.uploadZip(this.tenantIdentifier, createTransactionId)),
+        switchMap((uploadOperation) => uploadOperation),
+        tap(() => {
+          this.uploadZipCompleted = true;
+          this.pending = false;
+          this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
           });
-      });
+        }),
+        catchError((error) => this.logger.error(error)),
+      )
+      .subscribe();
   }
 
   asFormGroup(control: AbstractControl) {

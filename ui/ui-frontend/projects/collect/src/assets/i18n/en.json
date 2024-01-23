@@ -94,7 +94,10 @@
       "ATTACH_POSITION": "Set attachment position",
       "PROJECT_CREATION_ERROR": "Error while creating attachment project",
       "UPLOAD_SUB_TITLE": "Loading directories and documents to be poured",
-      "ARCHIVE_POSITION_SUB_TITLE": "Define fixed attachment position"
+      "ARCHIVE_POSITION_SUB_TITLE": "Define fixed attachment position",
+      "AUTO_INGEST": "Automatic transaction management:",
+      "AUTO_INGEST_TRUE": "Yes",
+      "AUTO_INGEST_FALSE": "No"
     },
     "TITLE_TRANSACTIONS_MONITORING": "Transaction monitoring of project",
     "INGEST_ACTION": "Ingest",

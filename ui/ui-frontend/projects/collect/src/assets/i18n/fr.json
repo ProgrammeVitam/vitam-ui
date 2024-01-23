@@ -99,7 +99,10 @@
       "ATTACH_POSITION": "Définir la position de rattachement",
       "PROJECT_CREATION_ERROR": "Erreur lors de la creation du projet de versement",
       "UPLOAD_SUB_TITLE": "Chargement des répertoires et des documents à verser ",
-      "ARCHIVE_POSITION_SUB_TITLE": "Définir la position fixe de rattachement"
+      "ARCHIVE_POSITION_SUB_TITLE": "Définir la position fixe de rattachement",
+      "AUTO_INGEST": "Gestion automatique des transactions :",
+      "AUTO_INGEST_TRUE": "Oui",
+      "AUTO_INGEST_FALSE": "Non"
     },
     "TITLE_TRANSACTIONS_MONITORING": "Suivi des versements du projet",
     "INGEST_ACTION": "Verser",
