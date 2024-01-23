@@ -222,10 +222,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (!node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
-            console.log('removeCriteria 4');
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
           } else {
-            console.log('removeCriteria 3 ' + JSON.stringify(node));
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
           return;
@@ -297,10 +295,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       return;
     }
     if (criteria.valueElt) {
-      console.log('removeCriteria 8');
       this.removeCriteria(criteria.keyElt, criteria.valueElt, false);
     } else {
-      console.log('searchCriteriaRemoveAction.removeCriteriaAllValues');
       this.removeCriteriaAllValues(criteria.keyElt, false);
     }
   }
@@ -462,7 +458,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   removeCriteriaEvent(criteriaToRemove: any) {
     if (criteriaToRemove.valueElt) {
-      console.log('removeCriteria 7');
       this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt, true);
     } else {
       this.removeCriteriaAllValues(criteriaToRemove.keyElt, true);
@@ -475,7 +470,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
     this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
-    console.log('removeCriteria');
     if (this.searchCriterias && this.searchCriterias.size === 0) {
       this.submited = false;
       this.showCriteriaPanel = true;
@@ -489,7 +483,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
           val.values.forEach((value) => {
-            console.log('removeCriteria 2');
             this.removeCriteria(key, value.value, emit);
           });
         }
@@ -503,7 +496,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.searchCriterias.forEach((criteriaValues, key) => {
           if (key === ELIMINATION_TECHNICAL_ID) {
             criteriaValues.values.forEach((value) => {
-              console.log('removeCriteria 5');
               this.removeCriteria(key, value.value, true);
             });
           }
@@ -512,7 +504,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.searchCriterias.forEach((val, key) => {
         if (SearchCriteriaTypeEnum[val.category] === category) {
           val.values.forEach((value) => {
-            console.log('removeCriteria 1');
             this.removeCriteria(key, value.value, true);
           });
         }
@@ -894,7 +885,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         const criteria = this.searchCriterias.get(criteriaKey);
         const values = criteria.values;
         values.forEach((value) => {
-          console.log('removeCriteria 6');
           this.removeCriteria(criteriaKey, value.value, true);
         });
       }

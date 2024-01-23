@@ -128,7 +128,7 @@ public class ArchiveSearchInternalService {
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
         final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService,
-        PersistentIdentifierService persistentIdentifierService) {
+        final PersistentIdentifierService persistentIdentifierService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;

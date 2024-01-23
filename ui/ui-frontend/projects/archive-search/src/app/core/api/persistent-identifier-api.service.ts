@@ -41,6 +41,6 @@ export class PersistentIdentifierApiService extends BaseHttpClient<any> {
   }
 
   findUnitsByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
-    return this.http.get<any>(this.apiUrl + '/units-by-persistent-identifier' + '?id=' + id, { headers });
+    return this.http.get<any>(`${this.apiUrl}/units-by-persistent-identifier?id=${id}`, { headers });
   }
 }

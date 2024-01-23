@@ -51,8 +51,8 @@ import { SearchCriteriaListService } from './search-criteria-list.service';
   styleUrls: ['./search-criteria-list.component.css'],
 })
 export class SearchCriteriaListComponent implements OnInit, OnDestroy {
-
-  @Output() storedSearchCriteriaHistory = new EventEmitter<any>();
+  @Output()
+  storedSearchCriteriaHistory = new EventEmitter<any>();
 
   searchCriteriaHistory: SearchCriteriaHistory[];
   private readonly orderChange = new Subject<string>();
@@ -69,7 +69,7 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
     private archiveSharedDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private snackBar: VitamUISnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -105,24 +105,24 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   }
 
   deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
-
-    const dialog = this.dialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.dialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.objectType = this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.OBJECT_TYPE');
     dialog.componentInstance.objectName = searchCriteriaHistory.name;
     dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;
 
-    dialog.afterClosed().pipe(
-      filter((result) => !!result)
-    ).subscribe(() => {
-      this.searchCriteriaListService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
-        this.clearElement(searchCriteriaHistory.id);
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: {type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name},
-          duration: 10000
+    dialog
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.searchCriteriaListService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
+          this.clearElement(searchCriteriaHistory.id);
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name },
+            duration: 10000,
+          });
         });
       });
-    });
   }
 
   clearElement(id: string) {

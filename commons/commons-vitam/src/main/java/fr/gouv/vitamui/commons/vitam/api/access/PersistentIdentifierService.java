@@ -61,12 +61,13 @@ public class PersistentIdentifierService {
         return accessExternalClient.selectUnitsByUnitPersistentIdentifier(vitamContext, new SelectMultiQuery().getFinalSelectById(), identifier);
     }
 
+    // TODO: code for future US 12072
     public Response findObjectGroupsByPersistentIdentifier(final String identifier, final VitamContext vitamContext)
         throws VitamClientException {
         return accessExternalClient.getObjectByObjectPersistentIdentifier(vitamContext, new SelectMultiQuery().getFinalSelectById(), identifier);
     }
 
-    // implement DOWNLOAD
+    // TODO: implement DOWNLOAD for US 12072
     // final Response objectOfUnit = accessExternalClient.getObjectByUnitPersistentIdentifier(vitamContext, identifier, null, null);
     // final Response object = accessExternalClient.downloadObjectByObjectPersistentIdentifier(vitamContext, identifier);
 

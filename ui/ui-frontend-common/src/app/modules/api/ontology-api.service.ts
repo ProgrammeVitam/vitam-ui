@@ -29,7 +29,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { Ontology } from '../models';
@@ -42,8 +42,7 @@ export class OntologyApiService extends BaseHttpClient<Ontology> {
     super(http, baseUrl + '/ontology');
   }
 
-  // TODO: ROLLBACK
   getInternalOntologyFieldsList(): Observable<Ontology[]> {
-    return EMPTY;
+    return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
   }
 }

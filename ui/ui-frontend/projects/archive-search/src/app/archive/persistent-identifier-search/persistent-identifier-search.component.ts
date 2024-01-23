@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { ApplicationId, BreadCrumbData, TenantSelectionService } from 'ui-frontend-common';
@@ -14,7 +14,7 @@ import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-id
   templateUrl: './persistent-identifier-search.component.html',
   styleUrls: ['./persistent-identifier-search.component.scss'],
 })
-export class PersistentIdentifierSearchComponent implements OnInit {
+export class PersistentIdentifierSearchComponent {
   appsHierarchy: BreadCrumbData[] = [
     { identifier: ApplicationId.PORTAL_APP },
     { identifier: ApplicationId.ARCHIVE_SEARCH_APP },
@@ -25,11 +25,8 @@ export class PersistentIdentifierSearchComponent implements OnInit {
     private dialog: MatDialog,
     private persistentIdentifierService: PersistentIdentifierService,
     private tenantSelectionService: TenantSelectionService,
-    // @ts-ignore
     private router: Router,
   ) {}
-
-  ngOnInit() {}
 
   onSearch(id: string) {
     this.persistentIdentifierService.findUnitsByPersistentIdentifier(id).subscribe(

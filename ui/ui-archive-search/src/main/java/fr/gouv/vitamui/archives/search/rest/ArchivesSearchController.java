@@ -362,7 +362,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return archivesSearchService.getExternalOntologyFieldsList(buildUiHttpContext());
     }
 
-    @ApiOperation(value = "Find the unit or the object associated to this ARK ID")
+    @ApiOperation(value = "Find the unit associated to this ARK ID")
     @GetMapping(RestApi.UNITS_PERSISTENT_IDENTIFIER)
     @ResponseStatus(HttpStatus.OK)
     public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
