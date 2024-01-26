@@ -206,6 +206,7 @@ export class StandaloneThemeService {
   /**
    * Gives complete color theme from current app config and any given customization.
    * Setting base colors (primary, secondary) will return updated variations (primary-light etc..)
+   *
    * @param customerColors Entries to override
    */
   public getThemeColors(customerColors: { [colorId: string]: string } = null): { [colorId: string]: string } {

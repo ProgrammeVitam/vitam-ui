@@ -41,19 +41,17 @@ export class ContractFormConverterService {
     const persistentIdentifierPolicyList: PersistentIdentifierPolicy[] = contractFormValue.persistentIdentifiers
       .filter((policyFormValue: any) => policyFormValue.policyTypeOption)
       .map((policyFormValue: any) => {
-        const persistentIdentifierUsages: PersistentIdentifierUsage[] = policyFormValue.objectUsagePolicies.map((usageFormValue: any) => {
-          return {
+        const persistentIdentifierUsages: PersistentIdentifierUsage[] = policyFormValue.objectUsagePolicies.map((usageFormValue: any) => ({
             intermediaryVersion: usageFormValue.intermediaryVersion,
             initialVersion: usageFormValue.initialVersion,
             usageName: usageFormValue.objectUsage,
-          };
-        });
+          }));
 
         return {
           persistentIdentifierPolicyType: policyFormValue.policyTypeOption,
           persistentIdentifierUnit: policyFormValue.shouldConcernArchiveUnits,
           persistentIdentifierAuthority: policyFormValue.authority,
-          persistentIdentifierUsages: persistentIdentifierUsages,
+          persistentIdentifierUsages,
         };
       });
 
@@ -72,7 +70,7 @@ export class ContractFormConverterService {
       deactivationDate: contractFormValue.deactivationDate,
       storage: contractFormValue.storage,
       versionRetentionPolicy: this.extractVersionRetentionPolicy(contractFormValue),
-      persistentIdentifierPolicyList: persistentIdentifierPolicyList,
+      persistentIdentifierPolicyList,
     };
 
     return managementContract;

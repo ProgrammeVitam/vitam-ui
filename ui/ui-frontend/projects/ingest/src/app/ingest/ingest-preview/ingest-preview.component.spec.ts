@@ -25,7 +25,7 @@ describe('IngestPreviewComponent test:', () => {
     id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
     agIdExt: {},
     events: [{}]
-  }
+  };
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],

@@ -82,12 +82,12 @@ export class ProfileInformationTabComponent {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited && this.formHasChanged()
+    return this.form.valid && !this.submited && this.formHasChanged();
   }
 
   formHasChanged() {
     for (const k of Object.keys(this.form.value)) {
-      const key = k as keyof ProfileDescription
+      const key = k as keyof ProfileDescription;
       if (!this.form.value[key] && !this._inputProfile[key]) {
         continue;
       }

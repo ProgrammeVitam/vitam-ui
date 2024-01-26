@@ -135,7 +135,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private firstToggle(node: FilingHoldingSchemeNode): boolean {
-    return this.leavesTreeService.firstToggle(node)
+    return this.leavesTreeService.firstToggle(node);
   }
 
   toggleOrphansNode(node: FilingHoldingSchemeNode) {

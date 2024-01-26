@@ -128,7 +128,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
         if (child.cardinality.endsWith('1')) {
           this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
         }
-      })
+      });
     }
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
@@ -159,9 +159,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
     }
     const orderedNames = Object.values(this.allowedChildren);
-    this.allowedChildren.sort((a, b) => {
-      return orderedNames.indexOf(a) - orderedNames.indexOf(b);
-    });
+    this.allowedChildren.sort((a, b) => orderedNames.indexOf(a) - orderedNames.indexOf(b));
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
     this.upateButtonStatusAndDataToSend();
   }

@@ -60,7 +60,7 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
   }]
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;

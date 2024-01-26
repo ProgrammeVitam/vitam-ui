@@ -10,7 +10,7 @@ export class ApplicationSvgLoader implements SvgLoader {
 
     private unknownAppSvg: string;
 
-    constructor(private transferState: TransferState, private http: HttpClient, private conf: {prefix: string, suffix: string}) {
+    constructor(private transferState: TransferState, private http: HttpClient, private conf: {prefix: string; suffix: string}) {
       new SvgHttpLoader(this.http).getSvg(this.conf.prefix + UNKNOW_APP_FILE_NAME + this.conf.suffix).subscribe((svgData: string) => {
         this.unknownAppSvg = svgData;
       });
@@ -26,9 +26,7 @@ export class ApplicationSvgLoader implements SvgLoader {
           observer.complete();
         });
       } else {
-        return new SvgHttpLoader(this.http).getSvg(url).pipe(catchError(() => {
-          return of(this.unknownAppSvg);
-        }));
+        return new SvgHttpLoader(this.http).getSvg(url).pipe(catchError(() => of(this.unknownAppSvg)));
       }
     }
   }

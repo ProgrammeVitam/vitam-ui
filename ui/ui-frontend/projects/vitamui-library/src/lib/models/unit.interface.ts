@@ -22,8 +22,8 @@ export interface Unit {
   DuaEndDate?: Date;
   OriginatingAgencyArchiveUnitIdentifier?: string;
   Status?: string;
-  Vtag?: Array<{ Key: string[], Value: string[] }>;
-  Keyword?: Array<{ KeywordReference: string, KeywordContent: string }>;
+  Vtag?: Array<{ Key: string[]; Value: string[] }>;
+  Keyword?: Array<{ KeywordReference: string; KeywordContent: string }>;
   Type?: string;
   PhysicalAgency?: string[];
   PhysicalStatus?: string[];

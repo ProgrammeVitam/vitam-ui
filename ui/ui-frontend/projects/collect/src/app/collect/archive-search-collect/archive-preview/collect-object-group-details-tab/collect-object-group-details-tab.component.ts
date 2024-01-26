@@ -53,7 +53,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   ],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges {
-  @Input() archiveUnit: Unit;  
+  @Input() archiveUnit: Unit;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 

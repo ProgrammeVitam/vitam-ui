@@ -91,9 +91,9 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 

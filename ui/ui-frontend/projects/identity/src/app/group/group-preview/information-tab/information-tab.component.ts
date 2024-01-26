@@ -60,11 +60,11 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
   form: FormGroup;
   groupsCount: number;
   previousValue: {
-    id: string,
+    id: string;
     enabled: boolean;
-    name: string,
-    level: string,
-    description: string,
+    name: string;
+    level: string;
+    description: string;
   };
 
   private updateSub: Subscription;

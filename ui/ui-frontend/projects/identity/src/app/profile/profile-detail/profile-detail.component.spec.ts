@@ -38,7 +38,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { EMPTY, of, Subject } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'ui-frontend-common';
-import { environment } from './../../../environments/environment';
 
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -50,6 +49,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ProfileService } from '../profile.service';
+import { environment } from './../../../environments/environment';
 import { ProfileDetailComponent } from './profile-detail.component';
 
 @Component({ selector: 'app-information-tab', template: '' })

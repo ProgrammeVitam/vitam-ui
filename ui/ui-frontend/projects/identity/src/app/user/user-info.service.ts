@@ -73,7 +73,7 @@ export class UserInfoService extends SearchService<UserInfo> {
     return this.userInfoServiceApi.getMyUserInfo();
   }
 
-  patch(partialUser: { id: string, [key: string]: any }, user: User): Observable<UserInfo> {
+  patch(partialUser: { id: string; [key: string]: any }, user: User): Observable<UserInfo> {
     return this.userInfoServiceApi.patch(partialUser).pipe(
       tap((response) => this.userInfoUpdated.next(response)),
       tap(

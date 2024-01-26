@@ -40,11 +40,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
 import { BASE_URL, Owner, VitamUISnackBarService } from 'ui-frontend-common';
-import { OwnerService } from './owner.service';
 
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMPTY } from 'rxjs';
+import { OwnerService } from './owner.service';
 
 const expectedOwner: Owner = {
   id: '42',

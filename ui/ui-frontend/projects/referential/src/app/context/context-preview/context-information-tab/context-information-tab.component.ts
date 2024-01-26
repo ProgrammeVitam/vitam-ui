@@ -43,7 +43,7 @@ import { Context, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
+import {RULE_TYPES} from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -66,9 +66,7 @@ export class ContextInformationTabComponent {
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): Context => {
-    return this._context;
-  };
+  previousValue = (): Context => this._context;
 
   @Input()
   // eslint-disable-next-line no-shadow

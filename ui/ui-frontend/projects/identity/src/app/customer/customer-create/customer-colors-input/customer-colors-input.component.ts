@@ -22,7 +22,7 @@ export class CustomerColorsInputComponent implements OnInit {
 
   public baseColors: { [colorId in ThemeColorType]?: string };
   public displayTertiary = false;
-  public backgroundColors: {id: string, label: string}[] = [];
+  public backgroundColors: {id: string; label: string}[] = [];
   public THEME_COLORS = ThemeColorType;
 
   constructor(private themeService: ThemeService) {}

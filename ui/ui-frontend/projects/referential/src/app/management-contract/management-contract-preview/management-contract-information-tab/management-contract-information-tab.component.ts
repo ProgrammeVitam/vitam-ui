@@ -74,9 +74,7 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
   _inputManagementContract: ManagementContract;
   statusControl = new FormControl();
 
-  previousValue = (): ManagementContract => {
-    return this._inputManagementContract;
-  };
+  previousValue = (): ManagementContract => this._inputManagementContract;
 
   constructor(private formBuilder: FormBuilder, private managementContractService: ManagementContractService) {
     this.form = this.formBuilder.group({

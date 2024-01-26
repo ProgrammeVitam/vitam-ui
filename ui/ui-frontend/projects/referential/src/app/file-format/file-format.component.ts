@@ -40,11 +40,11 @@ import {ActivatedRoute} from '@angular/router';
 
 import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage} from 'ui-frontend-common';
+import { Observable, Subscription } from 'rxjs';
 import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
 import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
 import {FileFormatListComponent} from './file-format-list/file-format-list.component';
-import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-format',

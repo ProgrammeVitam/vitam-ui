@@ -40,10 +40,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { HierarchyService } from './hierarchy.service';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../shared/shared.module';
+import { HierarchyService } from './hierarchy.service';
 import { HierarchyCreateModule } from './hierarchy-create';
 import { HierarchyDetailModule } from './hierarchy-detail/hierarchy-detail.module';
 import { HierarchyListModule } from './hierarchy-list/hierarchy-list.module';

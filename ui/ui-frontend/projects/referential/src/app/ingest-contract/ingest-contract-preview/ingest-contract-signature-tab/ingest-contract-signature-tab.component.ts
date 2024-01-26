@@ -66,9 +66,7 @@ export class IngestContractSignatureTabComponent {
     private ingestContractService: IngestContractService,
   ) {}
 
-  previousValue = (): SignaturePolicy => {
-    return this._ingestContract.signaturePolicy;
-  };
+  previousValue = (): SignaturePolicy => this._ingestContract.signaturePolicy;
 
   signaturePolicyUnchanged() {
     const actual = this.form.value as SignaturePolicy;

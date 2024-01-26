@@ -91,7 +91,7 @@ export class TenantService {
       );
   }
 
-  patch(partialTenant: { id: string, [key: string]: any }, ownerName: string): Observable<Tenant> {
+  patch(partialTenant: { id: string; [key: string]: any }, ownerName: string): Observable<Tenant> {
     return this.tenantApi.patch(partialTenant)
       .pipe(
         tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),

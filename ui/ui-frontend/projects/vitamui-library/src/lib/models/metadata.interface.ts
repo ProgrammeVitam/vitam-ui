@@ -13,8 +13,8 @@ export interface Metadata {
   systemId: string;
   status: string;
   dataObjectVersion: string;
-  tags: Array<{ Key: string[], Value: string[] }>;
-  vtags: Array<{ Key: string[], Value: string[] }>;
+  tags: Array<{ Key: string[]; Value: string[] }>;
+  vtags: Array<{ Key: string[]; Value: string[] }>;
   unitups?: string[];
   allunitups?: string[];
   mimeType?: string;

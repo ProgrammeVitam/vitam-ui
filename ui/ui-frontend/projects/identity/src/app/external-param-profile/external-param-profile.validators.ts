@@ -46,9 +46,7 @@ export class ExternalParamProfileValidators {
 
   constructor(private externalParamProfileService: ExternalParamProfileService) {}
 
-  nameExists = (tenantIdentifier: number, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
+  nameExists = (tenantIdentifier: number, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime).pipe(
         switchMap(() =>
           control.value !== nameToIgnore
             ? this.externalParamProfileService.exists(tenantIdentifier, applicationName, control.value)
@@ -57,6 +55,4 @@ export class ExternalParamProfileValidators {
         take(1),
         map((exists: boolean) => (exists ? { nameExists: true } : null))
       );
-    };
-  };
 }

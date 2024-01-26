@@ -89,9 +89,7 @@ export class FilingPlanService {
         'X-Tenant-Id': tenantId,
       });
       units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
+        catchError(() => of({ $hits: null, $results: [] })),
         map((response) => response.$results),
         tap(() => this._pending--),
         shareReplay(1)
@@ -99,9 +97,7 @@ export class FilingPlanService {
       this.setCachedValue(units$, tenantId);
     }
     return units$.pipe(
-      map((results) => {
-        return this.getNestedChildren(results, idPrefix);
-      })
+      map((results) => this.getNestedChildren(results, idPrefix))
     );
   }
 

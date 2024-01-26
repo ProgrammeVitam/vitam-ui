@@ -73,7 +73,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
     this.form= this.formBuilder.group({
       ...this.commonControls.controls,
       ...this.samlSpecificControls.controls
-    })
+    });
   }
 
   ngOnInit() {

@@ -66,7 +66,7 @@ export class CenterMatmenuDirective {
   }
 
   private _overrideMatMenu() {
-    console.log(this.overlayConf)
+    console.log(this.overlayConf);
     const strat = this.overlayConf.positionStrategy as FlexibleConnectedPositionStrategy;
        // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_setPosition'](strat);

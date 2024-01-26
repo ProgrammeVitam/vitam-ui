@@ -129,16 +129,14 @@ export class CollectUploadService {
       .accumulate((metadata) => {
         this.updateInternalZipFile(metadata.currentFile, metadata.percent);
       })
-      .then((content) => {
-        return this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options)).pipe(
+      .then((content) => this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options)).pipe(
           tap((data) => {
             if (data) {
               this.updateUploadedZipFile(data);
             }
           }),
           catchError((error) => of(error))
-        );
-      });
+        ));
   }
   reinitializeZip() {
     for (const file of this.filesToUpload) {

@@ -57,10 +57,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   groupsCount: boolean;
   userLevel: string;
   previousValue: {
-    name: string,
-    level: string,
-    description: string,
-    enabled: boolean,
+    name: string;
+    level: string;
+    description: string;
+    enabled: boolean;
     roles: any[];
   };
 

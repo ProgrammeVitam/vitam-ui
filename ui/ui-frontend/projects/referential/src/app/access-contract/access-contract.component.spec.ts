@@ -43,10 +43,10 @@ import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } fro
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 import { AccessContractComponent } from './access-contract.component';
 import { AccessContractService } from './access-contract.service';
 
-import { of } from 'rxjs';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
 // eslint-disable-next-line @angular-eslint/component-class-suffix

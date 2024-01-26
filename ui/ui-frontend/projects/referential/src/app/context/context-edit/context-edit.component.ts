@@ -76,13 +76,11 @@ export class ContextEditComponent implements OnInit, OnDestroy {
 
     let permissions: any[] = new Array();
     if (this.permissions) {
-      permissions = this.permissions.map((permission) => {
-        return {
+      permissions = this.permissions.map((permission) => ({
           tenant: permission.tenant,
           accessContracts: permission.accessContracts,
           ingestContracts: permission.ingestContracts,
-        };
-      });
+        }));
     }
 
     this.form = this.formBuilder.group({

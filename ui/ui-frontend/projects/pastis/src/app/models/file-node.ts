@@ -138,7 +138,7 @@ export function nodesToString(nodes: FileNode[]): string {
   if (!nodes || nodes.length < 1) {
     return '[]';
   }
-  return '[' + nodes.map(node => nodeToString(node)).join(',') + ']'
+  return '[' + nodes.map(node => nodeToString(node)).join(',') + ']';
 }
 
 export interface FileNodeInsertParams {

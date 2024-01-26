@@ -43,7 +43,7 @@ import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } fr
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
 
-const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: number, hasMore: boolean } = {
+const expectedCustomersPage: { values: Customer[]; pageNum: number; pageSize: number; hasMore: boolean } = {
   values: [
     {
       id: '5acc6bd8b75bfb2e46aeec3da96bdc5206a641e2babc48ec12473c206c4bb97d',
@@ -174,7 +174,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
   hasMore: false
 };
 
-const customersPage: { values: Customer[], pageNum: number, pageSize: number, hasMore: boolean } = {
+const customersPage: { values: Customer[]; pageNum: number; pageSize: number; hasMore: boolean } = {
   values: [
     {
       id: '5acc6bd8b75bfb2e46aeec3da96bdc5206a641e2babc48ec12473c206c4bb97d',

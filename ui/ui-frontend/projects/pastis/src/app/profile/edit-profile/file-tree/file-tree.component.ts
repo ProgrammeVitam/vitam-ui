@@ -303,9 +303,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       parent.sedaData.Children.forEach((child: { Name: string }) => {
         sedaChildrenName.push(child.Name);
       });
-      parent.children.sort((a, b) => {
-        return sedaChildrenName.indexOf(a.name) - sedaChildrenName.indexOf(b.name);
-      });
+      parent.children.sort((a, b) => sedaChildrenName.indexOf(a.name) - sedaChildrenName.indexOf(b.name));
       // 5. Update tree
       this.sendNodeMetadata(parent);
       console.log('New fileNode data is : %o', this.fileTreeService.nestedDataSource.data);
@@ -781,11 +779,9 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     if (this.viewChild && this.viewChild.length > 0) {
       this.viewChild.forEach((e: FileNode) => {
         // eslint-disable-next-line no-shadow
-        const abstractFunctionCondition = (isExpanded: boolean): boolean => {
-          return isExpanded
+        const abstractFunctionCondition = (isExpanded: boolean): boolean => isExpanded
             ? e.id !== node.id && e.level >= node.level
             : e.id !== node.id && (e.level === node.level || (e.level > node.level && e.parentId !== node.parentId));
-        };
         if (abstractFunctionCondition(isExpanded)) {
           if (this.fileTreeService.nestedTreeControl.isExpanded(e)) {
             document.getElementById('child' + e.id).click();

@@ -61,7 +61,7 @@ export class OntologyService extends SearchService<Ontology> {
     return this.ontologyApiService.getOne(encodeURI(id));
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existOntology: any = {};
     if (properties.name) {
       existOntology.name = properties.name;
@@ -94,7 +94,7 @@ export class OntologyService extends SearchService<Ontology> {
       );
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Ontology> {
+  patch(data: { id: string; [key: string]: any }): Observable<Ontology> {
     return this.ontologyApiService.patch(data)
       .pipe(
         tap((response) => this.updated.next(response)),

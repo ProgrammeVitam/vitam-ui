@@ -53,7 +53,7 @@ export const PATTERN_VALUE_ACCESSOR: any = {
 })
 export class PatternComponent implements ControlValueAccessor {
 
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;
@@ -95,11 +95,11 @@ export class PatternComponent implements ControlValueAccessor {
     }
   }
 
-  get availableOptions(): Array<{ value: string, disabled?: boolean }> {
+  get availableOptions(): Array<{ value: string; disabled?: boolean }> {
     return (this.options || []).filter((option) => this.isAvailable(option.value));
   }
 
-  get enabledOptions(): Array<{ value: string, disabled?: boolean }> {
+  get enabledOptions(): Array<{ value: string; disabled?: boolean }> {
     return this.availableOptions.filter((option) => !option.disabled);
   }
 

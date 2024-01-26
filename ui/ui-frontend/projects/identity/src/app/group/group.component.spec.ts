@@ -40,13 +40,13 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
-import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { environment } from './../../environments/environment';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupComponent } from './group.component';
 

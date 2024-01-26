@@ -66,9 +66,9 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
 
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   onChange = (_x: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   constructor(private permissionUtils: PermissionUtils, private formBuilder: FormBuilder) {
 

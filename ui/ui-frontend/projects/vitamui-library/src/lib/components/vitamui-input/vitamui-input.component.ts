@@ -90,9 +90,9 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   value: string | number;
 
   onChange = (_: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   ngOnInit(): void {
     if (this.value != null) {

@@ -80,7 +80,7 @@ export class HierarchyService extends SearchService<Profile>  {
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
     return this.profileApi.patch(data, this.headers)
       .pipe(
         tap((response) => this.updated.next(response)),

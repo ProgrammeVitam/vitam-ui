@@ -70,9 +70,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
-  };
+  previousValue = (): IngestContract => this._ingestContract;
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {

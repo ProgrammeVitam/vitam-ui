@@ -61,11 +61,11 @@ export class TenantApiService extends BaseHttpClient<Tenant> {
     return super.create(tenant);
   }
 
-  patch(partialTenant: { id: string, [key: string]: any }): Observable<Tenant> {
+  patch(partialTenant: { id: string; [key: string]: any }): Observable<Tenant> {
     return super.patch(partialTenant);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
     return super.checkExistsByParam(params);
   }
 

@@ -49,17 +49,11 @@ export class AccessContractCreateValidators {
 
   constructor(private accessContractService: AccessContractService) {}
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => this.uniqueFields('name', 'nameExists', nameToIgnore);
 
-  uniqueNameWhileEdit = (accessContract: () => AccessContract, nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFieldsWhileEdit(accessContract, 'name', 'nameExists', nameToIgnore);
-  };
+  uniqueNameWhileEdit = (accessContract: () => AccessContract, nameToIgnore?: string): AsyncValidatorFn => this.uniqueFieldsWhileEdit(accessContract, 'name', 'nameExists', nameToIgnore);
 
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  };
+  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
 
   private uniqueFieldsWhileEdit(accessContract: () => AccessContract, field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

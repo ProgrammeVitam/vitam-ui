@@ -96,9 +96,7 @@ export class ContextPermissionTabComponent implements OnInit {
     return this._context;
   }
 
-  previousValue = (): Context => {
-    return this._context;
-  };
+  previousValue = (): Context => this._context;
 
   constructor(
     public dialog: MatDialog,
@@ -120,15 +118,13 @@ export class ContextPermissionTabComponent implements OnInit {
       const accessTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === 'ACCESS_APP');
       if (accessTenantsInfo && accessTenantsInfo.tenants && accessTenantsInfo.tenants.length > 0) {
         accessContractObservable = forkJoin(
-          accessTenantsInfo.tenants.map((tenant) => {
-            return this.accessService.getAllForTenant('' + tenant.identifier).pipe(
+          accessTenantsInfo.tenants.map((tenant) => this.accessService.getAllForTenant('' + tenant.identifier).pipe(
               tap((accessContracts) => {
                 accessContracts.forEach((accessContract) => {
                   this.accessContracts.set(accessContract.identifier, accessContract);
                 });
               })
-            );
-          })
+            ))
         );
       }
 
@@ -136,15 +132,13 @@ export class ContextPermissionTabComponent implements OnInit {
       const ingestTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === 'INGEST_APP');
       if (ingestTenantsInfo && ingestTenantsInfo.tenants && ingestTenantsInfo.tenants.length > 0) {
         ingestContractObservable = forkJoin(
-          ingestTenantsInfo.tenants.map((tenant) => {
-            return this.ingestService.getAllForTenant('' + tenant.identifier).pipe(
+          ingestTenantsInfo.tenants.map((tenant) => this.ingestService.getAllForTenant('' + tenant.identifier).pipe(
               tap((ingestContracts) => {
                 ingestContracts.forEach((ingestContract) => {
                   this.ingestContracts.set(ingestContract.identifier, ingestContract);
                 });
               })
-            );
-          })
+            ))
         );
       }
     }

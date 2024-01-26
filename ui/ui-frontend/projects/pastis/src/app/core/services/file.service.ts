@@ -82,6 +82,7 @@ export class FileService implements OnDestroy {
 
   /**
    * Update the tree with the profile provided
+   *
    * @param profileResponse profileResponse sent from backend
    */
   updateTreeWithProfile(profileResponse: ProfileResponse) {
@@ -101,6 +102,7 @@ export class FileService implements OnDestroy {
 
   /**
    * Get profile from backend with id
+   *
    * @param id id of profile to get
    */
   getProfileAndUpdateTree(element: ProfileDescription) {
@@ -154,7 +156,7 @@ export class FileService implements OnDestroy {
             this.sedaDataArchiveUnit = sedaDataMatch;
             // On introduit la récursivité sur les ArchivesUnit
             this.sedaDataArchiveUnit.Children
-              .find((c: { Name: string; }) => c.Name === 'ArchiveUnit')
+              .find((c: { Name: string }) => c.Name === 'ArchiveUnit')
               .Children = this.sedaDataArchiveUnit.Children;
           }
         }
@@ -238,6 +240,7 @@ export class FileService implements OnDestroy {
 
   /**
    * Get one attribute of the node by its name
+   *
    * @param fileNode The concerned node
    * @param attributeName The name of the attribute we want to get
    */
@@ -247,6 +250,7 @@ export class FileService implements OnDestroy {
 
   /**
    * Delete all the attributes of the concerned FileNode
+   *
    * @param fileNode The concerned FileNode
    */
   deleteAllAttributes(fileNode: FileNode): void {
@@ -372,7 +376,7 @@ export class FileService implements OnDestroy {
     if (sedaElement.Element === SedaElementConstants.complex &&
       sedaElement.Children.length > 0) {
       const fileNodeComplexChildren: FileNode[] = [];
-      sedaElement.Children.forEach((child: { Cardinality: string; Name: string; Type: string; }) => {
+      sedaElement.Children.forEach((child: { Cardinality: string; Name: string; Type: string }) => {
         if (child.Cardinality === SedaCardinalityConstants.one ||
           child.Cardinality === SedaCardinalityConstants.oreOrMore) {
           const aFileNode: FileNode = {} as FileNode;

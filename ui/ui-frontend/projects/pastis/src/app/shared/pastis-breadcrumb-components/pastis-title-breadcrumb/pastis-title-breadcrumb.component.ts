@@ -64,7 +64,7 @@ export class PastisTitleBreadcrumbComponent implements OnInit {
   }
 
   public goBack(){
-    this.location.back()
+    this.location.back();
   }
 
 }

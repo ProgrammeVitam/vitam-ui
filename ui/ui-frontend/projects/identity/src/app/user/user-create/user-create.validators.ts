@@ -48,15 +48,11 @@ export class UserCreateValidators {
 
   constructor(private userService: UserService) { }
 
-  uniqueEmail = (emailToCheck?: string): AsyncValidatorFn => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime)
+  uniqueEmail = (emailToCheck?: string): AsyncValidatorFn => (control: AbstractControl): Observable<ValidationErrors | null> => timer(this.debounceTime)
         .pipe(
           switchMap(() => control.value !== emailToCheck ? this.userService.exists(control.value) : of(false)),
           take(1),
           map((exists: boolean) => exists ? { uniqueEmail: true } : null)
         );
-    };
-  }
 
 }

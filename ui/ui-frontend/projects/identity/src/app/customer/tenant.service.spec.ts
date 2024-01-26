@@ -41,11 +41,11 @@ import { EMPTY } from 'rxjs';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { TenantService } from './tenant.service';
 
 import { TranslateService } from '@ngx-translate/core';
 
 import { Type } from '@angular/core';
+import { TenantService } from './tenant.service';
 
 
 const expectedTenant: Tenant = {

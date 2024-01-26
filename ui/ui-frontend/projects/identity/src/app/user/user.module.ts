@@ -42,10 +42,10 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { SharedModule } from '../shared/shared.module';
 import { GroupService } from './../group/group.service';
 import { ProfileService } from './../profile/profile.service';
 
-import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from './group-attribution/group-attribution.module';
 import { UserCreateModule } from './user-create';
 import { UserListModule } from './user-list';

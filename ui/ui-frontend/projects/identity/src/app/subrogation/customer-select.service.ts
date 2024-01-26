@@ -63,7 +63,7 @@ export class CustomerSelectService {
         catchError(() => of([])),
         map((results) => {
           this.customers = results;
-          return (results || []).map((c: { id: string, code: string, name: string  }) => {
+          return (results || []).map((c: { id: string; code: string; name: string  }) => {
             const label = c.code + ' - ' + c.name;
             return { value: c.id, label };
           });

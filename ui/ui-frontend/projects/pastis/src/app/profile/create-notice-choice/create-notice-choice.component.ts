@@ -38,9 +38,9 @@ export class CreateNoticeChoiceComponent implements OnInit {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = ProfileType.PA
-      this.secondChoice = ProfileType.PUA
-      this.title = 'Choisir le type de notice à créer :'
+      this.firstChoice = ProfileType.PA;
+      this.secondChoice = ProfileType.PUA;
+      this.title = 'Choisir le type de notice à créer :';
     }
   }
 
@@ -65,7 +65,7 @@ export class CreateNoticeChoiceComponent implements OnInit {
   }
 
   changeChoiceCreateProfile($event: string) {
-    console.log($event)
+    console.log($event);
     this.noticePaChoice = $event === this.firstChoice;
   }
 

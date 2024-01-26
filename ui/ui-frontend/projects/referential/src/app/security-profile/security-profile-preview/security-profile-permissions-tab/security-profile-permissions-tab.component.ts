@@ -70,9 +70,7 @@ export class SecurityProfilePermissionsTabComponent {
     { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
-  previousValue = (): SecurityProfile => {
-    return this._SecurityProfile;
-  };
+  previousValue = (): SecurityProfile => this._SecurityProfile;
 
   @Input()
   // eslint-disable-next-line no-shadow
@@ -121,9 +119,7 @@ export class SecurityProfilePermissionsTabComponent {
       } else {
         const previousPermissions = this.previousValue().permissions;
         // eslint-disable-next-line no-shadow
-        const diff = this.form.getRawValue().permissions.filter((permission: string) => {
-          return previousPermissions.indexOf(permission) === -1;
-        });
+        const diff = this.form.getRawValue().permissions.filter((permission: string) => previousPermissions.indexOf(permission) === -1);
         if (diff.length > 0) {
           unchanged = false;
         }

@@ -221,16 +221,16 @@ export class ArchiveSharedDataService {
   sort(direction: Direction, searchCriteriaHistory: SearchCriteriaHistory[]): SearchCriteriaHistory[] {
     switch (direction) {
       case Direction.ASCENDANT:
-        searchCriteriaHistory.sort((a, b) => {
+        searchCriteriaHistory.sort((a, b) =>
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          return <any>new Date(b.savingDate) - <any>new Date(a.savingDate);
-        });
+           <any>new Date(b.savingDate) - <any>new Date(a.savingDate)
+        );
         break;
       case Direction.DESCENDANT:
-        searchCriteriaHistory.sort((a, b) => {
+        searchCriteriaHistory.sort((a, b) =>
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          return <any>new Date(a.savingDate) - <any>new Date(b.savingDate);
-        });
+           <any>new Date(a.savingDate) - <any>new Date(b.savingDate)
+        );
         break;
       default:
         break;

@@ -42,8 +42,8 @@ import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {diff} from 'ui-frontend-common';
 import {extend, isEmpty} from 'underscore';
 import { ActivatedRoute } from '@angular/router';
-import {FileFormatService} from '../../file-format.service';
 import { ApplicationId, Role, SecurityService } from 'ui-frontend-common';
+import {FileFormatService} from '../../file-format.service';
 
 @Component({
   selector: 'app-file-format-information-tab',
@@ -75,7 +75,7 @@ export class FileFormatInformationTabComponent {
       cleanedFileFortmat.extensions = null;
     }
     return cleanedFileFortmat;
-  }
+  };
 
   @Input()
   set fileFormat(fileFormat: FileFormat) {
@@ -140,14 +140,14 @@ export class FileFormatInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id, puid: this.previousValue().puid}, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => {
+      switchMap((formData: { id: string; [key: string]: any }) => {
         if (formData.extensions) {
           // The extensions property must be an array of string, not a string
           formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
         } else if(isEmpty(formData.extensions)){
           formData.extensions = [];
         }
-        return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))
+        return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)));
     }));
   }
 

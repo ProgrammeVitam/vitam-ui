@@ -97,9 +97,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
-      catchError(() => {
-        return of({ $hits: null, $results: [] });
-      }),
+      catchError(() => of({ $hits: null, $results: [] })),
       map((response) => response.$results),
       map((results) => this.buildNestedTreeLevels(results)),
     );
@@ -330,12 +328,8 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
       trackTotalHits: true,
     };
     return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
-      map((pagedResult: PagedResult) => {
-        return pagedResult.totalResults;
-      }),
-      catchError(() => {
-        return of(-1);
-      }),
+      map((pagedResult: PagedResult) => pagedResult.totalResults),
+      catchError(() => of(-1)),
     );
   }
 

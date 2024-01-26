@@ -41,11 +41,11 @@ export class SelectNoticeComponent implements OnInit {
     if (this.data.profileMode === ProfileType.PUA) {
       this.profilService.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
-      })
+      });
     } else if (this.data.profileMode === ProfileType.PA) {
       this.profilService.getAllProfilesPA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
-      })
+      });
     }
 
   }
@@ -76,7 +76,7 @@ export class SelectNoticeComponent implements OnInit {
 
   setValidate() {
     if (this.selectedProfile) {
-      this.validate = true
+      this.validate = true;
     }
   }
 

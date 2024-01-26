@@ -64,7 +64,7 @@ export class FileFormatApiService extends BaseHttpClient<FileFormat> {
     return super.getOne(id, headers);
   }
 
-  patch(partialAgency: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 

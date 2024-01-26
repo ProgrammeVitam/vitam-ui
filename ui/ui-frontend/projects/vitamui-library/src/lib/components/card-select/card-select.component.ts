@@ -47,9 +47,9 @@ export class CardSelectComponent {
   }
 
   onChange = (_: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   writeValue(value: Array<string>) {
     this.values = new Set((value == null) ? new Array<string>() : value);

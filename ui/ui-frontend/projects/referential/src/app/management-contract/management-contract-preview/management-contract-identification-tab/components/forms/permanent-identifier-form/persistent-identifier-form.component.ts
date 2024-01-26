@@ -126,9 +126,7 @@ export class PersistentIdentifierFormComponent implements OnChanges {
   }
 
   findAvailableObjectUsageOption(): ObjectUsageOption {
-    return this.objectUsageOptions.find((objectUsageOption) => {
-      return this.getObjectUsagePolicies().every((objectUsagePolicy) => objectUsagePolicy.value.objectUsage !== objectUsageOption.value);
-    });
+    return this.objectUsageOptions.find((objectUsageOption) => this.getObjectUsagePolicies().every((objectUsagePolicy) => objectUsagePolicy.value.objectUsage !== objectUsageOption.value));
   }
 
   getObjectUsagePolicies(): AbstractControl[] {

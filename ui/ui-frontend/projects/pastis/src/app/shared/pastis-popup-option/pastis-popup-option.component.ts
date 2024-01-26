@@ -104,7 +104,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   goToSedaView() {
-    const url = document.URL + '/sedaview'
+    const url = document.URL + '/sedaview';
     window.open(url, '_blank');
   }
 

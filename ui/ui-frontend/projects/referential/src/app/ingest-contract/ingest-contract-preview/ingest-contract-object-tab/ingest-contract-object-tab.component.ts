@@ -65,9 +65,7 @@ export class IngestContractObjectTabComponent implements OnInit {
     { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
-  };
+  previousValue = (): IngestContract => this._ingestContract;
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {

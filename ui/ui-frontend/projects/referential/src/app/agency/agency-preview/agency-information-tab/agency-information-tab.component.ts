@@ -59,9 +59,7 @@ export class AgencyInformationTabComponent {
   private _agency: Agency;
 
   form: FormGroup;
-  previousValue = (): Agency => {
-    return this._agency;
-  };
+  previousValue = (): Agency => this._agency;
 
   @Input()
   set agency(agency: Agency) {

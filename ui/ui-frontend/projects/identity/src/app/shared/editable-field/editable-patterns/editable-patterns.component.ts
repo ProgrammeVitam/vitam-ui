@@ -53,7 +53,7 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
 
-  @Input() options: Array<{ value: string, disabled: boolean }>;
+  @Input() options: Array<{ value: string; disabled: boolean }>;
 
   @ViewChild(PatternComponent, { static: false }) pattern: PatternComponent;
 

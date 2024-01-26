@@ -44,8 +44,8 @@ import { Subscription } from 'rxjs';
 import { AccessContract, ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractService } from '../access-contract.service';
-import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { RULE_TYPES } from '../../rule/rules.constants';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 

@@ -86,15 +86,15 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string, label: string }> = [];
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  groupFilterOptions: Array<{ value: string; label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
   totalMonth: number;
   isInactifUsers = false;
 
-  private userGroups: Array<{ id: string, group: any }> = [];
+  private userGroups: Array<{ id: string; group: any }> = [];
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();

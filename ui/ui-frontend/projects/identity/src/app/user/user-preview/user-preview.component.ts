@@ -40,12 +40,12 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
-import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { UserInfoService } from './../user-info.service';
 
 @Component({
   selector: 'app-user-preview',

@@ -788,6 +788,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy{
   /**
    * Returns a boolean if a given node has one or more attributes
    * regarding its seda specification
+   *
    * @param nodeName The node's name to be tested
    */
   hasAttributes(nodeName: string): boolean {

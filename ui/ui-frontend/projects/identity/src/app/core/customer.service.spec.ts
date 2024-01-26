@@ -36,7 +36,6 @@
  */
 import { BASE_URL, Customer, ENVIRONMENT, LoggerModule,
   Operators, OtpState, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
-import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
@@ -44,6 +43,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
+import { environment } from './../../environments/environment';
 import { CustomerService } from './customer.service';
 
 const expectedCustomer: Customer = {

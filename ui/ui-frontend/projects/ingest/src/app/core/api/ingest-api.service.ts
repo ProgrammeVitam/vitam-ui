@@ -42,7 +42,7 @@ export class IngestApiService extends BaseHttpClient<any> {
     );
   }
 
-  downloadODTReport(id : string) : Observable<Blob> {
+  downloadODTReport(id: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/odtreport/${id}`, { responseType: 'blob' });
   }
 

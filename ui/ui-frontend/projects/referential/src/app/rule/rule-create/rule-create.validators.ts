@@ -46,16 +46,12 @@ export class RuleCreateValidators {
 
   constructor(private ruleService: RuleService) {}
 
-  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
-  };
+  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
 
-  ruleIdPattern = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
+  ruleIdPattern = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
       const regexp = /[À-ÖØ-öø-ÿ ]/;
       return regexp.test(control.value) ? { ruleIdPattern: true } : null;
     };
-  };
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

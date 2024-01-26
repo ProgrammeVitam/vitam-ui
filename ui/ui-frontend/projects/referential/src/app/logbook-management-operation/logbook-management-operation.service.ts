@@ -78,9 +78,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
 
   listOperationsDetails(searchCriteria: any): Observable<OperationsResults> {
     return this.logbookManagementOperationApiService.searchOperationsDetails(searchCriteria).pipe(
-      catchError(() => {
-        return of({ $hits: null, $results: [] });
-      }),
+      catchError(() => of({ $hits: null, $results: [] })),
       map((response) => this.buildOperationsResults(response))
     );
   }
@@ -89,9 +87,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
     return this.logbookManagementOperationApiService
       .cancelOperationProcessExecution(id)
       .pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
+        catchError(() => of({ $hits: null, $results: [] })),
         map((response) => this.buildOperationsResults(response))
       )
       .pipe(
@@ -111,9 +107,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
     return this.logbookManagementOperationApiService
       .updateOperationProcessExecution(id, actionId)
       .pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
+        catchError(() => of({ $hits: null, $results: [] })),
         map((response) => this.buildOperationsResults(response))
       )
       .pipe(

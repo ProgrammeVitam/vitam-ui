@@ -90,9 +90,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         map((formData) =>
           extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData)
         ),
-        switchMap((formData) => {
-          return this.hierarchyService.patch(formData).pipe(catchError(() => of(null)));
-        })
+        switchMap((formData) => this.hierarchyService.patch(formData).pipe(catchError(() => of(null))))
       )
       .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly));
   }

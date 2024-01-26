@@ -52,7 +52,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
   @Input()
   accessionRegisterDetail: AccessionRegisterDetail;
 
-  longCommentSize = 200
+  longCommentSize = 200;
   hasLongComment = false;
   showFullComment = false;
 
@@ -65,7 +65,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
   }
 
   onClicShowMoreOrLessOfComment() {
-    this.showFullComment = !this.showFullComment
+    this.showFullComment = !this.showFullComment;
   }
 
   formatedComment() {
@@ -73,7 +73,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
       return '';
     }
     if (this.showFullComment) {
-      return this.accessionRegisterDetail.comment.join('\n\n')
+      return this.accessionRegisterDetail.comment.join('\n\n');
     }
     const premierParagraph = this.accessionRegisterDetail.comment[0];
     if (premierParagraph) {

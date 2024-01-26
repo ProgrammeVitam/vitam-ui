@@ -68,9 +68,7 @@ export class AdminDslService {
       headers = headers.append('X-By-Passed-Error', '500');
     }
     return this.unitApiService.getByDsl(unitId, dsl, headers).pipe(
-      catchError((httpErrorResponse: HttpErrorResponse) => {
-        return of(httpErrorResponse.error);
-      })
+      catchError((httpErrorResponse: HttpErrorResponse) => of(httpErrorResponse.error))
     );
   }
 
@@ -81,9 +79,7 @@ export class AdminDslService {
       .append('X-By-Passed-Error', '500');
 
     return this.unitApiService.getUnitObjectsByDsl(unitId, dsl, headers).pipe(
-      catchError((httpErrorResponse: HttpErrorResponse) => {
-        return of(httpErrorResponse.error);
-      })
+      catchError((httpErrorResponse: HttpErrorResponse) => of(httpErrorResponse.error))
     );
   }
 }

@@ -53,7 +53,7 @@ export class EventDisplayHelperService {
       for (const event of ingest) {
         this.eventData = this.getEventData(event);
         if (event.evParentId === null) {
-          rootEvent = new Event(this.eventData, [])
+          rootEvent = new Event(this.eventData, []);
           events.push(rootEvent);
         }
         else {

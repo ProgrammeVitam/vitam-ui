@@ -53,17 +53,17 @@ import {
   UserInfo,
   isRootLevel,
 } from 'ui-frontend-common';
-import { GroupSelection } from './../group-selection.interface';
-import { UserInfoService } from './../user-info.service';
 
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
+import { UserInfoService } from './../user-info.service';
+import { GroupSelection } from './../group-selection.interface';
 import { UserCreateValidators } from './user-create.validators';
 
 const LAST_STEP_INDEX = 2;
 
-const emailValidator: RegExp =
+const emailValidator =
   /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 @Component({
@@ -103,16 +103,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fullGroup = this.data.groups;
-    this.groups = this.fullGroup.map((group) => {
-      return {
+    this.groups = this.fullGroup.map((group) => ({
         id: group.id,
         name: group.name,
         description: group.description,
         selected: false,
         profiles: group.profiles,
         level: group.level,
-      };
-    }) as GroupSelection[];
+      })) as GroupSelection[];
 
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     if (!isRootLevel(this.authService.user)) {

@@ -257,9 +257,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
           break;
       }
     }
-    const diff = omit(o1, (value: any, key: string) => {
-      return isObject(value) ? isEqual(o2[key], value) : o2[key] === value;
-    });
+    const diff = omit(o1, (value: any, key: string) => isObject(value) ? isEqual(o2[key], value) : o2[key] === value);
     diffObj = { ...diffObj, ...diff };
     return mapObject(diffObj, (value: any) => value);
   }

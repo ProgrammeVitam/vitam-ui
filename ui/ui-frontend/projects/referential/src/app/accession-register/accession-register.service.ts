@@ -98,9 +98,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         ];
         return data.sort(this.sortByLabel(locale));
       }),
-      catchError((error) => {
-        return of(error);
-      })
+      catchError((error) => of(error))
     );
   }
 

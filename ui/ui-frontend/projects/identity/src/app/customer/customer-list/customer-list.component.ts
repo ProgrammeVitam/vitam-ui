@@ -140,7 +140,7 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
       panelClass: 'vitamui-modal'
     });
     dialogRef.afterClosed().pipe(filter((result) => !!result))
-    .subscribe((result: { owner?: Owner, tenant?: Tenant }) => {
+    .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
       if (result.owner) {
         customer.owners.push(result.owner);
       }

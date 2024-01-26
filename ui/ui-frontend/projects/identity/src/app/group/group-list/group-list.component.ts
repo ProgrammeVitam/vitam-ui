@@ -93,7 +93,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   private readonly orderChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
 
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
 
   constructor(public groupService: GroupService,
               @Inject(LOCALE_ID) private locale: string) {

@@ -38,9 +38,9 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   ngOnDestroy: () => void;
 
   onChange = (_: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   ngOnInit(): void {
     this.required = (this.required === undefined) ? false : true;

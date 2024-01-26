@@ -196,7 +196,7 @@ export class ProjectPreviewComponent implements OnInit {
     const projectToUpdate = {
       ...this.form.value,
       name: this.form.value.messageIdentifier,
-      
+
     };
     this.mapProjectInternalFields(projectToUpdate);
 
@@ -222,7 +222,7 @@ export class ProjectPreviewComponent implements OnInit {
               this.fillTransactionFromProject(transaction);
               updateTransactionOperation$.push(this.projectApiService.updateTransaction(transaction));
             } else if (transaction.status === TransactionStatus.KO) {
-              transactionsKO.push(transaction)
+              transactionsKO.push(transaction);
             }
           });
           return combineLatest(updateTransactionOperation$).pipe(map(() => transactionsKO));
@@ -230,7 +230,7 @@ export class ProjectPreviewComponent implements OnInit {
 
         let transactionMessage = this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED');
         if (transactionsKO.length > 0) {
-          transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO')
+          transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO');
         }
         this.snackBar.open(transactionMessage, null, {
           panelClass: 'vitamui-snack-bar',

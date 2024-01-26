@@ -88,7 +88,7 @@ function constantToTranslate(edit: boolean) {
   this.popupSaveOkLabel = this.translated('.SAVE_PROFILE.POPUP_SAVE_OK_LABEL');
   this.popupSaveCreateNoticeCancelLabel = this.translated('.SAVE_PROFILE.POPUP_CREATE_NOTICE_CANCEL_LABEL');
   this.popupSaveCreateNoticeOkLabel = this.translated('.SAVE_PROFILE.POPUP_CREATE_NOTICE_OK_LABEL');
-  this.popupSaveSelectNoticeTitleDialog = this.translated('.SAVE_PROFILE.POPUP_SELECT_NOTICE_TITLE_DIALOG')
+  this.popupSaveSelectNoticeTitleDialog = this.translated('.SAVE_PROFILE.POPUP_SELECT_NOTICE_TITLE_DIALOG');
 }
 
 @Component({
@@ -160,7 +160,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     }
     this.subscriptions.add(
       this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees));
-    this.isSlaveMode = this.popupService.externalIdentifierEnabled
+    this.isSlaveMode = this.popupService.externalIdentifierEnabled;
   }
 
   translatedOnChange(): void {
@@ -248,7 +248,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                           this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
                             this.toggleService.hidePending();
                             this.success('La création du profil a bien été effectué');
-                          })
+                          });
                         } else {
                           this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
                               this.toggleService.hidePending();
@@ -256,9 +256,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                             },
                             error => {
                               this.toggleService.hidePending();
-                              const vitamUIException: VitamUIExceptionResponse = error.error
+                              const vitamUIException: VitamUIExceptionResponse = error.error;
                               this.displaySnackBar(vitamUIException);
-                            })
+                            });
                         }
                       });
                     }));
@@ -332,7 +332,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                       .subscribe(() => {
                         this.toggleService.hidePending();
                         this.success('La modification du profil a bien été effectué');
-                      })
+                      });
                   });
                 }
               }
@@ -371,7 +371,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             this.profileService.updateProfileFilePa(createdProfile, myFile).subscribe(() => {
               this.toggleService.hidePending();
               this.success('La création du profil a bien été effectué');
-            })
+            });
           });
         }
       });
@@ -383,7 +383,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false), myFile).subscribe(() => {
             this.toggleService.hidePending();
             this.success('La modification du profil a bien été effectué');
-          })
+          });
         });
       });
     }
@@ -404,7 +404,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     b.name = fileName;
     // Cast to a File() type
     return theBlob as File;
-  }
+  };
 
   downloadFile(dataFile: any, notice: boolean): void {
     let typeFile;

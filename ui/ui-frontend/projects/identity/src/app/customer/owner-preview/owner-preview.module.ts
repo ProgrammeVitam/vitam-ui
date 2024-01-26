@@ -42,13 +42,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SharedModule } from '../../shared/shared.module';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { OwnerPopupComponent } from './owner-popup.component';
 import { OwnerPreviewComponent } from './owner-preview.component';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 
 @NgModule({

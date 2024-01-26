@@ -69,9 +69,7 @@ export class OntologyInformationTabComponent implements OnInit {
     }
   }
 
-  previousValue=(): Ontology => {
-    return this._inputOntology;
-  }
+  previousValue=(): Ontology => this._inputOntology;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,7 +110,7 @@ export class OntologyInformationTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(),this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id,identifier: this.previousValue().identifier},formData)),
-      switchMap((formData: {id: string,[key: string]: any}) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: {id: string;[key: string]: any}) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {

@@ -110,7 +110,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
       panelClass: 'vitamui-modal'
     });
     dialogRef.afterClosed().pipe(filter((result) => !!result))
-      .subscribe((result: { owner?: Owner, tenant?: Tenant }) => {
+      .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
         if (result.owner) {
           this.customer.owners = this.customer.owners.concat([result.owner]);
           this.filteredData(this.myTenants);

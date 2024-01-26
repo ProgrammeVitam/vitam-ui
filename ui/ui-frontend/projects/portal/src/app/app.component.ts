@@ -65,6 +65,6 @@ export class AppComponent implements OnInit {
     }
 
     const uiConfig: any = this.startupService.getConfigStringValue('UI');
-    this.hasLangSelection = uiConfig?.hasLangSelection ?? true
+    this.hasLangSelection = uiConfig?.hasLangSelection ?? true;
   }
 }

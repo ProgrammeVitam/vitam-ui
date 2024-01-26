@@ -298,10 +298,10 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
               const greaterThanOrEqual = this.translatePipe.transform('COLLECT.SEARCH_CRITERIA_GTE');
               const lesserThanOrEqual = this.translatePipe.transform('COLLECT.SEARCH_CRITERIA_LTE');
 
-              if (beginDate && endDate) value = `${between} ${beginDate} ${and} ${endDate}`;
-              else if (beginDate && !endDate) value = `${greaterThanOrEqual} ${beginDate}`;
-              else if (!beginDate && endDate) value = `${lesserThanOrEqual} ${endDate}`;
-              else throw new Error('Interval without beginDate and endDate');
+              if (beginDate && endDate) {value = `${between} ${beginDate} ${and} ${endDate}`;}
+              else if (beginDate && !endDate) {value = `${greaterThanOrEqual} ${beginDate}`;}
+              else if (!beginDate && endDate) {value = `${lesserThanOrEqual} ${endDate}`;}
+              else {throw new Error('Interval without beginDate and endDate');}
 
               break;
             default:
@@ -340,7 +340,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
       const translation = this.translatePipe.transform(translationKey);
       const isTranslated = translation !== translationKey;
 
-      if (isTranslated) return translation;
+      if (isTranslated) {return translation;}
     }
 
     return null;

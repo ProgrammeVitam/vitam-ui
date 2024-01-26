@@ -110,7 +110,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   @Input()
-  set gdprReadOnlyStatus(gdprReadOnlyStatus : boolean){
+  set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean){
     this._gdprReadOnlyStatus = gdprReadOnlyStatus;
     if(gdprReadOnlyStatus ) {
       this.form.get('gdprAlertDelay').disable({ emitEvent: false });

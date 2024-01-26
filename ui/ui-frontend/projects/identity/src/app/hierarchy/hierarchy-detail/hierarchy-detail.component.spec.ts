@@ -44,11 +44,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of, Subject } from 'rxjs';
-import { environment } from './../../../environments/environment';
 
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { HierarchyService } from '../hierarchy.service';
+import { environment } from './../../../environments/environment';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
 
 @Component({ selector: 'app-information-tab', template: '' })

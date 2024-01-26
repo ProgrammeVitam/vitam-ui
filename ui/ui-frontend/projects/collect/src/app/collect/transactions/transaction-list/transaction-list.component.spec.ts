@@ -99,9 +99,7 @@ describe('TransactionListComponent', () => {
   );
 
   const TransactionResolverStub = {
-    resolve: () => {
-      return true;
-    },
+    resolve: () => true,
   };
 
   const startUpServiceMock = {

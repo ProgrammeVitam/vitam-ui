@@ -54,11 +54,11 @@ export class SecurityProfileInformationTabComponent {
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
+    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
     { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
     { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
     { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AdministrationRule', label: "Durée d'utilité administrative", info: '' },
+    { key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: '' },
     { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
@@ -71,9 +71,7 @@ export class SecurityProfileInformationTabComponent {
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _securityProfile: SecurityProfile;
 
-  previousValue = (): SecurityProfile => {
-    return this._securityProfile;
-  };
+  previousValue = (): SecurityProfile => this._securityProfile;
 
   @Input()
   // eslint-disable-next-line no-shadow

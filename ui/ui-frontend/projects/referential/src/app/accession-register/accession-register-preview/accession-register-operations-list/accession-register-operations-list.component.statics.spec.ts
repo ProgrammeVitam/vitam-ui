@@ -33,8 +33,8 @@ export class AccessionRegisterFixtures {
   }
 
   public static newOperations(name: RegisterValueEventType): RegisterValueEventModel {
-    const date = new Date()
-    date.setHours(Math.floor(Math.random() * (12 + 1)))
+    const date = new Date();
+    date.setHours(Math.floor(Math.random() * (12 + 1)));
     return {
       Opc: name,
       OpType: name,
@@ -43,6 +43,6 @@ export class AccessionRegisterFixtures {
       Objects: Math.floor(Math.random() * (10 + 1)),
       ObjSize: Math.floor(Math.random() * (100 + 1)),
       CreationDate: date.toISOString(),
-    }
+    };
   }
 }

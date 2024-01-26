@@ -12,14 +12,14 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
 
   @Input()
   checked: boolean;
-  text : string;
+  text: string;
   text1: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.text1='Métadonnées supplémentaires'
-    this.text=' non autorisées'
+    this.text1='Métadonnées supplémentaires';
+    this.text=' non autorisées';
 
   }
   // eslint-disable-next-line @typescript-eslint/member-ordering

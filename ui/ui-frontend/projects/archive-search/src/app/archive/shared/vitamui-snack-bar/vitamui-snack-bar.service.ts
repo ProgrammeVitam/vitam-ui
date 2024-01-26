@@ -125,6 +125,7 @@ export class VitamUISnackBar {
 
   /**
    * Opens a snackbar with a message and an optional action.
+   *
    * @param message The message to show in the snackbar.
    * @param action The label for the snackbar action.
    * @param config Additional configuration options for the snackbar.
@@ -249,6 +250,7 @@ export class VitamUISnackBar {
 
   /**
    * Creates a new overlay and places it in the correct location.
+   *
    * @param config The user-specified snack bar config.
    */
   private _createOverlay(config: MatSnackBarConfig): OverlayRef {
@@ -290,6 +292,7 @@ export class VitamUISnackBar {
 
   /**
    * Creates an injector to be used inside of a snack bar component.
+   *
    * @param config Config that was used to create the snack bar.
    * @param snackBarRef Reference to the snack bar.
    */
