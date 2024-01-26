@@ -74,7 +74,8 @@
     "build:vitamui-library": "ng build vitamui-library",
     "watch:vitamui-library": "ng build vitamui-library --watch",
     "prettier": "prettier --write --ignore-unknown .",
-    "prettier:ci": "prettier --check --ignore-unknown ."
+    "prettier:ci": "prettier --check --ignore-unknown .",
+    "prepare": "cd ../../ && husky install ui/ui-frontend/.husky"
   },
   "private": true,
   "dependencies": {
@@ -136,6 +137,7 @@
     "codelyzer": "^5.2.2",
     "concurrently": "^5.3.0",
     "cp-cli": "^2.0.0",
+    "husky": "8.0.3",
     "jasmine-core": "^3.7.0",
     "jasmine-marbles": "^0.4.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -145,6 +147,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.4",
+    "lint-staged": "13.2.3",
     "moment-locales-webpack-plugin": "^1.2.0",
     "ng-packagr": "^10.1.2",
     "ngx-i18nsupport": "^0.17.1",
@@ -161,5 +164,8 @@
   },
   "overrides": {
     "colors": "1.4.0"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }
