@@ -72,7 +72,9 @@
     "check:archive-search": "npm run lint:archive-search && npm run test:archive-search && npm run build:archive-search",
     "copy-scss:vitamui-library": "cp-cli ./projects/vitamui-library/src/sass ./dist/sass",
     "build:vitamui-library": "ng build vitamui-library",
-    "watch:vitamui-library": "ng build vitamui-library --watch"
+    "watch:vitamui-library": "ng build vitamui-library --watch",
+    "prettier": "prettier --write --ignore-unknown .",
+    "prettier:ci": "prettier --check --ignore-unknown ."
   },
   "private": true,
   "dependencies": {
@@ -148,6 +150,7 @@
     "ngx-i18nsupport": "^0.17.1",
     "ngx-markdown": "8.2.2",
     "node-sass": "^4.14.1",
+    "prettier": "3.2.4",
     "protractor": "^7.0.0",
     "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
