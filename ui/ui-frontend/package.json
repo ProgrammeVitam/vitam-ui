@@ -105,7 +105,9 @@
     "package:ingest": "mkdir -p dist/ingest/ && cp projects/ingest/package.json dist/ingest/package.json && npm pack dist/ingest/",
     "package:pastis": "mkdir -p dist/pastis/ && cp projects/pastis/package.json dist/pastis/package.json && npm pack dist/pastis/",
     "package:referential": "mkdir -p dist/referential/ && cp projects/referential/package.json dist/referential/package.json && npm pack dist/referential/",
-    "package:all": "npm run package:portal &&  npm run package:identity  && npm run package:referential && npm run package:archive-search && npm run package:collect  && npm run package:pastis && npm run package:ingest"
+    "package:all": "npm run package:portal &&  npm run package:identity  && npm run package:referential && npm run package:archive-search && npm run package:collect  && npm run package:pastis && npm run package:ingest",
+    "prettier": "prettier --write --ignore-unknown .",
+    "prettier:ci": "prettier --check --ignore-unknown ."
   },
   "private": true,
   "dependencies": {
@@ -154,7 +156,6 @@
     "ngx-translate-multi-http-loader": "^3.0.0",
     "ngx-ui-loader": "^10.0.0",
     "popper.js": "^1.16.1",
-    "prettier": "^3.1.1",
     "remove": "^0.1.5",
     "rxjs": "^6.5.5",
     "serialize-javascript": "^5.0.1",
@@ -201,6 +202,7 @@
     "ngx-i18nsupport": "^0.17.1",
     "ngx-markdown": "10.1.1",
     "node-sass": "^4.14.1",
+    "prettier": "3.2.4",
     "protractor": "^7.0.0",
     "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
