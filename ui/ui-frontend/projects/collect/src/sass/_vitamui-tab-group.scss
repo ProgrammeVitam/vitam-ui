@@ -18,7 +18,9 @@
     font-weight: normal;
     color: rgba(72, 80, 83, 0.3);
     text-transform: uppercase;
-    transition: background-color 200ms ease-out, color 200ms ease-out;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out;
 
     &:hover {
       color: var(--vitamui-primary);

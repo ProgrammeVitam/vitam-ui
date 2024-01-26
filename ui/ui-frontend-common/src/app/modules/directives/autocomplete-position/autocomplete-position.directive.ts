@@ -56,7 +56,7 @@ export class AutocompletePositionDirective implements OnDestroy {
     if (this.matAutocompleteTrigger.panelOpen) {
       this.matAutocompleteTrigger.updatePosition();
     }
-  }
+  };
 
   ngOnDestroy() {
     window.removeEventListener('scroll', this.scrollEvent, true);

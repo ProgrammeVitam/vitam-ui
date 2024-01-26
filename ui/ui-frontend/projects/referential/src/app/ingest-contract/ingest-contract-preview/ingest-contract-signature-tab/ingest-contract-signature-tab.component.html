@@ -3,19 +3,24 @@
     <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate }}</p>
   </div>
   <div class="row">
-    <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup"
-                             class="vitamui-button-toggle-group">
-      <mat-button-toggle value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
-                         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)">
-        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED  | translate }}
+    <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+      <mat-button-toggle
+        value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
+        (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
+      >
+        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED | translate }}
       </mat-button-toggle>
-      <mat-button-toggle value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
-                         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)">
-        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY  | translate }}
+      <mat-button-toggle
+        value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
+        (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)"
+      >
+        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY | translate }}
       </mat-button-toggle>
-      <mat-button-toggle value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
-                         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)">
-        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN  | translate }}
+      <mat-button-toggle
+        value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
+        (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)"
+      >
+        {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
@@ -25,31 +30,29 @@
   <div class="row">
     <div class="col">
       <div class="criteria-checkbox-choice">
-        <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-          <input type="checkbox"
-                 id="declaredSignature"
-                 formControlName="declaredSignature"
-                 [attr.disabled]="signedDocumentPolicyIsDisabled()"
+        <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+          <input
+            type="checkbox"
+            id="declaredSignature"
+            formControlName="declaredSignature"
+            [attr.disabled]="signedDocumentPolicyIsDisabled()"
           />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
         </label>
       </div>
       <div class="criteria-checkbox-choice">
-        <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-          <input type="checkbox"
-                 id="TIMESTAMP"
-                 formControlName="declaredTimestamp"
-                 [attr.disabled]="signedDocumentPolicyIsDisabled()"
-          />
+        <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+          <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" [attr.disabled]="signedDocumentPolicyIsDisabled()" />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
         </label>
       </div>
       <div class="criteria-checkbox-choice">
-        <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-          <input type="checkbox"
-                 id="ADDITIONAL_EVIDENCES"
-                 formControlName="declaredAdditionalProof"
-                 [attr.disabled]="signedDocumentPolicyIsDisabled()"
+        <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+          <input
+            type="checkbox"
+            id="ADDITIONAL_EVIDENCES"
+            formControlName="declaredAdditionalProof"
+            [attr.disabled]="signedDocumentPolicyIsDisabled()"
           />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
         </label>

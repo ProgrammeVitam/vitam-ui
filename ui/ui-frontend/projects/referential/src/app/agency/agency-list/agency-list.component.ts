@@ -105,7 +105,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     public agencyService: AgencyService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
   ) {
     super(agencyService);
     this.genericUserRole = {
@@ -128,11 +128,11 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
       distinctUntilChanged(),
       tap((tenantIdentifier) => {
         this.agencyService.setTenantId(tenantIdentifier);
-      })
+      }),
     );
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
-      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+      debounceTime(FILTER_DEBOUNCE_TIME_MS),
     );
 
     searchCriteriaChange.subscribe(() => {

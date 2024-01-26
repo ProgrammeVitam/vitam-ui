@@ -1,14 +1,14 @@
 .vitamui-input-file {
-    label {
-        margin-bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-        position: unset !important;
-    }
+  label {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    position: unset !important;
+  }
 
-    input[type="file"] {
-        visibility: hidden;
-    }
+  input[type='file'] {
+    visibility: hidden;
+  }
 }

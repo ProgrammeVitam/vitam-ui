@@ -41,14 +41,12 @@ import { BASE_URL } from 'ui-frontend-common';
 import { UserGenericApiService } from './user-generic-api.service';
 
 describe('UserGenericApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-    ],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    }),
+  );
 
   it('should be created', () => {
     const service: UserGenericApiService = TestBed.inject(UserGenericApiService);

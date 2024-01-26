@@ -35,51 +35,46 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component} from '@angular/core';
-import {ComponentFixture, TestBed } from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {ResizeVerticalDirective} from './resize-vertical.directive';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ResizeVerticalDirective } from './resize-vertical.directive';
 
 @Component({
   template: `
     <div class="cadre">
-      <div class="box">
-        Top div
-      </div>
+      <div class="box">Top div</div>
       <div class="cadre" vitamuiVerticalResizeSidebar="top"></div>
-      <div class="box">
-        Bottom div
-      </div>
+      <div class="box">Bottom div</div>
     </div>
   `,
-  styles: [`
-    .vitamui-sidepanel-resize-sidebar {
-      border-top: 4px solid rgb(112, 35, 130);
-      height: 0;
-      padding: 0;
-      margin: 0;
-      cursor: ns-resize;
-      flex: 0 0 auto;
-    }
-  `]
+  styles: [
+    `
+      .vitamui-sidepanel-resize-sidebar {
+        border-top: 4px solid rgb(112, 35, 130);
+        height: 0;
+        padding: 0;
+        margin: 0;
+        cursor: ns-resize;
+        flex: 0 0 auto;
+      }
+    `,
+  ],
 })
-class ResizeVerticalBarTestComponent {
-}
+class ResizeVerticalBarTestComponent {}
 
 describe('ResizeVerticalDirective', () => {
-
   let fixture: ComponentFixture<ResizeVerticalBarTestComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ResizeVerticalDirective, ResizeVerticalBarTestComponent]
+      declarations: [ResizeVerticalDirective, ResizeVerticalBarTestComponent],
     }).createComponent(ResizeVerticalBarTestComponent);
     fixture.detectChanges();
-  }));
+  });
 
   it('should have one element resizeable', () => {
     const div = fixture.debugElement.queryAll(By.directive(ResizeVerticalDirective));
     expect(div.length).toBe(1);
   });
-
 });

@@ -39,13 +39,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-common-close-popup-dialog',
   templateUrl: './close-popup-dialog.component.html',
-  styleUrls: ['./close-popup-dialog.component.scss']
+  styleUrls: ['./close-popup-dialog.component.scss'],
 })
 export class ClosePopupDialogComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

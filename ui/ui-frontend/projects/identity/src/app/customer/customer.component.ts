@@ -49,7 +49,6 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
   styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
-
   public customers: Customer[];
   public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
   public owner: Owner;
@@ -57,8 +56,12 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService,
-    public customerService: CustomerService) {
+  constructor(
+    private dialog: MatDialog,
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+    public customerService: CustomerService,
+  ) {
     super(route, globalEventService);
   }
 

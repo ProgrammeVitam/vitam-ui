@@ -44,16 +44,15 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableFileComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-file',
   templateUrl: './editable-file.component.html',
-  providers: [EDITABLE_FILE_VALUE_ACCESSOR]
+  providers: [EDITABLE_FILE_VALUE_ACCESSOR],
 })
 export class EditableFileComponent extends EditableFieldComponent {
-
   @Input() accept: string;
   @Input() customId = 'vitamui-input-file';
   file: File;
@@ -71,10 +70,11 @@ export class EditableFileComponent extends EditableFieldComponent {
   }
 
   cancel() {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     this.file = null;
     this.fileInput.nativeElement.value = null;
     super.cancel();
   }
-
 }

@@ -1,5 +1,25 @@
 <div class="d-flex align-items-center" [formGroup]="form">
-  <vitamui-common-input class="w-100 mr-3" placeholder="{{'DATE.DAYS' | translate}}" type="number" formControlName="days" [minValue]="0"></vitamui-common-input>
-  <vitamui-common-input class="w-100 mr-3" placeholder="{{'DATE.HOURS' | translate}}" type="number" formControlName="hours" [minValue]="0" [maxValue]="23"></vitamui-common-input>
-  <vitamui-common-input class="w-100" placeholder="{{'DATE.MINUTES' | translate}}" type="number" formControlName="minutes" [minValue]="0" [maxValue]="59"></vitamui-common-input>
+  <vitamui-common-input
+    class="w-100 mr-3"
+    placeholder="{{ 'DATE.DAYS' | translate }}"
+    type="number"
+    formControlName="days"
+    [minValue]="0"
+  ></vitamui-common-input>
+  <vitamui-common-input
+    class="w-100 mr-3"
+    placeholder="{{ 'DATE.HOURS' | translate }}"
+    type="number"
+    formControlName="hours"
+    [minValue]="0"
+    [maxValue]="23"
+  ></vitamui-common-input>
+  <vitamui-common-input
+    class="w-100"
+    placeholder="{{ 'DATE.MINUTES' | translate }}"
+    type="number"
+    formControlName="minutes"
+    [minValue]="0"
+    [maxValue]="59"
+  ></vitamui-common-input>
 </div>

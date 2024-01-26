@@ -41,31 +41,23 @@ import { ProfilePopupComponent } from './profile-detail/profile-popup.component'
 import { ProfileResolver } from './profile-resolver.service';
 import { ProfileComponent } from './profile.component';
 
-
 const routes: Route[] = [
   {
     path: '',
     component: ProfileComponent,
-    pathMatch: 'full'
-
+    pathMatch: 'full',
   },
   {
     path: ':id',
     component: ProfilePopupComponent,
     resolve: { profile: ProfileResolver },
-    data: { isPopup: true, appId: 'PROFILES_APP' }
-  }
+    data: { isPopup: true, appId: 'PROFILES_APP' },
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class ProfileRoutingModule { }
+export class ProfileRoutingModule {}

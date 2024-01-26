@@ -39,13 +39,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'demo-icon-demo',
   templateUrl: './icon-demo.component.html',
-  styleUrls: ['./icon-demo.component.scss']
+  styleUrls: ['./icon-demo.component.scss'],
 })
 export class IconDemoComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

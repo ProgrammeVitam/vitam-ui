@@ -1,47 +1,46 @@
 .category {
-    margin: 0.5rem auto;
+  margin: 0.5rem auto;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 :host::ng-deep {
-
-    .mat-tab-body-wrapper {
-        ::-webkit-scrollbar {
-            display: none;
-        }
+  .mat-tab-body-wrapper {
+    ::-webkit-scrollbar {
+      display: none;
     }
+  }
 
-    .mat-card-image:first-child {
-        margin: 0;
-    }
+  .mat-card-image:first-child {
+    margin: 0;
+  }
 
-    .mat-card-header-text {
-        max-width: 16.8vw;
-        margin: 1rem 0;
-    }
+  .mat-card-header-text {
+    max-width: 16.8vw;
+    margin: 1rem 0;
+  }
 
-    .mat-tab-header {
-        margin: 3rem 0 1.5rem 0;
-    }
+  .mat-tab-header {
+    margin: 3rem 0 1.5rem 0;
+  }
 
-    .mat-tab-label.mat-tab-label-active {
-        color: var(--vitamui-primary);
-        opacity: 1;
-        font-weight: bold;
-    }
+  .mat-tab-label.mat-tab-label-active {
+    color: var(--vitamui-primary);
+    opacity: 1;
+    font-weight: bold;
+  }
 
-    .mat-tab-labels {
-        justify-content: center;
-    }
+  .mat-tab-labels {
+    justify-content: center;
+  }
 
-    .mat-ink-bar {
-        background-color: var(--vitamui-primary)!important;
-    }
+  .mat-ink-bar {
+    background-color: var(--vitamui-primary) !important;
+  }
 
-    .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
-        display: none!important;
-    }
+  .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
+    display: none !important;
+  }
 }

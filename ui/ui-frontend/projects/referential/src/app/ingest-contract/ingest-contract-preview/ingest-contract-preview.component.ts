@@ -85,7 +85,10 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     }
   }
 
-  constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private ingestContractService: IngestContractService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {

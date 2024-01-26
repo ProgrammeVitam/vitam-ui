@@ -64,7 +64,7 @@ export class StandaloneStartupService {
     private authService: AuthService,
     // private securityApi: SecurityApiService,
     private themeService: StandaloneThemeService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
   load(): any {

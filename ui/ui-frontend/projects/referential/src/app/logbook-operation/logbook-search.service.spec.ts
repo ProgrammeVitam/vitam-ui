@@ -43,13 +43,15 @@ import { TestBed } from '@angular/core/testing';
 import { LogbookSearchService } from './logbook-search.service';
 
 describe('LogbookSearchService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [
-      { provide: LogbookService, useValue: {} },
-      { provide: LogbookApiService, useValue: {} },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: LogbookService, useValue: {} },
+        { provide: LogbookApiService, useValue: {} },
+      ],
+    }),
+  );
 
   it('should be created', () => {
     const service: LogbookSearchService = TestBed.inject(LogbookSearchService);

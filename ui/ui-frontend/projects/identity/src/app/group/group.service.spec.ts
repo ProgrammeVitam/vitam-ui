@@ -281,7 +281,6 @@ describe('GroupService', () => {
   });
 
   it('should display an error message', () => {
-
     const snackBar = TestBed.inject(VitamUISnackBarService);
     const expectedGroup: Group = {
       id: '1',

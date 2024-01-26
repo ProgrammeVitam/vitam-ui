@@ -17,7 +17,11 @@ export class ConfigService implements OnDestroy {
   public config: AppConfiguration = null;
   public config$ = new BehaviorSubject<AppConfiguration>(null);
 
-  constructor(httpBackend: HttpBackend, private logger: Logger, private applicationApi: ApplicationApiService) {
+  constructor(
+    httpBackend: HttpBackend,
+    private logger: Logger,
+    private applicationApi: ApplicationApiService,
+  ) {
     this.http = new HttpClient(httpBackend);
   }
 
@@ -42,7 +46,7 @@ export class ConfigService implements OnDestroy {
       catchError((error) => {
         this.logger.error(this, error);
         return of(false);
-      })
+      }),
     );
   }
 
@@ -60,7 +64,7 @@ export class ConfigService implements OnDestroy {
         catchError((error) => {
           this.logger.error(this, error);
           return of(null);
-        })
+        }),
       );
     } else {
       return of(null);

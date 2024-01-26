@@ -443,14 +443,14 @@
                   <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
                     <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                       <b> {{ archiveUnit?.Title }}</b> <br />
-                      {{ archiveUnit?.Description | truncate : 100 }}
+                      {{ archiveUnit?.Description | truncate: 100 }}
                     </p>
                   </ng-container>
                   <ng-template #subTitleFr>
                     <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
                       <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.fr }} </b> <br />
-                        {{ archiveUnit?.Description_?.fr | truncate : 100 }}
+                        {{ archiveUnit?.Description_?.fr | truncate: 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
@@ -458,16 +458,16 @@
                     <ng-container *ngIf="archiveUnit.Title_.en">
                       <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                         <b>{{ archiveUnit.Title_.en }} </b> <br />
-                        {{ archiveUnit?.Description_?.en | truncate : 100 }}
+                        {{ archiveUnit?.Description_?.en | truncate: 100 }}
                       </p>
                     </ng-container>
                   </ng-template>
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit.StartDate | dateTime : 'dd/MM/yyyy' }}
+                  {{ archiveUnit.StartDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit.EndDate | dateTime : 'dd/MM/yyyy' }}
+                  {{ archiveUnit.EndDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <p

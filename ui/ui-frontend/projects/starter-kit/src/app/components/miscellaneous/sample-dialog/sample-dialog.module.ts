@@ -4,10 +4,7 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { SampleDialogComponent } from './sample-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule
-  ],
-  declarations: [SampleDialogComponent]
+  imports: [CommonModule, VitamUICommonModule],
+  declarations: [SampleDialogComponent],
 })
-export class SampleDialogModule { }
+export class SampleDialogModule {}

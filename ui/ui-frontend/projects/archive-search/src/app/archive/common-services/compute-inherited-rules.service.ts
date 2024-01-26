@@ -31,7 +31,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 import {
-  CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService, UnitType
+  CriteriaDataType,
+  CriteriaOperator,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  StartupService,
+  UnitType,
 } from 'ui-frontend-common';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
@@ -48,7 +53,7 @@ export class ComputeInheritedRulesService {
     private archiveService: ArchiveService,
     private translateService: TranslateService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   launchComputedInheritedRulesModal(
@@ -57,7 +62,7 @@ export class ComputeInheritedRulesService {
     tenantIdentifier: number,
     currentPage: number,
     launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
@@ -87,7 +92,7 @@ export class ComputeInheritedRulesService {
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
           dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-          { panelClass: 'vitamui-dialog' }
+          { panelClass: 'vitamui-dialog' },
         );
 
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -96,7 +101,7 @@ export class ComputeInheritedRulesService {
           .subscribe(() => {
             const computedInheritedRulesDSLQuery = {
               criteriaList: computedInheritedRulesSearchCriteria.criteriaList.filter(
-                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT
+                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT,
               ),
               pageNumber: currentPage,
               size: PAGE_SIZE,

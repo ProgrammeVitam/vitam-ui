@@ -7,14 +7,8 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { ContentListComponent } from './content-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatTabsModule,
-    TranslateModule,
-    VitamUICommonModule,
-    AngularSvgIconModule,
-  ],
+  imports: [CommonModule, MatTabsModule, TranslateModule, VitamUICommonModule, AngularSvgIconModule],
   declarations: [ContentListComponent],
-  exports: [ContentListComponent]
+  exports: [ContentListComponent],
 })
-export class ContentListModule { }
+export class ContentListModule {}

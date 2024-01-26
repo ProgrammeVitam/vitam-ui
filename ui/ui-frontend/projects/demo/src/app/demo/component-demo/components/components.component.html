@@ -3,24 +3,38 @@
 <h3>Navbar</h3>
 
 <div class="demo-block">
-  <vitamui-common-navbar [appId]="appId" (tenantSelect)="onTenantSelect($event)" (customerSelect)="onCustomerSelect($event)"
-    [customers]="customers" [hideTenantMenu]="false" [hideCustomerMenu]="false"></vitamui-common-navbar>
+  <vitamui-common-navbar
+    [appId]="appId"
+    (tenantSelect)="onTenantSelect($event)"
+    (customerSelect)="onCustomerSelect($event)"
+    [customers]="customers"
+    [hideTenantMenu]="false"
+    [hideCustomerMenu]="false"
+  ></vitamui-common-navbar>
 </div>
 
 <div id="components">
-
   <h3>Form Fields</h3>
 
   <div class="demo-block">
     <vitamui-common-input placeholder="Text Input" [(ngModel)]="vitamuiInputValue" required #vitamuiInput="ngModel">
-      <vitamui-common-input-error *ngIf="vitamuiInput.touched && vitamuiInput.hasError('required')">Invalid field</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="vitamuiInput.touched && vitamuiInput.hasError('required')"
+        >Invalid field</vitamui-common-input-error
+      >
     </vitamui-common-input>
   </div>
 
   <h3>Input Positive Number</h3>
   <div class="demo-block">
-    <vitamui-common-input-positive-number placeholder="Number Input" [(ngModel)]="vitamUIInputPositiveNumberValue"
-       required (keypress)="onKeyPress($event)" #VitamUIInputPositiveNumber="ngModel" type="number" min="0">
+    <vitamui-common-input-positive-number
+      placeholder="Number Input"
+      [(ngModel)]="vitamUIInputPositiveNumberValue"
+      required
+      (keypress)="onKeyPress($event)"
+      #VitamUIInputPositiveNumber="ngModel"
+      type="number"
+      min="0"
+    >
     </vitamui-common-input-positive-number>
   </div>
 
@@ -30,36 +44,33 @@
 
   <h3>Tooltip</h3>
 
-  <div class="tooltip-demo-block"
-    vitamuiCommonTooltip="Paramétrer les profils de droits des utilisateurs pour accéder aux archives dans un coffre et utiliser les fonctions de l'APP Archives (déposer, consulter, télécharger, ...)">
+  <div
+    class="tooltip-demo-block"
+    vitamuiCommonTooltip="Paramétrer les profils de droits des utilisateurs pour accéder aux archives dans un coffre et utiliser les fonctions de l'APP Archives (déposer, consulter, télécharger, ...)"
+  >
     <p>
-      Nullam ipsum turpis, sagittis at hendrerit at, lacinia vel augue. Nunc interdum, eros pulvinar suscipit vulputate,
-      dolor ante volutpat turpis,
-      ac scelerisque elit mi eget est. Mauris tincidunt, magna vel porttitor fringilla, ligula est eleifend ante, ac
-      pharetra metus augue sit amet sapien.
-      Cras eget mauris id dui semper convallis sed vel ante. Aenean sit amet semper velit, ac tincidunt tellus. Mauris
-      lacinia gravida ligula sit amet commodo.
-      Vestibulum a magna nec velit tristique mollis. Praesent posuere, orci eget vestibulum dictum, elit turpis faucibus
-      orci, et congue leo enim id sapien.
-      Ut congue nisi vitae aliquet finibus. Nullam accumsan magna a sagittis posuere. Sed venenatis egestas justo. Donec
-      magna tellus, efficitur nec sollicitudin
-      rutrum, ultricies non massa. Vestibulum a mauris a orci lacinia pharetra. Curabitur placerat sem a tellus
-      sagittis, ac rutrum eros interdum. Duis sagittis
-      orci sed neque consequat, non lobortis ex vehicula. Vestibulum nec risus eu justo rhoncus feugiat sed vel turpis.
-      Mauris consequat quis ante id semper.
-      Integer tempus convallis tellus, at eleifend dui dapibus vitae. Sed vel posuere elit. Etiam leo enim, dignissim
-      sit amet sem vel, scelerisque tempus ipsum.
-      Praesent lobortis faucibus mi ac condimentum. Nullam dignissim erat sit amet aliquam maximus.
+      Nullam ipsum turpis, sagittis at hendrerit at, lacinia vel augue. Nunc interdum, eros pulvinar suscipit vulputate, dolor ante volutpat
+      turpis, ac scelerisque elit mi eget est. Mauris tincidunt, magna vel porttitor fringilla, ligula est eleifend ante, ac pharetra metus
+      augue sit amet sapien. Cras eget mauris id dui semper convallis sed vel ante. Aenean sit amet semper velit, ac tincidunt tellus.
+      Mauris lacinia gravida ligula sit amet commodo. Vestibulum a magna nec velit tristique mollis. Praesent posuere, orci eget vestibulum
+      dictum, elit turpis faucibus orci, et congue leo enim id sapien. Ut congue nisi vitae aliquet finibus. Nullam accumsan magna a
+      sagittis posuere. Sed venenatis egestas justo. Donec magna tellus, efficitur nec sollicitudin rutrum, ultricies non massa. Vestibulum
+      a mauris a orci lacinia pharetra. Curabitur placerat sem a tellus sagittis, ac rutrum eros interdum. Duis sagittis orci sed neque
+      consequat, non lobortis ex vehicula. Vestibulum nec risus eu justo rhoncus feugiat sed vel turpis. Mauris consequat quis ante id
+      semper. Integer tempus convallis tellus, at eleifend dui dapibus vitae. Sed vel posuere elit. Etiam leo enim, dignissim sit amet sem
+      vel, scelerisque tempus ipsum. Praesent lobortis faucibus mi ac condimentum. Nullam dignissim erat sit amet aliquam maximus.
     </p>
   </div>
-
 
   <h3>Editable Fields</h3>
 
   <div class="editable-fields-container">
     <div class="demo-block">
-      <vitamui-common-editable-email-input label="Email Input" [domains]="['vitamui.com', 'gmail.com', 'my-domain.fr']"
-        [(ngModel)]="vitamuiEmailValue"></vitamui-common-editable-email-input>
+      <vitamui-common-editable-email-input
+        label="Email Input"
+        [domains]="['vitamui.com', 'gmail.com', 'my-domain.fr']"
+        [(ngModel)]="vitamuiEmailValue"
+      ></vitamui-common-editable-email-input>
     </div>
 
     <div class="demo-block">
@@ -96,7 +107,6 @@
 
   <div class="demo-block demo-stepper">
     <vitamui-common-stepper>
-
       <cdk-step>
         <div class="demo-step-content">
           <p>Step 1</p>
@@ -106,7 +116,7 @@
 
       <cdk-step>
         <div class="demo-step-content">
-          <p>Step 2<br>Taller content<br>...<br>...<br></p>
+          <p>Step 2<br />Taller content<br />...<br />...<br /></p>
           <button type="button" class="btn" cdkStepperPrevious>Previous</button>
           <button type="button" class="btn" cdkStepperNext>Next</button>
         </div>
@@ -117,7 +127,6 @@
           <p>Step 3</p>
           <button type="button" class="btn" cdkStepperPrevious>Previous</button>
           <button type="button" class="btn" cdkStepperNext>Next</button>
-
         </div>
       </cdk-step>
 
@@ -127,14 +136,13 @@
           <button class="btn" cdkStepperPrevious>Previous</button>
         </div>
       </cdk-step>
-
     </vitamui-common-stepper>
   </div>
 
   <h3>Confirm dialog Service</h3>
   <div class="demo-block">
     <button class="btn" (click)="openConfirmDialog()">Open Dialog</button>
-    Result: {{confirmResult|json}}
+    Result: {{ confirmResult | json }}
 
     <ng-template #confirmDialogTemplate>
       <vitamui-common-confirm-dialog
@@ -150,11 +158,14 @@
   <h3>Infinite Scroll Directive</h3>
 
   <div class="demo-block">
-    <div vitamuiCommonInfiniteScroll vitamuiCommonInfiniteScrollThreshold="0.5" [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
-      (vitamuiScroll)="onScroll()">
-      <div *ngFor="let value of infiniteValues">value {{value}}</div>
+    <div
+      vitamuiCommonInfiniteScroll
+      vitamuiCommonInfiniteScrollThreshold="0.5"
+      [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+      (vitamuiScroll)="onScroll()"
+    >
+      <div *ngFor="let value of infiniteValues">value {{ value }}</div>
       <mat-spinner *ngIf="infiniteScrollDisabled" class="vitamui-spinner medium"></mat-spinner>
     </div>
-
   </div>
 </div>

@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {IngestContract,SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import { IngestContract, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 
@@ -48,7 +48,11 @@ import { IngestContractApiService } from '../core/api/ingest-contract-api.servic
 export class IngestContractService extends SearchService<IngestContract> {
   updated = new Subject<IngestContract>();
 
-  constructor(private ingestContractApi: IngestContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private ingestContractApi: IngestContractApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, ingestContractApi, 'ALL');
   }
 
@@ -93,16 +97,16 @@ export class IngestContractService extends SearchService<IngestContract> {
         (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
-              translateParams: {
-                name: response.name,
-              },
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -112,16 +116,16 @@ export class IngestContractService extends SearchService<IngestContract> {
         (response: IngestContract) => {
           this.snackBarService.open({
             message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
-              translateParams:{
-                name: response.name,
-              },
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 }

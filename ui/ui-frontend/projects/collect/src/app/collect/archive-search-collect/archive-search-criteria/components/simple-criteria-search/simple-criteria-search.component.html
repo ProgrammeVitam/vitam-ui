@@ -56,7 +56,7 @@
                 >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate }}</span
               >
               <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime : 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | dateTime: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -75,7 +75,7 @@
                 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
               }}</span>
               <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime : 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | dateTime: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -187,7 +187,7 @@
               >
               <ng-template #showOtherCriteria
                 ><span (click)="pickerOtherCriteria.open()"
-                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime : 'dd/MM/yyyy' }}
+                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | dateTime: 'dd/MM/yyyy' }}
                 </span>
               </ng-template>
               <input

@@ -13,8 +13,7 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
 
         <div class="vitamui-heading">
           <vitamui-common-title-breadcrumb>
@@ -32,8 +31,7 @@
           </vitamui-common-search-bar>
 
           <div class="actions">
-            <button class="btn secondary" (click)="openCreateIngestcontractDialog()"
-                    [disabled]="!(hasUpdateIngestRole$ | async)">
+            <button class="btn secondary" (click)="openCreateIngestcontractDialog()" [disabled]="!(hasUpdateIngestRole$ | async)">
               <i class="vitamui-icon vitamui-icon-contrat"></i>
               <span i18n="Create an ingest contract button label@@IngestContractListCreateButton">Créer un contrat d'entrée</span>
             </button>
@@ -43,8 +41,7 @@
     </div>
 
     <div class="vitamui-body vitamui-container">
-      <app-ingest-contract-list (ingestContractClick)="showIngestContract($event)"
-                                [search]="search"></app-ingest-contract-list>
+      <app-ingest-contract-list (ingestContractClick)="showIngestContract($event)" [search]="search"></app-ingest-contract-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

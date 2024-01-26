@@ -43,7 +43,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { AccountComponent, AppGuard, AuthenticationModule, BASE_URL, ENVIRONMENT, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  AccountComponent,
+  AppGuard,
+  AuthenticationModule,
+  BASE_URL,
+  ENVIRONMENT,
+  LoggerModule,
+  VitamUICommonModule,
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppGuardDemoComponent } from './demo/app-guard-demo/app-guard-demo.component';
@@ -59,9 +68,7 @@ import { SubrogationDemoComponent } from './demo/subrogation-demo/subrogation-de
 import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     AuthenticationModule.forRoot(),
     BrowserAnimationsModule,
@@ -88,7 +95,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
           { path: 'angular/customer/:customerId', component: ComponentsComponent },
           { path: 'css', component: CssComponent },
           { path: '', redirectTo: 'angular', pathMatch: 'full' },
-        ]
+        ],
       },
       { path: 'icons-demo', component: IconDemoComponent },
       {
@@ -99,7 +106,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
           { path: 'subrogation', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'SUBROGATIONS_APP' } },
           { path: 'customers', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'CUSTOMERS_APP' } },
           { path: 'fake-app', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'DOES_NOT_EXIST_APP' } },
-        ]
+        ],
       },
       { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
       { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
@@ -112,6 +119,6 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     { provide: WINDOW_LOCATION, useValue: window.location },
     // { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

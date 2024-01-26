@@ -15,12 +15,8 @@ import { MenuApplicationTileComponent } from './menu-application-tile/menu-appli
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
 
-
 @NgModule({
-  declarations: [
-    MenuComponent,
-    MenuApplicationTileComponent
-  ],
+  declarations: [MenuComponent, MenuApplicationTileComponent],
   imports: [
     CommonModule,
     OverlayModule,
@@ -33,23 +29,17 @@ import { MenuComponent } from './menu.component';
     SearchBarModule,
     PipesModule,
     TranslateModule,
-    ItemSelectModule
+    ItemSelectModule,
   ],
-  entryComponents: [
-    MenuComponent
-  ],
-  providers: [
-    MenuOverlayService
-  ],
-  exports: [
-    MenuComponent, MenuApplicationTileComponent
-  ]
+  entryComponents: [MenuComponent],
+  providers: [MenuOverlayService],
+  exports: [MenuComponent, MenuApplicationTileComponent],
 })
 export class MenuModule {
   static forRoot(): ModuleWithProviders<MenuModule> {
     return {
       ngModule: MenuModule,
-      providers: [MenuOverlayService]
+      providers: [MenuOverlayService],
     };
   }
- }
+}

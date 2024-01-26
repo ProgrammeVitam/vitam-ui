@@ -36,16 +36,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import {TranslateModule} from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, TranslateModule],
   declarations: [VitamUISnackBarComponent],
   exports: [VitamUISnackBarComponent],
-  entryComponents: [VitamUISnackBarComponent]
+  entryComponents: [VitamUISnackBarComponent],
 })
-export class VitamUISnackBarModule { }
+export class VitamUISnackBarModule {}

@@ -39,14 +39,15 @@ import { InjectorHelper } from './helper/injector-helper';
 import { Logger } from './logger/logger';
 
 export class AppRootComponent {
-
   // tslint:disable-next-line:variable-name
   private _appId: string;
 
   public logger: Logger;
 
   constructor(route: ActivatedRoute) {
-    if (InjectorHelper.injector === undefined) { throw new Error('Injector not Found'); }
+    if (InjectorHelper.injector === undefined) {
+      throw new Error('Injector not Found');
+    }
     this.logger = InjectorHelper.injector.get(Logger);
     route.data.subscribe((data) => {
       if (!data.hasOwnProperty('appId')) {
@@ -60,5 +61,4 @@ export class AppRootComponent {
   get appId(): string {
     return this._appId;
   }
-
 }

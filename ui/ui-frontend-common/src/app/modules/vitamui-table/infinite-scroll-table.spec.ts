@@ -44,7 +44,6 @@ import { InfiniteScrollTable } from './infinite-scroll-table';
 import { SearchService } from './search.service';
 
 class SearchServiceMock extends SearchService<any> {
-
   constructor() {
     super(null, null);
   }
@@ -56,13 +55,10 @@ class SearchServiceMock extends SearchService<any> {
   loadMore(): Observable<any[]> {
     return of(['value3', 'value4']);
   }
-
 }
 
 describe('InfiniteScrollTable', () => {
-
   describe('search', () => {
-
     it('should set the dataSource', fakeAsync(() => {
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
@@ -75,11 +71,9 @@ describe('InfiniteScrollTable', () => {
       expect(infiniteScrollTable.pending).toBe(false);
       expect(infiniteScrollTable.dataSource).toEqual(['value1', 'value2']);
     }));
-
   });
 
   describe('loadMore', () => {
-
     it('should set infiniteScrollDisabled to true', fakeAsync(() => {
       const bigList: any[] = [];
       for (let i = 0; i < 150; i++) {
@@ -97,5 +91,4 @@ describe('InfiniteScrollTable', () => {
       expect(infiniteScrollTable.infiniteScrollDisabled).toBe(true);
     }));
   });
-
 });

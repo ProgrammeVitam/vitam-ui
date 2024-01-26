@@ -41,5 +41,5 @@
 
 export const environment = {
   production: false,
-  userRefreshRate: 30000
+  userRefreshRate: 30000,
 };

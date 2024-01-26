@@ -24,33 +24,32 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {ProjectsService} from '../projects/projects.service';
-import {TransactionsService} from './transactions.service';
+import { ProjectsService } from '../projects/projects.service';
+import { TransactionsService } from './transactions.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionResolver implements Resolve<boolean> {
-
-  constructor(private transactionsService: TransactionsService, private projectService: ProjectsService) {
-  }
+  constructor(
+    private transactionsService: TransactionsService,
+    private projectService: ProjectsService,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = route.paramMap.get('projectId');
 
-    return combineLatest([this.transactionsService.getTransactionsByProjectId(id),
-      this.projectService.getProjectById(id)]).pipe(
+    return combineLatest([this.transactionsService.getTransactionsByProjectId(id), this.projectService.getProjectById(id)]).pipe(
       map(([paginated, project]) => {
         const transactions = paginated.values;
         this.transactionsService.loadDataForTransactions(transactions, project);
         return true;
-      })
+      }),
     );
   }
-
 }

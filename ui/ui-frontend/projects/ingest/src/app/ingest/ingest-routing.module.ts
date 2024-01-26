@@ -44,28 +44,23 @@ const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
-  }, {
+    pathMatch: 'full',
+  },
+  {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: IngestComponent,
-    canActivate: [ActiveTenantGuard]
-  }
+    canActivate: [ActiveTenantGuard],
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class IngestRoutingModule { }
+export class IngestRoutingModule {}

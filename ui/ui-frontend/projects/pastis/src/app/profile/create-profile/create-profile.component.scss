@@ -46,25 +46,25 @@
   color: var(--vitamui-grey-900);
 }
 
-.conteneur{
+.conteneur {
   display: flex;
   padding: 0px 0px 40px 0px;
   margin: -15px 15px 20px -15px;
 }
 
-.gauche{
+.gauche {
   margin: 10px 0px -20px 30px;
   float: left;
-  width:34%
+  width: 34%;
 }
 
-.droite{
+.droite {
   float: right;
-  width:15%;
+  width: 15%;
   margin-top: 4%;
 }
 
-.flex{
+.flex {
   flex-grow: 1;
 }
 
@@ -80,7 +80,7 @@
   font-weight: normal;
   font-size: 12px;
   /* Secondary/Secondary-900 */
-  color: #050C15;
+  color: #050c15;
 }
 
 .pastis-dialog-confirm-buttons {
@@ -121,7 +121,4 @@
   align-items: center;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-
 }
-
-

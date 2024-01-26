@@ -34,18 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Directive, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  Application,
-  ApplicationId,
-  BASE_URL,
-  LoggerModule,
-  StartupService,
-  SUBROGRATION_REFRESH_RATE_MS
-} from 'ui-frontend-common';
-import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
+import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUBROGRATION_REFRESH_RATE_MS } from 'ui-frontend-common';
+import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 
 @Directive({
   selector: '[libVitamuiCommonTooltip]',
@@ -61,27 +54,18 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
   beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       getPortalUrl: () => 'https://dev.vitamui.com',
-      getConfigStringValue: () => 'https://dev.vitamui.com/identity'
+      getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [
-        UpdatedVitamUIMenuTileComponent,
-        TooltipStubDirective,
-      ],
+      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      declarations: [UpdatedVitamUIMenuTileComponent, TooltipStubDirective],
       providers: [
-        {provide: StartupService, useValue: startupServiceStub},
-        {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100},
+        { provide: StartupService, useValue: startupServiceStub },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
       ],
-      schemas: [
-        NO_ERRORS_SCHEMA
-      ]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -100,7 +84,7 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
       hasCustomerList: false,
       hasHighlight: false,
       hasTenantList: false,
-      target: 'self'
+      target: 'self',
     };
     component.application = appInfo;
     fixture.detectChanges();

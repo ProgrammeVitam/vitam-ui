@@ -35,9 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import {  merge, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AccessContract,collapseAnimation, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, rotateAnimation ,} from 'ui-frontend-common';
+import {
+  AccessContract,
+  collapseAnimation,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  rotateAnimation,
+} from 'ui-frontend-common';
 
 import { AccessContractService } from '../access-contract.service';
 
@@ -88,7 +96,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
         this.dataSource = data;
       },
       () => {},
-      () => (this.pending = false)
+      () => (this.pending = false),
     );
 
     searchCriteriaChange.subscribe(() => {

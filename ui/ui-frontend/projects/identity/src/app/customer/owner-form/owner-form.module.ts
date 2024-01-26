@@ -46,15 +46,9 @@ import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [OwnerFormComponent],
   exports: [OwnerFormComponent],
-  providers: [OwnerFormValidators, TenantFormValidators]
+  providers: [OwnerFormValidators, TenantFormValidators],
 })
-export class OwnerFormModule { }
+export class OwnerFormModule {}

@@ -60,17 +60,13 @@ import { SharedModule } from '../shared/shared.module';
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
+import { AccessionRegisterDetailComponent } from './accession-register-preview/accession-register-detail/accession-register-detail.component';
 import {
-  AccessionRegisterDetailComponent
-} from './accession-register-preview/accession-register-detail/accession-register-detail.component';
-import {
-  AccessionRegisterOperationComponent
-// tslint:disable-next-line:max-line-length
+  AccessionRegisterOperationComponent,
+  // tslint:disable-next-line:max-line-length
 } from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
-import {
-  AccessionRegisterOperationsListComponent
-} from './accession-register-preview/accession-register-operations-list/accession-register-operations-list.component';
-import {AccessionRegisterPreviewComponent} from './accession-register-preview/accession-register-preview.component';
+import { AccessionRegisterOperationsListComponent } from './accession-register-preview/accession-register-operations-list/accession-register-operations-list.component';
+import { AccessionRegisterPreviewComponent } from './accession-register-preview/accession-register-preview.component';
 import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
 import { AccessionRegisterComponent } from './accession-register.component';
 

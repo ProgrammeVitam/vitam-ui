@@ -77,38 +77,36 @@ describe('Profile Group InformationTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(
-    waitForAsync(() => {
-      expectedGroup = {
-        id: '42',
-        enabled: true,
-        identifier: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level: '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly: false,
-      };
+  beforeEach(waitForAsync(() => {
+    expectedGroup = {
+      id: '42',
+      enabled: true,
+      identifier: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
+    };
 
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
-        declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
-        providers: [
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: MatDialog, useValue: matDialogSpy },
-          { provide: GroupService, useValue: groupServiceSpy },
-          { provide: GroupValidators, useValue: groupValidatorsSpy },
-          { provide: AuthService, useValue: authServiceMock },
-          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-        ],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
+      declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: GroupService, useValue: groupServiceSpy },
+        { provide: GroupValidators, useValue: groupValidatorsSpy },
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

@@ -37,21 +37,21 @@
 import { Observable } from 'rxjs';
 
 export interface VitamuiSnackBarData {
-    /**
-     * Translate key as string.
-     * If translate = false, the string will be displayed directly.
-     */
-    message?: string;
-    /**
-     * If true or undefined, message will be considered as a translate key.
-     * Otherwise, will be considered as a simple string & displayed directly.
-     */
-    translate?: boolean;
-    /** Params to provide to ngxtranslate key params */
-    translateParams?: any;
-    /** Vitamui icon that will be displayed in the snackbar */
-    icon?: string;
-    duration?: number;
-    htmlContent?: string;
-    callBack?: Observable<any>;
+  /**
+   * Translate key as string.
+   * If translate = false, the string will be displayed directly.
+   */
+  message?: string;
+  /**
+   * If true or undefined, message will be considered as a translate key.
+   * Otherwise, will be considered as a simple string & displayed directly.
+   */
+  translate?: boolean;
+  /** Params to provide to ngxtranslate key params */
+  translateParams?: any;
+  /** Vitamui icon that will be displayed in the snackbar */
+  icon?: string;
+  duration?: number;
+  htmlContent?: string;
+  callBack?: Observable<any>;
 }

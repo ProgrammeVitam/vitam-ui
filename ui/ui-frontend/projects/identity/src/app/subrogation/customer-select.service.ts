@@ -44,31 +44,29 @@ import { Injectable } from '@angular/core';
 import { CustomerApiService } from '../core/api/customer-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerSelectService {
-
   private customers: Customer[];
 
-  constructor(private customerApi: CustomerApiService) { }
+  constructor(private customerApi: CustomerApiService) {}
 
   getAll(subrogeable: boolean): Observable<MenuOption[]> {
-    const criterionArray: any[] = [ { key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
+    const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };
 
     const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
 
-    return this.customerApi.getAllByParams(httpParams)
-      .pipe(
-        catchError(() => of([])),
-        map((results) => {
-          this.customers = results;
-          return (results || []).map((c: { id: string, code: string, name: string  }) => {
-            const label = c.code + ' - ' + c.name;
-            return { value: c.id, label };
-          });
-        })
-      );
+    return this.customerApi.getAllByParams(httpParams).pipe(
+      catchError(() => of([])),
+      map((results) => {
+        this.customers = results;
+        return (results || []).map((c: { id: string; code: string; name: string }) => {
+          const label = c.code + ' - ' + c.name;
+          return { value: c.id, label };
+        });
+      }),
+    );
   }
 
   getCustomers(): Customer[] {

@@ -48,12 +48,9 @@ describe('SubrogateUserComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ SubrogateUserComponent ],
-      providers: [
-        { provide: ActivatedRoute, useValue: { data: EMPTY } },
-      ]
-    })
-    .compileComponents();
+      declarations: [SubrogateUserComponent],
+      providers: [{ provide: ActivatedRoute, useValue: { data: EMPTY } }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

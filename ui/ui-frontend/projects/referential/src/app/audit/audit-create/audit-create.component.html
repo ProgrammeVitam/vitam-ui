@@ -12,10 +12,10 @@
           <div class="row">
             <div class="col-8 form-control">
               <vitamui-radio-group formControlName="auditActions" label="Type d'audit" required>
-                <vitamui-radio label="Existence" value="{{AuditAction.AUDIT_FILE_EXISTING}}"></vitamui-radio>
-                <vitamui-radio label="Intégrité" value="{{AuditAction.AUDIT_FILE_INTEGRITY}}" checked></vitamui-radio>
-                <vitamui-radio label="Cohérence" value="{{AuditAction.AUDIT_FILE_CONSISTENCY}}"></vitamui-radio>
-                <vitamui-radio label="Correctif" value="{{AuditAction.AUDIT_FILE_RECTIFICATION}}"></vitamui-radio>
+                <vitamui-radio label="Existence" value="{{ AuditAction.AUDIT_FILE_EXISTING }}"></vitamui-radio>
+                <vitamui-radio label="Intégrité" value="{{ AuditAction.AUDIT_FILE_INTEGRITY }}" checked></vitamui-radio>
+                <vitamui-radio label="Cohérence" value="{{ AuditAction.AUDIT_FILE_CONSISTENCY }}"></vitamui-radio>
+                <vitamui-radio label="Correctif" value="{{ AuditAction.AUDIT_FILE_RECTIFICATION }}"></vitamui-radio>
               </vitamui-radio-group>
             </div>
           </div>
@@ -35,13 +35,12 @@
                   <vitamui-common-input-error
                     *ngIf="!!form.get('evidenceAudit')?.errors?.required"
                     i18n="Required field error hint@@formErrorRequiredField"
-                  >Champ requis
-                  </vitamui-common-input-error
-                  >
+                    >Champ requis
+                  </vitamui-common-input-error>
                   <vitamui-common-input-error
                     *ngIf="!!form?.get('evidenceAudit')?.errors?.invalidEvidenceAuditId"
                     i18n="Identfier exists error hint@@formErrorIdentifierExists"
-                  >L'identifiant d'audit de cohérence saisi n'existe pas
+                    >L'identifiant d'audit de cohérence saisi n'existe pas
                   </vitamui-common-input-error>
                 </ng-container>
               </vitamui-common-input>
@@ -51,12 +50,14 @@
 
         <div
           class="form-group"
-          *ngIf="form.value.auditActions !== AuditAction.AUDIT_FILE_CONSISTENCY && form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION"
+          *ngIf="
+            form.value.auditActions !== AuditAction.AUDIT_FILE_CONSISTENCY &&
+            form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION
+          "
         >
           <div class="row">
             <div class="col-8 form-control">
-              <vitamui-common-slide-toggle [formControl]="allProducerServices">Tous les services producteurs
-              </vitamui-common-slide-toggle>
+              <vitamui-common-slide-toggle [formControl]="allProducerServices">Tous les services producteurs </vitamui-common-slide-toggle>
             </div>
 
             <div class="col-8 form-control">
@@ -65,7 +66,8 @@
                 *ngIf="
                   allProducerServices.value === false &&
                   accessionRegisterSummaries &&
-                  (form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING || form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
+                  (form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING ||
+                    form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
                 "
               >
                 <mat-select
@@ -74,8 +76,7 @@
                   panelclass="vitamui-mat-select"
                   required
                 >
-                  <mat-option *ngFor="let accession of accessionRegisterSummaries"
-                              [value]="accession.originatingAgency">
+                  <mat-option *ngFor="let accession of accessionRegisterSummaries" [value]="accession.originatingAgency">
                     {{ accession.originatingAgency }}
                   </mat-option>
                 </mat-select>
@@ -91,8 +92,7 @@
         <div class="form-group" *ngIf="form.value.auditActions === AuditAction.AUDIT_FILE_CONSISTENCY">
           <div class="row">
             <div class="col-8 form-control">
-              <vitamui-common-slide-toggle [formControl]="allNodes">Tous les noeuds de rattachement
-              </vitamui-common-slide-toggle>
+              <vitamui-common-slide-toggle [formControl]="allNodes">Tous les noeuds de rattachement </vitamui-common-slide-toggle>
             </div>
           </div>
         </div>
@@ -107,8 +107,7 @@
             {{ 'COMMON.NEXT' | translate }}
           </button>
 
-          <button type="submit" class="btn primary" *ngIf="this.allNodes.value"
-                  [disabled]="!isStepValid() || isDisabledButton">
+          <button type="submit" class="btn primary" *ngIf="this.allNodes.value" [disabled]="!isStepValid() || isDisabledButton">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
 

@@ -33,8 +33,8 @@ export enum Colors {
   WARNING_COLOR = 'orange',
   OK_COLOR = '#27740a',
   BLACK = '#000000',
-  GRAY= 'gray',
-  ORANGE= 'orange',
-  RED= 'red',
-  GREEN= 'green'
+  GRAY = 'gray',
+  ORANGE = 'orange',
+  RED = 'red',
+  GREEN = 'green',
 }

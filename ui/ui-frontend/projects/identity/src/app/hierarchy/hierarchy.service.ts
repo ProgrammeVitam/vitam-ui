@@ -42,25 +42,27 @@ import { tap } from 'rxjs/operators';
 import { Criterion, Operators, Profile, ProfileApiService, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class HierarchyService extends SearchService<Profile>  {
-
+export class HierarchyService extends SearchService<Profile> {
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, http: HttpClient, private snackBarService: VitamUISnackBarService) {
+  constructor(
+    private profileApi: ProfileApiService,
+    http: HttpClient,
+    private snackBarService: VitamUISnackBarService,
+  ) {
     super(http, profileApi, 'ALL');
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString()});
+    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
   }
 
   getAllByParams(query: SearchQuery, headers?: HttpHeaders) {
-    const params = new HttpParams().set('criteria',  JSON.stringify(query));
+    const params = new HttpParams().set('criteria', JSON.stringify(query));
     return this.profileApi.getAllByParams(params, headers);
   }
-
 
   get(id: string): Observable<Profile> {
     return this.profileApi.getOneWithEmbedded(id, 'ALL', this.headers);
@@ -71,51 +73,49 @@ export class HierarchyService extends SearchService<Profile>  {
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
     const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
-    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals};
+    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
-    return this.profileApi.patch(data, this.headers)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-              translateParams:{
-                param1: response.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
+    return this.profileApi.patch(data, this.headers).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
+            translateParams: {
+              param1: response.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   create(profile: Profile) {
-
     return this.profileApi.create(profile, this.headers).pipe(
       tap(
         (response: Profile) => {
           this.snackBarService.open({
             message: 'SHARED.SNACKBAR.PROFILE_CREATE_ERROR',
-              translateParams:{
-                param1: response.name,
-              }
+            translateParams: {
+              param1: response.name,
+            },
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 }

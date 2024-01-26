@@ -98,7 +98,7 @@
       'CUSTOMER.SSO.AUTO_PROVISIONING' | translate
     }}</vitamui-common-slide-toggle>
   </div>
-  <div *ngIf="form.value.protocoleType===('SAML') && displayOIDCSAMLBLOCKS">
+  <div *ngIf="form.value.protocoleType === 'SAML' && displayOIDCSAMLBLOCKS">
     <div class="row">
       <div class="col-6">
         <vitamui-common-editable-toggle-group
@@ -119,7 +119,7 @@
         <vitamui-common-editable-input
           type="number"
           formControlName="maximumAuthenticationLifetime"
-          label="{{'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate}}"
+          label="{{ 'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate }}"
           [validator]="form?.get('maximumAuthenticationLifetime')?.validator"
           [asyncValidator]="form?.get('maximumAuthenticationLifetime')?.asyncValidator"
         >
@@ -145,20 +145,18 @@
     </div>
     <div class="row" *ngIf="!identityProvider.internal">
       <div class="col-5">
-        <vitamui-common-slide-toggle
-          formControlName="wantsAssertionsSigned">
-          {{'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate}}
+        <vitamui-common-slide-toggle formControlName="wantsAssertionsSigned">
+          {{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}
         </vitamui-common-slide-toggle>
       </div>
       <div class="col-6">
-        <vitamui-common-slide-toggle
-          formControlName="authnRequestSigned" >
-          {{'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate}}
+        <vitamui-common-slide-toggle formControlName="authnRequestSigned">
+          {{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}
         </vitamui-common-slide-toggle>
       </div>
     </div>
   </div>
-  <div *ngIf="form.value.protocoleType==='OIDC' && displayOIDCSAMLBLOCKS">
+  <div *ngIf="form.value.protocoleType === 'OIDC' && displayOIDCSAMLBLOCKS">
     <div class="row">
       <div class="col-6">
         <vitamui-common-editable-input
@@ -166,7 +164,7 @@
           [validator]="form?.get('clientId')?.validator"
           [label]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
       <div class="col-6">
@@ -175,7 +173,7 @@
           [validator]="form?.get('clientSecret')?.validator"
           [label]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -186,13 +184,14 @@
           [validator]="form?.get('discoveryUrl')?.validator"
           [label]="'CUSTOMER.SSO.URL_DISCOVERY' | translate"
         >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <vitamui-common-editable-input formControlName="scope" [label]="'CUSTOMER.SSO.PERIMETER' | translate"> </vitamui-common-editable-input>
+        <vitamui-common-editable-input formControlName="scope" [label]="'CUSTOMER.SSO.PERIMETER' | translate">
+        </vitamui-common-editable-input>
       </div>
     </div>
     <div class="row">
@@ -210,13 +209,13 @@
     </div>
     <div class="row align-items-center">
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="useState">{{'CUSTOMER.SSO.STATEFUL' | translate}}</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle formControlName="useState">{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</vitamui-common-slide-toggle>
       </div>
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="usePkce">{{'CUSTOMER.SSO.USE_NONCE' | translate}} </vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle formControlName="usePkce">{{ 'CUSTOMER.SSO.USE_NONCE' | translate }} </vitamui-common-slide-toggle>
       </div>
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="useNonce">{{'CUSTOMER.SSO.USE_PKCE' | translate}}</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle formControlName="useNonce">{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</vitamui-common-slide-toggle>
       </div>
     </div>
   </div>

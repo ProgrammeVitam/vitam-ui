@@ -49,7 +49,7 @@ export class YesNoPipe implements PipeTransform {
     return String(propertyValue) === 'true'
       ? this.translateService.instant('COMMON.COMMON_YES')
       : String(propertyValue) === 'false'
-      ? this.translateService.instant('COMMON.COMMON_NO')
-      : propertyValue;
+        ? this.translateService.instant('COMMON.COMMON_NO')
+        : propertyValue;
   }
 }

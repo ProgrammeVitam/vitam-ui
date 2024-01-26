@@ -7,7 +7,7 @@ describe('PluralPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should add \'s\' after the word when count is greater than 1', () => {
+  it("should add 's' after the word when count is greater than 1", () => {
     const pipe = new PluralPipe();
     const word = 'archive';
     const count = 2;
@@ -18,7 +18,7 @@ describe('PluralPipe', () => {
     expect(result).toEqual(expectation);
   });
 
-  it('should not add \'s\' after the word when count is lesser than 2', () => {
+  it("should not add 's' after the word when count is lesser than 2", () => {
     const pipe = new PluralPipe();
     const word = 'archive';
     const count = 1;
@@ -29,7 +29,7 @@ describe('PluralPipe', () => {
     expect(result).toEqual(expectation);
   });
 
-  it('should not add \'s\' after the word when it already finished by \'s\'', () => {
+  it("should not add 's' after the word when it already finished by 's'", () => {
     const pipe = new PluralPipe();
     const word = 'archives';
     const count = 2;

@@ -2,15 +2,15 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'SUBROGATION.HOME.TITLE' | translate}}
+        {{ 'SUBROGATION.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'SUBROGATION.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openUserSubrogationDialog()">
-          {{'SUBROGATION.HOME.ACTION_BUTTON' | translate}}
+          {{ 'SUBROGATION.HOME.ACTION_BUTTON' | translate }}
         </button>
-    </vitamui-common-banner>
-</div>
+      </vitamui-common-banner>
+    </div>
 
     <div class="vitamui-content">
       <app-subrogate-user-list [search]="search" [emailDomains]="customer?.emailDomains"></app-subrogate-user-list>

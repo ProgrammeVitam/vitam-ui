@@ -44,7 +44,14 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
-  InheritedPropertyDto, InjectorModule, LoggerModule, ManagementRule, RuleCategoryVitamUiDto, Unit, UnitRuleDto, UnitType,
+  InheritedPropertyDto,
+  InjectorModule,
+  LoggerModule,
+  ManagementRule,
+  RuleCategoryVitamUiDto,
+  Unit,
+  UnitRuleDto,
+  UnitType,
   VitamuiMissingTranslationHandler,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -175,7 +182,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).not.toBeNaN();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toBeDefined();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toEqual(
-      'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED'
+      'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED',
     );
   });
 

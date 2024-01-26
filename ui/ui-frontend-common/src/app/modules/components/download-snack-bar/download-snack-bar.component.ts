@@ -42,10 +42,9 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'vitamui-common-download-snack-bar',
   templateUrl: './download-snack-bar.component.html',
-  styleUrls: ['./download-snack-bar.component.scss']
+  styleUrls: ['./download-snack-bar.component.scss'],
 })
 export class DownloadSnackBarComponent implements OnInit {
-
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 
   progressionValue: number;
@@ -67,8 +66,7 @@ export class DownloadSnackBarComponent implements OnInit {
   // tslint:disable-next-line:variable-name
   private readonly _cancel = new Subject<void>();
 
-  constructor(private matDialog: MatDialog) {
-  }
+  constructor(private matDialog: MatDialog) {}
 
   initialize(isCompressed: boolean, count?: number, total?: number) {
     this.count = count;
@@ -77,12 +75,13 @@ export class DownloadSnackBarComponent implements OnInit {
     this.notDownloadable = total - count;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   confirmClose() {
     const dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed().pipe(filter((result) => !!result))
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
       .subscribe(() => this._cancel.next());
   }
 

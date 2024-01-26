@@ -2,11 +2,14 @@ import { DisplayObject } from '../models';
 
 export class FavoriteEntryService {
   public favoriteEntry(displayObject: DisplayObject): [key: string, value: unknown] | null {
-    const favoriteEntry: [key: string, value: any] = displayObject.favoriteKeys.reduce((entry, key) => {
-      const value = displayObject.value[key];
+    const favoriteEntry: [key: string, value: any] = displayObject.favoriteKeys.reduce(
+      (entry, key) => {
+        const value = displayObject.value[key];
 
-      return value ? [key, value] : entry;
-    }, null as [key: string, value: any]);
+        return value ? [key, value] : entry;
+      },
+      null as [key: string, value: any],
+    );
 
     return favoriteEntry;
   }

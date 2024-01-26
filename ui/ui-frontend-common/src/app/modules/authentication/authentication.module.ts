@@ -62,14 +62,14 @@ export class AuthenticationModule {
 
   private static loadModule() {
     // tslint:disable-next-line: whitespace semicolon
-    return () => this.loading;;
+    return () => this.loading;
   }
 
   constructor(
     private configService: ConfigService,
     private oAuthService: OAuthService,
     @Inject(WINDOW_LOCATION) private location: any,
-    authService: AuthService
+    authService: AuthService,
   ) {
     AuthenticationModule.loading = this.configService.config$
       .pipe(
@@ -88,11 +88,11 @@ export class AuthenticationModule {
               this.location,
               config.CAS_URL,
               config.CAS_LOGOUT_URL,
-              config.LOGOUT_REDIRECT_UI_URL
+              config.LOGOUT_REDIRECT_UI_URL,
             );
           }
           authService.configure(config.GATEWAY_ENABLED, authenticatorService);
-        })
+        }),
       )
       .toPromise();
   }

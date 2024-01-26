@@ -87,7 +87,7 @@ export class ProbativeValueCreateComponent implements OnInit {
     private confirmDialogService: ConfirmDialogService,
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -102,7 +102,7 @@ export class ProbativeValueCreateComponent implements OnInit {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -145,7 +145,7 @@ export class ProbativeValueCreateComponent implements OnInit {
         },
         () => {
           this.dialogRef.close({ success: false, action: 'none' });
-        }
+        },
       );
   }
 

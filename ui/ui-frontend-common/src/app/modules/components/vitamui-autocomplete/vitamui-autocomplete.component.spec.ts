@@ -55,13 +55,9 @@ describe('VitamUIAutocompleteComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [ VitamUIAutocompleteComponent, MatTooltipStubDirective ]
-    })
-      .compileComponents();
+      imports: [ReactiveFormsModule, MatAutocompleteModule],
+      declarations: [VitamUIAutocompleteComponent, MatTooltipStubDirective],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

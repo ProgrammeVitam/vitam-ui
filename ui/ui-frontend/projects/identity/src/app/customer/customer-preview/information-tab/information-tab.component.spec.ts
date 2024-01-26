@@ -133,57 +133,55 @@ describe('Customer InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      expectedCustomer = {
-        id: '11',
-        identifier: '11',
-        code: '011000',
-        name: 'Kouygues Telecom',
-        companyName: 'Kouygues Telecom',
-        enabled: true,
-        readonly: false,
-        hasCustomGraphicIdentity: false,
-        language: 'FRENCH',
-        passwordRevocationDelay: 1,
-        otp: OtpState.OPTIONAL,
-        idp: false,
-        emailDomains: ['kouygues.com'],
-        defaultEmailDomain: 'kouygues.com',
-        address: {
-          street: '13 rue faubourg',
-          zipCode: '75009',
-          city: 'paris',
-          country: 'france',
-        },
-        internalCode: '1',
-        owners: [],
-        themeColors: {},
-        portalMessages: {},
-        portalTitles: {},
-        gdprAlert: false,
-        gdprAlertDelay: 72,
-      };
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
-      const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-        uniqueCode: () => of(null),
-        uniqueDomain: () => of(null),
-      });
+  beforeEach(waitForAsync(() => {
+    expectedCustomer = {
+      id: '11',
+      identifier: '11',
+      code: '011000',
+      name: 'Kouygues Telecom',
+      companyName: 'Kouygues Telecom',
+      enabled: true,
+      readonly: false,
+      hasCustomGraphicIdentity: false,
+      language: 'FRENCH',
+      passwordRevocationDelay: 1,
+      otp: OtpState.OPTIONAL,
+      idp: false,
+      emailDomains: ['kouygues.com'],
+      defaultEmailDomain: 'kouygues.com',
+      address: {
+        street: '13 rue faubourg',
+        zipCode: '75009',
+        city: 'paris',
+        country: 'france',
+      },
+      internalCode: '1',
+      owners: [],
+      themeColors: {},
+      portalMessages: {},
+      portalTitles: {},
+      gdprAlert: false,
+      gdprAlertDelay: 72,
+    };
+    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
+    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
+      uniqueCode: () => of(null),
+      uniqueDomain: () => of(null),
+    });
 
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
-        declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
-        providers: [
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
-          { provide: CustomerService, useValue: customerServiceSpy },
-          { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-        ],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
+      declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
+        { provide: CustomerService, useValue: customerServiceSpy },
+        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

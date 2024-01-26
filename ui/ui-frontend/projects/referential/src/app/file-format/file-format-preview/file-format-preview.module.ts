@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatOptionModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {FileFormatInformationTabComponent} from './file-format-information-tab/file-format-information-tab.component';
-import {FileFormatPreviewComponent} from './file-format-preview.component';
+import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
+import { FileFormatPreviewComponent } from './file-format-preview.component';
 
 @NgModule({
   imports: [
@@ -67,16 +67,9 @@ import {FileFormatPreviewComponent} from './file-format-preview.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
   ],
-  declarations: [
-    FileFormatPreviewComponent,
-    FileFormatInformationTabComponent
-  ],
-  exports: [
-    FileFormatPreviewComponent
-  ]
-
+  declarations: [FileFormatPreviewComponent, FileFormatInformationTabComponent],
+  exports: [FileFormatPreviewComponent],
 })
-export class FileFormatPreviewModule {
-}
+export class FileFormatPreviewModule {}

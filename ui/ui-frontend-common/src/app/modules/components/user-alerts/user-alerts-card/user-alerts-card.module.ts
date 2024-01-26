@@ -4,11 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserAlertsCardComponent } from './user-alerts-card.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, TranslateModule],
   declarations: [UserAlertsCardComponent],
-  exports: [UserAlertsCardComponent]
+  exports: [UserAlertsCardComponent],
 })
-export class UserAlertCardModule { }
+export class UserAlertCardModule {}

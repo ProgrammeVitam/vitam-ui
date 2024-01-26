@@ -64,7 +64,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<AccessContractNodeUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { accessContract: AccessContract; searchAccessContractId: string; tenantIdentifier: number },
     private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService
+    private accessContractService: AccessContractService,
   ) {
     this.searchAccessContractId = this.data.searchAccessContractId;
     this.tenantIdentifier = this.data.tenantIdentifier;
@@ -106,7 +106,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 }

@@ -40,23 +40,23 @@ import { FileUploader } from 'ng2-file-upload';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
 
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-upload',
   templateUrl: './upload-profile.component.html',
-  styleUrls: ['./upload-profile.component.scss']
+  styleUrls: ['./upload-profile.component.scss'],
 })
 export class UserActionUploadProfileComponent implements OnInit {
-
   @Input()
-  uploader: FileUploader = new FileUploader({url: ''});
+  uploader: FileUploader = new FileUploader({ url: '' });
   fileToUpload: File = null;
 
-  constructor(private profileService: ProfileService, private fileService: FileService) { }
+  constructor(
+    private profileService: ProfileService,
+    private fileService: FileService,
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -68,7 +68,7 @@ export class UserActionUploadProfileComponent implements OnInit {
     if (this.fileToUpload) {
       const formData = new FormData();
       formData.append('file', this.fileToUpload, this.fileToUpload.name);
-      this.profileService.uploadProfile(formData).subscribe( fileData => {
+      this.profileService.uploadProfile(formData).subscribe((fileData) => {
         if (fileData) {
           // console.log('File submited! : ', fileData);
           this.fileService.updateTreeWithProfile(fileData);
@@ -76,5 +76,4 @@ export class UserActionUploadProfileComponent implements OnInit {
       });
     }
   }
-
 }

@@ -65,7 +65,7 @@ export class SubrogationModalComponent implements OnInit {
     public builder: FormBuilder,
     private authService: AuthService,
     private snackBarService: VitamUISnackBarService,
-    private subrogationService: SubrogationService
+    private subrogationService: SubrogationService,
   ) {
     this.form = this.builder.group({
       emailFirstPart: [null, Validators.required],
@@ -151,7 +151,7 @@ export class SubrogationModalComponent implements OnInit {
       },
       () => {
         this.handleSubrogationError();
-      }
+      },
     );
   }
 

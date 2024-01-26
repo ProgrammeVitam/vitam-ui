@@ -42,20 +42,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DownloadSnackBarComponent } from '../download-snack-bar/download-snack-bar.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatProgressBarModule,
-    TranslateModule,
-  ],
-  declarations: [
-    DownloadSnackBarComponent,
-  ],
-  exports: [
-    DownloadSnackBarComponent,
-  ],
-  entryComponents: [
-    DownloadSnackBarComponent,
-  ]
+  imports: [CommonModule, MatDialogModule, MatProgressBarModule, TranslateModule],
+  declarations: [DownloadSnackBarComponent],
+  exports: [DownloadSnackBarComponent],
+  entryComponents: [DownloadSnackBarComponent],
 })
-export class DownloadSnackBarModule { }
+export class DownloadSnackBarModule {}

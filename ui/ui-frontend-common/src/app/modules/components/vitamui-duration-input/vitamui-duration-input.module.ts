@@ -43,13 +43,8 @@ import { VitamUIInputModule } from '../vitamui-input/vitamui-input.module';
 import { VitamUIDurationInputComponent } from './vitamui-duration-input.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    VitamUIInputModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, VitamUIInputModule, TranslateModule],
   declarations: [VitamUIDurationInputComponent],
-  exports: [VitamUIDurationInputComponent]
+  exports: [VitamUIDurationInputComponent],
 })
-export class VitamUIDurationInputModule { }
+export class VitamUIDurationInputModule {}

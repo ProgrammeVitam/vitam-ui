@@ -47,5 +47,5 @@ export function diff(o1: { [key: string]: any }, o2: { [key: string]: any }): { 
     return true;
   });
 
-  return mapObject(diffObj, (value: any, key: string) => (isObject(value) && !isArray(value)) ? diff(value, o2[key]) : value);
+  return mapObject(diffObj, (value: any, key: string) => (isObject(value) && !isArray(value) ? diff(value, o2[key]) : value));
 }

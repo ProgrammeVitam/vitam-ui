@@ -43,17 +43,16 @@ import { PatternComponent } from '../../pattern/pattern.component';
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditablePatternsComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-editable-patterns',
   templateUrl: './editable-patterns.component.html',
-  providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR],
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
-
-  @Input() options: Array<{ value: string, disabled: boolean }>;
+  @Input() options: Array<{ value: string; disabled: boolean }>;
 
   @ViewChild(PatternComponent, { static: false }) pattern: PatternComponent;
 
@@ -64,7 +63,9 @@ export class EditablePatternsComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     if (this.patternClicked) {
       this.patternClicked = false;
 
@@ -90,5 +91,4 @@ export class EditablePatternsComponent extends EditableFieldComponent {
   protected isInside(target: HTMLElement, element: HTMLElement): boolean {
     return element && (target === element || element.contains(target));
   }
-
 }

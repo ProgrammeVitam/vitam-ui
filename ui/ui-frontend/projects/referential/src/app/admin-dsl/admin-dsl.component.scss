@@ -10,7 +10,7 @@
 }
 
 ::ng-deep .vitamui-mat-select.mat-form-field.mat-form-field-type-mat-select .mat-form-field-flex {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .vitamui-container {
@@ -33,7 +33,7 @@
   label {
     font-weight: 500;
     margin-bottom: 10px;
-    color: #474D4A;
+    color: #474d4a;
   }
 
   &:first-child {
@@ -50,9 +50,12 @@
 
   .textarea {
     white-space: pre;
-    background: #FFFFFF;
+    background: #ffffff;
     padding: 10px;
-    box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.1), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 24px 38px rgba(0, 0, 0, 0.07);
+    box-shadow:
+      0px 11px 15px rgba(0, 0, 0, 0.1),
+      0px 9px 46px rgba(0, 0, 0, 0.06),
+      0px 24px 38px rgba(0, 0, 0, 0.07);
     border-radius: 10px;
     border: none;
     min-width: 100%;
@@ -62,11 +65,11 @@
     resize: none;
 
     &__resultat {
-      background: #F0F0F0;
+      background: #f0f0f0;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #F5F5F5;
+      background-color: #f5f5f5;
       border-radius: 10px;
     }
 
@@ -77,7 +80,7 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      background-color: #5CBAA9;
+      background-color: #5cbaa9;
     }
 
     &::-webkit-resizer {
@@ -88,7 +91,7 @@
   .actions {
     display: flex;
     flex-direction: row;
-    .btn{
+    .btn {
       background-color: transparent;
       color: var(--vitamui-secondary);
       border-color: var(--vitamui-secondary) !important;
@@ -100,11 +103,10 @@
 
   .right {
     float: right;
-    .btn{
+    .btn {
       &:first-child {
         margin-right: 20px;
       }
     }
   }
 }
-

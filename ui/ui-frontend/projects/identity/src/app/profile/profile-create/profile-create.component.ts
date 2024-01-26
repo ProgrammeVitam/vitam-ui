@@ -80,7 +80,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
     public customerService: CustomerService,
     public profileValidators: ProfileValidators,
     private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
   ) {
     this.adminProfileForm = this.formBuilder.group({
       enabled: true,
@@ -191,7 +191,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
       () => this.dialogRef.close(true),
       (error) => {
         console.error(error);
-      }
+      },
     );
   }
 }

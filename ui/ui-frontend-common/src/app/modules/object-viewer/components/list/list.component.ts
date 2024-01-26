@@ -54,7 +54,10 @@ export class ListComponent implements OnChanges {
 
   readonly DisplayObjectType = DisplayObjectType;
 
-  constructor(private typeService: TypeService, private favoriteEntryService: FavoriteEntryService) {}
+  constructor(
+    private typeService: TypeService,
+    private favoriteEntryService: FavoriteEntryService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { displayObject } = changes;

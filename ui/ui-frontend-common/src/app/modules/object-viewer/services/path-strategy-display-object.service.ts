@@ -64,7 +64,10 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 
-  constructor(private logger: Logger, private displayObjectHelper: DisplayObjectHelperService) {
+  constructor(
+    private logger: Logger,
+    private displayObjectHelper: DisplayObjectHelperService,
+  ) {
     const handleDisplayObjectComputing = (): void => {
       if (!this.data.value) {
         return;

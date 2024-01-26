@@ -82,65 +82,71 @@ export class LeavesTreeService {
       return EMPTY;
     }
     this.loadingNodesDetails = true;
-    return this.leavesTreeApiService.loadNodesDetailsFromFacetsIds(facets)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.loadNodesDetailsFromFacetsIds(facets).pipe(
+      map((pagedResult) => {
         FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pagedResult.results, true);
         FilingHoldingSchemeHandler.setCountRecursively(parentNodes, this.searchRequestResultFacets);
         this.loadingNodesDetails = false;
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   // ########## MAIN CALLS ####################################################################################################
 
   public searchUnderNode(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias).pipe(
+      map((pagedResult) => {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   public searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
+      map((pagedResult) => {
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
         console.log(JSON.stringify(tocheck));
         this.compareAddedNodeWithKnownFacets(tocheck);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   public searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
+      map((pagedResult) => {
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   public searchOrphans(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphans(parentNode, this.searchCriterias)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.searchOrphans(parentNode, this.searchCriterias).pipe(
+      map((pagedResult) => {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   public searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias)
-      .pipe(map(pagedResult => {
+    return this.leavesTreeApiService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias).pipe(
+      map((pagedResult) => {
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   searchAttachementUnit(): Observable<PagedResult> {
@@ -161,5 +167,4 @@ export class LeavesTreeService {
   setTransactionId(transactionId: string) {
     this.leavesTreeApiService.setTransactionId(transactionId);
   }
-
 }

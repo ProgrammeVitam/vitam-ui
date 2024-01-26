@@ -1,8 +1,6 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="form" class="side-form">
-
-
   <div class="row">
-    <div class=" col-6">
+    <div class="col-6">
       <vitamui-common-slide-toggle [formControl]="statusProfile" [checked]="form.controls.status.value === 'ACTIVE'">
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE' | translate }}
         <span *ngIf="form.controls.status.value === 'INACTIVE'">in</span>
@@ -12,7 +10,7 @@
 
     <div class="col-6 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.TYPE' | translate }}</label>
-      <div *ngIf="inputProfile.type=='PA';else pua">
+      <div *ngIf="inputProfile.type == 'PA'; else pua">
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_ARCHIVAGE' | translate }}
       </div>
       <ng-template #pua class="read_only">
@@ -23,16 +21,14 @@
 
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-input formControlName="name"
-                            placeholder="{{ 'PROFILE_PREVIEW.INFORMATION_TAB.INTITULE' | translate }} ">
+      <vitamui-common-input formControlName="name" placeholder="{{ 'PROFILE_PREVIEW.INFORMATION_TAB.INTITULE' | translate }} ">
       </vitamui-common-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-10 form-control">
-      <vitamui-common-input formControlName="description"
-                            placeholder="{{ 'PROFILE_PREVIEW.INFORMATION_TAB.DESCRIPTION' | translate }} ">
+      <vitamui-common-input formControlName="description" placeholder="{{ 'PROFILE_PREVIEW.INFORMATION_TAB.DESCRIPTION' | translate }} ">
       </vitamui-common-input>
     </div>
   </div>
@@ -40,7 +36,7 @@
   <div class="row">
     <div class="col-12 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFIL_ATTACHE' | translate }}</label>
-      <div *ngIf="isProfilAttached(inputProfile);else pas_profil">
+      <div *ngIf="isProfilAttached(inputProfile); else pas_profil">
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PRESENCE_PROFIL_ATTACHE' | translate }}
       </div>
       <ng-template #pas_profil>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.PAS_PROFIL_ATTACHE' | translate }}</ng-template>

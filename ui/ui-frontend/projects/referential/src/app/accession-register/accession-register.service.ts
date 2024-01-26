@@ -78,7 +78,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
     private bytesPipe: BytesPipe,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {
     super(http, accessionRegisterApiService, 'ALL');
   }
@@ -88,7 +88,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     return this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_COMPLETED).pipe(
       withLatestFrom(
         this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
-        this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.UNSTORED)
+        this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.UNSTORED),
       ),
       map(([storedAndCompleted, storedAndUpdated, unstored]) => {
         const data = [
@@ -100,7 +100,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
       }),
       catchError((error) => {
         return of(error);
-      })
+      }),
     );
   }
 
@@ -130,7 +130,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
             },
           });
         }
-      }
+      },
     );
   }
 
@@ -154,7 +154,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         // tslint:disable-next-line:no-string-literal
         const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
         return this.fetchFacetDetails(accessionRegisterStats);
-      })
+      }),
     );
   }
 

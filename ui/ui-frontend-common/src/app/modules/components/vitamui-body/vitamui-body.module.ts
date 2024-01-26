@@ -5,10 +5,7 @@ import { VitamuiBodyComponent } from './vitamui-body.component';
 
 @NgModule({
   declarations: [VitamuiBodyComponent],
-  imports: [
-    CommonModule,
-    ScrollTopModule
-  ],
-  exports: [VitamuiBodyComponent]
+  imports: [CommonModule, ScrollTopModule],
+  exports: [VitamuiBodyComponent],
 })
-export class VitamuiBodyModule { }
+export class VitamuiBodyModule {}

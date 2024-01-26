@@ -55,7 +55,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import {AuthenticationModule, TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import { AuthenticationModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
@@ -100,18 +100,9 @@ import { PastisRoutingModule } from './pastis-routing.module';
     MatIconModule,
     MatTabsModule,
   ],
-  providers: [
-    DatePipe,
-    TranslateService
-  ],
-  declarations: [
-    MainComponent,
-    UserActionRemoveMetadataComponent,
-    UserActionAddMetadataComponent,
-    SedaVisualizerComponent
-  ],
-  exports: [
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [DatePipe, TranslateService],
+  declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
+  exports: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PastisModule {}

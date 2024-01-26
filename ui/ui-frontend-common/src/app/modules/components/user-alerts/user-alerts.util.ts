@@ -9,7 +9,7 @@ export function buildAlertLabel(translateService: TranslateService, alert: Alert
   const statusTraduction = translateService.get('USER_ALERTS.STATUS.' + alert.status);
 
   return forkJoin([keyTraduction, actionTraduction, statusTraduction]).pipe(
-    map((trads: string[]) => trads[0] + ' ' + alert.identifier + ' : ' + trads[1] + ' ' + trads[2])
+    map((trads: string[]) => trads[0] + ' ' + alert.identifier + ' : ' + trads[1] + ' ' + trads[2]),
   );
 }
 

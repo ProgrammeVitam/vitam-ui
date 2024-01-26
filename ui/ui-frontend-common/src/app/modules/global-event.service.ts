@@ -38,17 +38,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GlobalEventService {
-
   pageEvent = new Subject<string>();
 
   tenantEvent = new Subject<string>();
 
   customerEvent = new Subject<string>();
 
-  constructor(
-  ) { }
-
+  constructor() {}
 }

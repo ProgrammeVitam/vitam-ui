@@ -50,8 +50,8 @@ const CURRENT_PAGE = 0;
   templateUrl: './archive-unit-rules-details-tab.component.html',
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
@@ -64,8 +64,10 @@ export class ArchiveUnitRulesDetailsTabComponent {
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
   selectUnitWithInheritedRulesSubscription: Subscription;
 
-  constructor(private collectService: ArchiveCollectService, private translateService: TranslateService) {
-  }
+  constructor(
+    private collectService: ArchiveCollectService,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit && this.archiveUnit['#opi']) {
@@ -73,8 +75,7 @@ export class ArchiveUnitRulesDetailsTabComponent {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     this.selectUnitWithInheritedRulesSubscription?.unsubscribe();
@@ -83,7 +84,7 @@ export class ArchiveUnitRulesDetailsTabComponent {
   selectUnitWithInheritedRules(archiveUnit: Unit) {
     this.listOfCriteriaSearch.push({
       criteria: 'GUID',
-      values: [{value: archiveUnit['#id'], id: archiveUnit['#id']}],
+      values: [{ value: archiveUnit['#id'], id: archiveUnit['#id'] }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,
@@ -94,7 +95,7 @@ export class ArchiveUnitRulesDetailsTabComponent {
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
-    if(archiveUnit['#opi']){
+    if (archiveUnit['#opi']) {
       this.selectUnitWithInheritedRulesSubscription = this.collectService
         .selectUnitWithInheritedRules(archiveUnit['#opi'], inheritedRulesCriteriaSearch)
         .subscribe((response) => {

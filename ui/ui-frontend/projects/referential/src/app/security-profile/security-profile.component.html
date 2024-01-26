@@ -1,7 +1,10 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-security-profile-preview *ngIf="openedItem" (previewClose)="closePanel()" [securityProfile]="openedItem"></app-security-profile-preview>
+    <app-security-profile-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [securityProfile]="openedItem"
+    ></app-security-profile-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -16,19 +19,19 @@
         </div>
 
         <div class="controls">
-
           <vitamui-common-search-bar
             name="security-profile-search"
             (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant" i18n-placeholder="@@contextSearchPlaceholder"
+            placeholder="Nom, Identifiant"
+            i18n-placeholder="@@contextSearchPlaceholder"
           ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateSecurityProfileDialog()">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create context button label@@contextListCreateButton">Créer un profil</span>
+              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
+              <span i18n="Create context button label@@contextListCreateButton">Créer un profil</span>
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -37,5 +40,4 @@
       <app-security-profile-list (contextClick)="showSecurityProfile($event)" [search]="search"></app-security-profile-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

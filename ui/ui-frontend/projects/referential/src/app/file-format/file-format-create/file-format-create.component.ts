@@ -75,7 +75,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private agencyService: FileFormatService,
-    private fileFormatCreateValidators: FileFormatCreateValidators
+    private fileFormatCreateValidators: FileFormatCreateValidators,
   ) {}
 
   ngOnInit() {
@@ -125,7 +125,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false });
         console.error(error);
-      }
+      },
     );
   }
 

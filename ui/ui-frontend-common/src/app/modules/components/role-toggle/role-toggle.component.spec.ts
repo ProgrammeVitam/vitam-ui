@@ -54,14 +54,10 @@ import { RoleComponent } from './role.component';
       <vitamui-common-role name="ROLE_TEST_2">Role Test 2</vitamui-common-role>
       <vitamui-common-role name="ROLE_TEST_3">Role Test 3</vitamui-common-role>
     </vitamui-common-role-toggle>
-  `
+  `,
 })
 class TesthostComponent {
-  roles: any[] = [
-    { name: 'ROLE_TEST_1' },
-    { name: 'DEFAULT_ROLE_TEST_1' },
-    { name: 'DEFAULT_ROLE_TEST_2' },
-  ];
+  roles: any[] = [{ name: 'ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_2' }];
 }
 
 describe('RoleToggleComponent', () => {
@@ -70,15 +66,10 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule,
-        HttpClientTestingModule,
-        TranslateModule.forRoot()],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ],
-      declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent]
-    })
-      .compileComponents();
+      imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+      declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -106,7 +97,6 @@ describe('RoleToggleComponent', () => {
       expect(slideToggles[1].attributes['ng-reflect-model']).toBe('false');
       expect(slideToggles[2].attributes['ng-reflect-model']).toBe('false');
     });
-
   }));
 
   it('should add the role to the list', waitForAsync(() => {
@@ -124,7 +114,5 @@ describe('RoleToggleComponent', () => {
         { name: 'ROLE_TEST_2' },
       ]);
     });
-
   }));
-
 });

@@ -48,7 +48,7 @@ export class DisplayObjectHelperService {
     private logger: Logger,
     private typeService: TypeService,
     private dataStructureService: DataStructureService,
-    private displayRuleHelperService: DisplayRuleHelperService
+    private displayRuleHelperService: DisplayRuleHelperService,
   ) {}
 
   public getComponentType(data: any, template: DisplayRule[] = [], path: string = ''): ComponentType {
@@ -70,7 +70,7 @@ export class DisplayObjectHelperService {
     data: any,
     template: DisplayRule[] = [],
     path: string = '',
-    configuration = { displayEmptyValues: true }
+    configuration = { displayEmptyValues: true },
   ): DisplayObject {
     const defaultDisplayRule = this.displayRuleHelperService.toDisplayRule(data, path, configuration);
     const templateDisplayRule = template.find((rule) => rule?.ui?.Path === path);
@@ -84,7 +84,7 @@ export class DisplayObjectHelperService {
 
     if (data && this.typeService.isGroup(data)) {
       children = Object.entries(data).map(([key, value]) =>
-        this.toDisplayObject(value, template, `${path ? path + '.' + key : key}`, configuration)
+        this.toDisplayObject(value, template, `${path ? path + '.' + key : key}`, configuration),
       );
     }
 
@@ -126,7 +126,7 @@ export class DisplayObjectHelperService {
     const templateDisplayObjectValue = templateDisplayObject?.value || {};
     const mixedValue = this.dataStructureService.deepMerge(
       this.dataStructureService.deepMerge({}, templateDisplayObjectValue),
-      dataDisplayObjectValue
+      dataDisplayObjectValue,
     );
 
     return this.toDisplayObject(mixedValue, template, '', configuration);

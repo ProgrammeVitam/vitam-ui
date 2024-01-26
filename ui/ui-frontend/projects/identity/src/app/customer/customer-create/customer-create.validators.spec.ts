@@ -43,7 +43,7 @@ import { CustomerCreateValidators } from './customer-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -51,7 +51,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('Customer Create Validators', () => {
-
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
@@ -121,5 +120,4 @@ describe('Customer Create Validators', () => {
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
     }));
   });
-
 });

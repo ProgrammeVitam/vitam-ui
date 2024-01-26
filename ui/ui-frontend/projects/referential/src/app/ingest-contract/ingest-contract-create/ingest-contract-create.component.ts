@@ -43,7 +43,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import {
-  ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  IngestContract,
+  Option,
+  SignaturePolicy,
+  SignedDocumentPolicyEnum,
 } from 'ui-frontend-common';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
@@ -57,7 +63,6 @@ import { IngestContractCreateValidators } from './ingest-contract-create.validat
   styleUrls: ['./ingest-contract-create.component.scss'],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
-
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
   readonly FilingPlanMode = FilingPlanMode;
 
@@ -88,9 +93,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
-  ) {
-  }
+    private snackBar: MatSnackBar,
+  ) {}
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
@@ -163,7 +167,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -237,7 +241,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 
@@ -305,5 +309,4 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
 }

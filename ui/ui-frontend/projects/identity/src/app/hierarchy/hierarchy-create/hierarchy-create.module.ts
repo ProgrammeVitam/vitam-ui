@@ -62,10 +62,8 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
     ReactiveFormsModule,
     MatDialogModule,
   ],
-  declarations: [
-    HierarchyCreateComponent,
-  ],
+  declarations: [HierarchyCreateComponent],
   exports: [HierarchyCreateComponent],
   entryComponents: [HierarchyCreateComponent],
 })
-export class HierarchyCreateModule { }
+export class HierarchyCreateModule {}

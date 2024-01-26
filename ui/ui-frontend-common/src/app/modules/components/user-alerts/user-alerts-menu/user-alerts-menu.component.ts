@@ -4,7 +4,7 @@ import { AlertOption, UserAlerts } from '../../../models/user/user-alerts.interf
 @Component({
   selector: 'vitamui-common-user-alerts-menu',
   templateUrl: './user-alerts-menu.component.html',
-  styleUrls: ['./user-alerts-menu.component.scss']
+  styleUrls: ['./user-alerts-menu.component.scss'],
 })
 export class UserAlertsMenuComponent {
   @Input() userAlerts: UserAlerts;
@@ -14,6 +14,5 @@ export class UserAlertsMenuComponent {
   @Output() closeAlert = new EventEmitter<AlertOption>();
   @Output() seeMoreAlerts = new EventEmitter();
 
-  constructor() { }
-
+  constructor() {}
 }

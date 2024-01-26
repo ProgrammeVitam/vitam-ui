@@ -42,8 +42,20 @@ import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/searc
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract, AccessContractApiService, ApiUnitObject, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Ontology, PagedResult,
-  SearchArchiveUnitsInterface, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse, SearchService, Transaction, Unit,
+  AccessContract,
+  AccessContractApiService,
+  ApiUnitObject,
+  FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode,
+  Ontology,
+  PagedResult,
+  SearchArchiveUnitsInterface,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchResponse,
+  SearchService,
+  Transaction,
+  Unit,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -59,7 +71,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
-    private accessContractApiService: AccessContractApiService
+    private accessContractApiService: AccessContractApiService,
   ) {
     super(http, projectsApiService, 'ALL');
   }
@@ -114,8 +126,8 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
           return of({ $hits: null, $results: [] });
         }),
         map((results) => {
-          return ArchiveCollectService.buildPagedResults(results)
-        })
+          return ArchiveCollectService.buildPagedResults(results);
+        }),
       );
     } else {
       return of({ pageNumbers: 1, results: [], totalResults: 0 });
@@ -129,11 +141,10 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
       size: 1,
       trackTotalHits: true,
     };
-    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId)
-      .pipe(
-        map((pagedResult: PagedResult) => pagedResult.totalResults),
-        catchError(() => of(-1))
-      );
+    return this.searchArchiveUnitsByCriteria(searchCriteria, transactionId).pipe(
+      map((pagedResult: PagedResult) => pagedResult.totalResults),
+      catchError(() => of(-1)),
+    );
   }
 
   normalizeTitle(title: string): string {
@@ -209,7 +220,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
             duration: 10000,
           });
         }
-      }
+      },
     );
   }
 
@@ -224,7 +235,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
       }),
       map((response) => {
         return this.buildNestedTreeLevels(response.$results as Unit[]);
-      })
+      }),
     );
   }
 

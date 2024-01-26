@@ -65,8 +65,8 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   checkTraceabilityOperation(id: string, accessContract: string): Observable<any> {
-    const headers = new HttpHeaders({'X-Access-Contract-Id': accessContract});
-    return super.getHttp().get(`${this.apiUrl}/check/${id}`, {headers});
+    const headers = new HttpHeaders({ 'X-Access-Contract-Id': accessContract });
+    return super.getHttp().get(`${this.apiUrl}/check/${id}`, { headers });
   }
 
   getInfoFromTimestamp(timestamp: string): Observable<any> {
@@ -74,7 +74,7 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   downloadOperation(id: string, type: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/${id}/download/${type}`, {responseType: 'blob', headers});
+    return this.http.get(`${this.apiUrl}/${id}/download/${type}`, { responseType: 'blob', headers });
   }
 
   runAudit(audit: any, headers?: HttpHeaders): Observable<any> {
@@ -82,10 +82,10 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   runProbativeValue(probativeValue: any, headers?: HttpHeaders): Observable<any> {
-    return this.http.post(this.apiUrl + '/probativeValue', probativeValue, {headers});
+    return this.http.post(this.apiUrl + '/probativeValue', probativeValue, { headers });
   }
 
   downloadProbativeValue(id: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/probativeValue/${id}`, {responseType: 'blob', headers});
+    return this.http.get(`${this.apiUrl}/probativeValue/${id}`, { responseType: 'blob', headers });
   }
 }

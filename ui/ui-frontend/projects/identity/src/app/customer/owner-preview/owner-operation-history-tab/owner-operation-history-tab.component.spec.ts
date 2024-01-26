@@ -36,8 +36,8 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {AuthService, LogbookService} from 'ui-frontend-common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AuthService, LogbookService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab.component';
 
@@ -48,14 +48,13 @@ describe('OwnerOperationHistoryTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ OwnerOperationHistoryTabComponent ],
+      declarations: [OwnerOperationHistoryTabComponent],
       providers: [
-        { provide: AuthService, useValue: {}},
-        { provide: LogbookService, useValue: {}},
+        { provide: AuthService, useValue: {} },
+        { provide: LogbookService, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -38,7 +38,12 @@ import { Observable, of } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
 
 export class CasAuthenticatorService implements AuthenticatorService {
-  constructor(private location: any, private loginUrl: string, private logoutUrl: string, private logoutRedirectUiUrl: string) {}
+  constructor(
+    private location: any,
+    private loginUrl: string,
+    private logoutUrl: string,
+    private logoutRedirectUiUrl: string,
+  ) {}
 
   public login(): Observable<boolean> {
     return of(true);

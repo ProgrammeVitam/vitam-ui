@@ -43,7 +43,7 @@ export class ProfileInformationTabComponent {
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
     private loggingService: NotificationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -56,7 +56,7 @@ export class ProfileInformationTabComponent {
     });
 
     this.statusProfile.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
   }
 
@@ -82,12 +82,12 @@ export class ProfileInformationTabComponent {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited && this.formHasChanged()
+    return this.form.valid && !this.submited && this.formHasChanged();
   }
 
   formHasChanged() {
     for (const k of Object.keys(this.form.value)) {
-      const key = k as keyof ProfileDescription
+      const key = k as keyof ProfileDescription;
       if (!this.form.value[key] && !this._inputProfile[key]) {
         continue;
       }
@@ -115,7 +115,7 @@ export class ProfileInformationTabComponent {
         this.submited = false;
         this.pending = !this.pending;
         this.loggingService.showSuccess('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR');
-      }
+      },
     );
   }
 
@@ -126,5 +126,4 @@ export class ProfileInformationTabComponent {
   isProfilAttached(inputProfile: ProfileDescription): boolean {
     return !!((inputProfile.controlSchema && inputProfile.controlSchema.length !== 2) || inputProfile.path);
   }
-
 }

@@ -89,7 +89,10 @@ export class IngestContractObjectTabComponent implements OnInit {
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private ingestContractService: IngestContractService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private ingestContractService: IngestContractService,
+  ) {
     this.form = this.formBuilder.group({
       masterMandatory: [true],
       everyDataObjectVersion: [true, Validators.required],
@@ -108,8 +111,8 @@ export class IngestContractObjectTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -124,7 +127,7 @@ export class IngestContractObjectTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

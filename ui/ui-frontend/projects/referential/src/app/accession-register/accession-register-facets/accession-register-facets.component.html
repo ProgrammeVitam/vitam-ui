@@ -1,24 +1,24 @@
 <div class="row">
   <div class="col-12">
-    <div class="row" *ngIf="(advancedSearchPanelOpenState$|async) !== true">
+    <div class="row" *ngIf="(advancedSearchPanelOpenState$ | async) !== true">
       <div class="col my-4">
-          <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">{{ 'ACCESSION_REGISTER.FACETS.SHOW_SEARCH_FILTERS' | translate }}</a>
+        <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">{{
+          'ACCESSION_REGISTER.FACETS.SHOW_SEARCH_FILTERS' | translate
+        }}</a>
       </div>
     </div>
     <div class="row">
       <div class="col">
-      <vitamui-interval-date-picker
-        label="{{ 'ACCESSION_REGISTER.FACETS.DATE_SEARCH_FILTER_LABEL' | translate }}"
-        (criteriaChange)="onDateCriteriaChange($event)"
-      >
-      </vitamui-interval-date-picker>
+        <vitamui-interval-date-picker
+          label="{{ 'ACCESSION_REGISTER.FACETS.DATE_SEARCH_FILTER_LABEL' | translate }}"
+          (criteriaChange)="onDateCriteriaChange($event)"
+        >
+        </vitamui-interval-date-picker>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <app-logbook-operation-facet
-          [facetDetails]="stateFacetDetails$|async"
-        ></app-logbook-operation-facet>
+        <app-logbook-operation-facet [facetDetails]="stateFacetDetails$ | async"></app-logbook-operation-facet>
       </div>
     </div>
   </div>

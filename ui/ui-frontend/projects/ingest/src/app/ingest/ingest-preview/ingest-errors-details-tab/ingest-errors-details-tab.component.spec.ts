@@ -11,16 +11,14 @@ describe('IngestErrorsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IngestErrorsDetailsTabComponent ],
-      imports: [
-        HttpClientTestingModule
+      declarations: [IngestErrorsDetailsTabComponent],
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: IngestService, useValue: {} },
+        { provide: EventDisplayHelperService, useValue: {} },
       ],
-      providers: [{ provide: IngestService, useValue: {} },
-        { provide: EventDisplayHelperService, useValue: {} }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {

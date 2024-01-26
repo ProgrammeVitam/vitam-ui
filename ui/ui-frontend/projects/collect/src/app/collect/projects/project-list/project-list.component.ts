@@ -24,11 +24,11 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Router} from '@angular/router';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project} from 'ui-frontend-common';
-import {ProjectsService} from '../projects.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-list',
@@ -47,17 +47,20 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   projectUpdated: Subscription;
 
-  constructor(public projectsService: ProjectsService, private router: Router) {
+  constructor(
+    public projectsService: ProjectsService,
+    private router: Router,
+  ) {
     super(projectsService);
   }
 
   ngOnInit(): void {
     this.searchProject();
 
-    this.projectUpdated = this.projectsService.getUpdatedProject$().subscribe(projectUpdated => {
+    this.projectUpdated = this.projectsService.getUpdatedProject$().subscribe((projectUpdated) => {
       for (let i = 0; i < this.dataSource.length; i++) {
         if (this.dataSource[i].id === projectUpdated.id) {
-          this.dataSource[i] = {...projectUpdated};
+          this.dataSource[i] = { ...projectUpdated };
         }
       }
     });
@@ -82,7 +85,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   searchArchiveUnitsByProject(project: Project) {
     this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', project.id], {
-      queryParams: {projectName: project.messageIdentifier},
+      queryParams: { projectName: project.messageIdentifier },
     });
   }
 

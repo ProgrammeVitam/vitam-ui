@@ -43,13 +43,15 @@ import { BASE_URL } from '../injection-tokens';
 import { AppConfiguration, ApplicationInfo, AttachmentType } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApplicationApiService {
-
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+  ) {
     this.apiUrl = baseUrl + '/ui/applications';
   }
 
@@ -58,7 +60,7 @@ export class ApplicationApiService {
   }
 
   isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
-    return this.http.get<boolean>(this.apiUrl  + '/' + id + '/externalid');
+    return this.http.get<boolean>(this.apiUrl + '/' + id + '/externalid');
   }
 
   getConfiguration(): Observable<AppConfiguration> {
@@ -83,7 +85,7 @@ export class ApplicationApiService {
       }),
       map((dataUrl: string) => {
         return dataUrl.split(',')[1];
-      })
+      }),
     );
   }
 }

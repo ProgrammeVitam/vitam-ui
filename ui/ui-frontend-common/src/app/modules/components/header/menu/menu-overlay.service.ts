@@ -12,7 +12,10 @@ export class MenuOverlayService {
 
   private portalInjector: PortalInjector;
 
-  constructor(private overlay: Overlay, private injector: Injector) {}
+  constructor(
+    private overlay: Overlay,
+    private injector: Injector,
+  ) {}
 
   public open(): void {
     const positionStrategy = this.overlay.position().global().top('0').right('0');

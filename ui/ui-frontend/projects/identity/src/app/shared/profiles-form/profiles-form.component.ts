@@ -91,7 +91,10 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   @ViewChild('profileInput', { static: true }) profileInput: VitamUIAutocompleteComponent;
   @ViewChild('addButton', { static: true }) addButton: ElementRef;
 
-  constructor(private rngProfileService: ProfileService, private appApiService: ApplicationApiService) {}
+  constructor(
+    private rngProfileService: ProfileService,
+    private appApiService: ApplicationApiService,
+  ) {}
 
   ngOnInit(): void {
     this.getProfiles();
@@ -129,7 +132,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       .getAllByParams(params)
       .pipe(
         tap((applications) => (this.applicationsDetails = applications.APPLICATION_CONFIGURATION)),
-        switchMap(() => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude))
+        switchMap(() => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude)),
       )
       .subscribe((profiles) => {
         this.profiles = profiles;
@@ -198,7 +201,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       .filter((profile) => profile.applicationName)
       .filter((profile) => {
         const foundProfile = selectedProfiles.find(
-          (p) => p.applicationName === profile.applicationName && p.tenantIdentifier === profile.tenantIdentifier
+          (p) => p.applicationName === profile.applicationName && p.tenantIdentifier === profile.tenantIdentifier,
         );
 
         return !foundProfile;

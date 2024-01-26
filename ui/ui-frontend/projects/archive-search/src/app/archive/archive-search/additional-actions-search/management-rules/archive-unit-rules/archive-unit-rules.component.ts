@@ -154,7 +154,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
     if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategory) !== -1) {
       if (actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE) {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         this.ruleCategoryDuaActions.preventRulesIdToAdd = this.ruleCategoryDuaActions.preventRulesIdToAdd.filter((rule) => rule !== ruleId);
@@ -163,18 +163,18 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
         }
       } else if (actionType === RuleActionsEnum.UNLOCK_RULE_INHERITANCE) {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction;
 
         this.ruleCategoryDuaActions.preventRulesIdToRemove = this.ruleCategoryDuaActions.preventRulesIdToRemove.filter(
-          (rule) => rule !== ruleId
+          (rule) => rule !== ruleId,
         );
         if (this.ruleActions.length === 0) {
           this.managementRules = this.managementRules.filter((m) => m.actionType !== RuleActionsEnum.DELETE_RULES);
         }
       } else {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
         )?.ruleCategoryAction;
         if (
           actionType === RuleActionsEnum.ADD_RULES &&
@@ -182,7 +182,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
         ) {
           if (this.ruleCategory === RuleTypeEnum.ACCESSRULE || this.ruleCategory === RuleTypeEnum.REUSERULE) {
             this.managementRules = this.managementRules.filter(
-              (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
+              (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES),
             );
           }
           this.ruleCategoryDuaActions = {
@@ -210,16 +210,16 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
       }
       if (this.checkExistenceOfManagementOperation(actionType, this.managementRules)) {
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
         ).ruleCategoryAction = this.ruleCategoryDuaActions;
         if (this.checkExistenceOfUpdateOperation(this.managementRules)) {
           this.managementRules = this.managementRules.filter(
-            (managementRule) => managementRule.actionType !== RuleActionsEnum.UPDATE_RULES
+            (managementRule) => managementRule.actionType !== RuleActionsEnum.UPDATE_RULES,
           );
         }
         if (this.checkExistenceOfDeleteOperation(this.managementRules)) {
           this.managementRules = this.managementRules.filter(
-            (managementRule) => managementRule.actionType !== RuleActionsEnum.DELETE_RULES
+            (managementRule) => managementRule.actionType !== RuleActionsEnum.DELETE_RULES,
           );
         }
       }
@@ -273,13 +273,15 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
 
   private checkExistenceOfUpdateOperation(managementRules: ManagementRules[]) {
     return managementRules.find(
-      (managementRule) => managementRule.actionType === RuleActionsEnum.UPDATE_RULES && managementRule.ruleCategoryAction.rules.length === 0
+      (managementRule) =>
+        managementRule.actionType === RuleActionsEnum.UPDATE_RULES && managementRule.ruleCategoryAction.rules.length === 0,
     );
   }
 
   private checkExistenceOfDeleteOperation(managementRules: ManagementRules[]) {
     return managementRules.find(
-      (managementRule) => managementRule.actionType === RuleActionsEnum.DELETE_RULES && managementRule.ruleCategoryAction.rules.length === 0
+      (managementRule) =>
+        managementRule.actionType === RuleActionsEnum.DELETE_RULES && managementRule.ruleCategoryAction.rules.length === 0,
     );
   }
 }

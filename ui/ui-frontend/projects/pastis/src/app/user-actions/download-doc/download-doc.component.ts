@@ -41,13 +41,10 @@ import { Component, OnInit } from '@angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-download-doc',
   templateUrl: './download-doc.component.html',
-  styleUrls: ['./download-doc.component.scss']
+  styleUrls: ['./download-doc.component.scss'],
 })
 export class UserActionsDownloadDocComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

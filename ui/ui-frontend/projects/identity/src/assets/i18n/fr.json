@@ -185,7 +185,7 @@
         "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
       },
       "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs",
-      "MAXIMUM_AUTHENTICATION_LIFETIME" : "Temps maximum de connexion (secondes)",
+      "MAXIMUM_AUTHENTICATION_LIFETIME": "Temps maximum de connexion (secondes)",
       "WANTS_ASSERTION_SIGNED": "Assertions signées",
       "AUTHN_REQUEST_SIGNED": "Requête d'authentification signée"
     },

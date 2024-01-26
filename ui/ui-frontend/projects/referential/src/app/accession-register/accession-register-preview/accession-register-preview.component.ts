@@ -24,8 +24,8 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AccessionRegisterDetail} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AccessionRegisterDetail } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-accession-register-preview',
@@ -33,18 +33,15 @@ import {AccessionRegisterDetail} from 'ui-frontend-common';
   styleUrls: ['./accession-register-preview.component.scss'],
 })
 export class AccessionRegisterPreviewComponent {
-
   @Input()
   accessionRegisterDetail: AccessionRegisterDetail;
 
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
-  }
+  constructor() {}
 
   emitClose() {
     this.previewClose.emit();
   }
-
 }

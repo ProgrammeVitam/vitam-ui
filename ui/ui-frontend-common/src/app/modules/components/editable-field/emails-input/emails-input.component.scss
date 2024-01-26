@@ -1,63 +1,63 @@
 @import '../../../../../sass/variables/colors';
 
 :host {
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
 
-    &::ng-deep {
-        .mat-button-wrapper {
-            padding: 0!important;
-        }
+  &::ng-deep {
+    .mat-button-wrapper {
+      padding: 0 !important;
     }
+  }
 }
 
 button {
-    background-color: var(--vitamui-primary)!important;
-    width: 35px;
-    height: 35px;
+  background-color: var(--vitamui-primary) !important;
+  width: 35px;
+  height: 35px;
 
-    i {
-        font-size: 20px;
-        font-weight: 600;
-    }
+  i {
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-    &:disabled {
-        background-color: var(--vitamui-grey-300)!important;
-        
-        > i {
-            color: var(--vitamui-grey-800);;
-        }
+  &:disabled {
+    background-color: var(--vitamui-grey-300) !important;
+
+    > i {
+      color: var(--vitamui-grey-800);
     }
+  }
 }
 
 .domain-input-control {
+  display: flex;
+  height: 60px;
+
+  .domain-input-wrapper {
     display: flex;
-    height: 60px;
+    align-items: center;
+  }
 
-    .domain-input-wrapper {
-        display: flex;
-        align-items: center;
-    }
+  .actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
 
-    .actions {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
-
-    mat-spinner {
-        margin-left: 1rem;;
-    }
+  mat-spinner {
+    margin-left: 1rem;
+  }
 }
 
 .vitamui-input-errors {
-    padding: 0;
-    position: relative;
-    top: -8px;
+  padding: 0;
+  position: relative;
+  top: -8px;
 }
 
 .vitamui-chip-list {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }

@@ -1,4 +1,4 @@
-import {HttpResponse} from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 
 export class DownloadUtils {
   private static DOUBLE_QUOTES = '"';

@@ -39,7 +39,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Profile } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SharedService {
   private sourceProfile = new BehaviorSubject<Profile>(null);

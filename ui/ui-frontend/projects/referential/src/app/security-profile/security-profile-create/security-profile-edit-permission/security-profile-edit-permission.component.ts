@@ -36,21 +36,21 @@
  */
 /* tslint:disable: no-use-before-declare */
 
-import {Component, forwardRef, Input} from '@angular/core';
-import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {PermissionStructure, PermissionUtils} from '../permission.utils';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { PermissionStructure, PermissionUtils } from '../permission.utils';
 
 export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SecurityProfileEditPermissionComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-security-profile-edit-permission',
   templateUrl: './security-profile-edit-permission.component.html',
   styleUrls: ['./security-profile-edit-permission.component.scss'],
-  providers: [PERMISSION_SELECT_VALUE_ACCESSOR]
+  providers: [PERMISSION_SELECT_VALUE_ACCESSOR],
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
   permissions: PermissionStructure;
@@ -65,14 +65,13 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
   @Input() forceDisabled: boolean;
 
   // tslint:disable-next-line:variable-name
-  onChange = (_x: any) => {
-  }
-  onTouched = () => {
-  }
+  onChange = (_x: any) => {};
+  onTouched = () => {};
 
-  constructor(private permissionUtils: PermissionUtils, private formBuilder: FormBuilder) {
-
-  }
+  constructor(
+    private permissionUtils: PermissionUtils,
+    private formBuilder: FormBuilder,
+  ) {}
 
   onSubmit() {
     this.onChange(this.getAllowedPermissions());
@@ -121,5 +120,4 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
-
 }

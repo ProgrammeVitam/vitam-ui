@@ -2,7 +2,7 @@
 
 .row > div {
   display: flex;
- flex-direction: column;
+  flex-direction: column;
 }
 
 .row:not(:last-child) {
@@ -12,15 +12,14 @@
 label {
   font-size: 14px;
 
-  color:var(--vitamui-grey-600);
+  color: var(--vitamui-grey-600);
   font-weight: normal;
 }
 
-span
-{
+span {
   font-size: 16px;
 
-  color:var(--vitamui-grey-900);
+  color: var(--vitamui-grey-900);
   font-weight: bold;
 }
 .form-pad {

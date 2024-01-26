@@ -1,235 +1,232 @@
 table.vitamui-table {
-    color: var(--vitamui-grey-700);
-    font-size: 14px;
-    width: 100%;
-    border-collapse: collapse;
+  color: var(--vitamui-grey-700);
+  font-size: 14px;
+  width: 100%;
+  border-collapse: collapse;
 
-    &.fixed-layout {
-        table-layout: fixed;
+  &.fixed-layout {
+    table-layout: fixed;
 
-        td {
-            width: 100%;
-            word-break: break-word;
-        }
-
-        th {
-            width: 100%;
-            white-space: normal;
-        }
-    }
-
-    tr {
-        transition: background-color 200ms ease-out;
-
-        &:hover td .row-expand-btn {
-            display: inline-flex;
-        }
-
+    td {
+      width: 100%;
+      word-break: break-word;
     }
 
     th {
-        text-align: left;
-        padding: 10px 18px;
-        color: var(--vitamui-grey-700);
-        white-space: nowrap;
+      width: 100%;
+      white-space: normal;
+    }
+  }
 
-        &:first-child:not(.no-first-cell-padding) {
-            padding-left: 40px;
-        }
+  tr {
+    transition: background-color 200ms ease-out;
 
-        .vitamui-table-header {
-            display: flex;
-            align-items: center;
-        }
+    &:hover td .row-expand-btn {
+      display: inline-flex;
+    }
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 18px;
+    color: var(--vitamui-grey-700);
+    white-space: nowrap;
+
+    &:first-child:not(.no-first-cell-padding) {
+      padding-left: 40px;
     }
 
-    td {
-        padding: 10px 18px;
-        color: var(--vitamui-grey-900);
-        vertical-align: middle;
-        font-weight: bold;
+    .vitamui-table-header {
+      display: flex;
+      align-items: center;
+    }
+  }
 
-        &:first-child:not(.no-first-cell-padding) {
-            padding-left: 40px;
-        }
+  td {
+    padding: 10px 18px;
+    color: var(--vitamui-grey-900);
+    vertical-align: middle;
+    font-weight: bold;
 
-        &:last-child {
-            padding-right: 0px;
-        }
+    &:first-child:not(.no-first-cell-padding) {
+      padding-left: 40px;
     }
 
-    td.no-padding {
-        padding: 0;
+    &:last-child {
+      padding-right: 0px;
+    }
+  }
+
+  td.no-padding {
+    padding: 0;
+  }
+
+  td.align-top {
+    vertical-align: top;
+  }
+
+  td .row-expand-btn {
+    display: none;
+    color: white;
+    min-height: 60px;
+    height: 100%;
+    width: 60px;
+    background-color: var(--vitamui-primary-light);
+    border: none;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    outline: none;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  tr {
+    td,
+    th {
+      position: relative;
+      height: 60px;
+
+      &:not(.no-border):before {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid $white-three;
+      }
+    }
+  }
+
+  tr.row-expanded {
+    background: white;
+
+    &:not(.no-hover):hover {
+      background-color: #e7f5f2;
+    }
+  }
+
+  tr.sub-table {
+    background: white;
+
+    table.vitamui-table {
+      margin-bottom: 10px;
+
+      td {
+        padding: 5px 18px;
+        height: 36px;
+      }
+
+      tr:last-child > td:before {
+        border-top: none;
+      }
     }
 
-    td.align-top {
-        vertical-align: top;
+    > td {
+      padding: 0;
+      height: auto;
+    }
+  }
+
+  .caret {
+    color: $white-four;
+  }
+
+  .vitamui-row-icon {
+    font-size: 24px;
+    vertical-align: middle;
+  }
+
+  td .vitamui-row-icon {
+    color: #b7b7b7;
+  }
+
+  tbody > tr:not(.no-hover):hover {
+    background-color: rgba(var(--vitamui-primary-rgb), 0.15);
+  }
+
+  .vitamui-table-row {
+    .actions {
+      white-space: nowrap;
+      visibility: hidden;
+      text-align: right;
     }
 
-    td .row-expand-btn {
-        display: none;
-        color: white;
-        min-height: 60px;
-        height: 100%;
-        width: 60px;
-        background-color: var(--vitamui-primary-light);
-        border: none;
-        padding: 0;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        outline: none;
+    .actions {
+      padding-right: 20px;
+
+      > button {
+        opacity: 0;
+        transform: translateX(20%);
+        transition: all 150ms ease-in;
+      }
     }
 
-    .text-center {
-        text-align: center;
+    &:hover .actions {
+      visibility: visible;
+
+      > button {
+        opacity: 1;
+        transform: translateX(0);
+        transition-timing-function: ease-out;
+      }
     }
-
-    tr {
-        td, th {
-            position: relative;
-            height: 60px;
-
-            &:not(.no-border):before {
-                content: '';
-                display: block;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                border-top: 1px solid $white-three;
-            }
-        }
-    }
-
-    tr.row-expanded {
-        background: white;
-
-        &:not(.no-hover):hover {
-            background-color: #e7f5f2;
-        }
-    }
-
-    tr.sub-table {
-        background: white;
-
-        table.vitamui-table {
-            margin-bottom: 10px;
-
-            td {
-                padding: 5px 18px;
-                height: 36px;
-            }
-
-            tr:last-child > td:before {
-                border-top: none;
-            }
-        }
-
-        > td {
-            padding: 0;
-            height: auto;
-        }
-    }
-
-    .caret {
-        color: $white-four;
-    }
-
-    .vitamui-row-icon {
-        font-size: 24px;
-        vertical-align: middle;
-    }
-
-    td .vitamui-row-icon {
-        color: #b7b7b7;
-    }
-
-    tbody > tr:not(.no-hover):hover {
-
-      background-color: rgba(var(--vitamui-primary-rgb), 0.15);
-    }
-
-    .vitamui-table-row {
-        .actions {
-            white-space: nowrap;
-            visibility: hidden;
-            text-align: right;
-        }
-
-        .actions {
-            padding-right: 20px;
-
-            > button {
-                opacity: 0;
-                transform: translateX(20%);
-                transition: all 150ms ease-in;
-            }
-        }
-
-        &:hover .actions {
-            visibility: visible;
-
-            > button {
-                opacity: 1;
-                transform: translateX(0);
-                transition-timing-function: ease-out;
-            }
-        }
-
-    }
+  }
 }
 
 .vitamui-table-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px 0;
-    height: 50px;
-    color: var(--vitamui-grey-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  height: 50px;
+  color: var(--vitamui-grey-900);
 }
 
 .btn-orderby {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    color: #d8d8d8;
-    transition: color 200ms ease-out;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: #d8d8d8;
+  transition: color 200ms ease-out;
 
-    &.active {
-        color: var(--vitamui-primary);
-    }
+  &.active {
+    color: var(--vitamui-primary);
+  }
 
-    > i {
-        transition: transform 200ms ease-out;
-    }
+  > i {
+    transition: transform 200ms ease-out;
+  }
 
-    &.upside-down > i {
-        transform: rotate(180deg);
-    }
+  &.upside-down > i {
+    transform: rotate(180deg);
+  }
 }
 
 .vitamui-filter-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    margin-right: 10px;
-    color: $greyish;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-right: 10px;
+  color: $greyish;
 
-    &.active {
-        color: var(--vitamui-primary);
-    }
+  &.active {
+    color: var(--vitamui-primary);
+  }
 }
-
 
 /*******************************/
 /******* NEW TABLE CSS *********/
@@ -239,142 +236,140 @@ $row-padding: 0.8rem;
 
 // table css
 .vitamui-table {
-    background-color: var(--vitamui-background);
-    border-radius: 5px;
+  background-color: var(--vitamui-background);
+  border-radius: 5px;
 }
 
 .vitamui-table-head {
-    display: flex;
-    align-items: center;
-    padding: $row-padding;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--vitamui-grey-900);
-    margin-bottom: 0.3rem;
-    border-bottom: 2px solid var(--vitamui-grey-300);
-    background-color: white;
+  display: flex;
+  align-items: center;
+  padding: $row-padding;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--vitamui-grey-900);
+  margin-bottom: 0.3rem;
+  border-bottom: 2px solid var(--vitamui-grey-300);
+  background-color: white;
 
-    i {
-        color: var(--vitamui-grey-900);
-        font-size: 30px;
-    }
+  i {
+    color: var(--vitamui-grey-900);
+    font-size: 30px;
+  }
 }
 
 .vitamui-min-content {
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vitamui-table-message {
-    font-weight: 600;
-    color: var(--vitamui-grey-700);
+  font-weight: 600;
+  color: var(--vitamui-grey-700);
 }
 
 .vitamui-table-rows {
-    color: var(--vitamui-grey-900);
+  color: var(--vitamui-grey-900);
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+
+  i {
+    color: var(--vitamui-grey-700);
+    font-size: 30px;
+  }
+
+  .vitamui-row {
+    padding: $row-padding;
+    margin-bottom: 0.3rem;
+    background-color: white;
+
+    &:hover {
+      background-color: transparent;
+      @include elevation-3-dark;
+
+      .actions > div {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 150ms ease-in;
+      }
+    }
+
+    &.no-hover {
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+
+    button {
+      max-height: 40px;
+    }
+  }
+
+  .actions {
+    display: flex;
     align-items: center;
-    font-size: 14px;
-    font-weight: bold;
+  }
 
-    i {
-        color: var(--vitamui-grey-700);
-        font-size: 30px;
-    }
+  .actions > span {
+    width: 100%;
+  }
 
-    .vitamui-row {
-        padding: $row-padding;
-        margin-bottom: 0.3rem;
-        background-color: white;
-
-        &:hover {
-            background-color: transparent;
-            @include elevation-3-dark;
-
-            .actions > div {
-                visibility: visible;
-                opacity: 1;
-                transform: translateX(0);
-                transition: all 150ms ease-in;
-            }
-        }
-
-        &.no-hover {
-            &:hover {
-                background-color: transparent!important;
-            }
-        }
-
-        button {
-            max-height: 40px;
-        }
-    }
-
-    .actions {
-        display: flex;
-        align-items: center;
-    }
-
-    .actions > span {
-        width: 100%;
-    }
-
-    .actions > div {
-        width: 100%;
-        text-align: right;
-        display: flex;
-        justify-content: flex-end;
-        visibility: inherit;
-        align-content: flex-end;
-        opacity: 0;
-        transform: translateX(-20%);
-        transition-timing-function: ease-out;
-    }
+  .actions > div {
+    width: 100%;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    visibility: inherit;
+    align-content: flex-end;
+    opacity: 0;
+    transform: translateX(-20%);
+    transition-timing-function: ease-out;
+  }
 }
 
 // Subtable css
 .vitamui-subtable {
-    background-color: var(--vitamui-background);
+  background-color: var(--vitamui-background);
 
-    .vitamui-table-head {
-        height: 55px;
+  .vitamui-table-head {
+    height: 55px;
+  }
+
+  .footer-action {
+    padding-left: 12rem;
+    height: 55px;
+    align-items: center;
+    display: flex;
+  }
+
+  .sub-actions > div {
+    width: 100%;
+    text-align: right;
+  }
+
+  .vitamui-row {
+    height: 55px;
+
+    &:hover {
+      background-color: transparent;
     }
-
-    .footer-action {
-        padding-left: 12rem;
-        height: 55px;
-        align-items: center;
-        display: flex;
-    }
-
-    .sub-actions > div {
-        width: 100%;
-        text-align: right;
-    }
-
-    .vitamui-row {
-        height: 55px;
-
-        &:hover {
-            background-color: transparent;
-        }
-
-    }
+  }
 }
 
 // Profile list item css
 .vitamui-profile-list {
-    background-color: var(--vitamui-grey-100);
+  background-color: var(--vitamui-grey-100);
 
+  .profile-label {
+    font-size: 12px;
+    color: var(--vitamui-grey-600);
+  }
 
-    .profile-label {
-        font-size: 12px;
-        color: var(--vitamui-grey-600);
-    }
-
-    .profile-value {
-        font-size: 16px;
-        color: var(--vitamui-grey-900);
-    }
+  .profile-value {
+    font-size: 16px;
+    color: var(--vitamui-grey-900);
+  }
 }

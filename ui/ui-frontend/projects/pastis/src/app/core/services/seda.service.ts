@@ -43,17 +43,16 @@ import { CardinalityValues } from '../../models/models';
 import { SedaData } from '../../models/seda-data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SedaService {
-
   selectedSedaNode = new BehaviorSubject<SedaData>(null);
   selectedSedaNodeParent = new BehaviorSubject<SedaData>(null);
   sedaTabNodeRootToSearch = new BehaviorSubject<SedaData>(null);
   private sedaRulesTemp: any = sedaRulesFile;
   public sedaRules: SedaData = this.sedaRulesTemp;
 
-  constructor() { }
+  constructor() {}
 
   getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
     if (currentNode && nameNode) {
@@ -133,14 +132,14 @@ export class SedaService {
   // If an element have an 'n' cardinality (e.g. 0-N), the element will
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
-    const fileNodesNames = fileNode.children.map(e => e.name);
-    const allowedSelectableList = sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
-      x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
-      ||
-      (fileNodesNames.includes(x.Name) &&
-        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf()
-         || x.Cardinality === CardinalityConstants['One Or More'].valueOf())
-      ));
+    const fileNodesNames = fileNode.children.map((e) => e.name);
+    const allowedSelectableList = sedaNode.Children.filter(
+      (x) =>
+        (!fileNodesNames.includes(x.Name) && x.Cardinality !== CardinalityConstants.Obligatoire.valueOf()) ||
+        (fileNodesNames.includes(x.Name) &&
+          (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() ||
+            x.Cardinality === CardinalityConstants['One Or More'].valueOf())),
+    );
     return allowedSelectableList;
   }
 
@@ -148,7 +147,7 @@ export class SedaService {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-      return cardlinalityValues.find(c => c.value === clickedNode.cardinality).value;
+      return cardlinalityValues.find((c) => c.value === clickedNode.cardinality).value;
     }
   }
 
@@ -158,8 +157,7 @@ export class SedaService {
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
     // if (!sedaNode) return;
-    return sedaNode.Children.filter(children => children.Element === 'Attribute'
-      && sedaNode.Collection === collection);
+    return sedaNode.Children.filter((children) => children.Element === 'Attribute' && sedaNode.Collection === collection);
   }
 
   isSedaNodeObligatory(nodeName: string, sedaParent: SedaData): boolean {
@@ -189,9 +187,11 @@ export class SedaService {
   }
 
   checkSedaElementType(nodeName: string, sedaNode: SedaData): string {
-    if (sedaNode.Name === nodeName) { return sedaNode.Element; }
+    if (sedaNode.Name === nodeName) {
+      return sedaNode.Element;
+    }
 
-    const node = sedaNode.Children.find(c => c.Name === nodeName);
+    const node = sedaNode.Children.find((c) => c.Name === nodeName);
     if (node) {
       return node.Element;
     }
@@ -201,7 +201,7 @@ export class SedaService {
     if (nodeName === sedaNode.Name) {
       return sedaNode;
     }
-    const childFound = sedaNode.Children.find(c => c.Name === nodeName);
+    const childFound = sedaNode.Children.find((c) => c.Name === nodeName);
     return childFound ? childFound : null;
   }
 
@@ -218,9 +218,7 @@ export class SedaService {
     for (const fileChild of fileNode.children) {
       for (const sedaChild of sedaNode.Children) {
         if (fileChild.name === sedaChild.Name) {
-          fileChild.cardinality ?
-            cardinalities.push(fileChild.cardinality) :
-            cardinalities.push(sedaChild.Cardinality);
+          fileChild.cardinality ? cardinalities.push(fileChild.cardinality) : cardinalities.push(sedaChild.Cardinality);
         }
       }
     }

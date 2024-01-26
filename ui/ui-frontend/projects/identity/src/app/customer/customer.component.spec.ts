@@ -90,23 +90,21 @@ describe('CustomerComponent', () => {
     getGdprReadOnlySettingStatus: () => of(true),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  beforeEach(waitForAsync(() => {
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-      TestBed.configureTestingModule({
-        imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-        declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
-        providers: [
-          { provide: CustomerService, useValue: customerServiceSpy },
-          { provide: MatDialog, useValue: matDialogSpy },
-          { provide: ActivatedRoute, useValue: { data: EMPTY } },
-          { provide: ENVIRONMENT, useValue: environment },
-        ],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+      providers: [
+        { provide: CustomerService, useValue: customerServiceSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: ActivatedRoute, useValue: { data: EMPTY } },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerComponent);

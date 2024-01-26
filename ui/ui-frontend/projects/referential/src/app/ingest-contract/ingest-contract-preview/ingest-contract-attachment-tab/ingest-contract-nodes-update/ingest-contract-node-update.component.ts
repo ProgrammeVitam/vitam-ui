@@ -67,7 +67,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { ingestContract: IngestContract; accessContractId: string; tenantIdentifier: number },
     private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService
+    private ingestContractService: IngestContractService,
   ) {
     this.accessContractId = this.data.accessContractId;
     this.ingestContract = this.data.ingestContract;
@@ -93,10 +93,10 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     });
 
     this.linkParentIdControl.setValue(
-      this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] }
+      this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] },
     );
     this.checkParentIdControl.setValue(
-      this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] }
+      this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] },
     );
   }
 
@@ -120,7 +120,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       (error: any) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 

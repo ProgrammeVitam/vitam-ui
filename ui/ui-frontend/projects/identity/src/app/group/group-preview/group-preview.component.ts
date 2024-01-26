@@ -38,16 +38,14 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { Subscription } from 'rxjs';
 import { AuthService, Group, isLevelAllowed, StartupService } from 'ui-frontend-common';
 
-
 import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-preview',
   templateUrl: './group-preview.component.html',
-  styleUrls: ['./group-preview.component.scss']
+  styleUrls: ['./group-preview.component.scss'],
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
-
   @Input() isPopup: boolean;
 
   @Input() group: Group;
@@ -58,15 +56,16 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   public groupUsersCount: number;
 
   constructor(
-    private groupService: GroupService, private authService: AuthService,
-    private startupService: StartupService
+    private groupService: GroupService,
+    private authService: AuthService,
+    private startupService: StartupService,
   ) {}
 
   ngOnInit(): void {
-    if(this.group) {
+    if (this.group) {
       this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
         this.group = groupRetrieved;
-        this.groupService.updated.next(groupRetrieved)
+        this.groupService.updated.next(groupRetrieved);
       });
     }
 
@@ -79,17 +78,20 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('group')) {
-      if(this.group) {
+      if (this.group) {
         this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
           this.group = groupRetrieved;
-          this.groupService.updated.next(groupRetrieved)
+          this.groupService.updated.next(groupRetrieved);
         });
       }
     }
   }
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/group/' + this.group.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/group/' + this.group.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
@@ -108,9 +110,8 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') || event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP'))
     );
   }
 }

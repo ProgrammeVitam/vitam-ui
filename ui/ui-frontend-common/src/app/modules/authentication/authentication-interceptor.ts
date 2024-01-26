@@ -44,7 +44,11 @@ import { Logger } from '../logger/logger';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  constructor(private authStorage: OAuthStorage, private configService: ConfigService, private logger: Logger) {}
+  constructor(
+    private authStorage: OAuthStorage,
+    private configService: ConfigService,
+    private logger: Logger,
+  ) {}
 
   private checkUrl(url: string): boolean {
     const found = this.configService.config.ALLOWED_URLS.find((u) => url.includes(u));
@@ -88,7 +92,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       catchError((err) => {
         this.logger.error(this, err);
         return next.handle(req);
-      })
+      }),
     );
   }
 }

@@ -47,10 +47,9 @@ import { TenantFormValidators } from './tenant-form.validators';
 @Component({
   selector: 'app-tenant-create',
   templateUrl: './tenant-create.component.html',
-  styleUrls: ['./tenant-create.component.scss']
+  styleUrls: ['./tenant-create.component.scss'],
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
@@ -61,19 +60,15 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private tenantService: TenantService,
     private tenantFormValidators: TenantFormValidators,
-    private confirmDialogService: ConfirmDialogService
-  ) { }
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       ownerId: [this.data.owner.id],
       customerId: [this.data.owner.customerId],
-      name: [
-        null,
-        [Validators.required],
-        this.tenantFormValidators.uniqueName(),
-      ],
-      enabled: [true, Validators.required]
+      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
+      enabled: [true, Validators.required],
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -91,7 +86,9 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.pending || this.form.invalid) { return; }
+    if (this.form.pending || this.form.invalid) {
+      return;
+    }
     this.tenantService.create(this.form.value, this.data.owner.name).subscribe(
       (newTenant: Tenant) => {
         this.dialogRef.close(newTenant);
@@ -99,7 +96,7 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
       (error) => {
         console.error(error);
         this.dialogRef.close(null);
-      });
+      },
+    );
   }
-
 }

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
@@ -44,10 +43,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',
-  styleUrls: ['./pastis-title-breadcrumb.component.scss']
+  styleUrls: ['./pastis-title-breadcrumb.component.scss'],
 })
 export class PastisTitleBreadcrumbComponent implements OnInit {
-
   @Input()
   public data?: Array<any>;
 
@@ -56,15 +54,13 @@ export class PastisTitleBreadcrumbComponent implements OnInit {
 
   constructor(private location: Location) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public bubbleEvent(d: any): void {
     this.selected.emit(d);
   }
 
-  public goBack(){
-    this.location.back()
+  public goBack() {
+    this.location.back();
   }
-
 }

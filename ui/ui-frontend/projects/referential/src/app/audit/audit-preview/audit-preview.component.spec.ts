@@ -36,14 +36,14 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {of} from 'rxjs';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
-import {AuditService} from '../audit.service';
-import {AuditPreviewComponent} from './audit-preview.component';
+import { of } from 'rxjs';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { AuditService } from '../audit.service';
+import { AuditPreviewComponent } from './audit-preview.component';
 
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -58,21 +58,18 @@ describe('AuditPreviewComponent', () => {
     const parameters: Map<string, string> = new Map<string, string>();
     parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+      getUserExternalParameters: () => of(parameters),
     };
 
     TestBed.configureTestingModule({
       declarations: [AuditPreviewComponent, MockTruncatePipe],
       providers: [
-        {provide: AuditService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+        { provide: AuditService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
       ],
-      imports: [
-        MatSnackBarModule
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      imports: [MatSnackBarModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

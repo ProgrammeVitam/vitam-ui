@@ -43,7 +43,6 @@ import { of } from 'rxjs';
 import { ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 
-
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
   let fixture: ComponentFixture<IngestContractAttachmentTabComponent>;
@@ -75,30 +74,28 @@ describe('IngestContractAttachmentTabComponent', () => {
     signaturePolicy: undefined,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const parameters: Map<string, string> = new Map<string, string>();
-      parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
-      const externalParametersServiceMock = {
-        getUserExternalParameters: () => of(parameters),
-      };
+  beforeEach(waitForAsync(() => {
+    const parameters: Map<string, string> = new Map<string, string>();
+    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      const unitValueMock = {
-        getByDsl: () => of({}),
-      };
+    const unitValueMock = {
+      getByDsl: () => of({}),
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [IngestContractAttachmentTabComponent],
-        imports: [MatSnackBarModule],
-        providers: [
-          { provide: MatDialog, useValue: {} },
-          { provide: SearchUnitApiService, useValue: unitValueMock },
-          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [IngestContractAttachmentTabComponent],
+      imports: [MatSnackBarModule],
+      providers: [
+        { provide: MatDialog, useValue: {} },
+        { provide: SearchUnitApiService, useValue: unitValueMock },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractAttachmentTabComponent);

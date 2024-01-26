@@ -56,58 +56,52 @@ describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
   let fixture: ComponentFixture<IngestContractCreateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
-        uniqueName: () => of(null),
-        uniqueIdentifier: () => of(null),
-        identifierToIgnore: '',
-      });
+  beforeEach(waitForAsync(() => {
+    const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
+      uniqueName: () => of(null),
+      uniqueIdentifier: () => of(null),
+      identifierToIgnore: '',
+    });
 
-      const accessContractServiceMock = {
-        getAll: () => of([]),
-      };
+    const accessContractServiceMock = {
+      getAll: () => of([]),
+    };
 
-      const parameters: Map<string, string> = new Map<string, string>();
-      parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
-      const externalParametersServiceMock = {
-        getUserExternalParameters: () => of(parameters),
-      };
+    const parameters: Map<string, string> = new Map<string, string>();
+    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      const fileFormatServiceMock = {
-        getAllForTenant: () => of([]),
-      };
-      const managementContractApiServiceMock = {
-        getAllByParams: (_params: any) => of(null),
-      };
-      const archiveProfileApiServiceMock = {
-        getAllByParams: (_params: any) => of(null),
-      };
+    const fileFormatServiceMock = {
+      getAllForTenant: () => of([]),
+    };
+    const managementContractApiServiceMock = {
+      getAllByParams: (_params: any) => of(null),
+    };
+    const archiveProfileApiServiceMock = {
+      getAllByParams: (_params: any) => of(null),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [
-          VitamUICommonTestModule,
-          MatSnackBarModule,
-          MatButtonToggleModule,
-        ],
-        declarations: [IngestContractCreateComponent],
-        providers: [
-          FormBuilder,
-          { provide: MatDialogRef, useValue: {} },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: IngestContractService, useValue: {} },
-          { provide: IngestContractCreateValidators, useValue: ingestContractCreateValidatorsSpy },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-          { provide: FileFormatService, useValue: fileFormatServiceMock },
-          { provide: ManagementContractApiService, useValue: managementContractApiServiceMock },
-          { provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock },
-          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-          { provide: AccessContractService, useValue: accessContractServiceMock },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [VitamUICommonTestModule, MatSnackBarModule, MatButtonToggleModule],
+      declarations: [IngestContractCreateComponent],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: IngestContractService, useValue: {} },
+        { provide: IngestContractCreateValidators, useValue: ingestContractCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: FileFormatService, useValue: fileFormatServiceMock },
+        { provide: ManagementContractApiService, useValue: managementContractApiServiceMock },
+        { provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractCreateComponent);

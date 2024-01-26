@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {SharedModule} from './shared.module';
+import { SharedModule } from './shared.module';
 
 describe('SharedModule', () => {
   let sharedModule: SharedModule;

@@ -44,10 +44,9 @@ import { GroupService } from '../../../group.service';
 @Component({
   selector: 'app-profiles-edit',
   templateUrl: './profiles-edit.component.html',
-  styleUrls: ['./profiles-edit.component.scss']
+  styleUrls: ['./profiles-edit.component.scss'],
 })
 export class ProfilesEditComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
 
   public stepIndex = 0;
@@ -60,10 +59,10 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { group: Group },
     private groupService: GroupService,
     private confirmDialogService: ConfirmDialogService,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
   ) {
     this.form = formBuilder.group({
-      profileIds: [this.data.group.profileIds, Validators.required]
+      profileIds: [this.data.group.profileIds, Validators.required],
     });
   }
 
@@ -76,12 +75,15 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.pristine || this.form.invalid) { return; }
-    this.groupService.patch({ id: this.data.group.id, profileIds: this.form.value.profileIds}).subscribe(
+    if (this.form.pristine || this.form.invalid) {
+      return;
+    }
+    this.groupService.patch({ id: this.data.group.id, profileIds: this.form.value.profileIds }).subscribe(
       (response) => this.dialogRef.close(response),
       (error) => {
         console.error(error);
-      });
+      },
+    );
   }
 
   onCancel() {
@@ -91,5 +93,4 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
       this.dialogRef.close();
     }
   }
-
 }

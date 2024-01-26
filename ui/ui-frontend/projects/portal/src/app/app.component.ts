@@ -40,7 +40,7 @@ import { Logger, StartupService } from 'ui-frontend-common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'Portal App';
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private startupService: StartupService,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   ngOnInit() {
@@ -65,6 +65,6 @@ export class AppComponent implements OnInit {
     }
 
     const uiConfig: any = this.startupService.getConfigStringValue('UI');
-    this.hasLangSelection = uiConfig?.hasLangSelection ?? true
+    this.hasLangSelection = uiConfig?.hasLangSelection ?? true;
   }
 }

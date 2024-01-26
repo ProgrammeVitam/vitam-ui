@@ -39,7 +39,10 @@ import { from, Observable } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
 
 export class OidcAuthenticatorService implements AuthenticatorService {
-  constructor(private oAuthService: OAuthService, private location: any) {}
+  constructor(
+    private oAuthService: OAuthService,
+    private location: any,
+  ) {}
 
   public login(): Observable<boolean> {
     const url = new URL(this.location.href);

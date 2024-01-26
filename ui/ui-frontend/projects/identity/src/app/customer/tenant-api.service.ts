@@ -41,10 +41,9 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, Tenant } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TenantApiService extends BaseHttpClient<Tenant> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/tenants');
   }
@@ -61,12 +60,11 @@ export class TenantApiService extends BaseHttpClient<Tenant> {
     return super.create(tenant);
   }
 
-  patch(partialTenant: { id: string, [key: string]: any }): Observable<Tenant> {
+  patch(partialTenant: { id: string; [key: string]: any }): Observable<Tenant> {
     return super.patch(partialTenant);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
     return super.checkExistsByParam(params);
   }
-
 }

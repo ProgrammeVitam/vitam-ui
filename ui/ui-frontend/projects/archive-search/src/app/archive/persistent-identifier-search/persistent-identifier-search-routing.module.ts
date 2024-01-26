@@ -43,17 +43,13 @@ const routes: Route[] = [
   {
     path: '',
     component: PersistentIdentifierSearchComponent,
-    canActivate: []
-  }
+    canActivate: [],
+  },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)],
-  exports: [
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class PersistentIdentifierSearchRoutingModule {}

@@ -81,7 +81,7 @@
             <i class="material-icons save-icon">save</i>
             <ng-container (click)="preUpdate(criteria, $event)">
               <span class="results-message">
-                {{ criteria.name | truncate : 30 }}
+                {{ criteria.name | truncate: 30 }}
               </span>
               <span class="results-nb-filters"> - ({{ getNbFilters(criteria) }} filtres) </span>
             </ng-container>
@@ -125,7 +125,7 @@
               matTooltipClass="vitamui-tooltip"
               [matTooltipShowDelay]="300"
             >
-              {{ criteriaToUpdate.name | truncate : 30 }}
+              {{ criteriaToUpdate.name | truncate: 30 }}
             </span>
             <span class="results-nb-filters"> - ({{ getNbFilters(criteriaToUpdate) }} filtres) </span>
           </ng-container>

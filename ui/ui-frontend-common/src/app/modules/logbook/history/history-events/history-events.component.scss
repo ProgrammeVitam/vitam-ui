@@ -1,104 +1,104 @@
 @import '../../../../../sass/variables/colors';
 
 .history-event-item {
-    padding-left: 12px;
-    font-size: 12px;
+  padding-left: 12px;
+  font-size: 12px;
 
-    &.event-error {
-        .history-event-date,
-        .history-event-outcome,
-        .history-event-type {
-            color: #EA0101;
-        }
+  &.event-error {
+    .history-event-date,
+    .history-event-outcome,
+    .history-event-type {
+      color: #ea0101;
     }
+  }
 
-    &.event-warning {
-        .history-event-date,
-        .history-event-outcome,
-        .history-event-type {
-            color: #FFA610;
-        }
+  &.event-warning {
+    .history-event-date,
+    .history-event-outcome,
+    .history-event-type {
+      color: #ffa610;
     }
+  }
 
-    .history-event-date {
-        color: var(--vitamui-grey-600);
-    }
+  .history-event-date {
+    color: var(--vitamui-grey-600);
+  }
 
-    .history-event-outcome {
-        color: var(--vitamui-grey-900);
-    }
+  .history-event-outcome {
+    color: var(--vitamui-grey-900);
+  }
 
-    .history-event-details {
-        color: var(--vitamui-grey-900);
-        word-break: break-word;
-        padding-right: 8px;
-    }
+  .history-event-details {
+    color: var(--vitamui-grey-900);
+    word-break: break-word;
+    padding-right: 8px;
+  }
 
-    .history-event-title {
-        font-size:16px;
-        color: var(--vitamui-grey-900);;
-        font-weight: bold;
-    }
+  .history-event-title {
+    font-size: 16px;
+    color: var(--vitamui-grey-900);
+    font-weight: bold;
+  }
 
-    .history-event-outmessage {
-        font-weight: 400;
-    }
+  .history-event-outmessage {
+    font-weight: 400;
+  }
 }
 
 // Code to display the circles and line
 .history-event-item {
-    overflow: hidden;
-    position: relative;
-    padding: 0px 4px 24px 35px;
-    left: 8px;
+  overflow: hidden;
+  position: relative;
+  padding: 0px 4px 24px 35px;
+  left: 8px;
+  border-color: var(--vitamui-grey-400);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 9px;
+    width: 0px;
+    height: 999px;
     border-color: var(--vitamui-grey-400);
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+  }
 
-    &::before {
-        content: '';
-        position: absolute;
-        left: 7px;
-        top: 9px;
-        width: 0px;
-        height: 999px;
-        border-color: var(--vitamui-grey-400);
-        border-style: solid;
-        border-width: 1px 0 0 1px;
-    }
+  &:last-child::before {
+    border-width: 0 0 0 0;
+  }
 
-    &:last-child::before {
-        border-width: 0 0 0 0;
-    }
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    background: $white;
+    border: 2px solid var(--vitamui-grey-400);
+    border-radius: 50%;
+  }
 
-    &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 16px;
-        height: 16px;
-        background: $white;
-        border: 2px solid var(--vitamui-grey-400);
-        border-radius: 50%;
-    }
+  &.event-error:after {
+    background: #ea0101;
+    border-color: #ea0101;
+    color: white;
+    font-size: 8px;
+    padding-top: 2px;
+    padding-left: 2px;
 
-    &.event-error:after {
-        background: #EA0101;
-        border-color: #EA0101;
-        color: white;
-        font-size: 8px;
-        padding-top: 2px;
-        padding-left: 2px;
-
-        // Cross icon
-        content: "\ea0f";
-        font-family: 'vitamui-icon' !important;
-        speak: none;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
+    // Cross icon
+    content: '\ea0f';
+    font-family: 'vitamui-icon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }

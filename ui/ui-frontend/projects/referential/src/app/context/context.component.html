@@ -1,5 +1,4 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-context-preview *ngIf="openedItem" (previewClose)="closePanel()" [context]="openedItem"></app-context-preview>
   </mat-sidenav>
@@ -16,19 +15,19 @@
         </div>
 
         <div class="controls">
-
           <vitamui-common-search-bar
             name="context-search"
             (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant" i18n-placeholder="@@contextSearchPlaceholder"
+            placeholder="Nom, Identifiant"
+            i18n-placeholder="@@contextSearchPlaceholder"
           ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateContextDialog()">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create context button label@@contextListCreateButton">Créer un contexte</span>
+              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
+              <span i18n="Create context button label@@contextListCreateButton">Créer un contexte</span>
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -37,5 +36,4 @@
       <app-context-list (contextClick)="showContext($event)" [search]="search"></app-context-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

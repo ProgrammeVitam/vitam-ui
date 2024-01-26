@@ -1,9 +1,11 @@
 <div *ngIf="!hidden && show" class="subrogation-banner">
   <div>
     <i class="vitamui-icon vitamui-icon-repeat mr-4"></i>
-    <span>{{'SUBROGATION.BANNER.MESSAGE' | translate : {email: authService?.user?.email, endDate : endDate | dateTime:'HH:mm:ss' } }}</span>
+    <span>{{
+      'SUBROGATION.BANNER.MESSAGE' | translate: { email: authService?.user?.email, endDate: endDate | dateTime: 'HH:mm:ss' }
+    }}</span>
 
-    <button class="btn link ml-5" (click)="onStopSubrogation()">{{'SUBROGATION.BANNER.STOP_LABEL' | translate}}</button>
+    <button class="btn link ml-5" (click)="onStopSubrogation()">{{ 'SUBROGATION.BANNER.STOP_LABEL' | translate }}</button>
   </div>
 
   <div (click)="hidden = true">

@@ -42,14 +42,16 @@ import { BASE_URL, WINDOW_LOCATION } from '../injection-tokens';
 import { SubrogationApiService } from './subrogation-api.service';
 
 describe('SubrogationApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-      { provide: WINDOW_LOCATION, useValue: {} },
-      { provide: AuthService, useValue: {} },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: AuthService, useValue: {} },
+      ],
+    }),
+  );
 
   it('should be created', () => {
     const service: SubrogationApiService = TestBed.inject(SubrogationApiService);

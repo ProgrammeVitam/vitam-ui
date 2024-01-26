@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {LogbookOperation} from '../../../../models/logbook-event.interface';
-import {Event} from '../../event';
-import {EventDisplayHelperService} from '../../event-display-helper.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { LogbookOperation } from '../../../../models/logbook-event.interface';
+import { Event } from '../../event';
+import { EventDisplayHelperService } from '../../event-display-helper.service';
 
 @Component({
   selector: 'app-ingest-event-detail',
@@ -46,22 +46,20 @@ import {EventDisplayHelperService} from '../../event-display-helper.service';
   styleUrls: ['./ingest-event-detail.component.scss'],
   animations: [
     trigger('rotateAnimation', [
-      state('collapse', style({transform: 'rotate(-180deg)'})),
-      state('expand', style({transform: 'rotate(0deg)'})),
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
       transition('expand <=> collapse', animate('200ms ease-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
-
   @Input()
   ingest: LogbookOperation;
 
   events: Event[] = [];
   isShown = false;
 
-  constructor(private eventDisplayHelper: EventDisplayHelperService) {
-  }
+  constructor(private eventDisplayHelper: EventDisplayHelperService) {}
 
   ngOnInit() {
     this.events = this.eventDisplayHelper.initEvents(this.ingest);
@@ -78,14 +76,12 @@ export class IngestEventDetailComponent implements OnInit, OnChanges {
   }
 
   ingestMessage(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessage :
-      ingest.outMessage;
+    return ingest.events !== undefined && ingest.events.length !== 0
+      ? ingest.events[ingest.events.length - 1].outMessage
+      : ingest.outMessage;
   }
 
   ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].dateTime :
-      ingest.dateTime;
+    return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].dateTime : ingest.dateTime;
   }
 }

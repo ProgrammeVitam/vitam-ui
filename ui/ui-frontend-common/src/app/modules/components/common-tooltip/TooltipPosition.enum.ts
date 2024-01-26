@@ -40,4 +40,3 @@ export enum TooltipPosition {
   LEFT = 'LEFT',
   RIGHT = 'RIGHT',
 }
-

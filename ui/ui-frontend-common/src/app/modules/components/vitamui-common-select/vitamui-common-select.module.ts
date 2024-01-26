@@ -44,12 +44,7 @@ import { VitamuiCommonSelectComponent } from './vitamui-common-select.component'
 
 @NgModule({
   declarations: [VitamuiCommonSelectComponent],
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    FormsModule,
-    TranslateModule
-  ],
-  exports: [VitamuiCommonSelectComponent]
+  imports: [CommonModule, MatSelectModule, FormsModule, TranslateModule],
+  exports: [VitamuiCommonSelectComponent],
 })
-export class VitamuiCommonSelectModule { }
+export class VitamuiCommonSelectModule {}

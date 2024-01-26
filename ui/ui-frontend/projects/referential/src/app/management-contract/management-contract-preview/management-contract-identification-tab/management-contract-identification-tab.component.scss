@@ -4,7 +4,9 @@
   background-color: white;
   border-radius: 5px;
   font-weight: 700;
-  box-shadow: 0 0 2px rgba(var(--vitamui-grey-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-rgb), 0.05);
+  box-shadow:
+    0 0 2px rgba(var(--vitamui-grey-rgb), 0.2),
+    0 1px 4px rgba(var(--vitamui-grey-rgb), 0.05);
   border-left: 2px solid transparent;
 
   &.opened {

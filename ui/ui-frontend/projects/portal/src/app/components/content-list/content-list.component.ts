@@ -1,8 +1,8 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {MatTabGroup} from '@angular/material/tabs';
-import {Category} from 'ui-frontend-common';
-import {ContentTypeEnum} from './content.enum';
-import {Content} from './content.interface';
+import { Component, Input, ViewChild } from '@angular/core';
+import { MatTabGroup } from '@angular/material/tabs';
+import { Category } from 'ui-frontend-common';
+import { ContentTypeEnum } from './content.enum';
+import { Content } from './content.interface';
 
 @Component({
   selector: 'app-content-list',

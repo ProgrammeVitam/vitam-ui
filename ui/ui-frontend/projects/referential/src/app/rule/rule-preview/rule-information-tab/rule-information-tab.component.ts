@@ -96,7 +96,7 @@ export class RuleInformationTabComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private securityService: SecurityService,
-    private ruleService: RuleService
+    private ruleService: RuleService,
   ) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
@@ -112,7 +112,7 @@ export class RuleInformationTabComponent implements OnInit {
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
         return this.securityService.hasRole(RULES_APP, this.tenantIdentifier, VitamuiRoles.ROLE_UPDATE_RULES);
-      })
+      }),
     );
   }
 
@@ -144,7 +144,7 @@ export class RuleInformationTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null))))
+      switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
@@ -163,7 +163,7 @@ export class RuleInformationTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

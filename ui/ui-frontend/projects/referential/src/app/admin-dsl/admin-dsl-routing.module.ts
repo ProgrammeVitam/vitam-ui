@@ -34,36 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
-import {ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
 
-import {AdminDslComponent} from './admin-dsl.component';
+import { AdminDslComponent } from './admin-dsl.component';
 
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
-  }, {
+    pathMatch: 'full',
+  },
+  {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: AdminDslComponent,
-    canActivate: [ActiveTenantGuard]
-  }
+    canActivate: [ActiveTenantGuard],
+  },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class AdminDslRoutingModule {
-}
+export class AdminDslRoutingModule {}

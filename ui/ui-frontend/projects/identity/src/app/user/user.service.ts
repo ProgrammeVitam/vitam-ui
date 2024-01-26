@@ -62,7 +62,7 @@ export class UserService extends SearchService<User> {
     private userApi: UserApiService,
     private snackBarService: VitamUISnackBarService,
     private rngProfileService: ProfileService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, userApi, '');
   }
@@ -80,7 +80,7 @@ export class UserService extends SearchService<User> {
             param2: response.lastname,
           },
         });
-      })
+      }),
     );
   }
 
@@ -110,7 +110,7 @@ export class UserService extends SearchService<User> {
             param2: updatedUser.lastname,
           },
         });
-      })
+      }),
     );
   }
 
@@ -123,7 +123,7 @@ export class UserService extends SearchService<User> {
           icon: 'vitamui-icon-key',
           translateParams: { param1: user.firstname, param2: user.lastname },
         });
-      })
+      }),
     );
   }
 

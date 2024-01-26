@@ -19,7 +19,7 @@ export class RequestParam extends PageRequest {
     orderBy: string,
     direction: Direction,
     criteria: string,
-    groups: { fields: string[]; operator: AggregationOperationType; fieldOperator?: string }
+    groups: { fields: string[]; operator: AggregationOperationType; fieldOperator?: string },
   ) {
     super(page, size, orderBy, direction, criteria);
     this.groups = groups;

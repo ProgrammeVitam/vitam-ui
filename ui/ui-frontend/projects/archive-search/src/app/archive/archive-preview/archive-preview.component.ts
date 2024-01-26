@@ -63,7 +63,10 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   updateStarted = false;
   hasAccessContractManagementPermissionsMessage = '';
 
-  constructor(private route: ActivatedRoute, private translateService: TranslateService) {
+  constructor(
+    private route: ActivatedRoute,
+    private translateService: TranslateService,
+  ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });

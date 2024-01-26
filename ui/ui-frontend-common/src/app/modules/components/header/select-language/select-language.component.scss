@@ -1,43 +1,43 @@
 :host {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-button-wrapper {
-    justify-content: center;
-    display: flex!important;
+  justify-content: center;
+  display: flex !important;
 }
 
 img {
-    width: 25px;
+  width: 25px;
 }
 
 span img {
-    margin-left: 0.75rem;
+  margin-left: 0.75rem;
 }
 
 span {
-    display: inline-flex;
+  display: inline-flex;
 }
 
 .flag-button {
-    background-color: white;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
+  background-color: white;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 
 ::ng-deep.mat-menu-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 ::ng-deep.mat-menu-panel {
-    min-width: 0!important;
+  min-width: 0 !important;
 }
 
 ::ng-deep.mat-menu-content {
-    padding: 0!important;
+  padding: 0 !important;
 }
 
 .select-language {
@@ -45,5 +45,5 @@ span {
 }
 
 div {
-    height: 100%;
+  height: 100%;
 }

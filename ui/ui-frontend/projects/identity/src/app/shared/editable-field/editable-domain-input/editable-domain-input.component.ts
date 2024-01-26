@@ -43,22 +43,23 @@ import { EditableFieldComponent } from 'ui-frontend-common';
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableDomainInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-editable-domain-input',
   templateUrl: './editable-domain-input.component.html',
-  providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
 })
 export class EditableDomainInputComponent extends EditableFieldComponent {
-
   @Input()
   set defaultDomain(defaultDomain: string) {
     this._defaultDomain = defaultDomain;
     this.selected = defaultDomain;
   }
-  get defaultDomain(): string { return this._defaultDomain; }
+  get defaultDomain(): string {
+    return this._defaultDomain;
+  }
   private _defaultDomain: string;
 
   @Output() defaultDomainChange = new EventEmitter<string>();
@@ -68,7 +69,7 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
   private domainInputClicked = false;
 
   get canConfirm(): boolean {
-    return this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || (this.selected !== this.defaultDomain));
+    return this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || this.selected !== this.defaultDomain);
   }
 
   constructor(elementRef: ElementRef) {
@@ -76,7 +77,9 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
   }
 
   confirm() {
-    if (!this.canConfirm) { return; }
+    if (!this.canConfirm) {
+      return;
+    }
     super.confirm();
     this.defaultDomain = this.selected;
     this.defaultDomainChange.emit(this.defaultDomain);
@@ -88,7 +91,9 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     if (this.domainInputClicked) {
       this.domainInputClicked = false;
 
@@ -104,5 +109,4 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
   onDomainInputClick() {
     this.domainInputClicked = true;
   }
-
 }

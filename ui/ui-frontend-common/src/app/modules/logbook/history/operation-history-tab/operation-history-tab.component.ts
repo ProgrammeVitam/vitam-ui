@@ -48,11 +48,9 @@ const EVENT_LIMIT = 100;
 @Component({
   selector: 'vitamui-common-operation-history-tab',
   templateUrl: './operation-history-tab.component.html',
-  styleUrls: ['./operation-history-tab.component.scss']
+  styleUrls: ['./operation-history-tab.component.scss'],
 })
-
 export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
-
   @Input() id: string;
   @Input() identifier: string;
   @Input() collectionName: string;
@@ -64,11 +62,15 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
 
   private isDestroyed$ = new Subject();
 
-  constructor(private authService: AuthService, private logbookService: LogbookService, private route: ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private logbookService: LogbookService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('identifier') || changes.hasOwnProperty('collectionName')) {
-      if (this.id && this.collectionName ) {
+      if (this.id && this.collectionName) {
         this.initEvent();
       }
     }
@@ -84,28 +86,27 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
     this.route.paramMap
       .pipe(
         map((paramMap) =>
-          paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier)
+          paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
         switchMap((tenantIdentifier) => {
           return this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier);
         }),
-        takeUntil(this.isDestroyed$)
+        takeUntil(this.isDestroyed$),
       )
       .subscribe(
         (results) => {
-          this.events = results.filter((event) => {
-            return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
-          })
-          .slice(0, EVENT_LIMIT);
+          this.events = results
+            .filter((event) => {
+              return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
+            })
+            .slice(0, EVENT_LIMIT);
           this.loading = false;
         },
-        () => (this.loading = false)
+        () => (this.loading = false),
       );
-
   }
 
   filterByIdentifier(event: any): boolean {
-
     return event.objectId && event.objectId === this.identifier;
   }
 }

@@ -34,27 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
-import {VitamUIImportDialogComponent} from './vitamui-import-dialog.component';
-
-
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatProgressBarModule,
-    VitamUICommonModule
-  ],
-  declarations: [
-    VitamUIImportDialogComponent
-  ],
-  entryComponents: [VitamUIImportDialogComponent]
+  imports: [CommonModule, SharedModule, MatProgressBarModule, VitamUICommonModule],
+  declarations: [VitamUIImportDialogComponent],
+  entryComponents: [VitamUIImportDialogComponent],
 })
-export class VitamUIImportDialogModule {
-}
+export class VitamUIImportDialogModule {}

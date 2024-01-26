@@ -37,7 +37,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 export class VitamUITimeoutError extends HttpErrorResponse {
-    constructor() {
-      super({ status: 504 });
-    }
+  constructor() {
+    super({ status: 504 });
   }
+}

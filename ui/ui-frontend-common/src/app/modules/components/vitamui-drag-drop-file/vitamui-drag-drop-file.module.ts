@@ -41,12 +41,7 @@ import { VitamuiDragDropFileComponent } from './vitamui-drag-drop-file.component
 
 @NgModule({
   declarations: [VitamuiDragDropFileComponent],
-  imports: [
-    CommonModule,
-    MatIconModule,
-  ],
-  exports: [
-    VitamuiDragDropFileComponent
-  ]
+  imports: [CommonModule, MatIconModule],
+  exports: [VitamuiDragDropFileComponent],
 })
-export class VitamuiDragDropFileModule { }
+export class VitamuiDragDropFileModule {}

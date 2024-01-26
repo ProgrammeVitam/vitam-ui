@@ -44,25 +44,26 @@ import { UserInfo } from '../models/user/user-info.interface';
 import { AuthService } from './../auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
-
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private authService: AuthService) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+    private authService: AuthService,
+  ) {
     super(http, baseUrl + '/userinfos');
   }
-
 
   getOne(id: string, headers?: HttpHeaders): Observable<UserInfo> {
     return super.getOne(id, headers);
   }
 
-
   create(userInfo: UserInfo, headers?: HttpHeaders): Observable<UserInfo> {
     return super.create(userInfo, headers);
   }
 
-  patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
+  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
     return super.patch(data, headers);
   }
 
@@ -70,11 +71,8 @@ export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
     return this.http.patch<Account>(this.apiUrl + '/me', userPartial, { headers });
   }
 
-
-
   getMyUserInfo(headers?: HttpHeaders): Observable<UserInfo> {
     headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return super.getHttp().get<any>(super.getApiUrl() + '/me', { headers });
   }
-
 }

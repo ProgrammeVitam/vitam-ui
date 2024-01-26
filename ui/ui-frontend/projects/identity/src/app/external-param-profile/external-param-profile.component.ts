@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component,OnInit,ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
-import {ExternalParamProfile,GlobalEventService,SidenavPage} from 'ui-frontend-common';
-import {ExternalParamProfileCreateComponent} from './external-param-profile-create/external-param-profile-create.component';
-import {ExternalParamProfileListComponent} from './external-param-profile-list/external-param-profile-list.component';
-import {ExternalParamProfileService} from './external-param-profile.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ExternalParamProfile, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
+import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
+import { ExternalParamProfileService } from './external-param-profile.service';
 
 @Component({
   selector: 'app-external-param-profile',
@@ -51,42 +51,42 @@ export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProf
   dto: ExternalParamProfile;
   tenantIdentifier: string;
   public search: string;
-  @ViewChild(ExternalParamProfileListComponent,{static: true}) externalParamProfileListComponent: ExternalParamProfileListComponent;
+  @ViewChild(ExternalParamProfileListComponent, { static: true }) externalParamProfileListComponent: ExternalParamProfileListComponent;
 
   constructor(
     public dialog: MatDialog,
     public route: ActivatedRoute,
     public globalEventService: GlobalEventService,
-    public externalParamProfileServiceService: ExternalParamProfileService
+    public externalParamProfileServiceService: ExternalParamProfileService,
   ) {
-    super(route,globalEventService);
+    super(route, globalEventService);
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier=params.tenantIdentifier;
+      this.tenantIdentifier = params.tenantIdentifier;
     });
   }
 
   onSearchSubmit(search: string) {
-    this.search=search;
+    this.search = search;
   }
 
   openExternalParamProfilCreateDialog() {
-    const dialogRef=this.dialog.open(ExternalParamProfileCreateComponent,{
+    const dialogRef = this.dialog.open(ExternalParamProfileCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: {tenantIdentifier: this.tenantIdentifier},
+      data: { tenantIdentifier: this.tenantIdentifier },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if(result) {
+      if (result) {
         this.refreshList();
       }
     });
   }
 
   private refreshList() {
-    if(!this.externalParamProfileListComponent) {
+    if (!this.externalParamProfileListComponent) {
       return;
     }
     this.externalParamProfileListComponent.search();

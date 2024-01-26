@@ -1,14 +1,14 @@
 @import '../../../../../sass/variables/colors';
 
 :host::ng-deep .mat-form-field {
-    padding: 0.5rem 2rem;
+  padding: 0.5rem 2rem;
 }
 
 .dialog {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .asterix {
-    color: $red;
-    font-weight: bold;
+  color: $red;
+  font-weight: bold;
 }

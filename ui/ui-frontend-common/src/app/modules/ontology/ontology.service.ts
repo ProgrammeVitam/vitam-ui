@@ -37,7 +37,10 @@ import { Ontology } from '../models';
   providedIn: 'root',
 })
 export class OntologyService {
-  constructor(private ontologyApiService: OntologyApiService, http: HttpClient) {}
+  constructor(
+    private ontologyApiService: OntologyApiService,
+    http: HttpClient,
+  ) {}
 
   getInternalOntologyFieldsList(): Observable<Ontology[]> {
     return this.ontologyApiService.getInternalOntologyFieldsList();

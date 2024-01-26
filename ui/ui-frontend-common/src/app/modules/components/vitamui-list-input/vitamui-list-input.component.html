@@ -1,16 +1,24 @@
 <div class="list-input-control">
   <div class="list-input-wrapper">
-    <input class="vitamui-input" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
+    <input
+      class="vitamui-input"
+      type="text"
+      size="10"
+      [formControl]="control"
+      [attr.placeholder]="placeholder"
+      (blur)="onTouched()"
+      (keydown.enter)="add()"
+    />
     <mat-spinner *ngIf="control.pending" [diameter]="spinnerDiameter" color="accent"></mat-spinner>
   </div>
-  <button type="button" class="btn primary" (click)="add()" [disabled]="buttonAddDisabled()">{{'COMMON.ADD' | translate}}</button>
+  <button type="button" class="btn primary" (click)="add()" [disabled]="buttonAddDisabled()">{{ 'COMMON.ADD' | translate }}</button>
 </div>
 <div class="vitamui-input-errors">
-    <ng-content select="vitamui-common-field-error"></ng-content>
+  <ng-content select="vitamui-common-field-error"></ng-content>
 </div>
 <div class="vitamui-chip-list">
   <div *ngFor="let val of values" class="vitamui-chip">
-    <div class="vitamui-chip-content">{{val}}</div>
+    <div class="vitamui-chip-content">{{ val }}</div>
     <div class="vitamui-remove-chip" (click)="remove(val)">
       <i class="material-icons">clear</i>
     </div>

@@ -106,7 +106,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private tenantFormValidators: TenantFormValidators,
     private countryService: CountryService,
     private startupService: StartupService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -179,7 +179,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
           name: this.form.get('name').value,
           companyName: this.form.get('companyName').value,
         };
-      }
+      },
     );
   }
 
@@ -219,7 +219,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         (error) => {
           this.creating = false;
           console.error(error);
-        }
+        },
       );
   }
 

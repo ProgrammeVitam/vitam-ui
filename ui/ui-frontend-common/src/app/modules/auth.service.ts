@@ -94,7 +94,7 @@ export class AuthService implements OnDestroy {
   public login(): Observable<boolean> {
     return this.isAuthenticatorConfigReady$.pipe(
       skipWhile((ready) => !ready),
-      switchMap(() => this.authenticatorService.login())
+      switchMap(() => this.authenticatorService.login()),
     );
   }
 
@@ -162,14 +162,14 @@ export class AuthService implements OnDestroy {
   public getUser$(): Observable<AuthUser> {
     return this.user$.pipe(
       filter((user: AuthUser) => !!user),
-      take(1)
+      take(1),
     );
   }
 
   public getUserInfo$(): Observable<UserInfo> {
     return this.userInfo$.pipe(
       filter((userInfo: UserInfo) => !!userInfo),
-      take(1)
+      take(1),
     );
   }
 }

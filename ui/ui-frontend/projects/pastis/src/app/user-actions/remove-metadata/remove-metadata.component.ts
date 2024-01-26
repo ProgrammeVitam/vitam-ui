@@ -44,16 +44,17 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
   // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-remove-metadata',
   templateUrl: './remove-metadata.component.html',
-  styleUrls: ['./remove-metadata.component.scss']
+  styleUrls: ['./remove-metadata.component.scss'],
 })
 export class UserActionRemoveMetadataComponent implements OnInit {
-
   dataToSend: string;
 
-  constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-              private popUpService: PopupService) { }
+  constructor(
+    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
+    private popUpService: PopupService,
+  ) {}
 
   ngOnInit() {
-      this.popUpService.setPopUpDataOnClose(this.dialogRef.componentInstance.dialogReceivedData.fileNode.name);
+    this.popUpService.setPopUpDataOnClose(this.dialogRef.componentInstance.dialogReceivedData.fileNode.name);
   }
 }

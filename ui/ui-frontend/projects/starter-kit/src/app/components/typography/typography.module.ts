@@ -4,10 +4,7 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { TypographyComponent } from './typography.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule
-  ],
-  declarations: [TypographyComponent]
+  imports: [CommonModule, VitamUICommonModule],
+  declarations: [TypographyComponent],
 })
-export class TypographyModule { }
+export class TypographyModule {}

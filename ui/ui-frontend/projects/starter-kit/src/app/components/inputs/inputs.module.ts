@@ -22,9 +22,9 @@ import { InputsComponent } from './inputs.component';
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   exports: [InputsComponent],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
 })
-export class InputsModule { }
+export class InputsModule {}

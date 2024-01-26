@@ -63,14 +63,9 @@ import { GroupService } from './group.service';
     MatMenuModule,
     HttpClientModule,
     MatSidenavModule,
-    GroupRoutingModule
+    GroupRoutingModule,
   ],
-  declarations: [
-    GroupComponent
-  ],
-  providers: [
-    GroupResolver,
-    GroupService,
-  ]
+  declarations: [GroupComponent],
+  providers: [GroupResolver, GroupService],
 })
-export class GroupModule { }
+export class GroupModule {}

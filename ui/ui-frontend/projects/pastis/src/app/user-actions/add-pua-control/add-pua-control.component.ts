@@ -43,7 +43,6 @@ import { PopupService } from '../../core/services/popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 
-
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
 
 function constantToTranslate() {
@@ -55,15 +54,13 @@ function constantToTranslate() {
   this.expressionReguliereDefinition = this.translated('.EXPRESSION_REGULIERE_DEFINITION');
 }
 
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
-  styleUrls: ['./add-pua-control.component.scss']
+  styleUrls: ['./add-pua-control.component.scss'],
 })
 export class UserActionAddPuaControlComponent implements OnInit {
-
   btnIsDisabled: boolean;
   enumerationsLabel = 'Enumération';
   expressionReguliereLabel = 'Expression régulière';
@@ -78,24 +75,25 @@ export class UserActionAddPuaControlComponent implements OnInit {
   atLeastOneIsSelected: boolean;
   isStandalone: boolean = environment.standalone;
 
-
-  constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-              private popUpService: PopupService, private translateService: TranslateService) {
-      if (!this.isStandalone) {
-        constantToTranslate.call(this);
-        this.translatedOnChange();
-      }
-      this.dialogData = this.dialogRef.componentInstance.dialogReceivedData;
-      this.refreshAllowedChildren();
+  constructor(
+    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
+    private popUpService: PopupService,
+    private translateService: TranslateService,
+  ) {
+    if (!this.isStandalone) {
+      constantToTranslate.call(this);
+      this.translatedOnChange();
     }
+    this.dialogData = this.dialogRef.componentInstance.dialogReceivedData;
+    this.refreshAllowedChildren();
+  }
 
   ngOnInit() {
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
-    this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
+    this.popUpService.btnYesShoudBeDisabled.subscribe((status) => {
       this.btnIsDisabled = status;
     });
-
   }
 
   onRemoveSelectedElement(element: string) {
@@ -107,7 +105,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
         this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0]);
       }
     }
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+    this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
     this.upateButtonStatusAndDataToSend();
   }
 
@@ -116,9 +114,9 @@ export class UserActionAddPuaControlComponent implements OnInit {
     if (this.isExclusive(element)) {
       this.refreshAllowedChildren(element);
     } else {
-      this.allowedChildren = this.allowedChildren.filter(e => e !== element);
+      this.allowedChildren = this.allowedChildren.filter((e) => e !== element);
     }
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+    this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
     this.upateButtonStatusAndDataToSend();
   }
 
@@ -146,29 +144,22 @@ export class UserActionAddPuaControlComponent implements OnInit {
       this.addedItems = [element];
       this.allowedChildren = [];
     } else if (this.dialogData.fileNode.sedaData.Enumeration.length > 0) {
-      this.allowedChildren = [
-        this.enumerationsLabel
-      ];
+      this.allowedChildren = [this.enumerationsLabel];
       this.addedItems = [];
     } else {
-      this.allowedChildren = [
-        this.enumerationsLabel,
-        this.expressionReguliereLabel
-      ];
+      this.allowedChildren = [this.enumerationsLabel, this.expressionReguliereLabel];
       this.addedItems = [];
     }
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((_: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        // console.log(event.lang);
-      });
+    this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
+      constantToTranslate.call(this);
+      // console.log(event.lang);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
     return this.translateService.instant(ADD_PUA_CONTROL_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
-
 }

@@ -86,7 +86,10 @@ export class LogbookManagementOperationListComponent implements OnInit {
     { key: 'EXTERNAL_LOGBOOK', value: 'Journalisation d’événements externes' },
   ];
 
-  constructor(public logbookManagementOperationService: LogbookManagementOperationService, private translate: TranslateService) {}
+  constructor(
+    public logbookManagementOperationService: LogbookManagementOperationService,
+    private translate: TranslateService,
+  ) {}
 
   searchOperationsList(searchCriteria: any) {
     this.filterMap.categories = [];
@@ -300,12 +303,12 @@ export class LogbookManagementOperationListComponent implements OnInit {
     const resultsToShow: any[] = this.filter ? this.resultsFiltred : this.operationsList.results;
     if (!this.getParamShow('Status')) {
       resultsToShow.sort((a, b) =>
-        this.translate.instant('STATUS_VALUE.' + a.stepStatus) > this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1
+        this.translate.instant('STATUS_VALUE.' + a.stepStatus) > this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1,
       );
       this.changeParamShow('Status', true);
     } else {
       resultsToShow.sort((a, b) =>
-        this.translate.instant('STATUS_VALUE.' + a.stepStatus) < this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1
+        this.translate.instant('STATUS_VALUE.' + a.stepStatus) < this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1,
       );
       this.changeParamShow('Status', false);
     }

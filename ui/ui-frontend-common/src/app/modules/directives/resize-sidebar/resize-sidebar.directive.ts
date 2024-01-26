@@ -77,7 +77,7 @@ export class ResizeSidebarDirective implements OnInit {
         this.width = space;
         this.elementRef.nativeElement.style.width = this.width + 'px';
       } else {
-        const {left} = this.elementRef.nativeElement.getBoundingClientRect();
+        const { left } = this.elementRef.nativeElement.getBoundingClientRect();
         this.width = left - space + this.width;
         this.elementRef.nativeElement.style.width = this.width + 'px';
       }
@@ -89,7 +89,11 @@ export class ResizeSidebarDirective implements OnInit {
     this.status = 0;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document,
+  ) {}
 
   ngOnInit(): void {
     const nativeElt = this.elementRef.nativeElement;

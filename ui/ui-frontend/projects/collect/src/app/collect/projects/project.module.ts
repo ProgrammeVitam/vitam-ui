@@ -36,12 +36,12 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -58,25 +58,25 @@ import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectsComponent } from './projects.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        ProjectRoutingModule,
-        VitamUICommonModule,
-        MatMenuModule,
-        MatSnackBarModule,
-        MatDialogModule,
-        MatSidenavModule,
-        MatProgressSpinnerModule,
-        TableFilterModule,
-        VitamUILibraryModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatDatepickerModule,
-        MatSelectModule,
-        MatTabsModule,
-        MatButtonToggleModule,
-        FormsModule,
-    ],
+  imports: [
+    CommonModule,
+    ProjectRoutingModule,
+    VitamUICommonModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    TableFilterModule,
+    VitamUILibraryModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatButtonToggleModule,
+    FormsModule,
+  ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
 })

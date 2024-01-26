@@ -7,14 +7,8 @@ import { ItemSelectModule } from '../item-select/item-select.module';
 import { SelectLanguageComponent } from './select-language.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    MatButtonModule,
-    ItemSelectModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, MatMenuModule, MatButtonModule, ItemSelectModule, TranslateModule],
   declarations: [SelectLanguageComponent],
   exports: [SelectLanguageComponent],
 })
-export class SelectLanguageModule { }
+export class SelectLanguageModule {}

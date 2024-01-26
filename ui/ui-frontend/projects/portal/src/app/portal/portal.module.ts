@@ -59,9 +59,8 @@ import { PortalComponent } from './portal.component';
     WelcomeMessageModule,
     ContentListModule,
     MatProgressSpinnerModule,
-    BrowserTransferStateModule
+    BrowserTransferStateModule,
   ],
-  declarations: [PortalComponent]
+  declarations: [PortalComponent],
 })
-export class PortalModule {
-}
+export class PortalModule {}

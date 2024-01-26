@@ -42,21 +42,19 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableLevelInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-level-input',
   templateUrl: './editable-level-input.component.html',
   styleUrls: ['./editable-level-input.component.scss'],
-  providers: [EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR],
 })
 export class EditableLevelInputComponent extends EditableFieldComponent {
-
   @Input() prefix: string;
 
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }
-
 }

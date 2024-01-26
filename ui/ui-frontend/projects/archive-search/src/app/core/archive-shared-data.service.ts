@@ -37,8 +37,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
-  Direction, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaAddAction, SearchCriteriaDto, SearchCriteriaHistory,
-  SearchCriteriaRemoveAction, Unit
+  Direction,
+  FilingHoldingSchemeNode,
+  ResultFacet,
+  SearchCriteriaAddAction,
+  SearchCriteriaDto,
+  SearchCriteriaHistory,
+  SearchCriteriaRemoveAction,
+  Unit,
 } from 'ui-frontend-common';
 import { NodeData } from '../archive/models/nodedata.interface';
 
@@ -101,8 +107,7 @@ export class ArchiveSharedDataService {
 
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
 
-  constructor() {
-  }
+  constructor() {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);

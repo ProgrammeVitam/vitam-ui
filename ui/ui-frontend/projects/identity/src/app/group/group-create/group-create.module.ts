@@ -65,9 +65,7 @@ import { GroupCreateComponent } from './group-create.component';
     VitamUICommonModule,
     UnitsFormModule,
   ],
-  declarations: [
-    GroupCreateComponent,
-  ],
-  entryComponents: [GroupCreateComponent]
+  declarations: [GroupCreateComponent],
+  entryComponents: [GroupCreateComponent],
 })
-export class GroupCreateModule { }
+export class GroupCreateModule {}

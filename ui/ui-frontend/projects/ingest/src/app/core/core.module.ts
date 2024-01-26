@@ -41,22 +41,15 @@ import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoad
 import { environment } from '../../environments/environment';
 
 @NgModule({
-  imports: [
-    HttpClientModule,
-    VitamUICommonModule,
-    InjectorModule,
-    LoggerModule.forRoot()
-  ],
+  imports: [HttpClientModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
   exports: [VitamUICommonModule],
   providers: [
     { provide: BASE_URL, useValue: './ingest-api' },
-    { provide: ENVIRONMENT, useValue: environment }
-  ]
+    { provide: ENVIRONMENT, useValue: environment },
+  ],
 })
 export class CoreModule {
-
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
-
 }

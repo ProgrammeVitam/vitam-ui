@@ -31,15 +31,11 @@
       "minItems": 0
     },
     "non-empty-token": {
-      "type": [
-        "array"
-      ],
+      "type": ["array"],
       "minLength": 1
     },
     "non-empty-token-array": {
-      "type": [
-        "object"
-      ],
+      "type": ["object"],
       "items": {
         "type": "string",
         "minLength": 1
@@ -81,10 +77,7 @@
             "FinalAction": {
               "description": "FinalAction : cardinalité 1-1 / valeur au choix",
               "$ref": "#/definitions/one-one",
-              "enum": [
-                "Keep",
-                "Destroy"
-              ]
+              "enum": ["Keep", "Destroy"]
             }
           }
         }
@@ -92,19 +85,7 @@
     },
     "DescriptionLevel": {
       "$ref": "#/definitions/zero-one",
-      "enum": [
-        "Fonds",
-        "Subfonds",
-        "Class",
-        "Collection",
-        "Series",
-        "Subseries",
-        "RecordGrp",
-        "SubGrp",
-        "File",
-        "Item",
-        "OtherLevel"
-      ]
+      "enum": ["Fonds", "Subfonds", "Class", "Collection", "Series", "Subseries", "RecordGrp", "SubGrp", "File", "Item", "OtherLevel"]
     },
     "Title_": {
       "allOf": [

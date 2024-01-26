@@ -42,7 +42,10 @@ import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'
   styleUrls: ['./vitamui-snack-bar.component.scss'],
 })
 export class VitamUISnackBarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>) {}
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+    private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>,
+  ) {}
 
   close() {
     this.matSnackBarRef.dismiss();

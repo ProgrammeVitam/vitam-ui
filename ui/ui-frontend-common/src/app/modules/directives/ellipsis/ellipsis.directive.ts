@@ -40,11 +40,13 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnInit, Rend
   selector: '[vitamuiCommonEllipsis]',
 })
 export class EllipsisDirective implements OnInit, AfterViewInit {
-
   @Input() isToolTipOnMouseEnter = false;
   domElement: any;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+  ) {
     this.domElement = this.elementRef.nativeElement;
     this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
   }
@@ -59,9 +61,9 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   setToolTip() {
-    (this.domElement.offsetWidth < this.domElement.scrollWidth) ?
-    this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent) :
-    this.renderer.removeAttribute(this.domElement, 'title');
+    this.domElement.offsetWidth < this.domElement.scrollWidth
+      ? this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent)
+      : this.renderer.removeAttribute(this.domElement, 'title');
   }
 
   @HostListener('mouseenter')

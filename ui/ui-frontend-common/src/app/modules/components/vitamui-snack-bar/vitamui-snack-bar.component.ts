@@ -50,7 +50,7 @@ export class VitamUISnackBarComponent implements OnInit {
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: VitamuiSnackBarData,
     private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
   ) {}
 
   ngOnInit() {

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
@@ -48,11 +47,8 @@ import { input, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { EditableKeystoreComponent } from './editable-keystore.component';
 
-
 @Component({
-  template: `
-    <app-editable-keystore [identityProvider]="identityProvider" [disabled]="disabled"></app-editable-keystore>
-  `
+  template: ` <app-editable-keystore [identityProvider]="identityProvider" [disabled]="disabled"></app-editable-keystore> `,
 })
 class TesthostComponent {
   identityProvider: IdentityProvider = {
@@ -66,7 +62,7 @@ class TesthostComponent {
     idpMetadata: null,
     patterns: ['test1.com', 'test2.com'],
     enabled: true,
-    readonly : false,
+    readonly: false,
     authnRequestBinding: AuthnRequestBindingEnum.POST,
     autoProvisioningEnabled: false,
     authnRequestSigned: false,
@@ -84,21 +80,10 @@ describe('EditableKeystoreComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        OverlayModule,
-        VitamUICommonTestModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableKeystoreComponent,
-      ],
-      providers: [
-        { provide: IdentityProviderService, useValue: { updateKeystore: () => of(null) } },
-      ]
-    })
-    .compileComponents();
+      imports: [ReactiveFormsModule, OverlayModule, VitamUICommonTestModule, NoopAnimationsModule],
+      declarations: [TesthostComponent, EditableKeystoreComponent],
+      providers: [{ provide: IdentityProviderService, useValue: { updateKeystore: () => of(null) } }],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -116,7 +101,6 @@ describe('EditableKeystoreComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -184,11 +168,9 @@ describe('EditableKeystoreComponent', () => {
       expect(elError).toBeTruthy();
       expect(elError.textContent).toContain('SHARED.EDITABLE_FIELD.WRONG_PASSWORD');
     });
-
   });
 
   describe('Class', () => {
-
     describe('canConfirm', () => {
       it('should return true when the edit mode is active, the file and password are set', () => {
         testhost.component.editMode = true;
@@ -296,6 +278,5 @@ describe('EditableKeystoreComponent', () => {
         expect(testhost.component.control.value).toBeNull();
       });
     });
-
   });
 });

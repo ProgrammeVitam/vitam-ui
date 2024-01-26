@@ -78,7 +78,10 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
     return this._inputManagementContract;
   };
 
-  constructor(private formBuilder: FormBuilder, private managementContractService: ManagementContractService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private managementContractService: ManagementContractService,
+  ) {
     this.form = this.formBuilder.group({
       identifier: [{ value: null, disabled: true }, Validators.required],
       name: [null, Validators.required],
@@ -112,7 +115,7 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
           }
         }
         return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -127,7 +130,7 @@ export class ManagementContractInformationTabComponent implements OnInit, OnDest
       },
       () => {
         this.submitting = false;
-      }
+      },
     );
   }
 

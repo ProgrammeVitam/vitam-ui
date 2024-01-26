@@ -58,9 +58,9 @@ export class LoggerModule {
         {
           provide: Logger,
           useFactory: loggerFactory,
-          deps: [[new Optional(), ENVIRONMENT]]
-        }
-      ]
+          deps: [[new Optional(), ENVIRONMENT]],
+        },
+      ],
     };
   }
 }

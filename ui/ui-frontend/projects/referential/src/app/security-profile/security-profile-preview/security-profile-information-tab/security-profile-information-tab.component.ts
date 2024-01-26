@@ -97,7 +97,10 @@ export class SecurityProfileInformationTabComponent {
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private securityProfileService: SecurityProfileService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private securityProfileService: SecurityProfileService,
+  ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       name: [null, Validators.required],
@@ -120,8 +123,8 @@ export class SecurityProfileInformationTabComponent {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.securityProfileService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.securityProfileService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -140,7 +143,7 @@ export class SecurityProfileInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

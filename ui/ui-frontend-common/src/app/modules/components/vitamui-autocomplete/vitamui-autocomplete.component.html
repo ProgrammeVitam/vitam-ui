@@ -1,34 +1,44 @@
-<div class="vitamui-autocomplete" [class.disabled]="control.disabled" [class.label-up]="labelUp"
+<div
+  class="vitamui-autocomplete"
+  [class.disabled]="control.disabled"
+  [class.label-up]="labelUp"
   vitamuiCommonToolTipClass="text-pre-line"
   vitamuiCommonToolTip="{{ this.autocompleteLabel }}"
   vitamuiCommonToolTipPosition="BOTTOM"
-  vitamuiCommonToolTipShowDelay="300">
+  vitamuiCommonToolTipShowDelay="300"
+>
   <label class="input-label">
-    {{placeholder}}
+    {{ placeholder }}
     <span *ngIf="required" class="required-marker">*</span>
   </label>
   <input
-      #input="matAutocompleteTrigger"
-      matInput
-      type="text"
-      [required]="required"
-      [formControl]="control"
-      [matAutocomplete]="auto"
-      [vitamuiAutocompletePosition]="input"
-      (blur)="onBlur()"
-      (focus)="onFocus()"
-      (click)="$event.target.select()"
-      (input)="inputChange($event.target.value)"
-  >
+    #input="matAutocompleteTrigger"
+    matInput
+    type="text"
+    [required]="required"
+    [formControl]="control"
+    [matAutocomplete]="auto"
+    [vitamuiAutocompletePosition]="input"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    (click)="$event.target.select()"
+    (input)="inputChange($event.target.value)"
+  />
   <i class="material-icons">keyboard_arrow_down</i>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(options)" autoActiveFirstOption (optionSelected)="selectionChange($event)" class="vitamui-autocomplete-panel">
+<mat-autocomplete
+  #auto="matAutocomplete"
+  [displayWith]="displayFn(options)"
+  autoActiveFirstOption
+  (optionSelected)="selectionChange($event)"
+  class="vitamui-autocomplete-panel"
+>
   <ng-container *ngFor="let option of filteredOptions | async">
-      <mat-option [value]="option.key">
-        <span vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true">{{ option.label }}</span>
-        <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
-      </mat-option>
+    <mat-option [value]="option.key">
+      <span vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true">{{ option.label }}</span>
+      <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
+    </mat-option>
   </ng-container>
 </mat-autocomplete>
 

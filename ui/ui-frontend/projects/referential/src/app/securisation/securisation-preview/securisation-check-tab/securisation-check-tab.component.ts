@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ApiEvent, Event, ExternalParametersService, ExternalParameters, LogbookApiService} from 'ui-frontend-common';
-import {SecurisationService} from '../../securisation.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ApiEvent, Event, ExternalParametersService, ExternalParameters, LogbookApiService } from 'ui-frontend-common';
+import { SecurisationService } from '../../securisation.service';
 
 @Component({
   selector: 'app-securisation-check-tab',
@@ -54,13 +54,11 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
 
   constructor(
     private readonly securingService: SecurisationService,
-    private readonly externalParameterService: ExternalParametersService){
-     }
-
+    private readonly externalParameterService: ExternalParametersService,
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters()
-    .subscribe(parameters => {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       this.accessContractId = accessContractId;
     });
@@ -74,9 +72,8 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   }
 
   checkTraceability() {
-    if(this.accessContractId){
-      this.securingService.checkTraceabilityOperation(this.id, this.accessContractId)
-      .subscribe((response: { $results: ApiEvent[]; }) => {
+    if (this.accessContractId) {
+      this.securingService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: { $results: ApiEvent[] }) => {
         this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
         this.display = true;
       });

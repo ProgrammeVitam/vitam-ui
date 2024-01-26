@@ -71,7 +71,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private hierarchyService: HierarchyService,
     private profileValidators: ProfileValidators,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.userLevel = this.authService.user.level;
     this.form = this.formBuilder.group({
@@ -88,11 +88,11 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) =>
-          extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData)
+          extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData),
         ),
         switchMap((formData) => {
           return this.hierarchyService.patch(formData).pipe(catchError(() => of(null)));
-        })
+        }),
       )
       .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly));
   }
@@ -123,8 +123,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     form
       .get('name')
       .setAsyncValidators(
-        this.profileValidators.
-      nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name)
+        this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name),
       );
   }
 

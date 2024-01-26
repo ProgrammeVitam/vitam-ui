@@ -70,7 +70,7 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
     private displayObjectHelper: DisplayObjectHelperService,
     private displayRuleHelper: DisplayRuleHelperService,
     private componentMapperService: SchemaElementToDisplayRuleService,
-    private typeService: TypeService
+    private typeService: TypeService,
   ) {
     combineLatest([this.schemaService.getSchema(Collection.ARCHIVE_UNIT), this.data, this.template]).subscribe(
       ([schema, data, template]) => {
@@ -102,7 +102,7 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
       },
       (error) => {
         this.logger.error(this, 'Error in observable', error);
-      }
+      },
     );
   }
 
@@ -174,11 +174,11 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
     const finalNotConsumedRulesByCustomTemplate = this.displayRuleHelper.getUniqueDisplayRules(finalSchemaTemplate, finalCustomTemplate);
     const finalNotConsumedRulesByOtherMetadataTemplate = this.displayRuleHelper.getUniqueDisplayRules(
       finalSchemaTemplate,
-      finalOtherMetadataTemplate
+      finalOtherMetadataTemplate,
     );
     const finalNotConsumedTemplate = this.displayRuleHelper.getCommonDisplayRules(
       finalNotConsumedRulesByCustomTemplate,
-      finalNotConsumedRulesByOtherMetadataTemplate
+      finalNotConsumedRulesByOtherMetadataTemplate,
     );
 
     const template = finalCustomTemplate.concat(finalNotConsumedTemplate).concat(finalOtherMetadataTemplate);

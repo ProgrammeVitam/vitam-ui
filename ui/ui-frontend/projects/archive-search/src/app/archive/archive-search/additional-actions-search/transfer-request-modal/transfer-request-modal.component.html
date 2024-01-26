@@ -8,18 +8,18 @@
     <ng-container *ngIf="stepIndex === 1">{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_PARAMS' | translate }}</ng-container>
   </div>
   <div class="text-title">
-    <ng-container
-      *ngIf="selectedItemCountKnown && itemSelected > 1">{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+    <ng-container *ngIf="selectedItemCountKnown && itemSelected > 1"
+      >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
     </ng-container>
-    <ng-container
-      *ngIf="selectedItemCountKnown && itemSelected === 1">{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
+    <ng-container *ngIf="selectedItemCountKnown && itemSelected === 1"
+      >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
     </ng-container>
-    <ng-container
-      *ngIf="!selectedItemCountKnown">{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+    <ng-container *ngIf="!selectedItemCountKnown"
+      >{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
     </ng-container>
   </div>
   <br />
-  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <form [formGroup]="formGroups[0]">
         <!-- 1 Contrat d'entrée *    ------------------------->
@@ -31,9 +31,7 @@
           required
           placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGREEMENT' | translate }}"
         >
-          <vitamui-common-input-error
-            *ngIf="archivalAgreement.touched && archivalAgreement.hasError('required')"
-          >
+          <vitamui-common-input-error *ngIf="archivalAgreement.touched && archivalAgreement.hasError('required')">
             {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
           </vitamui-common-input-error>
         </vitamui-common-input>
@@ -47,9 +45,7 @@
           required
           placeholder="{{ 'ARCHIVE_SEARCH.DIP.ORIGINATING_AGENCY_IDENTIFIER' | translate }}"
         >
-          <vitamui-common-input-error
-            *ngIf="originatingAgencyIdentifier.touched && originatingAgencyIdentifier.hasError('required')"
-          >
+          <vitamui-common-input-error *ngIf="originatingAgencyIdentifier.touched && originatingAgencyIdentifier.hasError('required')">
             {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
           </vitamui-common-input-error>
         </vitamui-common-input>
@@ -63,9 +59,7 @@
           required
           placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
         >
-          <vitamui-common-input-error
-            *ngIf="archivalAgencyIdentifier.touched && archivalAgencyIdentifier.hasError('required')"
-          >
+          <vitamui-common-input-error *ngIf="archivalAgencyIdentifier.touched && archivalAgencyIdentifier.hasError('required')">
             {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
           </vitamui-common-input-error>
         </vitamui-common-input>
@@ -141,21 +135,14 @@
                 #group="matButtonToggleGroup"
                 class="vitamui-button-toggle-group"
               >
-                <mat-button-toggle
-                  [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}
-                </mat-button-toggle>
-                <mat-button-toggle
-                  [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}
-                </mat-button-toggle>
+                <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }} </mat-button-toggle>
+                <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }} </mat-button-toggle>
               </mat-button-toggle-group>
             </div>
 
             <div class="gap-10">
               <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
-              <mat-button-toggle-group
-                formControlName="sedaVersion"
-                class="vitamui-button-toggle-group"
-              >
+              <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
                 <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
                 <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
               </mat-button-toggle-group>
@@ -164,32 +151,23 @@
             <div class="gap-30">
               <div class="gap-10">
                 <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
-                <mat-button-toggle-group
-                  formControlName="includeObjects"
-                  class="vitamui-button-toggle-group"
-                >
-                  <mat-button-toggle
-                    [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}
-                  </mat-button-toggle>
-                  <mat-button-toggle
-                    [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}
-                  </mat-button-toggle>
+                <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
+                  <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }} </mat-button-toggle>
+                  <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }} </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
 
-              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value"
-                   formArrayName="usages">
+              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value" formArrayName="usages">
                 <div *ngFor="let usage of usages.controls; let i = index" class="hgap-40">
                   <div class="hgap-20" [formGroupName]="i">
                     <mat-form-field class="vitamui-mat-select usage">
                       <mat-select
-                        placeholder="{{ ('ARCHIVE_SEARCH.DIP.TARGET_USAGE_#') | translate:{i: i + 1} }}"
+                        placeholder="{{ 'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 } }}"
                         panelClass="vitamui-mat-select"
                         formControlName="usage"
                       >
-                        <mat-option *ngFor="let usage of listUsages(i)" [value]="usage">{{
-                            ('ARCHIVE_SEARCH.DIP.USAGES.' + usage) | translate
-                          }}
+                        <mat-option *ngFor="let usage of listUsages(i)" [value]="usage"
+                          >{{ 'ARCHIVE_SEARCH.DIP.USAGES.' + usage | translate }}
                         </mat-option>
                       </mat-select>
                       <div class="select-arrow">
@@ -198,18 +176,11 @@
                       </div>
                     </mat-form-field>
                     <div class="gap-10">
-                      <label
-                        class="caption-caption-bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
+                      <label class="caption-caption-bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
                       <mat-radio-group class="hgap-10" formControlName="version">
-                        <mat-radio-button
-                          value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }}
-                        </mat-radio-button>
-                        <mat-radio-button
-                          value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }}
-                        </mat-radio-button>
-                        <mat-radio-button
-                          value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }}
-                        </mat-radio-button>
+                        <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
+                        <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
+                        <mat-radio-button value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }} </mat-radio-button>
                       </mat-radio-group>
                     </div>
                   </div>
@@ -218,9 +189,7 @@
                   </button>
                 </div>
 
-                <button *ngIf="usages.length < dataObjectVersions.length" type="button"
-                        class="btn link"
-                        (click)="addUsage()">
+                <button *ngIf="usages.length < dataObjectVersions.length" type="button" class="btn link" (click)="addUsage()">
                   <i class="vitamui-icon vitamui-icon-add"></i>
                   {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
                 </button>

@@ -41,7 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
@@ -64,7 +64,6 @@ import { EmailsInputModule } from './emails-input/emails-input.module';
 import { LevelInputModule } from './level-input/level-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input/multiple-email-input.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -81,7 +80,7 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     MatInputModule,
     MatFormFieldModule,
     TranslateModule,
-    EllipsisDirectiveModule
+    EllipsisDirectiveModule,
   ],
   declarations: [
     EditableFieldComponent,
@@ -115,7 +114,7 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     HumanizedDurationPipe,
     SubLevelPipe,
     LevelInputModule,
-    EmailsInputModule
-  ]
+    EmailsInputModule,
+  ],
 })
-export class EditableFieldModule { }
+export class EditableFieldModule {}

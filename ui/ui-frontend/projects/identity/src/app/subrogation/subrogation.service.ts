@@ -36,8 +36,14 @@
  */
 import { Observable } from 'rxjs';
 import {
-  Criterion, Group, Operators, SearchQuery, SearchService, Subrogation, SubrogationApiService,
-  SubrogationUser
+  Criterion,
+  Group,
+  Operators,
+  SearchQuery,
+  SearchService,
+  Subrogation,
+  SubrogationApiService,
+  SubrogationUser,
 } from 'ui-frontend-common';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -46,11 +52,14 @@ import { Injectable } from '@angular/core';
 import { UserGenericApiService } from './user-generic-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationService extends SearchService<SubrogationUser> {
-
-  constructor(http: HttpClient, userGenericApi: UserGenericApiService, private subrogationApiService: SubrogationApiService) {
+  constructor(
+    http: HttpClient,
+    userGenericApi: UserGenericApiService,
+    private subrogationApiService: SubrogationApiService,
+  ) {
     super(http, userGenericApi);
   }
 
@@ -68,5 +77,4 @@ export class SubrogationService extends SearchService<SubrogationUser> {
 
     return this.subrogationApiService.getAllByParams(params);
   }
-
 }
