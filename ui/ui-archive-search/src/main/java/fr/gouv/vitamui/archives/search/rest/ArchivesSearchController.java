@@ -43,14 +43,15 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.VitamuiRoles;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
@@ -155,7 +156,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Archive Unit with ID {}", id);
@@ -166,7 +167,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @GetMapping(RestApi.OBJECTGROUP + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Object Group with Identifier {}", id);
@@ -178,9 +179,9 @@ public class ArchivesSearchController extends AbstractUiRestController {
         "tenantId"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String unitId,
-                                                           @RequestParam(value = "qualifier", required = false) String qualifier,
-                                                           @RequestParam(value = "version", required = false) Integer version,
-                                                           @RequestParam("tenantId") Integer tenantId) throws PreconditionFailedException,
+        @RequestParam(value = "qualifier", required = false) String qualifier,
+        @RequestParam(value = "version", required = false) Integer version,
+        @RequestParam("tenantId") Integer tenantId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier and The tenantId are mandatory parameters: ",
             unitId, String.valueOf(tenantId));
@@ -319,7 +320,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
-                                                 @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         ParameterChecker
@@ -356,8 +357,22 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "get external ontologies list")
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
     @ResponseStatus(HttpStatus.OK)
-    public List<VitamUiOntologyDto> getExternalOntologyFieldsList() throws InvalidParseOperationException {
+    public List<VitamUiOntologyDto> getExternalOntologyFieldsList() {
         LOGGER.debug("[UI] : Get All External Ontologies");
         return archivesSearchService.getExternalOntologyFieldsList(buildUiHttpContext());
     }
+
+    @ApiOperation(value = "Find the unit associated to this ARK ID")
+    @GetMapping(RestApi.UNITS_PERSISTENT_IDENTIFIER)
+    @ResponseStatus(HttpStatus.OK)
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
+        final @RequestParam("id") String arkId
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, arkId);
+        LOGGER.debug("Find the Archive Units with persistent identifier {}", arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchService.findUnitsByPersistentIdentifier(arkId, buildUiHttpContext());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
+    }
+
 }

@@ -52,7 +52,13 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import {
-  BASE_URL, InjectorModule, LoggerModule, PagedResult, SearchCriteriaStatusEnum, VitamuiRoles, WINDOW_LOCATION
+  BASE_URL,
+  InjectorModule,
+  LoggerModule,
+  PagedResult,
+  SearchCriteriaStatusEnum,
+  VitamuiRoles,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -95,7 +101,7 @@ describe('ArchiveSearchComponent', () => {
     getOntologiesFromJson: () => of([]),
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
-    getAccessContractById: () => of({})
+    getAccessContractById: () => of({}),
   };
   const archiveSearchCommonService = {
     addCriteria: () => of(),
@@ -144,7 +150,12 @@ describe('ArchiveSearchComponent', () => {
         { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+            queryParamMap: of({ get: () => undefined }),
+            snapshot: { queryParamMap: { has: () => false } },
+          },
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: VitamUISnackBar, useValue: snackBarSpy },

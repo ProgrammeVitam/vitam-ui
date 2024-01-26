@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { ActiveTenantGuard, AnalyticsResolver, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
 import { ArchiveComponent } from './archive.component';
 
@@ -63,6 +63,13 @@ const routes: Route[] = [
     path: 'update-rules/tenant/:tenantIdentifier',
     component: ManagementRulesComponent,
     canActivate: [ActiveTenantGuard],
+  },
+  {
+    path: 'persistent-identifier-search',
+    loadChildren: () => import('./persistent-identifier-search/persistent-identifier-search.module')
+      .then((m) => m.PersistentIdentifierSearchModule),
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' },
   },
 ];
 

@@ -34,10 +34,31 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
-  AccessContract, ArchiveSearchResultFacets, CriteriaDataType, CriteriaOperator, CriteriaValue, Direction, ExternalParameters,
-  ExternalParametersService, FilingHoldingSchemeNode, GlobalEventService, ORPHANS_NODE_ID, PagedResult, SearchCriteria,
-  SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaEltements, SearchCriteriaHistory, SearchCriteriaMgtRuleEnum,
-  SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SidenavPage, Transaction, TransactionStatus, Unit, UnitType,
+  AccessContract,
+  ArchiveSearchResultFacets,
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  Direction,
+  ExternalParameters,
+  ExternalParametersService,
+  FilingHoldingSchemeNode,
+  GlobalEventService,
+  ORPHANS_NODE_ID,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
+  SearchCriteriaMgtRuleEnum,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SidenavPage,
+  Transaction,
+  TransactionStatus,
+  Unit,
+  UnitType,
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -147,7 +168,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private archiveExchangeDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     super(route, globalEventService);
     this.subscriptionSimpleSearchCriteriaAdd = this.archiveExchangeDataService
@@ -166,7 +187,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             criteria.category,
             criteria.valueTranslated,
             criteria.dataType,
-            false
+            false,
           );
         }
       });
@@ -195,7 +216,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
-            false
+            false,
           );
         } else {
           this.archiveHelperService.addCriteria(
@@ -210,10 +231,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             SearchCriteriaTypeEnum.NODES,
             false,
             CriteriaDataType.STRING,
-            false
+            false,
           );
         }
-      })
+      }),
     );
 
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
@@ -264,7 +285,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }),
         tap((transaction) => {
           this.transaction = transaction;
-        })
+        }),
       )
       .subscribe((transaction) => {
         this.fetchUserAccessContractFromExternalParameters();
@@ -283,12 +304,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
         .subscribe(() => {
           this.submit();
-        })
+        }),
     );
     this.subscriptions.add(
       this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
         this.show = hidden;
-      })
+      }),
     );
   }
 
@@ -305,7 +326,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
 
     this.archiveHelperService.addCriteria(
@@ -320,7 +341,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
   }
 
@@ -357,7 +378,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
                 panelClass: 'vitamui-snack-bar',
                 duration: 10000,
               });
-            })
+            }),
           )
           .subscribe();
       }
@@ -377,7 +398,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 
@@ -429,7 +450,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.totalResults = pagedResult.totalResults;
-          this.archiveExchangeDataService.emitTotalResults(this.totalResults)
+          this.archiveExchangeDataService.emitTotalResults(this.totalResults);
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
           pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
@@ -443,7 +464,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.archiveHelperService.updateCriteriaStatus(
           this.searchCriterias,
           SearchCriteriaStatusEnum.IN_PROGRESS,
-          SearchCriteriaStatusEnum.INCLUDED
+          SearchCriteriaStatusEnum.INCLUDED,
         );
         this.pending = false;
         this.included = true;
@@ -456,7 +477,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.pendingComputeFacets = false;
           this.archiveExchangeDataService.emitFacets([]);
         }
-      }
+      },
     );
   }
 
@@ -759,7 +780,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       (error: HttpErrorResponse) => {
         this.pendingComputeFacets = false;
         this.logger.error('Error message :', error.message);
-      }
+      },
     );
   }
 
@@ -781,7 +802,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         (error: HttpErrorResponse) => {
           this.pendingGetFixedCount = false;
           this.logger.error('Error message :', error.message);
-        }
+        },
       );
     }
   }
@@ -864,7 +885,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             criteria.category,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
           this.archiveHelperService.addCriteria(
@@ -881,7 +902,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             SearchCriteriaTypeEnum.FIELDS,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         }
       });
@@ -896,7 +917,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           nodeId.value,
           this.searchCriterias,
           this.searchCriteriaKeys,
-          this.nbQueryCriteria
+          this.nbQueryCriteria,
         );
       });
       this.nodeArray = null;
@@ -927,7 +948,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.listOfUAIdToInclude,
       this.listOfUAIdToExclude,
       this.isAllChecked,
-      this.isIndeterminate
+      this.isIndeterminate,
     );
   }
 

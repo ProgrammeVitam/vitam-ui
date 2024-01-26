@@ -34,54 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.config;
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
-import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-@Configuration
-public class VitamAccessConfig extends VitamClientConfig {
+import java.util.List;
 
-    @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
-    }
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class PurgedPersistentIdentifierDto {
 
-    @Bean
-    public PersistentIdentifierService getPersistentIdentifierService() {
-        return new PersistentIdentifierService(accessExternalClient());
-    }
+    private String id;
 
-    @Bean
-    public ObjectService getObjectServiceVitam() {
-        return new ObjectService(accessExternalClient());
-    }
+    private Integer tenant;
 
-    @Bean
-    public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
-    }
+    private Integer version;
 
-    @Bean
-    public ExportDipService getExportDipService() {
-        return new ExportDipService(accessExternalClient());
-    }
+    private String type;
 
-    @Bean
-    public ExportDipV2Service getExportDipV2Service() {
-        return new ExportDipV2Service(accessExternalClientV2());
-    }
+    private String operationId;
 
-    @Bean
-    public EliminationService getEliminationService() {
-        return new EliminationService(accessExternalClient());
-    }
+    private String operationType;
+
+    private String operationLastPersistentDate;
+
+    private String objectGroupId;
+
+    private List<PersistentIdentifierDto> persistentIdentifier;
 
 }

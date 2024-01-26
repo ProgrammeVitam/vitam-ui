@@ -35,16 +35,17 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
@@ -79,12 +80,14 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ArchivesSearchServiceTest {
+
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
     public final String GOT_PHYSICAL = "data/vitam_got_physical.json";
     public final String GOT_DISSEMINATION = "data/vitam_got_dissemination.json";
     public final String GOT_TEXTCONTENT = "data/vitam_got_textcontent.json";
     public final String GOT_BINARYMASTER_MULTI_QUALIFIERS = "data/vitam_got_binarymaster_multiple_versions.json";
     public final String GOT_BINARYMASTER = "data/vitam_got_binarymaster.json";
+    ExternalHttpContext defaultContext = new ExternalHttpContext(9, "", "", "");
 
     private ArchivesSearchService archivesSearchService;
 
@@ -125,13 +128,12 @@ public class ArchivesSearchServiceTest {
     public void testExportCsv() throws IOException {
         Resource resource = new ByteArrayResource(ArchivesSearchServiceTest.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
 
         when(archiveSearchExternalRestClient
             .exportCsvArchiveUnitsByCriteria(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
             (new ResponseEntity<>(resource, HttpStatus.OK)));
-        Assert.assertNotNull(archivesSearchService.exportCsvArchiveUnitsByCriteria(query, context));
+        Assert.assertNotNull(archivesSearchService.exportCsvArchiveUnitsByCriteria(query, defaultContext));
     }
 
     @Test
@@ -382,13 +384,12 @@ public class ArchivesSearchServiceTest {
     public void launch_computed_inherited_rules_should_call_appropriate_rest_client() {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(archiveSearchExternalRestClient.computedInheritedRules(any(SearchCriteriaDto.class),
                 ArgumentMatchers.any()))
             .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
 
         // When
-        archivesSearchService.computedInheritedRules(searchCriteriaDto, context);
+        archivesSearchService.computedInheritedRules(searchCriteriaDto, defaultContext);
 
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
@@ -399,13 +400,12 @@ public class ArchivesSearchServiceTest {
     public void select_unit_with_inherited_rules_should_call_appropriate_rest_client() {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(archiveSearchExternalRestClient.selectUnitWithInheritedRules(ArgumentMatchers.any(),
                 any(SearchCriteriaDto.class)))
             .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
 
         // When
-        archivesSearchService.selectUnitsWithInheritedRules(searchCriteriaDto, context);
+        archivesSearchService.selectUnitsWithInheritedRules(searchCriteriaDto, defaultContext);
 
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
@@ -416,13 +416,12 @@ public class ArchivesSearchServiceTest {
     public void launch_reclassification_should_call_appropriate_rest_client_one_time() {
         // Given
         ReclassificationCriteriaDto reclassificationCriteriaDto = new ReclassificationCriteriaDto();
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(archiveSearchExternalRestClient.reclassification(any(ReclassificationCriteriaDto.class),
                 ArgumentMatchers.any()))
             .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
 
         // When
-        archivesSearchService.reclassification(reclassificationCriteriaDto, context);
+        archivesSearchService.reclassification(reclassificationCriteriaDto, defaultContext);
 
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
@@ -432,13 +431,12 @@ public class ArchivesSearchServiceTest {
     @Test
     public void launch_transfer_reply_should_call_appropriate_rest_client_one_time() {
         // Given
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(archiveSearchStreamingExternalRestClient.transferAcknowledgment(
                 ArgumentMatchers.any(), any(String.class), any(InputStream.class)))
             .thenReturn(new ResponseEntity<>("OperationId", HttpStatus.OK));
 
         // When
-        archivesSearchService.transferAcknowledgment(eq(context), eq("fileName"), ArgumentMatchers.any());
+        archivesSearchService.transferAcknowledgment(eq(defaultContext), eq("fileName"), ArgumentMatchers.any());
 
         // Then
         verify(archiveSearchStreamingExternalRestClient, Mockito.times(1))
@@ -449,15 +447,26 @@ public class ArchivesSearchServiceTest {
     public void get_external_ontologies_list_should_call_appropriate_rest_client_one_time() {
         // Given
         List<VitamUiOntologyDto> ontologiesList = new ArrayList<>();
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         Mockito.when(archiveSearchExternalRestClient.getExternalOntologyFieldsList(ArgumentMatchers.any()))
-            .thenReturn( ontologiesList );
+            .thenReturn(ontologiesList);
 
         // When
-        archivesSearchService.getExternalOntologyFieldsList(eq(context));
+        archivesSearchService.getExternalOntologyFieldsList(eq(defaultContext));
 
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
             .getExternalOntologyFieldsList(ArgumentMatchers.any());
     }
+
+    @Test
+    public void findUnitsByPersistentIdentifier() {
+        // Given
+        String arkId = "ark:/225867/001a9d7db5eghxac";
+        Mockito.when(archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(eq(arkId), eq(defaultContext))).thenReturn(new PersistentIdentifierResponseDto());
+        // When
+        archivesSearchService.findUnitsByPersistentIdentifier(arkId, defaultContext);
+        // Then
+        verify(archiveSearchExternalRestClient).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultContext));
+    }
+
 }

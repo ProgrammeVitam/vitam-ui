@@ -105,6 +105,9 @@
     }
   },
   "APPLICATION": {
+    "PERSISTENT_IDENTIFIER_SEARCH_APP": {
+      "NAME": "Search by permanent identifier"
+    },
     "PORTAL_APP": {
       "NAME": "Portal"
     },
@@ -3533,7 +3536,7 @@
     },
     "COMPUTE_RULES_FACETS": "Show management rules facets",
     "CRITERIA_CATEGORY": {
-      "ADD": "Add filters",
+      "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
       "COMMUNICABILITY": "Communicability",
@@ -3622,7 +3625,7 @@
       "LOAD_MORE_UNITS": "Load more results",
       "ORPHANS_NODE": "Without attachment"
     },
-    "HIDE_SEARCH_CRITERIA": "hide the search filters",
+    "HIDE_SEARCH_CRITERIA": "HIDE SEARCH CRITERIA",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ than ",
     "MORE_THAN_THRESHOLD": "+ than 10 000",
@@ -3765,6 +3768,7 @@
         "ID_DUA": "Id",
         "ID_REUSE": "Identifier",
         "NODE": "Node",
+        "PersistentIdentifier.PersistentIdentifierContent": "Permanent identifier",
         "ORIGIN": {
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Define at least one DUA rule",
@@ -3868,7 +3872,7 @@
         "RULE_TITLE_ACCESS_RULE": "Storage rule title"
       },
       "STORAGE_TITLE": "Storage",
-      "TITLE": "Search filters",
+      "TITLE": "Multi-criteria search",
       "UA_TYPE": "Type of archival units"
     },
     "SEARCH_CRITERIA_GTE": "After than ",
@@ -3902,7 +3906,7 @@
     },
     "SELECTED": "sélectionnés",
     "SHOW_MORE_RESULTS": "Show more results...",
-    "SHOW_SEARCH_CRITERIA": "Show the search filters",
+    "SHOW_SEARCH_CRITERIA": "SHOW SEARCH CRITERIA",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
@@ -3917,6 +3921,9 @@
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
+    },
+    "PERSISTENT_IDENTIFIER_SEARCH": {
+      "GO_TO_PAGE": "Search by permanent identifier"
     }
   },
   "COLLECT": {
@@ -4051,7 +4058,7 @@
     },
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "CRITERIA_CATEGORY": {
-      "ADD": "Add filters",
+      "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
       "COMMUNICABILITY": "Communicability",
@@ -4145,7 +4152,7 @@
       "TREE_TITLE": "Trees and plans",
       "LOAD_MORE_UNITS": "Load more results"
     },
-    "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "HIDE_SEARCH_CRITERIA": "HIDE SEARCH CRITERIA",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ de ",
     "MORE_THAN_THRESHOLD": "+ de 10 000",
@@ -4414,7 +4421,7 @@
         "RULE_TITLE_ACCESS_RULE": "Storage rule title"
       },
       "STORAGE_TITLE": "Storage",
-      "TITLE": "Search filters",
+      "TITLE": "Multi-criteria search",
       "UA_TYPE": "Type of archival units"
     },
     "SEARCH_CRITERIA_GTE": "Après le ",
@@ -4448,7 +4455,7 @@
     },
     "SELECTED": "selected",
     "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
-    "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
+    "SHOW_SEARCH_CRITERIA": "SHOW SEARCH CRITERIA",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching by title or description",
@@ -4482,6 +4489,15 @@
     "SUBGRP": "SubGrp",
     "SUBSERIES": "Subseries",
     "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
+  },
+  "PERSISTENT_IDENTIFIER_SEARCH": {
+    "SEARCH_PLACEHOLDER": "Search for an archive unit by permanent identifier",
+    "MODAL": {
+      "TITLE": "",
+      "SEARCH_BY_ID": "Search by permanent identifier",
+      "TRANSFERRED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been transferred to another EDRMS, on {{date}}",
+      "DELETED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been eliminated from the system, on {{date}}"
+    }
   },
   "SEDA": {
     "MEASUREMENT_TYPE": {

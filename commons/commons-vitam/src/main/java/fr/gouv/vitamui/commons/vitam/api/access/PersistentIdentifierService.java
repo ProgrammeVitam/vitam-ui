@@ -34,54 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.config;
+package fr.gouv.vitamui.commons.vitam.api.access;
 
-import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
-import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.RequiredArgsConstructor;
 
-@Configuration
-public class VitamAccessConfig extends VitamClientConfig {
+@RequiredArgsConstructor
+public class PersistentIdentifierService {
 
-    @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
+    @SuppressWarnings("unused")
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PersistentIdentifierService.class);
+
+    private final AccessExternalClient accessExternalClient;
+
+    public RequestResponse<JsonNode> findUnitsByPersistentIdentifier(final String identifier, final VitamContext vitamContext)
+        throws VitamClientException {
+        return accessExternalClient.selectUnitsByUnitPersistentIdentifier(vitamContext, new SelectMultiQuery().getFinalSelectById(), identifier);
     }
-
-    @Bean
-    public PersistentIdentifierService getPersistentIdentifierService() {
-        return new PersistentIdentifierService(accessExternalClient());
-    }
-
-    @Bean
-    public ObjectService getObjectServiceVitam() {
-        return new ObjectService(accessExternalClient());
-    }
-
-    @Bean
-    public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
-    }
-
-    @Bean
-    public ExportDipService getExportDipService() {
-        return new ExportDipService(accessExternalClient());
-    }
-
-    @Bean
-    public ExportDipV2Service getExportDipV2Service() {
-        return new ExportDipV2Service(accessExternalClientV2());
-    }
-
-    @Bean
-    public EliminationService getEliminationService() {
-        return new EliminationService(accessExternalClient());
-    }
-
 }

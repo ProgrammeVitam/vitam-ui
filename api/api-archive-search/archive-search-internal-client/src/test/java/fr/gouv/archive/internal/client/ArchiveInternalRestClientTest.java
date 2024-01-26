@@ -31,6 +31,7 @@ import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,15 +48,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
+    String baseUrl = "https://tests" + RestApi.ARCHIVE_SEARCH_PATH;
+    InternalHttpContext defaultContext = new InternalHttpContext(9, "", "", "", "", "", "", "");
     private ArchiveInternalRestClient archivesSearchExternalRestClient;
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
@@ -65,7 +72,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
     @BeforeEach
     public void setUp() {
-        archivesSearchExternalRestClient = new ArchiveInternalRestClient(restTemplate, RestApi.ARCHIVE_SEARCH_PATH);
+        archivesSearchExternalRestClient = new ArchiveInternalRestClient(restTemplate, baseUrl);
     }
 
     @Test
@@ -75,10 +82,8 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     }
 
 
-
     @Test
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
-        InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
 
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
@@ -89,26 +94,24 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
                 eq(ArchiveUnitsDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         ArchiveUnitsDto response =
-            archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
+            archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
         Assertions.assertEquals(response, responseEntity);
     }
 
     @Test
     public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() {
-        InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
         when(restTemplate
             .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         VitamUISearchResponseDto response =
-            archivesSearchExternalRestClient.getFilingHoldingScheme(context);
+            archivesSearchExternalRestClient.getFilingHoldingScheme(defaultContext);
         Assertions.assertEquals(response, responseEntity);
     }
 
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
-        InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
 
         Resource resource = new ByteArrayResource(ArchiveInternalRestClientTest.class.getClassLoader()
@@ -118,10 +121,26 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
         Resource response =
-            archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
+            archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, defaultContext);
 
 
         Assertions.assertEquals(response, resource);
+    }
+
+    @Test
+    public void findUnitsByPersistentIdentifier_ok() throws URISyntaxException {
+        // Given
+        String arkId = "ark:/225867/001a9d7db5eghxac";
+        PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
+        URI uri = new URI(archivesSearchExternalRestClient.getBaseUrl() + archivesSearchExternalRestClient.getPathUrl()
+            + RestApi.UNITS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
+            .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
+        // When
+        PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
+        // Then
+        Assertions.assertEquals(persistentIdentifierResponse, result);
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(ArrayList.class));
     }
 
 }

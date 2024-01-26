@@ -33,14 +33,15 @@ import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -65,6 +66,7 @@ import java.util.Optional;
 @Setter
 @Service
 public class ArchivesSearchExternalService extends AbstractResourceClientService<ArchiveUnitsDto, ArchiveUnitsDto> {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivesSearchExternalService.class);
 
     @Autowired
@@ -203,4 +205,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public List<VitamUiOntologyDto> getExternalOntologiesList() {
         return archiveInternalRestClient.getExternalOntologiesList(getInternalHttpContext());
     }
+
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String arkId) {
+        return archiveInternalRestClient.findUnitsByPersistentIdentifier(arkId, getInternalHttpContext());
+    }
+
 }

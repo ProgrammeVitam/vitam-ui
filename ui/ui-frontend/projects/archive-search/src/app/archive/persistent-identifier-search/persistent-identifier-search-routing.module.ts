@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,54 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.config;
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
 
-import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
-import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+const routes: Route[] = [
+  {
+    path: '',
+    component: PersistentIdentifierSearchComponent,
+    canActivate: []
+  }
+];
 
-@Configuration
-public class VitamAccessConfig extends VitamClientConfig {
-
-    @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
-    }
-
-    @Bean
-    public PersistentIdentifierService getPersistentIdentifierService() {
-        return new PersistentIdentifierService(accessExternalClient());
-    }
-
-    @Bean
-    public ObjectService getObjectServiceVitam() {
-        return new ObjectService(accessExternalClient());
-    }
-
-    @Bean
-    public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
-    }
-
-    @Bean
-    public ExportDipService getExportDipService() {
-        return new ExportDipService(accessExternalClient());
-    }
-
-    @Bean
-    public ExportDipV2Service getExportDipV2Service() {
-        return new ExportDipV2Service(accessExternalClientV2());
-    }
-
-    @Bean
-    public EliminationService getEliminationService() {
-        return new EliminationService(accessExternalClient());
-    }
-
-}
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)],
+  exports: [
+    RouterModule
+  ],
+})
+export class PersistentIdentifierSearchRoutingModule {}

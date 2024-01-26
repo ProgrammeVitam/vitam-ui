@@ -56,7 +56,9 @@ import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
+import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
@@ -87,9 +89,11 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapR
 @Getter
 @Service
 public class ArchiveSearchInternalService {
+
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
+    private static final String HISTORY = "$history";
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
@@ -117,21 +121,24 @@ public class ArchiveSearchInternalService {
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
+    private final PersistentIdentifierService persistentIdentifierService;
 
     @Autowired
     public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
-                                        final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
-                                        final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
-                                        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
+        final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
+        final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
+        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService,
+        final PersistentIdentifierService persistentIdentifierService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
         this.archiveSearchFacetsInternalService = archiveSearchFacetsInternalService;
+        this.persistentIdentifierService = persistentIdentifierService;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-                                                        final VitamContext vitamContext)
+        final VitamContext vitamContext)
         throws VitamClientException, IOException {
         try {
             LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
@@ -151,7 +158,7 @@ public class ArchiveSearchInternalService {
     }
 
     private void fillManagementRulesFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
-                                           boolean trackTotalHits, VitamContext vitamContext)
+        boolean trackTotalHits, VitamContext vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         try {
             archiveUnitsDto.getArchives().getFacetResults()
@@ -221,7 +228,7 @@ public class ArchiveSearchInternalService {
     }
 
     public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
-                                 VitamContext vitamContext) throws VitamClientException {
+        VitamContext vitamContext) throws VitamClientException {
 
         if (unitDescriptiveMetadataDto == null) {
             LOGGER.error("Error update unit criteria");
@@ -406,7 +413,7 @@ public class ArchiveSearchInternalService {
     }
 
     public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto searchQuery,
-                                                   final VitamContext vitamContext)
+        final VitamContext vitamContext)
         throws VitamClientException, IOException {
         ResultsDto response = new ResultsDto();
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
@@ -423,7 +430,7 @@ public class ArchiveSearchInternalService {
     }
 
     public String reclassification(
-                                   final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
+        final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         if (reclassificationCriteriaDto == null) {
             throw new BadRequestException("Error reclassification criteria");
@@ -449,6 +456,17 @@ public class ArchiveSearchInternalService {
     public List<VitamUiOntologyDto> readExternalOntologiesFromFile(Integer tenantId) throws IOException {
         LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
+    }
+
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Persistent identifier : {}", identifier);
+        RequestResponse<JsonNode> response = persistentIdentifierService.findUnitsByPersistentIdentifier(identifier, vitamContext);
+        try {
+            return objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Response not in good format {}", e);
+            throw new VitamClientException("Unable to find the UA", e);
+        }
     }
 
 }

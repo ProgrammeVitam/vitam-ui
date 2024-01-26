@@ -54,6 +54,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -338,4 +339,15 @@ public class ArchiveSearchInternalController {
         final Integer tenantId = securityService.getTenantIdentifier();
         return archiveInternalService.readExternalOntologiesFromFile(tenantId);
     }
+
+    @GetMapping(RestApi.UNITS_PERSISTENT_IDENTIFIER)
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
+        final @RequestParam("id") String arkId
+    ) throws VitamClientException {
+        LOGGER.debug("[INTERNAL] : Get by persistent identifier {}", arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archiveInternalService.findUnitsByPersistentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
+    }
+
 }

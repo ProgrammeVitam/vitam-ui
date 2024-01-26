@@ -68,6 +68,8 @@ export class VitamuiBreadcrumbComponent implements OnInit {
             { label: app.name, identifier: appId }
           ];
         });
+      } else {
+        console.error('NO appId');
       }
     }
   }
