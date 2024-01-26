@@ -306,7 +306,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
     private loggerService: Logger,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     super(route, globalEventService);
     this.initExportForm();
@@ -363,7 +363,7 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
         (error) => {
           this.loggerService.error('error while searching for this operation', error);
           window.location.href = this.router.url.replace('?operationId=', '').replace(this.operationId, '');
-        }
+        },
       );
     }
   }
@@ -382,13 +382,13 @@ export class CreateGetorixDepositComponent extends SidenavPage<any> implements O
     if (this.getorixDepositform.get(formControlAttribut).invalid || this.getorixDepositform.get(formControlAttribut).pending) {
       this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).isValid = false;
       this.operationCategoryList.find(
-        (category) => category.target == this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).target
+        (category) => category.target == this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).target,
       ).isError = true;
     }
     if (this.getorixDepositform.get(formControlAttribut).valid) {
       this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).isValid = true;
       this.operationCategoryList.find(
-        (category) => category.target == this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).target
+        (category) => category.target == this.depositFormError.find((deposit) => deposit.inputName == formControlAttribut).target,
       ).isError = false;
     }
   }

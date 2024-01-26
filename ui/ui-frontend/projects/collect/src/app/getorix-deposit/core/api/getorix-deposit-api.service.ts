@@ -28,7 +28,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
+import { ApiUnitObject, BASE_URL, BaseHttpClient, Unit } from 'ui-frontend-common';
 import { GetorixDeposit } from '../model/getorix-deposit.interface';
 import { GetorixUnitFullPath } from '../model/getorix-unit-full-path.interface';
 
@@ -37,10 +37,12 @@ import { GetorixUnitFullPath } from '../model/getorix-unit-full-path.interface';
 })
 export class GetorixDepositApiService extends BaseHttpClient<any> {
   baseUrl: string;
+  urlTransaction: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/getorix-deposit');
     this.baseUrl = baseUrl;
+    this.urlTransaction = baseUrl + '/transactions';
   }
 
   getBaseUrl() {
@@ -63,7 +65,16 @@ export class GetorixDepositApiService extends BaseHttpClient<any> {
     return this.http.get<GetorixUnitFullPath[]>(this.apiUrl + '/' + unitId + '/full-path', { headers });
   }
 
+  getCollectUnitById(unitId: string, headers?: HttpHeaders) {
+    return this.http.get<Unit>(this.urlTransaction + '/archive-units/archiveunit/' + unitId, { headers });
+  }
+
   getLastThreeOperations(headers?: HttpHeaders): Observable<GetorixDeposit[]> {
     return this.http.get<GetorixDeposit[]>(this.apiUrl + '/last-three-operations', { headers });
+  }
+
+  // Get the technical group object of a unit
+  getObjectGroupDetailsById(objectId: string, headers?: HttpHeaders): Observable<ApiUnitObject> {
+    return this.http.get<ApiUnitObject>(this.urlTransaction + '/objects/' + objectId, { headers, responseType: 'json' });
   }
 }

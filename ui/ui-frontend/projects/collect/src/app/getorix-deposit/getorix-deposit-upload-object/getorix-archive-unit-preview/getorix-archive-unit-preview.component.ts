@@ -25,31 +25,56 @@
  * accept its terms.
  */
 
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { ApplicationService, AuthService } from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
+import { GetorixDepositService } from '../../getorix-deposit.service';
 
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'getorix-archive-unit-preview',
+  templateUrl: './getorix-archive-unit-preview.component.html',
+  styleUrls: ['./getorix-archive-unit-preview.component.scss'],
 })
-export class GetorixResolverService implements Resolve<any> {
-  GETORIX_DEPOSIT_APP = 'GETORIX_DEPOSIT_APP';
-  TIME_TO_WAIT: number = 0.0001;
-  constructor(
-    private authService: AuthService,
-    private applicationService: ApplicationService,
-  ) {}
+export class GetorixArchiveUnitPreviewComponent implements OnInit, OnChanges, OnDestroy {
+  @Input()
+  archiveUnitId: string;
+  archiveUnit: Unit;
 
-  resolve() {
-    if (this.authService.user && this.authService.user.profileGroup.profiles.length == 1) {
-      if (this.authService.user.profileGroup.profiles.find((profile) => profile.applicationName == this.GETORIX_DEPOSIT_APP)) {
-        this.applicationService.getApplications$().subscribe((data) => {
-          const application = data.find((application) => application.identifier == this.GETORIX_DEPOSIT_APP);
-          setTimeout(() => {
-            window.location.href = application.url;
-          }, this.TIME_TO_WAIT);
-        });
-      }
+  subscriptions: Subscription = new Subscription();
+
+  @Output() previewClose = new EventEmitter();
+
+  constructor(private getorixDepositService: GetorixDepositService) {}
+
+  ngOnInit() {
+    this.getArchiveUnitDetails();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions?.unsubscribe();
+  }
+
+  emitClose() {
+    this.previewClose.emit();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.archiveUnitId) {
+      this.getArchiveUnitDetails();
     }
+  }
+
+  getArchiveUnitIcon(unit: Unit) {
+    if (unit) {
+      return unitToVitamuiIcon(unit, true);
+    }
+  }
+
+  getArchiveUnitDetails() {
+    this.subscriptions.add(
+      this.getorixDepositService.getCollectUnitDetails(this.archiveUnitId).subscribe((data) => {
+        this.archiveUnit = data;
+      }),
+    );
   }
 }

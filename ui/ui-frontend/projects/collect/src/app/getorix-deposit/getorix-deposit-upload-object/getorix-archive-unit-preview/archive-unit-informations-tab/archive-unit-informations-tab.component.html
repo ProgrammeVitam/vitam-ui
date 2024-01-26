@@ -1,0 +1,133 @@
+<br />
+<!-- nom -->
+<div class="row">
+  <div class="col-12">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.NAME' | translate }}</label>
+      <div class="data-css">
+        <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
+          {{ archiveUnit?.Title }}
+        </ng-container>
+        <ng-template #subTitleFr>
+          <ng-container *ngIf="archiveUnit?.Title_.fr; else subTitleEn">
+            {{ archiveUnit?.Title_.fr }}
+          </ng-container>
+        </ng-template>
+        <ng-template #subTitleEn>
+          <ng-container *ngIf="archiveUnit?.Title_.en">
+            {{ archiveUnit?.Title_.en }}
+          </ng-container>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- identifier de l'unité -->
+<br />
+<div class="row">
+  <div class="col-12">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.UNIT_ID' | translate }}</label>
+      <div class="data-css">
+        {{ archiveUnitId }}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- type -->
+<!-- date de d'ajout -->
+<br />
+<div class="row">
+  <div class="col-6">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.TYPE' | translate }}</label>
+      <div class="data-css" *ngIf="unitHasObject()">
+        {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.FILE' | translate }} {{ getObjectType() }}
+      </div>
+
+      <div class="data-css" *ngIf="!unitHasObject()">
+        {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.FOLDER' | translate }}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.ADD_DATE' | translate }}</label>
+      <div class="data-css" *ngIf="archiveUnit">
+        {{ archiveUnit['#approximate_creation_date'] | dateTime: 'dd/MM/yyyy' }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Taille -->
+<br />
+<div class="row">
+  <div class="col-12">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.SIZE' | translate }}</label>
+
+      <ng-container *ngIf="!loadingObjectSize; then objectSizeFound; else inProgressSpinner"> </ng-container>
+    </div>
+  </div>
+</div>
+<!-- Emplacement -->
+<br />
+<div class="row">
+  <div class="col-12">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.LOCATION' | translate }}</label>
+
+      <ng-container *ngIf="!loadingFullPath; then unitFullPathFound; else inProgressSpinner"> </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Description -->
+<br />
+<div class="row">
+  <div class="col-12">
+    <div>
+      <label class="label-css"> {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.DESCRIPTION' | translate }}</label>
+
+      <div class="data-css">
+        <ng-container *ngIf="archiveUnit?.Description; else descriptionFr">
+          {{ archiveUnit?.Description }}
+        </ng-container>
+        <ng-template #descriptionFr>
+          <ng-container *ngIf="archiveUnit?.Description_?.fr; else descriptionEn">
+            {{ archiveUnit.Description_.fr }}
+          </ng-container>
+        </ng-template>
+        <ng-template #descriptionEn>
+          <ng-container *ngIf="archiveUnit?.Description_?.en">
+            {{ archiveUnit.Description_.en }}
+          </ng-container>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #inProgressSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium" color="accent"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #unitFullPathFound>
+  <div class="data-css">
+    <ng-container *ngFor="let element of unitFullPath; let lastItem = last">
+      <span *ngIf="!lastItem && element.id !== 'ORPHANS_NODE'">{{ element.title | truncate: 26 }} </span>
+      <span *ngIf="element.id === 'ORPHANS_NODE'">{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.TREE.MY_ARCHIVES' | translate }}</span>
+      <span *ngIf="lastItem">{{ element.title }}</span>
+      <span *ngIf="!lastItem"> / </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #objectSizeFound>
+  <div class="data-css">{{ versionsWithQualifiersOrdered[0]?.Size | bytes }}</div>
+</ng-template>

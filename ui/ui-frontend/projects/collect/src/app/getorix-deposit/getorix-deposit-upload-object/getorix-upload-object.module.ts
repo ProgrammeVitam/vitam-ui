@@ -30,17 +30,27 @@ import { NgModule } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveSearchHelperService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-search-helper.service';
+import { ArchiveUnitInformationsTabComponent } from './getorix-archive-unit-preview/archive-unit-informations-tab/archive-unit-informations-tab.component';
+import { GetorixArchiveUnitPreviewComponent } from './getorix-archive-unit-preview/getorix-archive-unit-preview.component';
 import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
 import { GetorixLeavesTreeComponent } from './getorix-leaves-tree/getorix-leaves-tree.component';
-import { GetorixTreePlanSchemaComponent } from './getorix-tree-plan-schema/getorix-tree-plan-schema.component';
 import { GetorixTreeNodeComponent } from './getorix-tree-node/getorix-tree-node.component';
+import { GetorixTreePlanSchemaComponent } from './getorix-tree-plan-schema/getorix-tree-plan-schema.component';
 
 @NgModule({
-  declarations: [GetorixDepositUploadObjectComponent, GetorixLeavesTreeComponent, GetorixTreePlanSchemaComponent, GetorixTreeNodeComponent],
-  imports: [CommonModule, MatTreeModule, VitamUICommonModule, MatCheckboxModule, MatSidenavModule, MatProgressSpinnerModule],
+  declarations: [
+    GetorixDepositUploadObjectComponent,
+    GetorixLeavesTreeComponent,
+    GetorixTreePlanSchemaComponent,
+    GetorixTreeNodeComponent,
+    GetorixArchiveUnitPreviewComponent,
+    ArchiveUnitInformationsTabComponent,
+  ],
+  imports: [CommonModule, MatTreeModule, VitamUICommonModule, MatCheckboxModule, MatSidenavModule, MatProgressSpinnerModule, MatTabsModule],
   providers: [ArchiveSearchHelperService],
 })
 export class GetorixUploadObjectModule {}

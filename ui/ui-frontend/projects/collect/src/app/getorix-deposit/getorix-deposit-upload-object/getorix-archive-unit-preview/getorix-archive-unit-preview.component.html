@@ -1,0 +1,20 @@
+<vitamui-common-sidenav-header
+  [title]="
+    (archiveUnit?.Title ? archiveUnit?.Title : archiveUnit?.Title_.fr ? archiveUnit?.Title_.fr : archiveUnit?.Title_.en) | truncate: 29
+  "
+  [icon]="getArchiveUnitIcon(archiveUnit)"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit?.Title_.fr ? archiveUnit?.Title_.fr : archiveUnit?.Title_.en"
+  [toolTipTitleDuration]="300"
+  (onclose)="emitClose()"
+>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.INFORMATIONS' | translate }}">
+      <archive-unit-informations-tab [archiveUnit]="archiveUnit" [archiveUnitId]="archiveUnitId"></archive-unit-informations-tab>
+    </mat-tab>
+    <mat-tab [disabled]="true" label="{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_INFORMATIONS.COMMENTS' | translate }}"> </mat-tab>
+  </mat-tab-group>
+</div>

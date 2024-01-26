@@ -73,7 +73,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private leavesTreeService: LeavesTreeService;
 
-  constructor(private archiveSharedDataService: ArchiveSharedDataService, private archiveCollectService: ArchiveCollectService) {
+  constructor(
+    private archiveSharedDataService: ArchiveSharedDataService,
+    private archiveCollectService: ArchiveCollectService,
+  ) {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
   }
 
@@ -240,7 +243,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
         this.searchCriterias = searchCriteriaDto;
-      })
+      }),
     );
   }
 }

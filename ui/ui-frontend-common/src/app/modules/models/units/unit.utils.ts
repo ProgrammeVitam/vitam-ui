@@ -24,24 +24,33 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+
 import { VitamuiIcons } from '../../vitamui-icons.enum';
 import { UnitType } from './unit-type.enum';
 import { Unit } from './unit.interface';
 
-export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
+export function unitToVitamuiIcon(unit: Unit, isGetorix?: boolean): VitamuiIcons {
   const hasObject = unit['#object'] && unit['#object'].length > 0;
-  return unitTypeToVitamuiIcon(unit['#unitType'], hasObject);
+  return unitTypeToVitamuiIcon(unit['#unitType'], hasObject, isGetorix);
 }
 
-export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean): VitamuiIcons {
+export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean, isGetorix?: boolean): VitamuiIcons {
   if (unitType === UnitType.HOLDING_UNIT) {
     return VitamuiIcons.HOLDING_UNIT;
   }
   if (unitType === UnitType.FILING_UNIT) {
     return VitamuiIcons.FILING_UNIT;
   }
-  if (unitType === UnitType.INGEST && hasObject) {
-    return VitamuiIcons.INGEST_WITH_OBJECT;
+
+  if (isGetorix) {
+    if (unitType === UnitType.INGEST && hasObject) {
+      return VitamuiIcons.GETORIX_INGEST_WITH_OBJECT;
+    }
+    return VitamuiIcons.GETORIX_INGEST_WITHOUT_OBJECT;
+  } else {
+    if (unitType === UnitType.INGEST && hasObject) {
+      return VitamuiIcons.INGEST_WITH_OBJECT;
+    }
+    return VitamuiIcons.INGEST_WITHOUT_OBJECT;
   }
-  return VitamuiIcons.INGEST_WITHOUT_OBJECT;
 }

@@ -128,6 +128,8 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
   @ViewChild('matUnitActionMenuTrigger', { read: MatMenuTrigger, static: false })
   matUnitActionMenuTrigger: MatMenuTrigger;
 
+  unitClicked: Unit;
+
   constructor(
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
@@ -259,6 +261,7 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
     }
   }
 
+  // not used
   checkChildrenBoxChange(id: string, event: any) {
     console.log('id', id);
     const action = event.target.checked;
@@ -571,12 +574,24 @@ export class GetorixDepositUploadObjectComponent extends SidenavPage<any> implem
   }
 
   onRightClick(event: MouseEvent, item: any) {
-    console.log('test', item);
+    this.unitClicked = item;
     event.preventDefault();
 
     this.menuTopLeftPosition.x = event.clientX;
     this.menuTopLeftPosition.y = event.clientY;
 
     this.matUnitActionMenuTrigger.openMenu();
+  }
+
+  showUnitDetails() {
+    this.openPanel(this.unitClicked['#id']);
+  }
+
+  showDetails() {
+    if (this.selectedItemsList.length === 1) {
+      this.openPanel(this.selectedItemsList[0]);
+    } else {
+      return;
+    }
   }
 }

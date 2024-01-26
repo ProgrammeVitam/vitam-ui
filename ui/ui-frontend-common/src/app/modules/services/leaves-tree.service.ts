@@ -88,7 +88,7 @@ export class LeavesTreeService {
         FilingHoldingSchemeHandler.setCountRecursively(parentNodes, this.searchRequestResultFacets);
         this.loadingNodesDetails = false;
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -100,7 +100,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -112,7 +112,7 @@ export class LeavesTreeService {
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
         this.compareAddedNodeWithKnownFacets(tocheck);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -123,7 +123,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -133,7 +133,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -144,7 +144,7 @@ export class LeavesTreeService {
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
-      })
+      }),
     );
   }
 
