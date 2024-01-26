@@ -126,7 +126,7 @@ export class AccessContractInformationTabComponent {
   statusControl = new FormControl();
   accessLogControl = new FormControl();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
 
   rules: Option[] = RULE_TYPES;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:object-literal-key-quotes quotemark */
+/* eslint-disable quote-props, @typescript-eslint/quotes */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import '@angular/localize/init';
@@ -64,7 +64,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   accessContracts: AccessContract[];
   titles: any = {};
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
   previousValue = (): IngestContract => {

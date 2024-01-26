@@ -88,7 +88,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
   previousValue = (): AccessContract => {
     return this._accessContract;

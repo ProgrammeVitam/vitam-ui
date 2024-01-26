@@ -9,7 +9,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'editable-custom-params',
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],

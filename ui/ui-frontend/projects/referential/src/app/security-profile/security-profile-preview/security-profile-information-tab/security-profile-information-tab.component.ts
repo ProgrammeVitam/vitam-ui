@@ -68,7 +68,7 @@ export class SecurityProfileInformationTabComponent {
 
   ruleFilter = new FormControl();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _securityProfile: SecurityProfile;
 
   previousValue = (): SecurityProfile => {
@@ -76,7 +76,7 @@ export class SecurityProfileInformationTabComponent {
   };
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   set securityProfile(SecurityProfile: SecurityProfile) {
     this._securityProfile = SecurityProfile;
     this.resetForm(this.securityProfile);
@@ -144,7 +144,7 @@ export class SecurityProfileInformationTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   resetForm(SecurityProfile: SecurityProfile) {
     this.form.reset(SecurityProfile, { emitEvent: false });
   }

@@ -29,9 +29,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/identity/src/sass/styles.scss"],
+            "styles": [
+              "projects/identity/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -94,18 +98,27 @@
             "polyfills": "projects/identity/src/polyfills.ts",
             "tsConfig": "projects/identity/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/identity/src/sass/styles.scss"],
+            "styles": [
+              "projects/identity/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
-            "assets": ["projects/identity/src/assets", "projects/identity/src/favicon.ico"]
+            "assets": [
+              "projects/identity/src/assets",
+              "projects/identity/src/favicon.ico"
+            ]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/identity/tsconfig.app.json", "projects/identity/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/identity//**/*.ts",
+              "projects/identity//**/*.html"
+            ]
           }
         }
       }
@@ -137,9 +150,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/portal/src/sass/styles.scss"],
+            "styles": [
+              "projects/portal/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -193,18 +210,27 @@
             "polyfills": "projects/portal/src/polyfills.ts",
             "tsConfig": "projects/portal/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/portal/src/sass/styles.scss"],
+            "styles": [
+              "projects/portal/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
-            "assets": ["projects/portal/src/assets", "projects/portal/src/favicon.ico"]
+            "assets": [
+              "projects/portal/src/assets",
+              "projects/portal/src/favicon.ico"
+            ]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/portal/tsconfig.app.json", "projects/portal/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/portal//**/*.ts",
+              "projects/portal//**/*.html"
+            ]
           }
         }
       }
@@ -229,8 +255,13 @@
             "polyfills": "projects/demo/src/polyfills.ts",
             "tsConfig": "projects/demo/tsconfig.app.json",
             "aot": false,
-            "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
-            "styles": ["projects/demo/src/styles.scss"],
+            "assets": [
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets"
+            ],
+            "styles": [
+              "projects/demo/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -278,10 +309,12 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/demo/tsconfig.app.json", "projects/demo/tsconfig.spec.json", "projects/demo/e2e/tsconfig.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/demo/**/*.ts",
+              "projects/demo/**/*.html"
+            ]
           }
         },
         "e2e": {
@@ -330,7 +363,9 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/referential/src/sass/styles.scss"],
+            "styles": [
+              "projects/referential/src/sass/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -388,20 +423,23 @@
             "polyfills": "projects/referential/src/polyfills.ts",
             "tsConfig": "projects/referential/tsconfig.spec.json",
             "karmaConfig": "projects/referential/karma.conf.ci.js",
-            "assets": ["projects/referential/src/favicon.ico", "projects/referential/src/assets"],
-            "styles": ["projects/referential/src/sass/styles.scss"],
+            "assets": [
+              "projects/referential/src/favicon.ico",
+              "projects/referential/src/assets"
+            ],
+            "styles": [
+              "projects/referential/src/sass/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/referential/tsconfig.app.json",
-              "projects/referential/tsconfig.spec.json",
-              "projects/referential/e2e/tsconfig.json"
-            ],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/referential/**/*.ts",
+              "projects/referential/**/*.html"
+            ]
           }
         },
         "e2e": {
@@ -449,10 +487,12 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/vitamui-library/tsconfig.lib.json", "projects/vitamui-library/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/vitamui-library/**/*.ts",
+              "projects/vitamui-library/**/*.html"
+            ]
           }
         }
       }
@@ -481,9 +521,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/starter-kit/src/sass/styles.scss"],
+            "styles": [
+              "projects/starter-kit/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -537,18 +581,27 @@
             "polyfills": "projects/starter-kit/src/polyfills.ts",
             "tsConfig": "projects/starter-kit/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/starter-kit/src/sass/styles.scss"],
+            "styles": [
+              "projects/starter-kit/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
-            "assets": ["projects/starter-kit/src/assets", "projects/starter-kit/src/favicon.ico"]
+            "assets": [
+              "projects/starter-kit/src/assets",
+              "projects/starter-kit/src/favicon.ico"
+            ]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/starter-kit/tsconfig.app.json", "projects/starter-kit/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/starter-kit//**/*.ts",
+              "projects/starter-kit//**/*.html"
+            ]
           }
         }
       }
@@ -579,9 +632,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/ingest/src/sass/styles.scss"],
+            "styles": [
+              "projects/ingest/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -643,19 +700,28 @@
             "polyfills": "projects/ingest/src/polyfills.ts",
             "tsConfig": "projects/ingest/tsconfig.spec.json",
             "karmaConfig": "projects/ingest/karma.conf.ci.js",
-            "assets": ["projects/ingest/src/favicon.ico", "projects/ingest/src/assets"],
-            "styles": ["projects/ingest/src/sass/styles.scss"],
+            "assets": [
+              "projects/ingest/src/favicon.ico",
+              "projects/ingest/src/assets"
+            ],
+            "styles": [
+              "projects/ingest/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/ingest/tsconfig.app.json", "projects/ingest/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/ingest//**/*.ts",
+              "projects/ingest//**/*.html"
+            ]
           }
         }
       }
@@ -686,9 +752,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/archive-search/src/sass/styles.scss"],
+            "styles": [
+              "projects/archive-search/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -751,18 +821,27 @@
             "polyfills": "projects/archive-search/src/polyfills.ts",
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/archive-search/src/sass/styles.scss"],
+            "styles": [
+              "projects/archive-search/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
-            "assets": ["projects/archive-search/src/assets", "projects/archive-search/src/favicon.ico"]
+            "assets": [
+              "projects/archive-search/src/assets",
+              "projects/archive-search/src/favicon.ico"
+            ]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/archive-search/tsconfig.app.json", "projects/archive-search/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/archive-search//**/*.ts",
+              "projects/archive-search//**/*.html"
+            ]
           }
         }
       }
@@ -793,9 +872,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/collect/src/sass/styles.scss"],
+            "styles": [
+              "projects/collect/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -858,18 +941,27 @@
             "polyfills": "projects/collect/src/polyfills.ts",
             "tsConfig": "projects/collect/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/collect/src/sass/styles.scss"],
+            "styles": [
+              "projects/collect/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
-            "assets": ["projects/collect/src/assets", "projects/collect/src/favicon.ico"]
+            "assets": [
+              "projects/collect/src/assets",
+              "projects/collect/src/favicon.ico"
+            ]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/collect/tsconfig.app.json", "projects/collect/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/collect//**/*.ts",
+              "projects/collect//**/*.html"
+            ]
           }
         }
       }
@@ -901,9 +993,13 @@
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/pastis/src/sass/styles.scss"],
+            "styles": [
+              "projects/pastis/src/sass/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
             },
             "scripts": []
           },
@@ -1008,16 +1104,23 @@
             "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.spec.json",
             "karmaConfig": "projects/pastis/karma.conf.ci.js",
-            "assets": ["projects/pastis/src/favicon.ico", "projects/pastis/src/assets"],
-            "styles": ["projects/pastis/src/sass/styles.scss"],
+            "assets": [
+              "projects/pastis/src/favicon.ico",
+              "projects/pastis/src/assets"
+            ],
+            "styles": [
+              "projects/pastis/src/sass/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["projects/pastis/tsconfig.app.json", "projects/pastis/tsconfig.spec.json", "projects/pastis/e2e/tsconfig.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/pastis//**/*.ts",
+              "projects/pastis//**/*.html"
+            ]
           }
         },
         "e2e": {

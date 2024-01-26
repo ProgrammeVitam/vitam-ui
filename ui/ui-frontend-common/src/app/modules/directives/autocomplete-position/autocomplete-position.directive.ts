@@ -38,7 +38,7 @@ import { Directive, Input, OnDestroy } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiAutocompletePosition]',
 })
 export class AutocompletePositionDirective implements OnDestroy {

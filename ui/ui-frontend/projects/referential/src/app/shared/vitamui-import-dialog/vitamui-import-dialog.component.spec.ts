@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 import { MatOptionModule } from '@angular/material/core';

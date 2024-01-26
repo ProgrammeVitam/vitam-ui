@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -48,14 +48,14 @@ import {of} from 'rxjs';
 import {SecurityProfileComponent} from './security-profile.component';
 
 @Component({selector: 'app-SecurityProfile-preview', template: ''})
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfilePreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({selector: 'app-SecurityProfile-list', template: ''})
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfileListStub {
 }
 

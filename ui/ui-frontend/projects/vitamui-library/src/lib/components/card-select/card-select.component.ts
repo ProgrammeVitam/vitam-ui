@@ -1,4 +1,4 @@
-/* tslint:disable:no-use-before-declare component-selector */
+/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import {Component, forwardRef, Input} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 

@@ -55,7 +55,7 @@ export class AgencyInformationTabComponent {
   submited = false;
   checkUpdateRole = new Observable<boolean>();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _agency: Agency;
 
   form: FormGroup;
@@ -142,7 +142,7 @@ export class AgencyInformationTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   resetForm(Agency: Agency) {
     this.form.reset(Agency, { emitEvent: false });
   }

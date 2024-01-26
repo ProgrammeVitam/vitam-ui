@@ -113,7 +113,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
@@ -129,7 +129,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
   constructor(

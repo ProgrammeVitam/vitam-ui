@@ -65,7 +65,7 @@ export class ArchiveUnitEliminationService {
     } else {
 
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      // tslint:disable-next-line:no-shadowed-variable
+      // eslint-disable-next-line no-shadow
       const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
         {panelClass: 'vitamui-dialog'}

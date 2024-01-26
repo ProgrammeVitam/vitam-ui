@@ -83,7 +83,7 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     this._groups = groupList;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
   form: FormGroup;

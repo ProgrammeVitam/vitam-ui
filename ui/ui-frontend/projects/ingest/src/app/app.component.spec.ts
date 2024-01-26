@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:component-selector max-classes-per-file */
+/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync  } from '@angular/core/testing';

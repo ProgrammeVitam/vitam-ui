@@ -44,7 +44,7 @@ import { AppRootComponent } from './app-root-component.class';
 import { GlobalEventService } from './global-event.service';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
 
   openedItem: T;

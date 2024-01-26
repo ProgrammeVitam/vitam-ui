@@ -41,7 +41,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //TODO: delete ?
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',
   styleUrls: ['./pastis-title-breadcrumb.component.scss']

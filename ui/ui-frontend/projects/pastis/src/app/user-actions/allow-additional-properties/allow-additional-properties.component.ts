@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'allow-additional-properties',
   templateUrl: './allow-additional-properties.component.html',
   styleUrls: ['./allow-additional-properties.component.scss']
@@ -22,7 +22,7 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
     this.text=' non autorisées'
 
   }
-  // tslint:disable-next-line:member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
 
 
   changed(){

@@ -55,7 +55,7 @@ import { UserService } from '../user.service';
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   _user: User;
 
   get user(): User {
@@ -108,7 +108,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this._groups = groupList;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
 
@@ -224,7 +224,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             siteCode,
             internalCode,
           })
-          // tslint:disable-next-line:no-shadowed-variable
+          // eslint-disable-next-line no-shadow
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

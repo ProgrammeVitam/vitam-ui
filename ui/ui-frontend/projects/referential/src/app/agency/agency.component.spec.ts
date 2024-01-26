@@ -51,14 +51,14 @@ import { AgencyService } from './agency.service';
 
 
 @Component({ selector: 'app-agency-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-agency-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {
 }
 

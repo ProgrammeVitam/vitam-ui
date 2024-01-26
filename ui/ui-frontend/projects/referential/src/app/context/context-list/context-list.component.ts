@@ -64,14 +64,14 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   animations: [collapseAnimation, rotateAnimation],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<Context>();
@@ -104,7 +104,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(public contextService: ContextService, private authService: AuthService, private route: ActivatedRoute) {

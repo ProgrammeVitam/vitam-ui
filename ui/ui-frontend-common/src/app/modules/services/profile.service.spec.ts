@@ -68,7 +68,7 @@ describe('ProfileService', () => {
 
       rngProfileService.list().subscribe((response) => expect(response).toEqual([]), fail);
 
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       const req = httpTestingController.expectOne('/fake-api/profiles?criteria=%7B%22criteria%22:%5B%7B%22key%22:%22enabled%22,%22value%22:true,%22operator%22:%22EQUALS%22%7D%5D%7D&embedded=ALL');
       expect(req.request.method).toEqual('GET');
       req.flush([]);

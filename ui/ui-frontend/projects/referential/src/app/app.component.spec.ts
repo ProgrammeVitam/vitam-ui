@@ -39,7 +39,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 
-// tslint:disable-next-line:component-selector
+// eslint-disable-next-line @angular-eslint/component-selector
 @Component({selector: 'vitamui-common-subrogation-banner', template: ''})
 class SubrogationBannerStubComponent {
 }

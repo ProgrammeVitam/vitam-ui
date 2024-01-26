@@ -89,9 +89,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
   gdprReadOnlyStatus: boolean;
   private destroy = new Subject();
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _homepageMessageForm: FormGroup;
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _customerForm: FormGroup;
 
   customer: Customer;

@@ -40,19 +40,19 @@ import { Logger } from './logger';
 @Injectable()
 export class NoLogService extends Logger {
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
   info(parentClass: Object, ...msg: any) {
   }
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
   log(parentClass: Object, ...msg: any) {
   }
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
   warn(parentClass: Object, ...msg: any) {
   }
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
   error(parentClass: Object, ...msg: any) {
   }
 }

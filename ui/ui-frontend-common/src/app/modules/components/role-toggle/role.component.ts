@@ -50,7 +50,7 @@ export class RoleComponent implements OnInit {
 
   forceDisabled: boolean;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   readonly _checkedChange = new Subject<boolean>();
 
   constructor() { }

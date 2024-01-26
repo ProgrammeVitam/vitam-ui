@@ -53,7 +53,7 @@ export enum FilingPlanMode {
   providedIn: 'root',
 })
 export class FilingPlanService {
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _pending = 0;
 
   constructor(private searchUnitApi: SearchUnitApiService, @Inject(LOCALE_ID) private locale: string) {}

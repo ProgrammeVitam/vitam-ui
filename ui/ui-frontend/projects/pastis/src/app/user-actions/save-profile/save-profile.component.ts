@@ -92,7 +92,7 @@ function constantToTranslate(edit: boolean) {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss']
@@ -125,7 +125,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   isSlaveMode: boolean;
   fileRng: File;
 
-  // tslint:disable-next-line:no-output-native
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter();
 
   constructor(private profileService: ProfileService,
@@ -296,7 +296,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             data: dataToSendToPopUp
           }
         );
-        // tslint:disable-next-line:no-shadowed-variable
+        // eslint-disable-next-line no-shadow
           this.subscriptions.add(
             selectNoticeDialog.afterClosed().subscribe((selectNoticeResult) => {
               this.toggleService.showPending();
@@ -307,7 +307,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
                   this.subscriptions.add(
                     this.profileService.uploadFile(this.data, profileDescription, selectNoticeResult.mode).subscribe(retrievedData => {
-                // tslint:disable-next-line:no-shadowed-variable
+                // eslint-disable-next-line no-shadow
                       retrievedData.text().then(result => {
                         const jsonObject = JSON.parse(result);
                         this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;

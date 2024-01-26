@@ -49,14 +49,14 @@ import { AccessContractService } from './access-contract.service';
 import { of } from 'rxjs';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-access-contract-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
 
 describe('AccessContractComponent', () => {

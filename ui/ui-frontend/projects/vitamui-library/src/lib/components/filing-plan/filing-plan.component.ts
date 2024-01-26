@@ -1,4 +1,4 @@
-/* tslint:disable:no-use-before-declare component-selector */
+/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -38,7 +38,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   onChange = (_x: { included: string[], excluded: string[] }) => {
   }
 

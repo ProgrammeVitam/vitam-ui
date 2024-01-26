@@ -51,7 +51,7 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss']
