@@ -107,7 +107,8 @@
     "package:referential": "mkdir -p dist/referential/ && cp projects/referential/package.json dist/referential/package.json && npm pack dist/referential/",
     "package:all": "npm run package:portal &&  npm run package:identity  && npm run package:referential && npm run package:archive-search && npm run package:collect  && npm run package:pastis && npm run package:ingest",
     "prettier": "prettier --write --ignore-unknown .",
-    "prettier:ci": "prettier --check --ignore-unknown ."
+    "prettier:ci": "prettier --check --ignore-unknown .",
+    "prepare": "cd ../../ && husky install ui/ui-frontend/.husky"
   },
   "private": true,
   "dependencies": {
@@ -188,6 +189,7 @@
     "codelyzer": "6.0.1",
     "concurrently": "^5.3.0",
     "cp-cli": "^2.0.0",
+    "husky": "8.0.3",
     "jasmine-core": "^3.7.0",
     "jasmine-marbles": "^0.4.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -197,6 +199,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-spec-reporter": "0.0.36",
+    "lint-staged": "13.2.3",
     "moment-locales-webpack-plugin": "^1.2.0",
     "ng-packagr": "^10.1.2",
     "ngx-i18nsupport": "^0.17.1",
@@ -213,5 +216,8 @@
   },
   "overrides": {
     "colors": "1.4.0"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }
