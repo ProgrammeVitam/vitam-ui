@@ -69,8 +69,4 @@ public class ManagementDto {
 
     @JsonProperty("UpdateOperation")
     private UpdateOperationDto updateOperationDto;
-
-    @JsonProperty("NeedAuthorization")
-    private Boolean needAuthorization;
-
 }
