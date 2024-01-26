@@ -85,7 +85,9 @@
     "check:collect": "npm run lint:collect && npm run test:collect && npm run build:collect",
     "copy-scss:vitamui-library": "cp-cli ./projects/vitamui-library/src/sass ./dist/sass",
     "build:vitamui-library": "ng build vitamui-library",
-    "watch:vitamui-library": "ng build vitamui-library --watch"
+    "watch:vitamui-library": "ng build vitamui-library --watch",
+    "prettier": "prettier --write --ignore-unknown .",
+    "prettier:ci": "prettier --check --ignore-unknown ."
   },
   "private": true,
   "dependencies": {
@@ -133,7 +135,6 @@
     "ngx-translate-multi-http-loader": "^3.0.0",
     "ngx-ui-loader": "^10.0.0",
     "popper.js": "^1.16.1",
-    "prettier": "^3.1.1",
     "remove": "^0.1.5",
     "rxjs": "^6.5.5",
     "serialize-javascript": "^5.0.1",
@@ -179,6 +180,7 @@
     "ngx-i18nsupport": "^0.17.1",
     "ngx-markdown": "10.1.1",
     "node-sass": "^4.14.1",
+    "prettier": "3.2.4",
     "protractor": "^7.0.0",
     "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
