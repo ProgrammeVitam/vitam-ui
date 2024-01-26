@@ -1,27 +1,25 @@
 <div class="editable-field-wrapper" *ngIf="!disabled">
-
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content">{{control?.value}}</span>
-          <div class="editable-field-control align" [formGroup]="formEmail">
-            <input type="text" formControlName="emailFirstPart">
-            <span class="layer">@</span>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ control?.value }}</span>
+        <div class="editable-field-control align" [formGroup]="formEmail">
+          <input type="text" formControlName="emailFirstPart" />
+          <span class="layer">&#64;</span>
 
-            <mat-form-field class="vitamui-mat-select vitamui-mat-select-mini" >
-              <mat-select formControlName="domain" required panelClass="vitamui-mat-select" #select>
-                <mat-option value="{{domainTmp}}" *ngFor="let domainTmp of domains; let index = index">
-                  {{domainTmp}}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
-
-          </div>
+          <mat-form-field class="vitamui-mat-select vitamui-mat-select-mini">
+            <mat-select formControlName="domain" required panelClass="vitamui-mat-select" #select>
+              <mat-option value="{{ domainTmp }}" *ngFor="let domainTmp of domains; let index = index">
+                {{ domainTmp }}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -41,14 +39,15 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div>{{control?.value}}</div>
+  <label>{{ label }}</label>
+  <div>{{ control?.value }}</div>
 </div>
