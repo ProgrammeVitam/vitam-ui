@@ -45,11 +45,11 @@ describe('AccessionRegisterListComponent', () => {
   let component: AccessionRegisterListComponent;
 
   let accessionRegistersService: {
-    getAccessionRegisterStatus: () => Observable<any>,
-    getDateIntervalChanges: () => BehaviorSubject<any>,
-    getAdvancedSearchData: () => BehaviorSubject<any>,
+    getAccessionRegisterStatus: () => Observable<any>;
+    getDateIntervalChanges: () => BehaviorSubject<any>;
+    getAdvancedSearchData: () => BehaviorSubject<any>;
   };
-  let searchService: { search: () => Observable<{}>; };
+  let searchService: { search: () => Observable<{}> };
 
   beforeEach(waitForAsync(() => {
 
@@ -88,7 +88,7 @@ describe('AccessionRegisterListComponent', () => {
       accessionRegistersService.getDateIntervalChanges = () => new BehaviorSubject({
         endDateMin: '',
         endDateMax: '14/09/1988'
-      })
+      });
       // When
       component.searchRequest();
       // Then
@@ -100,5 +100,5 @@ describe('AccessionRegisterListComponent', () => {
         '{"filters":{},"endDateInterval":{"endDateMin":"","endDateMax":"14/09/1988"}}'
       ));
     });
-  })
-})
+  });
+});

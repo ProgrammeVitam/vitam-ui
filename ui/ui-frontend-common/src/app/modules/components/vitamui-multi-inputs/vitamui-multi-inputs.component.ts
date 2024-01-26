@@ -47,7 +47,7 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-multi-inputs',
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],

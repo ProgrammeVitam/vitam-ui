@@ -154,6 +154,7 @@ export class SedaService {
 
   /**
    * Returns the list of all the attributes defined for the node
+   *
    * @param sedaNode the seda node we want to query
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {

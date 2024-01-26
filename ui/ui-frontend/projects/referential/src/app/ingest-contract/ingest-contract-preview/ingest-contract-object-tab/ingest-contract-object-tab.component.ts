@@ -53,7 +53,7 @@ export class IngestContractObjectTabComponent implements OnInit {
 
   form: FormGroup;
   submited = false;
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
   // FIXME: Get list from common var ?
@@ -65,9 +65,7 @@ export class IngestContractObjectTabComponent implements OnInit {
     { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
-  };
+  previousValue = (): IngestContract => this._ingestContract;
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {

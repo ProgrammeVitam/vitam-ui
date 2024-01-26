@@ -4,7 +4,7 @@ import {PopupService} from '../../core/services/popup.service';
 import {PastisDialogConfirmComponent} from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'duplicate-metadata',
   templateUrl: './duplicate-metadata.component.html',
   styleUrls: ['./duplicate-metadata.component.scss']

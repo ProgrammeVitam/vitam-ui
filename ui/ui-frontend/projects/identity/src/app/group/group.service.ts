@@ -104,7 +104,7 @@ export class GroupService extends SearchService<Group> {
     return this.groupApi.checkExistsByParam(params);
   }
 
-  patch(groupPartial: { id: string, [key: string]: any }): Observable<Group> {
+  patch(groupPartial: { id: string; [key: string]: any }): Observable<Group> {
     return this.groupApi.patch(groupPartial)
       .pipe(
         tap((updatedGroup: Group) => this.updated.next(updatedGroup)),

@@ -55,7 +55,7 @@ describe('RuleInformationTabComponent', () => {
   };
 
   const ruleServiceMock = {
-    // tslint:disable-next-line: variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     patch: (_data: any) => of(true),
   };
 

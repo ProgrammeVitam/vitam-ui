@@ -36,7 +36,7 @@
  */
 // import { of } from 'rxjs';
 
-/* tslint:disable:no-magic-numbers */
+/* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';

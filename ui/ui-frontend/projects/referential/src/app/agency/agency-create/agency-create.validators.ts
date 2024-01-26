@@ -49,13 +49,9 @@ export class AgencyCreateValidators {
   constructor(private agencyService: AgencyService) {
   }
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => this.uniqueFields('name', 'nameExists', nameToIgnore);
 
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  }
+  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

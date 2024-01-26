@@ -73,7 +73,7 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
     return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.identifier, archivalUnitProfile, { headers });
   }
 
-  patch(partialAgency: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 

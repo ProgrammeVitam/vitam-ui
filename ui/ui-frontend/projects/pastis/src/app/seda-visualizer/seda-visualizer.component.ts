@@ -44,7 +44,7 @@ const d3 = require('d3');
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-seda-visualizer',
   templateUrl: './seda-visualizer.component.html',
   styleUrls: ['./seda-visualizer.component.scss']
@@ -79,7 +79,7 @@ export class SedaVisualizerComponent implements OnInit {
       .size([height, width]);
 
       const diagonal = d3.svg.diagonal()
-      .projection((d: any)=> { return [d.y, d.x]; });
+      .projection((d: any)=> [d.y, d.x]);
 
       const svg = d3.select('div').append('svg')
       .attr('width', width + margin.right + margin.left)
@@ -107,13 +107,13 @@ export class SedaVisualizerComponent implements OnInit {
 
       // Update the nodes…
       const node = svg.selectAll('g.node')
-        .data(nodes, (d: any)=> { return d.id || (d.id = ++i); });
+        .data(nodes, (d: any)=> d.id || (d.id = ++i));
 
       // Enter any new nodes at the parent's previous position.
       const nodeEnter = node.enter().append('g')
         .attr('class', 'node')
         .attr('text', 'A')
-        .attr('transform', ()=> { return 'translate(' + source.y0 + ',' + source.x0 + ')'; })
+        .attr('transform', ()=> 'translate(' + source.y0 + ',' + source.x0 + ')')
         .style('cursor', 'pointer')
         .on('click', click).
         on('mouseover', function(d: any) {
@@ -137,13 +137,13 @@ export class SedaVisualizerComponent implements OnInit {
         .attr('r', 1e-6)
         .style('stroke', '#604379')
         .style('stroke-width', '2px')
-        .style('fill', (d: any)=> { return d.children ? '#604379' : '#fff'; });
+        .style('fill', (d: any)=> d.children ? '#604379' : '#fff');
 
       nodeEnter.append('text')
-        .attr('x', (d: any)=> { return d.children || d._children ? -16 : 13; })
+        .attr('x', (d: any)=> d.children || d._children ? -16 : 13)
         .attr('dy', '.35em')
-        .attr('text-anchor', (d: any)=> { return d.children || d._children ? 'end' : 'start'; })
-        .text((d: any)=> { return d.Name; })
+        .attr('text-anchor', (d: any)=> d.children || d._children ? 'end' : 'start')
+        .text((d: any)=> d.Name)
         .style('fill-opacity', 1e-6)
         .style('font', '12px sans-serif')
         .style('font-weight', 'bold');
@@ -151,8 +151,8 @@ export class SedaVisualizerComponent implements OnInit {
 
         // Letters inside circle
       nodeEnter.append('text')
-        .attr('x', (d: any)=> { return d.children || d._children ? 4 : -4; })
-        .attr('text-anchor', (d: any)=> { return d.children || d._children ? 'end' : 'start'; })
+        .attr('x', (d: any)=> d.children || d._children ? 4 : -4)
+        .attr('text-anchor', (d: any)=> d.children || d._children ? 'end' : 'start')
         .attr('dy', '.35em')
         .attr('stroke', '#65B2E4')
         .attr('stroke-width', '1px')
@@ -166,11 +166,11 @@ export class SedaVisualizerComponent implements OnInit {
       // Transition nodes to their new position.
       const nodeUpdate = node.transition()
         .duration(duration)
-        .attr('transform', (d: any)=> { return 'translate(' + d.y + ',' + d.x + ')'; });
+        .attr('transform', (d: any)=> 'translate(' + d.y + ',' + d.x + ')');
 
       nodeUpdate.select('circle')
         .attr('r', 12)
-        .style('fill', (d: any)=> { return d.children ? '#604379' : '#fff'; });
+        .style('fill', (d: any)=> d.children ? '#604379' : '#fff');
 
       nodeUpdate.select('text')
         .style('fill-opacity', 1);
@@ -178,7 +178,7 @@ export class SedaVisualizerComponent implements OnInit {
       // Transition exiting nodes to the parent's new position.
       const nodeExit = node.exit().transition()
         .duration(duration)
-        .attr('transform', ()=> { return 'translate(' + source.y + ',' + source.x + ')'; })
+        .attr('transform', ()=> 'translate(' + source.y + ',' + source.x + ')')
         .remove();
 
       nodeExit.select('circle')
@@ -189,7 +189,7 @@ export class SedaVisualizerComponent implements OnInit {
 
       // Update the links…
       const link = svg.selectAll('path.link')
-        .data(links, (d: any) => { return d.target.id; });
+        .data(links, (d: any) => d.target.id);
 
 
       // Enter any new links at the parent's previous position.
@@ -224,7 +224,7 @@ export class SedaVisualizerComponent implements OnInit {
 
       // Legend
       // select the svg area
-      // tslint:disable-next-line:variable-name
+      // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
       const svg_legend = d3.select('#seda_legend');
       // Nodes
       svg_legend.append('circle').attr('cx', 20).attr('cy', 30).attr('r', 6).attr('r', 12).style('stroke', '#604379').style('stroke-width', '2px').style('fill', '#fff' );
@@ -242,15 +242,15 @@ export class SedaVisualizerComponent implements OnInit {
       svg_legend.append('text').attr('x', '100').attr('dy', '70').text('1').style('font-size', '15px').attr('alignment-baseline', 'middle');
       // 1-N
       svg_legend.append('line').attr('x1', 140).attr('y1', 70).attr('x2', 180).attr('y2', 70).style('stroke', '#2A9DF4').style('stroke-width', '2.5');
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       svg_legend.append('text').attr('x', '190').attr('dy', '70').text('1-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
       svg_legend.append('line').attr('x1', 230).attr('y1', 70).attr('x2', 270).attr('y2', 70).style('stroke', '#555555').style('stroke-width', '2.5');
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       svg_legend.append('text').attr('x', '280').attr('dy', '70').text('0-1').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
       svg_legend.append('line').attr('x1', 310).attr('y1', 70).attr('x2', 350).attr('y2', 70).style('stroke', '#adb7bd').style('stroke-width', '2.5');
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       svg_legend.append('text').attr('x', '360').attr('dy', '70').text('0-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
       // Legend text

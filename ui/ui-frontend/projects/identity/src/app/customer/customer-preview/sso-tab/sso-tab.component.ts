@@ -82,7 +82,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   panel1Position = 'current';
   panel2Position = 'next';
   selectedIdentityProvider: IdentityProvider;
-  domains: Array<{ value: string, disabled: boolean }> = [];
+  domains: Array<{ value: string; disabled: boolean }> = [];
 
   @Input()
   set customer(customer: Customer) {
@@ -153,9 +153,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
 
   private refreshAvailableDomains() {
     this.identityProviderService.getDomainByCustomerId(this.customer.id).subscribe((domains) => {
-      this.domains = this.customer.emailDomains.map((domain) => {
-        return { value: domain, disabled: domains.includes(domain) };
-      });
+      this.domains = this.customer.emailDomains.map((domain) => ({ value: domain, disabled: domains.includes(domain) }));
     });
   }
 

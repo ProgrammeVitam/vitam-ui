@@ -48,9 +48,7 @@ export class AuditCreateValidators {
     constructor(private auditService: AuditService) {
     }
 
-    checkEvidenceAuditId = (): AsyncValidatorFn => {
-        return this.auditExists('invalidEvidenceAuditId');
-    }
+    checkEvidenceAuditId = (): AsyncValidatorFn => this.auditExists('invalidEvidenceAuditId');
 
     private auditExists(existTag: string) {
         return (control: AbstractControl) => {

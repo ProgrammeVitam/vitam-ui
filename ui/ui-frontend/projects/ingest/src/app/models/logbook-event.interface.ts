@@ -62,19 +62,19 @@ export enum IngestStatus {
 
 // evDetData
 export interface EvDetDataDeflateJson {
-  EvDetailReq?: string,
-  EvDateTimeReq?: string,
-  ArchivalAgreement?: string,
-  ArchivalProfile?: string,
-  ServiceLevel?: string,
-  AcquisitionInformation?: string,
-  LegalStatus?: string,
+  EvDetailReq?: string;
+  EvDateTimeReq?: string;
+  ArchivalAgreement?: string;
+  ArchivalProfile?: string;
+  ServiceLevel?: string;
+  AcquisitionInformation?: string;
+  LegalStatus?: string;
 }
 
 // agIdExt
 export interface AgIdExtDeflateJson {
-  originatingAgency?: string,
-  submissionAgency?: string,
+  originatingAgency?: string;
+  submissionAgency?: string;
 }
 
 export function ingestStatus(ingest: LogbookOperation): IngestStatus {
@@ -85,15 +85,15 @@ export function ingestStatus(ingest: LogbookOperation): IngestStatus {
   if (ingest.evType === lastEvent.evType) {
     return lastEvent.outcome as IngestStatus;
   }
-  return IngestStatus.IN_PROGRESS
+  return IngestStatus.IN_PROGRESS;
 }
 
 export function ingestLastEvent(ingest: LogbookOperation): LogbookEvent {
-  return ingest.events[ingest.events.length - 1]
+  return ingest.events[ingest.events.length - 1];
 }
 
 export function ingestHasEvents(ingest: LogbookOperation): boolean {
-  return ingest.events !== undefined && ingest.events.length > 0
+  return ingest.events !== undefined && ingest.events.length > 0;
 }
 
 export function ingestStatusVisualColor(status: IngestStatus): 'green' | 'grey' | 'orange' | 'red' | 'black' {

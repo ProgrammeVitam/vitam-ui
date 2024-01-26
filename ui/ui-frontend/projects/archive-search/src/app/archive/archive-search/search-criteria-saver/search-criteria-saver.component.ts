@@ -83,7 +83,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
-    private translatePipe: TranslatePipe
+    private translatePipe: TranslatePipe,
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -137,7 +137,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
+        },
       );
   }
 
@@ -203,7 +203,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
+        },
       );
   }
 
@@ -297,10 +297,15 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
               const greaterThanOrEqual = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE');
               const lesserThanOrEqual = this.translatePipe.transform('ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE');
 
-              if (beginDate && endDate) value = `${between} ${beginDate} ${and} ${endDate}`;
-              else if (beginDate && !endDate) value = `${greaterThanOrEqual} ${beginDate}`;
-              else if (!beginDate && endDate) value = `${lesserThanOrEqual} ${endDate}`;
-              else throw new Error('Interval without beginDate and endDate');
+              if (beginDate && endDate) {
+                value = `${between} ${beginDate} ${and} ${endDate}`;
+              } else if (beginDate && !endDate) {
+                value = `${greaterThanOrEqual} ${beginDate}`;
+              } else if (!beginDate && endDate) {
+                value = `${lesserThanOrEqual} ${endDate}`;
+              } else {
+                throw new Error('Interval without beginDate and endDate');
+              }
 
               break;
             default:
@@ -339,7 +344,9 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
       const translation = this.translatePipe.transform(translationKey);
       const isTranslated = translation !== translationKey;
 
-      if (isTranslated) return translation;
+      if (isTranslated) {
+        return translation;
+      }
     }
 
     return null;

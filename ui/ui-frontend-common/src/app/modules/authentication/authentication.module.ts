@@ -61,7 +61,7 @@ export class AuthenticationModule {
   private static loading: Promise<any> = null;
 
   private static loadModule() {
-    // tslint:disable-next-line: whitespace semicolon
+    // eslint-disable-next-line @typescript-eslint/semi, @typescript-eslint/member-delimiter-style
     return () => this.loading;;
   }
 

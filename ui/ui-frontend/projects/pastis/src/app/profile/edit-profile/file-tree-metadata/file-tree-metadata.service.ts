@@ -60,7 +60,7 @@ export class FileTreeMetadataService {
   }
 
   initCardinalityValues() {
-    // tslint:disable-next-line:forin
+    // eslint-disable-next-line guard-for-in
     for (const key in CardinalityConstants) {
       const cardinality: CardinalityValues = { value: CardinalityConstants[key as keyof typeof CardinalityConstants], viewValue: key };
       this.cardinalityValues.push(cardinality);
@@ -78,7 +78,7 @@ export class FileTreeMetadataService {
 
   fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude: string[], childrenToExclude: string[]): MetadataHeaders[] {
     const data: MetadataHeaders[] = [];
-    // tslint:disable-next-line:prefer-const
+    // eslint-disable-next-line prefer-const
     let allowedCardList: string[][];
     if (clickedNode.children.length > 0 ) {
       for (const child of clickedNode.children) {
@@ -206,7 +206,7 @@ export class FileTreeMetadataService {
 
     if (sedaNode.Children.length > 0) {
         for (const fileNodechild of nodesToKeep) {
-          sedaNode.Children.forEach((sedaGrandChild: { Name: string; }) => {
+          sedaNode.Children.forEach((sedaGrandChild: { Name: string }) => {
             if (fileNodechild.name === sedaGrandChild.Name) {
               fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality)
                : childrenCardMap.set(fileNodechild.id, '1');
@@ -224,6 +224,7 @@ export class FileTreeMetadataService {
 
   /**
    * Find the children of sedaParent and return the 'Enumeration' property
+   *
    * @param sedaParent the seda parent of the node we want to find
    * @param childName the name of the seda node we want to find
    */
@@ -231,7 +232,7 @@ export class FileTreeMetadataService {
     if (sedaParent.Name === childName) {
       return sedaParent.Enumeration;
     }
-    const sedaNode: SedaData = sedaParent.Children.find((c: { Name: string; }) => c.Name === childName);
+    const sedaNode: SedaData = sedaParent.Children.find((c: { Name: string }) => c.Name === childName);
     if (sedaNode) {
       return sedaNode.Enumeration;
     }

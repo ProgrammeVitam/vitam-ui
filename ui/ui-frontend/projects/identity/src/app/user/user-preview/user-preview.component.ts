@@ -40,12 +40,12 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
-import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { UserInfoService } from './../user-info.service';
 
 @Component({
   selector: 'app-user-preview',
@@ -55,7 +55,7 @@ import { UserService } from '../user.service';
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   _user: User;
 
   get user(): User {
@@ -108,7 +108,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this._groups = groupList;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
 
@@ -224,7 +224,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             siteCode,
             internalCode,
           })
-          // tslint:disable-next-line:no-shadowed-variable
+          // eslint-disable-next-line no-shadow
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

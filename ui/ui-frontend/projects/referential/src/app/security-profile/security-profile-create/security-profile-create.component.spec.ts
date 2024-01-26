@@ -1,4 +1,4 @@
-/* tslint:disable: max-classes-per-file directive-selector */
+/* eslint-disable max-classes-per-file, @angular-eslint/directive-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.

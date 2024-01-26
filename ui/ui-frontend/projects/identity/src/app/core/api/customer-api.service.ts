@@ -61,7 +61,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -80,7 +80,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getHttp().post<any>(super.getApiUrl(), formData, { headers });
   }
 
-  patchCustomer(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
+  patchCustomer(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
     formData.append('partialCustomerDto', JSON.stringify({
       id: partialCustomer.id,

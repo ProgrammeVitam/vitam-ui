@@ -39,10 +39,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { IngestContract } from 'ui-frontend-common';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
-import { IngestContract } from "ui-frontend-common";
 
 
 describe('IngestContractFormatTabComponent', () => {

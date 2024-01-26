@@ -50,7 +50,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
   public hasError = true;
   public message: string;
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _imageUrl: string | SafeResourceUrl;
   public get imageUrl(): string | SafeResourceUrl { return this._imageUrl; }
   public set imageUrl(val: string | SafeResourceUrl) {
@@ -117,7 +117,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // tslint:disable-next-line: max-line-length
+          // eslint-disable-next-line max-len
           this.message = `Les dimensions du fichier que vous essayez de déposer sont supérieures à ${this.logoSize.width}px * ${this.logoSize.height}px`;
           this.hasError = true;
         } else {

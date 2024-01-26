@@ -58,8 +58,8 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest)
-    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest)
+    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);
+    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest);
   }
 
   hasEvent(): boolean {
@@ -75,7 +75,7 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   getIngestStatus(ingest: LogbookOperation): string {
-    return ingestStatus(ingest)
+    return ingestStatus(ingest);
   }
 
   private deflateJsonEvDetData(element: LogbookOperation): EvDetDataDeflateJson {

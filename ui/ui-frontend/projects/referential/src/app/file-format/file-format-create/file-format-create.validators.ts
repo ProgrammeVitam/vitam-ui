@@ -49,13 +49,9 @@ export class FileFormatCreateValidators {
   constructor(private fileFormatService: FileFormatService) {
   }
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => this.uniqueFields('name', 'nameExists', nameToIgnore);
 
-  uniquePuid = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('puid', 'puidExists', identifierToIgnore);
-  }
+  uniquePuid = (identifierToIgnore?: string): AsyncValidatorFn => this.uniqueFields('puid', 'puidExists', identifierToIgnore);
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

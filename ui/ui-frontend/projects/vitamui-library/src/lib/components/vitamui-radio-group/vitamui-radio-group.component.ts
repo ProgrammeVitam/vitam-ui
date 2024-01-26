@@ -1,4 +1,4 @@
-/* tslint:disable:no-use-before-declare component-selector */
+/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import {AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -38,9 +38,9 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   ngOnDestroy: () => void;
 
   onChange = (_: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   ngOnInit(): void {
     this.required = (this.required === undefined) ? false : true;

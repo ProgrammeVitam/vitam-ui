@@ -48,7 +48,7 @@ export class SecurisationInformationTabComponent implements OnInit {
 
   @Input()
   securisation: Event;
-  timestamp: { signerCertIssuer: string, genTime: Date };
+  timestamp: { signerCertIssuer: string; genTime: Date };
 
   constructor(private securisationService: SecurisationService) {
   }

@@ -78,7 +78,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     return this._customerId;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _customerId: string;
 
   @Input()
@@ -96,7 +96,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   get customerInfo() {
     return this._customerInfo;
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _customerInfo: any;
 
   constructor(

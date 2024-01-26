@@ -56,7 +56,7 @@ import { EditablePatternsComponent } from './editable-patterns.component';
   }]
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;

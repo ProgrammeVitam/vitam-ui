@@ -42,7 +42,7 @@ import { ProfileService } from '../../core/services/profile.service';
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-upload',
   templateUrl: './upload-profile.component.html',
   styleUrls: ['./upload-profile.component.scss']

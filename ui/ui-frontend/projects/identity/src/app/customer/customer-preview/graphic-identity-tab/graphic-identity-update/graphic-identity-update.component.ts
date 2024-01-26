@@ -65,7 +65,7 @@ export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<GraphicIdentityUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, logos: LogosSafeResourceUrl },
+    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; logos: LogosSafeResourceUrl },
     private customerService: CustomerService,
   ) {}
 

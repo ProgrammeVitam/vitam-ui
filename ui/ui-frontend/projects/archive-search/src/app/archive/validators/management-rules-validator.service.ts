@@ -94,23 +94,19 @@ export class ManagementRulesValidatorService {
   }
 
   uniquePreventRuleId(codeToIgnore?: string): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
+    return (control: AbstractControl) => timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterPreventRulesId(control.value)) : of(false))),
         take(1),
         map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null))
       );
-    };
   }
 
   uniqueRuleId(codeToIgnore?: string): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
+    return (control: AbstractControl) => timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterRuleActions(control.value)) : of(false))),
         take(1),
         map((exists: boolean) => (exists ? { uniqueRuleId: true } : null))
       );
-    };
   }
 
   ruleIdPattern(): ValidatorFn {

@@ -76,7 +76,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   checkTraceability() {
     if(this.accessContractId){
       this.securingService.checkTraceabilityOperation(this.id, this.accessContractId)
-      .subscribe((response: { $results: ApiEvent[]; }) => {
+      .subscribe((response: { $results: ApiEvent[] }) => {
         this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
         this.display = true;
       });

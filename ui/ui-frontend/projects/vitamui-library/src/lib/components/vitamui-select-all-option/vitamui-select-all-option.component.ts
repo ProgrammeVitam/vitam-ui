@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject,
   Input, OnDestroy, OnInit, Optional, Output} from '@angular/core';
 import {AbstractControl} from '@angular/forms';

@@ -4,7 +4,7 @@ import { CountryOption, CountryService, Option} from 'ui-frontend-common';
 import { extend } from 'underscore';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'starter-kit-inputs',
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss'],

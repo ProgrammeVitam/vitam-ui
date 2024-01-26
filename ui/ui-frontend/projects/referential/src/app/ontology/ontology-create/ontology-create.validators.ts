@@ -51,21 +51,15 @@ export class OntologyCreateValidators {
   constructor(private ontologyService: OntologyService) {
   }
 
-  uniqueID = (): AsyncValidatorFn => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime)
+  uniqueID = (): AsyncValidatorFn => (control: AbstractControl): Observable<ValidationErrors | null> => timer(this.debounceTime)
         .pipe(
           switchMap(() => this.ontologyService.exists(control.value)),
           take(1),
           map((exists: boolean) => exists ? {idExists: true} : null)
         );
-    };
-  }
 
-  patternID = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
+  patternID = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
       const regexp = /^[_#\s]|\s/;
       return regexp.test(control.value) ? {idPattern: true} : null;
     };
-  }
 }

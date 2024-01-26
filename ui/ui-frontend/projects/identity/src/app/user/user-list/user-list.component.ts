@@ -86,15 +86,15 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string, label: string }> = [];
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  groupFilterOptions: Array<{ value: string; label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
   totalMonth: number;
   isInactifUsers = false;
 
-  private userGroups: Array<{ id: string, group: any }> = [];
+  private userGroups: Array<{ id: string; group: any }> = [];
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
@@ -113,7 +113,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
@@ -129,7 +129,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
   constructor(

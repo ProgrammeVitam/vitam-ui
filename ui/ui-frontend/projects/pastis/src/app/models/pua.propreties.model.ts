@@ -1,7 +1,7 @@
 export interface PuaProperties {
     'properties': {
         [name: string]: {
-            '$ref': '#/definitions/one-one'
-        }
+            '$ref': '#/definitions/one-one';
+        };
     };
 }

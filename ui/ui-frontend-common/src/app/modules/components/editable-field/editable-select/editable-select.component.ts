@@ -36,7 +36,7 @@
  */
 import { filter } from 'rxjs/operators';
 
-/* tslint:disable: no-use-before-declare */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, TemplateRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';

@@ -49,5 +49,5 @@ export interface PastisDialogData {
     fileNode: FileNode;
     disableBtnOuiOnInit: boolean;
     component: ComponentType<any>;
-    modeProfile ?: string;
+    modeProfile?: string;
   }

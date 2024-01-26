@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
-import { ProjectsService } from '../projects.service';
 
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -12,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PaginatedResponse, Project, ProjectStatus, Transaction, TransactionStatus } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ProjectsService } from '../projects.service';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';
 
@@ -32,14 +32,14 @@ describe('ProjectPreviewComponent', () => {
     status: TransactionStatus.OPEN,
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
     transferringAgencyIdentifier: 'transferringAgencyIdentifier',
-  }
+  };
   const transactionPaginatedResponse: PaginatedResponse<Transaction> = {
     pageNum: 0,
     pageSize: 1,
     totalElements: 1,
     hasMore: false,
     values: [transaction],
-  }
+  };
 
   const project: Project = {
     id: 'newId',
@@ -57,7 +57,7 @@ describe('ProjectPreviewComponent', () => {
 
   const projectAfterUpdate = {
     project, ...{messageIdentifier: 'test'}
-  }
+  };
 
   const projectServiceMock = {
     getBaseUrl: () => '/fake-api',
@@ -141,7 +141,7 @@ describe('ProjectPreviewComponent', () => {
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-    component.selectedValue = 'NON'
+    component.selectedValue = 'NON';
     component.onConfirm();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -157,7 +157,7 @@ describe('ProjectPreviewComponent', () => {
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-    component.selectedValue = 'YES'
+    component.selectedValue = 'YES';
     component.onConfirm();
     fixture.detectChanges();
     fixture.whenStable().then(() => {

@@ -43,7 +43,7 @@ import { Context, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
+import {RULE_TYPES} from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -61,17 +61,15 @@ export class ContextInformationTabComponent {
 
   securityProfiles: Option[] = [];
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _context: Context;
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): Context => {
-    return this._context;
-  };
+  previousValue = (): Context => this._context;
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   set context(Context: Context) {
     this._context = Context;
     this.resetForm(this.context);

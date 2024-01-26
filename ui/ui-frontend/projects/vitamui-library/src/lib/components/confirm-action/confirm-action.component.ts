@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.

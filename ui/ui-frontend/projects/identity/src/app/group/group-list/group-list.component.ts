@@ -71,7 +71,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this._search = text;
     this.searchChange.next(text);
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _search: string;
   private readonly searchKeys = [
     'identifier',
@@ -93,7 +93,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   private readonly orderChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
 
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
 
   constructor(public groupService: GroupService,
               @Inject(LOCALE_ID) private locale: string) {

@@ -67,7 +67,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Input('filters')
@@ -85,7 +85,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this.dataSource[index] = ingest;
   }
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _filters: IngestFilters;
 
   @Output() ingestClick = new EventEmitter<any>();

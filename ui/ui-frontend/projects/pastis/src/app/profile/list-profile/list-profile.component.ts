@@ -60,7 +60,7 @@ import {CreateProfileComponent} from '../create-profile/create-profile.component
 import {
   ProfileInformationTabComponent
 } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
-import { ProfileType } from "../../models/profile-type.enum";
+import { ProfileType } from '../../models/profile-type.enum';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -72,7 +72,7 @@ function constantToTranslate() {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],
@@ -193,7 +193,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         && profileDescription.status === 'ACTIVE') ||
       (profileDescription.type === ProfileType.PUA && profileDescription.status === 'ACTIVE'
         && (!profileDescription.controlSchema || profileDescription.controlSchema === '{}'))
-    )
+    );
   }
 
   private refreshListProfiles() {
@@ -207,7 +207,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
           profileDescription => {
             profileDescription.isEditable = this.isEditable(profileDescription);
           }
-        )
+        );
         this.profilesChargees = true;
         this.toggleService.hidePending();
       }
@@ -335,7 +335,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-    if (this.pendingSub) this.pendingSub.unsubscribe();
+    if (this.pendingSub) {this.pendingSub.unsubscribe();}
   }
 
   showProfile(element: ProfileDescription) {

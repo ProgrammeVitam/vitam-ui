@@ -47,9 +47,7 @@ export class ProfileValidators {
 
   constructor(private rngProfileService: ProfileService) {}
 
-  nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
+  nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime).pipe(
         switchMap(() =>
           control.value !== nameToIgnore
             ? this.rngProfileService.exists(tenantIdentifier, level, applicationName, control.value)
@@ -58,6 +56,4 @@ export class ProfileValidators {
         take(1),
         map((exists: boolean) => (exists ? { nameExists: true } : null))
       );
-    };
-  };
 }

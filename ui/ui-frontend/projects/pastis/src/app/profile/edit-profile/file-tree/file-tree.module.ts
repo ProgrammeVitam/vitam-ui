@@ -39,17 +39,17 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DpDatePickerModule } from 'ng2-date-picker';
-import { SharedModule } from '../../../shared/shared.module';
-import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
 import { MatTableModule} from '@angular/material/table';
-import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 
 
 import {TranslateModule} from '@ngx-translate/core';
 import {EditableFieldModule, VitamUICommonModule} from 'ui-frontend-common';
+import { PastisMaterialModule } from '../../../material.module';
+import { UserActionsModule } from '../../../user-actions/user-actions.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { CoreModule } from '../../../core/core.module';
 import { PastisDialogConfirmComponent } from '../../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';

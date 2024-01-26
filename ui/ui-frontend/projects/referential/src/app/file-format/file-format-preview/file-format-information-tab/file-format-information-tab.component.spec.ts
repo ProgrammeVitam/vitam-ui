@@ -50,7 +50,7 @@ describe('FileFormatInformationTabComponent', () => {
   let fixture: ComponentFixture<FileFormatInformationTabComponent>;
 
   const fileFormatServiceMock = {
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     patch: (_data: any) => of(null),
   };
 

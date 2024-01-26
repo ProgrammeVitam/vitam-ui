@@ -64,7 +64,7 @@ export class DownloadSnackBarComponent implements OnInit {
     other: 'DOWNLOAD.FILE_PREPARATION_TOTAL.PLURAL',
   };
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private readonly _cancel = new Subject<void>();
 
   constructor(private matDialog: MatDialog) {

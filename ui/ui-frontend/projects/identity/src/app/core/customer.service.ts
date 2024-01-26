@@ -106,7 +106,7 @@ export class CustomerService {
       );
   }
 
-  patch(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[]): Observable<Customer> {
+  patch(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[]): Observable<Customer> {
     return this.customerApi.patchCustomer(partialCustomer, logos)
       .pipe(
         tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),

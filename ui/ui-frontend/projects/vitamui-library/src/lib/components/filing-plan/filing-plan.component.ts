@@ -1,4 +1,4 @@
-/* tslint:disable:no-use-before-declare component-selector */
+/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -28,7 +28,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
 
-  selectedNodes: { included: string[], excluded: string[] } = {
+  selectedNodes: { included: string[]; excluded: string[] } = {
     included: [],
     excluded: []
   };
@@ -38,12 +38,12 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
 
-  // tslint:disable-next-line:variable-name
-  onChange = (_x: { included: string[], excluded: string[] }) => {
-  }
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
+  onChange = (_x: { included: string[]; excluded: string[] }) => {
+  };
 
   onTouched = () => {
-  }
+  };
 
   constructor(public filingPlanService: FilingPlanService) {
     this.nestedTreeControl = new NestedTreeControl<Node>((node) => node.children);
@@ -177,7 +177,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
     this.onChange(this.selectedNodes);
   }
 
-  initCheckedNodes(obj: { included: string[], excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
+  initCheckedNodes(obj: { included: string[]; excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
 
     if (!obj || !nodes) {
       return;
@@ -218,7 +218,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
     return shouldStop;
   }
 
-  writeValue(obj: { included: string[], excluded: string[] }): void {
+  writeValue(obj: { included: string[]; excluded: string[] }): void {
     this.initCheckedNodes(obj, this.nestedDataSource.data);
     this.selectedNodes = obj;
   }

@@ -68,7 +68,7 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.getAllByParams(params, headers);
   }
 
-  existsProperties(properties: { name?: string, puid?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; puid?: string }): Observable<any> {
     const existAgency: any = {};
     if (properties.name) {
       existAgency.name = properties.name;
@@ -101,7 +101,7 @@ export class FileFormatService extends SearchService<FileFormat> {
       );
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<FileFormat> {
+  patch(data: { id: string; [key: string]: any }): Observable<FileFormat> {
     return this.fileFormatApiService.patch(data)
       .pipe(
         tap((response) => this.updated.next(response)),

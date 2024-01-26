@@ -39,18 +39,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerComponent } from './customer.component';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { CustomerService } from '../core/customer.service';
+import { environment } from './../../environments/environment';
 
 let component: CustomerComponent;
 let fixture: ComponentFixture<CustomerComponent>;

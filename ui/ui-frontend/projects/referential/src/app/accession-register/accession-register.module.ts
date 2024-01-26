@@ -56,7 +56,7 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 import { SharedModule } from '../shared/shared.module';
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
@@ -65,7 +65,7 @@ import {
 } from './accession-register-preview/accession-register-detail/accession-register-detail.component';
 import {
   AccessionRegisterOperationComponent
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 } from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
 import {
   AccessionRegisterOperationsListComponent

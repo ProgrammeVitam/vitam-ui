@@ -46,7 +46,7 @@ import { FileTreeMetadataService } from './file-tree-metadata.service';
 describe('FileTreeMetadataComponent', () => {
   let component: FileTreeMetadataComponent;
   let fixture: ComponentFixture<FileTreeMetadataComponent>;
-  let metadataHeaders: MetadataHeaders = {
+  const metadataHeaders: MetadataHeaders = {
     id: 0,
     nomDuChamp: '',
     nomDuChampFr: '',

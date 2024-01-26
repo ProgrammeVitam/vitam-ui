@@ -43,7 +43,7 @@ import { AccessContract, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from '../../access-contract.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
+import {RULE_TYPES} from '../../../rule/rules.constants';
 
 
 @Component({
@@ -126,13 +126,11 @@ export class AccessContractInformationTabComponent {
   statusControl = new FormControl();
   accessLogControl = new FormControl();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
 
   rules: Option[] = RULE_TYPES;
-  previousValue = (): AccessContract => {
-    return this._accessContract;
-  };
+  previousValue = (): AccessContract => this._accessContract;
 
   unchanged(): boolean {
     const unchanged =

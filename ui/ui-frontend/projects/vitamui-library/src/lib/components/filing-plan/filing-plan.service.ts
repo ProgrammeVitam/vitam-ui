@@ -53,7 +53,7 @@ export enum FilingPlanMode {
   providedIn: 'root',
 })
 export class FilingPlanService {
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _pending = 0;
 
   constructor(private searchUnitApi: SearchUnitApiService, @Inject(LOCALE_ID) private locale: string) {}
@@ -89,9 +89,7 @@ export class FilingPlanService {
         'X-Tenant-Id': tenantId,
       });
       units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
+        catchError(() => of({ $hits: null, $results: [] })),
         map((response) => response.$results),
         tap(() => this._pending--),
         shareReplay(1)
@@ -99,9 +97,7 @@ export class FilingPlanService {
       this.setCachedValue(units$, tenantId);
     }
     return units$.pipe(
-      map((results) => {
-        return this.getNestedChildren(results, idPrefix);
-      })
+      map((results) => this.getNestedChildren(results, idPrefix))
     );
   }
 

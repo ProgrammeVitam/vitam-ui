@@ -21,5 +21,5 @@ export interface SearchCriteria {
     documentType?: string[];
   };
   autocomplete?: string;
-  facet?: { typeDate: DateType, years: number[] };
+  facet?: { typeDate: DateType; years: number[] };
 }

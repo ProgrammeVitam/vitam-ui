@@ -64,7 +64,7 @@ export class OntologyApiService extends BaseHttpClient<Ontology> {
     return super.getOne(id, headers);
   }
 
-  patch(partialOntology: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialOntology: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialOntology, headers);
   }
 

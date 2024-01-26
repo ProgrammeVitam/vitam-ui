@@ -48,19 +48,13 @@ export class GroupValidators {
 
     constructor(private groupService: GroupService) {}
 
-    nameExists = (customerId: string, nameToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime).pipe(
+    nameExists = (customerId: string, nameToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime).pipe(
           switchMap(() => control.value !== nameToIgnore ? this.groupService.exists(customerId, control.value) : of(false)),
           take(1),
           map((exists: boolean) => exists ? { nameExists: true } : null)
         );
-      };
-    }
 
-    unitExists = (customerId: string, unitToIgnore: string[] = []): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime).pipe(
+    unitExists = (customerId: string, unitToIgnore: string[] = []): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime).pipe(
           switchMap(() => {
             if (!control.value?.trim()) {
               return of(false);
@@ -70,6 +64,4 @@ export class GroupValidators {
           take(1),
           map((exists: boolean) => exists ? { unitExists: true } : null)
         );
-      };
-    }
 }

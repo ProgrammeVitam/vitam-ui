@@ -64,7 +64,7 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.ingestFromParent) {
-      this.reloadLogbookOperation()
+      this.reloadLogbookOperation();
     }
   }
 
@@ -81,7 +81,7 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {
     const logbookOperationUpdated = logbookOperations.find(e => e.id === this.ingestFromParent.id);
     if (logbookOperationUpdated) {
-      this.reloadLogbookOperation()
+      this.reloadLogbookOperation();
     }
   }
 
@@ -90,14 +90,14 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(first())
       .subscribe(receivedLogbookOperation => {
         if (this.ingestFromParent.id === receivedLogbookOperation.id) {
-          this.updateIngest(receivedLogbookOperation)
+          this.updateIngest(receivedLogbookOperation);
         }
-      })
+      });
   }
 
   private updateIngest(logbookOperation: LogbookOperation) {
     this.ingest = logbookOperation;
-    this.ingestHasChanged.emit(this.ingest)
+    this.ingestHasChanged.emit(this.ingest);
   }
 
   emitClose() {

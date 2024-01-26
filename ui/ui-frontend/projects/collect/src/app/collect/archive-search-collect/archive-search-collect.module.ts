@@ -71,7 +71,7 @@ import { ReuseRuleSearchComponent } from './archive-search-criteria/components/r
 import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';

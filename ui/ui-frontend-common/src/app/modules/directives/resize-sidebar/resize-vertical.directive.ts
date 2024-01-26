@@ -38,7 +38,7 @@ import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, HostListener, Inject, Input, OnInit } from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiVerticalResizeSidebar]',
 })
 export class ResizeVerticalDirective implements OnInit {

@@ -42,7 +42,6 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {ActivatedRoute} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
-import {IngestComponent} from './ingest.component';
 
 import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
@@ -53,6 +52,7 @@ import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {environment} from '../../environments/environment';
 import {IngestType} from '../core/common/ingest-type.enum';
 import {UploadService} from '../core/common/upload.service';
+import {IngestComponent} from './ingest.component';
 import {IngestListComponent} from './ingest-list/ingest-list.component';
 import {IngestService} from './ingest.service';
 

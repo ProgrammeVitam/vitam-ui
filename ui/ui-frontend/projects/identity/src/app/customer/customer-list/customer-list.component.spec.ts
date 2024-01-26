@@ -54,13 +54,13 @@ import { TenantService } from '../tenant.service';
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCommonCollapseTriggerFor]' })
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCommonCollapseTriggerFor: any;
 }
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
 class CollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;

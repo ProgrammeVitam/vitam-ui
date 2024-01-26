@@ -51,15 +51,11 @@ export class OwnerFormValidators {
 
     constructor(private ownerService: OwnerService) {}
 
-    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime)
+    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime)
           .pipe(
             switchMap(() => control.value !== codeToIgnore ? this.ownerService.exists(control.value) : of(false)),
             take(1),
             map((exists: boolean) => exists ? { uniqueCode: true } : null)
           );
-      };
-    }
 
 }

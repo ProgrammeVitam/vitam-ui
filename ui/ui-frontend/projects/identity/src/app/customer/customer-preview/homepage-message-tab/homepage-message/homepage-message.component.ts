@@ -161,9 +161,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
     forms.splice(index, 1);
 
     const values = forms.map((x: FormGroup) => x.get('language').value);
-    return this.languages.filter((x) => {
-      return x.key !== this.language && values.indexOf(x.key) < 0;
-    });
+    return this.languages.filter((x) => x.key !== this.language && values.indexOf(x.key) < 0);
   }
 
   public isLanguageSet(): boolean {

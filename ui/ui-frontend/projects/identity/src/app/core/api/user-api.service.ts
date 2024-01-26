@@ -61,7 +61,7 @@ export class UserApiService extends BaseHttpClient<User> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -69,7 +69,7 @@ export class UserApiService extends BaseHttpClient<User> {
     return super.create(user, headers);
   }
 
-  patch(userPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<User> {
+  patch(userPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<User> {
     return super.patch(userPartial, headers);
   }
 

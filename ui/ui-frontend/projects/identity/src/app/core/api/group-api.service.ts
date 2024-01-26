@@ -65,7 +65,7 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.getOneWithEmbedded(id, embedded, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -73,7 +73,7 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.create(group, headers);
   }
 
-  patch(groupPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
+  patch(groupPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
     return super.patch(groupPartial, headers);
   }
 

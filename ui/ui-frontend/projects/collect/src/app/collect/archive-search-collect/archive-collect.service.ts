@@ -113,9 +113,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
           // Return other errors
           return of({ $hits: null, $results: [] });
         }),
-        map((results) => {
-          return ArchiveCollectService.buildPagedResults(results)
-        })
+        map((results) => ArchiveCollectService.buildPagedResults(results))
       );
     } else {
       return of({ pageNumbers: 1, results: [], totalResults: 0 });
@@ -219,12 +217,8 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     });
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
-      catchError(() => {
-        return of({ $hits: null, $results: [] });
-      }),
-      map((response) => {
-        return this.buildNestedTreeLevels(response.$results as Unit[]);
-      })
+      catchError(() => of({ $hits: null, $results: [] })),
+      map((response) => this.buildNestedTreeLevels(response.$results as Unit[]))
     );
   }
 

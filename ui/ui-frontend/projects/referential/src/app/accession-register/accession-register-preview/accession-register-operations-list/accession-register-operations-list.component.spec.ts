@@ -73,7 +73,7 @@ describe('AccessionRegisterOperationsListComponent', () => {
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.INGEST),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.TRANSFER_REPLY),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.ELIMINATION),
-    ]
+    ];
     fixture.detectChanges();
   });
 

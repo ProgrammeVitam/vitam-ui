@@ -37,9 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {CoreModule} from './../core/core.module';
-import {FileTreeModule} from './../profile/edit-profile/file-tree/file-tree.module';
-import {SharedModule} from './../shared/shared.module';
 
 
 import {MatIconModule} from '@angular/material/icon';
@@ -54,6 +51,9 @@ import {NgxUiLoaderModule} from 'ngx-ui-loader';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {PastisMaterialModule} from '../material.module';
 import {UserActionsModule} from '../user-actions/user-actions.module';
+import {SharedModule} from './../shared/shared.module';
+import {FileTreeModule} from './../profile/edit-profile/file-tree/file-tree.module';
+import {CoreModule} from './../core/core.module';
 import {CreateNoticeChoiceComponent} from './create-notice-choice/create-notice-choice.component';
 import {CreateProfileComponent} from './create-profile/create-profile.component';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';

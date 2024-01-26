@@ -111,7 +111,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
 
       accessRuleEliminationIdentifier: ['', []],
     });
-    // tslint:disable-next-line:no-unused-expression
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     merge(this.accessRuleCriteriaForm.statusChanges, this.accessRuleCriteriaForm.valueChanges)
       .pipe(
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
@@ -123,7 +123,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         this.resetAccessRuleCriteriaForm();
       }).unsubscribe;
 
-    // tslint:disable-next-line:no-unused-expression
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.accessRuleCriteriaForm.get('accessRuleTitle').valueChanges.subscribe((value) => {
       if (
         this.accessRuleCriteriaForm.get('accessRuleTitle').value !== null &&

@@ -72,14 +72,14 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./file-format-list.component.scss']
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() fileFormatClick = new EventEmitter<FileFormat>();
@@ -91,9 +91,9 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
@@ -106,7 +106,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(

@@ -50,7 +50,7 @@ import { InformationTabComponent } from './information-tab.component';
 
 let expectedGroup: Group;
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

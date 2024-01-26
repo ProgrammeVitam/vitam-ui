@@ -44,6 +44,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
@@ -51,7 +52,6 @@ import { CustomerColorsInputModule } from './customer-colors-input/customer-colo
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 
-import { MatDialogModule } from '@angular/material/dialog';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 
 @NgModule({

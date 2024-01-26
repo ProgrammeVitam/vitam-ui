@@ -24,7 +24,7 @@ export class MetadataService {
     return this.metadataApi.searchMetadata(unitId, headers);
   }
 
-  compareVtag(tag1: { Key: string[], Value: any[] }, tag2: { Key: string[], Value: any[] }): number {
+  compareVtag(tag1: { Key: string[]; Value: any[] }, tag2: { Key: string[]; Value: any[] }): number {
     if (isArrayEmpty(tag1.Key) && isArrayEmpty(tag2.Key)) {
       return 0;
     } else if (isArrayEmpty(tag2.Key) && !isArrayEmpty(tag1.Key)) {
@@ -40,7 +40,7 @@ export class MetadataService {
     return 0;
   }
 
-  sortVtag(vtagArray: Array<{ Key: string[], Value: any[] }>): void {
+  sortVtag(vtagArray: Array<{ Key: string[]; Value: any[] }>): void {
     if (vtagArray) {
       vtagArray.sort(this.compareVtag);
     }

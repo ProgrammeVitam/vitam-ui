@@ -98,9 +98,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         ];
         return data.sort(this.sortByLabel(locale));
       }),
-      catchError((error) => {
-        return of(error);
-      })
+      catchError((error) => of(error))
     );
   }
 
@@ -147,11 +145,11 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   getStats(): Observable<FacetDetails[]> {
     return this.optionalValues.asObservable().pipe(
       map((m: any) => {
-        // tslint:disable-next-line:no-string-literal
+        // eslint-disable-next-line @typescript-eslint/dot-notation
         if (m === undefined || m['stats'] === undefined) {
           return [];
         }
-        // tslint:disable-next-line:no-string-literal
+        // eslint-disable-next-line @typescript-eslint/dot-notation
         const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
         return this.fetchFacetDetails(accessionRegisterStats);
       })

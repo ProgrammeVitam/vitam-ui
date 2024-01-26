@@ -57,7 +57,7 @@ export class SecurityProfilePermissionsTabComponent {
 
   ruleFilter = new FormControl();
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _SecurityProfile: SecurityProfile;
 
   // FIXME: Get list from common var ?
@@ -70,12 +70,10 @@ export class SecurityProfilePermissionsTabComponent {
     { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
-  previousValue = (): SecurityProfile => {
-    return this._SecurityProfile;
-  };
+  previousValue = (): SecurityProfile => this._SecurityProfile;
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   set SecurityProfile(SecurityProfile: SecurityProfile) {
     this._SecurityProfile = SecurityProfile;
     this.resetForm(this.SecurityProfile);
@@ -97,7 +95,7 @@ export class SecurityProfilePermissionsTabComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    // tslint:disable-next-line:no-shadowed-variable
+    // eslint-disable-next-line no-shadow
     private SecurityProfileService: SecurityProfileService
   ) {
     this.form = this.formBuilder.group({
@@ -120,10 +118,8 @@ export class SecurityProfilePermissionsTabComponent {
         unchanged = false;
       } else {
         const previousPermissions = this.previousValue().permissions;
-        // tslint:disable-next-line:no-shadowed-variable
-        const diff = this.form.getRawValue().permissions.filter((permission: string) => {
-          return previousPermissions.indexOf(permission) === -1;
-        });
+        // eslint-disable-next-line no-shadow
+        const diff = this.form.getRawValue().permissions.filter((permission: string) => previousPermissions.indexOf(permission) === -1);
         if (diff.length > 0) {
           unchanged = false;
         }
@@ -171,7 +167,7 @@ export class SecurityProfilePermissionsTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
+  // eslint-disable-next-line no-shadow
   resetForm(SecurityProfile: SecurityProfile) {
     this.form.reset(SecurityProfile, { emitEvent: false });
   }

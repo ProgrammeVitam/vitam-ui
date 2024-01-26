@@ -138,7 +138,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
     const delta = diff(data, this._initialAccessContract); // If items in arrays are same but not in same ordre then the diff will detect a change.
     const dataToPatch = { id, identifier, ...delta };
 
-    if (isEmpty(delta)) return of(null);
+    if (isEmpty(delta)) {return of(null);}
 
     return of(dataToPatch).pipe(
       switchMap((formData: { id: string; [key: string]: any }) =>
@@ -186,7 +186,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   private initTogglingLogic = (abstractControl: AbstractControl): void => {
     abstractControl.valueChanges.subscribe((value: boolean) => {
       abstractControl.setValidators(value ? [] : [Validators.required]);
-      if (!value) abstractControl.markAllAsTouched();
+      if (!value) {abstractControl.markAllAsTouched();}
       abstractControl.updateValueAndValidity({ emitEvent: false });
     });
   };

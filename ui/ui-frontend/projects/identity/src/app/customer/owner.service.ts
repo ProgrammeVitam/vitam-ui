@@ -81,7 +81,7 @@ export class OwnerService {
     return this.ownerApi.checkExistsByParam(params);
   }
 
-  patch(partialOwner: { id: string, [key: string]: any }): Observable<Owner> {
+  patch(partialOwner: { id: string; [key: string]: any }): Observable<Owner> {
     return this.ownerApi.patch(partialOwner)
       .pipe(
         tap((updatedOwner: Owner) => this.updated.next(updatedOwner)),

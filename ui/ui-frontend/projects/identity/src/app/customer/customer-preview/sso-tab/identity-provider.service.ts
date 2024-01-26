@@ -74,7 +74,7 @@ export class IdentityProviderService {
       );
   }
 
-  patch(idp: { id: string, [key: string]: any }): Observable<IdentityProvider> {
+  patch(idp: { id: string; [key: string]: any }): Observable<IdentityProvider> {
     return this.providerApi.patch(idp)
       .pipe(
         map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
@@ -172,21 +172,15 @@ export class IdentityProviderService {
 
     return this.providerApi.getAll(httpParams)
       .pipe(
-        map((identityProviders) => {
-          return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
-        }),
-        map((identityProviders) => {
-          return identityProviders.map((identityProvider) => this.addSpMetadataUrl(identityProvider));
-        })
+        map((identityProviders) => identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider))),
+        map((identityProviders) => identityProviders.map((identityProvider) => this.addSpMetadataUrl(identityProvider)))
       );
   }
 
   getDomainByCustomerId(customerId: string): Observable<string[]> {
     return this.getAll(customerId)
       .pipe(
-        map((identityProviders: IdentityProvider[]) => {
-            return identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []);
-        })
+        map((identityProviders: IdentityProvider[]) => identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []))
       );
   }
 

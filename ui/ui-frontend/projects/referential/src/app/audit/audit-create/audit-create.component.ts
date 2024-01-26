@@ -180,7 +180,7 @@ export class AuditCreateComponent implements OnInit {
     }
   }
 
-  private changeQueryOnNodesSelection(value: { included: Array<string>, excluded: Array<string> }): void {
+  private changeQueryOnNodesSelection(value: { included: Array<string>; excluded: Array<string> }): void {
     if (value && value.included && value.included.length > 0) {
       this.form.controls.query.setValue(this.getRootQuery(value.included));
     } else {
@@ -233,7 +233,7 @@ export class AuditCreateComponent implements OnInit {
 
   ngOnDestroy = () => {
     this.subscriptions.unsubscribe();
-  }
+  };
 
   onCancel() {
     if (this.form.dirty) {

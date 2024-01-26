@@ -72,7 +72,7 @@ export class ProfileService extends SearchService<Profile> {
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
     return this.profileApi.patch(data)
       .pipe(
         tap((response) => this.updated.next(response)),
@@ -114,10 +114,11 @@ export class ProfileService extends SearchService<Profile> {
 
   /**
    * Method allowing to convert roles to profiles' properties.
+   *
    * @param roles List of roles.
    * @returns The list of linked roles.
    */
-  convertToAdminUserProfile(roles: Array<{ name: string; }>): AdminUserProfile {
+  convertToAdminUserProfile(roles: Array<{ name: string }>): AdminUserProfile {
 
     const adminUserProfile: AdminUserProfile = {
       multifactorAllowed: false,
@@ -148,7 +149,7 @@ export class ProfileService extends SearchService<Profile> {
     return adminUserProfile;
   }
 
-  private hasRole(roles: Array<{ name: string; }>, role: Role): boolean {
+  private hasRole(roles: Array<{ name: string }>, role: Role): boolean {
     return roles.some((element) => element.name === role);
   }
 }

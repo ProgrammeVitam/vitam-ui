@@ -51,7 +51,7 @@ export class CollectUploadService {
 
   private static uploadFilesInfo(files: any) {
     let size = 0;
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
     }
@@ -129,16 +129,14 @@ export class CollectUploadService {
       .accumulate((metadata) => {
         this.updateInternalZipFile(metadata.currentFile, metadata.percent);
       })
-      .then((content) => {
-        return this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options)).pipe(
+      .then((content) => this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options)).pipe(
           tap((data) => {
             if (data) {
               this.updateUploadedZipFile(data);
             }
           }),
           catchError((error) => of(error))
-        );
-      });
+        ));
   }
   reinitializeZip() {
     for (const file of this.filesToUpload) {
@@ -153,7 +151,7 @@ export class CollectUploadService {
       return;
     }
     this.uploadInfo(CollectUploadService.uploadFilesInfo(files));
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i];
       this.zipFile.file(item.webkitRelativePath, item);
@@ -189,7 +187,7 @@ export class CollectUploadService {
   }
 
   private async buildAsyncZip(files: any) {
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
       if (item) {
@@ -201,7 +199,7 @@ export class CollectUploadService {
   private async dragAndDropUploadFilesInfo(files: any) {
     const name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
     let size = 0;
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
       if (item) {

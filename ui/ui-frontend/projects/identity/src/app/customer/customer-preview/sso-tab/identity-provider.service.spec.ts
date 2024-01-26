@@ -38,11 +38,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { inject, TestBed } from '@angular/core/testing';
 import { ENVIRONMENT, VitamUISnackBarService } from 'ui-frontend-common';
 import { BASE_URL, IdentityProvider, LoggerModule, Operators, SearchQuery, WINDOW_LOCATION } from 'ui-frontend-common';
-import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
+import { environment } from './../../../../environments/environment';
 import { IdentityProviderService } from './identity-provider.service';
 
 describe('IdentityProviderService', () => {

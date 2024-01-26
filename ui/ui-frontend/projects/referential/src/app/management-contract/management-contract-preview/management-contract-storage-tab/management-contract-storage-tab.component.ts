@@ -79,9 +79,7 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
 
   _inputManagementContract: ManagementContract;
 
-  previousValue = (): StorageStrategy => {
-    return this._inputManagementContract?.storage;
-  };
+  previousValue = (): StorageStrategy => this._inputManagementContract?.storage;
 
   constructor(private formBuilder: FormBuilder, private managementContractService: ManagementContractService) {
     this.form = this.formBuilder.group({
@@ -105,9 +103,7 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this._inputManagementContract.id, identifier: this._inputManagementContract.identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => {
-        return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      switchMap((formData: { id: string; [key: string]: any }) => this.managementContractService.patch(formData).pipe(catchError(() => of(null))))
     );
   }
 

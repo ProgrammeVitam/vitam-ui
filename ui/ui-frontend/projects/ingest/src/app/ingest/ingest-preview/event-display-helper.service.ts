@@ -53,7 +53,7 @@ export class EventDisplayHelperService {
       for (const event of ingest) {
         this.eventData = this.getEventData(event);
         if (event.evParentId === null) {
-          rootEvent = new Event(this.eventData, [])
+          rootEvent = new Event(this.eventData, []);
           events.push(rootEvent);
         }
         else {
@@ -72,14 +72,14 @@ export class EventDisplayHelperService {
   }
 
   initEvents(logbook: any): any[] {
-    // tslint:disable-next-line:prefer-const
+    // eslint-disable-next-line prefer-const
     let events = [];
     this.eventData = this.getEventData(logbook);
     let rootEvent = null; // Step event
     let actionEvent = null; // Action event
     let started = false;
     if (logbook.events.length > 0) {
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       for (let evt of logbook.events) {
         if (evt.outcome !== 'OK') {
           this.eventData = this.getEventData(evt);

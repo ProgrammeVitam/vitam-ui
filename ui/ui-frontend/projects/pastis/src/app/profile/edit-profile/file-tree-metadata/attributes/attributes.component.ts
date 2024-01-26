@@ -57,7 +57,7 @@ import {SedaData} from '../../../../models/seda-data';
 import {FileTreeMetadataService} from '../file-tree-metadata.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss']
@@ -120,11 +120,11 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   // Checks if a file node has an atttribute child
   initAttributeCardinality() {
-    // tslint:disable-next-line:forin
+    // eslint-disable-next-line guard-for-in
     for (const index in this.matDataSource.data) {
       const fileNode = this.dialogReceivedData.fileNode;
       const att = this.matDataSource.data[index];
-      const attSedaData = fileNode.sedaData.Children.find((child: { Name: string; }) => child.Name === att.nomDuChamp);
+      const attSedaData = fileNode.sedaData.Children.find((child: { Name: string }) => child.Name === att.nomDuChamp);
       if (attSedaData.Cardinality === CardinalityConstants.Obligatoire) {
         this.matDataSource.data[index].selected = true;
       } else {
@@ -173,7 +173,7 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
       const popUpData = this.popUpService.getPopUpDataOnOpen() as PastisDialogData;
       if (popUpData) {
         const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.
-        find((child: { Name: string; }) => child.Name === attribute.nomDuChamp);
+        find((child: { Name: string }) => child.Name === attribute.nomDuChamp);
         return popSendSedaNodeFilted.Cardinality.startsWith('1');
       }
     }

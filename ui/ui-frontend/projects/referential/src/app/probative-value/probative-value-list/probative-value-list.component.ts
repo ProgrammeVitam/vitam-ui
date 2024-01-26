@@ -54,14 +54,14 @@ export class ProbativeValueFilters {
   styleUrls: ['./probative-value-list.component.scss']
 })
 export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Input('filters')
@@ -70,7 +70,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
     this.filterChange.next(filters);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _filters: ProbativeValueFilters;
 
   loaded = false;

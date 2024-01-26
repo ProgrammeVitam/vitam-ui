@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
@@ -98,10 +98,10 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
   get options(): Option[] {
     return this._options;
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _options: Option[] = [];
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _customSorting: (a: Option, b: Option) => number;
   @Input()
   set customSorting(customSorting: (a: Option, b: Option) => number) {
@@ -120,9 +120,9 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
 
   private focused = false;
   private optionsChanges = new Subject<Option[]>();
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _required = false;
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
 
   private sortedOption(options: Option[]): Option[] {
     if (this._customSorting) {

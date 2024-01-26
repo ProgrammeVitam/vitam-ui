@@ -52,22 +52,16 @@ export class CustomerCreateValidators {
 
     constructor(private customerService: CustomerService) {}
 
-    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime).pipe(
+    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime).pipe(
           switchMap(() => control.value !== codeToIgnore ? this.customerService.exists({ code: control.value }) : of(false)),
           take(1),
           map((exists: boolean) => exists ? { uniqueCode: true } : null)
         );
-      };
-    }
 
-    uniqueDomain = (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime).pipe(
+    uniqueDomain = (control: AbstractControl): Observable<ValidationErrors | null> => timer(this.debounceTime).pipe(
         switchMap(() => this.customerService.exists({ domain: control.value })),
         take(1),
         map((exists: boolean) => exists ? { uniqueDomain: true } : null)
       );
-    }
 
 }

@@ -11,7 +11,7 @@ import { ProfileDescription } from '../../../../models/profile-description.model
 import { ProfileType } from '../../../../models/profile-type.enum';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
@@ -61,7 +61,7 @@ export class ProfileInformationTabComponent {
   }
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  // tslint:disable-next-line:no-output-native
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
 
@@ -82,12 +82,12 @@ export class ProfileInformationTabComponent {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited && this.formHasChanged()
+    return this.form.valid && !this.submited && this.formHasChanged();
   }
 
   formHasChanged() {
     for (const k of Object.keys(this.form.value)) {
-      const key = k as keyof ProfileDescription
+      const key = k as keyof ProfileDescription;
       if (!this.form.value[key] && !this._inputProfile[key]) {
         continue;
       }

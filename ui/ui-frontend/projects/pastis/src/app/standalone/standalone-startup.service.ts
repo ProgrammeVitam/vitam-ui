@@ -70,7 +70,7 @@ export class StandaloneStartupService {
   load(): any {
     this.configurationData = null;
 
-    let appConf: StandaloneConfiguration = {
+    const appConf: StandaloneConfiguration = {
       THEME_COLORS: {
         'vitamui-background': '#F5F7FC',
         'vitamui-header-footer': '#ffffff',
@@ -168,6 +168,7 @@ export class StandaloneStartupService {
 
   /**
    * Navigate to given url or to the portal otherwise.
+   *
    * @param url URL to be redirected to.
    */
   redirect(url?: string) {
@@ -185,7 +186,7 @@ export class StandaloneStartupService {
   public getCustomerTechnicalReferentEmail(): string {
     const customer = this.getCustomer();
 
-    if (!customer) return null;
+    if (!customer) {return null;}
 
     return customer[CUSTOMER_TECHNICAL_REFERENT_KEY];
   }
@@ -193,7 +194,7 @@ export class StandaloneStartupService {
   public getCustomerWebsiteUrl(): string {
     const customer = this.getCustomer();
 
-    if (!customer) return null;
+    if (!customer) {return null;}
 
     return customer[CUSTOMER_WEBSITE_URL_KEY];
   }

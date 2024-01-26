@@ -77,7 +77,7 @@ export class VitamUISnackBar {
    * If there is a parent snack-bar service, all operations should delegate to that parent
    * via `_openedSnackBarRef`.
    */
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _snackBarRefAtThisLevel: MatSnackBarRef<any> | null = null;
 
   /** Reference to the currently opened snackbar at *any* level. */
@@ -96,17 +96,17 @@ export class VitamUISnackBar {
   }
 
   constructor(
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     private _overlay: Overlay,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     private _live: LiveAnnouncer,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     private _injector: Injector,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     private _breakpointObserver: BreakpointObserver,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     @Optional() @SkipSelf() private _parentSnackBar: VitamUISnackBar,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig) { }
 
   /**
@@ -135,6 +135,7 @@ export class VitamUISnackBar {
 
   /**
    * Opens a snackbar with a message and an optional action.
+   *
    * @param message The message to show in the snackbar.
    * @param action The label for the snackbar action.
    * @param config Additional configuration options for the snackbar.
@@ -259,6 +260,7 @@ export class VitamUISnackBar {
 
   /**
    * Creates a new overlay and places it in the correct location.
+   *
    * @param config The user-specified snack bar config.
    */
   private _createOverlay(config: MatSnackBarConfig): OverlayRef {
@@ -300,6 +302,7 @@ export class VitamUISnackBar {
 
   /**
    * Creates an injector to be used inside of a snack bar component.
+   *
    * @param config Config that was used to create the snack bar.
    * @param snackBarRef Reference to the snack bar.
    */

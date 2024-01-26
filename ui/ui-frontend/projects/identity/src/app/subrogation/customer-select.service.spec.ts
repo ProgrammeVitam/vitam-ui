@@ -36,12 +36,12 @@
  */
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { AuthService, BASE_URL, LoggerModule, Operators, SearchQuery } from 'ui-frontend-common';
-import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
+import { environment } from './../../environments/environment';
 import { CustomerSelectService } from './customer-select.service';
 
 describe('CustomerSelectService', () => {

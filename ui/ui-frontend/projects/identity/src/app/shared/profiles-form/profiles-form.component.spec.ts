@@ -140,7 +140,7 @@ const expectedApp = {
   CATEGORY_CONFIGURATION: {},
 };
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

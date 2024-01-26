@@ -85,7 +85,7 @@ function constantToTranslate() {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-file-tree-metadata',
   templateUrl: './file-tree-metadata.component.html',
   styleUrls: ['./file-tree-metadata.component.scss'],
@@ -503,7 +503,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy{
 
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
-      // tslint:disable-next-line:prefer-const
+      // eslint-disable-next-line prefer-const
       let elements: SedaData[];
       elements.push({
         Name: 'ArchiveUnit',
@@ -788,6 +788,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy{
   /**
    * Returns a boolean if a given node has one or more attributes
    * regarding its seda specification
+   *
    * @param nodeName The node's name to be tested
    */
   hasAttributes(nodeName: string): boolean {
@@ -984,7 +985,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy{
 
     if (this.editedEnumControl.includes(element)) {
       indexOfElement = this.editedEnumControl.indexOf(element);
-      // tslint:disable-next-line:no-unused-expression
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.editedEnumControl.splice(indexOfElement, 1)[0];
     }
     if (this.enumsControlSeleted.length === 0) {

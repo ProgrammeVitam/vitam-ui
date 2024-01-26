@@ -47,7 +47,7 @@ describe('SecurityProfileListComponent', () => {
   let fixture: ComponentFixture<SecurityProfileListComponent>;
 
   const securityProfileServiceMock = {
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     delete: (_item: SecurityProfile) => of(null),
     search: () => of(null),
   };

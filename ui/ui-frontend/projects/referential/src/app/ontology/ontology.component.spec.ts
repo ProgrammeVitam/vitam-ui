@@ -46,14 +46,14 @@ import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {OntologyComponent} from './ontology.component';
 
 @Component({selector: 'app-ontology-preview', template: ''})
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({selector: 'app-ontology-list', template: ''})
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {
 }
 

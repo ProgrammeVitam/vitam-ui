@@ -43,9 +43,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Component } from '@angular/core';
 import { environment } from './../../../../../environments/environment';
 
-import { Component } from '@angular/core';
 
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update.component';
 

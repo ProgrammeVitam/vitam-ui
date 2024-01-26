@@ -50,15 +50,13 @@ export class ArchiveUnitValidatorService {
   debounceTime = 400;
 
   alreadyExistParents(codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
+    return (control: AbstractControl) => timer(this.debounceTime).pipe(
         switchMap(() =>
           control.value !== codeToIgnore ? of(this.isAlreadyExistingParentValue(control.value, archiveUnitAllunitup)) : of(false)
         ),
         take(1),
         map((exists: boolean) => (exists ? { alreadyExistParents: true } : null))
       );
-    };
   }
 
   isAlreadyExistingParentValue(parentId: string, archiveUnitAllunitup: string[]): boolean {

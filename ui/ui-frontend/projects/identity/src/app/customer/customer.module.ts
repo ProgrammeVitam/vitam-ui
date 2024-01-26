@@ -39,11 +39,11 @@ import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { CustomerRoutingModule } from './customer-routing.module';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
 import { SharedModule } from '../shared/shared.module';
+import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerCreateModule } from './customer-create';
 import { CustomerListModule } from './customer-list';
 import { CustomerPreviewModule } from './customer-preview';

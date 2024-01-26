@@ -66,7 +66,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if(this.group) {
       this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
         this.group = groupRetrieved;
-        this.groupService.updated.next(groupRetrieved)
+        this.groupService.updated.next(groupRetrieved);
       });
     }
 
@@ -82,7 +82,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
       if(this.group) {
         this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
           this.group = groupRetrieved;
-          this.groupService.updated.next(groupRetrieved)
+          this.groupService.updated.next(groupRetrieved);
         });
       }
     }

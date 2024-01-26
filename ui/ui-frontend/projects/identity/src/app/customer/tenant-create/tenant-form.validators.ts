@@ -48,15 +48,11 @@ export class TenantFormValidators {
 
     constructor(private tenantService: TenantService) {}
 
-    uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime)
+    uniqueName = (nameToIgnore?: string): AsyncValidatorFn => (control: AbstractControl) => timer(this.debounceTime)
           .pipe(
             switchMap(() => control.value !== nameToIgnore ? this.tenantService.exists(control.value) : of(false)),
             take(1),
             map((exists: boolean) => exists ? { uniqueName: true } : null)
           );
-      };
-    }
 
 }
