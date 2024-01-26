@@ -131,8 +131,10 @@
       "PWD_REVOCATION_SIX": "6 months",
       "PWD_REVOCATION_NINE": "9 months",
       "PWD_REVOCATION_TWELVE": "12 months",
-      "OTP_DESACTIVATE": "OTP deactivate",
-      "OTP_OPTIONNAL": "OTP optionnal",
+      "IDP_YES": "Yes",
+      "IDP_NO": "No",
+      "OTP_DISABLED": "OTP deactivate",
+      "OTP_OPTIONAL": "OTP optional",
       "OTP_MANDATORY": "OTP mandatory",
       "MODAL": {
         "DOMAINS_RESTRICTION": "Email domain restriction",
@@ -144,8 +146,8 @@
         "PWD_REVOCATION_SIX": "6 months",
         "PWD_REVOCATION_NINE": "9 months",
         "PWD_REVOCATION_TWELVE": "12 months",
-        "OTP_DESACTIVATE": "OTP deactivate",
-        "OTP_OPTIONNAL": "OTP optionnal",
+        "OTP_DISABLED": "OTP deactivate",
+        "OTP_OPTIONAL": "OTP optional",
         "OTP_MANDATORY": "OTP mandatory"
       }
     },
