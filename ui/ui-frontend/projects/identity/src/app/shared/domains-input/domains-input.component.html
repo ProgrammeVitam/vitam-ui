@@ -1,28 +1,35 @@
 <div class="domain-input-control d-flex align-items-center">
   <div class="domain-input-wrapper d-flex align-items-center">
-      <h4 class="mr-3 light">@</h4>
-      <input class="vitamui-input" [style.width.px]="280" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
-      <mat-spinner *ngIf="control.pending" class="ml-2" [diameter]="spinnerDiameter"></mat-spinner>
+    <h4 class="mr-3 light">&#64;</h4>
+    <input
+      class="vitamui-input"
+      [style.width.px]="280"
+      type="text"
+      size="10"
+      [formControl]="control"
+      [attr.placeholder]="placeholder"
+      (blur)="onTouched()"
+      (keydown.enter)="add()"
+    />
+    <mat-spinner *ngIf="control.pending" class="ml-2" [diameter]="spinnerDiameter"></mat-spinner>
   </div>
 
   <div>
-      <button type="button" class="btn primary ml-2" (click)="add()" [disabled]="buttonAddDisabled()">{{'COMMON.ADD' | translate}}</button>
+    <button type="button" class="btn primary ml-2" (click)="add()" [disabled]="buttonAddDisabled()">{{ 'COMMON.ADD' | translate }}</button>
   </div>
 </div>
 
 <div class="vitamui-input-errors">
-  <div *ngIf="control?.hasError('pattern')">{{'SHARED.DOMAIN_INPUT.WRONG_FORMAT' | translate}}</div>
-  <div *ngIf="domainExists">{{'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_EXIST' | translate}}</div>
-  <div *ngIf="!domainExists && control?.hasError('uniqueDomain')">{{'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_USED' | translate}}</div>
+  <div *ngIf="control?.hasError('pattern')">{{ 'SHARED.DOMAIN_INPUT.WRONG_FORMAT' | translate }}</div>
+  <div *ngIf="domainExists">{{ 'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_EXIST' | translate }}</div>
+  <div *ngIf="!domainExists && control?.hasError('uniqueDomain')">{{ 'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_USED' | translate }}</div>
 </div>
 
 <div class="vitamui-chip-list ml-4">
-  <div *ngFor="let domain of domains" class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain===selected">
-    <div class="vitamui-chip-content">{{domain}}</div>
+  <div *ngFor="let domain of domains" class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain === selected">
+    <div class="vitamui-chip-content">{{ domain }}</div>
     <div class="vitamui-remove-chip" (click)="remove(domain)">
       <i class="material-icons">clear</i>
     </div>
   </div>
 </div>
-
-
