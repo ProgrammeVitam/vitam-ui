@@ -25,8 +25,10 @@
  * accept its terms.
  */
 
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ApiUnitObject, Unit } from 'ui-frontend-common';
 import { GetorixDepositApiService } from './core/api/getorix-deposit-api.service';
 import { GetorixDeposit } from './core/model/getorix-deposit.interface';
 import { GetorixUnitFullPath } from './core/model/getorix-unit-full-path.interface';
@@ -53,7 +55,20 @@ export class GetorixDepositService {
     return this.getorixDepositApiService.getUnitFullPath(unitId);
   }
 
+  getCollectUnitDetails(unitId: string): Observable<Unit> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+
+    return this.getorixDepositApiService.getCollectUnitById(unitId, headers);
+  }
+
   getLastThreeOperations(): Observable<GetorixDeposit[]> {
     return this.getorixDepositApiService.getLastThreeOperations();
+  }
+
+  // Get the technical group object of a unit
+
+  getObjectGroupDetailsById(objectId: string): Observable<ApiUnitObject> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.getorixDepositApiService.getObjectGroupDetailsById(objectId, headers);
   }
 }

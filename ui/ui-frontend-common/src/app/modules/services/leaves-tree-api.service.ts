@@ -95,7 +95,7 @@ export class LeavesTreeApiService {
       map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, false);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -123,7 +123,7 @@ export class LeavesTreeApiService {
       map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -151,7 +151,7 @@ export class LeavesTreeApiService {
       map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, false);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -179,7 +179,7 @@ export class LeavesTreeApiService {
       map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      })
+      }),
     );
   }
 
@@ -207,7 +207,7 @@ export class LeavesTreeApiService {
       map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      })
+      }),
     );
   }
 

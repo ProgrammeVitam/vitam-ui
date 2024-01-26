@@ -30,4 +30,6 @@ export enum VitamuiIcons {
   FILING_UNIT = 'vitamui-icon-plan-classement',
   INGEST_WITHOUT_OBJECT = 'vitamui-icon-folder',
   INGEST_WITH_OBJECT = 'vitamui-icon-file',
+  GETORIX_INGEST_WITH_OBJECT = 'vitamui-icon-electronic-file1',
+  GETORIX_INGEST_WITHOUT_OBJECT = 'vitamui-icon-electronic-folder1',
 }

@@ -1,7 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav
     class="custom-sidenav"
-    #panel
     mode="side"
     [fixedInViewport]="true"
     [opened]="show && searchHasResults"
@@ -12,6 +11,14 @@
       (searchUnitsOfNode)="searchUnitsOfNode($event)"
       *ngIf="getorixDepositDetailsFound"
     ></getorix-tree-plan-schema>
+  </mat-sidenav>
+
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <getorix-archive-unit-preview
+      *ngIf="openedItem"
+      [archiveUnitId]="openedItem"
+      (previewClose)="closePanel()"
+    ></getorix-archive-unit-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -149,8 +156,9 @@
                 matTooltipClass="getorix-tooltip"
                 [matTooltipShowDelay]="300"
                 matTooltipPosition="above"
+                (click)="showDetails()"
                 class="material-icons icon-action"
-                *ngIf="numberOfSelectedElements > 0"
+                *ngIf="numberOfSelectedElements === 1"
                 >info
               </i>
               <i
@@ -258,7 +266,9 @@
                   #matUnitActionMenuTrigger
                 ></div>
                 <mat-menu #unitActionMenu="matMenu" class="unit-action-menu">
-                  <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.SHOW_DETAILS' | translate }}</button>
+                  <button mat-menu-item (click)="showUnitDetails()">
+                    {{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.SHOW_DETAILS' | translate }}
+                  </button>
                   <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.COMMENT' | translate }}</button>
                   <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.RENAME' | translate }}</button>
                   <button mat-menu-item>{{ 'GETORIX_DEPOSIT.UPLOAD_ARCHIVES.UNIT_ACTION.MOVE' | translate }}</button>

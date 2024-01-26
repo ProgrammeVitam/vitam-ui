@@ -134,7 +134,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
           FilingHoldingSchemeHandler.addOrphansNodeFromTree(
             this.nestedDataSourceLeaves.data,
             this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
-            this.searchRequestTotalResults
+            this.searchRequestTotalResults,
           );
         }
       }),

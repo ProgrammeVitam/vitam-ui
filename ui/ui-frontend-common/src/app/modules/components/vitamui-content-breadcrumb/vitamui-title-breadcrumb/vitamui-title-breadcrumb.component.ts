@@ -59,7 +59,7 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   ngOnInit() {}

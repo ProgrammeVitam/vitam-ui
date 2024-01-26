@@ -37,6 +37,7 @@ import {
   BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
+  FilingHoldingSchemeNode,
   InjectorModule,
   LoggerModule,
   ManagementRule,
@@ -48,6 +49,7 @@ import {
 import { ArchiveCollectService } from '../../collect/archive-search-collect/archive-collect.service';
 import { ArchiveSearchHelperService } from '../../collect/archive-search-collect/archive-search-criteria/services/archive-search-helper.service';
 import { ArchaeologistGetorixAddress, DepositStatus, GetorixDeposit } from '../core/model/getorix-deposit.interface';
+import { GetorixUnitFullPath } from '../core/model/getorix-unit-full-path.interface';
 import { GetorixDepositService } from '../getorix-deposit.service';
 import { GetorixDepositUploadObjectComponent } from './getorix-deposit-upload-object.component';
 
@@ -177,8 +179,23 @@ describe('GetorixDepositUploadObjectComponent', () => {
     ],
   };
 
+  const unitFullPath1: GetorixUnitFullPath = {
+    id: 'id1',
+
+    title: 'title1',
+    unitType: 'unitType1',
+  };
+  const unitFullPath2: GetorixUnitFullPath = {
+    id: 'id2',
+
+    title: 'title2',
+    unitType: 'unitType2',
+  };
+  let unitFullPath = [unitFullPath1, unitFullPath2];
+
   const getorixDepositMockService = {
     getGetorixDepositById: () => of(getorixDeposit),
+    getUnitFullPath: () => of(unitFullPath),
   };
 
   const archiveCollectMockService = {
@@ -385,5 +402,43 @@ describe('GetorixDepositUploadObjectComponent', () => {
     expect(component.isIndeterminate).toBeTruthy();
     expect(component.numberOfSelectedElements).toEqual(4);
     expect(component.itemNotSelected).toEqual(1);
+  });
+
+  it('component should show the archive unit details', () => {
+    const unit: Unit = {
+      '#allunitups': [],
+      '#id': 'id',
+      '#object': '',
+      '#unitType': null,
+      '#unitups': [],
+      '#opi': '',
+      Title: 'title',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+    component.unitClicked = unit;
+    component.showUnitDetails();
+    expect(component).toBeTruthy();
+  });
+
+  it('component should show the selected archive unit details when one element is selected', () => {
+    component.selectedItemsList.push('unitId');
+    component.showDetails();
+    expect(component).toBeTruthy();
+  });
+
+  it('component should find the parent node', () => {
+    const selectedUnitFolder = { id: 'nodeId' } as FilingHoldingSchemeNode;
+
+    component.findParents(selectedUnitFolder);
+    expect(component.isLoadUnitPath).toBeFalsy();
+    expect(component.nodeParentsFullPath.length).toEqual(2);
+    expect(component.nodeParents.length).toEqual(0);
+  });
+
+  it('component submit the search action', () => {
+    component.searchSubmit();
+    expect(component).toBeTruthy();
+    expect(component.submited).toBeTruthy();
   });
 });
