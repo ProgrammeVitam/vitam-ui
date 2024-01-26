@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -91,7 +92,8 @@ public class IngestContractInternalService {
     private LogbookService logbookService;
 
     @Autowired
-    public IngestContractInternalService(IngestContractService ingestContractService, ObjectMapper objectMapper, IngestContractConverter converter, LogbookService logbookService) {
+    public IngestContractInternalService(IngestContractService ingestContractService, ObjectMapper objectMapper,
+        IngestContractConverter converter, LogbookService logbookService) {
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -101,7 +103,8 @@ public class IngestContractInternalService {
     public IngestContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
             LOGGER.info("Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContractById(vitamContext, identifier);
+            RequestResponse<IngestContractModel> requestResponse =
+                ingestContractService.findIngestContractById(vitamContext, identifier);
             final IngestContractResponseDto ingestContractResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
             if (ingestContractResponseDto.getResults().isEmpty()) {
@@ -177,7 +180,9 @@ public class IngestContractInternalService {
         try {
             LOGGER.debug("Ingest Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             Integer ingestContractCheckedTenant =
-                ingestContractService.checkAbilityToCreateIngestContractInVitam(converter.convertDtosToVitams(Arrays.asList(ingestContractDto)), vitamContext.getApplicationSessionId());
+                ingestContractService.checkAbilityToCreateIngestContractInVitam(
+                    converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
+                    vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(ingestContractCheckedTenant);
         } catch (ConflictException e) {
             return true;
@@ -187,7 +192,8 @@ public class IngestContractInternalService {
     public IngestContractDto create(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
             LOGGER.debug("Create Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
+            RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext,
+                converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
             final IngestContractModel ingestContractVitamDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
             return converter.convertVitamToDto(ingestContractVitamDto);
@@ -235,7 +241,8 @@ public class IngestContractInternalService {
             propertiesToUpdate.put("MasterMandatory", (boolean) partialDto.get("masterMandatory"));
         }
         if (partialDto.get("formatUnidentifiedAuthorized") != null) {
-            propertiesToUpdate.put("FormatUnidentifiedAuthorized", (boolean) partialDto.get("formatUnidentifiedAuthorized"));
+            propertiesToUpdate.put("FormatUnidentifiedAuthorized",
+                (boolean) partialDto.get("formatUnidentifiedAuthorized"));
         }
         if (partialDto.get("everyFormatType") != null) {
             propertiesToUpdate.put("EveryFormatType", (boolean) partialDto.get("everyFormatType"));
@@ -273,7 +280,8 @@ public class IngestContractInternalService {
             propertiesToUpdate.set("DataObjectVersion", array);
         }
         if (partialDto.get("computeInheritedRulesAtIngest") != null) {
-            propertiesToUpdate.put("ComputeInheritedRulesAtIngest", (boolean) partialDto.get("computeInheritedRulesAtIngest"));
+            propertiesToUpdate.put("ComputeInheritedRulesAtIngest",
+                (boolean) partialDto.get("computeInheritedRulesAtIngest"));
         }
         if (partialDto.get("signaturePolicy") != null) {
             Map<String, Object> map = (Map<String, Object>) partialDto.get("signaturePolicy");
@@ -298,11 +306,26 @@ public class IngestContractInternalService {
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
-            ObjectNode action = JsonHandler.createObjectNode();
-            action.set("$set", fieldsUpdated);
+
 
             ArrayNode actions = JsonHandler.createArrayNode();
-            actions.add(action);
+            if (partialDto.get("managementContractId") == null) {
+                ObjectNode unsetAction = JsonNodeFactory.instance.objectNode();
+                ArrayNode unsetArray = JsonNodeFactory.instance.arrayNode();
+                unsetArray.add("ManagementContractId");
+                unsetAction.set("$unset", unsetArray);
+                actions.add(unsetAction);
+            }
+
+
+
+            if (!fieldsUpdated.isEmpty()) {
+                ObjectNode action = JsonHandler.createObjectNode();
+                action.set("$set", fieldsUpdated);
+                actions.add(action);
+            }
+
+
 
             ObjectNode query = JsonHandler.createObjectNode();
             query.set("$action", actions);

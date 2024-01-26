@@ -46,7 +46,8 @@
       "LAST": "Last",
       "NONE": "None",
       "YES": "Yes",
-      "NO": "No"
+      "NO": "No",
+      "SELECT_MANAGEMENT_CONTRACT": "Select a management contract"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Contract identifier",
