@@ -26,6 +26,49 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
+## IDE configuration
+
+### VSCode
+
+#### Recommended Extensions for VSCode
+
+- "ms-vscode.vscode-typescript-tslint-plugin" : for more information: // TsLinst, https://marketplace.visualstudio.com/items?itemName=ms-vscode.
+- "esbenp.prettier-vscode" : for more information: // Code formater Prettier, https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+- "sibiraj-s.vscode-scss-formatter" : for more information: // SCSS Formatter, https://marketplace.visualstudio.com/items?itemName=sibiraj-s.vscode-scss-formatter
+- "msjsdiag.debugger-for-chrome": for more information: // Debbuger for Chrome, https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+- "firefox-devtools.vscode-firefox-debug" : for more information: // Debbuger for Firefox, https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+
+#### VSCode settings
+
+Bellow, an example to manage code format for Visual studio code using `settings.json` file:
+
+```json5
+{
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.tslint": true,
+      "source.organizeImports": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+  },
+}
+```
+
+### IntelliJ
+
+- Enable "Automatic Prettier configuration", set `**/*.{js,ts,html,json,md,scss}` in "Run for files" and check the "Run on save" checkbox
+
 # Common lib specific info
 
 ## Usage
