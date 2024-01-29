@@ -129,7 +129,6 @@
     "ng-packagr": "^10.1.0",
     "ngx-i18nsupport": "^0.17.1",
     "ngx-quicklink": "^0.2.1",
-    "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "prettier": "3.2.4",
     "protractor": "~7.0.0",
