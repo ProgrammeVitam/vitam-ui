@@ -38,6 +38,7 @@ import { of } from 'rxjs';
 import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FilingHoldingSchemeComponent', () => {
   let component: FilingHoldingSchemeComponent;
@@ -108,6 +109,7 @@ describe('FilingHoldingSchemeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         MatMenuModule,
         MatTreeModule,
         MatProgressSpinnerModule,

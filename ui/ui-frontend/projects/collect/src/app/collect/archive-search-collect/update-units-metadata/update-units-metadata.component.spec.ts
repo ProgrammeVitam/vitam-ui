@@ -29,12 +29,13 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'ui-frontend-common';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {
@@ -56,7 +57,7 @@ const selectedTransaction: Transaction = {
   archiveProfile: 'archivalProfile',
   comment: 'comment',
   legalStatus: 'A legal status',
-  acquisitionInformation: 'Protocol'
+  acquisitionInformation: 'Protocol',
 };
 
 describe('UpdateUaMetadataComponent', () => {
@@ -69,6 +70,7 @@ describe('UpdateUaMetadataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({

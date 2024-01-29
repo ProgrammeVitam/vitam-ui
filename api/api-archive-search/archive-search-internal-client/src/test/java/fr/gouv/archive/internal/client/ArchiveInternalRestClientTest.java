@@ -140,7 +140,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
         Assertions.assertEquals(persistentIdentifierResponse, result);
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(ArrayList.class));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
     }
 
 }

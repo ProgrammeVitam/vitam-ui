@@ -26,6 +26,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'ui-frontend-common';
@@ -38,7 +39,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -64,9 +65,7 @@ describe('LeavesTreeComponent', () => {
 
   let archiveServiceStub: Partial<ArchiveCollectService>;
   let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
-  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', [
-    'getSearchCriterias',
-  ]);
+  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', ['getSearchCriterias']);
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
     size: 1,
@@ -83,7 +82,7 @@ describe('LeavesTreeComponent', () => {
     archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
       declarations: [LeavesTreeComponent],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
