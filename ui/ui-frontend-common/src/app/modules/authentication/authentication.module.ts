@@ -61,8 +61,9 @@ export class AuthenticationModule {
   private static loading: Promise<any> = null;
 
   private static loadModule() {
-    // tslint:disable-next-line: whitespace semicolon
-    return () => this.loading;
+    // Do NOT inline the variable.
+    const result = () => this.loading;
+    return result;
   }
 
   constructor(
