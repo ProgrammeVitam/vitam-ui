@@ -32,7 +32,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitam.common.model.administration.SchemaModel;
+import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -62,8 +62,8 @@ public class SchemaService {
 
     public Optional<SchemaDto> getSchema(final Collection collection) {
         try {
-            final RequestResponse<SchemaModel> payload = getSchemaModels(collection).orElseThrow();
-            final List<SchemaModel> schemaModels = ((RequestResponseOK<SchemaModel>) payload).getResults();
+            final RequestResponse<SchemaResponse> payload = getSchemaModels(collection).orElseThrow();
+            final List<SchemaResponse> schemaModels = ((RequestResponseOK<SchemaResponse>) payload).getResults();
             final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
             final SchemaDto schemaDto = new SchemaDto();
             schemaDto.addAll(schemaModels.stream()
@@ -83,7 +83,8 @@ public class SchemaService {
             .collect(Collectors.toList());
     }
 
-    private Optional<RequestResponse<SchemaModel>> getSchemaModels(Collection collection) throws VitamClientException {
+    private Optional<RequestResponse<SchemaResponse>> getSchemaModels(Collection collection)
+        throws VitamClientException {
         final VitamContext vitamContext = internalSecurityService.getVitamContext();
         if (Objects.equals(collection, Collection.ARCHIVE_UNIT)) {
             return Optional.of(adminExternalClient.getUnitSchema(vitamContext));

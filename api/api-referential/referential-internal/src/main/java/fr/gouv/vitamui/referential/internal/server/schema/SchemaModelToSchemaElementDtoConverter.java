@@ -28,21 +28,19 @@
 package fr.gouv.vitamui.referential.internal.server.schema;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
-import fr.gouv.vitam.common.model.administration.OntologyStringTypeSize;
-import fr.gouv.vitam.common.model.administration.SchemaModel;
+import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
+import fr.gouv.vitam.common.model.administration.schema.SchemaStringSizeType;
 import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaModel, SchemaElementDto> {
+public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaResponse, SchemaElementDto> {
     @Override
-    public SchemaElementDto convert(SchemaModel schemaModel) {
-        final OntologyStringTypeSize stringTypeSize = schemaModel.getStringSize();
+    public SchemaElementDto convert(SchemaResponse schemaModel) {
+        final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
         final String stringSize = stringTypeSize != null ? stringTypeSize.value().toLowerCase(Locale.ROOT) : null;
 
         return (SchemaElementDto) new SchemaElementDto()
@@ -56,18 +54,16 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaM
             .setApiField(schemaModel.getApiField())
             .setType(schemaModel.getType())
             .setOrigin(schemaModel.getOrigin())
-            .setCollections(mapCollections(schemaModel))
+            .setCollection(mapCollections(schemaModel))
             .setSedaVersions(schemaModel.getSedaVersions())
             .setCategory(schemaModel.getCategory())
             .setApiPath(schemaModel.getApiPath());
     }
 
-    private List<Collection> mapCollections(final SchemaModel schemaModel) {
-        return schemaModel.getCollections().stream().map(collection -> {
-            if (Objects.equals(collection, "Unit")) {
-                return Collection.ARCHIVE_UNIT;
-            }
-            return Collection.of(collection);
-        }).collect(Collectors.toList());
+    private Collection mapCollections(final SchemaResponse schemaResponse) {
+        if (Objects.equals(schemaResponse.getCollection(), "Unit")) {
+            return Collection.ARCHIVE_UNIT;
+        }
+        return Collection.valueOf(schemaResponse.getCollection());
     }
 }
