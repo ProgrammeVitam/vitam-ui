@@ -36,6 +36,7 @@ import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule } from 'ui-frontend-common';
 
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {
@@ -54,6 +55,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({

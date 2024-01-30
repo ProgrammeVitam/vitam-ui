@@ -44,13 +44,19 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import {
-  CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, SearchCriteriaEltements, SearchCriteriaHistory
+  CriteriaDataType,
+  CriteriaOperator,
+  InjectorModule,
+  LoggerModule,
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
 } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -88,6 +94,7 @@ describe('SearchCriteriaListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         MatSnackBarModule,
         InjectorModule,
         LoggerModule.forRoot(),
