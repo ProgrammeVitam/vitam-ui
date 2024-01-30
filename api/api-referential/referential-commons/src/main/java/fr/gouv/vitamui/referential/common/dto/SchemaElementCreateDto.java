@@ -28,9 +28,9 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitam.common.model.administration.OntologyOrigin;
-import fr.gouv.vitam.common.model.administration.SchemaCategory;
-import fr.gouv.vitam.common.model.administration.SchemaType;
+import fr.gouv.vitam.common.model.administration.schema.SchemaCategory;
+import fr.gouv.vitam.common.model.administration.schema.SchemaOrigin;
+import fr.gouv.vitam.common.model.administration.schema.SchemaType;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import lombok.Data;
@@ -54,8 +54,8 @@ public class SchemaElementCreateDto {
     @JsonProperty("SedaField") private String sedaField;
     @JsonProperty("ApiField") private String apiField;
     @JsonProperty("Type") private SchemaType type;
-    @JsonProperty("Origin") private OntologyOrigin origin;
-    @JsonProperty("Collections") private List<Collection> collections;
+    @JsonProperty("Origin") private SchemaOrigin origin;
+    @JsonProperty("Collection") private Collection collection;
     @JsonProperty("SedaVersions") private List<String> sedaVersions;
     @JsonProperty("RootPaths") private List<String> rootPaths;
     @JsonProperty("Category") private SchemaCategory category;
