@@ -1,4 +1,4 @@
 export enum ContentTypeEnum {
-    ALERT = 'ALERT',
-    APPLICATION = 'APPLICATION'
-  }
+  ALERT = 'ALERT',
+  APPLICATION = 'APPLICATION',
+}

@@ -35,21 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import {
-  Overlay,
-  OverlayPositionBuilder,
-  OverlayRef,
-} from '@angular/cdk/overlay';
+import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import {
-  ComponentRef,
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
 import { TooltipPosition } from './TooltipPosition.enum';
 
@@ -77,9 +65,8 @@ const VITAMUI_TOOL_TIP_POSITIONS = {
     originY: 'center',
     overlayX: 'start',
     overlayY: 'center',
-  }
+  },
 };
-
 
 @Directive({
   selector: '[vitamuiCommonToolTip]',
@@ -94,10 +81,11 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   showTimeoutId: ReturnType<typeof setTimeout>;
   hideTimeoutId: ReturnType<typeof setTimeout>;
 
-
- /** Disables the display of the tooltip. */
+  /** Disables the display of the tooltip. */
   @Input('vitamuiCommonToolTipDisabled')
-  get disabled(): boolean { return this._disabled; }
+  get disabled(): boolean {
+    return this._disabled;
+  }
   set disabled(value) {
     this._disabled = coerceBooleanProperty(value);
 
@@ -114,15 +102,13 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   constructor(
     private overlay: Overlay,
     private overlayPositionBuilder: OverlayPositionBuilder,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
     if (TooltipPosition[this.position]) {
       const position = VITAMUI_TOOL_TIP_POSITIONS[this.position];
-      const positionStrategy = this.overlayPositionBuilder
-          .flexibleConnectedTo(this.elementRef)
-          .withPositions([position]);
+      const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
       this.overlayRef = this.overlay.create({ positionStrategy });
     }
   }
@@ -136,14 +122,12 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     clearTimeout(this.hideTimeoutId);
 
     this.showTimeoutId = setTimeout(() => {
-      if (this.disabled || !this.text){
+      if (this.disabled || !this.text) {
         return;
       }
       const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
       if (this.overlayRef) {
-        const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
-          tooltipPortal
-        );
+        const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(tooltipPortal);
         tooltipRef.instance.text = this.text;
         tooltipRef.instance.position = this.position;
         tooltipRef.instance.outline = this.outline;
@@ -161,5 +145,4 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
       this.overlayRef?.detach();
     }, this.vitamuiCommonToolTipShowDelay);
   }
-
 }

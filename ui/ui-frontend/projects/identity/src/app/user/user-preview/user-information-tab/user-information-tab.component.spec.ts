@@ -62,7 +62,7 @@ let expectedUser: User = {
   mobile: '',
   userInfoId: '',
   phone: '',
-  level : '',
+  level: '',
   groupId: 'profile_group_id',
   customerId: '42',
   otp: false,
@@ -71,25 +71,25 @@ let expectedUser: User = {
   subrogeable: false,
   nbFailedAttempts: 0,
   lastConnection: '2018-07-04T16:00:00.126+02:00',
-  readonly : false,
+  readonly: false,
   address: {
-      street: '13 rue faubourg',
-      zipCode: '75009',
-      city: 'paris',
-      country: 'france'
+    street: '13 rue faubourg',
+    zipCode: '75009',
+    city: 'paris',
+    country: 'france',
   },
   siteCode: '001',
-  disablingDate : null,
+  disablingDate: null,
   centerCode: '000001',
-  autoProvisioningEnabled: false
+  autoProvisioningEnabled: false,
 };
 let userInfolanguage: UserInfo = {
-   id : '1',
-   language: 'fr'
- };
+  id: '1',
+  language: 'fr',
+};
 let expectedCustomer: Customer = {
   id: 'idCustomer',
-  identifier : '1',
+  identifier: '1',
   enabled: true,
   readonly: false,
   hasCustomGraphicIdentity: false,
@@ -103,33 +103,33 @@ let expectedCustomer: Customer = {
     street: '85 rue des bois',
     zipCode: '75013',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
   language: 'FRENCH',
-  emailDomains: [
-    'domain.com',
-  ],
+  emailDomains: ['domain.com'],
   defaultEmailDomain: 'domain.com',
-  owners: [{
-    id: 'znvuzhvyvg',
-    identifier : '41',
-    code: '254791',
-    name: 'owner name',
-    companyName: 'company name',
-    address: {
-      street: '85 rue des bois',
-      zipCode: '75013',
-      city: 'Paris',
-      country: 'France'
+  owners: [
+    {
+      id: 'znvuzhvyvg',
+      identifier: '41',
+      code: '254791',
+      name: 'owner name',
+      companyName: 'company name',
+      address: {
+        street: '85 rue des bois',
+        zipCode: '75013',
+        city: 'Paris',
+        country: 'France',
+      },
+      customerId: 'idCustomer',
+      readonly: false,
     },
-    customerId: 'idCustomer',
-    readonly : false
-  }],
+  ],
   themeColors: {},
-  gdprAlert : false,
-  gdprAlertDelay : 72,
+  gdprAlert: false,
+  gdprAlertDelay: 72,
   portalMessages: {},
-  portalTitles: {}
+  portalTitles: {},
 };
 
 let expectedAdminUserProfile: AdminUserProfile = {
@@ -140,11 +140,13 @@ let expectedAdminUserProfile: AdminUserProfile = {
   standardAttrsAllowed: true,
   type: 'type',
   profilGroupIds: ['profile_group_id'],
-  profilGroup: [{
-    id: 'profile_group_id',
-    name: 'profile_group_name',
-    description: 'Une description du profil group'
-  }]
+  profilGroup: [
+    {
+      id: 'profile_group_id',
+      name: 'profile_group_name',
+      description: 'Une description du profil group',
+    },
+  ],
 };
 
 // tslint:disable-next-line:directive-selector
@@ -156,15 +158,20 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-    // tslint:disable-next-line: max-line-length
-    template: `<app-user-info-tab [user]="user" [customer]="customer" [readOnly]="readOnly" [adminUserProfile]="adminUserProfile"></app-user-info-tab>`
+  // tslint:disable-next-line: max-line-length
+  template: `<app-user-info-tab
+    [user]="user"
+    [customer]="customer"
+    [readOnly]="readOnly"
+    [adminUserProfile]="adminUserProfile"
+  ></app-user-info-tab>`,
 })
 class TestHostComponent {
-    user = expectedUser;
-    customer = expectedCustomer;
-    readOnly = false;
-    adminUserProfile = expectedAdminUserProfile;
-    userInfo = userInfolanguage;
+  user = expectedUser;
+  customer = expectedCustomer;
+  readOnly = false;
+  adminUserProfile = expectedAdminUserProfile;
+  userInfo = userInfolanguage;
 
   @ViewChild(UserInfoTabComponent, { static: false }) component: UserInfoTabComponent;
 }
@@ -183,7 +190,7 @@ describe('UserInfoTabComponent', () => {
       mobile: '',
       userInfoId: '',
       phone: '',
-      level : '',
+      level: '',
       groupId: 'profile_group_id',
       customerId: '42',
       otp: false,
@@ -192,21 +199,21 @@ describe('UserInfoTabComponent', () => {
       subrogeable: false,
       nbFailedAttempts: 0,
       lastConnection: '2018-07-04T16:00:00.126+02:00',
-      readonly : false,
+      readonly: false,
       address: {
-          street: '13 rue faubourg',
-          zipCode: '75009',
-          city: 'paris',
-          country: 'france'
+        street: '13 rue faubourg',
+        zipCode: '75009',
+        city: 'paris',
+        country: 'france',
       },
       siteCode: '001',
-      disablingDate : null,
+      disablingDate: null,
       centerCode: '000001',
-      autoProvisioningEnabled: false
+      autoProvisioningEnabled: false,
     };
     expectedCustomer = {
       id: 'idCustomer',
-      identifier : '41',
+      identifier: '41',
       enabled: true,
       readonly: false,
       hasCustomGraphicIdentity: false,
@@ -220,33 +227,33 @@ describe('UserInfoTabComponent', () => {
         street: '85 rue des bois',
         zipCode: '75013',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
       language: 'FRENCH',
-      emailDomains: [
-        'domain.com',
-      ],
+      emailDomains: ['domain.com'],
       defaultEmailDomain: 'domain.com',
-      owners: [{
-        id: 'znvuzhvyvg',
-        identifier : '41',
-        code: '254791',
-        name: 'owner name',
-        companyName: 'company name',
-        address: {
-          street: '85 rue des bois',
-          zipCode: '75013',
-          city: 'Paris',
-          country: 'France'
+      owners: [
+        {
+          id: 'znvuzhvyvg',
+          identifier: '41',
+          code: '254791',
+          name: 'owner name',
+          companyName: 'company name',
+          address: {
+            street: '85 rue des bois',
+            zipCode: '75013',
+            city: 'Paris',
+            country: 'France',
+          },
+          customerId: 'idCustomer',
+          readonly: false,
         },
-        customerId: 'idCustomer',
-        readonly : false
-      }],
+      ],
       themeColors: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72,
+      gdprAlert: false,
+      gdprAlertDelay: 72,
       portalMessages: {},
-      portalTitles: {}
+      portalTitles: {},
     };
     expectedAdminUserProfile = {
       multifactorAllowed: true,
@@ -256,23 +263,22 @@ describe('UserInfoTabComponent', () => {
       standardAttrsAllowed: true,
       type: 'type',
       profilGroupIds: ['profile_group_id'],
-      profilGroup: [{
-        id: 'profile_group_id',
-        name: 'profile_group_name',
-        description: 'Une description du profil group'
-      }]
+      profilGroup: [
+        {
+          id: 'profile_group_id',
+          name: 'profile_group_name',
+          description: 'Une description du profil group',
+        },
+      ],
     };
     userInfolanguage = {
-      id : '1',
-      language: 'fr'
+      id: '1',
+      language: 'fr',
     };
     const userServiceSpy = jasmine.createSpyObj('UserService', { patch: of({}) });
     const userInfoServiceSpy = jasmine.createSpyObj('UserInfoService', { patch: of({}) });
 
-    const userCreateValidatorsSpy = jasmine.createSpyObj(
-      'userCreateValidators',
-      { uniqueEmail: () => of(null) }
-    );
+    const userCreateValidatorsSpy = jasmine.createSpyObj('userCreateValidators', { uniqueEmail: () => of(null) });
 
     TestBed.configureTestingModule({
       imports: [
@@ -281,9 +287,9 @@ describe('UserInfoTabComponent', () => {
         MatButtonToggleModule,
         VitamUICommonTestModule,
         LoggerModule.forRoot(),
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
-      declarations: [ UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective ],
+      declarations: [UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -292,9 +298,8 @@ describe('UserInfoTabComponent', () => {
         { provide: UserCreateValidators, useValue: userCreateValidatorsSpy },
         { provide: AuthService, useValue: { user: {} } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -325,7 +330,6 @@ describe('UserInfoTabComponent', () => {
     expect(testhost.component.form.get('code')).toBeDefined();
   });
 
-
   it('should have the email validator', () => {
     const emailControl = testhost.component.form.get('email');
     emailControl.setValue('name');
@@ -335,7 +339,6 @@ describe('UserInfoTabComponent', () => {
     emailControl.setValue('name@domaine.test');
     expect(emailControl.valid).toBeTruthy();
   });
-
 
   it('should disable then enable the form', () => {
     testhost.readOnly = true;

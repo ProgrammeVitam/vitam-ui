@@ -39,7 +39,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-
 export interface CountryOption {
   code: string;
   name?: string;
@@ -90,10 +89,7 @@ export class CountryService {
   constructor(private translateService: TranslateService) {}
 
   public getTranslatedCountryNameByCode(countryCode: CountryCode): string {
-
-    const name = this.availableCountries.find(
-      (value: CountryOption) => value.code === countryCode
-    )?.name;
+    const name = this.availableCountries.find((value: CountryOption) => value.code === countryCode)?.name;
 
     if (name) {
       return this.translateService.instant(COUNTRY_TRANSLATION_PATH + '.' + name);

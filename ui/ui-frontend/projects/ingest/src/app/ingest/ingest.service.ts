@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {SearchService} from 'ui-frontend-common';
-import {IngestApiService} from '../core/api/ingest-api.service';
-import {LogbookOperation} from '../models/logbook-event.interface';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { SearchService } from 'ui-frontend-common';
+import { IngestApiService } from '../core/api/ingest-api.service';
+import { LogbookOperation } from '../models/logbook-event.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IngestService extends SearchService<any> {
   constructor(
     private ingestApiService: IngestApiService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, ingestApiService, 'ALL');
   }
@@ -73,7 +72,7 @@ export class IngestService extends SearchService<any> {
   }
 
   downloadODTReport(id: string) {
-    return this.ingestApiService.downloadODTReport(id).subscribe(file => {
+    return this.ingestApiService.downloadODTReport(id).subscribe((file) => {
       const element = document.createElement('a');
       element.href = window.URL.createObjectURL(file);
       element.download = 'Bordereau-' + id + '.odt';

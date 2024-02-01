@@ -41,12 +41,11 @@ import { VitamUICustomerSelectComponent } from 'ui-frontend-common';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationResolver } from './subrogation-resolver.service';
 
-
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'customer',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'customer',
@@ -56,18 +55,12 @@ const routes: Route[] = [
   {
     path: 'customer/:customerId',
     component: SubrogateUserComponent,
-  }
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class SubrogationRoutingModule { }
+export class SubrogationRoutingModule {}

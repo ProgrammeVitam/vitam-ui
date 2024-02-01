@@ -7,7 +7,10 @@
   align-items: start;
   width: 100%;
 
-  div, mat-tree, mat-tree-node, mat-nested-tree-node {
+  div,
+  mat-tree,
+  mat-tree-node,
+  mat-nested-tree-node {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -18,7 +21,8 @@
   .tree-text {
     flex: 1;
     min-width: 0; /* or some value */
-    p, a {
+    p,
+    a {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -34,7 +38,6 @@
   mat-nested-tree-node .childs {
     padding-left: 27px;
   }
-
 
   .vitamui-sidepanel-resize-sidebar {
     border-top: 4px solid rgb(112, 35, 130);
@@ -55,7 +58,8 @@
     flex: 1;
     flex-direction: column;
 
-    mat-tree-node, mat-nested-tree-node {
+    mat-tree-node,
+    mat-nested-tree-node {
       flex-direction: column;
     }
   }
@@ -130,9 +134,9 @@
 
 .badge-primary {
   // Primary/Primary-500
-  color: #9C31B5;
+  color: #9c31b5;
   // Primary/Primary-100
-  background-color: #E6C3EF;
+  background-color: #e6c3ef;
 }
 
 .badge-secondary {

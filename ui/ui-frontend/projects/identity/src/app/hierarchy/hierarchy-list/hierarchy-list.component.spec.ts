@@ -45,37 +45,36 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyListComponent } from './hierarchy-list.component';
 
-
 const expectedApp = [
   {
     id: 'CUSTOMERS_APP',
     identifier: 'CUSTOMERS_APP',
     name: 'Organisations',
-    url: ''
+    url: '',
   },
   {
     id: 'ARCHIVE_APP',
     identifier: 'ARCHIVE_APP',
     name: 'Archives',
-    url: ''
+    url: '',
   },
   {
     id: 'USERS_APP',
     identifier: 'USERS_APP',
     name: 'Utilisateurs',
-    url: ''
+    url: '',
   },
   {
     id: 'GROUPS_APP',
     identifier: 'GROUPS_APP',
     name: 'Groupes de profils',
-    url: ''
+    url: '',
   },
   {
     id: 'PROFILES_APP',
     identifier: 'PROFILES_APP',
     name: 'Profils APP Utilisateurs',
-    url: ''
+    url: '',
   },
 ];
 
@@ -88,24 +87,20 @@ describe('HierarchyListComponent', () => {
       search: () => of([]),
       canLoadMore: true,
       loadMore: () => of([]),
-      updated: new Subject()
+      updated: new Subject(),
     };
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [ HierarchyListComponent ],
+      imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
+      declarations: [HierarchyListComponent],
       providers: [
         { provide: HierarchyService, useValue: hierarchyListServiceSpy },
         { provide: Router, useValue: routerSpy },
-        { provide: ActivatedRoute, useValue: {paramMap : EMPTY}},
+        { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {Collection} from '../../schema';
-import {SchemaElement} from '../models';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Collection } from '../../schema';
+import { SchemaElement } from '../models';
 
 @Injectable()
 export class MockSchemaService {

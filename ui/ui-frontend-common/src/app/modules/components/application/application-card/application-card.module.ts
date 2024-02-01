@@ -41,12 +41,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ApplicationCardComponent } from './application-card.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatCardModule,
-    TranslateModule,
-  ],
+  imports: [CommonModule, MatCardModule, TranslateModule],
   declarations: [ApplicationCardComponent],
-  exports: [ApplicationCardComponent]
+  exports: [ApplicationCardComponent],
 })
-export class ApplicationCardModule { }
+export class ApplicationCardModule {}

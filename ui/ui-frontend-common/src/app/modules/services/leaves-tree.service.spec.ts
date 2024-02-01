@@ -34,7 +34,9 @@ import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 
 describe('LeavesTreeService', () => {
   let leavesTreeService: LeavesTreeService;
-  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', ['searchArchiveUnitsByCriteria']);
+  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', [
+    'searchArchiveUnitsByCriteria',
+  ]);
   const leavesTreeApiServiceSpy = jasmine.createSpyObj<LeavesTreeApiService>('LeavesTreeApiService', [
     'firstToggle',
     'prepareSearch',
@@ -47,7 +49,7 @@ describe('LeavesTreeService', () => {
     'searchAttachementUnit',
     'sendSearchArchiveUnitsByCriteria',
     'searchAtNodeWithSearchCriterias',
-    'setTransactionId'
+    'setTransactionId',
   ]);
 
   beforeEach(() => {
@@ -119,7 +121,8 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')]);
       leavesTreeApiServiceSpy.searchUnderNode.and.returnValue(of(pagedResult));
 
@@ -135,7 +138,6 @@ describe('LeavesTreeService', () => {
       expect(parentNode.children[1].count).toEqual(7);
     });
   });
-
 
   describe('searchUnderNodeWithSearchCriterias', () => {
     it('should not add children if parentId does not match', () => {
@@ -203,7 +205,8 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const parentNode = newNode('node-0', [newTreeNode('node-0-1', 0), newNode('node-0-2')]);
       const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')]);
       leavesTreeApiServiceSpy.searchUnderNodeWithSearchCriterias.and.returnValue(of(pagedResult));
@@ -224,7 +227,8 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')]);
       leavesTreeApiServiceSpy.searchUnderNodeWithSearchCriterias.and.returnValue(of(pagedResult));
 
@@ -302,7 +306,8 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const parentNode = newNode('node-0', [newTreeNode('node-0-1', 0), newNode('node-0-2')]);
       const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')]);
       leavesTreeApiServiceSpy.searchAtNodeWithSearchCriterias.and.returnValue(of(pagedResult));
@@ -339,7 +344,8 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')]);
       leavesTreeApiServiceSpy.searchAtNodeWithSearchCriterias.and.returnValue(of(pagedResult));
 
@@ -358,14 +364,12 @@ describe('LeavesTreeService', () => {
       leavesTreeService.setSearchRequestResultFacets([
         newResultFacet('node-0', 5),
         newResultFacet('node-0-1', 5),
-        newResultFacet('node-0-2', 7)]);
+        newResultFacet('node-0-2', 7),
+      ]);
       const parentNode = newNode('node-0', [newTreeNode('node-0-1', 0), newNode('node-0-2')]);
-      const pagedResult = newPagedResult(
-          [newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')],
-          73, 12,
-          [newResultFacetList(FacetsUtils.COUNT_BY_NODE, [newResultBucket('node-0-2-1', 28)])]
-        )
-      ;
+      const pagedResult = newPagedResult([newUnit('node-0-1', 'node-0'), newUnit('node-0-2', 'node-0')], 73, 12, [
+        newResultFacetList(FacetsUtils.COUNT_BY_NODE, [newResultBucket('node-0-2-1', 28)]),
+      ]);
       leavesTreeApiServiceSpy.searchAtNodeWithSearchCriterias.and.returnValue(of(pagedResult));
 
       const result = leavesTreeService.searchAtNodeWithSearchCriterias(parentNode);
@@ -382,5 +386,4 @@ describe('LeavesTreeService', () => {
       expect(leavesTreeService.searchRequestResultFacets).toContain(newResultFacet('node-0-2-1', 28));
     });
   });
-
 });

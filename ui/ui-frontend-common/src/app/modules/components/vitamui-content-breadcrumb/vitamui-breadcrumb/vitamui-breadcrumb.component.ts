@@ -46,27 +46,26 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 @Component({
   selector: 'vitamui-common-breadcrumb',
   templateUrl: './vitamui-breadcrumb.component.html',
-  styleUrls: ['./vitamui-breadcrumb.component.scss']
+  styleUrls: ['./vitamui-breadcrumb.component.scss'],
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
-
   @Input()
   public data: BreadCrumbData[];
 
   @Output()
   public selected = new EventEmitter<BreadCrumbData>();
 
-  constructor(private route: ActivatedRoute, private applicationService: ApplicationService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private applicationService: ApplicationService,
+  ) {}
 
   ngOnInit() {
     if (!this.data) {
       const appId = this.route.snapshot.data.appId;
       if (appId) {
         this.applicationService.getAppById(appId).subscribe((app: Application) => {
-          this.data = [
-            { identifier: ApplicationId.PORTAL_APP },
-            { label: app.name, identifier: appId }
-          ];
+          this.data = [{ identifier: ApplicationId.PORTAL_APP }, { label: app.name, identifier: appId }];
         });
       } else {
         console.error('NO appId');

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { TranslateModule } from '@ngx-translate/core';
 import { LevelInputModule } from './level-input.module';
 

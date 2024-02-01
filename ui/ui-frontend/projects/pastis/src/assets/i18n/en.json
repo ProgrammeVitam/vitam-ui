@@ -29,7 +29,7 @@
   },
   "PASTIS_POPUP_OPTION": {
     "OPEN_PROFIL": "Open a profile from my workstation",
-    "CREATE_NOTICE":  "Create a profile notice",
+    "CREATE_NOTICE": "Create a profile notice",
     "SEDAVIEW": "View the structure of SEDA 2.1"
   },
   "SHARED": {
@@ -82,7 +82,7 @@
         "TITLE_ENREGISTREMENT": "Where do you want to save it?",
         "FIRST_CHOICE_GESTION_NOTICE": "Creation of a new record",
         "SECOND_CHOICE_GESTION_NOTICE": "Attachment to an existing record",
-        "TITLE_GESTION_NOTICE":"Managing the profile record",
+        "TITLE_GESTION_NOTICE": "Managing the profile record",
         "ENREGISTREMENT_OK_LABEL_NEXT": "NEXT",
         "ENREGISTREMENT_OK_LABEL_TERMINATE": "TERMINATE"
       }
@@ -92,7 +92,7 @@
       "ENREGISTRER_ACTIF_INACTIF": "Would you like to save it in active or inactive state?",
       "INTITULE": "Title",
       "IDENTIFIER": "Identifier",
-      "DESCRIPTION" : "Description",
+      "DESCRIPTION": "Description",
       "CHOICE": {
         "PROFIL_ACTIF": "Active Profile",
         "PROFIL_INACTIF": "Inactive Profile"
@@ -104,9 +104,9 @@
       "NEXT_LABEL": "next"
     },
     "POP_UP_CREATION": {
-      "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
-      "POPUP_CREATION_TITLE_DIALOG":  "Choice of profile type",
-      "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a profile",
+      "POPUP_CREATION_CANCEL_LABEL": "CANCEL",
+      "POPUP_CREATION_TITLE_DIALOG": "Choice of profile type",
+      "POPUP_CREATION_SUBTITLE_DIALOG": "Creating a profile",
       "POPUP_CREATION_OK_LABEL": "CONFIRM",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
@@ -120,9 +120,9 @@
       }
     },
     "POP_UP_CREATION_NOTICE_CHOICE": {
-      "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
-      "POPUP_CREATION_TITLE_DIALOG":  "Choice of record type",
-      "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a record",
+      "POPUP_CREATION_CANCEL_LABEL": "CANCEL",
+      "POPUP_CREATION_TITLE_DIALOG": "Choice of record type",
+      "POPUP_CREATION_SUBTITLE_DIALOG": "Creating a record",
       "POPUP_CREATION_OK_LABEL": "CONFIRM"
     },
     "EDIT_PROFILE": {
@@ -241,7 +241,7 @@
     "CREATE_PROFILE": {
       "INFORMATION": {
         "TITRE_PA": "AP : Archival profile\n",
-        "TITRE_PUA":"\nAUP: Archival Unit Profile\n",
+        "TITRE_PUA": "\nAUP: Archival Unit Profile\n",
         "CONTENT_PA": "The archiving profile imposes a structure on the entire remittance slip. It makes it possible to check the compliance of the slip when entering the SAE.",
         "CONTENT_PUA": "The archival unit profile is specific to one archival unit only."
       }

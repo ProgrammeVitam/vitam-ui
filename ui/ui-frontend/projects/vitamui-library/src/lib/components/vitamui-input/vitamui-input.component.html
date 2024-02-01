@@ -1,13 +1,22 @@
 <div class="vitamui-input" [class.disabled]="disabled">
-    <label>
-        {{placeholder}}
-        <span *ngIf="required" class="required-marker">*</span>
-    </label>
+  <label>
+    {{ placeholder }}
+    <span *ngIf="required" class="required-marker">*</span>
+  </label>
 
-    <input [type]="type" [required]="required" [disabled]="disabled" [autofocus]="autofocus"
-        [attr.maxlength]="maxlength" (blur)="onBlur()" (focus)="onFocus()" [(ngModel)]="value"
-        (ngModelChange)="onChangeValue($event)" #input>
+  <input
+    [type]="type"
+    [required]="required"
+    [disabled]="disabled"
+    [autofocus]="autofocus"
+    [attr.maxlength]="maxlength"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    [(ngModel)]="value"
+    (ngModelChange)="onChangeValue($event)"
+    #input
+  />
 </div>
 <div class="vitamui-input-errors" *ngIf="!disabled">
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 </div>

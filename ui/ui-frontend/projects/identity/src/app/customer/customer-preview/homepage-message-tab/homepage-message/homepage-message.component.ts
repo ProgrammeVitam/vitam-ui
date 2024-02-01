@@ -38,7 +38,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
     public dialogRef: MatDialogRef<HomepageMessageComponent>,
     private formBuilder: FormBuilder,
     private startupService: StartupService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
   ) {}
 
   ngOnInit() {

@@ -24,17 +24,17 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage} from 'ui-frontend-common';
-import {AccessionRegistersService} from './accession-register.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage } from 'ui-frontend-common';
+import { AccessionRegistersService } from './accession-register.service';
 
 @Component({
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
-  styleUrls: ['./accession-register.component.scss']
+  styleUrls: ['./accession-register.component.scss'],
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
   search: string;
@@ -45,7 +45,7 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
   constructor(
     private accessionRegistersService: AccessionRegistersService,
     route: ActivatedRoute,
-    private externalParameterService: ExternalParametersService
+    private externalParameterService: ExternalParametersService,
   ) {
     super(route, accessionRegistersService);
   }
@@ -87,5 +87,4 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
   accessionRegisterClick(item: AccessionRegisterDetail) {
     this.openPanel(item);
   }
-
 }

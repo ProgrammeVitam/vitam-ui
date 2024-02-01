@@ -43,13 +43,16 @@ import { StartupService } from '../../../startup.service';
 @Component({
   selector: 'vitamui-common-application-card',
   templateUrl: './application-card.component.html',
-  styleUrls: ['./application-card.component.scss']
+  styleUrls: ['./application-card.component.scss'],
 })
 export class ApplicationCardComponent {
-
   @Input() application: Application;
 
-  constructor(private applicationService: ApplicationService, private startupService: StartupService, private router: Router) { }
+  constructor(
+    private applicationService: ApplicationService,
+    private startupService: StartupService,
+    private router: Router,
+  ) {}
 
   public openApplication(application: Application): void {
     this.applicationService.openApplication(application, this.router, this.startupService.getConfigStringValue('UI_URL'));

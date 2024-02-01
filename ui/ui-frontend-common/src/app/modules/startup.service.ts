@@ -70,7 +70,7 @@ export class StartupService {
     private themeService: ThemeService,
     private applicationService: ApplicationService,
     private userInfoApiService: BaseUserInfoApiService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
   load(): Observable<AuthUser> {
@@ -85,7 +85,7 @@ export class StartupService {
           .getMyUserInfo()
           .pipe(
             tap((userInfo: UserInfo) => (this.authService.userInfo = userInfo)),
-            take(1)
+            take(1),
           )
           .subscribe();
       }),
@@ -109,7 +109,7 @@ export class StartupService {
               this.configurationData.LOGO = portal;
               this.configurationData.USER_LOGO = user;
             }),
-            take(1)
+            take(1),
           );
         } else {
           logosObservable = this.applicationApi
@@ -122,7 +122,7 @@ export class StartupService {
                 this.configurationData.USER_LOGO = data[AttachmentType.User];
                 this.configurationData.LOGO = data[AttachmentType.Portal];
               }),
-              take(1)
+              take(1),
             );
         }
         return logosObservable;
@@ -131,7 +131,7 @@ export class StartupService {
         const graphicIdentity = this.authService.user.basicCustomer.graphicIdentity;
         const customerColorMap = graphicIdentity.hasCustomGraphicIdentity ? graphicIdentity.themeColors : null;
         this.themeService.init(this.configurationData, customerColorMap);
-      })
+      }),
     );
   }
 
@@ -164,7 +164,7 @@ export class StartupService {
       tap((data) => {
         this.authService.user = data;
         this.userRefresh.next(data);
-      })
+      }),
     );
   }
 

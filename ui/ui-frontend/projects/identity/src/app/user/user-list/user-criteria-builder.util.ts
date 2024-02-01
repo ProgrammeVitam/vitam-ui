@@ -39,7 +39,7 @@ import { buildCriteriaFromFilters, Criterion, Operators, SearchQuery } from 'ui-
 const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }> = {
   status: (statusList: string[]): SearchQuery[] => {
     const statusFilters = statusList.filter((status) => status !== 'GENERIC');
-    const andCriterionList: Criterion [] = [];
+    const andCriterionList: Criterion[] = [];
 
     if (statusFilters.length > 0) {
       andCriterionList.push({ key: 'status', value: statusFilters, operator: Operators.in });
@@ -47,9 +47,7 @@ const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<
 
     const genericFilter = statusList.find((status) => status === 'GENERIC');
     if (genericFilter) {
-      andCriterionList.push(
-          { key: 'type', value: 'GENERIC', operator: Operators.equals }
-      );
+      andCriterionList.push({ key: 'type', value: 'GENERIC', operator: Operators.equals });
     }
 
     return [{ queryOperator: 'AND', criteria: andCriterionList }];
@@ -71,7 +69,7 @@ const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<
     }
 
     return [{ key: 'groupId', value: groupList, operator: Operators.in }];
-  }
+  },
 };
 
 export function buildCriteriaFromUserFilters(filterMap: { [key: string]: any[] }) {

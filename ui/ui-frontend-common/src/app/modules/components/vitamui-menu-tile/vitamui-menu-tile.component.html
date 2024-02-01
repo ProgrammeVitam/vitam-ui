@@ -6,16 +6,20 @@
 </a>
 
 <ng-template #button>
-  <div class="app-box clickable archive-tile category-app" [class.modal-app-box]="isModalMenu"
+  <div
+    class="app-box clickable archive-tile category-app"
+    [class.modal-app-box]="isModalMenu"
     [class.archive-tile]="application?.identifier === 'ARCHIVE_APP'"
-    [class.settings-app]="application?.identifier=== 'settings'"
-    [class.admin-app]="application?.identifier === 'administrators'" [class.user-app]="application?.identifier === 'users'"
+    [class.settings-app]="application?.identifier === 'settings'"
+    [class.admin-app]="application?.identifier === 'administrators'"
+    [class.user-app]="application?.identifier === 'users'"
     [class.ingest-app]="application?.identifier === 'ingests'"
-    [class.highlight]="application?.hasHighlight" [vitamuiCommonTooltip]="application?.tooltip"
-    [vitamuiCommonTooltipShowDelay]="800" id="{{ application.identifier }}">
-
-    <i [ngClass]="application?.icon"></i>{{ application?.name }} <i
-      *ngIf="application?.hasCustomerList || application?.hasTenantList"
-      class="material-icons chevron-icon">chevron_right</i>
+    [class.highlight]="application?.hasHighlight"
+    [vitamuiCommonTooltip]="application?.tooltip"
+    [vitamuiCommonTooltipShowDelay]="800"
+    id="{{ application.identifier }}"
+  >
+    <i [ngClass]="application?.icon"></i>{{ application?.name }}
+    <i *ngIf="application?.hasCustomerList || application?.hasTenantList" class="material-icons chevron-icon">chevron_right</i>
   </div>
 </ng-template>

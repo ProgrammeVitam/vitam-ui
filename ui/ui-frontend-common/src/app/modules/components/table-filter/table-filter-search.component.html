@@ -5,6 +5,13 @@
   (search)="searchOptions($event)"
   (filterClose)="filterClose.emit()"
 >
-  <vitamui-common-table-filter-option *ngIf="emptyValueOption" [value]="null" [class.hidden]="hideEmptyValueOption">{{ emptyValueOption }}</vitamui-common-table-filter-option>
-  <vitamui-common-table-filter-option *ngFor="let option of _options; let index = index" [value]="option.value" [class.hidden]="!optionDisplayMap[index]">{{ option.label }}</vitamui-common-table-filter-option>
+  <vitamui-common-table-filter-option *ngIf="emptyValueOption" [value]="null" [class.hidden]="hideEmptyValueOption">{{
+    emptyValueOption
+  }}</vitamui-common-table-filter-option>
+  <vitamui-common-table-filter-option
+    *ngFor="let option of _options; let index = index"
+    [value]="option.value"
+    [class.hidden]="!optionDisplayMap[index]"
+    >{{ option.label }}</vitamui-common-table-filter-option
+  >
 </vitamui-common-table-filter>

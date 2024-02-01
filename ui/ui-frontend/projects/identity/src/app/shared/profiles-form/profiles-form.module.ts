@@ -45,16 +45,9 @@ import { ProfileService, VitamUICommonModule } from 'ui-frontend-common';
 import { ProfilesFormComponent } from './profiles-form.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatTooltipModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, MatTooltipModule, VitamUICommonModule],
   declarations: [ProfilesFormComponent],
   exports: [ProfilesFormComponent],
-  providers: [ProfileService]
+  providers: [ProfileService],
 })
-export class ProfilesFormModule { }
+export class ProfilesFormModule {}

@@ -49,24 +49,20 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })
-class RouterOutletStubComponent { }
+class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       configurationLoaded: () => true,
-      printConfiguration: () => { },
+      printConfiguration: () => {},
       getPlatformName: () => '',
-      load: () => { },
+      load: () => {},
       getPortalUrl: () => '',
     };
 
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        RouterOutletStubComponent,
-      ],
+      declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
@@ -78,9 +74,9 @@ describe('AppComponent', () => {
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => { } } },
+        { provide: Router, useValue: { navigate: () => {} } },
         { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -98,5 +94,4 @@ describe('AppComponent', () => {
     console.log('Title App: ', title);
     expect(title).toEqual('Starter-kit App');
   });
-
 });

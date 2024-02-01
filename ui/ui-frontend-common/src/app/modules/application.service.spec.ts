@@ -46,7 +46,6 @@ import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
 
-
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
   let appService: ApplicationService;
@@ -61,7 +60,7 @@ describe('ApplicationService', () => {
       customerId: 'fakeCustomerId',
     };
     const configServiceStub = {
-      config: {GATEWAY_ENABLED: false}
+      config: { GATEWAY_ENABLED: false },
     };
 
     TestBed.configureTestingModule({

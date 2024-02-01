@@ -48,8 +48,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { AuthenticationModule, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule,
-  VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  AuthenticationModule,
+  BASE_URL,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  VitamUICommonModule,
+  VitamuiMissingTranslationHandler,
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -70,16 +78,14 @@ import { StarterKitModule } from './starter-kit/starter-kit.module';
 registerLocaleData(localeFr, 'fr');
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient,  [
-    {prefix: './assets/shared-i18n/', suffix: '.json'},
-    {prefix: './assets/i18n/', suffix: '.json'}
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/shared-i18n/', suffix: '.json' },
+    { prefix: './assets/i18n/', suffix: '.json' },
   ]);
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     AuthenticationModule.forRoot(),
     BrowserModule,
@@ -113,8 +119,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
   ],
   providers: [
@@ -122,8 +128,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: BASE_URL, useValue: '/identity-api' },
-    { provide: WINDOW_LOCATION, useValue: window.location }
+    { provide: WINDOW_LOCATION, useValue: window.location },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

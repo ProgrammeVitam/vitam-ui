@@ -80,12 +80,11 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
         useState: identityProvider.useState,
         useNonce: identityProvider.useNonce,
         usePkce: identityProvider.usePkce,
-      })
+      }),
     );
 
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });
   }
-
 
   patch(partialIDP: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
     return super.patch(partialIDP, headers);
@@ -113,7 +112,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     identityProviderId: string,
     keystore: File,
     keystorePassword: string,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
   ): Observable<IdentityProvider> {
     const formData = new FormData();
 
@@ -127,8 +126,8 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     return this.http.get<IdentityProvider[]>(this.apiUrl, { params, headers });
   }
 
-  getFileByUrl(url: string): Observable<HttpResponse<Blob>>{
-    return this.http.get(url, {observe: 'response' ,responseType: 'blob'});
+  getFileByUrl(url: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(url, { observe: 'response', responseType: 'blob' });
   }
 
   buildMetadataUrl(identityProviderId: string): string {

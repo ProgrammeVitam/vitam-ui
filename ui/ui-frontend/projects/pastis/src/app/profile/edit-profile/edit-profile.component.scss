@@ -1,22 +1,22 @@
-@import "../../../assets/css/colors";
+@import '../../../assets/css/colors';
 
-.pastis-edit-profile-header{
+.pastis-edit-profile-header {
   position: fixed;
   width: 480px;
   top: 70px;
   height: 180px;
   display: block;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-bottom: solid var(--vitamui-grey-200);
 }
-.mat-table{
-  background-color: map-get($colors , 'ligthly-purple');
+.mat-table {
+  background-color: map-get($colors, 'ligthly-purple');
   position: fixed;
   top: 220px;
   height: 100%;
   width: 480px;
 }
-.pastis-edit-profile-header-name{
+.pastis-edit-profile-header-name {
   position: relative;
   left: 40px;
   top: 43px;
@@ -26,120 +26,117 @@
   font-size: 24px;
   line-height: 24px;
   right: 186px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-.pastis-edit-profile-header-id{
-    position: relative;
-    left: 40px;
-    top: 25px;
-    font-family: Mulish;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 20px;
-    color: #FFFFFF;
+.pastis-edit-profile-header-id {
+  position: relative;
+  left: 40px;
+  top: 25px;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  color: #ffffff;
 }
 
 // The tabs containers
-::ng-deep .mat-tab-header{
-    left: 40px ;
-    right: 40px;
-    bottom: 37px ;
-    height: 37px;
-    max-width: fit-content;
-    border:none;
+::ng-deep .mat-tab-header {
+  left: 40px;
+  right: 40px;
+  bottom: 37px;
+  height: 37px;
+  max-width: fit-content;
+  border: none;
 }
 
 // The tab
-::ng-deep.mat-tab-label{
-    @extend .pastis-font-label-historique !optional;
-    margin-right: 3px !important;
-    background: rgba(255, 255, 255, 0.3);
-    height: 37px !important;
-    padding: 0 !important;
-    min-width: fit-content !important;
-    opacity: unset !important;
+::ng-deep.mat-tab-label {
+  @extend .pastis-font-label-historique !optional;
+  margin-right: 3px !important;
+  background: rgba(255, 255, 255, 0.3);
+  height: 37px !important;
+  padding: 0 !important;
+  min-width: fit-content !important;
+  opacity: unset !important;
 }
 
 //The tab hover
 ::ng-deep.mat-tab-label:hover {
-    background: #FFFFFF!important;
+  background: #ffffff !important;
 }
 
 // Tab hover and tab text hover
-::ng-deep.mat-tab-label:hover .mat-tab-label-content{
-    text-shadow: 0.5px 0  #5E5D5D;
-    background: rgba(255, 255, 255, 0.3) !important;
-    color: #5E5D5D !important;
+::ng-deep.mat-tab-label:hover .mat-tab-label-content {
+  text-shadow: 0.5px 0 #5e5d5d;
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #5e5d5d !important;
 }
 
-
 // The active tab (Black and bold)
-::ng-deep .mat-tab-label-active{
-    text-shadow: 0.5px 0  #5E5D5D;
-    background: #FFFFFF !important;
-    border-bottom: solid var(--vitamui-primary) 3px;
+::ng-deep .mat-tab-label-active {
+  text-shadow: 0.5px 0 #5e5d5d;
+  background: #ffffff !important;
+  border-bottom: solid var(--vitamui-primary) 3px;
 }
 
 // The tab content
-::ng-deep .mat-tab-label-content{
-    margin: 8px;
-    display: flex;
-    align-items: center;
-    color: var(--vitamui-grey-400);
+::ng-deep .mat-tab-label-content {
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  color: var(--vitamui-grey-400);
 }
-
 
 // The content of the active tab
-::ng-deep .mat-tab-label-active .mat-tab-label-content{
-    color: var(--vitamui-primary) !important;
-    padding-top: 3px !important;
+::ng-deep .mat-tab-label-active .mat-tab-label-content {
+  color: var(--vitamui-primary) !important;
+  padding-top: 3px !important;
 }
-
 
 // The automatic tab pagination chevron
 ::ng-deep .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
-    display: none !important;
+  display: none !important;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar .pastis-ink-bar{
-    height: 0;
-
-  }
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar .pastis-ink-bar {
+  height: 0;
+}
 
 .mat-tab-group {
-  @media screen and (min-height: 950px){
+  @media screen and (min-height: 950px) {
     max-height: 850px;
   }
-  @media screen and (min-height: 700px) and (max-height: 950px){
+  @media screen and (min-height: 700px) and (max-height: 950px) {
     max-height: 500px !important;
   }
-  @media screen and (min-height: 550px) and (max-height: 700px){
+  @media screen and (min-height: 550px) and (max-height: 700px) {
     max-height: 450px;
   }
-  @media screen and (max-height: 550px){
+  @media screen and (max-height: 550px) {
     max-height: 350px;
   }
 }
 
 .mat-tab-body .mat-tab-body-active {
-    overflow-x: auto !important;
-    overflow-y: auto !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
 }
 
 .mat-tab-body-content {
-    overflow-x: auto !important;
-    overflow-y: auto !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
 }
 
-.pastis-ico-close-sidenav{
-    position: absolute;
-    left: 90%;
-    top: 31px;
-    color: #757575;
-    cursor: pointer;
-    font-size: 24px;
+.pastis-ico-close-sidenav {
+  position: absolute;
+  left: 90%;
+  top: 31px;
+  color: #757575;
+  cursor: pointer;
+  font-size: 24px;
 }
 
 .vitamui-icon-close {
@@ -149,4 +146,3 @@
   color: var(--vitamui-grey-900);
   font-size: 20px;
 }
-

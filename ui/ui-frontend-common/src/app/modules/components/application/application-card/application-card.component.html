@@ -4,8 +4,10 @@
       <ng-content></ng-content>
     </div>
     <mat-card-header>
-      <mat-card-title>{{'APPLICATION.' + application.identifier + '.NAME' | translate:{ default: application.name } }}</mat-card-title>
-      <mat-card-subtitle>{{'APPLICATION.' + application.identifier + '.TOOLTIP' | translate:{ default: application.tooltip } }}</mat-card-subtitle>
+      <mat-card-title>{{ 'APPLICATION.' + application.identifier + '.NAME' | translate: { default: application.name } }}</mat-card-title>
+      <mat-card-subtitle>{{
+        'APPLICATION.' + application.identifier + '.TOOLTIP' | translate: { default: application.tooltip }
+      }}</mat-card-subtitle>
     </mat-card-header>
   </a>
 </mat-card>

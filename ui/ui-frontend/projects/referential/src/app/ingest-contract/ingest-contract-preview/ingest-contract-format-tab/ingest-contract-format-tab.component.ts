@@ -90,7 +90,7 @@ export class IngestContractFormatTabComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,
-    private fileFormatService: FileFormatService
+    private fileFormatService: FileFormatService,
   ) {
     this.form = this.formBuilder.group({
       everyFormatType: [true, Validators.required],
@@ -114,8 +114,8 @@ export class IngestContractFormatTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -130,7 +130,7 @@ export class IngestContractFormatTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

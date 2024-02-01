@@ -1,11 +1,13 @@
 <!-- Pastis dialog title qnd subtitle-->
 <h2 class="pastis-dialog-config-title" matDialogTitle>
   <i (click)="onNoClick()" class="vitamui-icon vitamui-icon-close icon-close"></i>
-  <p class="pastis-dialog-subtitle"><b>{{data.subTitleDialog}}</b></p>
-  <P class="pastis-dialog-title">{{data.titleDialog}}</P>
+  <p class="pastis-dialog-subtitle">
+    <b>{{ data.subTitleDialog }}</b>
+  </p>
+  <P class="pastis-dialog-title">{{ data.titleDialog }}</P>
 </h2>
 
-<form class="pastis-form"  *ngIf="!userValidation; else validation">
+<form class="pastis-form" *ngIf="!userValidation; else validation">
   <div class="row">
     <div class="col-10 form-control">
       <div class="text-enregistrement">
@@ -13,13 +15,8 @@
       </div>
 
       <mat-form-field class="vitamui-mat-select">
-        <mat-select disableRipple="true"
-                    panelClass="vitamui-mat-select"
-                    [(value)]="selectedProfile"
-                    (selectionChange)="setValidate()" >
-          <mat-option *ngFor="let profile of profiles" [value]="profile" >
-            {{profile.identifier}} - {{profile.name}}
-          </mat-option>
+        <mat-select disableRipple="true" panelClass="vitamui-mat-select" [(value)]="selectedProfile" (selectionChange)="setValidate()">
+          <mat-option *ngFor="let profile of profiles" [value]="profile"> {{ profile.identifier }} - {{ profile.name }} </mat-option>
         </mat-select>
         <div class="select-arrow">
           <i class="material-icons">keyboard_arrow_up</i>
@@ -29,45 +26,52 @@
     </div>
   </div>
 
-
   <div class="btn-container">
-    <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons"
-                        *ngIf="selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}'; else submitButton">
-      <button  (click)="setUserValidation(true)"
-              Class="pastis-btn-oui-dialog-confirm"
-              [disabled]="!validate"
-              [ngStyle]="{'background': validate ? '#9C31B5' : 'grey'}"
-      > {{'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
+    <mat-dialog-actions
+      align="right"
+      class="pastis-dialog-confirm-buttons"
+      *ngIf="selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}'; else submitButton"
+    >
+      <button
+        (click)="setUserValidation(true)"
+        Class="pastis-btn-oui-dialog-confirm"
+        [disabled]="!validate"
+        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
+      >
+        {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
       </button>
-      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{data.cancelLabel}}</button>
+      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{ data.cancelLabel }}</button>
     </mat-dialog-actions>
   </div>
 </form>
 
 <ng-template #validation>
-  <p class="pastis-dialog-content">{{'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate}}</p>
+  <p class="pastis-dialog-content">{{ 'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate }}</p>
   <div class="btn-container">
     <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-      <button (click)="onSubmit()"
-              Class="pastis-btn-oui-dialog-confirm"
-              [disabled]="!validate"
-              [ngStyle]="{'background': validate ? '#9C31B5' : 'grey'}"
-      >{{data.okLabel}}
+      <button
+        (click)="onSubmit()"
+        Class="pastis-btn-oui-dialog-confirm"
+        [disabled]="!validate"
+        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
+      >
+        {{ data.okLabel }}
       </button>
-      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="setUserValidation(false)">{{data.cancelLabel}}</button>
+      <button type="button" class="pastis-btn-non-dialog-confirm" (click)="setUserValidation(false)">{{ data.cancelLabel }}</button>
     </mat-dialog-actions>
   </div>
 </ng-template>
 
 <ng-template #submitButton>
   <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-    <button (click)="onSubmit()"
-            Class="pastis-btn-oui-dialog-confirm"
-            [disabled]="!validate"
-            [ngStyle]="{'background': validate ? '#9C31B5' : 'grey'}"
-    >{{data.okLabel}}
+    <button
+      (click)="onSubmit()"
+      Class="pastis-btn-oui-dialog-confirm"
+      [disabled]="!validate"
+      [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
+    >
+      {{ data.okLabel }}
     </button>
-    <button type="button" class="pastis-btn-non-dialog-confirm" (click)="userValidation = false">{{data.cancelLabel}}</button>
+    <button type="button" class="pastis-btn-non-dialog-confirm" (click)="userValidation = false">{{ data.cancelLabel }}</button>
   </mat-dialog-actions>
 </ng-template>
-

@@ -45,22 +45,20 @@ const NOTIFICATION_DELAY_MS = 40000;
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-
   displayed = false;
 
   constructor(
     private snackBar: MatSnackBar,
     private startupService: StartupService,
-    @Inject(ENVIRONMENT) private environment: any
-  ) {
-  }
+    @Inject(ENVIRONMENT) private environment: any,
+  ) {}
 
   handleError(error: any) {
     if (!(error instanceof HttpErrorResponse)) {
       // open the snackbar only once
       if (!this.displayed && this.snackBar.open) {
         this.snackBar.dismiss();
-        this.snackBar.open('Une erreur technique est survenue lors de l\'affichage de la page.', null, {
+        this.snackBar.open("Une erreur technique est survenue lors de l'affichage de la page.", null, {
           panelClass: 'vitamui-snack-bar',
           duration: NOTIFICATION_DELAY_MS,
         });

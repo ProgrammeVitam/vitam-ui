@@ -74,7 +74,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
           this.dataSource = data;
         },
         () => {},
-        () => (this.pending = false)
+        () => (this.pending = false),
       );
 
     this.searchCriteriaSub = merge(this.searchChange, this.filterChange, this.orderChange)
@@ -103,7 +103,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
   subscribeOnManagementContractPatchOperation() {
     this.updatedManagementContractsSub = this.managementContractService.updated.subscribe((managementContract: ManagementContract) => {
       const index = this.dataSource.findIndex(
-        (mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier
+        (mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier,
       );
       if (index > -1) {
         this.dataSource[index] = { ...managementContract };

@@ -53,11 +53,13 @@ import { GroupCreateComponent } from './group-create.component';
 @Component({
   selector: 'app-profiles-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => ProfilesFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProfilesFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() level: string;
@@ -69,11 +71,13 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'app-units-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => UnitsFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => UnitsFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -87,28 +91,29 @@ const expectedGroup: Group = {
   enabled: true,
   name: 'Group Name',
   description: 'Group Description',
-  level : '',
+  level: '',
   usersCount: 0,
   profileIds: ['profile1', 'profile2'],
   profiles: [],
   units: [],
-  readonly : false,
+  readonly: false,
 };
 
 let fixture: ComponentFixture<GroupCreateComponent>;
 let component: GroupCreateComponent;
 
 class Page {
-
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
-
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 }
 
 let page: Page;
 
 describe('GroupCreateComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const profileGroupServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
@@ -116,18 +121,14 @@ describe('GroupCreateComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-          MatProgressBarModule,
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          VitamUICommonTestModule,
-          LevelInputModule,
-          TranslateModule.forRoot(),
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        LevelInputModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [
-        ProfilesFormStubComponent,
-        UnitsFormStubComponent,
-        GroupCreateComponent,
-      ],
+      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent, GroupCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -137,9 +138,8 @@ describe('GroupCreateComponent', () => {
         { provide: GroupValidators, useValue: groupValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -170,7 +170,7 @@ describe('GroupCreateComponent', () => {
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
         profileIds: expectedGroup.profileIds,
-        units: expectedGroup.units
+        units: expectedGroup.units,
       });
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
@@ -190,13 +190,12 @@ describe('GroupCreateComponent', () => {
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
         profileIds: expectedGroup.profileIds,
-        units: expectedGroup.units
+        units: expectedGroup.units,
       });
       expect(component.form.valid).toBeTruthy();
     });
 
     describe('Validators', () => {
-
       describe('fields', () => {
         it('should be required', () => {
           expect(setControlValue('name', '').invalid).toBeTruthy('name');
@@ -208,7 +207,6 @@ describe('GroupCreateComponent', () => {
           expect(setControlValue('profileIds', '').invalid).toBeTruthy('profileIds');
           expect(setControlValue('profileIds', []).invalid).toBeTruthy('profileIds');
           expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy('profileIds');
-
         });
       });
 
@@ -223,20 +221,20 @@ describe('GroupCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const groupService =  TestBed.inject(GroupService);
+      const groupService = TestBed.inject(GroupService);
       component.onSubmit();
       expect(groupService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const groupService =  TestBed.inject(GroupService);
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const groupService = TestBed.inject(GroupService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue({
         customerId: expectedGroup.customerId,
         name: expectedGroup.name,
@@ -244,12 +242,11 @@ describe('GroupCreateComponent', () => {
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
         profileIds: expectedGroup.profileIds,
-        units: expectedGroup.units
+        units: expectedGroup.units,
       });
       component.onSubmit();
       expect(groupService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
-
 });

@@ -57,7 +57,7 @@ describe('SecurisationComponent', () => {
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
-      data: of({ appId: 'SECURISATION_APP' })
+      data: of({ appId: 'SECURISATION_APP' }),
     };
 
     TestBed.configureTestingModule({
@@ -69,7 +69,7 @@ describe('SecurisationComponent', () => {
         HttpClientTestingModule,
         InjectorModule,
         TranslateModule.forRoot(),
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
       declarations: [SecurisationComponent],
       providers: [
@@ -77,11 +77,10 @@ describe('SecurisationComponent', () => {
         GlobalEventService,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: Router, useValue: { navigate: () => {} } }
+        { provide: Router, useValue: { navigate: () => {} } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,35 +1,35 @@
 @import '../../../../../sass/mixins/elevation';
 
 .card {
-    @include elevation-2-dark;
-    
-    padding: 1rem;
-    background-color: white;
-    border-radius: 5px;
+  @include elevation-2-dark;
 
-    .close {
-        position: absolute;
-        right: 1.5rem;
-        cursor: pointer;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+
+  .close {
+    position: absolute;
+    right: 1.5rem;
+    cursor: pointer;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+
+    .details {
+      display: flex;
+      align-items: center;
+      margin-right: 1.5rem;
+
+      > i {
+        font-size: 16px;
+        margin-right: 0.25rem;
+      }
     }
 
-    .actions {
-        display: flex;
-        justify-content: space-between;
-
-        .details {
-            display: flex;
-            align-items: center;
-            margin-right: 1.5rem;
-    
-            > i {
-                font-size: 16px;
-                margin-right: 0.25rem;
-            }
-        }
-
-        button {
-            height: auto;
-        }
+    button {
+      height: auto;
     }
+  }
 }

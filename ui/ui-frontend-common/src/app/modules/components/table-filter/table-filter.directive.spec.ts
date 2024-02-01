@@ -43,15 +43,13 @@ import { TableFilterDirective } from './table-filter.directive';
 @Component({
   template: `
     <button [vitamuiCommonTableFilter]="filterTemplate"></button>
-    <ng-template #filterTemplate>
-      Overlay content
-    </ng-template>
-  `
+    <ng-template #filterTemplate> Overlay content </ng-template>
+  `,
 })
 export class TesthostComponent implements OnInit {
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 }
 
 describe('TableFilterDirective', () => {
@@ -61,9 +59,8 @@ describe('TableFilterDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OverlayModule],
-      declarations: [TesthostComponent, TableFilterDirective]
-    })
-      .compileComponents();
+      declarations: [TesthostComponent, TableFilterDirective],
+    }).compileComponents();
   });
 
   beforeEach(() => {

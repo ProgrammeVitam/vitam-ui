@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApplicationService, Context,GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'ui-frontend-common';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
@@ -60,7 +60,7 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
     public route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(route, globalEventService);
   }

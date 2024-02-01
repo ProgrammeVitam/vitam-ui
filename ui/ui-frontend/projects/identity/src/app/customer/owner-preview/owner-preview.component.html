@@ -1,18 +1,28 @@
 <vitamui-common-sidenav-header
   [title]="owner?.name"
-  [subtitle]="'(' +  owner?.code + ')'"
+  [subtitle]="'(' + owner?.code + ')'"
   [icon]="tenant ? 'vitamui-icon-safe' : 'vitamui-icon-key'"
-  (onclose)="emitClose()">
+  (onclose)="emitClose()"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'CUSTOMER.TAB.OWNER' | translate">
-      <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="isPopup || tenant?.readonly || owner?.readonly"></app-information-tab>
+      <app-information-tab
+        [owner]="owner"
+        [tenant]="tenant"
+        [readOnly]="isPopup || tenant?.readonly || owner?.readonly"
+      ></app-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
-      <app-owner-operation-history-tab [id]="owner?.id" [identifier]="owner?.identifier" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
+      <app-owner-operation-history-tab
+        [id]="owner?.id"
+        [identifier]="owner?.identifier"
+        [externalParamId]="tenant?.id"
+        [filter]="filterEvents"
+      ></app-owner-operation-history-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

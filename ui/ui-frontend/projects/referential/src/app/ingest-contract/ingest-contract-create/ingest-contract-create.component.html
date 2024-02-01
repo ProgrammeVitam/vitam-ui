@@ -4,7 +4,6 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
-
     <!-- STEP 1 - Informations : ID, nom, description -->
     <cdk-step>
       <div class="content">
@@ -14,17 +13,16 @@
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <vitamui-common-slide-toggle [formControl]="statusControl">Contrat d'entrée actif
-                </vitamui-common-slide-toggle>
+                <vitamui-common-slide-toggle [formControl]="statusControl">Contrat d'entrée actif </vitamui-common-slide-toggle>
               </div>
             </div>
             <div class="row">
               <div class="col-8 form-control">
                 <vitamui-common-input formControlName="name" minlength="2" maxlength="100" required placeholder="Nom">
                   <ng-container *ngIf="form.get('name')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">Champ requis
-                    </vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">Nom déjà utilisé
+                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">Champ requis </vitamui-common-input-error>
+                    <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists"
+                      >Nom déjà utilisé
                     </vitamui-common-input-error>
                   </ng-container>
                 </vitamui-common-input>
@@ -43,20 +41,19 @@
                     <vitamui-common-input-error
                       *ngIf="!!form.get('identifier')?.errors?.required"
                       i18n="Required field error hint@@formErrorRequiredField"
-                    >Champ requis
+                      >Champ requis
                     </vitamui-common-input-error>
                     <vitamui-common-input-error
                       *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
                       i18n="Name exists error hint@@formErrorIdentifierExists"
-                    >Identifiant déjà utilisé
+                      >Identifiant déjà utilisé
                     </vitamui-common-input-error>
                   </ng-container>
                 </vitamui-common-input>
               </div>
 
               <div class="col-12 form-control">
-                <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4"
-                                         required="required">
+                <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4" required="required">
                   <ng-container *ngIf="form.get('description')?.touched">
                     <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
                       {{ 'COMMON.REQUIRED' | translate }}
@@ -90,10 +87,8 @@
             <div class="row">
               <div class="col-6 form-control">
                 <mat-form-field class="vitamui-mat-select">
-                  <mat-select formControlName="archiveProfiles" placeholder="Profil d'archivage"
-                              panelclass="vitamui-mat-select" multiple>
-                    <mat-option *ngFor="let profiles of archiveProfiles"
-                                [value]="profiles.identifier">{{ profiles.name }} </mat-option>
+                  <mat-select formControlName="archiveProfiles" placeholder="Profil d'archivage" panelclass="vitamui-mat-select" multiple>
+                    <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }} </mat-option>
                   </mat-select>
                   <div class="select-arrow">
                     <i class="material-icons">keyboard_arrow_up</i>
@@ -105,11 +100,9 @@
             <div class="row">
               <div class="col-6 form-control">
                 <mat-form-field class="vitamui-mat-select">
-                  <mat-select formControlName="managementContractId" placeholder="Contrat de gestion"
-                              panelclass="vitamui-mat-select">
-                    <mat-option *ngFor="let managementContract of managementContracts"
-                                [value]="managementContract.identifier"
-                    >{{ managementContract.name }}
+                  <mat-select formControlName="managementContractId" placeholder="Contrat de gestion" panelclass="vitamui-mat-select">
+                    <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier"
+                      >{{ managementContract.name }}
                     </mat-option>
                   </mat-select>
                   <div class="select-arrow">
@@ -138,7 +131,6 @@
       </div>
     </cdk-step>
 
-
     <!-- STEP 3 - Format des fichiers : authorisés et identifiés -->
     <cdk-step>
       <div class="content">
@@ -148,10 +140,12 @@
           <div class="form-group">
             <div class="row">
               <div class="col-8 form-control">
-                <vitamui-common-slide-toggle formControlName="everyFormatType">Tous les formats de fichiers
-                </vitamui-common-slide-toggle>
-                <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                   matTooltip="Autoriser tout les formats d'objets binaires existant dans le référentiel des formats"></i>
+                <vitamui-common-slide-toggle formControlName="everyFormatType">Tous les formats de fichiers </vitamui-common-slide-toggle>
+                <i
+                  class="vitamui-icon vitamui-icon-info"
+                  matTooltipClass="vitamui-tooltip"
+                  matTooltip="Autoriser tout les formats d'objets binaires existant dans le référentiel des formats"
+                ></i>
               </div>
             </div>
 
@@ -165,16 +159,18 @@
                     required
                     multiple
                   >
-                    <mat-option *ngFor="let fileFormat of formatTypeList"
-                                [value]="fileFormat.puid">{{ fileFormat.name }} </mat-option>
+                    <mat-option *ngFor="let fileFormat of formatTypeList" [value]="fileFormat.puid">{{ fileFormat.name }} </mat-option>
                   </mat-select>
                   <div class="select-arrow">
                     <i class="material-icons">keyboard_arrow_down</i>
                   </div>
                 </mat-form-field>
               </div>
-              <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                 matTooltip="Choisir les formats binaires que vous souhaitez autoriser"></i>
+              <i
+                class="vitamui-icon vitamui-icon-info"
+                matTooltipClass="vitamui-tooltip"
+                matTooltip="Choisir les formats binaires que vous souhaitez autoriser"
+              ></i>
             </div>
 
             <div class="row">
@@ -182,8 +178,11 @@
                 <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
                   Autoriser les formats non identifiés
                 </vitamui-common-slide-toggle>
-                <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                   matTooltip="Autoriser les formats d'objets binaires non référencés dans le référentiel des formats"></i>
+                <i
+                  class="vitamui-icon vitamui-icon-info"
+                  matTooltipClass="vitamui-tooltip"
+                  matTooltip="Autoriser les formats d'objets binaires non référencés dans le référentiel des formats"
+                ></i>
               </div>
             </div>
           </div>
@@ -215,16 +214,18 @@
             <div class="row">
               <div class="col-6 form-control">
                 <vitamui-common-slide-toggle formControlName="binaryObjectMandatory"
-                >Original binaire obligatoire
+                  >Original binaire obligatoire
                 </vitamui-common-slide-toggle>
-                <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                   matTooltip="Option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »"></i>
+                <i
+                  class="vitamui-icon vitamui-icon-info"
+                  matTooltipClass="vitamui-tooltip"
+                  matTooltip="Option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »"
+                ></i>
               </div>
             </div>
             <div class="row">
               <div class="col-4 form-)control">
-                <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous usages autorisés
-                </vitamui-common-slide-toggle>
+                <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous usages autorisés </vitamui-common-slide-toggle>
                 <div class="form-control" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
                   <mat-form-field class="vitamui-mat-select">
                     <mat-select
@@ -245,8 +246,11 @@
                 </div>
               </div>
               <div class="col-3">
-                <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                   matTooltip="Usage(s) autorisé(s) dans le cas de l’ajout d’un objet binaire à un groupe d’objets techniques existant"></i>
+                <i
+                  class="vitamui-icon vitamui-icon-info"
+                  matTooltipClass="vitamui-tooltip"
+                  matTooltip="Usage(s) autorisé(s) dans le cas de l’ajout d’un objet binaire à un groupe d’objets techniques existant"
+                ></i>
               </div>
             </div>
           </div>
@@ -278,11 +282,14 @@
             <div class="row">
               <div class="col-12 form-control">
                 <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtIngest"
-                >Calcul des héritages de règles et d'indexation des échéances
+                  >Calcul des héritages de règles et d'indexation des échéances
                 </vitamui-common-slide-toggle>
-                <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-                   matTooltip="Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin
-                qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement"></i>
+                <i
+                  class="vitamui-icon vitamui-icon-info"
+                  matTooltipClass="vitamui-tooltip"
+                  matTooltip="Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin
+                qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement"
+                ></i>
               </div>
             </div>
           </div>
@@ -308,9 +315,13 @@
     <cdk-step>
       <div class="content">
         <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
-        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_POSITION.TITLE' | translate }}
-          <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-             matTooltip="Ajouter si nécessaire la position de rattachement auquel on souhaite rattacher le SIP"></i>
+        <h2>
+          {{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_POSITION.TITLE' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info"
+            matTooltipClass="vitamui-tooltip"
+            matTooltip="Ajouter si nécessaire la position de rattachement auquel on souhaite rattacher le SIP"
+          ></i>
         </h2>
         <div class="main-content">
           <div class="form-group">
@@ -343,27 +354,33 @@
     <cdk-step>
       <div class="content">
         <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
-        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_CONTROLS.TITLE' | translate }}
-          <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-             matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"></i>
+        <h2>
+          {{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_CONTROLS.TITLE' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info"
+            matTooltipClass="vitamui-tooltip"
+            matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
+          ></i>
         </h2>
         <div class="main-content">
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <mat-button-toggle-group formControlName="checkParentLink"
-                                         #group="matButtonToggleGroup"
-                                         class="vitamui-button-toggle-group">
-                  <mat-button-toggle value="AUTHORIZED"
-                                     [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'">
+                <mat-button-toggle-group
+                  formControlName="checkParentLink"
+                  #group="matButtonToggleGroup"
+                  class="vitamui-button-toggle-group"
+                >
+                  <mat-button-toggle
+                    value="AUTHORIZED"
+                    [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'"
+                  >
                     {{ 'Autorisé' | translate }}
                   </mat-button-toggle>
-                  <mat-button-toggle value="REQUIRED"
-                                     [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'">
+                  <mat-button-toggle value="REQUIRED" [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'">
                     {{ 'Obligatoire' | translate }}
                   </mat-button-toggle>
-                  <mat-button-toggle value="UNAUTHORIZED"
-                                     [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'">
+                  <mat-button-toggle value="UNAUTHORIZED" [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'">
                     {{ 'Interdit' | translate }}
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -392,9 +409,9 @@
     <cdk-step>
       <div class="content">
         <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
-        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_CONTROLS.TITLE' | translate }}
-          <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip"
-             matTooltip="Sélection des positions de l'arbre"></i>
+        <h2>
+          {{ 'INGEST_CONTRACT.MODAL_CREATE.ATTACHMENT_CONTROLS.TITLE' | translate }}
+          <i class="vitamui-icon vitamui-icon-info" matTooltipClass="vitamui-tooltip" matTooltip="Sélection des positions de l'arbre"></i>
         </h2>
         <div class="main-content">
           <div class="form-group">
@@ -431,53 +448,61 @@
         <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate }}</h2>
         <div class="main-content" formGroupName="signaturePolicy">
           <div class="row">
-            <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup"
-                                     class="vitamui-button-toggle-group">
-              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
-                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED  | translate }}
+            <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+              <mat-button-toggle
+                value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
+                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
+              >
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED | translate }}
               </mat-button-toggle>
-              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
-                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY  | translate }}
+              <mat-button-toggle
+                value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
+                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)"
+              >
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY | translate }}
               </mat-button-toggle>
-              <mat-button-toggle value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
-                                 (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)">
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN  | translate }}
+              <mat-button-toggle
+                value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
+                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)"
+              >
+                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
           <div class="row">
-            <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate}}</p>
+            <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</p>
           </div>
           <div class="row">
             <div class="col">
               <div class="criteria-checkbox-choice">
-                <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-                  <input type="checkbox"
-                         id="declaredSignature"
-                         formControlName="declaredSignature"
-                         [attr.disabled]="signedDocumentPolicyIsDisabled()"
+                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+                  <input
+                    type="checkbox"
+                    id="declaredSignature"
+                    formControlName="declaredSignature"
+                    [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
                 </label>
               </div>
               <div class="criteria-checkbox-choice">
-                <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-                  <input type="checkbox"
-                         id="TIMESTAMP"
-                         formControlName="declaredTimestamp"
-                         [attr.disabled]="signedDocumentPolicyIsDisabled()"
+                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+                  <input
+                    type="checkbox"
+                    id="TIMESTAMP"
+                    formControlName="declaredTimestamp"
+                    [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
                 </label>
               </div>
               <div class="criteria-checkbox-choice">
-                <label [ngClass]="{'disabled': signedDocumentPolicyIsDisabled()}">
-                  <input type="checkbox"
-                         id="ADDITIONAL_EVIDENCES"
-                         formControlName="declaredAdditionalProof"
-                         [attr.disabled]="signedDocumentPolicyIsDisabled()"
+                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+                  <input
+                    type="checkbox"
+                    id="ADDITIONAL_EVIDENCES"
+                    formControlName="declaredAdditionalProof"
+                    [attr.disabled]="signedDocumentPolicyIsDisabled()"
                   />
                   <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
                 </label>
@@ -501,6 +526,5 @@
         </div>
       </div>
     </cdk-step>
-
   </vitamui-common-stepper>
 </form>

@@ -30,8 +30,15 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
-  DescriptionLevel, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesTreeService, nodeToVitamuiIcon, PagedResult, ResultFacet,
-  SearchCriteriaDto, UnitType
+  DescriptionLevel,
+  FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode,
+  LeavesTreeService,
+  nodeToVitamuiIcon,
+  PagedResult,
+  ResultFacet,
+  SearchCriteriaDto,
+  UnitType,
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
@@ -58,7 +65,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
   showEveryNodes = true;
   showFacetsCount = true;
@@ -93,7 +100,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -103,45 +109,39 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private searchUnderNode(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchUnderNode(parentNode)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.searchUnderNode(parentNode).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchAtNodeWithSearchCriterias(parentNode)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.searchAtNodeWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private searchOrphans(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchOrphans(parentNode)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.searchOrphans(parentNode).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode) {
-    this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.searchOrphansWithSearchCriterias(parentNode).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]) {
-    this.leavesTreeService.loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes, facets)
-      .subscribe((_: PagedResult) => {
-        this.refreshTreeNodes();
-      });
+    this.leavesTreeService.loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes, facets).subscribe((_: PagedResult) => {
+      this.refreshTreeNodes();
+    });
   }
 
   private refreshTreeNodes() {
@@ -151,7 +151,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private firstToggle(node: FilingHoldingSchemeNode): boolean {
-    return this.leavesTreeService.firstToggle(node)
+    return this.leavesTreeService.firstToggle(node);
   }
 
   toggleOrphansNode(node: FilingHoldingSchemeNode) {
@@ -240,12 +240,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   private subscribeOnSearchCriteriasUpdate() {
     this.subscriptions.add(
-      this.archiveSharedDataService.getSearchCriterias()
-        .subscribe((searchCriteriaDto: SearchCriteriaDto) => {
-          this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
-          this.searchCriterias = searchCriteriaDto;
-        })
+      this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
+        this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
+        this.searchCriterias = searchCriteriaDto;
+      }),
     );
   }
-
 }

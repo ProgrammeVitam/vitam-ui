@@ -96,7 +96,7 @@ export class GroupListComponent implements OnInit {
       this.groups = this.groups.filter(
         (group) =>
           group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
-          group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+          group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
       );
     }
   }

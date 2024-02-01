@@ -15,7 +15,7 @@ import {
   PaginatedResponse,
   Project,
   Transaction,
-  TransactionStatus
+  TransactionStatus,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
@@ -23,10 +23,9 @@ import { ProjectsService } from '../projects.service';
 @Component({
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
-  styleUrls: ['./project-preview.component.scss']
+  styleUrls: ['./project-preview.component.scss'],
 })
 export class ProjectPreviewComponent implements OnInit {
-
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -43,8 +42,7 @@ export class ProjectPreviewComponent implements OnInit {
   acquisitionInformationsList: string[];
   legalStatusList: LegalStatus[] = [];
 
-  @ViewChild('confirmEditProject', {static: true}) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
-
+  @ViewChild('confirmEditProject', { static: true }) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
 
   @Input()
   get projectId(): string {
@@ -57,7 +55,6 @@ export class ProjectPreviewComponent implements OnInit {
     this.selectedTabIndex = 0;
   }
 
-
   private projectId$ = new BehaviorSubject<string>(null);
   private tenantIdentifier: string;
 
@@ -69,26 +66,25 @@ export class ProjectPreviewComponent implements OnInit {
 
   transactions$: BehaviorSubject<PaginatedResponse<Transaction>> = new BehaviorSubject<PaginatedResponse<Transaction>>(null);
 
-
-  constructor(private formBuilder: FormBuilder, private projectService: ProjectsService,
-              private projectApiService: ProjectsApiService,
-              private route: ActivatedRoute, private router: Router,
-              public dialog: MatDialog,
-              private translationService: TranslateService,
-              private snackBar: MatSnackBar,
-  ) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private projectService: ProjectsService,
+    private projectApiService: ProjectsApiService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog,
+    private translationService: TranslateService,
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.projectId$.pipe(mergeMap(() => this.projectService.getProjectById(this.projectId$.getValue())))
-      .subscribe((project) => {
-        this.project = project;
-      });
-
+    this.projectId$.pipe(mergeMap(() => this.projectService.getProjectById(this.projectId$.getValue()))).subscribe((project) => {
+      this.project = project;
+    });
 
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
@@ -97,11 +93,9 @@ export class ProjectPreviewComponent implements OnInit {
   }
 
   searchArchiveUnitsByProject() {
-
     this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id], {
-      queryParams: {projectName: this.project.messageIdentifier},
+      queryParams: { projectName: this.project.messageIdentifier },
     });
-
   }
 
   emitClose() {
@@ -134,10 +128,9 @@ export class ProjectPreviewComponent implements OnInit {
       archivalAgreement: [null, Validators.required],
       archiveProfile: [null],
       acquisitionInformation: [null],
-      legalStatus: [null]
+      legalStatus: [null],
     });
   }
-
 
   showEditProject() {
     this.form.markAsPristine();
@@ -145,7 +138,6 @@ export class ProjectPreviewComponent implements OnInit {
     this.showExtendedPanel();
     this.initFormForEdit();
   }
-
 
   initFormForEdit() {
     this.form.get('messageIdentifier').setValue(this.project.messageIdentifier);
@@ -164,10 +156,10 @@ export class ProjectPreviewComponent implements OnInit {
     const dialogToOpen = this.confirmEditProject;
     this.selectedValue = 'YES';
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
-    this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe(transactions => {
+    this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
       this.transactions$.next(transactions);
     });
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
   }
 
   mapProjectInternalFields(projectToUpdate: Project) {
@@ -177,7 +169,6 @@ export class ProjectPreviewComponent implements OnInit {
     projectToUpdate.status = this.project.status;
     projectToUpdate.unitUps = this.project.unitUps;
   }
-
 
   fillTransactionFromProject(transaction: Transaction) {
     transaction.archivalAgreement = this.project.archivalAgreement;
@@ -196,7 +187,6 @@ export class ProjectPreviewComponent implements OnInit {
     const projectToUpdate = {
       ...this.form.value,
       name: this.form.value.messageIdentifier,
-      
     };
     this.mapProjectInternalFields(projectToUpdate);
 
@@ -204,42 +194,46 @@ export class ProjectPreviewComponent implements OnInit {
     const previousProject = this.project;
     this.project = null;
     if (this.selectedValue !== 'NO') {
-      updateProjectOperation$.pipe(mergeMap((project): Observable<PaginatedResponse<Transaction>> => {
+      updateProjectOperation$
+        .pipe(
+          mergeMap((project): Observable<PaginatedResponse<Transaction>> => {
+            this.dialogRefToClose.close(true);
+            this.project = project;
+            this.projectService.nextUpdatedProject(project);
 
-          this.dialogRefToClose.close(true);
-          this.project = project;
-          this.projectService.nextUpdatedProject(project);
-
-          this.updateStarted = false;
-          return this.transactions$;
-        }),
-        map(paginated => paginated.values),
-        mergeMap((transactions: Transaction[]) => {
-          const updateTransactionOperation$: Observable<Transaction>[] = [];
-          const transactionsKO: Transaction[] = [];
-          transactions.forEach(transaction => {
-            if (transaction.status === TransactionStatus.OPEN) {
-              this.fillTransactionFromProject(transaction);
-              updateTransactionOperation$.push(this.projectApiService.updateTransaction(transaction));
-            } else if (transaction.status === TransactionStatus.KO) {
-              transactionsKO.push(transaction)
+            this.updateStarted = false;
+            return this.transactions$;
+          }),
+          map((paginated) => paginated.values),
+          mergeMap((transactions: Transaction[]) => {
+            const updateTransactionOperation$: Observable<Transaction>[] = [];
+            const transactionsKO: Transaction[] = [];
+            transactions.forEach((transaction) => {
+              if (transaction.status === TransactionStatus.OPEN) {
+                this.fillTransactionFromProject(transaction);
+                updateTransactionOperation$.push(this.projectApiService.updateTransaction(transaction));
+              } else if (transaction.status === TransactionStatus.KO) {
+                transactionsKO.push(transaction);
+              }
+            });
+            return combineLatest(updateTransactionOperation$).pipe(map(() => transactionsKO));
+          }),
+        )
+        .subscribe(
+          (transactionsKO: Transaction[]) => {
+            let transactionMessage = this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED');
+            if (transactionsKO.length > 0) {
+              transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO');
             }
-          });
-          return combineLatest(updateTransactionOperation$).pipe(map(() => transactionsKO));
-        })).subscribe((transactionsKO: Transaction[]) => {
-
-        let transactionMessage = this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED');
-        if (transactionsKO.length > 0) {
-          transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO')
-        }
-        this.snackBar.open(transactionMessage, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-
-      }, () => {
-        this.project = previousProject;
-      });
+            this.snackBar.open(transactionMessage, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+            });
+          },
+          () => {
+            this.project = previousProject;
+          },
+        );
     } else {
       updateProjectOperation$.subscribe(
         (project) => {
@@ -251,18 +245,15 @@ export class ProjectPreviewComponent implements OnInit {
           this.updateStarted = false;
           this.project = project;
           this.projectService.nextUpdatedProject(project);
-        }
-        , () => {
+        },
+        () => {
           this.project = previousProject;
-        });
+        },
+      );
     }
-
-
   }
 
   onClose() {
     this.dialogRefToClose.close(true);
   }
-
-
 }

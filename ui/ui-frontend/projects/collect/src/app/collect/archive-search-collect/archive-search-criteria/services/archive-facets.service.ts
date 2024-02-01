@@ -34,7 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
-import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum, } from 'ui-frontend-common';
+import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from 'ui-frontend-common';
 import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 
 @Injectable({
@@ -71,37 +71,37 @@ export class ArchiveFacetsService {
     if (facetResults) {
       archiveSearchResultFacets.appraisalRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.APPRAISAL_RULE
+        SearchCriteriaMgtRuleEnum.APPRAISAL_RULE,
       );
 
       archiveSearchResultFacets.accessRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.ACCESS_RULE
+        SearchCriteriaMgtRuleEnum.ACCESS_RULE,
       );
 
       archiveSearchResultFacets.disseminationRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.DISSEMINATION_RULE
+        SearchCriteriaMgtRuleEnum.DISSEMINATION_RULE,
       );
 
       archiveSearchResultFacets.reuseRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.REUSE_RULE
+        SearchCriteriaMgtRuleEnum.REUSE_RULE,
       );
 
       archiveSearchResultFacets.holdRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.HOLD_RULE
+        SearchCriteriaMgtRuleEnum.HOLD_RULE,
       );
 
       archiveSearchResultFacets.classificationRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.CLASSIFICATION_RULE
+        SearchCriteriaMgtRuleEnum.CLASSIFICATION_RULE,
       );
 
       archiveSearchResultFacets.storageRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.STORAGE_RULE
+        SearchCriteriaMgtRuleEnum.STORAGE_RULE,
       );
     }
     return archiveSearchResultFacets;

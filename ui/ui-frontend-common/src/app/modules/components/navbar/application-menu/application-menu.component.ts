@@ -55,7 +55,10 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
   applications: Application[];
   getApplicationSubscription: Subscription;
 
-  constructor(public applicationService: ApplicationService, public dialog: MatDialog) {}
+  constructor(
+    public applicationService: ApplicationService,
+    public dialog: MatDialog,
+  ) {}
 
   getActiveApplication() {
     this.getApplicationSubscription = this.applicationService.getApplications$().subscribe((applications) => {

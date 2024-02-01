@@ -40,10 +40,8 @@ import { NgModule } from '@angular/core';
 import { InfiniteScrollDirective } from './infinite-scroll.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [InfiniteScrollDirective],
-  exports: [InfiniteScrollDirective]
+  exports: [InfiniteScrollDirective],
 })
-export class InfiniteScrollModule { }
+export class InfiniteScrollModule {}

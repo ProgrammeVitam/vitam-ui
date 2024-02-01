@@ -107,7 +107,11 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(public contextService: ContextService, private authService: AuthService, private route: ActivatedRoute) {
+  constructor(
+    public contextService: ContextService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+  ) {
     super(contextService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
@@ -123,7 +127,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
       distinctUntilChanged(),
       tap((tenantIdentifier) => {
         this.contextService.setTenantId(tenantIdentifier);
-      })
+      }),
     );
 
     this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Context[]) => {
@@ -131,7 +135,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     });
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
-      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+      debounceTime(FILTER_DEBOUNCE_TIME_MS),
     );
 
     searchCriteriaChange.subscribe(() => {

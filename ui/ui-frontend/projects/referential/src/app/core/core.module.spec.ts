@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CoreModule} from './core.module';
+import { CoreModule } from './core.module';
 
 describe('CoreModule', () => {
   let coreModule: CoreModule;

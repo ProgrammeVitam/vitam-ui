@@ -41,12 +41,14 @@ import { ArchiveSharedDataService } from './archive-shared-data.service';
 import { ManagementRulesSharedDataService } from './management-rules-shared-data.service';
 
 @Injectable()
-export class  RuleValidator {
+export class RuleValidator {
   private debounceTime = 400;
   ruleCategorySelected: string;
 
-  constructor(private managementRulesSharedDataService:
-    ManagementRulesSharedDataService, private archiveSharedDataService: ArchiveSharedDataService) { }
+  constructor(
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private archiveSharedDataService: ArchiveSharedDataService,
+  ) {}
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
@@ -92,10 +94,11 @@ export class  RuleValidator {
         const existField: any = {};
         existField[existTag] = true;
         return timer(this.debounceTime).pipe(
-          switchMap(() => (control.value !== valueToIgnore ?
-            this.managementRulesSharedDataService.existsProperties(properties) : of(false))),
+          switchMap(() =>
+            control.value !== valueToIgnore ? this.managementRulesSharedDataService.existsProperties(properties) : of(false),
+          ),
           take(1),
-          map((exists: boolean) => (exists ? null : existField))
+          map((exists: boolean) => (exists ? null : existField)),
         );
       } else {
         return of(false);

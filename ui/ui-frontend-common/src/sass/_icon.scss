@@ -1,58 +1,58 @@
 .vitamui-icon {
-    @include text-colors;
+  @include text-colors;
 }
 
 // App engine icon theming
 .vitamui-icon-apps-colored .path1:before {
-  content: "\e955";
+  content: '\e955';
   color: var(--vitamui-primary);
 }
 .vitamui-icon-apps-colored .path2:before {
-  content: "\e956";
+  content: '\e956';
   margin-left: -1em;
   color: var(--vitamui-primary);
 }
 .vitamui-icon-apps-colored .path3:before {
-  content: "\e957";
+  content: '\e957';
   margin-left: -1em;
   color: var(--vitamui-primary);
 }
 .vitamui-icon-apps-colored .path4:before {
-  content: "\e958";
+  content: '\e958';
   margin-left: -1em;
   color: var(--vitamui-secondary);
 }
 .vitamui-icon-apps-colored .path5:before {
-  content: "\e959";
+  content: '\e959';
   margin-left: -1em;
   color: var(--vitamui-secondary);
 }
 .vitamui-icon-apps-colored .path6:before {
-  content: "\e95a";
+  content: '\e95a';
   margin-left: -1em;
   color: var(--vitamui-secondary);
 }
 .vitamui-icon-apps-colored .path7:before {
-  content: "\e95b";
+  content: '\e95b';
   margin-left: -1em;
   color: var(--vitamui-primary-200);
 }
 .vitamui-icon-apps-colored .path8:before {
-  content: "\e95c";
+  content: '\e95c';
   margin-left: -1em;
   color: var(--vitamui-primary-200);
 }
 .vitamui-icon-apps-colored .path9:before {
-  content: "\e95d";
+  content: '\e95d';
   margin-left: -1em;
   color: var(--vitamui-primary-200);
 }
 
 // DEPRECATED TODO : REMOVE AT THE END OF THE REDESIGN
 i.vitamui-icon.primary:before {
-    color: var(--vitamui-primary);
+  color: var(--vitamui-primary);
 }
 
 i.vitamui-icon.secondary:before {
-    color: var(--vitamui-secondary);
+  color: var(--vitamui-secondary);
 }

@@ -94,7 +94,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private subrogationModalService: SubrogationModalService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     super(subrogationService);
   }

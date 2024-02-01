@@ -39,50 +39,48 @@ knowledge of the CeCILL-C license and that you accept its terms.
 // Seda elelemtns can be attributes, simple or complex elements
 
 export enum SedaElementConstants {
-    attribute = 'Attribute',
-    simple = 'Simple',
-    complex = 'Complex'
+  attribute = 'Attribute',
+  simple = 'Simple',
+  complex = 'Complex',
 }
 
 // Seda choice constants : can be yes or no
 export enum SedaChoiceConstants {
-    yes = 'yes',
-    no = 'no',
+  yes = 'yes',
+  no = 'no',
 }
 
 // Seda Extensible constants : can be yes or no
 export enum SedaExtensibleConstants {
-    yes = 'yes',
-    no = 'no',
+  yes = 'yes',
+  no = 'no',
 }
-
 
 export enum SedaCardinalityConstants {
-    'zeroOrOne' = '0-1',
-    'one' = '1',
-    'oreOrMore' = '1-N',
-    'zeroOrMore'  = '0-N'
+  'zeroOrOne' = '0-1',
+  'one' = '1',
+  'oreOrMore' = '1-N',
+  'zeroOrMore' = '0-N',
 }
 
-
 export enum SedaCollections {
-    'object' = 'Objets',
-    'header' = 'Entete',
-    'rules' = 'Regles',
-    'arborescent'  = 'Aborescence'
+  'object' = 'Objets',
+  'header' = 'Entete',
+  'rules' = 'Regles',
+  'arborescent' = 'Aborescence',
 }
 
 export interface SedaData {
-    [key: string]: any;
-    Name: string;
-    NameFr: string;
-    Type: string;
-    Element: string;
-    Cardinality: string;
-    Definition: string;
-    Extensible: boolean;
-    Choice: boolean;
-    Children: SedaData[];
-    Enumeration: string[];
-    Collection: SedaCollections;
+  [key: string]: any;
+  Name: string;
+  NameFr: string;
+  Type: string;
+  Element: string;
+  Cardinality: string;
+  Definition: string;
+  Extensible: boolean;
+  Choice: boolean;
+  Children: SedaData[];
+  Enumeration: string[];
+  Collection: SedaCollections;
 }

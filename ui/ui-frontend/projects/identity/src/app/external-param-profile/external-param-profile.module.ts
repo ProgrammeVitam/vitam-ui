@@ -82,7 +82,7 @@ import { SharedService } from './shared.service';
     ExternalParamProfileCreateComponent,
     ExternalParamProfileDetailComponent,
     InformationTabComponent,
-    ThresholdsTabComponent
+    ThresholdsTabComponent,
   ],
   providers: [ExternalParamProfileValidators, ProfileValidators, SharedService],
 })

@@ -38,7 +38,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  ApiUnitObject, BaseHttpClient, BASE_URL, Ontology, PageRequest, PaginatedResponse, SearchCriteriaDto, SearchResponse, Transaction, Unit
+  ApiUnitObject,
+  BaseHttpClient,
+  BASE_URL,
+  Ontology,
+  PageRequest,
+  PaginatedResponse,
+  SearchCriteriaDto,
+  SearchResponse,
+  Transaction,
+  Unit,
 } from 'ui-frontend-common';
 
 @Injectable({

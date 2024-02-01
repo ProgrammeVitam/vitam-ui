@@ -34,24 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {SharedModule} from '../shared/shared.module';
-import {SecurisationListModule} from './securisation-list/securisation-list.module';
-import {SecurisationPreviewModule} from './securisation-preview/securisation-preview.module';
-import {SecurisationRoutingModule} from './securisation-routing.module';
-import {SecurisationComponent} from './securisation.component';
+import { SharedModule } from '../shared/shared.module';
+import { SecurisationListModule } from './securisation-list/securisation-list.module';
+import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
+import { SecurisationRoutingModule } from './securisation-routing.module';
+import { SecurisationComponent } from './securisation.component';
 
 @NgModule({
   imports: [
@@ -70,11 +70,8 @@ import {SecurisationComponent} from './securisation.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
   ],
-  declarations: [
-    SecurisationComponent
-  ]
+  declarations: [SecurisationComponent],
 })
-export class SecurisationModule {
-}
+export class SecurisationModule {}

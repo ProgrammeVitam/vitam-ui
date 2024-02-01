@@ -6,7 +6,10 @@ import { TypeService } from './type.service';
 
 @Injectable()
 export class DisplayRuleHelperService {
-  constructor(private typeService: TypeService, private dataStructureService: DataStructureService) {}
+  constructor(
+    private typeService: TypeService,
+    private dataStructureService: DataStructureService,
+  ) {}
 
   private isUndefinedOrNull(path: any): boolean {
     return path === undefined || path === null;
@@ -45,7 +48,7 @@ export class DisplayRuleHelperService {
 
   public getCommonDisplayRules(sourceRules: DisplayRule[], targetRules: DisplayRule[]): DisplayRule[] {
     return sourceRules.filter((sourceRule) =>
-      targetRules.some((targetRule) => !this.isUndefinedOrNull(targetRule.Path) && this.arePathsEqual(targetRule.Path, sourceRule.Path))
+      targetRules.some((targetRule) => !this.isUndefinedOrNull(targetRule.Path) && this.arePathsEqual(targetRule.Path, sourceRule.Path)),
     );
   }
 

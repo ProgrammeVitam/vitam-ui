@@ -45,25 +45,25 @@ import { OwnerService } from './owner.service';
 
 @Injectable()
 export class OwnerResolver implements Resolve<Owner> {
-
-  constructor(private ownerService: OwnerService, private router: Router) { }
+  constructor(
+    private ownerService: OwnerService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Owner> {
     const id = route.paramMap.get('id');
 
-    return this.ownerService.get(id)
-      .pipe(
-        take(1),
-        map((owner: Owner) => {
-          if (owner) {
-            return owner;
-          } else {
-            this.router.navigate(['/']);
+    return this.ownerService.get(id).pipe(
+      take(1),
+      map((owner: Owner) => {
+        if (owner) {
+          return owner;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

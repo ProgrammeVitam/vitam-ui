@@ -55,7 +55,6 @@ interface Tenant {
   styleUrls: ['./tenant-menu.component.scss'],
 })
 export class TenantMenuComponent implements OnInit, OnDestroy {
-
   @Input() appId: ApplicationId;
 
   @Output() selectedTenant = new EventEmitter<number>();
@@ -65,7 +64,8 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
   constructor(
     public tenantMenuService: TenantMenuService,
     public dialog: MatDialog,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     this.tenantMenuService.appId = this.appId;
@@ -90,13 +90,11 @@ export class TenantMenuComponent implements OnInit, OnDestroy {
     this.tenantMenuService.tenants.forEach((tenant) => tenants.push({ value: tenant.identifier, label: tenant.name }));
     this.dialog.open(CommonMenuComponent, {
       panelClass: 'vitamui-modal',
-      data: { menuType: MenuType.tenant, items: tenants }
+      data: { menuType: MenuType.tenant, items: tenants },
     });
-
   }
 
   ngOnDestroy() {
     this.tenantSelection.unsubscribe();
   }
-
 }

@@ -107,17 +107,15 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // tslint:disable-next-line:adjacent-overload-signatures
   @Input()
-  set gdprReadOnlyStatus(gdprReadOnlyStatus : boolean){
+  set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean) {
     this._gdprReadOnlyStatus = gdprReadOnlyStatus;
-    if(gdprReadOnlyStatus ) {
+    if (gdprReadOnlyStatus) {
       this.form.get('gdprAlertDelay').disable({ emitEvent: false });
       this.form.get('gdprAlert').disable({ emitEvent: false });
     }
-  };
-
+  }
 
   private sub: Subscription;
 
@@ -128,7 +126,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -159,7 +157,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
@@ -167,7 +164,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.customer.id }, formData)),
-        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((customer: Customer) => this.resetForm(customer));
 

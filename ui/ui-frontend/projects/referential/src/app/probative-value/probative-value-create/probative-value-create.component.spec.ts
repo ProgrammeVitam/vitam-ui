@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, ExternalParametersService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {ProbativeValueService} from '../probative-value.service';
-import {ProbativeValueCreateComponent} from './probative-value-create.component';
+import { ProbativeValueService } from '../probative-value.service';
+import { ProbativeValueCreateComponent } from './probative-value-create.component';
 
 describe('ProbativeValueCreateComponent', () => {
   let component: ProbativeValueCreateComponent;
@@ -56,7 +56,7 @@ describe('ProbativeValueCreateComponent', () => {
   beforeEach(waitForAsync(() => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+      getUserExternalParameters: () => of(parameters),
     };
 
     TestBed.configureTestingModule({
@@ -66,20 +66,19 @@ describe('ProbativeValueCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressBarModule,
         MatSnackBarModule,
-        VitamUICommonTestModule
+        VitamUICommonTestModule,
       ],
       declarations: [ProbativeValueCreateComponent],
       providers: [
         FormBuilder,
-        {provide: MatDialogRef, useValue: {}},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
-        {provide: ProbativeValueService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: ProbativeValueService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

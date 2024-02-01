@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {BytesPipe, Logger, StartupService} from 'ui-frontend-common';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BytesPipe, Logger, StartupService } from 'ui-frontend-common';
 
-import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
-import {IngestType} from './ingest-type.enum';
-import {UploadService} from './upload.service';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { IngestType } from './ingest-type.enum';
+import { UploadService } from './upload.service';
 
 const LAST_STEP_INDEX = 1;
 
@@ -70,7 +70,7 @@ export class UploadComponent implements OnInit {
   public stepIndex = 0;
   public stepCount = 2;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -79,7 +79,7 @@ export class UploadComponent implements OnInit {
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
     private startupService: StartupService,
-    public logger: Logger
+    public logger: Logger,
   ) {
     this.sipForm = this.formBuilder.group({
       hasSip: null,
@@ -121,7 +121,7 @@ export class UploadComponent implements OnInit {
     this.fileSizeString = transformer.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
-      this.message = 'Le fichier déposé n\'est pas au bon format';
+      this.message = "Le fichier déposé n'est pas au bon format";
       this.hasError = true;
       return;
     }
@@ -144,12 +144,17 @@ export class UploadComponent implements OnInit {
     this.uploadService
       .uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
         this.snackBar.dismiss();
-        if (this.contextId === IngestType.HOLDING_SCHEME || this.contextId === IngestType.FILING_SCHEME
-          || this.contextId === IngestType.BLANK_TEST) {
+        if (
+          this.contextId === IngestType.HOLDING_SCHEME ||
+          this.contextId === IngestType.FILING_SCHEME ||
+          this.contextId === IngestType.BLANK_TEST
+        ) {
           this.displaySnackBar({
             type: 'fileUploaded',
-            messageKey: this.contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.BLANK_UPLOAD_COMPLETE_MESSAGE'
-              : 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
+            messageKey:
+              this.contextId === IngestType.BLANK_TEST
+                ? 'INGEST_UPLOAD.BLANK_UPLOAD_COMPLETE_MESSAGE'
+                : 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
             buttonAction: () => this.goToOperation(operationId),
             buttonMessageKey: 'INGEST_UPLOAD.TO_OPERATION_APP',
           });
@@ -165,7 +170,7 @@ export class UploadComponent implements OnInit {
         },
         (error: any) => {
           this.message = error.message;
-        }
+        },
       );
   }
 

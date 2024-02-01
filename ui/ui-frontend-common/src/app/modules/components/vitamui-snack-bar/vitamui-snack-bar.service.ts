@@ -55,7 +55,7 @@ export class VitamUISnackBarService {
   constructor(
     private matSnackBar: MatSnackBar,
     private applicationService: ApplicationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   public open(data: VitamuiSnackBarData): MatSnackBarRef<VitamUISnackBarComponent> {
@@ -75,7 +75,7 @@ export class VitamUISnackBarService {
     data: VitamuiSnackBarData,
     appId: ApplicationId | any,
     urlName: string,
-    urlParams?: Map<string, string>
+    urlParams?: Map<string, string>,
   ): Observable<MatSnackBarRef<VitamUISnackBarComponent>> {
     return this.applicationService.getAppById(appId).pipe(
       map((application: Application) => {
@@ -96,7 +96,7 @@ export class VitamUISnackBarService {
 
         return this.open(data);
       }),
-      take(1)
+      take(1),
     );
   }
 
@@ -105,7 +105,7 @@ export class VitamUISnackBarService {
     url: string,
     urlName: string,
     cssClass?: string,
-    closeOnClick: boolean = false
+    closeOnClick: boolean = false,
   ): MatSnackBarRef<VitamUISnackBarComponent> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
     urlName = this.getTranslateValue(data.translate, urlName);

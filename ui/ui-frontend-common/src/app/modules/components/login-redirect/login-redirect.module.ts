@@ -42,12 +42,7 @@ import { LoginRedirectComponent } from './login-redirect.component';
 
 @NgModule({
   declarations: [LoginRedirectComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([
-      { path: 'login-redirect', component: LoginRedirectComponent },
-    ])
-  ],
-  exports: [LoginRedirectComponent]
+  imports: [CommonModule, RouterModule.forChild([{ path: 'login-redirect', component: LoginRedirectComponent }])],
+  exports: [LoginRedirectComponent],
 })
-export class LoginRedirectModule { }
+export class LoginRedirectModule {}

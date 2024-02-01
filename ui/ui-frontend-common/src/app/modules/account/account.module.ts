@@ -65,12 +65,8 @@ import { AccountComponent } from './account.component';
     VitamUIFieldErrorModule,
     VitamuiContentBreadcrumbModule,
     UserPhotoModule,
-    TranslateModule
+    TranslateModule,
   ],
-  declarations: [
-    AccountComponent,
-    AccountInformationTabComponent,
-    AccountApplicationTabComponent,
-  ]
+  declarations: [AccountComponent, AccountInformationTabComponent, AccountApplicationTabComponent],
 })
-export class AccountModule { }
+export class AccountModule {}

@@ -38,10 +38,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerMenuService {
-
   private selectedCustomerSubject = new Subject<string>();
 
   constructor() {}

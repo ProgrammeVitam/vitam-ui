@@ -43,7 +43,7 @@ import { Context, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
+import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -95,7 +95,7 @@ export class ContextInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private contextService: ContextService,
-    private securityProfileService: SecurityProfileService
+    private securityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
       name: [null],
@@ -149,7 +149,7 @@ export class ContextInformationTabComponent {
           }
         }
         return this.contextService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -167,7 +167,7 @@ export class ContextInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

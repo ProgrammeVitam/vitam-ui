@@ -45,119 +45,113 @@ import { ProviderApiService } from './provider-api.service';
 
 @Injectable()
 export class IdentityProviderService {
-
   updated = new Subject<IdentityProvider>();
 
   constructor(
     private providerApi: ProviderApiService,
-    private snackBarService: VitamUISnackBarService
-    ) { }
+    private snackBarService: VitamUISnackBarService,
+  ) {}
 
   create(idp: IdentityProvider): Observable<IdentityProvider> {
-    return this.providerApi.create(idp)
-      .pipe(
-        map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
-        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
-        tap(
-          (newIDP: IdentityProvider) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROVIDER_CREATE',
-              translateParams:{
-                param1: newIDP.name,
-              }
-            });
-          },
-          (error) => {
+    return this.providerApi.create(idp).pipe(
+      map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
+      map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
+      tap(
+        (newIDP: IdentityProvider) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROVIDER_CREATE',
+            translateParams: {
+              param1: newIDP.name,
+            },
+          });
+        },
+        (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+        },
+      ),
+    );
   }
 
-  patch(idp: { id: string, [key: string]: any }): Observable<IdentityProvider> {
-    return this.providerApi.patch(idp)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
-              translateParams:{
-                param1: updatedIdp.name,
-              }
-            });
-          },
-          (error) => {
+  patch(idp: { id: string; [key: string]: any }): Observable<IdentityProvider> {
+    return this.providerApi.patch(idp).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            translateParams: {
+              param1: updatedIdp.name,
+            },
+          });
+        },
+        (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+        },
+      ),
+    );
   }
 
   updateMetadataFile(id: string, idpMetadata: File): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderIdpMetadata(id, idpMetadata)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
-              translateParams:{
-                param1: updatedIdp.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.providerApi.patchProviderIdpMetadata(id, idpMetadata).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            translateParams: {
+              param1: updatedIdp.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   updateKeystore(id: string, file: File, password: string): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderKeystore(id, file, password)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
-              translateParams:{
-                param1: updatedIdp.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.providerApi.patchProviderKeystore(id, file, password).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            translateParams: {
+              param1: updatedIdp.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   updateSpMetadataFile(id: string, spMetadata: File): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderSpMetadata(id, spMetadata)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
-              translateParams:{
-                param1: updatedIdp.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.providerApi.patchProviderSpMetadata(id, spMetadata).pipe(
+      map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            translateParams: {
+              param1: updatedIdp.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   getAll(customerId?: string): Observable<IdentityProvider[]> {
@@ -170,24 +164,22 @@ export class IdentityProviderService {
 
     const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
 
-    return this.providerApi.getAll(httpParams)
-      .pipe(
-        map((identityProviders) => {
-          return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
-        }),
-        map((identityProviders) => {
-          return identityProviders.map((identityProvider) => this.addSpMetadataUrl(identityProvider));
-        })
-      );
+    return this.providerApi.getAll(httpParams).pipe(
+      map((identityProviders) => {
+        return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
+      }),
+      map((identityProviders) => {
+        return identityProviders.map((identityProvider) => this.addSpMetadataUrl(identityProvider));
+      }),
+    );
   }
 
   getDomainByCustomerId(customerId: string): Observable<string[]> {
-    return this.getAll(customerId)
-      .pipe(
-        map((identityProviders: IdentityProvider[]) => {
-            return identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []);
-        })
-      );
+    return this.getAll(customerId).pipe(
+      map((identityProviders: IdentityProvider[]) => {
+        return identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []);
+      }),
+    );
   }
 
   private addMetadataUrl(identityProvider: IdentityProvider): IdentityProvider {
@@ -199,5 +191,4 @@ export class IdentityProviderService {
     identityProvider.spMetadataUrl = this.providerApi.buildSpMetadataUrl(identityProvider.id);
     return identityProvider;
   }
-
 }

@@ -44,15 +44,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EmailsInputComponent } from './emails-input.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    MatInputModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatInputModule, TranslateModule],
   declarations: [EmailsInputComponent],
-  exports: [EmailsInputComponent]
+  exports: [EmailsInputComponent],
 })
-export class EmailsInputModule { }
+export class EmailsInputModule {}

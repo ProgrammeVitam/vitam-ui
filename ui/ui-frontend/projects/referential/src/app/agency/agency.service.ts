@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {Agency,SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Agency, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-
-import {AgencyApiService} from '../core/api/agency-api.service';
+import { AgencyApiService } from '../core/api/agency-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +48,11 @@ import {AgencyApiService} from '../core/api/agency-api.service';
 export class AgencyService extends SearchService<Agency> {
   updated = new Subject<Agency>();
 
-  constructor(private agencyApiService: AgencyApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private agencyApiService: AgencyApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, agencyApiService, 'ALL');
   }
 
@@ -81,16 +84,16 @@ export class AgencyService extends SearchService<Agency> {
         (response: Agency) => {
           this.snackBarService.open({
             message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
+            translateParams: {
+              name: response.identifier,
+            },
             icon: 'vitamui-icon-admin-key',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -101,16 +104,16 @@ export class AgencyService extends SearchService<Agency> {
         (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
+            translateParams: {
+              name: response.identifier,
+            },
             icon: 'vitamui-icon-admin-key',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -121,7 +124,7 @@ export class AgencyService extends SearchService<Agency> {
           if (response === false) {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
-              translateParams:{
+              translateParams: {
                 name: agency.id,
               },
               icon: 'vitamui-icon-admin-key',
@@ -129,7 +132,7 @@ export class AgencyService extends SearchService<Agency> {
           } else {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
-              translateParams:{
+              translateParams: {
                 name: agency.identifier,
               },
               icon: 'vitamui-icon-admin-key',
@@ -138,8 +141,8 @@ export class AgencyService extends SearchService<Agency> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -164,7 +167,7 @@ export class AgencyService extends SearchService<Agency> {
       },
       (error) => {
         this.snackBarService.open({ message: error.error.message, translate: false });
-      }
+      },
     );
   }
 

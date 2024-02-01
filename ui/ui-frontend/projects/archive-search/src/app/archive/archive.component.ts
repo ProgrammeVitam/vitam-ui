@@ -86,7 +86,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
     private loggerService: Logger,
-    private schemaService: SchemaService
+    private schemaService: SchemaService,
   ) {
     super(route, globalEventService);
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
@@ -136,7 +136,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
                 panelClass: 'vitamui-snack-bar',
                 duration: 10000,
               });
-            })
+            }),
           )
           .subscribe();
       }
@@ -161,7 +161,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 

@@ -37,8 +37,8 @@
 export interface VitamResponse<T> {
   $results: T[];
   $hits: {
-    total: number,
-    size: number,
-    offset: number
+    total: number;
+    size: number;
+    offset: number;
   };
 }

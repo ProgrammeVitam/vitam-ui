@@ -35,18 +35,15 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Injectable} from '@angular/core';
-import {FormControl} from '@angular/forms';
-
+import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Injectable()
 export class DateValidator {
-
-  constructor() {
-  }
+  constructor() {}
 
   static date(c: FormControl) {
     const dateRegEx = new RegExp(/^\d{1,2}\.\d{1,2}\.\d{4}$/);
-    return dateRegEx.test(c.value) ? null : {date: true};
+    return dateRegEx.test(c.value) ? null : { date: true };
   }
 }

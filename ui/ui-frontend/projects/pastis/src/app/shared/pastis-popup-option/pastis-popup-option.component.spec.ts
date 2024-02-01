@@ -11,7 +11,6 @@ import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { PastisPopupOptionComponent } from './pastis-popup-option.component';
 
-
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
@@ -22,7 +21,7 @@ describe('PastisPopupOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PastisPopupOptionComponent ],
+      declarations: [PastisPopupOptionComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
@@ -32,17 +31,16 @@ describe('PastisPopupOptionComponent', () => {
           preventDuplicates: false,
           timeOut: 3000,
           closeButton: false,
-          easeTime: 0
-        })
+          easeTime: 0,
+        }),
       ],
       providers: [
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MatSnackBar, useValue: snackBarSpy }
-      ]
-    })
-    .compileComponents();
+        { provide: MatSnackBar, useValue: snackBarSpy },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

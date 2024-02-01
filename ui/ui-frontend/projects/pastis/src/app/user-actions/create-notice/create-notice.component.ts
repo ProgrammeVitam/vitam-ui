@@ -16,7 +16,6 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 
-
 interface Status {
   value: string;
   viewValue: string;
@@ -33,7 +32,7 @@ function constantToTranslate() {
   // tslint:disable-next-line:component-selector
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
-  styleUrls: ['./create-notice.component.scss']
+  styleUrls: ['./create-notice.component.scss'],
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -62,17 +61,17 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
   externalIdentifierEnabled: boolean;
 
-  constructor(public dialogRef: MatDialogRef<CreateNoticeComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
-              private formBuilder: FormBuilder,
-              private translateService: TranslateService,
-              private popupService: PopupService,
-              private fileService: FileService,
-              private router: Router,
-              private profileService: ProfileService,
-              private applicationService: ApplicationService,) {
-
-  }
+  constructor(
+    public dialogRef: MatDialogRef<CreateNoticeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService,
+    private popupService: PopupService,
+    private fileService: FileService,
+    private router: Router,
+    private profileService: ProfileService,
+    private applicationService: ApplicationService,
+  ) {}
 
   ngOnInit() {
     this.typeProfile = this.data.profileMode;
@@ -91,13 +90,14 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.fileService.noticeEditable.subscribe((value: Notice) => {
           this.notice = value;
-        }));
+        }),
+      );
     } else {
       this.notice = {
         description: '',
         name: '',
         status: 'ACTIVE',
-        identifier: ''
+        identifier: '',
       };
     }
 
@@ -110,39 +110,39 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     }
     this.arrayStatus = [
       { value: 'INACTIVE', viewValue: this.profilInactif },
-      { value: 'ACTIVE', viewValue: this.profilActif }
+      { value: 'ACTIVE', viewValue: this.profilActif },
     ];
-    this.information = 'texte d\'information';
+    this.information = "texte d'information";
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       intitule: [null, Validators.required],
       selectedStatus: [null],
       description: [null],
-      autoriserPresenceMetadonnees: false
+      autoriserPresenceMetadonnees: false,
     });
-
 
     this.subscriptions.add(
       this.presenceNonDeclareMetadonneesPUAControl.valueChanges.subscribe((value) => {
         this.form.controls.autoriserPresenceMetadonnees.setValue(value);
-      }));
-
+      }),
+    );
 
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
 
     this.subscriptions.add(
-      this.popupService.btnYesShoudBeDisabled.subscribe(status => {
+      this.popupService.btnYesShoudBeDisabled.subscribe((status) => {
         this.btnIsDisabled = status;
-      }));
+      }),
+    );
   }
 
   translatedOnChange(): void {
     this.subscriptions.add(
-      this.translateService.onLangChange
-        .subscribe((_: LangChangeEvent) => {
-          constantToTranslate.call(this);
-        }));
+      this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
+        constantToTranslate.call(this);
+      }),
+    );
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -153,17 +153,14 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-
   upateButtonStatusAndDataToSend() {
     this.popupService.setPopUpDataOnClose('test');
     this.popupService.disableYesButton(true);
   }
 
-
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy(): void {
@@ -179,32 +176,30 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       const archivalProfileUnit = {} as ArchivalProfileUnit;
       archivalProfileUnit.identifier = this.notice.identifier;
       this.subscriptions.add(
-        this.profileService.checkPuaProfile(archivalProfileUnit).subscribe(
-          (response: boolean) => {
-            if (response) {
-              alert('Identifier already exists use another identifier');
-              this.validate = false;
-            } else {
-              this.validate = true;
-              this.checkIntitule();
-            }
+        this.profileService.checkPuaProfile(archivalProfileUnit).subscribe((response: boolean) => {
+          if (response) {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          } else {
+            this.validate = true;
+            this.checkIntitule();
           }
-        ));
+        }),
+      );
     } else {
       const profile = {} as Profile;
       profile.identifier = this.notice.identifier;
       this.subscriptions.add(
-        this.profileService.checkPaProfile(profile).subscribe(
-          (response: boolean) => {
-            if (response) {
-              alert('Identifier already exists use another identifier');
-              this.validate = false;
-            } else {
-              this.validate = true;
-              this.checkIntitule();
-            }
+        this.profileService.checkPaProfile(profile).subscribe((response: boolean) => {
+          if (response) {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          } else {
+            this.validate = true;
+            this.checkIntitule();
           }
-        ));
+        }),
+      );
     }
   }
 

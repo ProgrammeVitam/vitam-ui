@@ -1,11 +1,11 @@
 <div class="error-message">
-  <img class="vitamui-logo" [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'">
+  <img class="vitamui-logo" [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'" />
 
-  <h2>{{'ERROR_DIALOG.TITLE' | translate}}</h2>
-  <p>{{'ERROR_DIALOG.MESSAGE' | translate}}</p>
+  <h2>{{ 'ERROR_DIALOG.TITLE' | translate }}</h2>
+  <p>{{ 'ERROR_DIALOG.MESSAGE' | translate }}</p>
 
   <button class="btn link" (click)="goBack()">
     <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-    <span class="text-underline">{{'COMMON.UNDO' | translate}}</span>
+    <span class="text-underline">{{ 'COMMON.UNDO' | translate }}</span>
   </button>
 </div>

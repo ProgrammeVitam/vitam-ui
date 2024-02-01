@@ -44,14 +44,8 @@ import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { OwnerCreateComponent } from './owner-create.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    OwnerFormModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, MatProgressBarModule, ReactiveFormsModule, OwnerFormModule, VitamUICommonModule],
   declarations: [OwnerCreateComponent],
   entryComponents: [OwnerCreateComponent],
 })
-export class OwnerCreateModule { }
+export class OwnerCreateModule {}

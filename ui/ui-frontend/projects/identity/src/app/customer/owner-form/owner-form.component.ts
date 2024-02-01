@@ -103,7 +103,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     private formBuilder: FormBuilder,
     private ownerFormValidators: OwnerFormValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -160,7 +160,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
           country: 'FR',
         },
         readonly: false,
-      }
+      },
     );
 
     this.subscribeToValueChanges();
@@ -178,7 +178,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
         map(() => (this.form.pending || this.form.invalid ? null : this.form.value)),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe((value) => this.onChange(value));
   }

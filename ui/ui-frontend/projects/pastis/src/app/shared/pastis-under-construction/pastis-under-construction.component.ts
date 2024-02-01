@@ -41,13 +41,10 @@ import { Component, OnInit } from '@angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'pastis-under-construction',
   templateUrl: './pastis-under-construction.component.html',
-  styleUrls: ['./pastis-under-construction.component.scss']
+  styleUrls: ['./pastis-under-construction.component.scss'],
 })
 export class PastisUnderConstructionComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -69,24 +69,22 @@ describe('UnitsEditComponent', () => {
   let component: UnitsEditComponent;
   let fixture: ComponentFixture<UnitsEditComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-        declarations: [UnitsEditComponent, UnitsFormStubComponent],
-        providers: [
-          { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [UnitsEditComponent, UnitsFormStubComponent],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnitsEditComponent);

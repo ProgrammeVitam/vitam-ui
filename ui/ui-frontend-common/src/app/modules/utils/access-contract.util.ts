@@ -40,6 +40,6 @@ export const HOLDING_ACCESS_CONTRACT_NAME = 'Contrat Acces Arbre';
 export const LOGBOOK_ACCESS_CONTRACT_NAME = 'Contrat Acces Logbook';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessContractUtil {}

@@ -60,13 +60,9 @@ import { SubrogationRoutingModule } from './subrogation-routing.module';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     ReactiveFormsModule,
-    SubrogationRoutingModule
+    SubrogationRoutingModule,
   ],
-  declarations: [
-    SubrogateUserListComponent,
-    SubrogateUserComponent
-  ],
-  providers: [
-  ]
+  declarations: [SubrogateUserListComponent, SubrogateUserComponent],
+  providers: [],
 })
-export class SubrogationModule { }
+export class SubrogationModule {}

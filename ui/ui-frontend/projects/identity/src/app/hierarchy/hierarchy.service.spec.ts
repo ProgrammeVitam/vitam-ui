@@ -51,10 +51,9 @@ describe('HierarchyService', () => {
         HierarchyService,
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      ],
     });
-  }
-  );
+  });
 
   it('should be created', () => {
     const service: HierarchyService = TestBed.inject(HierarchyService);

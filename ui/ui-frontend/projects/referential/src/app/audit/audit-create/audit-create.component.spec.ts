@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {AuditCreateComponent} from './audit-create.component';
+import { AuditCreateComponent } from './audit-create.component';
 
 // TODO make it work
 xdescribe('AuditCreateComponent', () => {
@@ -45,9 +45,8 @@ xdescribe('AuditCreateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AuditCreateComponent]
-    })
-      .compileComponents();
+      declarations: [AuditCreateComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

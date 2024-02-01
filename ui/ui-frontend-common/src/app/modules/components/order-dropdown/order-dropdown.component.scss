@@ -2,39 +2,38 @@
 @import '../../../../sass/mixins/elevation';
 
 .btn-orderby {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 30px;
-    height: 30px;
-    color: #d8d8d8;
-    transition: color 200ms ease-out;
-    white-space: nowrap;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 30px;
+  height: 30px;
+  color: #d8d8d8;
+  transition: color 200ms ease-out;
+  white-space: nowrap;
 
-    &.active {
-        color: var(--vitamui-primary);
-    }
+  &.active {
+    color: var(--vitamui-primary);
+  }
 
-    &.upside-down > i {
-        transform: rotate(180deg);
-    }
+  &.upside-down > i {
+    transform: rotate(180deg);
+  }
 
-    > i {
-        transition: transform 200ms ease-out;
-    }
-
+  > i {
+    transition: transform 200ms ease-out;
+  }
 }
 
 .order-dropdown-container {
-    padding: 10px 0;
-    background: white;
-    @include input-elevation-dark;
-    border-radius: 5px;
-    min-width: 100px;
+  padding: 10px 0;
+  background: white;
+  @include input-elevation-dark;
+  border-radius: 5px;
+  min-width: 100px;
 }

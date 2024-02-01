@@ -35,9 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export interface Option {
-
   key?: any;
   label: string;
   info?: string;
-
 }

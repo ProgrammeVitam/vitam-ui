@@ -40,22 +40,19 @@ import { Observable, Subject } from 'rxjs';
 import { EMPTY } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User, VitamUISnackBarService } from 'ui-frontend-common';
-import {
-  BaseUserInfoApiService, SearchService
-} from 'ui-frontend-common';
+import { BaseUserInfoApiService, SearchService } from 'ui-frontend-common';
 
 import { UserInfo } from 'ui-frontend-common';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
-
   userInfoUpdated = new Subject<UserInfo>();
 
   constructor(
     private userInfoServiceApi: BaseUserInfoApiService,
     private snackBarService: VitamUISnackBarService,
 
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, { getAllPaginated: () => EMPTY }, '');
   }
@@ -63,7 +60,6 @@ export class UserInfoService extends SearchService<UserInfo> {
   create(userInfo: UserInfo): Observable<UserInfo> {
     return this.userInfoServiceApi.create(userInfo);
   }
-
 
   get(id: string): Observable<UserInfo> {
     return this.userInfoServiceApi.getOne(id);
@@ -73,26 +69,24 @@ export class UserInfoService extends SearchService<UserInfo> {
     return this.userInfoServiceApi.getMyUserInfo();
   }
 
-  patch(partialUser: { id: string, [key: string]: any }, user: User): Observable<UserInfo> {
+  patch(partialUser: { id: string; [key: string]: any }, user: User): Observable<UserInfo> {
     return this.userInfoServiceApi.patch(partialUser).pipe(
       tap((response) => this.userInfoUpdated.next(response)),
       tap(
         () => {
           this.snackBarService.open({
             message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-            translateParams:{
+            translateParams: {
               param1: user.firstname,
               param2: user.lastname,
             },
-            icon: 'vitamui-icon-key'
+            icon: 'vitamui-icon-key',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
-
-
 }

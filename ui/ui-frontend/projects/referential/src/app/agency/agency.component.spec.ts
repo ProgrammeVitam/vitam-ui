@@ -49,7 +49,6 @@ import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 import { AgencyService } from './agency.service';
 
-
 @Component({ selector: 'app-agency-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
 class AgencyPreviewStub {
@@ -59,8 +58,7 @@ class AgencyPreviewStub {
 
 @Component({ selector: 'app-agency-list', template: '' })
 // tslint:disable-next-line:component-class-suffix
-class AgencyListStub {
-}
+class AgencyListStub {}
 
 const securityServiceMock = {
   hasRole: () => of(true),
@@ -72,11 +70,7 @@ describe('AgencyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AgencyComponent,
-        AgencyListStub,
-        AgencyPreviewStub
-      ],
+      declarations: [AgencyComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -85,7 +79,7 @@ describe('AgencyComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
-        MatMenuModule
+        MatMenuModule,
       ],
       providers: [
         { provide: AgencyService, useValue: {} },
@@ -93,11 +87,10 @@ describe('AgencyComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'AGENCIES_APP' }) },
-        }
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

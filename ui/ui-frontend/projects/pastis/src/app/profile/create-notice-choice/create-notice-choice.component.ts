@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
-
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.NOTICE_CHOICE';
 
 function constantToTranslate() {
@@ -18,38 +17,37 @@ function constantToTranslate() {
   // tslint:disable-next-line:component-selector
   selector: 'create-notice-choice',
   templateUrl: './create-notice-choice.component.html',
-  styleUrls: ['./create-notice-choice.component.scss']
+  styleUrls: ['./create-notice-choice.component.scss'],
 })
-
 export class CreateNoticeChoiceComponent implements OnInit {
-
   firstChoice: string;
   secondChoice: string;
   title: string;
   noticePaChoice = true;
   isStandalone: boolean = environment.standalone;
 
-  constructor(private dialogRef: MatDialogRef<CreateNoticeChoiceComponent>, private translateService: TranslateService,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogData) {
-  }
+  constructor(
+    private dialogRef: MatDialogRef<CreateNoticeChoiceComponent>,
+    private translateService: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
+  ) {}
 
   ngOnInit() {
     if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = ProfileType.PA
-      this.secondChoice = ProfileType.PUA
-      this.title = 'Choisir le type de notice à créer :'
+      this.firstChoice = ProfileType.PA;
+      this.secondChoice = ProfileType.PUA;
+      this.title = 'Choisir le type de notice à créer :';
     }
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((event: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        console.log(event.lang);
-      });
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      constantToTranslate.call(this);
+      console.log(event.lang);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -65,7 +63,7 @@ export class CreateNoticeChoiceComponent implements OnInit {
   }
 
   changeChoiceCreateProfile($event: string) {
-    console.log($event)
+    console.log($event);
     this.noticePaChoice = $event === this.firstChoice;
   }
 
@@ -76,5 +74,4 @@ export class CreateNoticeChoiceComponent implements OnInit {
       this.dialogRef.close({ success: true, action: ProfileType.PUA });
     }
   }
-
 }

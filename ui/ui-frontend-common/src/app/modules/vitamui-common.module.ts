@@ -130,7 +130,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
         .login()
         .pipe(
           first((authenticated) => authenticated),
-          switchMap(() => startupService.load())
+          switchMap(() => startupService.load()),
         )
         .subscribe(() => resolve(true));
       // tslint:disable-next-line: semicolon whitespace

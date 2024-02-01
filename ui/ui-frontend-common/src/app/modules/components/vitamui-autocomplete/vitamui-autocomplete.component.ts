@@ -145,7 +145,7 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
 
         return '';
       }),
-      map((name) => (name ? this.filter(name) : this.options.slice()))
+      map((name) => (name ? this.filter(name) : this.options.slice())),
     );
 
     this.filteredOptions = merge(valueChanges, this.optionsChanges.pipe(map((options) => this.sortedOption(options))));

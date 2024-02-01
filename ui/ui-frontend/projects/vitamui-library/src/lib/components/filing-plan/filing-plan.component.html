@@ -1,10 +1,6 @@
 <div class="dlab-sidepanel">
   <div class="dlab-sidepanel-body">
-    <mat-tree
-      [dataSource]="nestedDataSource"
-      [treeControl]="nestedTreeControl"
-      class="filing-tree"
-    >
+    <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="filing-tree">
       <mat-tree-node *matTreeNodeDef="let node">
         <li class="mat-tree-node filing-tree-node">
           <vitamui-library-node
@@ -33,11 +29,9 @@
           </ul>
         </li>
       </mat-nested-tree-node>
-
     </mat-tree>
     <div class="loader" *ngIf="filingPlanService.pending">
-        <mat-spinner diameter="50" color="accent"></mat-spinner>
+      <mat-spinner diameter="50" color="accent"></mat-spinner>
     </div>
   </div>
-
 </div>

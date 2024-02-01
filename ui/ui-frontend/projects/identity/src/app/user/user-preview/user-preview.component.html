@@ -1,64 +1,95 @@
 <vitamui-common-sidenav-header
-  [badge]="user?.status === 'ENABLED' ? 'green' : (user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : 'orange')"
+  [badge]="user?.status === 'ENABLED' ? 'green' : user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : 'orange'"
   [title]="user?.lastname.toUpperCase() + ' ' + user?.firstname"
-  [subtitle]="'(' +  user?.identifier + ')'"
+  [subtitle]="'(' + user?.identifier + ')'"
   [icon]="'vitamui-icon-user'"
-  (onclose)="emitClose()">
-    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-      <button mat-menu-item (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">{{'USER.OTHER_ACTION.ACTIVATE' | translate}} </button>
-      <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">{{'USER.OTHER_ACTION.DESACTIVATE' | translate}}</button>
-      <button mat-menu-item i18n="@@userPreviewDeleted" (click)="deleteUser(user,'REMOVED')"
-              [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'">Supprimer les données personnelles</button>
-    </vitamui-common-menu-button>
+  (onclose)="emitClose()"
+>
+  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+    <button mat-menu-item (click)="updateStatus('ENABLED')" [disabled]="user?.status === 'ENABLED'">
+      {{ 'USER.OTHER_ACTION.ACTIVATE' | translate }}
+    </button>
+    <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">
+      {{ 'USER.OTHER_ACTION.DESACTIVATE' | translate }}
+    </button>
+    <button
+      mat-menu-item
+      i18n="@@userPreviewDeleted"
+      (click)="deleteUser(user, 'REMOVED')"
+      [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'"
+    >
+      Supprimer les données personnelles
+    </button>
+  </vitamui-common-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'USER.TAB.INFORMATIONS' | translate">
-      <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [adminUserProfile]="connectedUserInfo" [userInfo] = "userInfo"></app-user-info-tab>
+      <app-user-info-tab
+        [user]="user"
+        [customer]="customer"
+        [readOnly]="isPopup || user?.readonly || levelNotAllowed()"
+        [adminUserProfile]="connectedUserInfo"
+        [userInfo]="userInfo"
+      ></app-user-info-tab>
     </mat-tab>
 
     <mat-tab [label]="'USER.TAB.GROUP' | translate" class="no-padding">
-      <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo" [groups]="groups"></app-user-group-tab>
+      <app-user-group-tab
+        [user]="user"
+        [readOnly]="isPopup || user?.readonly || levelNotAllowed()"
+        [userInfo]="connectedUserInfo"
+        [groups]="groups"
+      ></app-user-group-tab>
     </mat-tab>
 
     <mat-tab [label]="'USER.TAB.HISTORY' | translate">
-      <vitamui-common-multi-operation-history-tab [collectionsMap]="collectionsMap" [identifiers]="identifiers" [filter]="filterAuthenticationEvents"></vitamui-common-multi-operation-history-tab>
-   </mat-tab>
+      <vitamui-common-multi-operation-history-tab
+        [collectionsMap]="collectionsMap"
+        [identifiers]="identifiers"
+        [filter]="filterAuthenticationEvents"
+      ></vitamui-common-multi-operation-history-tab>
+    </mat-tab>
   </mat-tab-group>
 </div>
 
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
-    <p>{{'USER.OTHER_ACTION.DESACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
-  </mat-dialog-content>
+    <p>
+      {{ 'USER.OTHER_ACTION.DESACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+    </p></mat-dialog-content
+  >
 
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
-    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button matDialogClose class="btn link cancel">{{ 'COMMON.BACK' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
-    <p>{{'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}</p>
+    <p>
+      {{ 'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+    </p>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
-    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button matDialogClose class="btn link cancel">{{ 'COMMON.BACK' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #confirmdeleteUserDialog>
   <mat-dialog-content>
-    <p i18n="@@disabledUserConfirm"> Vous allez procéder à l'effacement des données personnelles de l'utilisateur
-      {{user?.firstname}} {{user?.lastname}}. Cette action ne peut pas être annulée, voulez-vous confirmer ?
+    <p i18n="@@disabledUserConfirm">
+      Vous allez procéder à l'effacement des données personnelles de l'utilisateur {{ user?.firstname }} {{ user?.lastname }}. Cette action
+      ne peut pas être annulée, voulez-vous confirmer ?
     </p>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
-    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button matDialogClose class="btn link cancel">{{ 'COMMON.BACK' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

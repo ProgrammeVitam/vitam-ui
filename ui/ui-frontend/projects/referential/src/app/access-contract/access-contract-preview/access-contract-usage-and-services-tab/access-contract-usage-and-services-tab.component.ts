@@ -85,7 +85,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
   ) {
     this.initForm();
   }
@@ -101,7 +101,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
           next: (value) => {
             this.changed = value;
           },
-        })
+        }),
       )
       .subscribe((value) => this.updated.emit(value));
   }
@@ -128,7 +128,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
       },
       () => {
         this.submitting = false;
-      }
+      },
     );
   }
 
@@ -142,8 +142,8 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
 
     return of(dataToPatch).pipe(
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 

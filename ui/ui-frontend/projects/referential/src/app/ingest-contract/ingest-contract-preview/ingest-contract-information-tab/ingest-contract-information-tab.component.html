@@ -64,8 +64,7 @@
           i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
           panelclass="vitamui-mat-select"
         >
-          <mat-option [value]="null">
-            {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
+          <mat-option [value]="null"> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
           <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier">{{
             managementContract.name
           }}</mat-option>

@@ -34,14 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  Directive,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Directive, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 const DEFAULT_SCROLL_THRESHOLD = 0.8;
 
@@ -56,26 +49,25 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
 
   private scrollElement: Element;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {
     const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
     const windowElement = document.getElementsByTagName('div');
-    const scrollElement = sideNavElement?.length > 0 ? sideNavElement[sideNavElement?.length - 1 ] : windowElement[0];
+    const scrollElement = sideNavElement?.length > 0 ? sideNavElement[sideNavElement?.length - 1] : windowElement[0];
 
     this.scrollElement = this.getScrollElement();
     if (this.scrollElement) {
-        scrollElement.addEventListener('scroll', () => {
-            if (!this.vitamuiCommonInfiniteScrollDisable) {
-                const height = scrollElement.scrollHeight - scrollElement.clientHeight;
-                const scrollRatio = scrollElement.scrollTop / height;
+      scrollElement.addEventListener('scroll', () => {
+        if (!this.vitamuiCommonInfiniteScrollDisable) {
+          const height = scrollElement.scrollHeight - scrollElement.clientHeight;
+          const scrollRatio = scrollElement.scrollTop / height;
 
-                if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold) {
-                    this.vitamuiScroll.emit();
-                }
-            }
-        });
+          if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold) {
+            this.vitamuiScroll.emit();
+          }
+        }
+      });
     }
   }
 
@@ -86,26 +78,18 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
   }
 
   private getScrollElement(): Element {
-    const sideNavElement = document.getElementsByClassName(
-      'mat-sidenav-content'
-    );
+    const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
     const windowElement = document.getElementsByTagName('div');
-    return sideNavElement?.length > 0
-      ? sideNavElement[sideNavElement.length - 1]
-      : windowElement?.length > 0
-        ? windowElement[0]
-        : null;
+    return sideNavElement?.length > 0 ? sideNavElement[sideNavElement.length - 1] : windowElement?.length > 0 ? windowElement[0] : null;
   }
 
   private scroll = (): void => {
     if (!this.vitamuiCommonInfiniteScrollDisable) {
-      const height =
-        this.scrollElement.scrollHeight - this.scrollElement.clientHeight;
+      const height = this.scrollElement.scrollHeight - this.scrollElement.clientHeight;
       const scrollRatio = this.scrollElement.scrollTop / height;
       if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold) {
         this.vitamuiScroll.emit();
       }
     }
-  }
-
+  };
 }

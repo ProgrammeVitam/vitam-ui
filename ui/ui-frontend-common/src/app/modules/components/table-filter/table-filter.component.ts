@@ -83,13 +83,13 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
     if (this.options) {
       return this.options.changes.pipe(
         startWith(this.options),
-        switchMap(() => merge(...this.options.map((option) => option.selectionChange)))
+        switchMap(() => merge(...this.options.map((option) => option.selectionChange))),
       );
     }
 
     return this.ngZone.onStable.asObservable().pipe(
       take(1),
-      switchMap(() => this.optionSelectionChanges)
+      switchMap(() => this.optionSelectionChanges),
     );
   }) as Observable<TableFilterOptionComponent>;
 

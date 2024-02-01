@@ -53,5 +53,5 @@ export enum Operators {
   count = 'COUNT',
   isNotNull = 'ISNOTNULL',
   isEqualToProperty = 'ISEQUALTOPROPERTY',
-  namedExpression = 'NAMEDEXPRESSION'
+  namedExpression = 'NAMEDEXPRESSION',
 }

@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:no-magic-numbers */
-import {ɵisObservable as isObservable, ɵisPromise as isPromise} from '@angular/core';
-import {fakeAsync, tick} from '@angular/core/testing';
-import {FormControl} from '@angular/forms';
-import {from, Observable, of} from 'rxjs';
-import {RuleCreateValidators} from './rule-create.validators';
+import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { from, Observable, of } from 'rxjs';
+import { RuleCreateValidators } from './rule-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -51,7 +51,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('Rule Create Validators', () => {
-
   describe('uniqueRuleId', () => {
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
@@ -61,7 +60,7 @@ describe('Rule Create Validators', () => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
     }));
 
     it('should return { ruleIdExists: true }', fakeAsync(() => {
@@ -69,10 +68,10 @@ describe('Rule Create Validators', () => {
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
       toObservable(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ruleIdExists: true});
+        expect(result).toEqual({ ruleIdExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
     }));
 
     it('should not call the service', fakeAsync(() => {
@@ -91,10 +90,10 @@ describe('Rule Create Validators', () => {
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
       toObservable(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ruleIdExists: true});
+        expect(result).toEqual({ ruleIdExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '111111'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '111111' });
     }));
   });
 
@@ -108,8 +107,7 @@ describe('Rule Create Validators', () => {
     it('should return { ruleIdPattern: true }', fakeAsync(() => {
       const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('ÀÖØöøÿ '))).toEqual({ruleIdPattern: true});
+      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('ÀÖØöøÿ '))).toEqual({ ruleIdPattern: true });
     }));
   });
-
 });

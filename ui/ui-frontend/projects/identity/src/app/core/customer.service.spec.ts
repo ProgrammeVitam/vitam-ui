@@ -34,8 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, Customer, ENVIRONMENT, LoggerModule,
-  Operators, OtpState, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
+import {
+  BASE_URL,
+  Customer,
+  ENVIRONMENT,
+  LoggerModule,
+  Operators,
+  OtpState,
+  SearchQuery,
+  VitamUISnackBarService,
+} from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';

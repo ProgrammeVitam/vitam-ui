@@ -41,17 +41,8 @@ import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcr
 import { VitamuiTitleBreadcrumbComponent } from './vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
 
 @NgModule({
-  declarations: [
-    VitamuiBreadcrumbComponent,
-    VitamuiTitleBreadcrumbComponent
-  ],
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
-  exports: [
-    VitamuiBreadcrumbComponent,
-    VitamuiTitleBreadcrumbComponent,
-  ]
+  declarations: [VitamuiBreadcrumbComponent, VitamuiTitleBreadcrumbComponent],
+  imports: [CommonModule, TranslateModule],
+  exports: [VitamuiBreadcrumbComponent, VitamuiTitleBreadcrumbComponent],
 })
-export class VitamuiContentBreadcrumbModule { }
+export class VitamuiContentBreadcrumbModule {}

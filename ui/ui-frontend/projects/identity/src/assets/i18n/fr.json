@@ -129,8 +129,10 @@
       "PWD_REVOCATION_SIX": "6 mois",
       "PWD_REVOCATION_NINE": "9 mois",
       "PWD_REVOCATION_TWELVE": "12 mois",
-      "OTP_DESACTIVATE": "Non",
-      "OTP_OPTIONNAL": "Optionnelle",
+      "IDP_YES": "Oui",
+      "IDP_NO": "Non",
+      "OTP_DISABLED": "Non",
+      "OTP_OPTIONAL": "Optionnelle",
       "OTP_MANDATORY": "Obligatoire",
       "MODAL": {
         "DOMAINS_RESTRICTION": "Restriction de domaine e-mail",
@@ -142,8 +144,8 @@
         "PWD_REVOCATION_SIX": "6 mois",
         "PWD_REVOCATION_NINE": "9 mois",
         "PWD_REVOCATION_TWELVE": "12 mois",
-        "OTP_DESACTIVATE": "Désactivé",
-        "OTP_OPTIONNAL": "Optionnelle",
+        "OTP_DISABLED": "Désactivé",
+        "OTP_OPTIONAL": "Optionnelle",
         "OTP_MANDATORY": "Obligatoire"
       }
     },
@@ -185,7 +187,7 @@
         "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
       },
       "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs",
-      "MAXIMUM_AUTHENTICATION_LIFETIME" : "Temps maximum de connexion (secondes)",
+      "MAXIMUM_AUTHENTICATION_LIFETIME": "Temps maximum de connexion (secondes)",
       "WANTS_ASSERTION_SIGNED": "Assertions signées",
       "AUTHN_REQUEST_SIGNED": "Requête d'authentification signée"
     },

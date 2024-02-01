@@ -69,7 +69,7 @@ export class SubrogationService {
     private snackBarService: VitamUISnackBarService,
     private authService: AuthService,
     @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
-    @Inject(LOCALE_ID) private local: string
+    @Inject(LOCALE_ID) private local: string,
   ) {}
 
   intervalCheck: number;
@@ -85,14 +85,14 @@ export class SubrogationService {
       takeUntil(this.subrogationCancel),
       switchMap(() => this.getSubrogation(subrogationCreated.id, dialogRef)),
       filter((subrogationWatched) => subrogationWatched.status === 'ACCEPTED'),
-      take(1)
+      take(1),
     );
   }
 
   checkCurrentUserIsInSubrogation(): Observable<Subrogation> {
     return this.subrogationApi.getMySubrogationAsSuperuser().pipe(
       map((response) => response),
-      catchError(() => of(undefined))
+      catchError(() => of(undefined)),
     );
   }
 
@@ -111,7 +111,7 @@ export class SubrogationService {
             icon: 'vitamui-icon-link banner-icon',
           });
         },
-      })
+      }),
     );
   }
 
@@ -128,7 +128,7 @@ export class SubrogationService {
         error: (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
         },
-      })
+      }),
     );
   }
 
@@ -179,7 +179,7 @@ export class SubrogationService {
 
           return false;
         }),
-        last()
+        last(),
       )
       .subscribe((accepted) => {
         if (!accepted) {

@@ -51,7 +51,10 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
-  constructor(private archiveService: ArchiveService, private clipboard: Clipboard) {}
+  constructor(
+    private archiveService: ArchiveService,
+    private clipboard: Clipboard,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
@@ -73,7 +76,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
       this.archiveUnit['#id'],
       this.tenantIdentifier,
       versionWithQualifier.qualifier,
-      versionWithQualifier.version
+      versionWithQualifier.version,
     );
   }
 

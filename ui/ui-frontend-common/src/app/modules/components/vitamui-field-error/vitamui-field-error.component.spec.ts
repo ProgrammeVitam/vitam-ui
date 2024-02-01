@@ -44,9 +44,8 @@ describe('VitamUIFieldErrorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VitamUIFieldErrorComponent ]
-    })
-    .compileComponents();
+      declarations: [VitamUIFieldErrorComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

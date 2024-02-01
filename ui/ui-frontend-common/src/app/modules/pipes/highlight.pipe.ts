@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import {DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeColorType } from '../utils';
 
-@Pipe({name: 'highlight'})
-export class  HighlightPipe implements PipeTransform {
+@Pipe({ name: 'highlight' })
+export class HighlightPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(value: any, args: any): any {

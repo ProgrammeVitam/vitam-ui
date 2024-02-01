@@ -91,7 +91,7 @@ export class AgencyInformationTabComponent {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private agencyService: AgencyService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -120,7 +120,7 @@ export class AgencyInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null))))
+      switchMap((formData: { id: string; [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
@@ -138,7 +138,7 @@ export class AgencyInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

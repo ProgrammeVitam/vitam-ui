@@ -1,83 +1,83 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
-    .vitamui-panel-content  {
-        padding: 0!important;
-    }
+  .vitamui-panel-content {
+    padding: 0 !important;
+  }
 }
 
 button.back {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .vitamui-panel {
-    .vitamui-panel-content {
-        padding: 30px 60px 0 40px;
-        overflow: visible;
-        height: 100%;
-        width: 100%;
-        transform: none;
-    }
+  .vitamui-panel-content {
+    padding: 30px 60px 0 40px;
+    overflow: visible;
+    height: 100%;
+    width: 100%;
+    transform: none;
+  }
 }
 
 button.btn {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .provider-list {
-    width: 100%;
+  width: 100%;
+  font-size: 14px;
+
+  .provider-item-content {
+    border-radius: 5px;
+    background-color: var(--vitamui-grey-100);
+    color: var(--vitamui-grey-900);
+    min-height: 60px;
+    width: 90%;
+    cursor: pointer;
+
+    div {
+      font-weight: 500;
+    }
+
+    label {
+      font-weight: normal;
+    }
+  }
+
+  .provider-item-centered {
+    align-self: center;
+  }
+
+  .provider-item-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    border-radius: 3px;
+    border: solid 1px var(--vitamui-primary);
+    margin-left: 10px;
+    color: var(--vitamui-primary);
+    font-size: 9px;
+    text-align: center;
+    text-decoration: none;
+
+    &.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+
+  .provider-status {
     font-size: 14px;
+    font-weight: bold;
+    color: var(--vitamui-grey-600);
+    width: 100%;
+    text-align: right;
 
-    .provider-item-content {
-        border-radius: 5px;
-        background-color: var(--vitamui-grey-100);
-        color: var(--vitamui-grey-900);
-        min-height: 60px;
-        width: 90%;
-        cursor: pointer;
-
-        div {
-            font-weight: 500;
-        }
-
-        label {
-            font-weight: normal;
-        }
+    &.active {
+      color: $green;
     }
-
-    .provider-item-centered {
-        align-self: center;
-    }
-
-    .provider-item-link {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 60px;
-        border-radius: 3px;
-        border: solid 1px var(--vitamui-primary);
-        margin-left: 10px;
-        color: var(--vitamui-primary);
-        font-size: 9px;
-        text-align: center;
-        text-decoration: none;
-
-        &.disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-    }
-
-    .provider-status {
-        font-size: 14px;
-        font-weight: bold;
-        color: var(--vitamui-grey-600);
-        width: 100%;
-        text-align: right;
-
-        &.active {
-            color: $green;
-        }
-    }
+  }
 }

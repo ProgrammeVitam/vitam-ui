@@ -43,10 +43,9 @@ import { AuditService } from '../audit.service';
 @Component({
   selector: 'app-audit-preview',
   templateUrl: './audit-preview.component.html',
-  styleUrls: ['./audit-preview.component.scss']
+  styleUrls: ['./audit-preview.component.scss'],
 })
 export class AuditPreviewComponent implements OnInit {
-
   @Input() audit: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -55,21 +54,23 @@ export class AuditPreviewComponent implements OnInit {
   constructor(
     private auditService: AuditService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar) {
-  }
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
         this.snackBar.open(
           $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000
-        });
+          null,
+          {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          },
+        );
       }
     });
   }
@@ -83,9 +84,8 @@ export class AuditPreviewComponent implements OnInit {
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_AUDIT') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_AUDIT')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_AUDIT') || event.outDetail.includes('EXT_VITAMUI_CREATE_AUDIT'))
     );
   }
 }

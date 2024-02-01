@@ -69,7 +69,10 @@ export class EditableSelectComponent extends EditableFieldComponent {
 
   private dialogRef: MatDialogRef<EditableFieldComponent>;
 
-  constructor(private matDialog: MatDialog, elementRef: ElementRef) {
+  constructor(
+    private matDialog: MatDialog,
+    elementRef: ElementRef,
+  ) {
     super(elementRef);
   }
 

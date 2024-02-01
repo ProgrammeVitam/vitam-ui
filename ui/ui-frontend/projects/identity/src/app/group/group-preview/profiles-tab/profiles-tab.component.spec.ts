@@ -55,9 +55,7 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-  template: `
-    <app-profiles-tab [group]="group" [readOnly]="readOnly"></app-profiles-tab>
-  `
+  template: ` <app-profiles-tab [group]="group" [readOnly]="readOnly"></app-profiles-tab> `,
 })
 class TesthostComponent {
   readOnly = false;
@@ -67,7 +65,7 @@ class TesthostComponent {
     customerId: '42',
     name: 'Profile Group Name',
     level: 'level',
-    usersCount : 0,
+    usersCount: 0,
     description: 'Profile Group Description',
     profileIds: [],
     units: [],
@@ -86,7 +84,7 @@ class TesthostComponent {
         tenantIdentifier: 1,
         roles: [],
         externalParamId: null,
-        readonly: false
+        readonly: false,
       },
       {
         id: '2',
@@ -102,7 +100,7 @@ class TesthostComponent {
         tenantIdentifier: 2,
         roles: [],
         externalParamId: null,
-        readonly: false
+        readonly: false,
       },
       {
         id: '3',
@@ -118,10 +116,10 @@ class TesthostComponent {
         tenantIdentifier: 1,
         roles: [],
         externalParamId: null,
-        readonly: false
+        readonly: false,
       },
     ],
-    readonly: true
+    readonly: true,
   };
 }
 
@@ -130,31 +128,31 @@ const expectedApp = [
     id: 'CUSTOMERS_APP',
     identifier: 'CUSTOMERS_APP',
     name: 'Organisations',
-    url: ''
+    url: '',
   },
   {
     id: 'ARCHIVE_APP',
     identifier: 'ARCHIVE_APP',
     name: 'Archives',
-    url: ''
+    url: '',
   },
   {
     id: 'USERS_APP',
     identifier: 'USERS_APP',
     name: 'Utilisateurs',
-    url: ''
+    url: '',
   },
   {
     id: 'GROUPS_APP',
     identifier: 'GROUPS_APP',
     name: 'Groupes de profils',
-    url: ''
+    url: '',
   },
   {
     id: 'PROFILES_APP',
     identifier: 'PROFILES_APP',
     name: 'Profils APP Utilisateurs',
-    url: ''
+    url: '',
   },
 ];
 
@@ -166,15 +164,14 @@ describe('ProfilesTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports : [ VitamUICommonTestModule ],
-      declarations: [ ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective ],
+      imports: [VitamUICommonTestModule],
+      declarations: [ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: GroupService, useValue: { updated: new Subject() } },
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -199,7 +196,7 @@ describe('ProfilesTabComponent', () => {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
   });
 
@@ -235,7 +232,7 @@ describe('ProfilesTabComponent', () => {
           tenantIdentifier: 2,
           roles: [],
           externalParamId: null,
-          readonly: false
+          readonly: false,
         },
         {
           id: '2',
@@ -251,7 +248,7 @@ describe('ProfilesTabComponent', () => {
           tenantIdentifier: 2,
           roles: [],
           externalParamId: null,
-          readonly: false
+          readonly: false,
         },
         {
           id: '3',
@@ -267,10 +264,10 @@ describe('ProfilesTabComponent', () => {
           tenantIdentifier: 2,
           roles: [],
           externalParamId: null,
-          readonly: false
+          readonly: false,
         },
       ],
-      readonly: true
+      readonly: true,
     };
     fixture.detectChanges();
     const elList = fixture.nativeElement.querySelector('.vitamui-profile-list');
@@ -279,9 +276,9 @@ describe('ProfilesTabComponent', () => {
     expect(elRows.length).toBe(3);
     testhost.group.profiles.forEach((profile: any, index: number) => {
       const elDetails = elRows[index];
-      expect(elDetails.textContent).toContain(profile.tenantName + ' : ' +
-        profile.name.charAt(0).toUpperCase() + profile.name.substr(1).toLowerCase());
+      expect(elDetails.textContent).toContain(
+        profile.tenantName + ' : ' + profile.name.charAt(0).toUpperCase() + profile.name.substr(1).toLowerCase(),
+      );
     });
   });
-
 });

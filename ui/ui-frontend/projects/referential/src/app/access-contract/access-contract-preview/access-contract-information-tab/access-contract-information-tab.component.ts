@@ -43,8 +43,7 @@ import { AccessContract, diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from '../../access-contract.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
-
+import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-access-contract-information-tab',
@@ -87,7 +86,7 @@ export class AccessContractInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators
+    private accessContractCreateValidators: AccessContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -173,7 +172,7 @@ export class AccessContractInformationTabComponent {
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -192,7 +191,7 @@ export class AccessContractInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

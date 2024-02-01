@@ -53,10 +53,10 @@ export class ProfileValidators {
         switchMap(() =>
           control.value !== nameToIgnore
             ? this.rngProfileService.exists(tenantIdentifier, level, applicationName, control.value)
-            : of(false)
+            : of(false),
         ),
         take(1),
-        map((exists: boolean) => (exists ? { nameExists: true } : null))
+        map((exists: boolean) => (exists ? { nameExists: true } : null)),
       );
     };
   };

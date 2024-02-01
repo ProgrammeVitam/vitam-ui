@@ -50,7 +50,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private contractFormConverterService: ContractFormConverterService,
-    private managementContractService: ManagementContractService
+    private managementContractService: ManagementContractService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -62,7 +62,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   private buildForm(managementContract: ManagementContract): void {
     this.contractForm = this.formBuilder.group({
       persistentIdentifiers: this.formBuilder.array(
-        managementContract.persistentIdentifierPolicyList.map((policy) => this.buildPolicyGroup(policy))
+        managementContract.persistentIdentifierPolicyList.map((policy) => this.buildPolicyGroup(policy)),
       ),
     });
   }
@@ -74,7 +74,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
       shouldConcernArchiveUnits: [policy.persistentIdentifierUnit],
       shouldConcernObjects: [Boolean(policy.persistentIdentifierUsages.length)],
       objectUsagePolicies: this.formBuilder.array(
-        policy.persistentIdentifierUsages.map((objectUsagePolicy) => this.buildObjectUsageGroup(objectUsagePolicy))
+        policy.persistentIdentifierUsages.map((objectUsagePolicy) => this.buildObjectUsageGroup(objectUsagePolicy)),
       ),
     });
   }
@@ -86,7 +86,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
         initialVersion: [objectUsagePolicy.initialVersion, Validators.required],
         intermediaryVersion: [objectUsagePolicy.intermediaryVersion, Validators.required],
       },
-      { validators: [this.objectUsagePolicyValidator] }
+      { validators: [this.objectUsagePolicyValidator] },
     );
   }
 
@@ -112,12 +112,12 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
       mergeMap(() => this.managementContractService.patch(this.getUpdatedManagementContract())),
       tap(
         () => (this.sending = false),
-        () => (this.sending = false)
+        () => (this.sending = false),
       ),
       tap(() => this.updated.emit(false)),
       tap(() => {
         this.contractForm.markAsPristine();
-      })
+      }),
     );
   }
 
@@ -128,7 +128,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
     this.subscriptions.add(
       this.contractForm.valueChanges.subscribe(() => {
         this.updated.emit(true);
-      })
+      }),
     );
   }
 

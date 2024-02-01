@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBarService} from 'ui-frontend-common';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 
-import {Ontology} from 'projects/vitamui-library/src/public-api';
-import {OntologyApiService} from '../core/api/ontology-api.service';
+import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { OntologyApiService } from '../core/api/ontology-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OntologyService extends SearchService<Ontology> {
-
   updated = new Subject<Ontology>();
 
   constructor(
     private ontologyApiService: OntologyApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, ontologyApiService, 'ALL');
   }
 
@@ -61,7 +61,7 @@ export class OntologyService extends SearchService<Ontology> {
     return this.ontologyApiService.getOne(encodeURI(id));
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existOntology: any = {};
     if (properties.name) {
       existOntology.name = properties.name;
@@ -75,60 +75,60 @@ export class OntologyService extends SearchService<Ontology> {
   }
 
   create(ontology: Ontology) {
-    return this.ontologyApiService.create(ontology, this.headers)
-      .pipe(
-        tap(
-          (response: Ontology) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.ONTOLOGY_CREATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-ontologie'
-            });
-          },
-          (error: any) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  patch(data: { id: string, [key: string]: any }): Observable<Ontology> {
-    return this.ontologyApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.ONTOLOGY_UPDATED',
-              translateParams:{
-                name: response.identifier,
-              },
-              icon: 'vitamui-icon-ontologie'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  delete(ontology: Ontology): Observable<any> {
-    return this.ontologyApiService.delete(ontology.id).pipe(
-      tap(() => {
+    return this.ontologyApiService.create(ontology, this.headers).pipe(
+      tap(
+        (response: Ontology) => {
           this.snackBarService.open({
-            message: 'SNACKBAR.ONTOLOGY_DELETED',
-            translateParams:{
-              name: ontology.identifier,
+            message: 'SNACKBAR.ONTOLOGY_CREATED',
+            translateParams: {
+              name: response.identifier,
             },
-            icon: 'vitamui-icon-ontologie'
+            icon: 'vitamui-icon-ontologie',
+          });
+        },
+        (error: any) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
+
+  patch(data: { id: string; [key: string]: any }): Observable<Ontology> {
+    return this.ontologyApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ONTOLOGY_UPDATED',
+            translateParams: {
+              name: response.identifier,
+            },
+            icon: 'vitamui-icon-ontologie',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        })
+        },
+      ),
+    );
+  }
+
+  delete(ontology: Ontology): Observable<any> {
+    return this.ontologyApiService.delete(ontology.id).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ONTOLOGY_DELETED',
+            translateParams: {
+              name: ontology.identifier,
+            },
+            icon: 'vitamui-icon-ontologie',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
     );
   }
 
@@ -139,15 +139,16 @@ export class OntologyService extends SearchService<Ontology> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([ response ], { type: 'octet/stream' });
+        const blob = new Blob([response], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'agencies.csv';
         a.click();
         window.URL.revokeObjectURL(url);
-      }, (error) => {
+      },
+      (error) => {
         this.snackBarService.open({ message: error.error.message, translate: false });
-      }
+      },
     );
   }
 

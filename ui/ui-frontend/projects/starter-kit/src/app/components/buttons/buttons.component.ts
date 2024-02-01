@@ -5,19 +5,16 @@ import { FormControl } from '@angular/forms';
   // tslint:disable-next-line:component-selector
   selector: 'starter-kit-buttons',
   templateUrl: './buttons.component.html',
-  styleUrls: ['./buttons.component.scss']
+  styleUrls: ['./buttons.component.scss'],
 })
 export class ButtonsComponent implements OnInit {
-
   public control = new FormControl();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public onClick(): void {
     console.log('[onClick]');
   }
-
 }

@@ -38,22 +38,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { RowCollapseContainerDirective } from './row-collapse-container.directive';
-import { RowCollapseTriggerForDirective} from './row-collapse-trigger-for.directive';
+import { RowCollapseTriggerForDirective } from './row-collapse-trigger-for.directive';
 import { RowCollapseDirective } from './row-collapse.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    RowCollapseDirective,
-    RowCollapseTriggerForDirective,
-    RowCollapseContainerDirective,
-  ],
-  exports: [
-    RowCollapseDirective,
-    RowCollapseTriggerForDirective,
-    RowCollapseContainerDirective,
-  ]
+  imports: [CommonModule],
+  declarations: [RowCollapseDirective, RowCollapseTriggerForDirective, RowCollapseContainerDirective],
+  exports: [RowCollapseDirective, RowCollapseTriggerForDirective, RowCollapseContainerDirective],
 })
-export class RowCollapseModule { }
+export class RowCollapseModule {}

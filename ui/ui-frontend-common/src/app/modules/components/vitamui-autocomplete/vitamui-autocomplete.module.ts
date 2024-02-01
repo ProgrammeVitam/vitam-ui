@@ -54,7 +54,7 @@ import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
     MatInputModule,
     AutocompletePositionDirectiveModule,
     CommonTooltipModule,
-    EllipsisDirectiveModule
+    EllipsisDirectiveModule,
   ],
   declarations: [VitamUIAutocompleteComponent],
   exports: [VitamUIAutocompleteComponent],

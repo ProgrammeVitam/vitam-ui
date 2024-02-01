@@ -43,7 +43,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL, DescriptionLevel, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, UnitType, WINDOW_LOCATION
+  BASE_URL,
+  DescriptionLevel,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  StartupService,
+  Unit,
+  UnitType,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';

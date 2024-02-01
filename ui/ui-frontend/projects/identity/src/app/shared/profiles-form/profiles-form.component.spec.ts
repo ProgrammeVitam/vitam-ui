@@ -286,7 +286,7 @@ describe('ProfilesFormComponent', () => {
               },
             ],
           },
-        ])
+        ]),
       );
     });
 

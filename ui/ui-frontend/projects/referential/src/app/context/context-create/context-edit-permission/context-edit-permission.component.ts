@@ -63,7 +63,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     private tenantApiService: TenantApiService,
     private authService: AuthService,
     private accessService: AccessContractService,
-    private ingestService: IngestContractService
+    private ingestService: IngestContractService,
   ) {}
   permissions: ContextPermission[];
   selectedOrganisations: string[];
@@ -120,7 +120,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
             accessContracts.map((x) => ({
               label: x.name,
               key: x.identifier,
-            }))
+            })),
           );
         });
       });
@@ -135,7 +135,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
             ingestContracts.map((x) => ({
               label: x.name,
               key: x.identifier,
-            }))
+            })),
           );
         });
       });

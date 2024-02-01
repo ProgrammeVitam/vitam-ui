@@ -16,9 +16,7 @@
   "UI_URL": "https://dev.vitamui.com:4200",
   "ARCHIVES_SEARCH_URL": "https://dev.vitamui.com:4209/archive-search",
   "PORTAL_URL": "https://dev.vitamui.com:4200",
-  "ALLOWED_URLS": [
-    "/portal-api"
-  ],
+  "ALLOWED_URLS": ["/portal-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
     "redirectUri": "?",

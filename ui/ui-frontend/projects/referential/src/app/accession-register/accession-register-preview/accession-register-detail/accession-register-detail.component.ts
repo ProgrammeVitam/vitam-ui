@@ -24,9 +24,9 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
-import {Component, Input, OnInit} from '@angular/core';
-import {AccessionRegisterDetail, rotate90Animation} from 'ui-frontend-common';
+import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnInit } from '@angular/core';
+import { AccessionRegisterDetail, rotate90Animation } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-accession-register-detail',
@@ -34,30 +34,28 @@ import {AccessionRegisterDetail, rotate90Animation} from 'ui-frontend-common';
   styleUrls: ['./accession-register-detail.component.scss'],
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
     trigger('rotateAnimation', [
-      state('collapse', style({transform: 'rotate(-180deg)'})),
-      state('expand', style({transform: 'rotate(0deg)'})),
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
     rotate90Animation,
   ],
 })
 export class AccessionRegisterDetailComponent implements OnInit {
-
   @Input()
   accessionRegisterDetail: AccessionRegisterDetail;
 
-  longCommentSize = 200
+  longCommentSize = 200;
   hasLongComment = false;
   showFullComment = false;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     const comment = this.accessionRegisterDetail.comment;
@@ -65,7 +63,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
   }
 
   onClicShowMoreOrLessOfComment() {
-    this.showFullComment = !this.showFullComment
+    this.showFullComment = !this.showFullComment;
   }
 
   formatedComment() {
@@ -73,7 +71,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
       return '';
     }
     if (this.showFullComment) {
-      return this.accessionRegisterDetail.comment.join('\n\n')
+      return this.accessionRegisterDetail.comment.join('\n\n');
     }
     const premierParagraph = this.accessionRegisterDetail.comment[0];
     if (premierParagraph) {
@@ -81,5 +79,4 @@ export class AccessionRegisterDetailComponent implements OnInit {
     }
     return '';
   }
-
 }

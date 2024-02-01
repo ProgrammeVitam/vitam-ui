@@ -48,10 +48,9 @@ import { TenantsByApplication } from './models/user/tenants-by-application.inter
 import { StartupService } from './startup.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActiveTenantGuard implements CanActivate, CanActivateChild {
-
   constructor(
     private authService: AuthService,
     private appService: ApplicationService,
@@ -59,7 +58,7 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
     private globalEventService: GlobalEventService,
     private router: Router,
     @Inject(WINDOW_LOCATION) private location: any,
-  ) { }
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
     return this.checkTenants(route);
@@ -85,9 +84,8 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
     }
     // redirect user to the tenant selection page
     const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-    this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat(['tenant']));
+    this.router.navigate(route.pathFromRoot.map((r) => r.url.toString()).concat(['tenant']));
 
     return false;
   }
-
 }

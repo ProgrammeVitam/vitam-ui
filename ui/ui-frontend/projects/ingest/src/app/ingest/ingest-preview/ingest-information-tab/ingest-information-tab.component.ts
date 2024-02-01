@@ -34,32 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnChanges} from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import {
   AgIdExtDeflateJson,
   EvDetDataDeflateJson,
   ingestHasEvents,
   ingestLastEvent,
   ingestStatus,
-  LogbookOperation
+  LogbookOperation,
 } from '../../../models/logbook-event.interface';
 
 @Component({
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
-  styleUrls: ['./ingest-information-tab.component.scss']
+  styleUrls: ['./ingest-information-tab.component.scss'],
 })
 export class IngestInformationTabComponent implements OnChanges {
   @Input() ingest: LogbookOperation;
   evDetDataDeflated: EvDetDataDeflateJson;
   agIdExtDeflated: AgIdExtDeflateJson;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges() {
-    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest)
-    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest)
+    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);
+    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest);
   }
 
   hasEvent(): boolean {
@@ -75,7 +74,7 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   getIngestStatus(ingest: LogbookOperation): string {
-    return ingestStatus(ingest)
+    return ingestStatus(ingest);
   }
 
   private deflateJsonEvDetData(element: LogbookOperation): EvDetDataDeflateJson {
@@ -101,5 +100,4 @@ export class IngestInformationTabComponent implements OnChanges {
     }
     return element.agIdExt;
   }
-
 }

@@ -45,7 +45,10 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
 
   public language: string;
 
-  constructor(private dialog: MatDialog, private startupService: StartupService) {}
+  constructor(
+    private dialog: MatDialog,
+    private startupService: StartupService,
+  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

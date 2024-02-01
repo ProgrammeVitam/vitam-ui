@@ -65,10 +65,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   pbDirection: 'ltr',
   pbThickness: 3,
   hasProgressBar: false,
-textColor: '#FFFFFF',
+  textColor: '#FFFFFF',
   textPosition: 'center-center',
   maxTime: -1,
-  minTime: 300
+  minTime: 300,
 };
 @NgModule({
   declarations: [],
@@ -78,20 +78,14 @@ textColor: '#FFFFFF',
     VitamUICommonModule,
     PastisMaterialModule,
     SharedModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
   ],
 
-  exports: [
-    VitamUICommonModule,
-    NgxUiLoaderModule
-  ],
-  providers: [
-  ]
+  exports: [VitamUICommonModule, NgxUiLoaderModule],
+  providers: [],
 })
 export class CoreModule {
-
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
-
 }

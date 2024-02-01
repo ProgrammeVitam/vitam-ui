@@ -4,15 +4,13 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
 
         <div class="vitamui-heading">
           <vitamui-common-title-breadcrumb>
             {{ 'APPLICATION.DSL_APP.NAME' | translate }}
           </vitamui-common-title-breadcrumb>
         </div>
-
       </div>
     </div>
 
@@ -92,7 +90,10 @@
           <label for="dsl">Requête DSL (Format JSON)</label>
           <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
           <div class="actions btn-container">
-            <button type="submit" [disabled]="form.pending || form.invalid" class="btn secondary"
+            <button
+              type="submit"
+              [disabled]="form.pending || form.invalid"
+              class="btn secondary"
               [disabled]="form.pending || form.invalid"
               class="btn secondary"
               [disabled]="form.pending || form.invalid"
@@ -106,11 +107,17 @@
         </div>
         <div class="form_textarea">
           <label for="response">Résultat de la requête DSL</label>
-          <textarea class="textarea textarea__resultat" readonly="readonly" id="response" #responseText
-            formControlName="response"></textarea>
+          <textarea
+            class="textarea textarea__resultat"
+            readonly="readonly"
+            id="response"
+            #responseText
+            formControlName="response"
+          ></textarea>
           <div class="actions right btn-container">
-            <button type="button" class="btn" (click)="copyToClipbord(responseText)"
-              i18n="Copy adminDsl button@@AdminDslCopyButton">Copier</button>
+            <button type="button" class="btn" (click)="copyToClipbord(responseText)" i18n="Copy adminDsl button@@AdminDslCopyButton">
+              Copier
+            </button>
 
             <button type="button" class="btn" (click)="clear()" i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">
               Effacer

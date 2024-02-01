@@ -137,7 +137,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private identityProviderService: IdentityProviderService,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {
     this.commonsControls = this.initializeCommonControls();
     this.specificSamlControls = this.initializeSamlControls();
@@ -209,7 +209,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
         map(() => this.diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.identityProvider.id }, formData)),
-        switchMap((formData) => this.identityProviderService.patch(formData))
+        switchMap((formData) => this.identityProviderService.patch(formData)),
       )
       .subscribe(() => {
         this.previousValue = this.form.value;
@@ -218,7 +218,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         filter(() => this.idpMetadata.valid),
-        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider.id, this.idpMetadata.value))
+        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider.id, this.idpMetadata.value)),
       )
       .subscribe();
   }

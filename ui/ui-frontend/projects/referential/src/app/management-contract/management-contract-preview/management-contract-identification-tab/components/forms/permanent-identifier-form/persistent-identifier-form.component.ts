@@ -117,7 +117,7 @@ export class PersistentIdentifierFormComponent implements OnChanges {
         initialVersion: [true, Validators.required],
         intermediaryVersion: ['ALL', Validators.required],
       },
-      { validators: [this.objectUsagePolicyValidator] }
+      { validators: [this.objectUsagePolicyValidator] },
     );
 
     this.objectUsagePolicies.push(objectUsagePolicy);

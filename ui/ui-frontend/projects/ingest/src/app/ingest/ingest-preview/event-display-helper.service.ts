@@ -37,26 +37,23 @@
 import { Injectable } from '@angular/core';
 import { Event } from './event';
 
-
 @Injectable()
 export class EventDisplayHelperService {
   eventData: any;
 
-  constructor() { }
+  constructor() {}
 
   getAllEvents(ingest: any): any[] {
     const events = [];
     let rootEvent = null;
     let actionEvent = null;
     if (ingest.length > 0) {
-
       for (const event of ingest) {
         this.eventData = this.getEventData(event);
         if (event.evParentId === null) {
-          rootEvent = new Event(this.eventData, [])
+          rootEvent = new Event(this.eventData, []);
           events.push(rootEvent);
-        }
-        else {
+        } else {
           if (event.evParentId === rootEvent.eventData.evId) {
             actionEvent = new Event(this.eventData, []);
             rootEvent.subEvents.push(actionEvent);
@@ -83,7 +80,8 @@ export class EventDisplayHelperService {
       for (let evt of logbook.events) {
         if (evt.outcome !== 'OK') {
           this.eventData = this.getEventData(evt);
-          if (!evt.parentId) { // Step event
+          if (!evt.parentId) {
+            // Step event
             rootEvent = new Event(this.eventData, []);
             if (evt.evType.endsWith('.STARTED')) {
               events.push(rootEvent);
@@ -99,14 +97,16 @@ export class EventDisplayHelperService {
             if (!rootEvent) {
               console.log('Error, step events should have a null parent id');
             }
-            if (evt.parentId === rootEvent.eventData.evId) { // Action events
+            if (evt.parentId === rootEvent.eventData.evId) {
+              // Action events
               actionEvent = new Event(this.eventData, []);
               rootEvent.subEvents.push(actionEvent);
             } else {
               if (!actionEvent) {
                 console.log('Error, to have treatemnt event, task event should not be null');
               }
-              if (evt.parentId === actionEvent.eventData.evId) { // SubTask events
+              if (evt.parentId === actionEvent.eventData.evId) {
+                // SubTask events
                 actionEvent.subEvents.push(new Event(this.eventData, []));
               }
             }
@@ -124,7 +124,7 @@ export class EventDisplayHelperService {
       evDateTime: event.evDateTime,
       evDetData: event.evDetData,
       outcome: event.outcome,
-      outMessg: event.outMessg
+      outMessg: event.outMessg,
     };
   }
 }

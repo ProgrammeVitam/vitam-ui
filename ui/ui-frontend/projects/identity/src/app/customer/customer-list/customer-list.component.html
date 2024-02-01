@@ -2,17 +2,23 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.CODE' | translate}}</div>
-      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.NAME' | translate}}</div>
-      <div class="col-3">{{'CUSTOMER.HOME.RESULTS_TABLE.SOCIAL_REASON' | translate}}</div>
-      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.SSO' | translate}}</div>
-      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.VALIDATIONS' | translate}}</div>
+      <div class="col-2">{{ 'CUSTOMER.HOME.RESULTS_TABLE.CODE' | translate }}</div>
+      <div class="col-2">{{ 'CUSTOMER.HOME.RESULTS_TABLE.NAME' | translate }}</div>
+      <div class="col-3">{{ 'CUSTOMER.HOME.RESULTS_TABLE.SOCIAL_REASON' | translate }}</div>
+      <div class="col-2">{{ 'CUSTOMER.HOME.RESULTS_TABLE.SSO' | translate }}</div>
+      <div class="col-2">{{ 'CUSTOMER.HOME.RESULTS_TABLE.VALIDATIONS' | translate }}</div>
     </div>
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
         <ng-container *ngFor="let customer of dataSource">
-          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'" (click)="customerClick.emit(customer)">
+          <div
+            class="vitamui-row"
+            [vitamuiCommonCollapse]
+            #row="vitamuiCommonCollapse"
+            [class.no-hover]="row.state === 'expanded'"
+            (click)="customerClick.emit(customer)"
+          >
             <div class="d-flex align-items-center clickable">
               <div class="col-1 d-flex" (click)="$event.stopPropagation(); row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
@@ -22,10 +28,10 @@
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.code }}</div>
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.name }}</div>
               <div class="col-3" vitamuiCommonEllipsis>{{ customer?.companyName }}</div>
-              <div class="col-2" vitamuiCommonEllipsis>{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+              <div class="col-2" vitamuiCommonEllipsis>{{ ('CUSTOMER.INFORMATIONS.IDP_' + customer?.idp ? 'YES' : 'NO') | translate }}</div>
 
               <div class="col-2 actions">
-                <span vitamuiCommonEllipsis>{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
+                <span vitamuiCommonEllipsis>{{ 'CUSTOMER.INFORMATIONS.OTP_' + customer?.otp | translate }}</span>
                 <div>
                   <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateOwnerDialog(customer, tenants)">
                     <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
@@ -39,25 +45,26 @@
             [@collapseAnimation]="row.state"
             [customer]="customer"
             (ownerClick)="ownerClick.emit($event)"
-            (tenantClick)="tenantClick.emit($event)">
+            (tenantClick)="tenantClick.emit($event)"
+          >
           </app-owner-list>
         </ng-container>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && customerListService.canLoadMore && !pending then loadMore"></div>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && customerListService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
- <ng-template #loadMore>
+<ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 

@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {Subscription} from 'rxjs';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
-import {Customer, DownloadUtils, IdentityProvider} from 'ui-frontend-common';
-import {IdentityProviderCreateComponent} from './identity-provider-create/identity-provider-create.component';
-import {IdentityProviderService} from './identity-provider.service';
-import {ProviderApiService} from './provider-api.service';
+import { Customer, DownloadUtils, IdentityProvider } from 'ui-frontend-common';
+import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
+import { IdentityProviderService } from './identity-provider.service';
+import { ProviderApiService } from './provider-api.service';
 
 @Component({
   selector: 'app-sso-tab',
@@ -51,38 +51,27 @@ import {ProviderApiService} from './provider-api.service';
   animations: [
     trigger('panelTransition', [
       state('previous', style({ transform: 'translate3d(-100%, 0, 0)' })),
-      state('next', style({ transform: 'translate3d(100%, 0, 0)'  })),
+      state('next', style({ transform: 'translate3d(100%, 0, 0)' })),
       state('current', style({ transform: 'translate3d(0, 0, 0)' })),
       transition('* <=> current', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
     trigger('slideLeftTransition', [
-      transition(':enter', [
-        style({ transform: 'translate3d(-100%, 0, 0)' }),
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ]),
-      transition(':leave', [
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(-100%, 0, 0)' })),
-      ]),
+      transition(':enter', [style({ transform: 'translate3d(-100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
+      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(-100%, 0, 0)' }))]),
     ]),
     trigger('slideRightTransition', [
       state('*', style({ transform: 'translate3d(0, 0, 0)' })),
-      transition(':enter', [
-        style({ transform: 'translate3d(100%, 0, 0)' }),
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ]),
-      transition(':leave', [
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' })),
-      ]),
+      transition(':enter', [style({ transform: 'translate3d(100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
+      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
     ]),
-  ]
+  ],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
-
   providers: IdentityProvider[];
   panel1Position = 'current';
   panel2Position = 'next';
   selectedIdentityProvider: IdentityProvider;
-  domains: Array<{ value: string, disabled: boolean }> = [];
+  domains: Array<{ value: string; disabled: boolean }> = [];
 
   @Input()
   set customer(customer: Customer) {
@@ -96,15 +85,20 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     });
     this.refreshAvailableDomains();
   }
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   private _customer: Customer;
 
   @Input() readOnly: boolean;
 
   private updatedProviderSub: Subscription;
 
-  constructor(public dialog: MatDialog, private identityProviderService: IdentityProviderService,
-              private providerApi: ProviderApiService) { }
+  constructor(
+    public dialog: MatDialog,
+    private identityProviderService: IdentityProviderService,
+    private providerApi: ProviderApiService,
+  ) {}
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {
@@ -124,10 +118,10 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(IdentityProviderCreateComponent, {
       data: {
         customer: this.customer,
-        domains: this.domains
+        domains: this.domains,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
     dialogRef.afterClosed().subscribe((result: IdentityProvider) => {
       if (result) {
@@ -146,7 +140,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   }
 
   downloadFile(isInternalProvider: boolean, url: string): void {
-    if(!isInternalProvider){
+    if (!isInternalProvider) {
       this.providerApi.getFileByUrl(url).subscribe((response: any) => DownloadUtils.loadFromBlob(response, response.body.type));
     }
   }
@@ -158,5 +152,4 @@ export class SsoTabComponent implements OnDestroy, OnInit {
       });
     });
   }
-
 }

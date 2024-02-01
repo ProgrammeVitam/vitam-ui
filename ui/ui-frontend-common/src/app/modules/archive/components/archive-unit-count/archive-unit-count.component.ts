@@ -127,8 +127,8 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
         (error: HttpErrorResponse) => {
           this.logger.error(this, error.message);
           this.handleExactCount(-1);
-        }
-      )
+        },
+      ),
     );
   }
 

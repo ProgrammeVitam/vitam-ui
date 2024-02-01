@@ -104,7 +104,10 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(public securityProfileService: SecurityProfileService, private authService: AuthService) {
+  constructor(
+    public securityProfileService: SecurityProfileService,
+    private authService: AuthService,
+  ) {
     super(securityProfileService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,

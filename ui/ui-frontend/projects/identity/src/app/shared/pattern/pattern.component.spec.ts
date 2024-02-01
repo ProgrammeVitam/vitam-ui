@@ -46,7 +46,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { PatternComponent } from './pattern.component';
 
 @Component({
-  template: `<app-pattern [(ngModel)]="patterns" [options]="options"></app-pattern>`
+  template: `<app-pattern [(ngModel)]="patterns" [options]="options"></app-pattern>`,
 })
 class TestHostComponent {
   patterns: string[];
@@ -66,16 +66,9 @@ describe('PatternComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ PatternComponent, TestHostComponent ]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [PatternComponent, TestHostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -268,7 +261,5 @@ describe('PatternComponent', () => {
       elAddButton.click();
       expect(testhost.component.add).toHaveBeenCalled();
     });
-
   });
-
 });

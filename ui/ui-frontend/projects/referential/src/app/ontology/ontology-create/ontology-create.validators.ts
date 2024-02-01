@@ -34,38 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {Observable, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Observable, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
-import {OntologyService} from '../ontology.service';
+import { OntologyService } from '../ontology.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OntologyCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private ontologyService: OntologyService) {
-  }
+  constructor(private ontologyService: OntologyService) {}
 
   uniqueID = (): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime)
-        .pipe(
-          switchMap(() => this.ontologyService.exists(control.value)),
-          take(1),
-          map((exists: boolean) => exists ? {idExists: true} : null)
-        );
+      return timer(this.debounceTime).pipe(
+        switchMap(() => this.ontologyService.exists(control.value)),
+        take(1),
+        map((exists: boolean) => (exists ? { idExists: true } : null)),
+      );
     };
-  }
+  };
 
   patternID = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const regexp = /^[_#\s]|\s/;
-      return regexp.test(control.value) ? {idPattern: true} : null;
+      return regexp.test(control.value) ? { idPattern: true } : null;
     };
-  }
+  };
 }

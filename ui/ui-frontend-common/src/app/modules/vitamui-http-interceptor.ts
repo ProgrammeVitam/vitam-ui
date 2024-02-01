@@ -92,7 +92,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private injector: Injector,
     @Inject(ENVIRONMENT) private environment: any,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {
     this.apiTimeout = environment?.apiTimeout ? environment.apiTimeout : DEFAULT_API_TIMEOUT;
   }
@@ -137,8 +137,8 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
     return next.handle(reqWithCredentials).pipe(
       timeoutWith(
-        URLS_INCREASED_TIMEOUT.some(url => request.url.includes(url)) ?  DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT : this.apiTimeout,
-        throwError(new VitamUITimeoutError())
+        URLS_INCREASED_TIMEOUT.some((url) => request.url.includes(url)) ? DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT : this.apiTimeout,
+        throwError(new VitamUITimeoutError()),
       ),
       tap((ev: HttpEvent<any>) => {
         if (ev instanceof HttpResponse) {
@@ -162,7 +162,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
         }
         this.logger.log(this, 'Request error', response);
         return throwError(response);
-      })
+      }),
     );
   }
 

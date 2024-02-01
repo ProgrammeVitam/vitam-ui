@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders } from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {BASE_URL } from 'ui-frontend-common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { BASE_URL } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReferentialImportApiService {
-
-  constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
-  }
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) private baseUrl: string,
+  ) {}
 
   importReferential(referential: string, file: File, headers?: HttpHeaders) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, {headers, responseType: 'text'});
+    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' });
   }
 }

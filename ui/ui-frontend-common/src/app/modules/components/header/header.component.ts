@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private globalEventService: GlobalEventService,
     private translateService: TranslateService,
-    private userAlertsService: UserAlertsService
+    private userAlertsService: UserAlertsService,
   ) {}
 
   ngOnInit() {
@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.authService.user) {
       this.currentUser = this.authService.user;
       this.hasAccountProfile = this.authService.user.profileGroup.profiles.some(
-        (profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP
+        (profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP,
       );
     }
 
@@ -163,7 +163,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         return zip(labelObs, appObs).pipe(
           map((result) => {
             return { label: result[0], url: result[1]?.url, key: alert.id };
-          })
+          }),
         );
       });
 

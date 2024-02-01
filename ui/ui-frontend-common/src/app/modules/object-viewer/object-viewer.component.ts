@@ -48,7 +48,10 @@ export class ObjectViewerComponent implements OnInit, OnChanges {
   @Input() template!: DisplayRule[];
   @Input() mode = 'template-driven';
 
-  constructor(private logger: Logger, public displayObjectService: DisplayObjectService) {}
+  constructor(
+    private logger: Logger,
+    public displayObjectService: DisplayObjectService,
+  ) {}
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);

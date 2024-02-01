@@ -9,4 +9,4 @@ import { UserAlertsMenuComponent } from './user-alerts-menu.component';
   imports: [CommonModule, MatMenuModule, TranslateModule],
   exports: [UserAlertsMenuComponent],
 })
-export class UserAlertsMenuModule { }
+export class UserAlertsMenuModule {}

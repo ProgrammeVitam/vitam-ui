@@ -41,7 +41,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria, CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaEltDto, SearchCriteriaTypeEnum
+  ActionOnCriteria,
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  diff,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -122,7 +128,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator
+    private ruleValidator: RuleValidator,
   ) {
     this.storageRuleCriteriaForm = this.formBuilder.group({
       storageRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
@@ -137,7 +143,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.storageRuleCriteriaForm.value),
         map(() => diff(this.storageRuleCriteriaForm.value, this.previousStorageCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
         this.resetStorageRuleCriteriaForm();
@@ -156,7 +162,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE
+          SearchCriteriaTypeEnum.STORAGE_RULE,
         );
         this.resetStorageRuleCriteriaForm();
       }
@@ -191,7 +197,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -211,7 +217,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.MISSING,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -231,7 +237,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -251,7 +257,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EXISTS,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -271,7 +277,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
@@ -291,7 +297,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
@@ -311,7 +317,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
@@ -331,7 +337,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
@@ -351,7 +357,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.STORAGE_RULE
+            SearchCriteriaTypeEnum.STORAGE_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
@@ -381,7 +387,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.LTE,
         false,
         CriteriaDataType.INTERVAL,
-        SearchCriteriaTypeEnum.STORAGE_RULE
+        SearchCriteriaTypeEnum.STORAGE_RULE,
       );
       this.storageRuleCriteriaForm.controls.storageRuleStartDate.setValue(null);
     }
@@ -401,7 +407,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.EQ,
         false,
         CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.STORAGE_RULE
+        SearchCriteriaTypeEnum.STORAGE_RULE,
       );
       this.storageRuleCriteriaForm.controls.storageRuleIdentifier.setValue(null);
     }
@@ -421,7 +427,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.BETWEEN,
         false,
         CriteriaDataType.INTERVAL,
-        SearchCriteriaTypeEnum.STORAGE_RULE
+        SearchCriteriaTypeEnum.STORAGE_RULE,
       );
       this.storageRuleCriteriaForm.controls.storageRuleStartDate.setValue(null);
       this.storageRuleCriteriaForm.controls.storageRuleEndDate.setValue(null);
@@ -440,7 +446,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE
+          SearchCriteriaTypeEnum.STORAGE_RULE,
         );
         this.resetStorageRuleCriteriaForm();
         return true;
@@ -453,7 +459,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE
+          SearchCriteriaTypeEnum.STORAGE_RULE,
         );
         return true;
       }
@@ -514,7 +520,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       CriteriaOperator.EXISTS,
       true,
       CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.STORAGE_RULE
+      SearchCriteriaTypeEnum.STORAGE_RULE,
     );
     this.addCriteria(
       RULE_ORIGIN + RULE_TYPE_SUFFIX,
@@ -524,7 +530,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       CriteriaOperator.EXISTS,
       true,
       CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.STORAGE_RULE
+      SearchCriteriaTypeEnum.STORAGE_RULE,
     );
     this.storageAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
     this.storageAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
@@ -542,7 +548,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     operator: string,
     valueTranslated: boolean,
     dataType: string,
-    category?: SearchCriteriaTypeEnum
+    category?: SearchCriteriaTypeEnum,
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({

@@ -96,20 +96,18 @@ xdescribe('SecurisationInformationTabComponent', () => {
     ],
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const securisationServiceMock = {
-        getInfoFromTimestamp: () => of({}),
-      };
+  beforeEach(waitForAsync(() => {
+    const securisationServiceMock = {
+      getInfoFromTimestamp: () => of({}),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [NgxFilesizeModule],
-        declarations: [SecurisationInformationTabComponent],
-        providers: [{ provide: SecurisationService, useValue: securisationServiceMock }],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [NgxFilesizeModule],
+      declarations: [SecurisationInformationTabComponent],
+      providers: [{ provide: SecurisationService, useValue: securisationServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationInformationTabComponent);

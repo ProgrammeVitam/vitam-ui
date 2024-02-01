@@ -44,25 +44,25 @@ import { GroupService } from './group.service';
 
 @Injectable()
 export class GroupResolver implements Resolve<Group> {
-
-  constructor(private groupService: GroupService, private router: Router) { }
+  constructor(
+    private groupService: GroupService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Group> {
     const id = route.paramMap.get('id');
 
-    return this.groupService.get(id)
-      .pipe(
-        take(1),
-        map((group: Group) => {
-          if (group) {
-            return group;
-          } else {
-            this.router.navigate(['/']);
+    return this.groupService.get(id).pipe(
+      take(1),
+      map((group: Group) => {
+        if (group) {
+          return group;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

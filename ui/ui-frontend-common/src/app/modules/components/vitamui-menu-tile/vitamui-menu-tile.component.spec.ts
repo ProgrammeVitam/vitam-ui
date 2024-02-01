@@ -57,27 +57,20 @@ describe('VitamUIMenuTileComponent', () => {
   let fixture: ComponentFixture<VitamUIMenuTileComponent>;
 
   beforeEach(waitForAsync(() => {
-    const startupServiceStub = { getPortalUrl: () => 'https://dev.vitamui.com',
-    getConfigStringValue: () => 'https://dev.vitamui.com/identity' };
+    const startupServiceStub = {
+      getPortalUrl: () => 'https://dev.vitamui.com',
+      getConfigStringValue: () => 'https://dev.vitamui.com/identity',
+    };
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [
-        VitamUIMenuTileComponent,
-        TooltipStubDirective,
-      ],
+      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      declarations: [VitamUIMenuTileComponent, TooltipStubDirective],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
       ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -96,7 +89,7 @@ describe('VitamUIMenuTileComponent', () => {
       hasCustomerList: false,
       hasHighlight: false,
       hasTenantList: false,
-      target: 'self'
+      target: 'self',
     };
     component.application = appInfo;
     fixture.detectChanges();

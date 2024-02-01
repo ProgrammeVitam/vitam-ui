@@ -34,19 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExternalParametersService } from 'ui-frontend-common';
-import {SecurisationService} from '../securisation.service';
-import {SecurisationPreviewComponent} from './securisation-preview.component';
+import { SecurisationService } from '../securisation.service';
+import { SecurisationPreviewComponent } from './securisation-preview.component';
 
-
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -69,7 +68,7 @@ describe('SecurisationPreviewComponent', () => {
     outMessage: 'outMessage',
     data: 'data',
     parsedData: {
-      Size: 2
+      Size: 2,
     },
     objectId: 'objectId',
     collectionName: 'collectionName',
@@ -78,55 +77,53 @@ describe('SecurisationPreviewComponent', () => {
     agIdExt: 'agIdExt',
     obIdReq: 'obIdReq',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
-    events: [{
-      id: 'id2',
-      idAppSession: 'idAppSession2',
-      idRequest: 'idRequest2',
-      parentId: 'id',
-      type: 'type',
-      obIdReq: 'obIdReq',
-      typeProc: 'typeProc',
-      dateTime: new Date('1995-12-17'),
-      outcome: 'outcome',
-      outDetail: 'outDetail',
-      outMessage: 'outMessage',
-      data: 'data',
-      parsedData: {
-        dataKey: 'dataValue'
+    events: [
+      {
+        id: 'id2',
+        idAppSession: 'idAppSession2',
+        idRequest: 'idRequest2',
+        parentId: 'id',
+        type: 'type',
+        obIdReq: 'obIdReq',
+        typeProc: 'typeProc',
+        dateTime: new Date('1995-12-17'),
+        outcome: 'outcome',
+        outDetail: 'outDetail',
+        outMessage: 'outMessage',
+        data: 'data',
+        parsedData: {
+          dataKey: 'dataValue',
+        },
+        objectId: 'objectId',
+        collectionName: 'collectionName',
+        agId: 'agId',
+        agIdApp: 'agIdApp',
+        agIdExt: 'agIdExt',
+        rightsStatementIdentifier: 'rightsStatementIdentifier',
       },
-      objectId: 'objectId',
-      collectionName: 'collectionName',
-      agId: 'agId',
-      agIdApp: 'agIdApp',
-      agIdExt: 'agIdExt',
-      rightsStatementIdentifier: 'rightsStatementIdentifier'
-    }]
+    ],
   };
 
   beforeEach(waitForAsync(() => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+      getUserExternalParameters: () => of(parameters),
     };
 
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1})
+      params: of({ tenantIdentifier: 1 }),
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        MatSnackBarModule
-      ],
-      declarations: [SecurisationPreviewComponent,MockTruncatePipe],
+      imports: [BrowserAnimationsModule, MatSnackBarModule],
+      declarations: [SecurisationPreviewComponent, MockTruncatePipe],
       providers: [
-        {provide: SecurisationService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        { provide: SecurisationService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

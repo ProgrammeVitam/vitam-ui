@@ -43,7 +43,7 @@ describe('SubrogationModalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule],
-      providers: [SubrogationModalService]
+      providers: [SubrogationModalService],
     });
   });
 

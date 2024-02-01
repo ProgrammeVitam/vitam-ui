@@ -35,18 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -93,11 +82,11 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   updateFormSub: Subscription;
   @Output()
   showNormalPanel = new EventEmitter<any>();
-  @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', {static: true})
+  @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteMessageDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
   updateArchiveUnitDescMetadataAlerteMessageDialogSubscription: Subscription;
 
-  @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', {static: true})
+  @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteFormCancelDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
   updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription: Subscription;
 
@@ -109,22 +98,21 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private dialog: MatDialog,
     private startupService: StartupService,
     private translateService: TranslateService,
-    private logger: Logger
-  ) {
-  }
+    private logger: Logger,
+  ) {}
 
   descriptionLevels: Option[] = [
-    {key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM')},
-    {key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE')},
-    {key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP')},
-    {key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP')},
-    {key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES')},
-    {key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES')},
-    {key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION')},
-    {key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS')},
-    {key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS')},
-    {key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS')},
-    {key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL')},
+    { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
+    { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
+    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP') },
+    { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
+    { key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES') },
+    { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
+    { key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION') },
+    { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
+    { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
+    { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') },
+    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') },
   ];
 
   ngOnInit() {
@@ -286,11 +274,11 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
               startDate: this.getStartDate(this.previousValue.startDate),
               endDate: this.getStartDate(this.previousValue.endDate),
             },
-            formData
-          )
+            formData,
+          ),
         ),
         switchMap((formData) => of(formData)),
-        catchError((error) => of(error))
+        catchError((error) => of(error)),
       )
       .subscribe((formData: any) => this.logger.info('value au = ', formData));
   }
@@ -339,7 +327,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
   launchUpdate() {
     const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteMessageDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     this.updateArchiveUnitDescMetadataAlerteMessageDialogSubscription = dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
@@ -389,7 +377,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   cancelUpdate() {
     if (this.form.dirty) {
       const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
-      const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
       this.updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription = dialogRef
         .afterClosed()
         .pipe(filter((result) => !!result))
@@ -412,12 +400,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       if (this.archiveUnit && this.archiveUnit.StartDate) {
         this.unsetAction.push('StartDate');
       }
-      this.form.get(date).reset(null, {emitEvent: false});
+      this.form.get(date).reset(null, { emitEvent: false });
     } else if (date === 'endDate') {
       if (this.archiveUnit && this.archiveUnit.EndDate) {
         this.unsetAction.push('EndDate');
       }
-      this.form.get(date).reset(null, {emitEvent: false});
+      this.form.get(date).reset(null, { emitEvent: false });
     } else {
       this.logger.error('clearDate() error: unknown date ' + date);
     }
@@ -457,7 +445,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 

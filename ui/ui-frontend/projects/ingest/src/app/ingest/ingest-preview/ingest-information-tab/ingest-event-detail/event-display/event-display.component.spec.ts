@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IngestService } from '../../../../ingest.service';
-import {EventDisplayComponent} from './event-display.component';
+import { EventDisplayComponent } from './event-display.component';
 
 describe('EventDisplayComponent', () => {
   let component: EventDisplayComponent;
@@ -47,12 +47,10 @@ describe('EventDisplayComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [EventDisplayComponent],
-      imports: [
-      ],
+      imports: [],
       providers: [{ provide: IngestService, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -63,9 +61,10 @@ describe('EventDisplayComponent', () => {
         evId: 'aeeaaaaaaoem5l4iaa3lialtbt4j6yaaaaaq',
         evType: 'STEP_FAKE_INGEST.STARTED',
         outcome: 'OK',
-        outMessg: 'Success ingest'
+        outMessg: 'Success ingest',
       },
-      subEvents: [] };
+      subEvents: [],
+    };
 
     fixture.detectChanges();
   });

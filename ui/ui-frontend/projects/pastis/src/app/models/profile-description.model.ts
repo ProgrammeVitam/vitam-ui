@@ -1,9 +1,9 @@
-import {ArchivalProfileUnit} from './archival-profile-unit';
-import {Profile} from './profile';
+import { ArchivalProfileUnit } from './archival-profile-unit';
+import { Profile } from './profile';
 
 export interface ProfileDescription extends Partial<Profile>, Partial<ArchivalProfileUnit> {
   type: string;
-  isEditable?:boolean;
+  isEditable?: boolean;
 }
 
 export class ProfileDescriptionModel implements ProfileDescription {

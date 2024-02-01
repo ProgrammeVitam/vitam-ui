@@ -39,10 +39,9 @@ import { Inject, Injectable } from '@angular/core';
 import { BaseHttpClient, BASE_URL, Tenant } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TenantApiService extends BaseHttpClient<Tenant> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/tenants');
   }

@@ -60,7 +60,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
     private externalParamProfileApi: ExternalParamProfileApiService,
     private accessContractApiService: AccessContractApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, externalParamProfileApi);
   }
@@ -79,15 +79,13 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
 
   create(externalParamProfile: ExternalParamProfile) {
     return this.externalParamProfileApi.create(externalParamProfile).pipe(
-      tap(
-        (response: ExternalParamProfile) => {
-          this.snackBarService.open({
-            message: 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_CREATED',
-            icon: 'vitamui-icon-admin-key',
-            translateParams: { name: response.name },
-          });
-        }
-      )
+      tap((response: ExternalParamProfile) => {
+        this.snackBarService.open({
+          message: 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_CREATED',
+          icon: 'vitamui-icon-admin-key',
+          translateParams: { name: response.name },
+        });
+      }),
     );
   }
 
@@ -102,8 +100,8 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
             translateParams: { name: response.name },
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+      ),
     );
   }
 

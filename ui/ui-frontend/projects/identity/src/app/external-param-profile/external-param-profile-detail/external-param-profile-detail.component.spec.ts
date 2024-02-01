@@ -34,30 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Component,Input,NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed} from '@angular/core/testing';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatTabsModule} from '@angular/material/tabs';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {TranslateLoader,TranslateModule} from '@ngx-translate/core';
-import {Observable, of, Subject} from 'rxjs';
-import {AuthService,BASE_URL,LoggerModule,WINDOW_LOCATION} from 'ui-frontend-common';
-import {environment} from '../../../environments/environment.prod';
-import {TestHostComponent} from '../../shared/domains-input/domains-input.component.spec';
-import {ExternalParamProfileService} from '../external-param-profile.service';
-import {ExternalParamProfileDetailComponent} from './external-param-profile-detail.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of, Subject } from 'rxjs';
+import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment.prod';
+import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
+import { ExternalParamProfileService } from '../external-param-profile.service';
+import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
 
-
-@Component({selector: 'app-information-tab',template: ''})
+@Component({ selector: 'app-information-tab', template: '' })
 class InformationTabStubComponent {
   // @Input() profile: ExternalParamProfile;
   @Input() readOnly: boolean;
   @Input() tenantIdentifier: string;
-
 }
 
-const translations: any={TEST: 'Mock translate test'};
+const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -65,48 +63,43 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-
-describe('ExternalParamProfilDetailComponent',() => {
+describe('ExternalParamProfilDetailComponent', () => {
   let component: ExternalParamProfileDetailComponent;
   let fixture: ComponentFixture<ExternalParamProfileDetailComponent>;
 
-  const authServiceMock={user: {level: ''}};
+  const authServiceMock = { user: { level: '' } };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader,useClass: FakeLoader}
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatMenuModule,
         MatTabsModule,
         NoopAnimationsModule,
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
-      declarations: [
-        TestHostComponent,
-        ExternalParamProfileDetailComponent,
-        InformationTabStubComponent,
-      ],
+      declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
       providers: [
-        {provide: ExternalParamProfileService,useValue: {updated: new Subject()}},
-        {provide: AuthService,useValue: authServiceMock},
-        {provide: WINDOW_LOCATION,useValue: {}},
-        {provide: BASE_URL,useValue: '/fake-api'},
-        {provide: environment,useValue: environment}
+        { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(ExternalParamProfileDetailComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(ExternalParamProfileDetailComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

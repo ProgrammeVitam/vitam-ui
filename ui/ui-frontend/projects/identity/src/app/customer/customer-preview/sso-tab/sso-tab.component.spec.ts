@@ -101,72 +101,70 @@ describe('SsoTabComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let providers: any[];
 
-  beforeEach(
-    waitForAsync(() => {
-      providers = [
-        {
-          id: '5ad5f14c894e6a414edc7b60c5397d744f4b4ed8bd86934d0a8e8311add40f3f',
-          customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
-          name: 'default',
-          internal: true,
-          enabled: true,
-          patterns: null,
-          keystoreBase64: null,
-          keystorePassword: null,
-          privateKeyPassword: null,
-          idpMetadata: null,
-          spMetadata: null,
-        },
-        {
-          id: '5ad5f14e894e6a414edc7b91dc194c3187f143cbb7593242769a1706fd03d3f3',
-          customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
-          name: 'TeamVitamUI',
-          internal: true,
-          enabled: true,
-          patterns: null,
-          keystoreBase64: null,
-          keystorePassword: null,
-          privateKeyPassword: null,
-          idpMetadata: null,
-          spMetadata: null,
-        },
-        {
-          id: '5af95fae636f9114e074100590122991ac38418595cd0dab684fee3bccacd2dd',
-          customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
-          name: 'test',
-          internal: false,
-          enabled: true,
-          patterns: ['vitamui.com'],
-          keystoreBase64: null,
-          keystorePassword: 'test',
-          privateKeyPassword: 'test',
-          idpMetadata: null,
-          spMetadata: null,
-        },
-      ];
+  beforeEach(waitForAsync(() => {
+    providers = [
+      {
+        id: '5ad5f14c894e6a414edc7b60c5397d744f4b4ed8bd86934d0a8e8311add40f3f',
+        customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
+        name: 'default',
+        internal: true,
+        enabled: true,
+        patterns: null,
+        keystoreBase64: null,
+        keystorePassword: null,
+        privateKeyPassword: null,
+        idpMetadata: null,
+        spMetadata: null,
+      },
+      {
+        id: '5ad5f14e894e6a414edc7b91dc194c3187f143cbb7593242769a1706fd03d3f3',
+        customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
+        name: 'TeamVitamUI',
+        internal: true,
+        enabled: true,
+        patterns: null,
+        keystoreBase64: null,
+        keystorePassword: null,
+        privateKeyPassword: null,
+        idpMetadata: null,
+        spMetadata: null,
+      },
+      {
+        id: '5af95fae636f9114e074100590122991ac38418595cd0dab684fee3bccacd2dd',
+        customerId: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
+        name: 'test',
+        internal: false,
+        enabled: true,
+        patterns: ['vitamui.com'],
+        keystoreBase64: null,
+        keystorePassword: 'test',
+        privateKeyPassword: 'test',
+        idpMetadata: null,
+        spMetadata: null,
+      },
+    ];
 
-      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-      TestBed.configureTestingModule({
-        imports: [VitamUICommonTestModule, HttpClientTestingModule],
-        declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent, MatTooltipStubDirective],
-        providers: [
-          ProviderApiService,
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: MatDialog, useValue: matDialogSpy },
-          {
-            provide: IdentityProviderService,
-            useValue: {
-              getAll: () => of(providers),
-              getDomainByCustomerId: () => of(['test1.com', 'test2.com']),
-              updated: new Subject(),
-            },
+    TestBed.configureTestingModule({
+      imports: [VitamUICommonTestModule, HttpClientTestingModule],
+      declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent, MatTooltipStubDirective],
+      providers: [
+        ProviderApiService,
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: MatDialog, useValue: matDialogSpy },
+        {
+          provide: IdentityProviderService,
+          useValue: {
+            getAll: () => of(providers),
+            getDomainByCustomerId: () => of(['test1.com', 'test2.com']),
+            updated: new Subject(),
           },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -229,7 +227,7 @@ describe('SsoTabComponent', () => {
           expect(elProvider.textContent).toContain(providers[index].name);
           expect(elProvider.textContent).toContain(providers[index].internal ? 'CUSTOMER.SSO.TYPE_INTERNAL' : 'CUSTOMER.SSO.TYPE_EXTERNAL');
           expect(elProvider.textContent).toContain(
-            providers[index].enabled ? 'CUSTOMER.SSO.STATUS_ACTIVE' : 'CUSTOMER.SSO.STATUS_INACTIVE'
+            providers[index].enabled ? 'CUSTOMER.SSO.STATUS_ACTIVE' : 'CUSTOMER.SSO.STATUS_INACTIVE',
           );
         });
       });

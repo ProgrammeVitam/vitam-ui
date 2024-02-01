@@ -54,10 +54,9 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
   // tslint:disable-next-line:component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
-  styleUrls: ['./add-metadata.component.scss']
+  styleUrls: ['./add-metadata.component.scss'],
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
-
   btnIsDisabled: boolean;
 
   sedaData: SedaData;
@@ -75,12 +74,14 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
 
-
-  constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-              private fileService: FileService, private sedaService: SedaService,
-              private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService,
-              private profileService: ProfileService) {
-  }
+  constructor(
+    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
+    private fileService: FileService,
+    private sedaService: SedaService,
+    private popUpService: PopupService,
+    private sedaLanguageService: PastisPopupMetadataLanguageService,
+    private profileService: ProfileService,
+  ) {}
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -89,9 +90,9 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.log(error);
-      }
+      },
     );
-    this.fileService.nodeChange.subscribe(fileNode => {
+    this.fileService.nodeChange.subscribe((fileNode) => {
       this.fileNode = fileNode;
     });
     this.sedaData = this.sedaService.sedaRules[0];
@@ -99,18 +100,21 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.sedaNodeFound = this.fileNode.sedaData;
 
     if (this.profileService.profileMode === ProfileType.PA) {
-      this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
-        .filter(e => e.Element !== SedaElementConstants.attribute);
+      this.allowedChildren = this.sedaService
+        .findSelectableElementList(this.sedaNodeFound, this.fileNode)
+        .filter((e) => e.Element !== SedaElementConstants.attribute);
     } else if (this.profileService.profileMode === ProfileType.PUA) {
       if (this.fileNode.name === 'ArchiveUnit') {
         if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
-          this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter(e => e.Element !== SedaElementConstants.attribute)
-            .filter(e => e.Name === 'Management');
+          this.allowedChildren = this.sedaService
+            .findSelectableElementList(this.sedaNodeFound, this.fileNode)
+            .filter((e) => e.Element !== SedaElementConstants.attribute)
+            .filter((e) => e.Name === 'Management');
         } else {
-          this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter(e => e.Element !== SedaElementConstants.attribute)
-            .filter(e => e.Name === 'Management' || e.Name === 'ArchiveUnitProfile');
+          this.allowedChildren = this.sedaService
+            .findSelectableElementList(this.sedaNodeFound, this.fileNode)
+            .filter((e) => e.Element !== SedaElementConstants.attribute)
+            .filter((e) => e.Name === 'Management' || e.Name === 'ArchiveUnitProfile');
         }
       } else {
         this.allowedChildren = this.sedaNodeFound.Children.filter((e: SedaData) => e.Name !== 'id');
@@ -122,17 +126,16 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
             this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
           }
         }
-
       }
       this.fileNode.children.forEach((child: FileNode) => {
         if (child.cardinality.endsWith('1')) {
           this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
         }
-      })
+      });
     }
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
-    this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
+    this.popUpService.btnYesShoudBeDisabled.subscribe((status) => {
       this.btnIsDisabled = status;
     });
   }
@@ -162,7 +165,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.allowedChildren.sort((a, b) => {
       return orderedNames.indexOf(a) - orderedNames.indexOf(b);
     });
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+    this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
     this.upateButtonStatusAndDataToSend();
   }
 
@@ -170,7 +173,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.addedItems.push(element);
 
     if (element.Cardinality.endsWith('1')) {
-      this.allowedChildren = this.allowedChildren.filter(e => e !== element);
+      this.allowedChildren = this.allowedChildren.filter((e) => e !== element);
     }
 
     if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
@@ -182,7 +185,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+    this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
     this.upateButtonStatusAndDataToSend();
   }
 
@@ -229,7 +232,6 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       this.sedaLanguageSub.unsubscribe();
     }
   }
-
 }
 
 @Pipe({ name: 'filterByName' })
@@ -242,13 +244,13 @@ export class FilterByNamePipe implements PipeTransform {
       return listOfElements;
     }
     if (sedaLanguage) {
-      return listOfElements.filter(element => element.Name !== undefined)
-        .filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+      return listOfElements
+        .filter((element) => element.Name !== undefined)
+        .filter((element) => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     } else {
       return listOfElements
-        .filter(element => element.NameFr !== undefined)
-        .filter(element => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+        .filter((element) => element.NameFr !== undefined)
+        .filter((element) => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     }
-
   }
 }

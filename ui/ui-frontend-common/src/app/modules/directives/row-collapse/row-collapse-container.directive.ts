@@ -39,13 +39,12 @@ import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angula
 import { RowCollapseDirective } from './row-collapse.directive';
 
 @Directive({
-  selector: '[vitamuiCommonRowCollapseContainer]'
+  selector: '[vitamuiCommonRowCollapseContainer]',
 })
 export class RowCollapseContainerDirective implements AfterContentInit {
-
   @ContentChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;
 
-  constructor() { }
+  constructor() {}
 
   ngAfterContentInit() {
     this.subscribeToExpandEvents();
@@ -61,5 +60,4 @@ export class RowCollapseContainerDirective implements AfterContentInit {
   private collapseAllExcept(collapseDirective: RowCollapseDirective) {
     this.collapseDirectives.filter((e) => e !== collapseDirective).forEach((e) => e.collapse());
   }
-
 }

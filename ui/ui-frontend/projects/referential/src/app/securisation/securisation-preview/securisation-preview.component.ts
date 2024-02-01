@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Event} from 'projects/vitamui-library/src/public-api';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Event } from 'projects/vitamui-library/src/public-api';
 
 import '@angular/localize/init';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
-import {SecurisationService} from '../securisation.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { SecurisationService } from '../securisation.service';
 
 @Component({
   selector: 'app-securisation-preview',
   templateUrl: './securisation-preview.component.html',
-  styleUrls: ['./securisation-preview.component.scss']
+  styleUrls: ['./securisation-preview.component.scss'],
 })
 export class SecurisationPreviewComponent implements OnInit {
-
   @Input() securisation: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -57,21 +56,23 @@ export class SecurisationPreviewComponent implements OnInit {
   constructor(
     private securisationService: SecurisationService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar) {
-  }
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
         this.snackBar.open(
           $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null, {
+          null,
+          {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
+            duration: 10000,
+          },
+        );
       }
     });
   }

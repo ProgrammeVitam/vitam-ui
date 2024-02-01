@@ -8,21 +8,27 @@ import { User } from './models/user/user.interface';
 import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnalyticsResolver implements Resolve<any> {
-
   private currentApplicationId: string;
 
-  constructor(private userApiService: UserApiService, private applicationService: ApplicationService,
-              private tenantService: TenantSelectionService, private userAlertsService: UserAlertsService) { }
+  constructor(
+    private userApiService: UserApiService,
+    private applicationService: ApplicationService,
+    private tenantService: TenantSelectionService,
+    private userAlertsService: UserAlertsService,
+  ) {}
 
-    resolve(route: ActivatedRouteSnapshot) {
-      const nextApplicationId = route.data.appId;
-      this.tenantService.currentAppId$.next(nextApplicationId);
-      if (nextApplicationId && nextApplicationId !== this.currentApplicationId) {
-        // tag the application as the last used
-        this.userApiService.analytics({ applicationId: nextApplicationId }).pipe(take(1)).subscribe((userData: User) => {
+  resolve(route: ActivatedRouteSnapshot) {
+    const nextApplicationId = route.data.appId;
+    this.tenantService.currentAppId$.next(nextApplicationId);
+    if (nextApplicationId && nextApplicationId !== this.currentApplicationId) {
+      // tag the application as the last used
+      this.userApiService
+        .analytics({ applicationId: nextApplicationId })
+        .pipe(take(1))
+        .subscribe((userData: User) => {
           if (userData.analytics) {
             const analytics = userData.analytics;
             this.applicationService.applicationsAnalytics = analytics.applications;
@@ -31,7 +37,7 @@ export class AnalyticsResolver implements Resolve<any> {
           }
         });
 
-        this.currentApplicationId = nextApplicationId;
-      }
+      this.currentApplicationId = nextApplicationId;
     }
   }
+}

@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {BASE_URL, LoggerModule, WINDOW_LOCATION} from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 
@@ -25,18 +25,13 @@ describe('CreateNoticeComponent', () => {
 
   const popupServiceMock = {
     externalIdentifierEnabled: true,
-    btnYesShoudBeDisabled: of(true)
+    btnYesShoudBeDisabled: of(true),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateNoticeComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         ProfileService,
@@ -48,9 +43,8 @@ describe('CreateNoticeComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: matDialogData },
         { provide: PopupService, useValue: popupServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-      ]
-    })
-      .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -47,7 +47,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { Type } from '@angular/core';
 
-
 const expectedTenant: Tenant = {
   id: '42',
   customerId: '43',
@@ -60,7 +59,7 @@ const expectedTenant: Tenant = {
   accessContractHoldingIdentifier: 'AC-000001',
   accessContractLogbookIdentifier: 'AC-000002',
   ingestContractHoldingIdentifier: 'IC-000001',
-  itemIngestContractIdentifier: 'IC-000001'
+  itemIngestContractIdentifier: 'IC-000001',
 };
 
 const expectedOwner: Owner = {
@@ -75,8 +74,8 @@ const expectedOwner: Owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
-  }
+    country: 'France',
+  },
 };
 
 const expectedTenants = [
@@ -92,7 +91,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
   {
     id: '1',
@@ -106,7 +105,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
   {
     id: '2',
@@ -120,7 +119,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
 ];
 
@@ -137,7 +136,7 @@ describe('TenantService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
-      ]
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -167,20 +166,17 @@ describe('TenantService', () => {
 
   it('should call /fake-api/tenants and display a success message', () => {
     const snackBar = TestBed.inject(VitamUISnackBarService);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
-      (response: Tenant) => {
-        expect(response).toEqual(expectedTenant);
-        expect(snackBar.open).toHaveBeenCalledWith({
-          message: 'SHARED.SNACKBAR.SAFE_CREATE',
-          translateParams:{
-            param1: expectedTenant.name,
-            param2: expectedOwner.name,
-          },
-          icon: 'vitamui-icon-safe'
-        });
-      },
-      fail
-    );
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe((response: Tenant) => {
+      expect(response).toEqual(expectedTenant);
+      expect(snackBar.open).toHaveBeenCalledWith({
+        message: 'SHARED.SNACKBAR.SAFE_CREATE',
+        translateParams: {
+          param1: expectedTenant.name,
+          param2: expectedOwner.name,
+        },
+        icon: 'vitamui-icon-safe',
+      });
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedTenant);
@@ -188,33 +184,26 @@ describe('TenantService', () => {
 
   it('should display an error message', () => {
     const snackBar = TestBed.inject(VitamUISnackBarService);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
-      fail,
-      () => {
-        expect(snackBar.open).toHaveBeenCalledWith({
-          message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
-          icon: 'vitamui-icon-danger'
-        });
-      }
-    );
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe(fail, () => {
+      expect(snackBar.open).toHaveBeenCalledWith({
+        message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
+        icon: 'vitamui-icon-danger',
+      });
+    });
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 
   it('should return true if the tenant exists', () => {
-    tenantService.exists('tenantName').subscribe(
-      (found) => {
-        expect(found).toBeTruthy();
-      },
-      fail
-    );
+    tenantService.exists('tenantName').subscribe((found) => {
+      expect(found).toBeTruthy();
+    }, fail);
 
-    const criterionArray: any[] = [ { key: 'name', value: 'tenantName', operator: Operators.equals }];
+    const criterionArray: any[] = [{ key: 'name', value: 'tenantName', operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/tenants/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
   });
-
 });

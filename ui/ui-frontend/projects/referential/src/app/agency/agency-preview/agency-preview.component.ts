@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
@@ -70,7 +70,10 @@ export class AgencyPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private agencyService: AgencyService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private agencyService: AgencyService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

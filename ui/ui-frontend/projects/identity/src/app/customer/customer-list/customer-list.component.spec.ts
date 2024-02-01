@@ -100,189 +100,187 @@ let customers: Customer[];
 let tenants: Tenant[];
 
 describe('CustomerListComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      customers = [
-        {
-          id: '11',
-          identifier: '11',
-          code: '011000',
-          name: 'Kouygues Telecom',
-          companyName: 'Kouygues Telecom',
-          enabled: true,
-          readonly: false,
-          hasCustomGraphicIdentity: false,
-          language: null,
-          passwordRevocationDelay: 1,
-          otp: OtpState.DEACTIVATED,
-          idp: true,
-          emailDomains: ['kouygues.com'],
-          defaultEmailDomain: 'kouygues.com',
-          address: {
-            street: '13 rue faubourg',
-            zipCode: '75009',
-            city: 'paris',
-            country: 'france',
-          },
-          owners: [],
-          themeColors: {},
-          gdprAlert: false,
-          gdprAlertDelay: 72,
-          portalMessages: {},
-          portalTitles: {},
+  beforeEach(waitForAsync(() => {
+    customers = [
+      {
+        id: '11',
+        identifier: '11',
+        code: '011000',
+        name: 'Kouygues Telecom',
+        companyName: 'Kouygues Telecom',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: null,
+        passwordRevocationDelay: 1,
+        otp: OtpState.DEACTIVATED,
+        idp: true,
+        emailDomains: ['kouygues.com'],
+        defaultEmailDomain: 'kouygues.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
         },
-        {
-          id: '12',
-          identifier: '12',
-          code: '012000',
-          name: 'Lrange',
-          companyName: 'Lrange',
-          enabled: true,
-          readonly: false,
-          hasCustomGraphicIdentity: false,
-          language: null,
-          passwordRevocationDelay: 1,
-          otp: OtpState.OPTIONAL,
-          idp: false,
-          emailDomains: ['louygues.com'],
-          defaultEmailDomain: 'louygues.com',
-          address: {
-            street: '13 rue faubourg',
-            zipCode: '75009',
-            city: 'paris',
-            country: 'france',
-          },
-          owners: [],
-          themeColors: {},
-          gdprAlert: false,
-          gdprAlertDelay: 72,
-          portalMessages: {},
-          portalTitles: {},
+        owners: [],
+        themeColors: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+        portalMessages: {},
+        portalTitles: {},
+      },
+      {
+        id: '12',
+        identifier: '12',
+        code: '012000',
+        name: 'Lrange',
+        companyName: 'Lrange',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: null,
+        passwordRevocationDelay: 1,
+        otp: OtpState.OPTIONAL,
+        idp: false,
+        emailDomains: ['louygues.com'],
+        defaultEmailDomain: 'louygues.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
         },
-        {
-          id: '13',
-          identifier: '13',
-          code: '013000',
-          name: 'Mouygues Telecom',
-          companyName: 'Mouygues Telecom',
-          enabled: true,
-          readonly: false,
-          hasCustomGraphicIdentity: false,
-          language: null,
-          passwordRevocationDelay: 1,
-          otp: OtpState.MANDATORY,
-          idp: true,
-          emailDomains: ['mouygues.com'],
-          defaultEmailDomain: 'mouygues.com',
-          address: {
-            street: '13 rue faubourg',
-            zipCode: '75009',
-            city: 'paris',
-            country: 'france',
-          },
-          owners: [],
-          themeColors: {},
-          gdprAlert: false,
-          gdprAlertDelay: 72,
-          portalMessages: {},
-          portalTitles: {},
+        owners: [],
+        themeColors: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+        portalMessages: {},
+        portalTitles: {},
+      },
+      {
+        id: '13',
+        identifier: '13',
+        code: '013000',
+        name: 'Mouygues Telecom',
+        companyName: 'Mouygues Telecom',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: null,
+        passwordRevocationDelay: 1,
+        otp: OtpState.MANDATORY,
+        idp: true,
+        emailDomains: ['mouygues.com'],
+        defaultEmailDomain: 'mouygues.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
         },
-        {
-          id: '14',
-          identifier: '14',
-          code: '014000',
-          name: 'Nrange',
-          companyName: 'Nrange',
-          enabled: true,
-          readonly: false,
-          hasCustomGraphicIdentity: false,
-          language: null,
-          passwordRevocationDelay: 1,
-          otp: OtpState.OPTIONAL,
-          idp: false,
-          emailDomains: ['nrange.com'],
-          defaultEmailDomain: 'nrange.com',
-          address: {
-            street: '13 rue faubourg',
-            zipCode: '75009',
-            city: 'paris',
-            country: 'france',
-          },
-          owners: [],
-          themeColors: {},
-          gdprAlert: false,
-          gdprAlertDelay: 72,
-          portalMessages: {},
-          portalTitles: {},
+        owners: [],
+        themeColors: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+        portalMessages: {},
+        portalTitles: {},
+      },
+      {
+        id: '14',
+        identifier: '14',
+        code: '014000',
+        name: 'Nrange',
+        companyName: 'Nrange',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: null,
+        passwordRevocationDelay: 1,
+        otp: OtpState.OPTIONAL,
+        idp: false,
+        emailDomains: ['nrange.com'],
+        defaultEmailDomain: 'nrange.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
         },
-        {
-          id: '15',
-          identifier: '15',
-          code: '015000',
-          name: 'Bouygues Telecom',
-          companyName: 'Bouygues Telecom',
-          enabled: true,
-          readonly: false,
-          hasCustomGraphicIdentity: false,
-          language: null,
-          passwordRevocationDelay: 1,
-          otp: OtpState.OPTIONAL,
-          idp: false,
-          emailDomains: ['bouygues.com'],
-          defaultEmailDomain: 'bouygues.com',
-          address: {
-            street: '13 rue faubourg',
-            zipCode: '75009',
-            city: 'paris',
-            country: 'france',
-          },
-          owners: [],
-          themeColors: {},
-          gdprAlert: false,
-          gdprAlertDelay: 72,
-          portalMessages: {},
-          portalTitles: {},
+        owners: [],
+        themeColors: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+        portalMessages: {},
+        portalTitles: {},
+      },
+      {
+        id: '15',
+        identifier: '15',
+        code: '015000',
+        name: 'Bouygues Telecom',
+        companyName: 'Bouygues Telecom',
+        enabled: true,
+        readonly: false,
+        hasCustomGraphicIdentity: false,
+        language: null,
+        passwordRevocationDelay: 1,
+        otp: OtpState.OPTIONAL,
+        idp: false,
+        emailDomains: ['bouygues.com'],
+        defaultEmailDomain: 'bouygues.com',
+        address: {
+          street: '13 rue faubourg',
+          zipCode: '75009',
+          city: 'paris',
+          country: 'france',
         },
-      ];
+        owners: [],
+        themeColors: {},
+        gdprAlert: false,
+        gdprAlertDelay: 72,
+        portalMessages: {},
+        portalTitles: {},
+      },
+    ];
 
-      tenants = [];
+    tenants = [];
 
-      const customerListServiceSpy = {
-        search: () => of(customers),
-        canLoadMore: true,
-        loadMore: () => of(customers),
-      };
+    const customerListServiceSpy = {
+      search: () => of(customers),
+      canLoadMore: true,
+      loadMore: () => of(customers),
+    };
 
-      const tenantServiceSpy = {
-        getTenantsByCustomerIds: () => of(tenants),
-      };
-      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-      const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const tenantServiceSpy = {
+      getTenantsByCustomerIds: () => of(tenants),
+    };
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-      TestBed.configureTestingModule({
-        imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
-        declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
-        providers: [
-          { provide: CustomerListService, useValue: customerListServiceSpy },
-          { provide: CustomerService, useValue: { updated: new Subject() } },
-          { provide: TenantService, useValue: tenantServiceSpy },
-          { provide: MatDialog, useValue: matDialogSpy },
-          { provide: Router, useValue: routerSpy },
-          CustomerDataService,
-        ],
-      }).compileComponents();
+    TestBed.configureTestingModule({
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
+      providers: [
+        { provide: CustomerListService, useValue: customerListServiceSpy },
+        { provide: CustomerService, useValue: { updated: new Subject() } },
+        { provide: TenantService, useValue: tenantServiceSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: Router, useValue: routerSpy },
+        CustomerDataService,
+      ],
+    }).compileComponents();
 
-      const customerListService = TestBed.get(CustomerListService);
-      spyOn(customerListService, 'search').and.callThrough();
-      spyOn(customerListService, 'loadMore').and.callThrough();
+    const customerListService = TestBed.get(CustomerListService);
+    spyOn(customerListService, 'search').and.callThrough();
+    spyOn(customerListService, 'loadMore').and.callThrough();
 
-      const customerDataService = TestBed.get(CustomerDataService);
-      spyOn(customerDataService, 'addTenants').and.callThrough();
-      spyOn(customerDataService, 'updateTenant').and.callThrough();
-      spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
-    })
-  );
+    const customerDataService = TestBed.get(CustomerDataService);
+    spyOn(customerDataService, 'addTenants').and.callThrough();
+    spyOn(customerDataService, 'updateTenant').and.callThrough();
+    spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerListComponent);

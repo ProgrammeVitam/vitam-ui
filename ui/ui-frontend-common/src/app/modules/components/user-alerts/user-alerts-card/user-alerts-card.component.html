@@ -1,24 +1,24 @@
 <div class="card mt-3">
   <div class="close" (click)="removeAlert.emit()"><i class="vitamui-icon vitamui-icon-close text light"></i></div>
-  <div class="text large bold">{{'USER_ALERTS_CARD.APPLICATION' | translate }} : {{applicationName}}</div>
+  <div class="text large bold">{{ 'USER_ALERTS_CARD.APPLICATION' | translate }} : {{ applicationName }}</div>
 
   <div class="mt-3 text medium">
-    <span class="text bold">{{'USER_ALERTS_CARD.DETAIL' | translate }} :</span> {{details}}
+    <span class="text bold">{{ 'USER_ALERTS_CARD.DETAIL' | translate }} :</span> {{ details }}
   </div>
 
   <div class="mt-4 actions">
-    <div class=" d-flex align-items-center">
+    <div class="d-flex align-items-center">
       <div class="details text caption bold light">
         <i class="vitamui-icon vitamui-icon-calendar"></i>
-        <span>{{date}}</span>
+        <span>{{ date }}</span>
       </div>
 
       <div class="details text caption bold light">
         <i class="vitamui-icon vitamui-icon-time"></i>
-        <span>{{time}}</span>
+        <span>{{ time }}</span>
       </div>
     </div>
 
-    <button class="btn link" (click)="openAlert.emit()">{{'USER_ALERTS_CARD.OPEN' | translate }}</button>
+    <button class="btn link" (click)="openAlert.emit()">{{ 'USER_ALERTS_CARD.OPEN' | translate }}</button>
   </div>
 </div>

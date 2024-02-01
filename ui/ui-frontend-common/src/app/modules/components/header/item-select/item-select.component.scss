@@ -1,114 +1,114 @@
 @import '../../../../../sass/mixins/elevation';
 
 :host::ng-deep {
-    .selected-item-label,
-    .unselected-item-label {
-        color: var(--vitamui-primary);
-        font-size: 16px;
-        font-weight: 700;
-    }
+  .selected-item-label,
+  .unselected-item-label {
+    color: var(--vitamui-primary);
+    font-size: 16px;
+    font-weight: 700;
+  }
 
-    .mat-form-field-underline {
-        display: none;
-    }
+  .mat-form-field-underline {
+    display: none;
+  }
 
-    .mat-select-value-text {
-        color: var(--vitamui-grey-900);
-        font-size: 16px;
-        font-weight: 700;
-    }
+  .mat-select-value-text {
+    color: var(--vitamui-grey-900);
+    font-size: 16px;
+    font-weight: 700;
+  }
 
-    .mat-select-arrow {
-        color: var(--vitamui-primary);
-    }
+  .mat-select-arrow {
+    color: var(--vitamui-primary);
+  }
 
-    .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
-        color: var(--vitamui-primary);
-    }
+  .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: var(--vitamui-primary);
+  }
 
-    .mat-form-field-wrapper {
-        width: 100%;
-        padding-bottom: 0;
-        width: 100%;
-    }
+  .mat-form-field-wrapper {
+    width: 100%;
+    padding-bottom: 0;
+    width: 100%;
+  }
 
-    mat-form-field {
-        display: inline-flex;
-        align-items: center;
-        position: relative;
-        height: 60px;
-        border-radius: 4px;
-        border: none;
-        background-color: white;
-        padding: 8px 30px;
-        transition: border-color 150ms ease-out;
-        vertical-align: top;
-        width: 100%;
-    }
+  mat-form-field {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    height: 60px;
+    border-radius: 4px;
+    border: none;
+    background-color: white;
+    padding: 8px 30px;
+    transition: border-color 150ms ease-out;
+    vertical-align: top;
+    width: 100%;
+  }
 
-    .mat-form-field {
-        font-weight: 700;
-        width: 100%;
-    }
+  .mat-form-field {
+    font-weight: 700;
+    width: 100%;
+  }
 
-    .mat-form-field.mat-form-field-disabled {
-        background-color: var(--vitamui-grey-300);
-        border: none;
-        color: var(--vitamui-grey-300);
+  .mat-form-field.mat-form-field-disabled {
+    background-color: var(--vitamui-grey-300);
+    border: none;
+    color: var(--vitamui-grey-300);
 
-        .mat-form-field-flex {
-            background-color: var(--vitamui-grey-300);
-        }
-    }
-
-    .mat-form-field:not(.mat-form-field-disabled) {
-        @include input-elevation-dark;
-
-        .mat-form-field-label {
-            color: var(--vitamui-grey-600);
-        }
-
-        &.mat-focused {
-            border: solid 1px var(--vitamui-primary);
-
-            .mat-form-field-label {
-                color: var(--vitamui-grey-600);
-            }
-        }
-        .mat-select .mat-select-value {
-            color: var(--vitamui-grey-900);
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .select-arrow {
-            i {
-                color: var(--vitamui-primary);
-            }
-        }
-    }
     .mat-form-field-flex {
-        background-color: white;
+      background-color: var(--vitamui-grey-300);
+    }
+  }
+
+  .mat-form-field:not(.mat-form-field-disabled) {
+    @include input-elevation-dark;
+
+    .mat-form-field-label {
+      color: var(--vitamui-grey-600);
     }
 
-    mat-select {
-        color: var(--vitamui-grey-900);
-        font-size: 16px;
+    &.mat-focused {
+      border: solid 1px var(--vitamui-primary);
+
+      .mat-form-field-label {
+        color: var(--vitamui-grey-600);
+      }
+    }
+    .mat-select .mat-select-value {
+      color: var(--vitamui-grey-900);
+      font-size: 16px;
+      font-weight: 700;
     }
 
-    .mat-option-text {
-        color: var(--vitamui-grey-900);
-    }
-
-    .mat-option {
-        color: var(--vitamui-grey-900);
-    }
-
-    .mat-option.mat-selected:not(.mat-option-disabled) {
+    .select-arrow {
+      i {
         color: var(--vitamui-primary);
+      }
     }
+  }
+  .mat-form-field-flex {
+    background-color: white;
+  }
 
-    span.mat-select-placeholder {
-        margin-top: 0.4rem;
-    }
+  mat-select {
+    color: var(--vitamui-grey-900);
+    font-size: 16px;
+  }
+
+  .mat-option-text {
+    color: var(--vitamui-grey-900);
+  }
+
+  .mat-option {
+    color: var(--vitamui-grey-900);
+  }
+
+  .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: var(--vitamui-primary);
+  }
+
+  span.mat-select-placeholder {
+    margin-top: 0.4rem;
+  }
 }

@@ -62,7 +62,7 @@ export class AccessContractNodesTabComponent implements OnInit {
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -78,7 +78,7 @@ export class AccessContractNodesTabComponent implements OnInit {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });

@@ -55,7 +55,10 @@ export class GroupComponent implements OnChanges {
 
   readonly DisplayObjectType = DisplayObjectType;
 
-  constructor(private layoutService: LayoutService, private favoriteEntryService: FavoriteEntryService) {}
+  constructor(
+    private layoutService: LayoutService,
+    private favoriteEntryService: FavoriteEntryService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { displayObject } = changes;

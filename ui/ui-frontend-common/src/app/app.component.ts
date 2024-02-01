@@ -45,12 +45,16 @@ import { StartupService } from './modules/startup.service';
 @Component({
   selector: 'vitamui-common-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'app';
 
-  constructor(public authService: AuthService, private matDialog: MatDialog, titleService: Title, startupService: StartupService
+  constructor(
+    public authService: AuthService,
+    private matDialog: MatDialog,
+    titleService: Title,
+    startupService: StartupService,
   ) {
     titleService.setTitle(startupService.getPlatformName());
   }
