@@ -25,7 +25,7 @@ services:
   mongo-express-dev:
     container_name: vitamui-mongo-express
     image: mongo-express
-    restart: always
+    restart: unless-stopped
     ports:
       - "18081:8081"
     depends_on:
