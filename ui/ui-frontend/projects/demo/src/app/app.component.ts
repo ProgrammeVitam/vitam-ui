@@ -43,14 +43,15 @@ import { ErrorDialogComponent } from 'ui-frontend-common';
 @Component({
   selector: 'demo-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'demo';
 
-  constructor(public authService: AuthService, private matDialog: MatDialog) {
-
-  }
+  constructor(
+    public authService: AuthService,
+    private matDialog: MatDialog,
+  ) {}
 
   openErrorModal() {
     this.matDialog.open(ErrorDialogComponent, {

@@ -38,19 +38,15 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Event } from '../../../models';
 
-
 @Component({
   selector: 'vitamui-common-history-events',
   templateUrl: './history-events.component.html',
-  styleUrls: ['./history-events.component.scss']
+  styleUrls: ['./history-events.component.scss'],
 })
 export class HistoryEventsComponent implements OnInit {
-
   @Input() events: Event[];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

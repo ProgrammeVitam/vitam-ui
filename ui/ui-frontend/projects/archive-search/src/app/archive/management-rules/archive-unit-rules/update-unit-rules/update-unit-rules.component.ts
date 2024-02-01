@@ -35,18 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {cloneDeep} from 'lodash';
-import {merge, Subscription} from 'rxjs';
-import {debounceTime, filter, map} from 'rxjs/operators';
-import {CriteriaDataType, CriteriaOperator, diff, Rule, RuleService} from 'ui-frontend-common';
-import {ManagementRulesSharedDataService} from '../../../../core/management-rules-shared-data.service';
-import {ArchiveService} from '../../../archive.service';
-import {ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction} from '../../../models/ruleAction.interface';
-import {SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum} from '../../../models/search.criteria';
-import {ManagementRulesValidatorService} from '../../../validators/management-rules-validator.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { cloneDeep } from 'lodash';
+import { merge, Subscription } from 'rxjs';
+import { debounceTime, filter, map } from 'rxjs/operators';
+import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
+import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
+import { ArchiveService } from '../../../archive.service';
+import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
+import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
+import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
@@ -109,7 +109,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   isValidRule = false;
   isValidForm = false;
 
-  @ViewChild('confirmDeleteUpdateRuleDialog', {static: true}) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
+  @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
   constructor(
     private archiveService: ArchiveService,
@@ -117,7 +117,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private formBuilder: FormBuilder,
-    private managementRulesValidatorService: ManagementRulesValidatorService
+    private managementRulesValidatorService: ManagementRulesValidatorService,
   ) {
     this.previousRuleDetails = {
       oldRule: '',
@@ -136,28 +136,28 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
         [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      oldRuleName: [{value: null, disabled: true}],
+      oldRuleName: [{ value: null, disabled: true }],
       newRule: [
         null,
         [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
         [this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      newRuleName: [{value: null, disabled: true}],
+      newRuleName: [{ value: null, disabled: true }],
       startDate: [null, Validators.required],
-      endDate: [{value: null, disabled: true}],
-      ruleUpdated: [{value: false, disabled: true}],
-      startDateUpdated: [{value: false, disabled: true}],
+      endDate: [{ value: null, disabled: true }],
+      ruleUpdated: [{ value: false, disabled: true }],
+      startDateUpdated: [{ value: false, disabled: true }],
     });
 
     this.ruleDetailsForm.get('ruleUpdated').valueChanges.subscribe((value) => {
       this.isNewRuleDisabled = !value;
       if (!value) {
         this.cancelStep.emit();
-        this.ruleDetailsForm.patchValue({newRule: null});
+        this.ruleDetailsForm.patchValue({ newRule: null });
         this.previousRuleDetails.newRule = null;
         this.previousRuleDetails.newRuleName = null;
-        this.ruleDetailsForm.patchValue({newRuleName: null});
-        this.ruleDetailsForm.patchValue({endDate: null});
+        this.ruleDetailsForm.patchValue({ newRuleName: null });
+        this.ruleDetailsForm.patchValue({ endDate: null });
         this.newRule = null;
       }
     });
@@ -166,8 +166,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       this.isStartDateDisabled = !value;
       if (!value) {
         this.cancelStep.emit();
-        this.ruleDetailsForm.patchValue({startDate: null});
-        this.ruleDetailsForm.patchValue({endDate: null});
+        this.ruleDetailsForm.patchValue({ startDate: null });
+        this.ruleDetailsForm.patchValue({ endDate: null });
       }
     });
 
@@ -176,7 +176,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
-        filter((formData) => this.patchForm(formData))
+        filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
@@ -202,8 +202,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         this.cancelStep.emit();
         this.getOldRuleSuscription = this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
           this.oldRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({oldRuleName: ruleResponse.ruleValue});
-          this.ruleDetailsForm.patchValue({endDate: null});
+          this.ruleDetailsForm.patchValue({ oldRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
         });
         this.ruleDetailsForm.controls.startDateUpdated.enable();
         this.ruleDetailsForm.controls.ruleUpdated.enable();
@@ -215,8 +215,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         this.cancelStep.emit();
         this.getNewRuleSuscription = this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
           this.newRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({newRuleName: ruleResponse.ruleValue});
-          this.ruleDetailsForm.patchValue({endDate: null});
+          this.ruleDetailsForm.patchValue({ newRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
         });
         this.isShowCheckButton = true;
         return true;
@@ -251,8 +251,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   submit() {
     this.disabledControl = true;
@@ -273,27 +272,27 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
       ).ruleCategoryAction;
       if (this.ruleTypeDUA.rules.findIndex((item) => item.oldRule === rule.oldRule) === -1) {
         this.ruleTypeDUA.rules.push(rule);
         this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.oldRule !== this.lastRuleId);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         const index = this.ruleTypeDUA.rules.findIndex((item) => item.oldRule === rule.oldRule);
         this.ruleTypeDUA.rules[index] = rule;
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
-      this.ruleTypeDUA = {finalAction: null, rules: [rule]};
+      this.ruleTypeDUA = { finalAction: null, rules: [rule] };
       const managementRule: ManagementRules = {
         category: this.ruleCategory,
         ruleCategoryAction: this.ruleTypeDUA,
@@ -310,7 +309,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteUpdateRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
 
     this.showConfirmDeleteUpdateRuleSuscription = dialogRef
       .afterClosed()
@@ -356,7 +355,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
-      this.ruleDetailsForm.patchValue({endDate});
+      this.ruleDetailsForm.patchValue({ endDate });
     }
 
     this.isShowCheckButton = !this.isShowCheckButton;
@@ -379,12 +378,12 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
-      values: [{id: 'true', value: 'true'}],
+      values: [{ id: 'true', value: 'true' }],
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: APPRAISAL_RULE_IDENTIFIER,
-      values: [{id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value}],
+      values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,

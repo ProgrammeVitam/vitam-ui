@@ -35,5 +35,5 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum ExternalParameters {
-    PARAM_ACCESS_CONTRACT = 'PARAM_ACCESS_CONTRACT',
+  PARAM_ACCESS_CONTRACT = 'PARAM_ACCESS_CONTRACT',
 }

@@ -45,22 +45,25 @@ const moment = moment_;
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIDurationInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-vitamui-duration-input',
   templateUrl: './vitamui-duration-input.component.html',
   styleUrls: ['./vitamui-duration-input.component.scss'],
-  providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
+  providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
 })
 export class VitamUIDurationInputComponent implements ControlValueAccessor {
-
   form: FormGroup;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
 
@@ -68,7 +71,7 @@ export class VitamUIDurationInputComponent implements ControlValueAccessor {
     this.form = formBuilder.group({
       days: null,
       hours: null,
-      minutes: null
+      minutes: null,
     });
     this.form.valueChanges.subscribe((val) => {
       let duration;
@@ -85,7 +88,6 @@ export class VitamUIDurationInputComponent implements ControlValueAccessor {
   onTouched = () => {};
 
   writeValue(value: string) {
-
     const momentDuration = moment.duration(value);
     this.form.get('days').reset(momentDuration.days() || null, { emitEvent: false });
     this.form.get('hours').reset(momentDuration.hours() || null, { emitEvent: false });
@@ -103,5 +105,4 @@ export class VitamUIDurationInputComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
-
 }

@@ -1,9 +1,9 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
-import {ContextService} from '../context.service';
-import {ContextPreviewComponent} from './context-preview.component';
+import { ContextService } from '../context.service';
+import { ContextPreviewComponent } from './context-preview.component';
 
 describe('ContextPreviewComponent', () => {
   let component: ContextPreviewComponent;
@@ -13,13 +13,11 @@ describe('ContextPreviewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ContextPreviewComponent],
       providers: [
-        {provide: MatDialog, useValue: {}},
-        {provide: ContextService, useValue: {}}
+        { provide: MatDialog, useValue: {} },
+        { provide: ContextService, useValue: {} },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

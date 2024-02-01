@@ -1,6 +1,8 @@
 <div class="breadcrumb">
-    <ng-container *ngFor="let d of data; let last = last">
-        <span class="text normal" (click)="onClick(d, !last)">{{'APPLICATION.' + d.identifier + '.NAME' | translate:{default: d.label} }}</span>
-        <i *ngIf="!last" class="material-icons px-2">trending_flat</i>
-    </ng-container>
+  <ng-container *ngFor="let d of data; let last = last">
+    <span class="text normal" (click)="onClick(d, !last)">{{
+      'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label }
+    }}</span>
+    <i *ngIf="!last" class="material-icons px-2">trending_flat</i>
+  </ng-container>
 </div>

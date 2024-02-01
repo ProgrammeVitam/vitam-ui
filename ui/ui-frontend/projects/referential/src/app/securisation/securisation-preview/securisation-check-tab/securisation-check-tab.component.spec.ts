@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {of} from 'rxjs';
-import {AccessContractService} from '../../../access-contract/access-contract.service';
-import {SecurisationService} from '../../securisation.service';
+import { of } from 'rxjs';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
 describe('SecurisationCheckTabComponent', () => {
@@ -60,7 +60,7 @@ describe('SecurisationCheckTabComponent', () => {
     outMessage: 'outMessage',
     data: 'data',
     parsedData: {
-      Size: 2
+      Size: 2,
     },
     objectId: 'objectId',
     collectionName: 'collectionName',
@@ -69,51 +69,52 @@ describe('SecurisationCheckTabComponent', () => {
     agIdExt: 'agIdExt',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
     obIdReq: 'obIdReq',
-    events: [{
-      id: 'id2',
-      idAppSession: 'idAppSession2',
-      idRequest: 'idRequest2',
-      parentId: 'id',
-      type: 'type',
-      obIdReq: 'obIdReq',
-      typeProc: 'typeProc',
-      dateTime: new Date('1995-12-17'),
-      outcome: 'outcome',
-      outDetail: 'outDetail',
-      outMessage: 'outMessage',
-      data: 'data',
-      parsedData: {
-        dataKey: 'dataValue'
+    events: [
+      {
+        id: 'id2',
+        idAppSession: 'idAppSession2',
+        idRequest: 'idRequest2',
+        parentId: 'id',
+        type: 'type',
+        obIdReq: 'obIdReq',
+        typeProc: 'typeProc',
+        dateTime: new Date('1995-12-17'),
+        outcome: 'outcome',
+        outDetail: 'outDetail',
+        outMessage: 'outMessage',
+        data: 'data',
+        parsedData: {
+          dataKey: 'dataValue',
+        },
+        objectId: 'objectId',
+        collectionName: 'collectionName',
+        agId: 'agId',
+        agIdApp: 'agIdApp',
+        agIdExt: 'agIdExt',
+        rightsStatementIdentifier: 'rightsStatementIdentifier',
       },
-      objectId: 'objectId',
-      collectionName: 'collectionName',
-      agId: 'agId',
-      agIdApp: 'agIdApp',
-      agIdExt: 'agIdExt',
-      rightsStatementIdentifier: 'rightsStatementIdentifier'
-    }]
+    ],
   };
 
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'TRACEABILITY_APP'})
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'TRACEABILITY_APP' }),
     };
 
     const accessContractServiceMock = {
-      getAllForTenant: () => of([])
+      getAllForTenant: () => of([]),
     };
 
     TestBed.configureTestingModule({
-      declarations: [ SecurisationCheckTabComponent ],
+      declarations: [SecurisationCheckTabComponent],
       providers: [
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: SecurisationService, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: SecurisationService, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -46,14 +46,13 @@ describe('TenantSelectContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TenantSelectContentComponent ],
+      declarations: [TenantSelectContentComponent],
       providers: [
         { provide: Router, useValue: { navigate: () => {} } },
         { provide: ActivatedRoute, useValue: {} },
         { provide: TenantMenuService, useValue: { sendSelectedTenant: () => {} } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -50,12 +50,8 @@ describe('HistoryEventsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HistoryEventsComponent,
-        EventTypeLabelStubComponent,
-      ]
-    })
-    .compileComponents();
+      declarations: [HistoryEventsComponent, EventTypeLabelStubComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

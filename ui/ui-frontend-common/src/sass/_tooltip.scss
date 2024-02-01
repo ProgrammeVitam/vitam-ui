@@ -1,59 +1,59 @@
 .vitamui-tooltip {
-    display: flex;
-    background-color: var(--vitamui-primary);
-    color: $white;
-    @include elevation-1-primary;
-    border-radius: 10px;
-    margin-top: 24px;
-    position: relative;
-    max-width: 500px;
+  display: flex;
+  background-color: var(--vitamui-primary);
+  color: $white;
+  @include elevation-1-primary;
+  border-radius: 10px;
+  margin-top: 24px;
+  position: relative;
+  max-width: 500px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -23px;
+    left: 24px;
+    display: block;
+    height: 0px;
+    width: 0px;
+    border: 12.5px solid var(--vitamui-primary);
+    border-color: transparent var(--vitamui-primary) var(--vitamui-primary) transparent;
+  }
+
+  &.vitamui-tooltip-bottom {
+    margin-top: 0;
+    margin-bottom: 24px;
 
     &:before {
-        content: '';
-        position: absolute;
-        top: -23px;
-        left: 24px;
-        display: block;
-        height: 0px;
-        width: 0px;
-        border: 12.5px solid var(--vitamui-primary);
-        border-color: transparent var(--vitamui-primary) var(--vitamui-primary) transparent;
+      top: 100%;
+      left: 24px;
+      border-color: var(--vitamui-primary) transparent transparent var(--vitamui-primary);
     }
+  }
 
-    &.vitamui-tooltip-bottom {
-        margin-top: 0;
-        margin-bottom: 24px;
+  &.vitamui-tooltip-end:before {
+    left: auto;
+    right: 24px;
+    border-color: var(--vitamui-primary-dark-5) transparent transparent var(--vitamui-primary-dark-5);
+  }
 
-        &:before {
-            top: 100%;
-            left: 24px;
-            border-color: var(--vitamui-primary) transparent transparent var(--vitamui-primary);
-        }
-    }
+  &.vitamui-tooltip-end.vitamui-tooltip-top:before {
+    border-color: transparent var(--vitamui-primary-dark-5) var(--vitamui-primary-dark-5) transparent;
+  }
 
-    &.vitamui-tooltip-end:before {
-        left: auto;
-        right: 24px;
-        border-color: var(--vitamui-primary-dark-5) transparent transparent var(--vitamui-primary-dark-5);
-    }
+  .vitamui-tooltip-content {
+    display: flex;
+    align-items: center;
+    padding: 15px 22px;
+    font-weight: 600;
+  }
 
-    &.vitamui-tooltip-end.vitamui-tooltip-top:before {
-        border-color: transparent var(--vitamui-primary-dark-5) var(--vitamui-primary-dark-5) transparent;
-    }
-
-    .vitamui-tooltip-content {
-        display: flex;
-        align-items: center;
-        padding: 15px 22px;
-        font-weight: 600;
-    }
-
-    .vitamui-tooltip-icon {
-        display: flex;
-        font-size: 34px;
-        background-color: var(--vitamui-primary-dark-5);
-        align-items: center;
-        padding: 15px 15px;
-        border-radius: 0 10px 10px 0;
-    }
+  .vitamui-tooltip-icon {
+    display: flex;
+    font-size: 34px;
+    background-color: var(--vitamui-primary-dark-5);
+    align-items: center;
+    padding: 15px 15px;
+    border-radius: 0 10px 10px 0;
+  }
 }

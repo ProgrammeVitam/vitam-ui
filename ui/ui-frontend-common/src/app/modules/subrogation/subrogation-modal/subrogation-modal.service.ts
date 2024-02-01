@@ -40,17 +40,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubrogationModalComponent } from './subrogation-modal.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationModalService {
+  constructor(private dialog: MatDialog) {}
 
-  constructor(private dialog: MatDialog) { }
-
-  open(domains: string[], subrogateUser?: { email: string, firstname?: string, lastname?: string }) {
+  open(domains: string[], subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {
       panelClass: 'vitamui-modal',
-      data: { domains, user: subrogateUser }
+      data: { domains, user: subrogateUser },
     });
   }
-
 }

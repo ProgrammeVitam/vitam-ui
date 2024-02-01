@@ -61,6 +61,6 @@ import { ProfilePopupComponent } from './profile-popup.component';
   ],
   declarations: [ProfilePopupComponent, ProfileDetailComponent, InformationTabComponent],
   exports: [ProfileDetailComponent],
-  providers: [ProfileValidators]
+  providers: [ProfileValidators],
 })
-export class ProfileDetailModule { }
+export class ProfileDetailModule {}

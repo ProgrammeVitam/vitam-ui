@@ -2,98 +2,99 @@
 @import './variables';
 
 html {
-    // Hide scroll bars for our body container (but still scrollable)
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
+  // Hide scroll bars for our body container (but still scrollable)
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .vitamui-heading {
-    padding-top: $layout-margin-y;
-    margin-bottom: 3rem;
+  padding-top: $layout-margin-y;
+  margin-bottom: 3rem;
 }
 
 // Defaut supported screen width is 1920px
-.vitamui-content, .vitamui-heading {
-    max-width: $large-width;
-    min-width: $min-width;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 50px;
-    padding-right: 1rem;
+.vitamui-content,
+.vitamui-heading {
+  max-width: $large-width;
+  min-width: $min-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 1rem;
 
-    @include breakpoint(mediumScreen) {
-        max-width: $medium-width;
-    }
+  @include breakpoint(mediumScreen) {
+    max-width: $medium-width;
+  }
 
-    @include breakpoint(smallScreen) {
-        max-width: $small-width;
-    }
+  @include breakpoint(smallScreen) {
+    max-width: $small-width;
+  }
 }
 
 .mat-drawer-container {
-    height: calc(100vh - #{$header-height});
+  height: calc(100vh - #{$header-height});
 }
 
 /**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/
 .vitamui-header {
-    background-size: cover;
-    background-position: center;
-    padding-top: 1rem;
+  background-size: cover;
+  background-position: center;
+  padding-top: 1rem;
 
-    .vitamui-container {
-        padding-bottom: 62px;
+  .vitamui-container {
+    padding-bottom: 62px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    justify-content: space-between;
+
+    .btn {
+      margin-left: 20px;
     }
 
-    .controls {
-        display: flex;
-        align-items: center;
-        text-align: right;
-        justify-content: space-between;
-
-        .btn {
-            margin-left: 20px;
-        }
-
-        .actions {
-            display: flex;
-        }
+    .actions {
+      display: flex;
     }
+  }
 
-    > h2 {
-        // TODO Rename this variable in angular-commons
-        @include login-title;
-        margin-top: 67.5px;
-
-        img {
-            width: 37px;
-            vertical-align: middle;
-            margin-right: 17px;
-        }
-    }
-}
-
-.vitamui-header > .vitamui-container > h2 {
+  > h2 {
     // TODO Rename this variable in angular-commons
     @include login-title;
     margin-top: 67.5px;
-    color: $charcoal-grey;
-    font-weight: 500;
 
     img {
-        width: 37px;
-        vertical-align: middle;
-        margin-right: 17px;
+      width: 37px;
+      vertical-align: middle;
+      margin-right: 17px;
     }
+  }
+}
+
+.vitamui-header > .vitamui-container > h2 {
+  // TODO Rename this variable in angular-commons
+  @include login-title;
+  margin-top: 67.5px;
+  color: $charcoal-grey;
+  font-weight: 500;
+
+  img {
+    width: 37px;
+    vertical-align: middle;
+    margin-right: 17px;
+  }
 }
 
 .vitamui-body {
-    min-height: calc(100vh - #{$header-height + $footer-height});
+  min-height: calc(100vh - #{$header-height + $footer-height});
 }
 
 .vitamui-separator {
-    border-bottom: 1px solid var(--vitamui-grey-300);
-    margin: 1.25rem 0;
+  border-bottom: 1px solid var(--vitamui-grey-300);
+  margin: 1.25rem 0;
 }

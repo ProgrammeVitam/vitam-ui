@@ -58,7 +58,7 @@ import { UploadService } from '../core/common/upload.service';
 
 @Component({ selector: 'app-ingest-list', template: '' })
 export class IngestListStubComponent {
-      emitOrderChange() {}
+  emitOrderChange() {}
 }
 
 describe('IngestComponent test:', () => {
@@ -67,7 +67,7 @@ describe('IngestComponent test:', () => {
 
   const ingestServiceMock = {
     ingest: () => of('test ingest'),
-    search: () => of([])
+    search: () => of([]),
   };
   const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}), filesStatus: of([]) });
 
@@ -87,23 +87,19 @@ describe('IngestComponent test:', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule
+        SearchBarModule,
       ],
-      declarations: [
-        IngestComponent,
-        IngestListStubComponent
-      ],
+      declarations: [IngestComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
         { provide: UploadService, useValue: uploadServiceSpy },
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) } },
-        { provide: environment, useValue: environment }
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

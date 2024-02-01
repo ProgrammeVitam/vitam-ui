@@ -48,10 +48,9 @@ import { StartupService } from '../../../startup.service';
 @Component({
   selector: 'vitamui-common-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
-  styleUrls: ['./vitamui-title-breadcrumb.component.scss']
+  styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
 })
 export class VitamuiTitleBreadcrumbComponent implements OnInit {
-
   @Input()
   public data?: BreadCrumbData[];
 
@@ -60,11 +59,10 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,
-    private logger: Logger
-  ) { }
+    private logger: Logger,
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public redirectTo(identifier: string): void {
     if (!identifier || identifier === ApplicationId.PORTAL_APP) {
@@ -72,11 +70,7 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     } else {
       const app = this.applicationService.applications.find((application: Application) => application.identifier === identifier);
       if (app) {
-        this.applicationService.openApplication(
-          app,
-          this.router,
-          this.startupService.getConfigStringValue('UI_URL')
-        );
+        this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
       } else {
         this.logger.error(this, 'No application identifier found for ', identifier);
       }

@@ -1,26 +1,25 @@
 .breadcrumb {
-    display: inline-flex;
-    align-items: center;
-    
-    span
-    {
-        font-weight: 700;
+  display: inline-flex;
+  align-items: center;
 
-        &:not(:last-child) {
-            cursor: pointer;
-            color: var(--vitamui-primary);
-        }
+  span {
+    font-weight: 700;
 
-        &:last-child {
-            color: var(--vitamui-grey-900);
-        }
+    &:not(:last-child) {
+      cursor: pointer;
+      color: var(--vitamui-primary);
     }
 
-    i:not(:nth-last-child(2)) {
-        color: var(--vitamui-primary);
+    &:last-child {
+      color: var(--vitamui-grey-900);
     }
+  }
 
-    i:nth-last-child(2) {
-        color: var(--vitamui-grey-900);
-    }
+  i:not(:nth-last-child(2)) {
+    color: var(--vitamui-primary);
+  }
+
+  i:nth-last-child(2) {
+    color: var(--vitamui-grey-900);
+  }
 }

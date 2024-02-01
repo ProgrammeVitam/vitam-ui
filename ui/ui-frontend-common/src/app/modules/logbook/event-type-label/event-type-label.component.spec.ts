@@ -47,10 +47,9 @@ xdescribe('EventTypeLabelComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports : [VitamUICommonTestModule],
-      declarations: [ EventTypeLabelComponent ]
-    })
-    .compileComponents();
+      imports: [VitamUICommonTestModule],
+      declarations: [EventTypeLabelComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

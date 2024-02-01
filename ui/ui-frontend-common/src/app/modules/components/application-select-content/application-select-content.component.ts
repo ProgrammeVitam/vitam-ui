@@ -42,10 +42,9 @@ import { Category } from '../../models/application/category.interface';
 @Component({
   selector: 'vitamui-common-application-select-content',
   templateUrl: './application-select-content.component.html',
-  styleUrls: ['./application-select-content.component.scss']
+  styleUrls: ['./application-select-content.component.scss'],
 })
 export class ApplicationSelectContentComponent {
-
   @Input() isModalMenu: boolean;
 
   @Input()
@@ -56,7 +55,9 @@ export class ApplicationSelectContentComponent {
       this.computeAppCategories();
     }
   }
-  get applications(): Application[] { return this._applications; }
+  get applications(): Application[] {
+    return this._applications;
+  }
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
@@ -67,23 +68,27 @@ export class ApplicationSelectContentComponent {
       this.computeAppCategories();
     }
   }
-  get categories(): { [categoryId: string]: Category } { return this._categories; }
+  get categories(): { [categoryId: string]: Category } {
+    return this._categories;
+  }
   // tslint:disable-next-line:variable-name
   private _categories: { [categoryId: string]: Category };
 
   @Output() applicationSelected = new EventEmitter<string>();
 
-  get target(): string { return '_blank'; }
+  get target(): string {
+    return '_blank';
+  }
 
   categoryList: any[];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   checkTenantNumberByApp(apps: Application[]) {
     apps.forEach((application) => {
       const app = this.authService.user.tenantsByApp.find((appToTest) => appToTest.name === application.id);
       if (app) {
-          application.hasTenantList = app.tenants && app.tenants.length > 1 && application.hasTenantList;
+        application.hasTenantList = app.tenants && app.tenants.length > 1 && application.hasTenantList;
       }
     });
   }
@@ -98,7 +103,7 @@ export class ApplicationSelectContentComponent {
       title: 'Autres',
       displayTitle: true,
       order: 99,
-      applications: []
+      applications: [],
     };
     this.categoryList.push(defaultCategory);
 
@@ -114,7 +119,7 @@ export class ApplicationSelectContentComponent {
       ids.push(id);
     }
 
-    this.categoryList.forEach(category => {
+    this.categoryList.forEach((category) => {
       if (category.id === 'default') {
         category.applications = sortedApps.filter((app) => !ids.includes(app.category));
       } else {

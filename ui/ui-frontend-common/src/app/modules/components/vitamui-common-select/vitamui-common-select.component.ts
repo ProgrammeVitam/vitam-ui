@@ -41,12 +41,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'vitamui-common-select',
   templateUrl: './vitamui-common-select.component.html',
-  styleUrls: ['./vitamui-common-select.component.scss']
+  styleUrls: ['./vitamui-common-select.component.scss'],
 })
 export class VitamuiCommonSelectComponent implements OnInit {
-
   @Input()
-  public data: {id: number | string, label: string, isDefault?: boolean}[];
+  public data: { id: number | string; label: string; isDefault?: boolean }[];
 
   @Input()
   public selected: number | string;
@@ -58,15 +57,15 @@ export class VitamuiCommonSelectComponent implements OnInit {
   public disabled = false;
 
   @Input()
-  public messages = {selected: 'selected', unselected: 'unselected'};
+  public messages = { selected: 'selected', unselected: 'unselected' };
 
   public dataSelected = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    const defaultValue = this.data.find((d: { id: number | string, label: string, isDefault?: boolean }) => d.isDefault);
-    this.dataSelected = !!this.selected || !! defaultValue;
+    const defaultValue = this.data.find((d: { id: number | string; label: string; isDefault?: boolean }) => d.isDefault);
+    this.dataSelected = !!this.selected || !!defaultValue;
     this.selected = this.selected ? this.selected : defaultValue.id;
   }
 

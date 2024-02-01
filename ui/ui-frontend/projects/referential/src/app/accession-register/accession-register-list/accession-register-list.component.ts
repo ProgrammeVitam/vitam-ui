@@ -24,19 +24,12 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
-import {
-  AccessionRegisterDetail,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  OjectUtils,
-  PageRequest
-} from 'ui-frontend-common';
-import {AccessionRegisterSearchDto} from '../../models/accession-register-export-csv.interface';
-import {AccessionRegistersService} from '../accession-register.service';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
+import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'ui-frontend-common';
+import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
+import { AccessionRegistersService } from '../accession-register.service';
 
 @Component({
   selector: 'app-accession-register-list',
@@ -65,11 +58,13 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   private orderChange = new BehaviorSubject<string>(this.orderBy);
   private textToSearch: string;
 
-
   searchSub: Subscription;
   advancedSearchSub: Subscription;
 
-  constructor(public accessionRegistersService: AccessionRegistersService, @Inject(LOCALE_ID) private locale: string) {
+  constructor(
+    public accessionRegistersService: AccessionRegistersService,
+    @Inject(LOCALE_ID) private locale: string,
+  ) {
     super(accessionRegistersService);
   }
 
@@ -83,8 +78,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
           this.filterChange,
           this.orderChange,
           this.accessionRegistersService.getDateIntervalChanges(),
-          this.accessionRegistersService.getAdvancedSearchData()
-        )
+          this.accessionRegistersService.getAdvancedSearchData(),
+        ),
       )
       .subscribe((changes) => {
         const globalSearch = changes[0];
@@ -172,5 +167,4 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   onSelectRow(accessionRegisterDetail: AccessionRegisterDetail) {
     this.accessionRegisterClick.emit(accessionRegisterDetail);
   }
-
 }

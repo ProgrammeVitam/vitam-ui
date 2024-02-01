@@ -45,18 +45,16 @@ describe('IngestContractPreviewComponent', () => {
   let component: IngestContractPreviewComponent;
   let fixture: ComponentFixture<IngestContractPreviewComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [IngestContractPreviewComponent],
-        providers: [
-          { provide: MatDialog, useValue: {} },
-          { provide: IngestContractService, useValue: {} },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [IngestContractPreviewComponent],
+      providers: [
+        { provide: MatDialog, useValue: {} },
+        { provide: IngestContractService, useValue: {} },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractPreviewComponent);

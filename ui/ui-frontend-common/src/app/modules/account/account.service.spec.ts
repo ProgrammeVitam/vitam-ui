@@ -47,11 +47,7 @@ describe('AccountService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        AccountService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: {} },
-      ]
+      providers: [AccountService, { provide: VitamUISnackBar, useValue: snackBarSpy }, { provide: BASE_URL, useValue: {} }],
     });
   });
 

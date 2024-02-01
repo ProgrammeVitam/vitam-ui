@@ -1,16 +1,13 @@
 <div class="d-flex flex-column">
-    <div class="d-flex align-items-center mt-2">
-        <button class="btn btn-circle primary small" (click)="location.back()" aria-label="breadcrumb back">
-            <i class="vitamui-icon vitamui-icon-arrow-back"></i>
-        </button>
+  <div class="d-flex align-items-center mt-2">
+    <button class="btn btn-circle primary small" (click)="location.back()" aria-label="breadcrumb back">
+      <i class="vitamui-icon vitamui-icon-arrow-back"></i>
+    </button>
 
-        <vitamui-common-breadcrumb
-            [data]="data"
-            (selected)="redirectTo($event)">
-        </vitamui-common-breadcrumb>
-    </div>
+    <vitamui-common-breadcrumb [data]="data" (selected)="redirectTo($event)"> </vitamui-common-breadcrumb>
+  </div>
 
-    <h5 class="ml-2 mb-4">
-        <ng-content></ng-content>
-    </h5>
+  <h5 class="ml-2 mb-4">
+    <ng-content></ng-content>
+  </h5>
 </div>

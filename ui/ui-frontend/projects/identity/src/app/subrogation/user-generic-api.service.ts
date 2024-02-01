@@ -41,10 +41,9 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SubrogationUser } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserGenericApiService extends BaseHttpClient<SubrogationUser> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/subrogations/users/generic');
   }
@@ -52,5 +51,4 @@ export class UserGenericApiService extends BaseHttpClient<SubrogationUser> {
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<SubrogationUser>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
   }
-
 }

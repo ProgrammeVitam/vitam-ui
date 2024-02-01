@@ -47,16 +47,10 @@ describe('ApplicationMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ ApplicationMenuComponent ],
-      providers: [
-        { provide: ApplicationService, useValue: { applications: [] } },
-      ]
-    })
-    .compileComponents();
+      imports: [MatDialogModule, VitamUICommonTestModule],
+      declarations: [ApplicationMenuComponent],
+      providers: [{ provide: ApplicationService, useValue: { applications: [] } }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

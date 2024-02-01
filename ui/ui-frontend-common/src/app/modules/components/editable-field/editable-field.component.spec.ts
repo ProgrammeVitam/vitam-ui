@@ -45,12 +45,12 @@ import { EditableFieldComponent } from './editable-field.component';
 describe('EditableFieldComponent', () => {
   let component: EditableFieldComponent;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule, VitamUICommonTestModule],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, VitamUICommonTestModule],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    }),
+  );
   beforeEach(() => {
     component = new EditableFieldComponent({ nativeElement: document.createElement('dummy') });
   });
@@ -190,5 +190,4 @@ describe('EditableFieldComponent', () => {
     component.setDisabledState(false);
     expect(component.disabled).toBeFalsy();
   });
-
 });

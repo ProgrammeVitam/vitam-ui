@@ -46,15 +46,15 @@ import { MenuType } from '../menu-type.enum';
 @Component({
   selector: 'vitamui-common-application-menu',
   templateUrl: './application-menu.component.html',
-  styleUrls: ['./application-menu.component.scss']
+  styleUrls: ['./application-menu.component.scss'],
 })
 export class ApplicationMenuComponent {
-
   @Input() appId: ApplicationId;
 
   constructor(
     public applicationService: ApplicationService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+  ) {}
 
   get activeApplication(): Application {
     return this.applicationService.applications.find((application) => application.identifier === this.appId);
@@ -65,8 +65,8 @@ export class ApplicationMenuComponent {
       panelClass: 'vitamui-modal',
       data: {
         menuType: MenuType.application,
-        applicationConfig: { applications: this.applicationService.applications, categories: this.applicationService.categories }
-      }
+        applicationConfig: { applications: this.applicationService.applications, categories: this.applicationService.categories },
+      },
     });
   }
 }

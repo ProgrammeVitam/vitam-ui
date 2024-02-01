@@ -52,10 +52,10 @@ export class ExternalParamProfileValidators {
         switchMap(() =>
           control.value !== nameToIgnore
             ? this.externalParamProfileService.exists(tenantIdentifier, applicationName, control.value)
-            : of(false)
+            : of(false),
         ),
         take(1),
-        map((exists: boolean) => (exists ? { nameExists: true } : null))
+        map((exists: boolean) => (exists ? { nameExists: true } : null)),
       );
     };
   };

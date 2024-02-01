@@ -4,13 +4,13 @@
     "SUBMIT": "Confirm",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED" : "Required field"
+    "REQUIRED": "Required field"
   },
   "LOGBOOK_OPERATION_LIST": {
-    "NO_RESULTS" : "End of results",
-    "HOUR" : "Hour",
-    "NEXT" : "Next",
-    "PREVIOUS" : "Previous",
+    "NO_RESULTS": "End of results",
+    "HOUR": "Hour",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
     "STATE": "State",
     "STATUS": "Status",
     "RESULTS": "Results",
@@ -42,19 +42,19 @@
     "AND": "and the :",
     "ADD_INTREVAL": "ADD INTERVAL",
     "DELETE_INTERVAL": "DELETE INTERVAL",
-      "OPERATION_CATEGORY" : {
-      "TRACEABILITY" : "Securing",
-      "INGEST" : "Entry",
-      "STORAGE_BACKUP":"Save write logs",
-      "AUDIT":"Audit",
-      "MASTERDATA":"Basic data",
-      "ELIMINATION":"Elimination of archival units",
-      "CHECK":"Checking secure logs",
-      "UPDATE":"Update",
-      "EXPORT_DIP":"Export of the DIP",
-      "RECLASSIFICATION":"Modification of the tree structure of archival units",
-      "PRESERVATION":"Global preservation process",
-      "EXTERNAL_LOGBOOK":"Logging of external events"
+    "OPERATION_CATEGORY": {
+      "TRACEABILITY": "Securing",
+      "INGEST": "Entry",
+      "STORAGE_BACKUP": "Save write logs",
+      "AUDIT": "Audit",
+      "MASTERDATA": "Basic data",
+      "ELIMINATION": "Elimination of archival units",
+      "CHECK": "Checking secure logs",
+      "UPDATE": "Update",
+      "EXPORT_DIP": "Export of the DIP",
+      "RECLASSIFICATION": "Modification of the tree structure of archival units",
+      "PRESERVATION": "Global preservation process",
+      "EXTERNAL_LOGBOOK": "Logging of external events"
     }
   },
   "STATE_VALUE": {

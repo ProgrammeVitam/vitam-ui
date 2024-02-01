@@ -1,54 +1,52 @@
 @mixin mat-select-panel {
-    border-radius: 5px;
-    background-color: white;
-    border: solid 1px var(--vitamui-grey-400);
+  border-radius: 5px;
+  background-color: white;
+  border: solid 1px var(--vitamui-grey-400);
 
-    .mat-select-content {
-        background: transparent;
-    }
+  .mat-select-content {
+    background: transparent;
+  }
 
-    .mat-option {
-        height: 50px;
-        padding: 14px 16px;
-    }
-    .mat-option-text {
-        display: flex;
-        align-items: center;
-      
-        font-size: 14px;
-        line-height: 22px;
-        color: var(--vitamui-grey-900);
-        letter-spacing: 0.1px;
-    }
+  .mat-option {
+    height: 50px;
+    padding: 14px 16px;
+  }
+  .mat-option-text {
+    display: flex;
+    align-items: center;
 
-    .mat-option:not(:last-child) {
-        border-bottom: 1px solid var(--vitamui-grey-300);
-    }
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--vitamui-grey-900);
+    letter-spacing: 0.1px;
+  }
 
-    .mat-option.mat-active,
-    .mat-option:hover:not(.mat-option-disabled),
-    .mat-option:focus:not(.mat-option-disabled) {
-        background-color: var(--vitamui-grey-300);
-        color: var(--vitamui-grey-900);
-      
-    }
+  .mat-option:not(:last-child) {
+    border-bottom: 1px solid var(--vitamui-grey-300);
+  }
 
-    .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled){
-        font-weight: 700;
-    }
-    .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled):not(:hover) {
-        background: none;
-    }
+  .mat-option.mat-active,
+  .mat-option:hover:not(.mat-option-disabled),
+  .mat-option:focus:not(.mat-option-disabled) {
+    background-color: var(--vitamui-grey-300);
+    color: var(--vitamui-grey-900);
+  }
 
-    .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
-        background: none;
-    }
+  .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
+    font-weight: 700;
+  }
+  .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled):not(:hover) {
+    background: none;
+  }
 
-    .mat-option-disabled {
-        color: var(--vitamui-grey-300);
-    }
+  .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
+    background: none;
+  }
 
+  .mat-option-disabled {
+    color: var(--vitamui-grey-300);
+  }
 }
-.mat-select-panel:not([class*="mat-elevation-z"]) {
-    box-shadow: none !important;
+.mat-select-panel:not([class*='mat-elevation-z']) {
+  box-shadow: none !important;
 }

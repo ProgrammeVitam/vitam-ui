@@ -47,11 +47,15 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT,
-  InjectorModule, LoggerModule,
+import {
+  BASE_URL,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
-  WINDOW_LOCATION } from 'ui-frontend-common';
+  WINDOW_LOCATION,
+} from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -63,7 +67,7 @@ registerLocaleData(localeFr, 'fr');
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient, [
     { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' }
+    { prefix: './assets/i18n/', suffix: '.json' },
   ]);
 }
 
@@ -72,9 +76,7 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -92,27 +94,26 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularSvgIconModule.forRoot({
       loader: {
         provide: SvgLoader,
         useFactory: ApplicationSvgLoaderFactory,
-        deps: [ HttpBackend, TransferState ],
-      }
+        deps: [HttpBackend, TransferState],
+      },
     }),
-    BrowserTransferStateModule
+    BrowserTransferStateModule,
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: BASE_URL, useValue: '/portal-api' },
     { provide: ENVIRONMENT, useValue: environment },
-    { provide: WINDOW_LOCATION, useValue: window.location }
+    { provide: WINDOW_LOCATION, useValue: window.location },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

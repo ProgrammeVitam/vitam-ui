@@ -34,21 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FilingPlanMode} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {AccessContractService} from '../../../access-contract.service';
-
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FilingPlanMode } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { AccessContractService } from '../../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-node-update',
   templateUrl: './access-contract-node-update.component.html',
-  styleUrls: ['./access-contract-node-update.component.scss']
+  styleUrls: ['./access-contract-node-update.component.scss'],
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
-
   accessContract: AccessContract;
   searchAccessContractId: string;
   tenantIdentifier: number;
@@ -60,32 +58,32 @@ export class AccessContractNodeUpdateComponent implements OnInit {
 
   FILLING_PLAN_MODE_BOTH = FilingPlanMode.BOTH;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractNodeUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { accessContract: AccessContract, searchAccessContractId: string, tenantIdentifier: number },
+    @Inject(MAT_DIALOG_DATA) public data: { accessContract: AccessContract; searchAccessContractId: string; tenantIdentifier: number },
     private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService
+    private accessContractService: AccessContractService,
   ) {
     this.searchAccessContractId = this.data.searchAccessContractId;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.accessContract = this.data.accessContract;
     this.selectNodesForm = this.formBuilder.group({
       rootUnits: null,
-      excludedRootUnits: null
+      excludedRootUnits: null,
     });
   }
 
   ngOnInit() {
-    this.selectedRootsControl.valueChanges.subscribe(value => {
+    this.selectedRootsControl.valueChanges.subscribe((value) => {
       this.selectNodesForm.get('rootUnits').setValue(value.included);
       this.selectNodesForm.get('excludedRootUnits').setValue(value.excluded);
     });
 
     this.selectedRootsControl.setValue({
       included: this.accessContract.rootUnits || [],
-      excluded: this.accessContract.excludedRootUnits || []
+      excluded: this.accessContract.excludedRootUnits || [],
     });
   }
 
@@ -98,17 +96,17 @@ export class AccessContractNodeUpdateComponent implements OnInit {
       id: this.accessContract.id,
       identifier: this.accessContract.identifier,
       rootUnits: this.selectNodesForm.get('rootUnits').value,
-      excludedRootUnits: this.selectNodesForm.get('excludedRootUnits').value
+      excludedRootUnits: this.selectNodesForm.get('excludedRootUnits').value,
     };
 
-    this.accessContractService.patch(formData)
-      .subscribe(
-        () => {
-          this.dialogRef.close(true);
-        },
-        (error) => {
-          this.dialogRef.close(false);
-          console.error(error);
-        });
+    this.accessContractService.patch(formData).subscribe(
+      () => {
+        this.dialogRef.close(true);
+      },
+      (error) => {
+        this.dialogRef.close(false);
+        console.error(error);
+      },
+    );
   }
 }

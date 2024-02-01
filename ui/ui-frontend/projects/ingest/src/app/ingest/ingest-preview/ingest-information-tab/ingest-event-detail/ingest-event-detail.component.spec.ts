@@ -34,39 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatMenuModule} from '@angular/material/menu';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {IngestService} from '../../../ingest.service';
-import {IngestEventDetailComponent} from './ingest-event-detail.component';
-import {EventDisplayHelperService} from '../../event-display-helper.service';
-import {Event} from '../../event';
-import {of} from 'rxjs';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { IngestService } from '../../../ingest.service';
+import { IngestEventDetailComponent } from './ingest-event-detail.component';
+import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { Event } from '../../event';
+import { of } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;
   let fixture: ComponentFixture<IngestEventDetailComponent>;
 
   const eventDisplayHelperServiceSpy = jasmine.createSpyObj('EventDisplayHelperService', {
-    initEvents: of([])
+    initEvents: of([]),
   });
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestEventDetailComponent],
-      imports: [
-        MatMenuModule,
-        BrowserAnimationsModule
+      imports: [MatMenuModule, BrowserAnimationsModule],
+      providers: [
+        { provide: IngestService, useValue: {} },
+        {
+          provide: EventDisplayHelperService,
+          useValue: eventDisplayHelperServiceSpy,
+        },
       ],
-      providers: [{provide: IngestService, useValue: {}}, {
-        provide: EventDisplayHelperService,
-        useValue: eventDisplayHelperServiceSpy
-      }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -75,13 +74,12 @@ describe('IngestEventDetailComponent', () => {
     component.ingest = {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
       agIdExt: {},
-      events: [{}]
+      events: [{}],
     };
     component.events = [
-      new Event({eventData: '{"some": "data1"}'}, []),
-      new Event({eventData: '{"some": "data2"}'}, [new Event({eventData: '{"some": "data2"}'}, [])])
+      new Event({ eventData: '{"some": "data1"}' }, []),
+      new Event({ eventData: '{"some": "data2"}' }, [new Event({ eventData: '{"some": "data2"}' }, [])]),
     ];
-
 
     fixture.detectChanges();
   });

@@ -47,10 +47,9 @@ const moment = moment_;
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
-  templateUrl: './subrogation-banner.component.html'
+  templateUrl: './subrogation-banner.component.html',
 })
 export class SubrogationBannerComponent implements OnInit {
-
   show = false;
   hidden = false;
   endDate: Date;
@@ -59,30 +58,30 @@ export class SubrogationBannerComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private subrogationService: SubrogationService
-  ) { }
+    private subrogationService: SubrogationService,
+  ) {}
 
   ngOnInit() {
-    this.authService.userLoaded.pipe(filter((user) => !!user && !!user.superUser))
-      .subscribe(() => {
-        this.subrogationService.getCurrent().pipe(filter((data) => !!data))
-          .subscribe((data) => {
-            if (!this.subrogation) {
-              this.subrogation = data;
-              this.show = true;
-              this.endDate = moment(this.subrogation.date).toDate();
-              this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
-              setTimeout(() => this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser), this.subrogationTTL);
-            }
-          });
-      });
+    this.authService.userLoaded.pipe(filter((user) => !!user && !!user.superUser)).subscribe(() => {
+      this.subrogationService
+        .getCurrent()
+        .pipe(filter((data) => !!data))
+        .subscribe((data) => {
+          if (!this.subrogation) {
+            this.subrogation = data;
+            this.show = true;
+            this.endDate = moment(this.subrogation.date).toDate();
+            this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
+            setTimeout(() => this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser), this.subrogationTTL);
+          }
+        });
+    });
   }
 
   onStopSubrogation() {
     this.subrogationService.decline(this.subrogation.id).subscribe(() => {
-        this.show = false;
-        this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser);
-      });
+      this.show = false;
+      this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser);
+    });
   }
-
 }

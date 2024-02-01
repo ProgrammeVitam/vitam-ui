@@ -50,22 +50,17 @@ describe('SubrogationSnackBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ SubrogationSnackBarComponent ],
+      imports: [HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
+      declarations: [SubrogationSnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fakeapi' },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
-        { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
+        { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: 'subrogations/customers/customerId' } },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

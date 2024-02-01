@@ -137,18 +137,21 @@ export class IdentityProviderDetailsComponent implements OnInit {
   commonsControls: FormGroup;
   idpMetadata: FormControl;
 
-  constructor(private formBuilder: FormBuilder, private identityProviderService: IdentityProviderService, private snackBar: VitamUISnackBar,
-    private translate: TranslateService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private identityProviderService: IdentityProviderService,
+    private snackBar: VitamUISnackBar,
+    private translate: TranslateService,
+  ) {
     this.commonsControls = this.initializeCommonControls();
     this.specificSamlControls = this.initializeSamlControls();
     this.specificOidcControls = this.initializeOidcControls();
     this.form = this.formBuilder.group({
-      ...this.commonsControls.controls
+      ...this.commonsControls.controls,
     });
     this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
   }
   updateForm() {
-
     if (this.form.value?.protocoleType !== this.previousValue?.protocoleType) {
       this.displayOIDCSAMLBLOCKS = false;
       this.manageForm(this.form.getRawValue());
@@ -200,7 +203,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
         map(() => this.diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.identityProvider.id }, formData)),
-        switchMap((formData) => this.identityProviderService.patch(formData))
+        switchMap((formData) => this.identityProviderService.patch(formData)),
       )
       .subscribe(() => {
         this.previousValue = this.form.value;
@@ -209,7 +212,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         filter(() => this.idpMetadata.valid),
-        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider.id, this.idpMetadata.value))
+        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider.id, this.idpMetadata.value)),
       )
       .subscribe();
   }
@@ -286,10 +289,10 @@ export class IdentityProviderDetailsComponent implements OnInit {
 
     this.form.reset(formValue, { emitEvent: false });
     this.manageChanges();
-    if(this.form.invalid){
+    if (this.form.invalid) {
       this.snackBar.open(this.translate.instant('SHARED.SNACKBAR.OIDC_UPDATE'), null, {
         panelClass: 'vitamui-snack-bar',
-        duration: 10000
+        duration: 10000,
       });
     }
     this.displayOIDCSAMLBLOCKS = true;

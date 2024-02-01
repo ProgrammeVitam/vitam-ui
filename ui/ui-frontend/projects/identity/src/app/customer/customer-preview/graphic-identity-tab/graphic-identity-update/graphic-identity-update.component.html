@@ -1,10 +1,14 @@
 <div id="toOverride" class="content">
-  <app-graphic-identity [customerLogosUrl]="customerLogosUrl" [customer]="data.customer"
-    (formToSend)="customForm = $event.form; logos = $event.logos">
+  <app-graphic-identity
+    [customerLogosUrl]="customerLogosUrl"
+    [customer]="data.customer"
+    (formToSend)="customForm = $event.form; logos = $event.logos"
+  >
   </app-graphic-identity>
   <div class="d-flex">
-    <button type="button" class="btn primary mr-4" [disabled]="disabled"
-      (click)="updateGraphicIdentity()">{{'CUSTOMER.GRAPHIC_IDENTITY.SUBMIT' | translate}}</button>
-    <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+    <button type="button" class="btn primary mr-4" [disabled]="disabled" (click)="updateGraphicIdentity()">
+      {{ 'CUSTOMER.GRAPHIC_IDENTITY.SUBMIT' | translate }}
+    </button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
   </div>
 </div>

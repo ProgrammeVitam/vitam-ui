@@ -36,7 +36,7 @@
  */
 /* tslint:disable: no-magic-numbers max-file-line-count max-classes-per-file */
 
-import {  NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -52,21 +52,14 @@ describe('UnitsFormComponent', () => {
   let fixture: ComponentFixture<UnitsFormComponent>;
 
   beforeEach(waitForAsync(() => {
-    const groupValidatorSpy = jasmine.createSpyObj('GroupService',   { unitExists: () => of(null) });
+    const groupValidatorSpy = jasmine.createSpyObj('GroupService', { unitExists: () => of(null) });
 
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [ UnitsFormComponent ],
-      providers: [{ provide: GroupValidators, useValue: groupValidatorSpy} ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [UnitsFormComponent],
+      providers: [{ provide: GroupValidators, useValue: groupValidatorSpy }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

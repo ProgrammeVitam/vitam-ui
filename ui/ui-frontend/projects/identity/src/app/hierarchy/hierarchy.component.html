@@ -6,12 +6,12 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'HIERARCHY.HOME.TITLE' | translate}}
+        {{ 'HIERARCHY.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'HIERARCHY.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openHierarchyDuplicateDialog()">
-          <span>{{'HIERARCHY.HOME.ACTION_BUTTON' | translate}}</span>
+          <span>{{ 'HIERARCHY.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>

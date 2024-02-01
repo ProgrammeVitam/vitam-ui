@@ -8,20 +8,24 @@
     </div> -->
 
     <!--<div class="form-group" *ngIf="allNodes.value === false"> -->
-    <vitamui-library-filing-plan [formControl]="selectedRootsControl"
-                                 [tenantIdentifier]="tenantIdentifier"
-                                 [accessContract]="searchAccessContractId"
-                                 [mode]="FILLING_PLAN_MODE_BOTH"
+    <vitamui-library-filing-plan
+      [formControl]="selectedRootsControl"
+      [tenantIdentifier]="tenantIdentifier"
+      [accessContract]="searchAccessContractId"
+      [mode]="FILLING_PLAN_MODE_BOTH"
     ></vitamui-library-filing-plan>
     <!--    </div> -->
 
     <div class="actions">
-      <button type="button" class="btn primary" i18n="Update accessContract nodes@@updateAccessContractNodesButton"
-              (click)="updateAccessContractNodes()">Valider
+      <button
+        type="button"
+        class="btn primary"
+        i18n="Update accessContract nodes@@updateAccessContractNodesButton"
+        (click)="updateAccessContractNodes()"
+      >
+        Valider
       </button>
-      <button type="button" class="btn cancel" (click)="onCancel()"
-              >{{'COMMON.UNDO' | translate}}
-      </button>
+      <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
   </div>
 </form>

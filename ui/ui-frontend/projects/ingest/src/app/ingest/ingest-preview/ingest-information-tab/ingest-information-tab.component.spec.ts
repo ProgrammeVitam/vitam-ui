@@ -48,13 +48,9 @@ describe('IngestInformationTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
-      imports: [
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -63,7 +59,7 @@ describe('IngestInformationTabComponent', () => {
     component.ingest = {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
       agIdExt: {},
-      events: [{}]
+      events: [{}],
     };
     fixture.detectChanges();
   });

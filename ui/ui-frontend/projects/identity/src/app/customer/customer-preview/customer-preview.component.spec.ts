@@ -79,12 +79,14 @@ describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync((() => {
+  beforeEach(waitForAsync(() => {
     const customerServiceSpy = {
-      updated: new Subject()
+      updated: new Subject(),
     };
-    const startupServiceStub = { getPortalUrl: () => 'https://dev.vitamui.com',
-    getConfigStringValue: () => 'https://dev.vitamui.com/identity' };
+    const startupServiceStub = {
+      getPortalUrl: () => 'https://dev.vitamui.com',
+      getConfigStringValue: () => 'https://dev.vitamui.com/identity',
+    };
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
@@ -93,7 +95,7 @@ describe('CustomerPreviewComponent', () => {
         ReactiveFormsModule,
         VitamUICommonTestModule,
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
       declarations: [
         TestHostComponent,
@@ -106,12 +108,11 @@ describe('CustomerPreviewComponent', () => {
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-  })));
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -131,9 +132,7 @@ describe('CustomerPreviewComponent', () => {
     expect(openSpy).toHaveBeenCalledWith(
       'https://dev.vitamui.com/identity/customer/11',
       'detailPopup',
-      'width=584, height=713, resizable=no, location=no'
+      'width=584, height=713, resizable=no, location=no',
     );
   });
-
 });
-

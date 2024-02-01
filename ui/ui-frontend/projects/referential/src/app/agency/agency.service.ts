@@ -34,27 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SearchService, VitamUISnackBar } from 'ui-frontend-common';
 
-import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
-import {AgencyApiService} from '../core/api/agency-api.service';
-import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
+import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
+import { AgencyApiService } from '../core/api/agency-api.service';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AgencyService extends SearchService<Agency> {
-
   updated = new Subject<Agency>();
 
   constructor(
     private agencyApiService: AgencyApiService,
     private snackBar: VitamUISnackBar,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, agencyApiService, 'ALL');
   }
 
@@ -67,7 +67,7 @@ export class AgencyService extends SearchService<Agency> {
     return this.agencyApiService.getAllByParams(params);
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existAgency: any = {};
     if (properties.name) {
       existAgency.name = properties.name;
@@ -81,70 +81,70 @@ export class AgencyService extends SearchService<Agency> {
   }
 
   create(agency: Agency) {
-    return this.agencyApiService.create(agency, this.headers)
-      .pipe(
-        tap(
-          (response: Agency) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: {type: 'agencyCreate', name: response.identifier},
-              duration: 10000
-            });
-          },
-          (error: any) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.agencyApiService.create(agency, this.headers).pipe(
+      tap(
+        (response: Agency) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'agencyCreate', name: response.identifier },
+            duration: 10000,
+          });
+        },
+        (error: any) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Agency> {
-    return this.agencyApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-              data: {type: 'agencyUpdate', name: response.identifier}
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Agency> {
+    return this.agencyApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'agencyUpdate', name: response.identifier },
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   delete(agency: Agency): Observable<any> {
     return this.agencyApiService.delete(agency.id).pipe(
-      tap((response) => {
+      tap(
+        (response) => {
           if (response === false) {
             this.snackBar.open('Erreur lors de la suppression du Service Agent ' + agency.id, null, {
               panelClass: 'vitamui-snack-bar',
-              duration: 10000
+              duration: 10000,
             });
           } else {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: {type: 'agencyDelete', name: agency.identifier}
+              data: { type: 'agencyDelete', name: agency.identifier },
             });
           }
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        })
+        },
+      ),
     );
   }
 
@@ -152,7 +152,7 @@ export class AgencyService extends SearchService<Agency> {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       duration: 10000,
-      data: { type: 'agencyExportAll' }
+      data: { type: 'agencyExportAll' },
     });
 
     this.agencyApiService.export().subscribe(
@@ -161,22 +161,23 @@ export class AgencyService extends SearchService<Agency> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([response], {type: 'octet/stream'});
+        const blob = new Blob([response], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'agencies.csv';
         a.click();
         window.URL.revokeObjectURL(url);
-      }, (error) => {
+      },
+      (error) => {
         this.snackBar.open(error.error.message, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
-      }
+      },
     );
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({'X-Tenant-Id': tenantIdentifier.toString()});
+    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
   }
 }

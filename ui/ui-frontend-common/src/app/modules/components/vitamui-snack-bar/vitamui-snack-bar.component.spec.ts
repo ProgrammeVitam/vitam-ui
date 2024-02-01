@@ -47,18 +47,14 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-      ],
-      declarations: [ VitamUISnackBarComponent ],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+      declarations: [VitamUISnackBarComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

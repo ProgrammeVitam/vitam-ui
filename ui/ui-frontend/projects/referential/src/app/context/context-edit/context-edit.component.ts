@@ -47,11 +47,9 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 @Component({
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
-  styleUrls: ['./context-edit.component.scss']
+  styleUrls: ['./context-edit.component.scss'],
 })
-
 export class ContextEditComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
   hasError = true;
@@ -78,17 +76,17 @@ export class ContextEditComponent implements OnInit, OnDestroy {
 
     let permissions: any[] = new Array();
     if (this.permissions) {
-      permissions = this.permissions.map(permission => {
+      permissions = this.permissions.map((permission) => {
         return {
           tenant: permission.tenant,
           accessContracts: permission.accessContracts,
-          ingestContracts: permission.ingestContracts
+          ingestContracts: permission.ingestContracts,
         };
       });
     }
 
     this.form = this.formBuilder.group({
-      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()]
+      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()],
     });
   }
 
@@ -134,9 +132,9 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     }
 
     // Update the context permissions
-    this.permissions = this.form.value.permissions.map((item:
-      { tenant: string; accessContracts: string[]; ingestContracts: string[]; }) =>
-      new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts)
+    this.permissions = this.form.value.permissions.map(
+      (item: { tenant: string; accessContracts: string[]; ingestContracts: string[] }) =>
+        new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts),
     );
 
     this.dialogRef.close({ permissions: this.permissions });

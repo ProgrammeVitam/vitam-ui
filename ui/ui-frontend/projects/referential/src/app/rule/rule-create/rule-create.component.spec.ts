@@ -58,7 +58,7 @@ const expectedRule = {
   ruleValue: '111',
   ruleDescription: 'DESC',
   ruleDuration: '10',
-  ruleMeasurement: RULE_MEASUREMENTS[0].key
+  ruleMeasurement: RULE_MEASUREMENTS[0].key,
 };
 
 let component: RuleCreateComponent;
@@ -77,43 +77,41 @@ class Page {
 let page: Page;
 
 describe('RuleCreateComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
-        create: of({}),
-        existsProperties: of(false)
-      });
-      const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
-      const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
-        uniqueRuleId: () => of(null),
-        ruleIdPattern: ruleCreateValidators.ruleIdPattern()
-      });
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
+      create: of({}),
+      existsProperties: of(false),
+    });
+    const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
+    const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
+      uniqueRuleId: () => of(null),
+      ruleIdPattern: ruleCreateValidators.ruleIdPattern(),
+    });
 
-      TestBed.configureTestingModule({
-        declarations: [RuleCreateComponent],
-        imports: [
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          MatFormFieldModule,
-          MatSelectModule,
-          MatButtonToggleModule,
-          MatProgressBarModule,
-          MatProgressSpinnerModule,
-          MatDialogModule,
-          VitamUICommonTestModule
-        ],
-        providers: [
-          { provide: RuleService, useValue: ruleServiceSpy },
-          { provide: RuleCreateValidators, useValue: ruleCreateValidatorsSpy },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          { provide: MAT_DIALOG_DATA, useValue: {} }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [RuleCreateComponent],
+      imports: [
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        VitamUICommonTestModule,
+      ],
+      providers: [
+        { provide: RuleService, useValue: ruleServiceSpy },
+        { provide: RuleCreateValidators, useValue: ruleCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleCreateComponent);

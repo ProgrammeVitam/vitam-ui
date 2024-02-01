@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import {CollapseModule, LevelInputModule, TableFilterModule} from 'ui-frontend-common';
+import { CollapseModule, LevelInputModule, TableFilterModule } from 'ui-frontend-common';
 import { DomainsInputModule } from './domains-input';
 import { EditableFieldModule } from './editable-field';
 import { PatternModule } from './pattern';
@@ -65,6 +65,6 @@ import { VitamUISnackBarModule } from './vitamui-snack-bar';
     ProfilesFormModule,
     LevelInputModule,
     TableFilterModule,
-  ]
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

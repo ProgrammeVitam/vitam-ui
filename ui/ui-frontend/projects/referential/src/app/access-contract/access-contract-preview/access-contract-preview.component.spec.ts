@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
- import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {AccessContractPreviewComponent} from './access-contract-preview.component';
+import { AccessContractPreviewComponent } from './access-contract-preview.component';
 
 // TODO fix tests
 xdescribe('AccessContractPreviewComponent', () => {
@@ -45,9 +45,8 @@ xdescribe('AccessContractPreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AccessContractPreviewComponent]
-    })
-      .compileComponents();
+      declarations: [AccessContractPreviewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

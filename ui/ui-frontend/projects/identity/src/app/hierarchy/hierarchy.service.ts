@@ -44,18 +44,21 @@ import { Injectable } from '@angular/core';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class HierarchyService extends SearchService<Profile>  {
-
+export class HierarchyService extends SearchService<Profile> {
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, http: HttpClient, private snackBar: VitamUISnackBar) {
+  constructor(
+    private profileApi: ProfileApiService,
+    http: HttpClient,
+    private snackBar: VitamUISnackBar,
+  ) {
     super(http, profileApi, 'ALL');
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString()});
+    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
   }
 
   get(id: string): Observable<Profile> {
@@ -67,55 +70,53 @@ export class HierarchyService extends SearchService<Profile>  {
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
     const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
-    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals};
+    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
-    return this.profileApi.patch(data, this.headers)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-              data: { type: 'profileUpdate', name: response.name }
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
+    return this.profileApi.patch(data, this.headers).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'profileUpdate', name: response.name },
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   create(profile: Profile) {
-
     return this.profileApi.create(profile, this.headers).pipe(
       tap(
         (response: Profile) => {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'profileAdminCreate', name: response.name },
-            duration: 10000
+            duration: 10000,
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 }

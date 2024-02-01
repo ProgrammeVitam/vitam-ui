@@ -40,36 +40,28 @@ import { Route, RouterModule } from '@angular/router';
 import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
-
-
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
     pathMatch: 'full',
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: HoldingFillingSchemeComponent,
-    canActivate: [ActiveTenantGuard]
-  }
+    canActivate: [ActiveTenantGuard],
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class HoldingFillingSchemeRoutingModule { }
+export class HoldingFillingSchemeRoutingModule {}

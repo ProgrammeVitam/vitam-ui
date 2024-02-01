@@ -8,12 +8,10 @@
         [validator]="form?.get('code')?.validator"
         [asyncValidator]="form?.get('code')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern"
-                                    >{{'CUSTOMER.INFORMATIONS.WRONG_FORMAT' | translate}}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode" >{{'CUSTOMER.INFORMATIONS.CODE_ALREADY_EXIST' | translate}}
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern">{{ 'CUSTOMER.INFORMATIONS.WRONG_FORMAT' | translate }} </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode"
+          >{{ 'CUSTOMER.INFORMATIONS.CODE_ALREADY_EXIST' | translate }}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -21,7 +19,7 @@
       <vitamui-common-editable-input
         formControlName="identifier"
         maxlength="12"
-        [label]="'COMMON.ID' |translate"
+        [label]="'COMMON.ID' | translate"
         [validator]="form?.get('identifier')?.validator"
         [asyncValidator]="form?.get('identifier')?.asyncValidator"
       >
@@ -38,8 +36,7 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
-        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
@@ -50,8 +47,7 @@
         [validator]="form?.get('companyName')?.validator"
         [asyncValidator]="form?.get('companyName')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
-        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -66,8 +62,7 @@
           [validator]="form?.get('address.street')?.validator"
           [asyncValidator]="form?.get('address.street')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
-          </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -81,8 +76,7 @@
           [validator]="form?.get('address.zipCode')?.validator"
           [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
-          </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
       <div class="col-6 form-control">
@@ -93,8 +87,7 @@
           [validator]="form?.get('address.city')?.validator"
           [asyncValidator]="form?.get('address.city')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
-          </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -105,7 +98,8 @@
           formControlName="country"
           [label]="'COMMON.ADRESS.COUNTRY' | translate"
           [validator]="form?.get('address.country')?.validator"
-          [asyncValidator]="form?.get('address.country')?.asyncValidator">
+          [asyncValidator]="form?.get('address.country')?.asyncValidator"
+        >
           <vitamui-common-editable-option *ngFor="let country of countries" [value]="country.code" [content]="country.name">
           </vitamui-common-editable-option>
         </vitamui-common-editable-select>
@@ -145,10 +139,22 @@
         [validator]="form?.get('passwordRevocationDelay')?.validator"
         [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
       >
-        <vitamui-common-editable-option [value]="3" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_THREE' | translate"></vitamui-common-editable-option>
-        <vitamui-common-editable-option [value]="6" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate"></vitamui-common-editable-option>
-        <vitamui-common-editable-option [value]="9" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate"></vitamui-common-editable-option>
-        <vitamui-common-editable-option [value]="12" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate"></vitamui-common-editable-option>
+        <vitamui-common-editable-option
+          [value]="3"
+          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_THREE' | translate"
+        ></vitamui-common-editable-option>
+        <vitamui-common-editable-option
+          [value]="6"
+          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate"
+        ></vitamui-common-editable-option>
+        <vitamui-common-editable-option
+          [value]="9"
+          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate"
+        ></vitamui-common-editable-option>
+        <vitamui-common-editable-option
+          [value]="12"
+          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate"
+        ></vitamui-common-editable-option>
       </vitamui-common-editable-select>
     </div>
   </div>
@@ -161,9 +167,18 @@
         [validator]="form?.get('otp')?.validator"
         [asyncValidator]="form?.get('otp')?.asyncValidator"
       >
-        <vitamui-common-editable-button-toggle value="DISABLED" [content]="'CUSTOMER.INFORMATIONS.OTP_DESACTIVATE' | translate"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="OPTIONAL" [content]="'CUSTOMER.INFORMATIONS.OTP_OPTIONNAL' | translate"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="MANDATORY" [content]="'CUSTOMER.INFORMATIONS.OTP_MANDATORY' | translate"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle
+          value="DISABLED"
+          [content]="'CUSTOMER.INFORMATIONS.OTP_DESACTIVATE' | translate"
+        ></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle
+          value="OPTIONAL"
+          [content]="'CUSTOMER.INFORMATIONS.OTP_OPTIONNAL' | translate"
+        ></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle
+          value="MANDATORY"
+          [content]="'CUSTOMER.INFORMATIONS.OTP_MANDATORY' | translate"
+        ></vitamui-common-editable-button-toggle>
       </vitamui-common-editable-toggle-group>
     </div>
   </div>
@@ -181,43 +196,37 @@
     </div>
   </div>
 
-
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-common-slide-toggle formControlName="gdprAlert" i18n="gdprAlert Account@@accountgdprAlertToggleLabel"
-                                   [disabled]="gdprReadOnlyStatus">
+      <vitamui-common-slide-toggle
+        formControlName="gdprAlert"
+        i18n="gdprAlert Account@@accountgdprAlertToggleLabel"
+        [disabled]="gdprReadOnlyStatus"
+      >
         Alerte sur les utilisateurs inactifs
       </vitamui-common-slide-toggle>
-
     </div>
   </div>
   <div class="row" *ngIf="form?.get('gdprAlert')?.value">
     <div class="col-12 form-control">
-      <vitamui-common-editable-input [disabled]="gdprReadOnlyStatus &&  !form?.get('gdprAlert')?.value"
-                                     formControlName="gdprAlertDelay"
-
-                                     label="Durée d'alerte sur les utilisateurs inactifs (mois)"
-                                     i18n-label="gdprAlertDelay@@CustomerDetailLabelgdprAlertDelay"
-                                     [validator]="form?.get('gdprAlertDelay')?.validator"
-                                     [asyncValidator]="form?.get('gdprAlertDelay')?.asyncValidator"
-
+      <vitamui-common-editable-input
+        [disabled]="gdprReadOnlyStatus && !form?.get('gdprAlert')?.value"
+        formControlName="gdprAlertDelay"
+        label="Durée d'alerte sur les utilisateurs inactifs (mois)"
+        i18n-label="gdprAlertDelay@@CustomerDetailLabelgdprAlertDelay"
+        [validator]="form?.get('gdprAlertDelay')?.validator"
+        [asyncValidator]="form?.get('gdprAlertDelay')?.asyncValidator"
       >
-
-        <vitamui-common-field-error errorKey="required"
-                                    i18n="Required field error hint@@formErrorRequiredFieldAndMinValue">Champ
-          obligatoire et il faut une valeur supérieure à 0
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredFieldAndMinValue"
+          >Champ obligatoire et il faut une valeur supérieure à 0
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format error hint@@formErrorFormatField">Format
-          incorrecte
+        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format error hint@@formErrorFormatField"
+          >Format incorrecte
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="min" i18n="Required a min value error hint@@formErrorRequiredMinValue">Il
-          faut une valeur supérieure à 0
+        <vitamui-common-field-error errorKey="min" i18n="Required a min value error hint@@formErrorRequiredMinValue"
+          >Il faut une valeur supérieure à 0
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
-
     </div>
   </div>
-
 </form>
-
-

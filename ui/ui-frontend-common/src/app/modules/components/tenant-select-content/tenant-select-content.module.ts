@@ -41,12 +41,8 @@ import { RouterModule } from '@angular/router';
 import { TenantSelectContentComponent } from './tenant-select-content.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   declarations: [TenantSelectContentComponent],
   exports: [TenantSelectContentComponent],
 })
-export class TenantSelectContentModule { }
+export class TenantSelectContentModule {}

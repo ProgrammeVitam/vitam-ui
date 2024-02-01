@@ -46,19 +46,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { UserListComponent } from './user-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule,
-    SharedModule,
-    MatSelectModule,
-  ],
-  declarations: [
-    UserListComponent,
-  ],
-  exports: [
-    UserListComponent,
-  ]
+  imports: [CommonModule, RouterModule, MatProgressSpinnerModule, VitamUICommonModule, SharedModule, MatSelectModule],
+  declarations: [UserListComponent],
+  exports: [UserListComponent],
 })
-export class UserListModule { }
+export class UserListModule {}

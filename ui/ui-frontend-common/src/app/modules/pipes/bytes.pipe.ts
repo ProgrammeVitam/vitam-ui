@@ -34,16 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Pipe, PipeTransform} from '@angular/core';
-import {Logger} from '../logger/logger';
+import { Pipe, PipeTransform } from '@angular/core';
+import { Logger } from '../logger/logger';
 
 @Pipe({ name: 'bytes' })
 export class BytesPipe implements PipeTransform {
-
   private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
   private static DEFAULT_PRECISION = 2;
 
-  constructor(private logger: Logger) { }
+  constructor(private logger: Logger) {}
 
   transform(value: any, precision = BytesPipe.DEFAULT_PRECISION): any {
     if (value === undefined || value === '' || isNaN(parseFloat(value)) || !isFinite(value)) {
@@ -51,7 +50,7 @@ export class BytesPipe implements PipeTransform {
       return '';
     }
 
-    if (parseFloat(value) < 0 ) {
+    if (parseFloat(value) < 0) {
       this.logger.log(this, `BytesPipe: value [${value}] can't be negative`);
       // return value there because next operation return Nan with negative value
       return value;
@@ -66,7 +65,7 @@ export class BytesPipe implements PipeTransform {
     const units = ['octets', 'ko', 'Mo', 'Go', 'To', 'Po'];
     let power = Math.floor(Math.log(value) / Math.log(BytesPipe.NUMBER_OF_BYTES_IN_ONE_KB));
 
-    while(power >= units.length) {
+    while (power >= units.length) {
       power = power - 1;
     }
 

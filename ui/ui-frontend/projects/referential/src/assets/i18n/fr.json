@@ -4,14 +4,14 @@
     "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications ",
-    "REQUIRED" : "Champ requis"
+    "REQUIRED": "Champ requis"
   },
   "LOGBOOK_OPERATION_LIST": {
-    "NO_RESULTS" : "Fin des résultats",
-    "HOUR" : "Heure",
-    "NEXT" : "Suivant",
-    "PREVIOUS" : "Précédent",
-    "STATE" : "Etat",
+    "NO_RESULTS": "Fin des résultats",
+    "HOUR": "Heure",
+    "NEXT": "Suivant",
+    "PREVIOUS": "Précédent",
+    "STATE": "Etat",
     "STATUS": "Statut",
     "RESULTS": "Résultats",
     "ONE_RESULT": "Résultat",
@@ -42,19 +42,19 @@
     "AND": "et le :",
     "ADD_INTREVAL": "AJOUTER UN INTERVALLE",
     "DELETE_INTERVAL": "SUPPRIMER L'INTERVALLE",
-    "OPERATION_CATEGORY" : {
-      "TRACEABILITY" : "Sécurisation",
-      "INGEST" : "Entrée",
-      "STORAGE_BACKUP":"Sauvegarde des journaux des écritures",
-      "AUDIT":"Audit",
-      "MASTERDATA":"Données de base",
-      "ELIMINATION":"Élimination des unités archivistiques",
-      "CHECK":"Vérification des journaux sécurisés",
-      "UPDATE":"Mise à jour",
-      "EXPORT_DIP":"Export du DIP",
-      "RECLASSIFICATION":"Modification d’arborescence des unités archivistiques",
-      "PRESERVATION":"Processus global de préservation",
-      "EXTERNAL_LOGBOOK":"Journalisation d’événements externes"
+    "OPERATION_CATEGORY": {
+      "TRACEABILITY": "Sécurisation",
+      "INGEST": "Entrée",
+      "STORAGE_BACKUP": "Sauvegarde des journaux des écritures",
+      "AUDIT": "Audit",
+      "MASTERDATA": "Données de base",
+      "ELIMINATION": "Élimination des unités archivistiques",
+      "CHECK": "Vérification des journaux sécurisés",
+      "UPDATE": "Mise à jour",
+      "EXPORT_DIP": "Export du DIP",
+      "RECLASSIFICATION": "Modification d’arborescence des unités archivistiques",
+      "PRESERVATION": "Processus global de préservation",
+      "EXTERNAL_LOGBOOK": "Journalisation d’événements externes"
     }
   },
   "STATE_VALUE": {

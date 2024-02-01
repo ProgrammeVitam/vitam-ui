@@ -69,17 +69,9 @@ import { UserService } from './user.service';
     GroupAttributionModule,
     MatSidenavModule,
     FormsModule,
-    UserRoutingModule
+    UserRoutingModule,
   ],
-  declarations: [
-    UserComponent,
-  ],
-  providers: [
-    UserResolver,
-    UserService,
-    VitamUISnackBar,
-    ProfileService,
-    GroupService
-  ]
+  declarations: [UserComponent],
+  providers: [UserResolver, UserService, VitamUISnackBar, ProfileService, GroupService],
 })
-export class UserModule { }
+export class UserModule {}

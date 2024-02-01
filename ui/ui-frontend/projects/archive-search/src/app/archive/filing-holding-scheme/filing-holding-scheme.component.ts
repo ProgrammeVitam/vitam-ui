@@ -48,10 +48,9 @@ import { ResultFacet } from '../models/search.criteria';
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: ['./filing-holding-scheme.component.scss']
+  styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit {
-
   tenantIdentifier: number;
   subscriptionNodesFull: Subscription;
 
@@ -77,7 +76,7 @@ export class FilingHoldingSchemeComponent implements OnInit {
   constructor(
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
-    private archiveSharedDataServiceService: ArchiveSharedDataServiceService
+    private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -212,8 +211,9 @@ export class FilingHoldingSchemeComponent implements OnInit {
   }
 
   buildrecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) { return null; }
-    else {
+    if (node.count === 0) {
+      return null;
+    } else {
       const filtredNode: FilingHoldingSchemeNode = {
         count: node.count,
         id: node.id,
@@ -223,7 +223,7 @@ export class FilingHoldingSchemeComponent implements OnInit {
         children: null,
         parents: null,
         vitamId: node.vitamId,
-        checked: node.checked
+        checked: node.checked,
       };
       if (node.children && node.children.length > 0) {
         const filtredChildren = [];
@@ -250,8 +250,7 @@ export class FilingHoldingSchemeComponent implements OnInit {
     this.archiveSharedDataServiceService.emitNode(this.nodeData);
   }
 
-  onTouched = () => {
-  }
+  onTouched = () => {};
 
   showAllTreeNodes() {
     this.filtered = false;

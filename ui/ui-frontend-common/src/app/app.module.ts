@@ -72,9 +72,9 @@ import { PipesModule } from './modules/pipes/pipes.module';
       ],
       {
         preloadingStrategy: QuicklinkStrategy,
-      }
+      },
     ),
-    PipesModule
+    PipesModule,
   ],
   providers: [
     { provide: BASE_URL, useValue: '/portal-api' },

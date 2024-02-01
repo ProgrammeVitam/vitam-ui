@@ -1,20 +1,19 @@
 <div class="header">
-    <vitamui-common-progress-bar [index]="0" count="1"></vitamui-common-progress-bar>
+  <vitamui-common-progress-bar [index]="0" count="1"></vitamui-common-progress-bar>
 </div>
-  
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <vitamui-common-stepper>
-        <cdk-step>
-            <div class="content">
-                <div class="text large bold">{{'GROUP.INFORMATIONS.MODAL.UPDATE_UNITS' | translate}} "{{ data?.group?.name }}"</div>
-        
-                <app-units-form [customer]="data?.group?.customerId" formControlName="units"></app-units-form>
-                <div class="actions">
-                    <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
-                    <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
-                </div>
-            </div>
-        </cdk-step>
-    </vitamui-common-stepper>
+  <vitamui-common-stepper>
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold">{{ 'GROUP.INFORMATIONS.MODAL.UPDATE_UNITS' | translate }} "{{ data?.group?.name }}"</div>
+
+        <app-units-form [customer]="data?.group?.customerId" formControlName="units"></app-units-form>
+        <div class="actions">
+          <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
 </form>
-  

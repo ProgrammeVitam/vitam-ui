@@ -57,7 +57,11 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
   profileUpdateSub: Subscription;
 
-  constructor(private rngProfileService: ProfileService, private authService: AuthService, private startupService: StartupService) {}
+  constructor(
+    private rngProfileService: ProfileService,
+    private authService: AuthService,
+    private startupService: StartupService,
+  ) {}
 
   ngOnInit(): void {
     this.profileUpdateSub = this.rngProfileService.updated.subscribe((updatedProfile) => {
@@ -73,7 +77,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     window.open(
       this.startupService.getConfigStringValue('UI_URL') + '/profile/' + this.profile.id,
       'detailPopup',
-      'width=584, height=713, resizable=no, location=no'
+      'width=584, height=713, resizable=no, location=no',
     );
     this.emitClose();
   }

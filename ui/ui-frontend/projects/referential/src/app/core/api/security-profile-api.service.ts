@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {SecurityProfile} from '../../../../../vitamui-library/src/lib/models/security-profile';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { SecurityProfile } from '../../../../../vitamui-library/src/lib/models/security-profile';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SecurityProfileApiService extends BaseHttpClient<SecurityProfile> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/security-profile');
   }
@@ -64,21 +63,22 @@ export class SecurityProfileApiService extends BaseHttpClient<SecurityProfile> {
     return super.getOne(id, headers);
   }
 
-  patch(partialSecurityProfile: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialSecurityProfile: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialSecurityProfile, headers);
   }
 
   create(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<SecurityProfile> {
-    return super.getHttp().post<any>(super.getApiUrl(), securityProfile, {headers});
+    return super.getHttp().post<any>(super.getApiUrl(), securityProfile, { headers });
   }
 
   check(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', securityProfile, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', securityProfile, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
+    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
   }
-
 }

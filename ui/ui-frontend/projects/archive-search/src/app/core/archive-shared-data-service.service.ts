@@ -44,7 +44,7 @@ import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from
 import { Unit } from '../archive/models/unit.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveSharedDataServiceService {
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());

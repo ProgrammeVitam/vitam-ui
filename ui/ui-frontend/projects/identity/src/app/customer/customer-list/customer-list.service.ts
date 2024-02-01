@@ -43,49 +43,50 @@ import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedRe
 import { CustomerApiService } from '../../core/api/customer-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerListService extends SearchService<Customer> {
-
-  constructor(http: HttpClient, private customerApi: CustomerApiService) {
+  constructor(
+    http: HttpClient,
+    private customerApi: CustomerApiService,
+  ) {
     super(http, customerApi, 'OWNER,TENANT');
   }
 
   search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'code', Direction.ASCENDANT)): Observable<Customer[]> {
     this.pageRequest = pageRequest;
 
-    return this.customerApi.getAllPaginated(this.pageRequest, 'OWNER,TENANT')
-      .pipe(
-        map((paginated: PaginatedResponse<Customer>) => {
-          this.data = paginated.values.map((customer) => this.transformCustomer(customer));
-          this.pageRequest.page = paginated.pageNum;
-          this.hasMore = paginated.hasMore;
+    return this.customerApi.getAllPaginated(this.pageRequest, 'OWNER,TENANT').pipe(
+      map((paginated: PaginatedResponse<Customer>) => {
+        this.data = paginated.values.map((customer) => this.transformCustomer(customer));
+        this.pageRequest.page = paginated.pageNum;
+        this.hasMore = paginated.hasMore;
 
-          return this.data;
-        })
-      );
+        return this.data;
+      }),
+    );
   }
 
   loadMore(): Observable<Customer[]> {
-    if (!this.hasMore) { return of(this.data); }
+    if (!this.hasMore) {
+      return of(this.data);
+    }
 
     this.pageRequest.page += 1;
 
-    return this.customerApi.getAllPaginated(this.pageRequest, 'OWNER,TENANT')
-      .pipe(
-        map((paginated: PaginatedResponse<Customer>) => {
-          this.data = this.data.concat(paginated.values.map((customer) => this.transformCustomer(customer)));
-          this.pageRequest.page = paginated.pageNum;
-          this.hasMore = paginated.hasMore;
+    return this.customerApi.getAllPaginated(this.pageRequest, 'OWNER,TENANT').pipe(
+      map((paginated: PaginatedResponse<Customer>) => {
+        this.data = this.data.concat(paginated.values.map((customer) => this.transformCustomer(customer)));
+        this.pageRequest.page = paginated.pageNum;
+        this.hasMore = paginated.hasMore;
 
-          return this.data;
-        })
-      );
+        return this.data;
+      }),
+    );
   }
 
   private transformCustomer(customer: Customer): Customer {
     return {
-
       id: customer.id,
       identifier: customer.identifier,
       enabled: customer.enabled,
@@ -105,14 +106,12 @@ export class CustomerListService extends SearchService<Customer> {
       readonly: customer.readonly,
       hasCustomGraphicIdentity: customer.hasCustomGraphicIdentity,
       themeColors: customer.themeColors,
-      gdprAlert : customer.gdprAlert,
-      gdprAlertDelay : customer.gdprAlertDelay,
-
+      gdprAlert: customer.gdprAlert,
+      gdprAlertDelay: customer.gdprAlertDelay,
     };
   }
 
   private filteredOwners(customer: Customer): Owner[] {
     return customer.owners;
   }
-
 }

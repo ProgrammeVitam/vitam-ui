@@ -37,18 +37,15 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export class UserValidators {
-
   static missingPhoneNumber(control: AbstractControl): ValidationErrors {
     if (control && control.get('otp').value) {
       if (!control.get('mobile').value) {
-
         return {
-          missingPhoneNumber: true
+          missingPhoneNumber: true,
         };
       }
     }
 
     return null;
   }
-
 }

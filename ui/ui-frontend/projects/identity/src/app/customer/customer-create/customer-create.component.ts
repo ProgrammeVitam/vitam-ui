@@ -111,7 +111,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
-    private countryService: CountryService
+    private countryService: CountryService,
   ) {}
 
   ngOnInit() {
@@ -178,7 +178,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
           name: this.form.get('name').value,
           companyName: this.form.get('companyName').value,
         };
-      }
+      },
     );
   }
 
@@ -218,7 +218,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         (error) => {
           this.creating = false;
           console.error(error);
-        }
+        },
       );
   }
 

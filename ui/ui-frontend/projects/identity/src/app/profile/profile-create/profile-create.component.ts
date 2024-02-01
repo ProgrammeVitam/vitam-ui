@@ -36,7 +36,15 @@
  */
 import { Subscription } from 'rxjs';
 import {
-  ApplicationId, AuthService, AuthUser, buildValidators, collapseAnimation, ConfirmDialogService, Group, Profile, Role
+  ApplicationId,
+  AuthService,
+  AuthUser,
+  buildValidators,
+  collapseAnimation,
+  ConfirmDialogService,
+  Group,
+  Profile,
+  Role,
 } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
@@ -51,15 +59,12 @@ import { ProfileValidators } from '../profile.validators';
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
-  animations: [
-    collapseAnimation,
-  ]
+  animations: [collapseAnimation],
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
-
   adminProfileForm: FormGroup;
   tenantWithProofId: string;
-  selectedProfileGroups: Group [] = [];
+  selectedProfileGroups: Group[] = [];
   selectedProfileGroupsId: string[] = [];
   userLevel: string;
   subLevelIsRequired: boolean;
@@ -75,20 +80,19 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
     public customerService: CustomerService,
     public profileValidators: ProfileValidators,
     private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService
-    )  {
+    private confirmDialogService: ConfirmDialogService,
+  ) {
     this.adminProfileForm = this.formBuilder.group({
       enabled: true,
       name: [null, Validators.required],
       description: [null, Validators.required],
-      level: ['',  buildValidators(this.authService.user)],
+      level: ['', buildValidators(this.authService.user)],
       customerId: [this.authService.user.customerId],
       applicationName: 'USERS_APP',
       tenantIdentifier: this.tenantWithProofId,
-      roles : [[{name : this.roleEnum.ROLE_GET_USERS},
-                {name : this.roleEnum.ROLE_GET_GROUPS},
-                {name : this.roleEnum.ROLE_GET_USER_INFOS}
-              ]]
+      roles: [
+        [{ name: this.roleEnum.ROLE_GET_USERS }, { name: this.roleEnum.ROLE_GET_GROUPS }, { name: this.roleEnum.ROLE_GET_USER_INFOS }],
+      ],
     });
   }
 
@@ -97,12 +101,14 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
     this.tenantWithProofId = user.proofTenantIdentifier;
 
     this.adminProfileForm.get('tenantIdentifier').setValue(this.tenantWithProofId);
-    this.adminProfileForm.get('name')
-    .setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), '', ApplicationId.USERS_APP));
+    this.adminProfileForm
+      .get('name')
+      .setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), '', ApplicationId.USERS_APP));
 
     this.adminProfileForm.get('level').valueChanges.subscribe((level) => {
-      this.adminProfileForm.get('name').
-      setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), level, ApplicationId.USERS_APP));
+      this.adminProfileForm
+        .get('name')
+        .setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), level, ApplicationId.USERS_APP));
       this.adminProfileForm.get('name').updateValueAndValidity();
     });
 
@@ -122,18 +128,19 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return this.adminProfileForm.get('name').invalid || this.adminProfileForm.get('name').pending ||
-      this.adminProfileForm.get('description').invalid || this.adminProfileForm.get('description').pending
-      || this.adminProfileForm.get('level').invalid;
+    return (
+      this.adminProfileForm.get('name').invalid ||
+      this.adminProfileForm.get('name').pending ||
+      this.adminProfileForm.get('description').invalid ||
+      this.adminProfileForm.get('description').pending ||
+      this.adminProfileForm.get('level').invalid
+    );
   }
 
   completeUpdateRoles(profile: Profile) {
     // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
     // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
-    const userUpdateRolesNames = [
-      Role.ROLE_MFA_USERS.toString(),
-      Role.ROLE_UPDATE_STANDARD_USERS.toString(),
-    ];
+    const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
 
     const hasUpdateRole = profile.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
     const roleUpdateUsersIndex = profile.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
@@ -159,9 +166,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   completeCreateRoles(profile: Profile) {
-    const userCreateRolesNames = [
-      Role.ROLE_CREATE_USERS.toString(),
-    ];
+    const userCreateRolesNames = [Role.ROLE_CREATE_USERS.toString()];
 
     const hasUserCreateRole = profile.roles.some((r: any) => userCreateRolesNames.includes(r.name));
     const userCreateInfoRoleIndex = profile.roles.findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
@@ -176,7 +181,9 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.adminProfileForm.invalid) { return; }
+    if (this.adminProfileForm.invalid) {
+      return;
+    }
     const profile: Profile = this.adminProfileForm.getRawValue();
     this.completeUpdateRoles(profile);
     this.completeCreateRoles(profile);
@@ -184,6 +191,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
       () => this.dialogRef.close(true),
       (error) => {
         console.error(error);
-      });
+      },
+    );
   }
 }

@@ -61,12 +61,9 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     MatNativeDateModule,
     HoldingFillingSchemeRoutingModule,
     MatProgressBarModule,
-    UploadModule
+    UploadModule,
   ],
-  declarations: [
-    HoldingFillingSchemeComponent
-  ],
-  providers: [
-  ]
+  declarations: [HoldingFillingSchemeComponent],
+  providers: [],
 })
-export class HoldingFillingSchemeModule { }
+export class HoldingFillingSchemeModule {}

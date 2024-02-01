@@ -63,7 +63,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     this.previousTitleDescriptionCriteriaValue = {
       archiveCriteria: '',
@@ -78,7 +78,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
         filter(() => this.quickSearchCriteriaForm.valid),
         map(() => this.quickSearchCriteriaForm.value),
         map(() => diff(this.quickSearchCriteriaForm.value, this.previousTitleDescriptionCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
         this.resetSimpleCriteriaForm();
@@ -94,7 +94,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
           formData.archiveCriteria.trim(),
           true,
           CriteriaOperator.EQ,
-          false
+          false,
         );
         return true;
       } else {

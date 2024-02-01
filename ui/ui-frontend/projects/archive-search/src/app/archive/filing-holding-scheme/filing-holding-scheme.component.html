@@ -8,17 +8,20 @@
 
     <div class="justify-content-around">
       <div *ngIf="!loadingHolding && !filtered" class="tree-filing-scheme">
-        <mat-tree [dataSource]="nestedDataSourceFull" [treeControl]="nestedTreeControlFull"
-                  class="filing-holding-scheme-tree">
-
+        <mat-tree [dataSource]="nestedDataSourceFull" [treeControl]="nestedTreeControlFull" class="filing-holding-scheme-tree">
           <mat-tree-node *matTreeNodeDef="let node">
             <ng-container>
               <li class="mat-tree-node filing-holding-scheme-tree-node">
-                <app-filing-holding-node disabled [node]="node" (nodeToggle)="nestedTreeControlFull.toggle(node)"
-                                         (labelClick)="emitNode(node)"></app-filing-holding-node>
-                 
-                <span *ngIf="node?.count != null  && hasResults && node?.count > 0 " class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
-                 
+                <app-filing-holding-node
+                  disabled
+                  [node]="node"
+                  (nodeToggle)="nestedTreeControlFull.toggle(node)"
+                  (labelClick)="emitNode(node)"
+                ></app-filing-holding-node>
+
+                <span *ngIf="node?.count != null && hasResults && node?.count > 0" class="badge badge-secondary pad">{{
+                  node?.count | number: '1.0'
+                }}</span>
               </li>
             </ng-container>
           </mat-tree-node>
@@ -27,12 +30,16 @@
             <ng-container>
               <li>
                 <div class="mat-tree-node filing-holding-scheme-tree-node">
-                  <app-filing-holding-node [node]="node" [expanded]="nestedTreeControlFull.isExpanded(node)"
-                                           (nodeToggle)="nestedTreeControlFull.toggle(node)"
-                                           (labelClick)="emitNode(node)"></app-filing-holding-node>
-                  
-                  <span *ngIf="node?.count != null && hasResults  && node?.count > 0" class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
-                  
+                  <app-filing-holding-node
+                    [node]="node"
+                    [expanded]="nestedTreeControlFull.isExpanded(node)"
+                    (nodeToggle)="nestedTreeControlFull.toggle(node)"
+                    (labelClick)="emitNode(node)"
+                  ></app-filing-holding-node>
+
+                  <span *ngIf="node?.count != null && hasResults && node?.count > 0" class="badge badge-secondary pad">{{
+                    node?.count | number: '1.0'
+                  }}</span>
                 </div>
                 <ul [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull.isExpanded(node)">
                   <ng-container matTreeNodeOutlet></ng-container>
@@ -43,16 +50,17 @@
         </mat-tree>
       </div>
       <div *ngIf="!loadingHolding && filtered" class="tree-filing-scheme">
-        <mat-tree [dataSource]="nestedDataSourceFiltred" [treeControl]="nestedTreeControlFiltred"
-                  class="filing-holding-scheme-tree">
-
+        <mat-tree [dataSource]="nestedDataSourceFiltred" [treeControl]="nestedTreeControlFiltred" class="filing-holding-scheme-tree">
           <mat-tree-node *matTreeNodeDef="let node">
             <ng-container>
               <li class="mat-tree-node filing-holding-scheme-tree-node">
-                <app-filing-holding-node disabled [node]="node" (nodeToggle)="nestedTreeControlFiltred.toggle(node)"
-                                         (labelClick)="emitNode(node)"></app-filing-holding-node>
-                <span *ngIf="node?.count != null && hasResults"
-                      class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
+                <app-filing-holding-node
+                  disabled
+                  [node]="node"
+                  (nodeToggle)="nestedTreeControlFiltred.toggle(node)"
+                  (labelClick)="emitNode(node)"
+                ></app-filing-holding-node>
+                <span *ngIf="node?.count != null && hasResults" class="badge badge-secondary pad">{{ node?.count | number: '1.0' }}</span>
               </li>
             </ng-container>
           </mat-tree-node>
@@ -61,12 +69,14 @@
             <ng-container>
               <li>
                 <div class="mat-tree-node filing-holding-scheme-tree-node">
-                  <app-filing-holding-node [node]="node" [expanded]="nestedTreeControlFiltred.isExpanded(node)"
-                                           (nodeToggle)="nestedTreeControlFiltred.toggle(node)"
-                                           (labelClick)="emitNode(node)">
+                  <app-filing-holding-node
+                    [node]="node"
+                    [expanded]="nestedTreeControlFiltred.isExpanded(node)"
+                    (nodeToggle)="nestedTreeControlFiltred.toggle(node)"
+                    (labelClick)="emitNode(node)"
+                  >
                   </app-filing-holding-node>
-                  <span *ngIf="node?.count!= null  && hasResults"
-                        class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
+                  <span *ngIf="node?.count != null && hasResults" class="badge badge-secondary pad">{{ node?.count | number: '1.0' }}</span>
                 </div>
                 <ul [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFiltred.isExpanded(node)">
                   <ng-container matTreeNodeOutlet></ng-container>
@@ -76,12 +86,16 @@
           </mat-nested-tree-node>
         </mat-tree>
       </div>
-      <div class="area-show-tree " *ngIf="!loadingHolding && nestedDataSourceFull.data.length <= 0">
-        {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}
+      <div class="area-show-tree" *ngIf="!loadingHolding && nestedDataSourceFull.data.length <= 0">
+        {{ 'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate }}
       </div>
-      <a *ngIf="filtered && !loadingHolding && nestedDataSourceFull.data.length > 0 && !linkOneToNotKeep "
-         class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' |
-        translate}}</a>      
+      <a
+        *ngIf="filtered && !loadingHolding && nestedDataSourceFull.data.length > 0 && !linkOneToNotKeep"
+        class="tree-show-link"
+        (click)="showAllTreeNodes()"
+      >
+        {{ 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate }}</a
+      >
     </div>
 
     <div class="" *ngIf="loadingHolding">

@@ -1,4 +1,4 @@
-import {Id} from 'ui-frontend-common';
+import { Id } from 'ui-frontend-common';
 
 export interface SecurityProfile extends Id {
   name: string;

@@ -46,10 +46,12 @@ import { TenantApiService } from './tenant-api.service';
 
 @Injectable()
 export class TenantService {
-
   updated = new Subject<Tenant>();
 
-  constructor(private tenantApi: TenantApiService, private snackBar: VitamUISnackBar) {}
+  constructor(
+    private tenantApi: TenantApiService,
+    private snackBar: VitamUISnackBar,
+  ) {}
 
   get(id: string): Observable<Tenant> {
     return this.tenantApi.getOne(id);
@@ -69,47 +71,45 @@ export class TenantService {
   }
 
   create(tenant: Tenant, ownerName: string): Observable<Tenant> {
-    return this.tenantApi.create(tenant)
-      .pipe(
-        tap(
-          (newTenant: Tenant) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'tenantCreate', tenantName: newTenant.name, ownerName },
-              duration: 10000
-            });
-          },
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'tenantCreateError' },
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.tenantApi.create(tenant).pipe(
+      tap(
+        (newTenant: Tenant) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'tenantCreate', tenantName: newTenant.name, ownerName },
+            duration: 10000,
+          });
+        },
+        () => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'tenantCreateError' },
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
-  patch(partialTenant: { id: string, [key: string]: any }, ownerName: string): Observable<Tenant> {
-    return this.tenantApi.patch(partialTenant)
-      .pipe(
-        tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),
-        tap(
-          (updatedTenant: Tenant) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'tenantUpdate', tenantName: updatedTenant.name, ownerName },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(partialTenant: { id: string; [key: string]: any }, ownerName: string): Observable<Tenant> {
+    return this.tenantApi.patch(partialTenant).pipe(
+      tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),
+      tap(
+        (updatedTenant: Tenant) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'tenantUpdate', tenantName: updatedTenant.name, ownerName },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   exists(name: string): Observable<any> {
@@ -117,9 +117,8 @@ export class TenantService {
     const criterionCode: Criterion = { key: 'name', value: name, operator: Operators.equals };
     criterionArray.push(criterionCode);
     const query: SearchQuery = { criteria: criterionArray };
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.tenantApi.checkExistsByParam(params);
   }
-
 }

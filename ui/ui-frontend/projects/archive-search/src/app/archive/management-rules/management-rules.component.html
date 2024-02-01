@@ -7,7 +7,7 @@
     <div class="vitamui-content">
       <div class="row">
         <div class="col-4 radio-btn-area">
-          <br/>
+          <br />
           <label class="title-text"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
           <div class="radio-group" *ngFor="let ruleCategory of rulesCatygories">
             <div class="radio-btn-list">
@@ -21,9 +21,9 @@
               </mat-radio-button>
             </div>
           </div>
-          <br/>
+          <br />
           <label class="title-text">{{ 'RULES.SELECT_RULE_ACTION' | translate }} *</label>
-          <br/>
+          <br />
           <div>
             <mat-form-field class="vitamui-mat-select select-style">
               <mat-select
@@ -61,8 +61,7 @@
                 <mat-option value="BlockRuleInheritance" [disabled]="true" (click)="onSelectAction(actionSelected)">
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
-                <mat-option value="deleteBlockRuleInheritance" [disabled]="true"
-                            (click)="onSelectAction(actionSelected)">
+                <mat-option value="deleteBlockRuleInheritance" [disabled]="true" (click)="onSelectAction(actionSelected)">
                   {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
               </mat-select>
@@ -125,12 +124,11 @@
               <div class="row">
                 <div class="col-7">
                   <span class="details-ua">
-                    {{ 'RULES.UA_SELECTED' | translate: {ua_selected: selectedItem} }}
+                    {{ 'RULES.UA_SELECTED' | translate: { ua_selected: selectedItem } }}
                   </span>
                 </div>
                 <div class="col-5">
-                  <button class="btn primary" [disabled]="!isAllActionsValid() || ruleActions.length === 0"
-                          (click)="submitUpdates()">
+                  <button class="btn primary" [disabled]="!isAllActionsValid() || ruleActions.length === 0" (click)="submitUpdates()">
                     {{ 'RULES.EXECUTE_RULE_UPDATE' | translate }}
                   </button>
                 </div>
@@ -143,10 +141,7 @@
               <mat-tab-group [selectedIndex]="indexOfSelectedCategory">
                 <div *ngFor="let item of rulesCatygoriesToShow">
                   <mat-tab label="{{ item.name }}">
-                    <app-archive-unit-rules
-                      [selectedItem]="selectedItem"
-                      [ruleCategory]="item.id"
-                    ></app-archive-unit-rules>
+                    <app-archive-unit-rules [selectedItem]="selectedItem" [ruleCategory]="item.id"></app-archive-unit-rules>
                   </mat-tab>
                 </div>
               </mat-tab-group>
@@ -160,16 +155,15 @@
 
 <ng-template #confirmRuleActionsDialog>
   <mat-dialog-content>
-    <br/>
+    <br />
     <div class="text-title">{{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_TITLE_MESSAGE' | translate }}</div>
     <div class="text large bold">
-      {{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate: {ua_selected: selectedItem} }}
+      {{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate: { ua_selected: selectedItem } }}
     </div>
   </mat-dialog-content>
-  <br/>
+  <br />
   <mat-dialog-actions>
-    <button matDialogClose
-            class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+    <button matDialogClose class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.UNDO' | translate }}</button>
 
     <button [matDialogClose]="true" class="btn cancel">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
   </mat-dialog-actions>
@@ -177,16 +171,15 @@
 
 <ng-template #confirmLeaveRuleActionsDialog>
   <mat-dialog-content>
-    <br/>
+    <br />
 
     <div class="text large bold">
-      {{ 'RULES.DIALOG_MESSAGE.EXIT_CONFIRM_MESSAGE' | translate: {ua_selected: selectedItem} }}
+      {{ 'RULES.DIALOG_MESSAGE.EXIT_CONFIRM_MESSAGE' | translate: { ua_selected: selectedItem } }}
     </div>
   </mat-dialog-content>
-  <br/>
+  <br />
   <mat-dialog-actions>
-    <button [matDialogClose]="true"
-            class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
 
     <button matDialogClose class="btn cancel">{{ 'RULES.COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>

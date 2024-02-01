@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {CriteriaDataType, CriteriaOperator} from 'ui-frontend-common';
-import {ArchiveService} from '../../archive.service';
-import {SearchCriteriaEltDto, SearchCriteriaTypeEnum} from '../../models/search.criteria';
-import {Unit} from '../../models/unit.interface';
+import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
+import { ArchiveService } from '../../archive.service';
+import { SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { Unit } from '../../models/unit.interface';
 
 const PAGE_SIZE = 10;
 const CURRENT_PAGE = 0;
@@ -53,8 +53,8 @@ const CURRENT_PAGE = 0;
   styleUrls: ['./archive-unit-rules-details-tab.component.css'],
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
@@ -69,8 +69,10 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
 
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
 
-  constructor(private archiveSearchService: ArchiveService, private translateService: TranslateService) {
-  }
+  constructor(
+    private archiveSearchService: ArchiveService,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
@@ -78,8 +80,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     this.selectUnitWithInheritedRulesSubscription?.unsubscribe();
@@ -88,7 +89,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
   selectUnitWithInheritedRules(archiveUnit: Unit) {
     this.listOfCriteriaSearch.push({
       criteria: 'GUID',
-      values: [{value: archiveUnit['#id'], id: archiveUnit['#id']}],
+      values: [{ value: archiveUnit['#id'], id: archiveUnit['#id'] }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,

@@ -45,15 +45,8 @@ import { TenantSelectContentModule } from '../tenant-select-content/tenant-selec
 import { VitamUITenantSelectComponent } from './vitamui-tenant-select.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-    NavbarModule,
-    TenantSelectContentModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule, NavbarModule, TenantSelectContentModule, TranslateModule],
   declarations: [VitamUITenantSelectComponent],
   exports: [VitamUITenantSelectComponent],
 })
-export class VitamUITenantSelectModule { }
+export class VitamUITenantSelectModule {}

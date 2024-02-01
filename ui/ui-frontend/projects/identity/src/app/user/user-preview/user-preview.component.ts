@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -48,30 +47,26 @@ import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
-
 @Component({
   selector: 'app-user-preview',
   templateUrl: './user-preview.component.html',
-  styleUrls: ['./user-preview.component.scss']
+  styleUrls: ['./user-preview.component.scss'],
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
-
   @Input() isPopup: boolean;
 
-   // tslint:disable-next-line:variable-name
-   _user: User;
+  // tslint:disable-next-line:variable-name
+  _user: User;
 
-
-   get user() : User {
-     return this._user;
-   }
-   @Input()
-  set user(user: User){
+  get user(): User {
+    return this._user;
+  }
+  @Input()
+  set user(user: User) {
     this._user = user;
-    if(this._user.userInfoId)
-   {
-    this.userInfoService.get(this._user.userInfoId).subscribe((response) => this.userInfo = response);
-   }
+    if (this._user.userInfoId) {
+      this.userInfoService.get(this._user.userInfoId).subscribe((response) => (this.userInfo = response));
+    }
   }
   @Input() customer: Customer;
 
@@ -81,53 +76,53 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
 
-
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
   attribaGroups: GroupSelection[];
   userInfo: UserInfo;
 
   @Input()
-  get groups(): Group[] { return this._groups; }
+  get groups(): Group[] {
+    return this._groups;
+  }
   set groups(groupList: Group[]) {
     this._groups = groupList;
   }
 
-    // tslint:disable-next-line:variable-name
-    private _groups: Group[];
+  // tslint:disable-next-line:variable-name
+  private _groups: Group[];
 
-
-    constructor(
+  constructor(
     private matDialog: MatDialog,
     private userService: UserService,
     private authService: AuthService,
     public userApi: UserApiService,
     private startupService: StartupService,
     public groupService: GroupService,
-    private userInfoService: UserInfoService
-  ) { }
+    private userInfoService: UserInfoService,
+  ) {}
 
   ngOnInit() {
-
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
       this.user = updatedUser;
     });
-
   }
-
 
   ngOnDestroy() {
     this.userUpdatedSub.unsubscribe();
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/user/' + this.user.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
-  updateStatus( status: string) {
+  updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
       dialogToOpen = this.confirmEnabledUserDialog;
@@ -135,15 +130,14 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       dialogToOpen = this.confirmDisabledUserDialog;
     }
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed()
-    .pipe(filter((result) => !!result))
-    .subscribe(() => {
-      this.userService.patch({id: this.user.id, status })
-      .subscribe((user) => {
-        this.user = user;
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.userService.patch({ id: this.user.id, status }).subscribe((user) => {
+          this.user = user;
+        });
       });
-
-    });
   }
 
   levelNotAllowed(): boolean {
@@ -157,44 +151,57 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   }
 
   filterAuthenticationEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_BLOCK_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_REVOCATION') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_CREATE_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_UPDATE_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_BLOCK_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_REVOCATION') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE'))
     );
   }
 
-    deleteUser(user: User, status: string) {
-
-    const emailadress  = user.email.split('@');
-    const email = "anonyme-"+user.identifier + "@"+emailadress[1];
-    const firstname = "";
-    const lastname = "";
-    const siteCode = "";
-    const internalCode = "";
-    const groupId = "";
+  deleteUser(user: User, status: string) {
+    const emailadress = user.email.split('@');
+    const email = 'anonyme-' + user.identifier + '@' + emailadress[1];
+    const firstname = '';
+    const lastname = '';
+    const siteCode = '';
+    const internalCode = '';
+    const groupId = '';
     const address = {
-      street: "",
-      zipCode: "",
-      city: "",
-      country: ""};
+      street: '',
+      zipCode: '',
+      city: '',
+      country: '',
+    };
 
-      let dialogToOpen;
+    let dialogToOpen;
     dialogToOpen = this.confirmdeleteUserDialog;
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, groupId, firstname, siteCode, internalCode })
+        this.userService
+          .deleteUser({
+            id: this.user.id,
+            lastname,
+            email,
+            address,
+            mobile: null,
+            phone: null,
+            status,
+            groupId,
+            firstname,
+            siteCode,
+            internalCode,
+          })
           .subscribe((user) => {
             this.user = user;
             this.emitClose();
           });
-
       });
   }
-
 }

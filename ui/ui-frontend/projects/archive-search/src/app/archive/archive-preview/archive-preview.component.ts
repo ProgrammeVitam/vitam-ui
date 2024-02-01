@@ -64,12 +64,15 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   tenantIdentifier: number;
 
   updateStarted = false;
- @Input()
+  @Input()
   accessContractAllowUpdating: boolean;
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';
-  constructor(private route: ActivatedRoute, private translateService: TranslateService) {
+  constructor(
+    private route: ActivatedRoute,
+    private translateService: TranslateService,
+  ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });

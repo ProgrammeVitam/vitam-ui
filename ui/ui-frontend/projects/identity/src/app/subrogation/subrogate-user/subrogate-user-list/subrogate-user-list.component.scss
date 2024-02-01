@@ -1,32 +1,31 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 .criticity-column {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 #rectangle-criticity-high {
-    width: 20px;
-    height: 10px;
-    border-radius: 3px;
-    background: var(--vitamui-grey);
-    margin-right: 5px;
+  width: 20px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--vitamui-grey);
+  margin-right: 5px;
 }
 
 #rectangle-criticity-low {
-    width: 20px;
-    height: 10px;
-    border-radius: 3px;
-    background: var(--vitamui-grey-300);
-    margin-right: 5px;
+  width: 20px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--vitamui-grey-300);
+  margin-right: 5px;
 }
 
 .user-in-subrogation-label {
-    color: red;
+  color: red;
 }
 
-
 .user-current-in-subrogation-label {
-    color: red;
-    margin-left: 20px;
+  color: red;
+  margin-left: 20px;
 }

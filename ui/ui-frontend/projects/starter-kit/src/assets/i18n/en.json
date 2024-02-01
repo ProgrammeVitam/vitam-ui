@@ -12,11 +12,11 @@
       "TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address..."
     }
   },
-  "ARRAY":{
-    "BASIC_TITLE" : "Basic array",
+  "ARRAY": {
+    "BASIC_TITLE": "Basic array",
     "FILTER_TITLE": "Array with filters",
     "SUBTABLE_TITLE": "Array with subtable",
-    "DIALOG_TITLE" :"Dialog array"
+    "DIALOG_TITLE": "Dialog array"
   },
   "BUTTON": {
     "Primary": "Primary default",

@@ -41,15 +41,10 @@ import { BASE_URL, WINDOW_LOCATION } from 'ui-frontend-common';
 import { SubrogationService } from './subrogation.service';
 
 describe('SubrogationService', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        SubrogationService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ]
+      providers: [SubrogationService, { provide: BASE_URL, useValue: '/fake-api' }, { provide: WINDOW_LOCATION, useValue: {} }],
     });
   });
 

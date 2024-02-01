@@ -43,20 +43,11 @@ import { CollapseModule } from '../../components/collapse/collapse.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { EventTypeLabelModule } from '../event-type-label/event-type-label.module';
 import { HistoryEventsComponent } from './history-events/history-events.component';
-import {
-  OperationHistoryTabComponent
-} from './operation-history-tab/operation-history-tab.component';
+import { OperationHistoryTabComponent } from './operation-history-tab/operation-history-tab.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CollapseModule,
-    MatProgressSpinnerModule,
-    EventTypeLabelModule,
-    TranslateModule,
-    PipesModule
-  ],
+  imports: [CommonModule, CollapseModule, MatProgressSpinnerModule, EventTypeLabelModule, TranslateModule, PipesModule],
   declarations: [HistoryEventsComponent, OperationHistoryTabComponent],
-  exports: [HistoryEventsComponent, OperationHistoryTabComponent]
+  exports: [HistoryEventsComponent, OperationHistoryTabComponent],
 })
-export class HistoryModule { }
+export class HistoryModule {}

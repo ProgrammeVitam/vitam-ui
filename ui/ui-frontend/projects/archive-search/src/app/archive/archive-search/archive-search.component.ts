@@ -35,41 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {HttpErrorResponse} from '@angular/common/http';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {merge, Subject, Subscription} from 'rxjs';
-import {debounceTime, filter} from 'rxjs/operators';
-import {
-  ActionOnCriteria,
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  StartupService,
-  VitamuiRoles
-} from 'ui-frontend-common';
-import {ArchiveSharedDataServiceService} from '../../core/archive-shared-data-service.service';
-import {ManagementRulesSharedDataService} from '../../core/management-rules-shared-data.service';
-import {ArchiveService} from '../archive.service';
-import {FilingHoldingSchemeNode} from '../models/node.interface';
-import {NodeData} from '../models/nodedata.interface';
-import {ActionsRules} from '../models/ruleAction.interface';
-import {SearchCriteriaEltements, SearchCriteriaHistory} from '../models/search-criteria-history.interface';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { merge, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
+import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { ArchiveService } from '../archive.service';
+import { FilingHoldingSchemeNode } from '../models/node.interface';
+import { NodeData } from '../models/nodedata.interface';
+import { ActionsRules } from '../models/ruleAction.interface';
+import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import {
   ArchiveSearchResultFacets,
   CriteriaValue,
@@ -79,13 +61,13 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue
+  SearchCriteriaValue,
 } from '../models/search.criteria';
-import {Unit} from '../models/unit.interface';
-import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
-import {DipRequestCreateComponent} from './dip-request-create/dip-request-create.component';
-import {ReclassificationComponent} from './reclassification/reclassification.component';
-import {SearchCriteriaSaverComponent} from './search-criteria-saver/search-criteria-saver.component';
+import { Unit } from '../models/unit.interface';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
+import { ReclassificationComponent } from './reclassification/reclassification.component';
+import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
@@ -114,7 +96,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     public dialog: MatDialog,
     private startupService: StartupService,
     private router: Router,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
   ) {
     this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe((nodes) => {
       this.entireNodesIds = nodes;
@@ -124,18 +106,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (node.checked) {
         this.addCriteria(
           'NODE',
-          {id: node.id, value: node.id},
+          { id: node.id, value: node.id },
           node.title,
           true,
           CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
           CriteriaDataType.STRING,
-          false
+          false,
         );
       } else {
         node.count = null;
-        this.removeCriteria('NODE', {id: node.id, value: node.id}, false);
+        this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
       }
     });
 
@@ -152,7 +134,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             criteria.category,
             criteria.valueTranslated,
             criteria.dataType,
-            false
+            false,
           );
         }
       });
@@ -178,7 +160,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           criteria.category,
           criteria.valueTranslated,
           criteria.dataType,
-          false
+          false,
         );
       }
     });
@@ -194,7 +176,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           criteria.category,
           criteria.valueTranslated,
           criteria.dataType,
-          false
+          false,
         );
       }
     });
@@ -224,7 +206,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   isIndeterminate: boolean;
   isAllchecked: boolean;
   hasResults = false;
-
 
   show = true;
   hasDipExportRole = false;
@@ -293,16 +274,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   archiveUnitGuidSelected: string;
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
-  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', {static: true})
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
-  @ViewChild('updateArchiveUnitAlerteMessageDialog', {static: true})
+  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
   updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
-  @ViewChild('reclassificationAlerteMessageDialog', {static: true})
+  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
   reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
-  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', {static: true})
+  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
@@ -316,7 +297,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     if (indexOfCategory === -1) {
       this.additionalSearchCriteriaCategories.push({
         name: categoryName,
-        index: this.additionalSearchCriteriaCategories.length + 1
+        index: this.additionalSearchCriteriaCategories.length + 1,
       });
 
       this.additionalSearchCriteriaCategories.forEach((category, index) => {
@@ -365,7 +346,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-    this.addInitalCriteriaValues()
+    this.addInitalCriteriaValues();
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
@@ -381,32 +362,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.managementRulesSharedDataService.emitManagementRules([]);
   }
 
-
   private addInitalCriteriaValues() {
-
     this.addCriteria(
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS},
+      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
-      CriteriaOperator.EQ, SearchCriteriaTypeEnum.FIELDS,
+      CriteriaOperator.EQ,
+      SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
 
     this.addCriteria(
       ALL_ARCHIVE_UNIT_TYPES,
-      {value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS},
+      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
       true,
       CriteriaOperator.EQ,
       SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -464,7 +443,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         valueElt.id = 'WAITING_RECALCULATE';
       }
       if (valueElt && valueElt.id === 'ORIGIN_WAITING_RECALCULATE') {
-        this.removeCriteria('WAITING_RECALCULATE', {id: 'WAITING_RECALCULATE', value: valueElt.value}, emit);
+        this.removeCriteria('WAITING_RECALCULATE', { id: 'WAITING_RECALCULATE', value: valueElt.value }, emit);
       }
       this.searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
@@ -562,34 +541,34 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     category: SearchCriteriaTypeEnum,
     valueTranslated: boolean,
     dataType: string,
-    emit: boolean
+    emit: boolean,
   ) {
     if (keyElt && valueElt) {
       if (valueElt && valueElt.id === 'ORIGIN_WAITING_RECALCULATE') {
         this.addCriteria(
           'WAITING_RECALCULATE',
-          {id: 'WAITING_RECALCULATE', value: 'true'},
+          { id: 'WAITING_RECALCULATE', value: 'true' },
           labelElt,
           keyTranslated,
           operator,
           SearchCriteriaTypeEnum.FIELDS,
           valueTranslated,
           dataType,
-          emit
+          emit,
         );
 
         if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.ADD
+            action: ActionOnCriteria.ADD,
           });
         }
         if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.ADD
+            action: ActionOnCriteria.ADD,
           });
         }
       } else if (this.searchCriterias) {
@@ -605,7 +584,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           const filtredValues = values.filter((elt) =>
             criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
               ? elt.value.value === valueElt.value
-              : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
+              : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval,
           );
           if (filtredValues.length === 0) {
             values.push({
@@ -652,14 +631,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.ADD
+            action: ActionOnCriteria.ADD,
           });
         }
         if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.ADD
+            action: ActionOnCriteria.ADD,
           });
         }
       }
@@ -708,7 +687,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         (error: HttpErrorResponse) => {
           this.pendingGetFixedCount = false;
           console.log('error : ', error.message);
-        }
+        },
       );
     }
   }
@@ -806,7 +785,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   private callVitamApiService() {
     this.pending = true;
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
@@ -851,7 +830,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         console.log('error : ', error.message);
         this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
-      }
+      },
     );
   }
 
@@ -911,14 +890,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         node.hidden = false;
         this.addCriteria(
           'NODE',
-          {id: nodeId, value: nodeId},
+          { id: nodeId, value: nodeId },
           node.title,
           true,
           CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
           CriteriaDataType.STRING,
-          false
+          false,
         );
       } else if (node.children.length > 0) {
         this.fillNodeTitle(node.children, nodeId);
@@ -968,7 +947,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
               SearchCriteriaTypeEnum.APPRAISAL_RULE,
               criteria.valueTranslated,
               criteria.dataType,
-              true
+              true,
             );
           } else {
             this.addCriteria(
@@ -980,7 +959,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
               SearchCriteriaTypeEnum.APPRAISAL_RULE,
               criteria.valueTranslated,
               criteria.dataType,
-              true
+              true,
             );
           }
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE]) {
@@ -995,7 +974,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
               SearchCriteriaTypeEnum.ACCESS_RULE,
               criteria.valueTranslated,
               criteria.dataType,
-              true
+              true,
             );
           } else {
             this.addCriteria(
@@ -1007,7 +986,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
               SearchCriteriaTypeEnum.ACCESS_RULE,
               criteria.valueTranslated,
               criteria.dataType,
-              true
+              true,
             );
           }
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES]) {
@@ -1020,7 +999,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             SearchCriteriaTypeEnum.NODES,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
           this.addCriteria(
@@ -1034,7 +1013,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             SearchCriteriaTypeEnum.FIELDS,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         }
       });
@@ -1099,7 +1078,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.archiveExchangeDataService.emitToggle(this.show);
   }
 
-
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscriptionNodes?.unsubscribe();
@@ -1120,7 +1098,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   exportArchiveUnitsToCsvFile() {
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-      const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
         pageNumber: this.currentPage,
@@ -1187,7 +1165,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isAllchecked && !action) {
       this.listOfUACriteriaSearch = [];
       this.isIndeterminate = true;
-      this.listOfUAIdToExclude.push({value: id, id});
+      this.listOfUAIdToExclude.push({ value: id, id });
       this.listOfUAIdToInclude = [];
       if (this.itemSelected > 0) {
         this.itemSelected--;
@@ -1201,7 +1179,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         if (this.itemSelected === this.totalResults) {
           this.isIndeterminate = false;
         }
-        this.listOfUAIdToInclude.push({value: id, id});
+        this.listOfUAIdToInclude.push({ value: id, id });
         this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
@@ -1293,19 +1271,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .subscribe((exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe((exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-            this.launchExportDipMoadal();
-          });
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+          this.launchExportDipMoadal();
+        });
       }
     } else {
       this.launchExportDipMoadal();
@@ -1319,7 +1295,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        {panelClass: 'vitamui-dialog'}
+        { panelClass: 'vitamui-dialog' },
       );
 
       this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -1333,7 +1309,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   launchExportDIP() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
@@ -1363,17 +1339,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     // reclassification can not be launched on more than one archive unit
     if (this.itemSelected > 1) {
       const dialogToOpen = this.reclassificationAlerteMessageDialog;
-      const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
       this.reclassificationAlerteMessageDialogSubscription = dialogRef
         .afterClosed()
         .pipe(filter((result) => !!result))
-        .subscribe(() => {
-        });
+        .subscribe(() => {});
     } else if (this.itemSelected === 1) {
       this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
       this.archiveUnitAllunitup = this.archiveUnits.find((au) => au['#id'] === this.archiveUnitGuidSelected)['#unitups'];
       this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-      const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
 
       const reclassificationCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
@@ -1411,19 +1386,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .subscribe((exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe((exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-            this.launchEliminationAnalysisMoadal();
-          });
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+          this.launchEliminationAnalysisMoadal();
+        });
       }
     } else {
       this.launchEliminationAnalysisMoadal();
@@ -1437,7 +1410,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        {panelClass: 'vitamui-dialog'}
+        { panelClass: 'vitamui-dialog' },
       );
 
       this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -1451,7 +1424,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   launchEliminationAnalysis() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
@@ -1460,20 +1433,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       language: this.translateService.currentLang,
     };
 
-    this.analysisliminationSuscription = this.archiveService
-      .startEliminationAnalysis(exportDIPSearchCriteria)
-      .subscribe((data) => {
-        this.eliminationAnalysisResponse = data.$results;
+    this.analysisliminationSuscription = this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria).subscribe((data) => {
+      this.eliminationAnalysisResponse = data.$results;
 
-        if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
-          const guid = this.eliminationAnalysisResponse[0].itemId;
-          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
-          const serviceUrl =
-            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+      if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
+        const guid = this.eliminationAnalysisResponse[0].itemId;
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
+        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
-          this.openSnackBarForWorkflow(message, serviceUrl);
-        }
-      });
+        this.openSnackBarForWorkflow(message, serviceUrl);
+      }
+    });
   }
 
   prepareToLaunchElimination() {
@@ -1481,19 +1451,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .subscribe((exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe((exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-            this.launchEliminationMoadal();
-          });
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+          this.launchEliminationMoadal();
+        });
       }
     } else {
       this.launchEliminationMoadal();
@@ -1504,7 +1472,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-      {panelClass: 'vitamui-dialog'}
+      { panelClass: 'vitamui-dialog' },
     );
 
     this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -1517,7 +1485,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   private launchEliminationAction() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-    const sortingCriteria = {criteria: this.orderBy, sorting: this.direction};
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
@@ -1526,20 +1494,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       language: this.translateService.currentLang,
     };
 
-    this.actionliminationSuscription = this.archiveService
-      .launchEliminationAction(exportDIPSearchCriteria)
-      .subscribe((response) => {
-        this.eliminationActionResponse = response.$results;
+    this.actionliminationSuscription = this.archiveService.launchEliminationAction(exportDIPSearchCriteria).subscribe((response) => {
+      this.eliminationActionResponse = response.$results;
 
-        if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
-          const guid = this.eliminationActionResponse[0].itemId;
-          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-          const serviceUrl =
-            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+      if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
+        const guid = this.eliminationActionResponse[0].itemId;
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
-          this.openSnackBarForWorkflow(message, serviceUrl);
-        }
-      });
+        this.openSnackBarForWorkflow(message, serviceUrl);
+      }
+    });
   }
 
   updateManagementRule() {
@@ -1547,19 +1512,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .subscribe((exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe((exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-            this.goToUpdateManagementRule();
-          });
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+          this.goToUpdateManagementRule();
+        });
       }
     } else {
       this.goToUpdateManagementRule();
@@ -1571,7 +1534,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     this.listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{value: 'HOLDING_UNIT', id: 'HOLDING_UNIT'}],
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,
@@ -1587,12 +1550,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.numberOfHoldingUnitType = data.totalResults;
       if (this.numberOfHoldingUnitType > 0) {
         const dialogToOpen = this.updateArchiveUnitAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
         this.updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {
-          });
+          .subscribe(() => {});
       } else {
         const criteriaSearchDSLQueryToSend = {
           criteriaList: this.listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
@@ -1614,19 +1576,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .subscribe((exactCountResults: number) => {
-            if (exactCountResults !== -1) {
-              this.totalResults = exactCountResults;
-              if (this.isAllchecked) {
-                this.itemSelected = this.totalResults - this.itemNotSelected;
-              }
-              this.waitingToGetFixedCount = false;
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).subscribe((exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
             }
-            this.pendingGetFixedCount = false;
-            this.launchComputedInheritedRulesModal();
-          });
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+          this.launchComputedInheritedRulesModal();
+        });
       }
     } else {
       this.launchComputedInheritedRulesModal();
@@ -1637,7 +1597,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     this.listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{value: 'HOLDING_UNIT', id: 'HOLDING_UNIT'}],
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       dataType: CriteriaDataType.STRING,
@@ -1653,17 +1613,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
       if (this.numberOfHoldingUnitTypeOnComputedRules > 0) {
         const dialogToOpen = this.launchComputeInheritedRuleAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
         this.launchComputeInheritedRuleAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {
-          });
+          .subscribe(() => {});
       } else {
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
           dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-          {panelClass: 'vitamui-dialog'}
+          { panelClass: 'vitamui-dialog' },
         );
 
         this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -1672,7 +1631,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           .subscribe(() => {
             const computedInheritedRulesDSLQuery = {
               criteriaList: computedInheritedRulesSearchCriteria.criteriaList.filter(
-                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT
+                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT,
               ),
               pageNumber: this.currentPage,
               size: PAGE_SIZE,

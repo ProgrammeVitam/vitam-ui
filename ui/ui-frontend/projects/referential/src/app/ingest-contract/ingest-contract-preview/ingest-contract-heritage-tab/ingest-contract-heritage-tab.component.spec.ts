@@ -72,16 +72,14 @@ describe('IngestContractHeritageTabComponent', () => {
     computeInheritedRulesAtIngest: false,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, VitamUICommonTestModule],
-        declarations: [IngestContractHeritageTabComponent],
-        providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [IngestContractHeritageTabComponent],
+      providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractHeritageTabComponent);

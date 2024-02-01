@@ -42,21 +42,14 @@ import { fadeInOutAnimation } from '../../animations';
   selector: 'vitamui-common-tooltip',
   templateUrl: './common-tooltip.component.html',
   styleUrls: ['./common-tooltip.component.scss'],
-  animations: [
-    fadeInOutAnimation,
-  ],
+  animations: [fadeInOutAnimation],
 })
 export class CommonTooltipComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  public text = '';
+  public className: string;
+  public outline: boolean;
 
- public text = '';
- public className: string;
-public outline: boolean;
-
-  ngOnInit() {
-  }
-
-
-
+  ngOnInit() {}
 }

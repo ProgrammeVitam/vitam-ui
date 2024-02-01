@@ -42,12 +42,10 @@ import { BASE_URL } from '../injection-tokens';
 import { Profile, SearchQuery } from '../models';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileApiService extends BaseHttpClient<Profile> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/profiles');
   }
@@ -68,7 +66,7 @@ export class ProfileApiService extends BaseHttpClient<Profile> {
     return super.getOneWithEmbedded(id, embedded, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -76,12 +74,12 @@ export class ProfileApiService extends BaseHttpClient<Profile> {
     return super.create(profile, headers);
   }
 
-  patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Profile> {
+  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Profile> {
     return super.patch(data, headers);
   }
 
   getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
+    let params = new HttpParams();
     if (query) {
       params = params.set('criteria', JSON.stringify(query));
     }

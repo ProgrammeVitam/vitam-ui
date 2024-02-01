@@ -53,11 +53,10 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./subrogation-modal.component.scss'],
 })
 export class SubrogationModalComponent implements OnInit {
-
   public stepIndex = 0;
   public stepCount = 2;
   public domains: string[];
-  public user: { email: string, firstname: string, lastname: string };
+  public user: { email: string; firstname: string; lastname: string };
   public form: FormGroup;
   public pending: boolean;
 
@@ -69,13 +68,12 @@ export class SubrogationModalComponent implements OnInit {
     public builder: FormBuilder,
     private authService: AuthService,
     private matSnackBar: MatSnackBar,
-    private subrogationService: SubrogationService
+    private subrogationService: SubrogationService,
   ) {
     this.form = this.builder.group({
       emailFirstPart: [null, Validators.required],
-      domain: null
+      domain: null,
     });
-
   }
 
   ngOnInit() {
@@ -117,11 +115,10 @@ export class SubrogationModalComponent implements OnInit {
           this.dialogRef.close();
           this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: NotificationType.SUBRO_ALREADY_RUNNING_WITH_OTHER_USERS, email : response.surrogate },
-            duration: 10000
+            data: { type: NotificationType.SUBRO_ALREADY_RUNNING_WITH_OTHER_USERS, email: response.surrogate },
+            duration: 10000,
           });
         }
-
       } else {
         this.createSubrogation(surrogateEmail);
       }
@@ -156,7 +153,8 @@ export class SubrogationModalComponent implements OnInit {
       },
       () => {
         this.handleSubrogationError();
-      });
+      },
+    );
   }
 
   handleSubrogationError() {
@@ -164,7 +162,7 @@ export class SubrogationModalComponent implements OnInit {
     this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       data: { type: NotificationType.SUBRO_UNAVAILABLE },
-      duration: 10000
+      duration: 10000,
     });
   }
 
@@ -182,5 +180,4 @@ export class SubrogationModalComponent implements OnInit {
       this.dialogRef.close();
     });
   }
-
 }

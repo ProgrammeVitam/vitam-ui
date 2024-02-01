@@ -86,7 +86,10 @@ export class RuleInformationTabComponent {
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private ruleService: RuleService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private ruleService: RuleService,
+  ) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
@@ -124,7 +127,7 @@ export class RuleInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null))))
+      switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
@@ -143,7 +146,7 @@ export class RuleInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

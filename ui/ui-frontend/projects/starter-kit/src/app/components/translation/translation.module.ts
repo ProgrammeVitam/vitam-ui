@@ -6,21 +6,9 @@ import { TranslationComponent } from './translation.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
-
 @NgModule({
-  declarations: [
-    TranslationComponent
-  ],
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    TranslateModule
-  ],
-  exports: [
-    TranslationComponent
-  ]
+  declarations: [TranslationComponent],
+  imports: [CommonModule, VitamUICommonModule, ReactiveFormsModule, MatInputModule, TranslateModule],
+  exports: [TranslationComponent],
 })
-export class TranslationModule { }
+export class TranslationModule {}

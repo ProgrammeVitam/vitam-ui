@@ -54,7 +54,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
   constructor(
     private logbookManagementOperationApiService: LogbookManagementOperationApiService,
     private snackBar: MatSnackBar,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, logbookManagementOperationApiService, 'ALL');
   }
@@ -83,7 +83,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
       catchError(() => {
         return of({ $hits: null, $results: [] });
       }),
-      map((response) => this.buildOperationsResults(response))
+      map((response) => this.buildOperationsResults(response)),
     );
   }
 
@@ -94,7 +94,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
         catchError(() => {
           return of({ $hits: null, $results: [] });
         }),
-        map((response) => this.buildOperationsResults(response))
+        map((response) => this.buildOperationsResults(response)),
       )
       .pipe(
         tap((response) => {
@@ -116,8 +116,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
             });
-          }
-        )
+          },
+        ),
       );
   }
 
@@ -128,7 +128,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
         catchError(() => {
           return of({ $hits: null, $results: [] });
         }),
-        map((response) => this.buildOperationsResults(response))
+        map((response) => this.buildOperationsResults(response)),
       )
       .pipe(
         tap((response) => {
@@ -150,8 +150,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
             });
-          }
-        )
+          },
+        ),
       );
   }
 }

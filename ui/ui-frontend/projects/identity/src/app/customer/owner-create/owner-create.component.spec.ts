@@ -38,7 +38,6 @@ import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, Owner } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -55,11 +54,13 @@ import { OwnerCreateComponent } from './owner-create.component';
 @Component({
   selector: 'app-owner-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => OwnerFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => OwnerFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerId: any;
@@ -77,7 +78,7 @@ describe('OwnerCreateComponent', () => {
   beforeEach(waitForAsync(() => {
     owner = {
       id: '5ad5f14c894e6a414edc7b67',
-      identifier : '1',
+      identifier: '1',
       customerId: '5ad5f14c894e6a414edc7b6438c3dd882b4145bb8a8a240726d66d64c9e878bc',
       name: 'Mr Président',
       code: '02234512',
@@ -86,30 +87,22 @@ describe('OwnerCreateComponent', () => {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
-      readonly : false
+      readonly: false,
     };
 
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of(owner) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null)
+      uniqueName: () => of(null),
     });
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
 
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        OwnerCreateComponent,
-        OwnerFormStubComponent,
-      ],
+      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },
@@ -119,16 +112,14 @@ describe('OwnerCreateComponent', () => {
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OwnerCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
   });
 
   it('should create', () => {
@@ -136,20 +127,20 @@ describe('OwnerCreateComponent', () => {
   });
 
   it('should call dialogRef.close', () => {
-    const matDialogRef =  TestBed.inject(MatDialogRef);
+    const matDialogRef = TestBed.inject(MatDialogRef);
     component.onCancel();
     expect(matDialogRef.close).toHaveBeenCalledTimes(1);
   });
 
   it('should not call ownerService.create()', () => {
-    const ownerService =  TestBed.inject(OwnerService);
+    const ownerService = TestBed.inject(OwnerService);
     component.onOwnerSubmit();
     expect(ownerService.create).toHaveBeenCalledTimes(0);
   });
 
   it('should call ownerService.create()', () => {
-    const ownerService =  TestBed.inject(OwnerService);
-    const matDialogRef =  TestBed.inject(MatDialogRef);
+    const ownerService = TestBed.inject(OwnerService);
+    const matDialogRef = TestBed.inject(MatDialogRef);
     component.ownerForm.setValue({ owner });
     component.onOwnerSubmit();
     expect(ownerService.create).toHaveBeenCalledTimes(1);
@@ -157,21 +148,21 @@ describe('OwnerCreateComponent', () => {
   });
 
   it('should not call tenantService.create()', () => {
-    const tenantService =  TestBed.inject(TenantService);
+    const tenantService = TestBed.inject(TenantService);
     component.onTenantSubmit();
     expect(tenantService.create).not.toHaveBeenCalled();
   });
 
   it('should call tenantService.create()', () => {
-    const tenantService =  TestBed.inject(TenantService);
-    const matDialogRef =  TestBed.inject(MatDialogRef);
+    const tenantService = TestBed.inject(TenantService);
+    const matDialogRef = TestBed.inject(MatDialogRef);
     component.ownerForm.setValue({ owner });
     const tenant = { name: 'tenant name', ownerId: owner.id, customerId: '42', enabled: true };
     component.tenantForm.setValue(tenant);
     component.onTenantSubmit();
     expect(tenantService.create).toHaveBeenCalledWith(
       { name: tenant.name, ownerId: tenant.ownerId, customerId: tenant.customerId, enabled: tenant.enabled },
-      owner.name
+      owner.name,
     );
     expect(matDialogRef.close).toHaveBeenCalledTimes(1);
   });

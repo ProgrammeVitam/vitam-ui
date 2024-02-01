@@ -45,12 +45,14 @@ import { Account } from '../models/account/account.interface';
 import { AccountApiService } from './account-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccountService {
-
-  constructor(private accountApi: AccountApiService, private securityApi: SecurityApiService, private snackBar: VitamUISnackBar) {
-  }
+  constructor(
+    private accountApi: AccountApiService,
+    private securityApi: SecurityApiService,
+    private snackBar: VitamUISnackBar,
+  ) {}
 
   public getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();
@@ -63,16 +65,16 @@ export class AccountService {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'accountUpdate' },
-            duration: 10000
+            duration: 10000,
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 }

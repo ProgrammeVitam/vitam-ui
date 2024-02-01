@@ -34,9 +34,10 @@
   }
 }
 
-.mat-drawer, .mat-dialog-container {
-  .vitamui-chip  {
-      @include dialog-elevation-primary;
+.mat-drawer,
+.mat-dialog-container {
+  .vitamui-chip {
+    @include dialog-elevation-primary;
   }
 }
 .vitamui-chip {
@@ -44,7 +45,7 @@
   border: 1px solid var(--vitamui-primary-300);
   border-radius: 5px;
   color: var(--vitamui-grey-900);
-  font-size:12px;
+  font-size: 12px;
   font-weight: bold;
   @include btn-elevation-primary;
 

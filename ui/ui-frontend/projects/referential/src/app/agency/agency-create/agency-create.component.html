@@ -3,8 +3,7 @@
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
-
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
         <h4 i18n="Create agency title@@agencyCreateTitle1">Création d'un service agent</h4>
@@ -15,14 +14,22 @@
           <vitamui-common-input
             class="field-identifier"
             formControlName="identifier"
-            minlength="2" maxlength="100"
+            minlength="2"
+            maxlength="100"
             required
-            placeholder="Identifiant" i18n-placeholder="Identifier@@agencyCreateIdentifierPlaceholder"
+            placeholder="Identifiant"
+            i18n-placeholder="Identifier@@agencyCreateIdentifierPlaceholder"
           >
             <ng-container *ngIf="form.get('identifier')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">{{
+                'COMMON.REQUIRED' | translate
+              }}</vitamui-common-input-error>
               <!-- FIXME: Must we validate existance ? -->
-              <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists" i18n="Identfier exists error hint@@formErrorIdentifierExists">Identifiant déjà utilisé</vitamui-common-input-error>
+              <vitamui-common-input-error
+                *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
+                i18n="Identfier exists error hint@@formErrorIdentifierExists"
+                >Identifiant déjà utilisé</vitamui-common-input-error
+              >
             </ng-container>
           </vitamui-common-input>
         </div>
@@ -32,12 +39,16 @@
           <vitamui-common-input
             class="field-name"
             formControlName="name"
-            minlength="2" maxlength="100"
+            minlength="2"
+            maxlength="100"
             required
-            placeholder="Nom" i18n-placeholder="Name@@agencyCreateNamePlaceholder"
+            placeholder="Nom"
+            i18n-placeholder="Name@@agencyCreateNamePlaceholder"
           >
             <ng-container *ngIf="form.get('name')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
+                'COMMON.REQUIRED' | translate
+              }}</vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
         </div>
@@ -47,16 +58,30 @@
           <vitamui-common-input
             class="field-description"
             formControlName="description"
-            minlength="4" maxlength="100"
-            placeholder="Description" i18n-placeholder="Description@@agencyCreateDescriptionPlaceholder"
+            minlength="4"
+            maxlength="100"
+            placeholder="Description"
+            i18n-placeholder="Description@@agencyCreateDescriptionPlaceholder"
           >
-            <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{
+              'COMMON.REQUIRED' | translate
+            }}</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
         <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">{{'COMMON.SUBMIT' | translate}}</button>
-          <button type="button" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton" (click)="onSubmitAndCreate()" i18n="Finish agency creation button@@agencyCreateFinishButton">Terminer et créer un nouveau service agent</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button
+            type="button"
+            class="btn primary"
+            [disabled]="form.pending || form.invalid || isDisabledButton"
+            (click)="onSubmitAndCreate()"
+            i18n="Finish agency creation button@@agencyCreateFinishButton"
+          >
+            Terminer et créer un nouveau service agent
+          </button>
+          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>

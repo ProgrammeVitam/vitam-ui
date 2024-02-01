@@ -35,84 +35,64 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {CommonModule} from '@angular/common';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatTreeModule} from '@angular/material/tree';
-import {TranslateService} from '@ngx-translate/core';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-import {ArchiveApiService} from '../core/api/archive-api.service';
-import {ArchiveSharedDataServiceService} from '../core/archive-shared-data-service.service';
-import {ManagementRulesSharedDataService} from '../core/management-rules-shared-data.service';
-import {ArchivePreviewComponent} from './archive-preview/archive-preview.component';
-import {
-  ArchiveUnitInformationTabComponent
-} from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
-import {
-  ArchiveUnitRulesDetailsTabComponent
-} from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
-import {
-  ArchiveUnitRulesInformationsTabComponent
-} from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
-import {ArchiveRoutingModule} from './archive-routing.module';
-import {ArchiveSearchResolverService} from './archive-search-resolver.service';
-import {AccessRuleSearchComponent} from './archive-search/access-rule-search/access-rule-search.component';
-import {AppraisalRuleSearchComponent} from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
-import {
-  ArchiveSearchRulesFacetsComponent
-} from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
-import {
-  SearchAppraisalRulesFacetsComponent
-} from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
-import {ArchiveSearchComponent} from './archive-search/archive-search.component';
-import {DipRequestCreateComponent} from './archive-search/dip-request-create/dip-request-create.component';
-import {ReclassificationComponent} from './archive-search/reclassification/reclassification.component';
-import {RuleValidator} from './archive-search/rule.validator';
-import {SearchCriteriaListComponent} from './archive-search/search-criteria-list/search-criteria-list.component';
-import {SearchCriteriaSaverComponent} from './archive-search/search-criteria-saver/search-criteria-saver.component';
-import {SearchCriteriaSaverService} from './archive-search/search-criteria-saver/search-criteria-saver.service';
-import {SimpleCriteriaSearchComponent} from './archive-search/simple-criteria-search/simple-criteria-search.component';
-import {
-  TitleAndDescriptionCriteriaSearchComponent
-} from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
-import {ArchiveComponent} from './archive.component';
-import {CriteriaSearchComponent} from './criteria-search/criteria-search.component';
-import {FilingHoldingSchemeComponent} from './filing-holding-scheme/filing-holding-scheme.component';
-import {FilingHoldingNodeComponent} from './filing-holding-scheme/tree-node/filing-holding-node.component';
-import {
-  AddManagementRulesComponent
-} from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
-import {
-  AddUpdatePropertyComponent
-} from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
-import {ArchiveUnitRulesComponent} from './management-rules/archive-unit-rules/archive-unit-rules.component';
-import {
-  DeleteUnitRulesComponent
-} from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
-import {
-  UpdateUnitRulesComponent
-} from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
-import {ManagementRulesComponent} from './management-rules/management-rules.component';
-import {SharedModule} from './shared/shared.module';
-import {ArchiveUnitValidatorService} from './validators/archive-unit-validator.service';
-import {ManagementRulesValidatorService} from './validators/management-rules-validator.service';
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
+import { TranslateService } from '@ngx-translate/core';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
+import { ArchiveRoutingModule } from './archive-routing.module';
+import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { AccessRuleSearchComponent } from './archive-search/access-rule-search/access-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
+import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
+import { RuleValidator } from './archive-search/rule.validator';
+import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
+import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
+import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
+import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
+import { ArchiveComponent } from './archive.component';
+import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
+import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
+import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
+import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
+import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
+import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
+import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
+import { SharedModule } from './shared/shared.module';
+import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
+import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
 @NgModule({
   imports: [
@@ -152,7 +132,7 @@ import {ManagementRulesValidatorService} from './validators/management-rules-val
     RuleValidator,
     ManagementRulesSharedDataService,
     ManagementRulesValidatorService,
-    ArchiveUnitValidatorService
+    ArchiveUnitValidatorService,
   ],
   declarations: [
     ArchiveComponent,
@@ -184,5 +164,4 @@ import {ManagementRulesValidatorService} from './validators/management-rules-val
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ArchiveModule {
-}
+export class ArchiveModule {}

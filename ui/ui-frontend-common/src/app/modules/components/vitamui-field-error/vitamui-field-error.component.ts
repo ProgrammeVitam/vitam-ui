@@ -42,14 +42,10 @@ import { slideDownAnimation } from '../../animations/vitamui-common-animations';
   selector: 'vitamui-common-field-error',
   template: `<div *ngIf="show" @slideDownAnimation><ng-content></ng-content></div>`,
   styleUrls: ['./vitamui-field-error.component.scss'],
-  animations: [
-    slideDownAnimation
-  ]
+  animations: [slideDownAnimation],
 })
 export class VitamUIFieldErrorComponent {
-
   @Input() errorKey: string;
 
   show = false;
-
 }

@@ -64,7 +64,10 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
   confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
 
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {
+  constructor(
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private dialog: MatDialog,
+  ) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.isButtonCanceled = data.filter((rule) => rule.actionType === RuleActionsEnum.ADD_RULES).length !== 0;
     });
@@ -85,11 +88,11 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction.finalAction = this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
@@ -135,7 +138,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.ADD_RULES
+            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.ADD_RULES,
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);

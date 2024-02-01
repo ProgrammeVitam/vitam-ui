@@ -48,16 +48,15 @@ import { IngestList } from '../../core/common/ingest-list';
       state('collapse', style({ transform: 'rotate(-180deg)' })),
       state('expand', style({ transform: 'rotate(0deg)' })),
       transition('expand <=> collapse', animate('200ms ease-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class UploadTrackingComponent implements OnInit {
-
   ingestList: IngestList;
   displayTracking = false;
 
   constructor(private uploadSipService: UploadService) {
-    this.uploadSipService.filesStatus().subscribe( (ingestList) => {
+    this.uploadSipService.filesStatus().subscribe((ingestList) => {
       this.ingestList = ingestList;
       if (this.ingestList.wipNumber > 0) {
         this.displayTracking = true;
@@ -65,10 +64,9 @@ export class UploadTrackingComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   toogleTracking() {
     this.displayTracking = !this.displayTracking;
   }
-
 }

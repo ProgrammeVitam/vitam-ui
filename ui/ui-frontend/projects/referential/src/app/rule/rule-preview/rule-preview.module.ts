@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -45,12 +45,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {RuleInformationTabComponent} from './rule-information-tab/rule-information-tab.component';
-import {RulePreviewComponent} from './rule-preview.component';
+import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
+import { RulePreviewComponent } from './rule-preview.component';
 
 @NgModule({
   imports: [
@@ -67,16 +67,9 @@ import {RulePreviewComponent} from './rule-preview.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
   ],
-  declarations: [
-    RulePreviewComponent,
-    RuleInformationTabComponent
-  ],
-  exports: [
-    RulePreviewComponent
-  ]
-
+  declarations: [RulePreviewComponent, RuleInformationTabComponent],
+  exports: [RulePreviewComponent],
 })
-export class RulePreviewModule {
-}
+export class RulePreviewModule {}

@@ -47,32 +47,34 @@ import { OwnerFormValidators } from './owner-form.validators';
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => OwnerFormComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-owner-form',
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
-  providers: [OWNER_FORM_VALUE_ACCESSOR]
+  providers: [OWNER_FORM_VALUE_ACCESSOR],
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
-
   form: FormGroup;
 
   private sub: any;
 
   public countries: CountryOption[];
 
-
   @Input()
   set customerId(customerId: string) {
     this._customerId = customerId;
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     this.form.get('customerId').setValue(customerId);
   }
 
-  get customerId() { return this._customerId; }
+  get customerId() {
+    return this._customerId;
+  }
 
   private _customerId: string;
 
@@ -81,18 +83,24 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     this._customerInfo = customerInfo;
     if (customerInfo && this.form) {
       this.form.patchValue({
-          code: customerInfo.code,
-          name: customerInfo.name,
-          companyName: customerInfo.companyName,
-        });
+        code: customerInfo.code,
+        name: customerInfo.name,
+        companyName: customerInfo.companyName,
+      });
     }
   }
 
-  get customerInfo() { return this._customerInfo; }
+  get customerInfo() {
+    return this._customerInfo;
+  }
 
   private _customerInfo: any;
 
-  constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators, private countryService: CountryService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private ownerFormValidators: OwnerFormValidators,
+    private countryService: CountryService,
+  ) {}
 
   onChange = (_: any) => {};
 
@@ -103,11 +111,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       id: null,
       customerId: [null],
       identifier: null,
-      code: [
-        null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
-        this.ownerFormValidators.uniqueCode(),
-      ],
+      code: [null, [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)], this.ownerFormValidators.uniqueCode()],
       name: [null, Validators.required],
       companyName: [null, Validators.required],
       internalCode: [null],
@@ -117,7 +121,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
         city: null,
         country: 'FR',
       }),
-      readonly: false
+      readonly: false,
     });
 
     this.subscribeToValueChanges();
@@ -134,20 +138,22 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   writeValue(owner: Owner) {
     this.sub.unsubscribe();
 
-    this.form.reset(owner || {
-      customerId: this.customerId,
-      code: null,
-      name: null,
-      companyName: null,
-      internalCode: null,
-      address: {
-        street: null,
-        zipCode: null,
-        city: null,
-        country: 'FR'
+    this.form.reset(
+      owner || {
+        customerId: this.customerId,
+        code: null,
+        name: null,
+        companyName: null,
+        internalCode: null,
+        address: {
+          street: null,
+          zipCode: null,
+          city: null,
+          country: 'FR',
+        },
+        readonly: false,
       },
-      readonly: false
-    });
+    );
 
     this.subscribeToValueChanges();
   }
@@ -163,10 +169,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   subscribeToValueChanges() {
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
-        map(() => this.form.pending || this.form.invalid ? null : this.form.value),
-        distinctUntilChanged()
+        map(() => (this.form.pending || this.form.invalid ? null : this.form.value)),
+        distinctUntilChanged(),
       )
       .subscribe((value) => this.onChange(value));
   }
-
 }

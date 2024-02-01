@@ -44,27 +44,25 @@ import { CustomerService } from '../../core/customer.service';
 
 @Injectable()
 export class CustomerCreateValidators {
+  private debounceTime = 400;
 
-    private debounceTime = 400;
+  constructor(private customerService: CustomerService) {}
 
-    constructor(private customerService: CustomerService) {}
-
-    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime).pipe(
-          switchMap(() => control.value !== codeToIgnore ? this.customerService.exists({ code: control.value }) : of(false)),
-          take(1),
-          map((exists: boolean) => exists ? { uniqueCode: true } : null)
-        );
-      };
-    }
-
-    uniqueDomain = (control: AbstractControl): Observable<ValidationErrors | null> => {
+  uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
+    return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
-        switchMap(() => this.customerService.exists({ domain: control.value })),
+        switchMap(() => (control.value !== codeToIgnore ? this.customerService.exists({ code: control.value }) : of(false))),
         take(1),
-        map((exists: boolean) => exists ? { uniqueDomain: true } : null)
+        map((exists: boolean) => (exists ? { uniqueCode: true } : null)),
       );
-    }
+    };
+  };
 
+  uniqueDomain = (control: AbstractControl): Observable<ValidationErrors | null> => {
+    return timer(this.debounceTime).pipe(
+      switchMap(() => this.customerService.exists({ domain: control.value })),
+      take(1),
+      map((exists: boolean) => (exists ? { uniqueDomain: true } : null)),
+    );
+  };
 }

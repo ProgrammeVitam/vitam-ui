@@ -41,21 +41,18 @@ import { Group } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-group-popup',
-  template: '<app-group-preview (previewClose)="closePopup()" [group]="group" [isPopup]="true"></app-group-preview>'
+  template: '<app-group-preview (previewClose)="closePopup()" [group]="group" [isPopup]="true"></app-group-preview>',
 })
 export class GroupPopupComponent implements OnInit {
-
   group: Group;
 
   constructor(private route: ActivatedRoute) {
     this.group = this.route.snapshot.data.group;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

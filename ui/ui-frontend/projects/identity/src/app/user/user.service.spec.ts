@@ -48,13 +48,7 @@ describe('UserService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        UserService,
-        StartupService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-      ]
+      providers: [UserService, StartupService, { provide: VitamUISnackBar, useValue: snackBarSpy }],
     });
-
   });
-
 });

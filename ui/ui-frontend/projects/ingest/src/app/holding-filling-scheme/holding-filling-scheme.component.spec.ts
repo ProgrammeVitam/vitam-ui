@@ -56,8 +56,7 @@ import { IngestService } from '../ingest/ingest.service';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
 @Component({ selector: 'app-ingest-list', template: '' })
-class IngestListStubComponent {
-}
+class IngestListStubComponent {}
 
 describe('HoldingFilingSchemeComponent', () => {
   let component: HoldingFillingSchemeComponent;
@@ -65,7 +64,7 @@ describe('HoldingFilingSchemeComponent', () => {
 
   const ingestServiceMock = {
     ingest: () => of('test ingest'),
-    search: () => of([])
+    search: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {
@@ -87,20 +86,16 @@ describe('HoldingFilingSchemeComponent', () => {
         SearchBarModule,
         MatDialogModule,
       ],
-      declarations: [
-        HoldingFillingSchemeComponent,
-        IngestListStubComponent
-      ],
+      declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) } },
-        { provide: environment, useValue: environment }
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

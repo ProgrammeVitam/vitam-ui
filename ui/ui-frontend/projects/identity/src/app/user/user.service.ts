@@ -36,10 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile, AuthUser, Criterion, Operators, Profile, SearchQuery,
-  SearchService, User
-} from 'ui-frontend-common';
+import { AdminUserProfile, AuthUser, Criterion, Operators, Profile, SearchQuery, SearchService, User } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -50,14 +47,13 @@ import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-sna
 
 @Injectable()
 export class UserService extends SearchService<User> {
-
   userUpdated = new Subject<User>();
 
   constructor(
     private userApi: UserApiService,
     private snackBar: VitamUISnackBar,
     private rngProfileService: ProfileService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, userApi, '');
   }
@@ -71,16 +67,16 @@ export class UserService extends SearchService<User> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'userCreate', firstname: response.firstname, lastname: response.lastname },
-            duration: 10000
+            duration: 10000,
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -98,7 +94,7 @@ export class UserService extends SearchService<User> {
     return this.userApi.checkExistsByParam(params);
   }
 
-  patch(partialUser: { id: string, [key: string]: any }): Observable<User> {
+  patch(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
       tap(
@@ -112,15 +108,14 @@ export class UserService extends SearchService<User> {
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
-
-  deleteUser(partialUser: { id: string, [key: string]: any }) : Observable<User>{
+  deleteUser(partialUser: { id: string; [key: string]: any }): Observable<User> {
     return this.userApi.patch(partialUser).pipe(
       tap((response) => this.userUpdated.next(response)),
       tap(
@@ -134,13 +129,11 @@ export class UserService extends SearchService<User> {
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
-
-
   }
 
   getUserProfileInfo(connectedUser: AuthUser): AdminUserProfile | null {
@@ -155,10 +148,6 @@ export class UserService extends SearchService<User> {
   }
 
   getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
-    return this.userApi.getLevels(query)
-      .pipe(
-        map((levels) => levels.filter((l) => !!l))
-      );
+    return this.userApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
-
 }

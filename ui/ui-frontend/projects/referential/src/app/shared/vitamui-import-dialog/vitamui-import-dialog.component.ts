@@ -46,7 +46,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 @Component({
   selector: 'app-vitamui-import-dialog',
   templateUrl: './vitamui-import-dialog.component.html',
-  styleUrls: ['./vitamui-import-dialog.component.scss']
+  styleUrls: ['./vitamui-import-dialog.component.scss'],
 })
 export class VitamUIImportDialogComponent implements OnInit {
   stepIndex = 0;
@@ -66,8 +66,8 @@ export class VitamUIImportDialogComponent implements OnInit {
     private referentialImportService: ReferentialImportService,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<VitamUIImportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Referential) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data: Referential,
+  ) {}
 
   ngOnInit() {
     this.referential = this.data;
@@ -86,10 +86,12 @@ export class VitamUIImportDialogComponent implements OnInit {
     this.fileToUpload = files.item(0);
 
     // Check the file format according to the provided referential
-    if ((this.referential === Referential.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
-    (this.referential === Referential.RULE && this.isCsvFile(this.fileToUpload.type)) ||
-    (this.referential === Referential.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
-    (this.referential === Referential.ONTOLOGY && this.fileToUpload.type === 'application/json')) {
+    if (
+      (this.referential === Referential.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === Referential.RULE && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === Referential.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
+      (this.referential === Referential.ONTOLOGY && this.fileToUpload.type === 'application/json')
+    ) {
       this.isfileFormatValid = true;
     } else {
       this.isfileFormatValid = false;
@@ -97,9 +99,11 @@ export class VitamUIImportDialogComponent implements OnInit {
   }
 
   private isCsvFile(type: string): boolean {
-    return type === 'text/csv'
-      || type === 'application/vnd.ms-excel'
-      || type ===  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    return (
+      type === 'text/csv' ||
+      type === 'application/vnd.ms-excel' ||
+      type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
   }
 
   onFileDragOver(inDropZone: boolean) {
@@ -120,33 +124,35 @@ export class VitamUIImportDialogComponent implements OnInit {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       duration: 10000,
-      data: { type: this.referential + 'ImportInProgress' }
+      data: { type: this.referential + 'ImportInProgress' },
     });
 
-    this.referentialImportService.importReferential(this.referential, this.fileToUpload).subscribe(response => {
-      this.isImportInProgress = false;
-      const importResult = JSON.parse(response);
-      if (importResult.httpCode === 200 || importResult.httpCode === 201) {
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-          data: { type: this.referential + 'ImportSuccessed' }
-        });
+    this.referentialImportService.importReferential(this.referential, this.fileToUpload).subscribe(
+      (response) => {
+        this.isImportInProgress = false;
+        const importResult = JSON.parse(response);
+        if (importResult.httpCode === 200 || importResult.httpCode === 201) {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: this.referential + 'ImportSuccessed' },
+          });
 
-        this.dialogRef.close({
-          success: true
-        });
-      } else {
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-          data: { type: this.referential + 'ImportFailed' }
-        });
-      }
-    }, () => {
-      this.isImportInProgress = false;
-    });
-
+          this.dialogRef.close({
+            success: true,
+          });
+        } else {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: this.referential + 'ImportFailed' },
+          });
+        }
+      },
+      () => {
+        this.isImportInProgress = false;
+      },
+    );
   }
 
   get stepProgress() {
@@ -160,5 +166,4 @@ export class VitamUIImportDialogComponent implements OnInit {
       return 0;
     }
   }
-
 }

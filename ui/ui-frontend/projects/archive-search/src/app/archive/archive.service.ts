@@ -34,25 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable, LOCALE_ID} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Observable, of, throwError, TimeoutError} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
   CriteriaDataType,
   CriteriaOperator,
   SearchService,
-  SecurityService
+  SecurityService,
 } from 'ui-frontend-common';
-import {ArchiveApiService} from '../core/api/archive-api.service';
-import {ExportDIPCriteriaList} from './models/dip-request-detail.interface';
-import {FilingHoldingSchemeNode} from './models/node.interface';
-import {ReclassificationCriteriaDto} from './models/reclassification-request.interface';
-import {RuleSearchCriteriaDto} from './models/ruleAction.interface';
-import {SearchResponse} from './models/search-response.interface';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
+import { FilingHoldingSchemeNode } from './models/node.interface';
+import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
+import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
+import { SearchResponse } from './models/search-response.interface';
 import {
   AppraisalRuleFacets,
   PagedResult,
@@ -61,11 +61,11 @@ import {
   SearchCriteria,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from './models/search.criteria';
-import {Unit} from './models/unit.interface';
-import {UnitDescriptiveMetadataDto} from './models/unitDescriptiveMetadata.interface';
-import {VitamUISnackBarComponent} from './shared/vitamui-snack-bar';
+import { Unit } from './models/unit.interface';
+import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
+import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -77,7 +77,7 @@ export class ArchiveService extends SearchService<any> {
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
-    private accessContractApiService: AccessContractApiService
+    private accessContractApiService: AccessContractApiService,
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -94,17 +94,16 @@ export class ArchiveService extends SearchService<any> {
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier
+      'X-Tenant-Id': '' + tenantIdentifier,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
       catchError(() => {
-        return of({$hits: null, $results: []});
+        return of({ $hits: null, $results: [] });
       }),
       map((response) => response.$results),
-      tap(() => {
-      }),
-      map((results) => this.buildNestedTreeLevels(results))
+      tap(() => {}),
+      map((results) => this.buildNestedTreeLevels(results)),
     );
   }
 
@@ -145,7 +144,6 @@ export class ArchiveService extends SearchService<any> {
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
 
-
     return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
       (file) => {
         const element = document.createElement('a');
@@ -162,17 +160,16 @@ export class ArchiveService extends SearchService<any> {
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: {type: 'exportCsvLimitReached'},
+            data: { type: 'exportCsvLimitReached' },
             duration: 10000,
           });
         }
-      }
+      },
     );
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-
 
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
       //   timeout(TIMEOUT_SEC),
@@ -181,9 +178,9 @@ export class ArchiveService extends SearchService<any> {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
-        return of({$hits: null, $results: []});
+        return of({ $hits: null, $results: [] });
       }),
-      map((results) => this.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results)),
     );
   }
 
@@ -211,7 +208,7 @@ export class ArchiveService extends SearchService<any> {
       for (let facet of facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
           for (let bucket of facet.buckets) {
-            nodesFacets.push({node: bucket.value, count: bucket.count});
+            nodesFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
       }
@@ -228,7 +225,7 @@ export class ArchiveService extends SearchService<any> {
           let buckets = facet.buckets;
           let finalActionsFacets = [];
           for (let bucket of buckets) {
-            finalActionsFacets.push({node: bucket.value, count: bucket.count});
+            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
         }
@@ -236,7 +233,7 @@ export class ArchiveService extends SearchService<any> {
           let rulesListFacets = [];
           let buckets = facet.buckets;
           for (let bucket of buckets) {
-            rulesListFacets.push({node: bucket.value, count: bucket.count});
+            rulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.rulesListFacets = rulesListFacets;
         }
@@ -244,7 +241,7 @@ export class ArchiveService extends SearchService<any> {
           let expiredRulesListFacets = [];
           let buckets = facet.buckets;
           for (let bucket of buckets) {
-            expiredRulesListFacets.push({node: bucket.value, count: bucket.count});
+            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
         }
@@ -253,7 +250,7 @@ export class ArchiveService extends SearchService<any> {
           let buckets = facet.buckets;
           let waitingToRecalculateRulesListFacets = [];
           for (let bucket of buckets) {
-            waitingToRecalculateRulesListFacets.push({node: bucket.value, count: bucket.count});
+            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
         }
@@ -262,7 +259,7 @@ export class ArchiveService extends SearchService<any> {
           let buckets = facet.buckets;
           let noAppraisalRulesFacets = [];
           for (let bucket of buckets) {
-            noAppraisalRulesFacets.push({node: bucket.value, count: bucket.count});
+            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
         }
@@ -319,7 +316,6 @@ export class ArchiveService extends SearchService<any> {
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
   }
 
-
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -344,7 +340,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   buildArchiveUnitPath(archiveUnit: Unit) {
-    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({id: unitUp, value: unitUp}));
+    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
 
     if (!allunitups || allunitups.length === 0) {
       return of({
@@ -395,7 +391,7 @@ export class ArchiveService extends SearchService<any> {
           fullPath,
           resumePath,
         };
-      })
+      }),
     );
   }
 
@@ -418,7 +414,7 @@ export class ArchiveService extends SearchService<any> {
       }),
       catchError(() => {
         return of(-1);
-      })
+      }),
     );
   }
 
@@ -463,6 +459,6 @@ function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingS
       return 0;
     }
 
-    return a.title.localeCompare(b.title, locale, {numeric: true});
+    return a.title.localeCompare(b.title, locale, { numeric: true });
   };
 }

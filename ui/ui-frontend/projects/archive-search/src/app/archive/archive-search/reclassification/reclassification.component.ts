@@ -1,28 +1,21 @@
-import {HttpErrorResponse} from '@angular/common/http';
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatOptionSelectionChange} from '@angular/material/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {intersection} from 'lodash';
-import {Subscription} from 'rxjs';
-import {
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  Logger,
-  Option,
-  StartupService
-} from 'ui-frontend-common';
-import {ArchiveSharedDataServiceService} from '../../../core/archive-shared-data-service.service';
-import {ArchiveService} from '../../archive.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { intersection } from 'lodash';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, CriteriaDataType, CriteriaOperator, Logger, Option, StartupService } from 'ui-frontend-common';
+import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveService } from '../../archive.service';
 import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
-  ReclassificationQueryActionType
+  ReclassificationQueryActionType,
 } from '../../models/reclassification-request.interface';
-import {PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum} from '../../models/search.criteria';
-import {ArchiveUnitValidatorService} from '../../validators/archive-unit-validator.service';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { ArchiveUnitValidatorService } from '../../validators/archive-unit-validator.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 const PULL = 'PULL';
@@ -31,7 +24,7 @@ const REPLACE = 'REPLACE';
 @Component({
   selector: 'reclassification',
   templateUrl: './reclassification.component.html',
-  styleUrls: ['./reclassification.component.css']
+  styleUrls: ['./reclassification.component.css'],
 })
 export class ReclassificationComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -57,9 +50,9 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   subscriptionAuTitle: Subscription;
 
   actions: Option[] = [
-    {key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE')},
-    {key: 'PULL', label: this.translateService.instant('RECLASSIFICATION.DELETE_STEP.TITLE')},
-    {key: 'ADD', label: this.translateService.instant('RECLASSIFICATION.ADD_STEP.TITLE')}
+    { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
+    { key: 'PULL', label: this.translateService.instant('RECLASSIFICATION.DELETE_STEP.TITLE') },
+    { key: 'ADD', label: this.translateService.instant('RECLASSIFICATION.ADD_STEP.TITLE') },
   ];
 
   constructor(
@@ -80,9 +73,8 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       selectedItemCountKnown?: boolean;
       archiveUnitGuidSelected: string;
       archiveUnitAllunitup: string[];
-    }
-  ) {
-  }
+    },
+  ) {}
 
   ngOnInit() {
     this.itemSelected = this.data.itemSelected;
@@ -96,15 +88,15 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       actionToFilter: [null, Validators.required],
 
       targetGuid: [
-        {value: null, disabled: this.archiveUnitAllunitup.length < 1 && this.actionChosen == REPLACE},
+        { value: null, disabled: this.archiveUnitAllunitup.length < 1 && this.actionChosen == REPLACE },
         null,
         [
           this.archiveUnitValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
-          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria)
-        ]
+          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria),
+        ],
       ],
-      targetAuTitle: [{value: null, disabled: true}],
-      allunitupsGuidsFormAttribute: new FormArray([], [Validators.required])
+      targetAuTitle: [{ value: null, disabled: true }],
+      allunitupsGuidsFormAttribute: new FormArray([], [Validators.required]),
     });
 
     if (this.archiveUnitAllunitup.length > 0) {
@@ -134,14 +126,14 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         values: [this.data.archiveUnitGuidSelected],
         operator: 'IN',
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria: any = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: 1
+      size: 1,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
@@ -154,7 +146,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         this.pendingGetChilds = false;
         this.waitingForLoadExactTotalTrackHits = false;
         console.log('error : ', error.message);
-      }
+      },
     );
   }
 
@@ -169,8 +161,8 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
           values: [this.data.archiveUnitGuidSelected],
           operator: 'IN',
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: CriteriaDataType.STRING
-        }
+          dataType: CriteriaDataType.STRING,
+        },
       ];
 
       this.archiveService.getTotalTrackHitsByCriteria(criteriaSearchList).subscribe(
@@ -189,7 +181,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
           this.pendingGetFixedCount = false;
           this.waitingForLoadExactTotalTrackHits = false;
           console.log('error : ', error.message);
-        }
+        },
       );
     }
   }
@@ -231,27 +223,27 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   }
 
   getArchiveUnitParents(allunitupsIds: string[]) {
-    const allunitups = allunitupsIds.map((unitUp) => ({id: unitUp, value: unitUp}));
+    const allunitups = allunitupsIds.map((unitUp) => ({ id: unitUp, value: unitUp }));
     const criteriaSearchList = [
       {
         criteria: '#id',
         values: allunitups,
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: allunitupsIds.length
+      size: allunitupsIds.length,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((pagedResult: PagedResult) => {
       if (pagedResult.results) {
         pagedResult.results.map((ua) => {
           const title = ArchiveService.fetchTitle(ua.Title, ua.Title_);
-          this.archiveUnitFetchedParents.push({title: title, id: ua['#id']});
+          this.archiveUnitFetchedParents.push({ title: title, id: ua['#id'] });
           this.addAllUnitUpsDynamically();
         });
       }
@@ -279,12 +271,12 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
         this.archiveService.openSnackBarForWorkflow(
           this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
-          serviceUrl
+          serviceUrl,
         );
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 
@@ -298,7 +290,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
       let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     } else if (this.actionChosen === PULL) {
@@ -310,7 +302,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
       let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     } else {
@@ -320,7 +312,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
       let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     }
@@ -329,13 +321,13 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   getReclassificationAction(add: ReclassificationQueryActionType, pull: ReclassificationQueryActionType): ReclassificationAction {
     return {
       $pull: pull,
-      $add: add
+      $add: add,
     };
   }
 
   getReclassificationQueryActionType(parentToPull: string[]): ReclassificationQueryActionType {
     return {
-      '#unitups': parentToPull
+      '#unitups': parentToPull,
     };
   }
 

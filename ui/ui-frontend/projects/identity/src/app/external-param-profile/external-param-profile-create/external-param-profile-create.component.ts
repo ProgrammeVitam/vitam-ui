@@ -60,7 +60,7 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     private externalParamProfileService: ExternalParamProfileService,
     private externalParamProfileValidators: ExternalParamProfileValidators,
     private confirmDialogService: ConfirmDialogService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit() {
@@ -100,7 +100,7 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         console.error(error);
-      }
+      },
     );
   }
 

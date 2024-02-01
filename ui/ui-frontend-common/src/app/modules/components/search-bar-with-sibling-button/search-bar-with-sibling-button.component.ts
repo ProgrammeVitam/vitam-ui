@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'search-bar-with-sibling-button',
   templateUrl: './search-bar-with-sibling-button.component.html',
 })
 export class SearchBarWithSiblingButtonComponent {
-
   @Input() placeholder: string;
 
   @Input() name: string;
@@ -75,5 +74,4 @@ export class SearchBarWithSiblingButtonComponent {
       setTimeout(() => this.searchInput.nativeElement.focus(), 0);
     }
   }
-
 }

@@ -127,15 +127,13 @@ xdescribe('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-        declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
-        providers: [{ provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
+      providers: [{ provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -206,17 +204,16 @@ xdescribe('IdentityProviderDetailsComponent', () => {
         identifierAttribute: null,
         authnRequestBinding: null,
         autoProvisioningEnabled: null,
-        protocoleType:null,
+        protocoleType: null,
         clientId: null,
         clientSecret: null,
         customParams: null,
         discoveryUrl: null,
-        scope:null,
-        preferredJwsAlgorithm:null,
+        scope: null,
+        preferredJwsAlgorithm: null,
         useNonce: null,
         usePkce: null,
         useState: null,
-        
       });
       expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
       expect(testhost.component.form.get('identifier').valid).toBeFalsy('identifier');
@@ -228,36 +225,32 @@ xdescribe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('autoProvisioningEnabled').valid).toBeFalsy('autoProvisioningEnabled');
     });
 
-    it(
-      'should be valid and call patch()',
-      waitForAsync(() => {
-        const providerService = TestBed.inject(IdentityProviderService);
-        spyOn(providerService, 'patch').and.returnValue(of(null));
-        testhost.component.form.setValue({
-          identifier: testhost.provider.identifier,
-          enabled: false,
-          name: testhost.provider.name,
-          internal: testhost.provider.internal,
-          patterns: testhost.provider.patterns,
-          mailAttribute: testhost.provider.mailAttribute,
-          identifierAttribute: testhost.provider.identifierAttribute,
-          authnRequestBinding: testhost.provider.authnRequestBinding,
-          autoProvisioningEnabled: false,
-          protocoleType: 'SAML',
-          clientId: 2,
-          clientSecret: 'secret',
-          discoveryUrl: 'discoveryUrl',
-          scope: 'private',
-          preferredJwsAlgorithm: 'HS-256',
-          customParams: { key: 'value' },
-          useNonce: true,
-          usePkce: true,
-          useState: true,
-          
-        });
-        expect(testhost.component.form.valid).toBeTruthy();
-      })
-    );
+    it('should be valid and call patch()', waitForAsync(() => {
+      const providerService = TestBed.inject(IdentityProviderService);
+      spyOn(providerService, 'patch').and.returnValue(of(null));
+      testhost.component.form.setValue({
+        identifier: testhost.provider.identifier,
+        enabled: false,
+        name: testhost.provider.name,
+        internal: testhost.provider.internal,
+        patterns: testhost.provider.patterns,
+        mailAttribute: testhost.provider.mailAttribute,
+        identifierAttribute: testhost.provider.identifierAttribute,
+        authnRequestBinding: testhost.provider.authnRequestBinding,
+        autoProvisioningEnabled: false,
+        protocoleType: 'SAML',
+        clientId: 2,
+        clientSecret: 'secret',
+        discoveryUrl: 'discoveryUrl',
+        scope: 'private',
+        preferredJwsAlgorithm: 'HS-256',
+        customParams: { key: 'value' },
+        useNonce: true,
+        usePkce: true,
+        useState: true,
+      });
+      expect(testhost.component.form.valid).toBeTruthy();
+    }));
 
     it('should call updateMetadataFile');
 

@@ -44,36 +44,42 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
 @Component({
   selector: 'app-hierarchy',
   templateUrl: './hierarchy.component.html',
-  styleUrls: ['./hierarchy.component.scss']
+  styleUrls: ['./hierarchy.component.scss'],
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
-
   public profiles: Profile[];
   public search: string;
   private tenantIdentifier: number;
 
   @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, public globalEventService: GlobalEventService) {
+  constructor(
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+  ) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
       this.tenantIdentifier = +paramMap.get('tenantIdentifier');
-      });
+    });
   }
 
   public openHierarchyDuplicateDialog(): void {
-    this.dialog.open(HierarchyCreateComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: { tenantId: this.tenantIdentifier }
-    }).afterClosed().subscribe((result) => {
+    this.dialog
+      .open(HierarchyCreateComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: { tenantId: this.tenantIdentifier },
+      })
+      .afterClosed()
+      .subscribe((result) => {
         if (result) {
           this.refreshList();
         }
-    });
+      });
   }
 
   public onSearchSubmit(search: string): void {
@@ -85,5 +91,4 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
       this.hierarchyListComponent.search();
     }
   }
-
 }

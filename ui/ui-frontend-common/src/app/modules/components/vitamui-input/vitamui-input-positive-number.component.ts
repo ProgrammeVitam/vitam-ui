@@ -42,31 +42,38 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIInputPositiveNumberComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-input-positive-number',
   templateUrl: './vitamui-input-positive-number.component.html',
   styleUrls: ['./vitamui-input-positive-number.component.scss'],
-  providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
+  providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
 })
 export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor {
-
   @Input() type = 'text';
   @Input() maxlength: number;
   @Input() min: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
   @ViewChild('vitamUIInputPositiveNumber') private input: ElementRef;
@@ -76,8 +83,8 @@ export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor
 
   value: string | number;
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange = (_: any) => {};
+  onTouched = () => {};
   onKeyPress = (_: any) => {};
 
   @HostListener('click')
@@ -129,5 +136,4 @@ export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
-
 }

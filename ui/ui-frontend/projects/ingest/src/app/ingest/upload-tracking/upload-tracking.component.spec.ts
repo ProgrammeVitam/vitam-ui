@@ -55,20 +55,11 @@ describe('UploadTrackingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot()
-      ],
-      declarations: [ UploadTrackingComponent ],
-      providers: [
-        FormBuilder,
-        { provide: UploadService, useValue: UploadServiceSpy }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      declarations: [UploadTrackingComponent],
+      providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

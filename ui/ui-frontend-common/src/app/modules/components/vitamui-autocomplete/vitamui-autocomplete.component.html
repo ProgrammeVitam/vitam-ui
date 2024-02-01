@@ -1,24 +1,25 @@
 <div class="vitamui-autocomplete" [class.disabled]="control.disabled" [class.label-up]="labelUp">
   <label class="input-label">
-    {{placeholder}}
+    {{ placeholder }}
     <span *ngIf="required" class="required-marker">*</span>
   </label>
   <input
-      #input="matAutocompleteTrigger"
-      matInput
-      type="text"
-      [required]="required"
-      [formControl]="control"
-      [matAutocomplete]="auto"
-      [vitamuiAutocompletePosition]="input"
-      (blur)="onBlur()"
-      (focus)="onFocus()"
-  >
+    #input="matAutocompleteTrigger"
+    matInput
+    type="text"
+    [required]="required"
+    [formControl]="control"
+    [matAutocomplete]="auto"
+    [vitamuiAutocompletePosition]="input"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+  />
   <i class="material-icons">keyboard_arrow_down</i>
 </div>
 
 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(options)" autoActiveFirstOption class="vitamui-autocomplete-panel">
   <mat-option *ngFor="let option of filteredOptions | async" [value]="option.key">
-    <span class="vitamui-option-label">{{ option.label }}</span> <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
+    <span class="vitamui-option-label">{{ option.label }}</span>
+    <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
   </mat-option>
 </mat-autocomplete>

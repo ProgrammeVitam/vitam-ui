@@ -19,11 +19,11 @@
     </button>
     <button
       mat-menu-item
-      matTooltip="{{ !accessContractAllowUpdating  ? hasAccessContractManagementPermissionsMessage : '' }}"
+      matTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!accessContractAllowUpdating  || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
@@ -31,8 +31,7 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  <mat-tab-group [selectedIndex]="selectedIndex"
-                 [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+  <mat-tab-group [selectedIndex]="selectedIndex" [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
@@ -43,9 +42,7 @@
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}" [disabled]="!isPanelextended">
-      <app-archive-unit-rules-details-tab
-        [archiveUnit]="archiveUnit"
-      ></app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"></app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}" [disabled]="true"></mat-tab>

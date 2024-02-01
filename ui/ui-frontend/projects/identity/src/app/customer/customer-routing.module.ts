@@ -48,13 +48,13 @@ const routes: Route[] = [
   {
     path: '',
     component: CustomerComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: ':id',
     component: CustomerPopupComponent,
     resolve: { customer: CustomerResolver },
-    data: { isPopup: true, appId: 'CUSTOMERS_APP' }
+    data: { isPopup: true, appId: 'CUSTOMERS_APP' },
   },
   {
     path: 'owner/:id',
@@ -67,18 +67,12 @@ const routes: Route[] = [
     component: OwnerPopupComponent,
     resolve: { tenant: TenantResolver },
     data: { isPopup: true, appId: 'CUSTOMERS_APP' },
-  }
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class CustomerRoutingModule { }
+export class CustomerRoutingModule {}

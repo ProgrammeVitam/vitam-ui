@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Logger, StartupService} from 'ui-frontend-common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Logger, StartupService } from 'ui-frontend-common';
 import * as uuid from 'uuid';
-import {ArchiveService} from '../../archive.service';
-import {ExportDIPCriteriaList, ExportDIPRequestDetail} from '../../models/dip-request-detail.interface';
-import {SearchCriteriaEltDto} from '../../models/search.criteria';
+import { ArchiveService } from '../../archive.service';
+import { ExportDIPCriteriaList, ExportDIPRequestDetail } from '../../models/dip-request-detail.interface';
+import { SearchCriteriaEltDto } from '../../models/search.criteria';
 
 @Component({
   selector: 'app-dip-request-create',
@@ -67,9 +67,8 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-    }
-  ) {
-  }
+    },
+  ) {}
 
   exportDIPform: FormGroup;
   exportDIPIncludeform: FormGroup;
@@ -101,7 +100,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     const messageRequestIdentifier = uuid.v4();
     this.exportDIPform = this.formBuilder.group({
       lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.EXCLUDE')],
-      messageRequestIdentifier: [{value: messageRequestIdentifier, disabled: true}, Validators.required],
+      messageRequestIdentifier: [{ value: messageRequestIdentifier, disabled: true }, Validators.required],
       requesterIdentifier: [null, Validators.required],
       archivalAgencyIdentifier: [null, Validators.required],
       authorizationRequestReplyIdentifier: [null],
@@ -134,7 +133,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 }

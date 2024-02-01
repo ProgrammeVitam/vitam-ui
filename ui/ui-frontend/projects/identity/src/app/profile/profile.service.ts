@@ -36,24 +36,24 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {
-  AdminUserProfile, Criterion, Operators, Profile, ProfileApiService, Role, SearchQuery, SearchService
-} from 'ui-frontend-common';
+import { AdminUserProfile, Criterion, Operators, Profile, ProfileApiService, Role, SearchQuery, SearchService } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService extends SearchService<Profile> {
-
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private profileApi: ProfileApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient,
+  ) {
     super(http, profileApi, 'ALL');
   }
 
@@ -66,56 +66,54 @@ export class ProfileService extends SearchService<Profile> {
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
     const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
-    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals};
+    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
-    return this.profileApi.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-              data: { type: 'profileUpdate', name: response.name }
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
+    return this.profileApi.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'profileUpdate', name: response.name },
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   create(profile: Profile) {
-    return this.profileApi.create(profile)
-      .pipe(
-        tap(
-          (response: Profile) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'profileAdminCreate', name: response.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.profileApi.create(profile).pipe(
+      tap(
+        (response: Profile) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'profileAdminCreate', name: response.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   /**
@@ -123,8 +121,7 @@ export class ProfileService extends SearchService<Profile> {
    * @param roles List of roles.
    * @returns The list of linked roles.
    */
-  convertToAdminUserProfile(roles: Array<{ name: string; }>): AdminUserProfile {
-
+  convertToAdminUserProfile(roles: Array<{ name: string }>): AdminUserProfile {
     const adminUserProfile: AdminUserProfile = {
       multifactorAllowed: false,
       createUser: false,
@@ -154,7 +151,7 @@ export class ProfileService extends SearchService<Profile> {
     return adminUserProfile;
   }
 
-  private hasRole(roles: Array<{ name: string; }>, role: Role): boolean {
+  private hasRole(roles: Array<{ name: string }>, role: Role): boolean {
     return roles.some((element) => element.name === role);
   }
 }

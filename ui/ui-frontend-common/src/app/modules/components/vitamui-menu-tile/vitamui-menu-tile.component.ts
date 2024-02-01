@@ -42,17 +42,15 @@ import { StartupService } from './../../startup.service';
 @Component({
   selector: 'vitamui-common-menu-tile',
   templateUrl: './vitamui-menu-tile.component.html',
-  styleUrls: ['./vitamui-menu-tile.component.scss']
+  styleUrls: ['./vitamui-menu-tile.component.scss'],
 })
 export class VitamUIMenuTileComponent implements OnInit {
-
   sameApp = false;
   url: string;
 
   @Input() isModalMenu: boolean;
 
-  constructor(private startupService: StartupService) {
-  }
+  constructor(private startupService: StartupService) {}
 
   @Input()
   set application(application: Application) {
@@ -70,8 +68,10 @@ export class VitamUIMenuTileComponent implements OnInit {
     this.url = this._application.url;
     const uiUrl = this.startupService.getConfigStringValue('UI_URL');
     // to handle single domains we need to remove sameApp feature from portal
-    if (((this._application.url.startsWith(uiUrl)) && this.startupService.getPortalUrl() !== uiUrl)
-    || (!this._application.url.startsWith('http://') && !this._application.url.startsWith('https://'))) {
+    if (
+      (this._application.url.startsWith(uiUrl) && this.startupService.getPortalUrl() !== uiUrl) ||
+      (!this._application.url.startsWith('http://') && !this._application.url.startsWith('https://'))
+    ) {
       this.sameApp = true;
       this.url = this._application.url.replace(uiUrl, '');
     }
@@ -79,5 +79,4 @@ export class VitamUIMenuTileComponent implements OnInit {
   appSelected() {
     this.appSelect.emit();
   }
-
 }

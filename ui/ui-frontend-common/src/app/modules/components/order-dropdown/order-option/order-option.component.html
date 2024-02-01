@@ -1,7 +1,7 @@
 <button
   class="btn-orderby"
-  [class.active]="orderBy===orderByKey"
-  [class.upside-down]="orderBy===orderByKey && direction==='ASC'"
+  [class.active]="orderBy === orderByKey"
+  [class.upside-down]="orderBy === orderByKey && direction === 'ASC'"
   (click)="toggleOrder()"
 >
   <ng-content></ng-content>

@@ -40,12 +40,11 @@ import { Group } from 'ui-frontend-common';
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
-  styleUrls: ['./group-detail.component.scss']
+  styleUrls: ['./group-detail.component.scss'],
 })
 export class GroupDetailComponent {
-
   @Input() group: Group;
   public displayedGroup: Group;
 
-  constructor() { }
+  constructor() {}
 }

@@ -10,15 +10,14 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked {
   windowScrolled: boolean;
   contentRendered: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewChecked() {
     if (!this.contentRendered) {
       const bodyElement = document.getElementsByClassName('vitamui-content');
       if (bodyElement?.length > 0) {
-
         const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
         const windowElement = document.getElementsByTagName('div');
         const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];
@@ -26,15 +25,9 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked {
           this.contentRendered = true;
 
           scrollElement.addEventListener('scroll', () => {
-            if (
-              scrollElement.scrollTop && scrollElement.scrollTop > 250
-            ) {
+            if (scrollElement.scrollTop && scrollElement.scrollTop > 250) {
               this.windowScrolled = true;
-            } else if (
-              (this.windowScrolled && window.pageYOffset) ||
-              scrollElement.scrollTop ||
-              scrollElement.scrollTop < 10
-            ) {
+            } else if ((this.windowScrolled && window.pageYOffset) || scrollElement.scrollTop || scrollElement.scrollTop < 10) {
               this.windowScrolled = false;
             }
           });
@@ -45,7 +38,6 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked {
 
   scrollToTop() {
     (function smoothScroll() {
-
       const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
       const windowElement = document.getElementsByTagName('div');
       const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];

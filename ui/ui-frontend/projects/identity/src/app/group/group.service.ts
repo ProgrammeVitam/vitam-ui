@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Observable, Subject } from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Criterion, Group, Operators, SearchQuery, SearchService } from 'ui-frontend-common';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -45,35 +45,37 @@ import { GroupApiService } from '../core/api/group-api.service';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GroupService extends SearchService<Group> {
-
   updated = new Subject<Group>();
 
-  constructor(private groupApi: GroupApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private groupApi: GroupApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient,
+  ) {
     super(http, groupApi, 'ALL');
   }
 
   create(group: Group) {
-    return this.groupApi.create(group)
-      .pipe(
-        tap(
-          (response: Group) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'groupCreate', name: response.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.groupApi.create(group).pipe(
+      tap(
+        (response: Group) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'groupCreate', name: response.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   get(id: string): Observable<Group> {
@@ -81,7 +83,6 @@ export class GroupService extends SearchService<Group> {
   }
 
   exists(customerId: string, name: string): Observable<any> {
-
     const criterionArray: Criterion[] = [];
     if (customerId) {
       criterionArray.push({ key: 'customerId', value: customerId, operator: Operators.equals });
@@ -91,7 +92,7 @@ export class GroupService extends SearchService<Group> {
     }
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.groupApi.checkExistsByParam(params);
   }
@@ -101,31 +102,30 @@ export class GroupService extends SearchService<Group> {
     criteria.push({ key: 'units', value: unit, operator: Operators.equalsIgnoreCase });
     criteria.push({ key: 'customerId', value: customerId, operator: Operators.equals });
     const query: SearchQuery = { criteria };
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.groupApi.checkExistsByParam(params);
   }
 
-  patch(groupPartial: { id: string, [key: string]: any }): Observable<Group> {
-    return this.groupApi.patch(groupPartial)
-      .pipe(
-        tap((updatedGroup: Group) => this.updated.next(updatedGroup)),
-        tap(
-          (response: Group) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'groupUpdate', name: response.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(groupPartial: { id: string; [key: string]: any }): Observable<Group> {
+    return this.groupApi.patch(groupPartial).pipe(
+      tap((updatedGroup: Group) => this.updated.next(updatedGroup)),
+      tap(
+        (response: Group) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'groupUpdate', name: response.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   getAll(enabled?: boolean): Observable<Group[]> {
@@ -138,16 +138,13 @@ export class GroupService extends SearchService<Group> {
 
     let params = new HttpParams().set('embedded', 'ALL');
     if (criterionArray.length > 0) {
-      params = params.set('criteria',  JSON.stringify(query));
+      params = params.set('criteria', JSON.stringify(query));
     }
 
     return this.groupApi.getAllByParams(params);
   }
 
   getNonEmptyLevels(query: SearchQuery) {
-    return this.groupApi.getLevels(query)
-      .pipe(
-        map((levels) => levels.filter((l) => !!l))
-      );
+    return this.groupApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
 }

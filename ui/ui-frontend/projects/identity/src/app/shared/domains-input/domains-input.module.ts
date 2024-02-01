@@ -43,13 +43,8 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { DomainsInputComponent } from './domains-input.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonModule],
   declarations: [DomainsInputComponent],
-  exports: [DomainsInputComponent]
+  exports: [DomainsInputComponent],
 })
-export class DomainsInputModule { }
+export class DomainsInputModule {}

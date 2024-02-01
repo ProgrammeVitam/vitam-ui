@@ -3,29 +3,29 @@
 </div>
 
 <form>
-  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold">{{'SAMPLE_DIALOG.STEP_0' | translate}}</div>
+        <div class="text large bold">{{ 'SAMPLE_DIALOG.STEP_0' | translate }}</div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{'COMMON.NEXT' | translate}}</button>
-          <button type="button" class="btn cancel link" (click)="cancel()">{{'COMMON.UNDO' | translate}}</button>
+          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold">{{'SAMPLE_DIALOG.STEP_1' | translate}}</div>
+        <div class="text large bold">{{ 'SAMPLE_DIALOG.STEP_1' | translate }}</div>
 
         <div class="actions">
-          <button type="submit" class="btn primary" (click)="cancel()">{{'COMMON.SUBMIT' | translate}}</button>
-          <button type="button" class="btn cancel link" (click)="cancel()">{{'COMMON.UNDO' | translate}}</button>
+          <button type="submit" class="btn primary" (click)="cancel()">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{'COMMON.BACK' | translate}}</span>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>

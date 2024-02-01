@@ -44,25 +44,25 @@ import { TenantService } from './tenant.service';
 
 @Injectable()
 export class TenantResolver implements Resolve<Tenant> {
-
-  constructor(private tenantService: TenantService, private router: Router) { }
+  constructor(
+    private tenantService: TenantService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Tenant> {
     const id = route.paramMap.get('id');
 
-    return this.tenantService.get(id)
-      .pipe(
-        take(1),
-        map((tenant: Tenant) => {
-          if (tenant) {
-            return tenant;
-          } else {
-            this.router.navigate(['/']);
+    return this.tenantService.get(id).pipe(
+      take(1),
+      map((tenant: Tenant) => {
+        if (tenant) {
+          return tenant;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

@@ -1,9 +1,10 @@
-@import "../../../../sass/variables/colors";
-@import "../../../../sass/mixins/elevation";
+@import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
 
 $animation-time: 150ms;
 
-.mat-drawer, .mat-dialog-container {
+.mat-drawer,
+.mat-dialog-container {
   .vitamui-autocomplete {
     > input {
       @include dialog-elevation-dark;
@@ -45,7 +46,7 @@ $animation-time: 150ms;
     }
 
     > i {
-      color: var(--vitamui-grey-700)
+      color: var(--vitamui-grey-700);
     }
   }
 
@@ -70,7 +71,9 @@ $animation-time: 150ms;
     pointer-events: none;
     transform-origin: left;
     color: var(--vitamui-primary);
-    transition: transform $animation-time ease-out, top $animation-time ease-out;
+    transition:
+      transform $animation-time ease-out,
+      top $animation-time ease-out;
 
     > .required-marker {
       color: $red;

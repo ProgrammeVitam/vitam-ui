@@ -1,16 +1,33 @@
 /* tslint:disable:component-selector */
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject,
-  Input, OnDestroy, OnInit, Optional, Output} from '@angular/core';
-import {AbstractControl} from '@angular/forms';
-import {MAT_OPTION_PARENT_COMPONENT, MatOptgroup, MatOption,
-  MatOptionParentComponent, MatPseudoCheckboxState} from '@angular/material/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+} from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import {
+  MAT_OPTION_PARENT_COMPONENT,
+  MatOptgroup,
+  MatOption,
+  MatOptionParentComponent,
+  MatPseudoCheckboxState,
+} from '@angular/material/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'vitamui-select-all-option',
   templateUrl: './vitamui-select-all-option.component.html',
-  styleUrls: ['./vitamui-select-all-option.component.scss']
+  styleUrls: ['./vitamui-select-all-option.component.scss'],
 })
 export class VitamUISelectAllOptionComponent extends MatOption implements OnInit, OnDestroy {
   // You need to provide either a control or a model
@@ -35,10 +52,12 @@ export class VitamUISelectAllOptionComponent extends MatOption implements OnInit
     }
   }
 
-  constructor(elementRef: ElementRef<HTMLElement>,
-              changeDetectorRef: ChangeDetectorRef,
-              @Optional() @Inject(MAT_OPTION_PARENT_COMPONENT) parent: MatOptionParentComponent,
-              @Optional() group: MatOptgroup) {
+  constructor(
+    elementRef: ElementRef<HTMLElement>,
+    changeDetectorRef: ChangeDetectorRef,
+    @Optional() @Inject(MAT_OPTION_PARENT_COMPONENT) parent: MatOptionParentComponent,
+    @Optional() group: MatOptgroup,
+  ) {
     super(elementRef, changeDetectorRef, parent, group);
   }
 
@@ -48,12 +67,10 @@ export class VitamUISelectAllOptionComponent extends MatOption implements OnInit
     if (this.control) {
       this.unsubscribe = new Subject<any>();
 
-      this.control.valueChanges
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(() => {
-          this.refresh();
-        });
-      }
+      this.control.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+        this.refresh();
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -67,11 +84,10 @@ export class VitamUISelectAllOptionComponent extends MatOption implements OnInit
 
   get selectedItemsCount(): number {
     if (this.control) {
-      return Array.isArray(this.control.value) ? this.control.value.filter(el => el !== null).length : 0;
+      return Array.isArray(this.control.value) ? this.control.value.filter((el) => el !== null).length : 0;
     } else {
-      return this.value ? this.value.filter(el => el !== null).length : 0;
+      return this.value ? this.value.filter((el) => el !== null).length : 0;
     }
-
   }
 
   get selectedAll(): boolean {
@@ -103,4 +119,3 @@ export class VitamUISelectAllOptionComponent extends MatOption implements OnInit
     }
   }
 }
-

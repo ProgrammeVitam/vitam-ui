@@ -1,41 +1,37 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-agency-preview *ngIf="openedItem" (previewClose)="closePanel()" [agency]="openedItem"></app-agency-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
-
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"></vitamui-common-navbar>
 
         <h2 i18n="Search a agency, owner or tenant@@agencySearchHeader">
-          <img src="assets/mini-logo-vitam.png"> Paramétrer les <strong>Services Agents</strong>
+          <img src="assets/mini-logo-vitam.png" /> Paramétrer les <strong>Services Agents</strong>
         </h2>
 
         <div class="controls">
-
           <vitamui-common-search-bar
             name="agency-search"
             (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant" i18n-placeholder="@@agencySearchPlaceholder"
+            placeholder="Nom, Identifiant"
+            i18n-placeholder="@@agencySearchPlaceholder"
           ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateAgencyDialog()">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create agency button label@@agencyListCreateButton">Créer un service agent</span>
+              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
+              <span i18n="Create agency button label@@agencyListCreateButton">Créer un service agent</span>
             </button>
             <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-              <i class="material-icons">more_horiz</i> <span i18n="More actions button label@@AgencyListMoreActionsButton">Autres actions</span>
+              <i class="material-icons">more_horiz</i>
+              <span i18n="More actions button label@@AgencyListMoreActionsButton">Autres actions</span>
             </button>
             <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <button mat-menu-item (click)="openAgencyImportDialog()" i18n="export button label@@agencyImportButton">
-                Importer
-              </button>
-              <button mat-menu-item (click)="exportAgencies()" i18n="export button label@@agencyExportButton">
-                Exporter
-              </button>
+              <button mat-menu-item (click)="openAgencyImportDialog()" i18n="export button label@@agencyImportButton">Importer</button>
+              <button mat-menu-item (click)="exportAgencies()" i18n="export button label@@agencyExportButton">Exporter</button>
             </mat-menu>
           </div>
         </div>
@@ -46,5 +42,4 @@
       <app-agency-list (agencyClick)="showAgency($event)" [search]="search"></app-agency-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

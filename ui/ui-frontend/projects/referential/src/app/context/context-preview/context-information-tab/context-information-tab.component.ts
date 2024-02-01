@@ -44,15 +44,12 @@ import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
 
-
-
 @Component({
   selector: 'app-context-information-tab',
   templateUrl: './context-information-tab.component.html',
-  styleUrls: ['./context-information-tab.component.scss']
+  styleUrls: ['./context-information-tab.component.scss'],
 })
 export class ContextInformationTabComponent {
-
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -66,20 +63,19 @@ export class ContextInformationTabComponent {
   // tslint:disable-next-line:variable-name
   private _context: Context;
 
-
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
-    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
-    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
-    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
-    {key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: ''},
-    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
+    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
+    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
+    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
+    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
+    { key: 'AdministrationRule', label: "Durée d'utilité administrative", info: '' },
+    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
   previousValue = (): Context => {
     return this._context;
-  }
+  };
 
   @Input()
   // tslint:disable-next-line:no-shadowed-variable
@@ -96,32 +92,31 @@ export class ContextInformationTabComponent {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
   constructor(
     private formBuilder: FormBuilder,
     private contextService: ContextService,
-    private securityProfileService: SecurityProfileService
+    private securityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
       name: [null],
       status: [null, Validators.required],
       securityProfile: [null, Validators.required],
-      enableControl: [null, Validators.required]
+      enableControl: [null, Validators.required],
     });
 
-    this.securityProfileService.getAll().subscribe(
-      securityProfiles => {
-        this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
-      });
+    this.securityProfileService.getAll().subscribe((securityProfiles) => {
+      this.securityProfiles = securityProfiles.map((x) => ({ label: x.name, key: x.identifier }));
+    });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
   }
 
@@ -147,8 +142,8 @@ export class ContextInformationTabComponent {
 
     return of(diffValue).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => {
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the context status has changed before sending the data
         if (formData.status) {
           if (formData.status === 'ACTIVE') {
@@ -161,7 +156,8 @@ export class ContextInformationTabComponent {
           }
         }
         return this.contextService.patch(formData).pipe(catchError(() => of(null)));
-      }));
+      }),
+    );
   }
 
   onSubmit() {
@@ -169,20 +165,21 @@ export class ContextInformationTabComponent {
     if (this.isInvalid()) {
       return;
     }
-    this.prepareSubmit().subscribe(() => {
-      this.contextService.get(this._context.identifier).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.contextService.get(this._context.identifier).subscribe((response) => {
           this.submited = false;
           this.context = response;
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      },
+    );
   }
 
   resetForm(context: Context) {
     this.statusControl.setValue(context.status === 'ACTIVE');
-    this.form.reset(context, {emitEvent: false});
+    this.form.reset(context, { emitEvent: false });
   }
 }

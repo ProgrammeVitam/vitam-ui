@@ -1,94 +1,114 @@
 <table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
   <thead>
-  <tr>
-    <th>
-      <div class="vitamui-table-header">
-        <button
-          class="vitamui-filter-button"
-          [vitamuiCommonTableFilter]="statusFilterTemplate"
-          [class.active]="filterMap['status'] && filterMap['status'].length > 0"
-        >
-          <i class="material-icons vitamui-row-icon">filter_list</i>
-        </button>
+    <tr>
+      <th>
+        <div class="vitamui-table-header">
+          <button
+            class="vitamui-filter-button"
+            [vitamuiCommonTableFilter]="statusFilterTemplate"
+            [class.active]="filterMap['status'] && filterMap['status'].length > 0"
+          >
+            <i class="material-icons vitamui-row-icon">filter_list</i>
+          </button>
 
-        <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="filterMap['status']"
-                                       (filterChange)="onFilterChange('status', $event)">
-            <vitamui-common-table-filter-option value="ACTIVE">
-              <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="INACTIVE">
-              <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Inactif
-              </div>
-            </vitamui-common-table-filter-option>
-          </vitamui-common-table-filter>
-        </ng-template>
+          <ng-template #statusFilterTemplate>
+            <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+              <vitamui-common-table-filter-option value="ACTIVE">
+                <div class="table-filter-icon" i18n="@@userStatusEnabled">
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
+                </div>
+              </vitamui-common-table-filter-option>
+              <vitamui-common-table-filter-option value="INACTIVE">
+                <div class="table-filter-icon" i18n="@@userStatusDisabled">
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Inactif
+                </div>
+              </vitamui-common-table-filter-option>
+            </vitamui-common-table-filter>
+          </ng-template>
 
-        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
-        <vitamui-common-order-by-button orderByKey="Status" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th>
-      <div class="vitamui-table-header">
-        <span i18n="accessContract name column header@@accessContractListNameHeader">Nom</span>
-        <vitamui-common-order-by-button orderByKey="Name" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th>
-      <div class="vitamui-table-header">
-        <span i18n="accessContract id column header@@accessContractListIdHeader">Identifiant</span>
-        <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th>
-      <div class="vitamui-table-header">
-        <span
-          i18n="accessContract creation date column header@@accessContractListCreationDateHeader">Date de création</span>
-        <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th></th>
-  </tr>
+          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
+          <vitamui-common-order-by-button
+            orderByKey="Status"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="accessContract name column header@@accessContractListNameHeader">Nom</span>
+          <vitamui-common-order-by-button
+            orderByKey="Name"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="accessContract id column header@@accessContractListIdHeader">Identifiant</span>
+          <vitamui-common-order-by-button
+            orderByKey="Identifier"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="accessContract creation date column header@@accessContractListCreationDateHeader">Date de création</span>
+          <vitamui-common-order-by-button
+            orderByKey="CreationDate"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th></th>
+    </tr>
   </thead>
   <!--tbody vitamuiCommonCollapseContainer-->
   <tbody>
-  <ng-container *ngFor="let accessContract of dataSource; let index = index">
+    <ng-container *ngFor="let accessContract of dataSource; let index = index">
+      <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
 
-    <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
-
-    <tr class="vitamui-table-row">
-
-      <!--td [vitamuiCommonCollapseTriggerFor]="row">
+      <tr class="vitamui-table-row">
+        <!--td [vitamuiCommonCollapseTriggerFor]="row">
       <i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i>
       <i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
     </td-->
-      <td>
-        <i class="vitamui-icon vitamui-icon-contrat vitamui-row-icon status-badge"
-           [ngClass]="{'status-badge-green': accessContract?.status == 'ACTIVE', 'status-badge-grey':accessContract?.status == 'INACTIVE' }"></i>
-        <!--i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i-->
-      </td>
-      <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.name }}</td>
-      <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.identifier }}</td>
-      <td class="clickable" (click)="accessContractClick.emit(accessContract)">
-        {{ accessContract?.creationDate | dateTime: 'dd/MM/yyyy'}}
-      </td>
-    </tr>
-
-  </ng-container>
+        <td>
+          <i
+            class="vitamui-icon vitamui-icon-contrat vitamui-row-icon status-badge"
+            [ngClass]="{
+              'status-badge-green': accessContract?.status == 'ACTIVE',
+              'status-badge-grey': accessContract?.status == 'INACTIVE'
+            }"
+          ></i>
+          <!--i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i-->
+        </td>
+        <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.name }}</td>
+        <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.identifier }}</td>
+        <td class="clickable" (click)="accessContractClick.emit(accessContract)">
+          {{ accessContract?.creationDate | dateTime: 'dd/MM/yyyy' }}
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </table>
 
 <div class="vitamui-table-footer">
   <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && accessContractService.canLoadMore" (click)="loadMore()"
-          class="btn" i18n="Show more results@@tableMoreResultButton">
+  <button
+    *ngIf="!pending && infiniteScrollDisabled && accessContractService.canLoadMore"
+    (click)="loadMore()"
+    class="btn"
+    i18n="Show more results@@tableMoreResultButton"
+  >
     Afficher plus de résultats...
   </button>
   <span *ngIf="!pending && !accessContractService.canLoadMore">Fin des résultats</span>

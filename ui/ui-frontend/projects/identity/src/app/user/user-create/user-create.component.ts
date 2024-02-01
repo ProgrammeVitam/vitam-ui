@@ -40,7 +40,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState
+  AdminUserProfile,
+  AuthService,
+  ConfirmDialogService,
+  CountryOption,
+  CountryService,
+  Customer,
+  Group,
+  isRootLevel,
+  OtpState,
 } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
@@ -53,15 +61,15 @@ import { UserCreateValidators } from './user-create.validators';
 
 const LAST_STEP_INDEX = 2;
 
-const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const emailValidator: RegExp =
+  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.scss']
+  styleUrls: ['./user-create.component.scss'],
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
-
   public form: FormGroup;
   public formEmail: FormGroup;
   public customer: Customer;
@@ -76,10 +84,9 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   private keyPressSubscription: Subscription;
   public countries: CountryOption[];
 
-
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile, customer: Customer, groups: Group[] },
+    @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile; customer: Customer; groups: Group[] },
     private formBuilder: FormBuilder,
     private userService: UserService,
     private userInfoService: UserInfoService,
@@ -87,35 +94,31 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private userCreateValidators: UserCreateValidators,
     private confirmDialogService: ConfirmDialogService,
     private countryService: CountryService,
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     // tslint:disable-next-line: max-line-length
-    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: group.profiles }));
+    this.groups = this.data.groups.map((group) =>
+      Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: group.profiles }),
+    );
     this.fullGroup = this.data.groups;
     if (!isRootLevel(this.authService.user)) {
       this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
     }
-    this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
+    this.groups.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0));
 
     this.customer = this.data.customer;
     this.connectedUserInfo = this.data.userInfo;
 
     this.formEmail = this.formBuilder.group({
       emailFirstPart: null,
-      domain: [this.customer.emailDomains[0]]
+      domain: [this.customer.emailDomains[0]],
     });
 
     this.form = this.formBuilder.group(
       {
-
         enabled: true,
-        email: [null, [
-          Validators.required,
-          Validators.pattern(emailValidator)
-        ],
-          this.userCreateValidators.uniqueEmail()],
+        email: [null, [Validators.required, Validators.pattern(emailValidator)], this.userCreateValidators.uniqueEmail()],
         firstname: [null, Validators.required],
         lastname: [null, Validators.required],
         mobile: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
@@ -123,10 +126,12 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         domain: [this.customer.emailDomains[0], Validators.required],
         groupId: [null, Validators.required],
         customerId: this.authService.user.customerId,
-        otp: [{
-          value: this.customer.otp !== OtpState.DEACTIVATED,
-          disabled: this.customer.otp !== OtpState.OPTIONAL
-        }],
+        otp: [
+          {
+            value: this.customer.otp !== OtpState.DEACTIVATED,
+            disabled: this.customer.otp !== OtpState.OPTIONAL,
+          },
+        ],
         type: [{ value: 'NOMINATIVE', disabled: !this.connectedUserInfo.genericAllowed }],
         subrogeable: false,
         status: null,
@@ -135,36 +140,38 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           street: [null],
           zipCode: [null],
           city: [null],
-          country: ['FR']
+          country: ['FR'],
         }),
         internalCode: [null],
         siteCode: [null],
         centerCode: [null],
-        autoProvisioningEnabled: false
+        autoProvisioningEnabled: false,
       },
-      { validator: UserValidators.missingPhoneNumber }
+      { validator: UserValidators.missingPhoneNumber },
     );
     this.applyUserProfile();
     this.onChanges();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
-    this.form.get('address').valueChanges.pipe(
-      map((value) => !value.street && !value.zipCode && !value.city),
-      distinctUntilChanged()
-    ).subscribe((addressEmpty) => {
-      this.addressEmpty = addressEmpty;
-      if (addressEmpty) {
-        this.form.get('address.street').clearValidators();
-        this.form.get('address.zipCode').clearValidators();
-        this.form.get('address.city').clearValidators();
-      } else {
-        this.form.get('address.street').setValidators(Validators.required);
-        this.form.get('address.zipCode').setValidators(Validators.required);
-        this.form.get('address.city').setValidators(Validators.required);
-      }
-      this.form.get('address').updateValueAndValidity({ emitEvent: false });
-    });
-
+    this.form
+      .get('address')
+      .valueChanges.pipe(
+        map((value) => !value.street && !value.zipCode && !value.city),
+        distinctUntilChanged(),
+      )
+      .subscribe((addressEmpty) => {
+        this.addressEmpty = addressEmpty;
+        if (addressEmpty) {
+          this.form.get('address.street').clearValidators();
+          this.form.get('address.zipCode').clearValidators();
+          this.form.get('address.city').clearValidators();
+        } else {
+          this.form.get('address.street').setValidators(Validators.required);
+          this.form.get('address.zipCode').setValidators(Validators.required);
+          this.form.get('address.city').setValidators(Validators.required);
+        }
+        this.form.get('address').updateValueAndValidity({ emitEvent: false });
+      });
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
@@ -182,18 +189,12 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.get('groupId').setValidators(null);
       this.form.updateValueAndValidity({ emitEvent: false });
     } else if (this.connectedUserInfo.type === 'LIST') {
-      this.groups = this.connectedUserInfo.profilGroup
-        .map((group) => {
-          const profilGroup = this.groups.find((g) => g.id === group.id);
-          return Object({ id: group.id,
-            name: group.name,
-            description: group.description,
-            selected: false,
-            profiles: profilGroup?.profiles });
-        });
-      this.groups.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+      this.groups = this.connectedUserInfo.profilGroup.map((group) => {
+        const profilGroup = this.groups.find((g) => g.id === group.id);
+        return Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: profilGroup?.profiles });
+      });
+      this.groups.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
     }
-
   }
 
   onCancel() {
@@ -205,31 +206,29 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     this.creating = true;
     let status = '';
-    this.form.get('enabled').value ? status = 'ENABLED' : status = 'DISABLED';
+    this.form.get('enabled').value ? (status = 'ENABLED') : (status = 'DISABLED');
     this.form.get('status').setValue(status);
-    this.userInfoService
-      .create({ id: null, language: this.customer.language })
-      .subscribe(
-         (response: UserInfo) => {
-          this.form.get('userInfoId').setValue(response.id);
-          this.userService.create(this.form.getRawValue()).subscribe(
-            () => this.dialogRef.close(true),
-            (error) => {
-              this.creating = false;
-              console.error(error);
-            }
-          );
-        },
-        (error) => {
-          this.creating = false;
-          console.error(error);
-        }
+    this.userInfoService.create({ id: null, language: this.customer.language }).subscribe(
+      (response: UserInfo) => {
+        this.form.get('userInfoId').setValue(response.id);
+        this.userService.create(this.form.getRawValue()).subscribe(
+          () => this.dialogRef.close(true),
+          (error) => {
+            this.creating = false;
+            console.error(error);
+          },
+        );
+      },
+      (error) => {
+        this.creating = false;
+        console.error(error);
+      },
     );
-
-
   }
 
   onChanges(): void {
@@ -239,17 +238,24 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return this.form.pending ||
-      this.form.get('email').invalid || this.form.get('email').pending ||
+    return (
+      this.form.pending ||
+      this.form.get('email').invalid ||
+      this.form.get('email').pending ||
       this.form.get('firstname').invalid ||
       this.form.get('lastname').invalid ||
       this.form.get('domain').invalid ||
-      this.form.get('enabled').invalid;
+      this.form.get('enabled').invalid
+    );
   }
 
   public thirdStepInvalid(): boolean {
-    return this.form.get('address').pending || this.form.get('address').invalid ||
-    this.form.get('internalCode').pending || this.form.get('internalCode').invalid;
+    return (
+      this.form.get('address').pending ||
+      this.form.get('address').invalid ||
+      this.form.get('internalCode').pending ||
+      this.form.get('internalCode').invalid
+    );
   }
 
   passGroupStep() {
@@ -266,5 +272,4 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     const groupId = selectedGroup.id;
     this.form.patchValue({ groupId });
   }
-
 }

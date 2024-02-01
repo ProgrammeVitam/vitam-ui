@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject} from '@angular/core';
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import { Component, Inject } from '@angular/core';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-vitamui-snack-bar',
   templateUrl: './vitamui-snack-bar.component.html',
-  styleUrls: ['./vitamui-snack-bar.component.scss']
+  styleUrls: ['./vitamui-snack-bar.component.scss'],
 })
 export class VitamUISnackBarComponent {
-
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>) {
-  }
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+    private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>,
+  ) {}
 
   close() {
     this.matSnackBarRef.dismiss();
   }
-
 }

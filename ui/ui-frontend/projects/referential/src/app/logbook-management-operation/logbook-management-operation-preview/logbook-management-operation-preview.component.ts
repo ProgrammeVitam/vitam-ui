@@ -58,7 +58,10 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   actionId: string;
   operationUpdatedSub: Subscription;
 
-  constructor(private matDialog: MatDialog, public logbookManagementOperationService: LogbookManagementOperationService) {}
+  constructor(
+    private matDialog: MatDialog,
+    public logbookManagementOperationService: LogbookManagementOperationService,
+  ) {}
   ngOnDestroy(): void {
     this.operationUpdatedSub.unsubscribe();
   }

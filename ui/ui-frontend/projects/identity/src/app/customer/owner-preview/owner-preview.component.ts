@@ -41,10 +41,9 @@ import { Owner, StartupService, Tenant } from 'ui-frontend-common';
 @Component({
   selector: 'app-owner-preview',
   templateUrl: './owner-preview.component.html',
-  styleUrls: ['./owner-preview.component.scss']
+  styleUrls: ['./owner-preview.component.scss'],
 })
 export class OwnerPreviewComponent {
-
   @Input() owner: Owner;
   @Input() tenant: Tenant;
   @Input() isPopup: boolean;
@@ -54,8 +53,11 @@ export class OwnerPreviewComponent {
 
   openPopup() {
     const url = this.tenant ? '/customer/tenant/' + this.tenant.id : '/customer/owner/' + this.owner.id;
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + url, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + url,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
@@ -64,13 +66,12 @@ export class OwnerPreviewComponent {
   }
 
   filterEvents(event: any): boolean {
-
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_OWNER') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_OWNER') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_TENANT') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_TENANT')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_OWNER') ||
+        event.outDetail.includes('EXT_VITAMUI_CREATE_OWNER') ||
+        event.outDetail.includes('EXT_VITAMUI_CREATE_TENANT') ||
+        event.outDetail.includes('EXT_VITAMUI_UPDATE_TENANT'))
     );
   }
-
 }

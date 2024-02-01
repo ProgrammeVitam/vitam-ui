@@ -55,10 +55,9 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
 const moment = moment_;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationService {
-
   subrogationCancel = new Subject();
 
   private subrogationSnackBarComponent: MatSnackBarRef<SubrogationSnackBarComponent>;
@@ -71,7 +70,8 @@ export class SubrogationService {
     private snackBar: VitamUISnackBar,
     private matSnackBar: MatSnackBar,
     private authService: AuthService,
-    @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number) {}
+    @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
+  ) {}
 
   intervalCheck: number;
 
@@ -86,14 +86,14 @@ export class SubrogationService {
       takeUntil(this.subrogationCancel),
       switchMap(() => this.getSubrogation(subrogationCreated.id, dialogRef)),
       filter((subrogationWatched) => subrogationWatched.status === 'ACCEPTED'),
-      take(1)
+      take(1),
     );
   }
 
   checkCurrentUserIsInSubrogation(): Observable<Subrogation> {
     return this.subrogationApi.getMySubrogationAsSuperuser().pipe(
       map((response) => response),
-      catchError(() => of(undefined))
+      catchError(() => of(undefined)),
     );
   }
 
@@ -110,10 +110,10 @@ export class SubrogationService {
           this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: NotificationType.SUBRO_DENY },
-            duration: 10000
+            duration: 10000,
           });
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -124,17 +124,17 @@ export class SubrogationService {
           this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: NotificationType.SUBRO_CANCEL },
-            duration: 10000
+            duration: 10000,
           });
           this.subrogationCancel.next();
         },
         error: (error) => {
           this.matSnackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -155,45 +155,46 @@ export class SubrogationService {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       data: { type: 'subrogationActivated', duration: '5', endTime: moment().add(this.TIMEOUT_SUBROGATION_MS, 'ms') },
-      duration: 50000
+      duration: 50000,
     });
     this.logger.log(this, callCount);
     const subrogationAccepted = new Subject();
-    interval(this.subrogationRefreshRateMs).pipe(
-      startWith(),
-      take(callCount),
-      takeUntil(subrogationAccepted),
-      map(() => this.authService.user),
-      filter((user) => !!user),
-      switchMap(() => this.subrogationApi.getMySubrogationAsSurrogate()),
-      filter((data) => data !== null),
-      tap((data) => {
-        if (data.status === 'CREATED' && !this.subrogationSnackBarComponent) {
-          this.subrogationSnackBarComponent = this.matSnackBar.openFromComponent(SubrogationSnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 0,
-            data: { subro: data }
-          });
-          this.subrogationSnackBarComponent.afterDismissed().subscribe(() => this.subrogationSnackBarComponent = null);
-        }
-      }),
-      map((data) => {
-        if (data.status === 'ACCEPTED') {
-          subrogationAccepted.next();
+    interval(this.subrogationRefreshRateMs)
+      .pipe(
+        startWith(),
+        take(callCount),
+        takeUntil(subrogationAccepted),
+        map(() => this.authService.user),
+        filter((user) => !!user),
+        switchMap(() => this.subrogationApi.getMySubrogationAsSurrogate()),
+        filter((data) => data !== null),
+        tap((data) => {
+          if (data.status === 'CREATED' && !this.subrogationSnackBarComponent) {
+            this.subrogationSnackBarComponent = this.matSnackBar.openFromComponent(SubrogationSnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 0,
+              data: { subro: data },
+            });
+            this.subrogationSnackBarComponent.afterDismissed().subscribe(() => (this.subrogationSnackBarComponent = null));
+          }
+        }),
+        map((data) => {
+          if (data.status === 'ACCEPTED') {
+            subrogationAccepted.next();
 
-          return true;
-        }
+            return true;
+          }
 
-        return false;
-      }),
-      last()
-    )
+          return false;
+        }),
+        last(),
+      )
       .subscribe((accepted) => {
         if (!accepted) {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'subrogationFinish' },
-            duration: 10000
+            duration: 10000,
           });
         }
       });

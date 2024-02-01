@@ -43,9 +43,6 @@ import { EventTypeLabelComponent } from './event-type-label.component';
 @NgModule({
   declarations: [EventTypeLabelComponent],
   exports: [EventTypeLabelComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-  ]
+  imports: [CommonModule, TranslateModule],
 })
-export class EventTypeLabelModule { }
+export class EventTypeLabelModule {}

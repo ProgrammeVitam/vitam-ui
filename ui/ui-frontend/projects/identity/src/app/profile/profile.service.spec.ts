@@ -51,11 +51,7 @@ describe('ProfileService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        ProfileService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      providers: [ProfileService, { provide: VitamUISnackBar, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -69,20 +65,20 @@ describe('ProfileService', () => {
   describe('get', () => {
     it('should call /fake-api/profiles/42', () => {
       const expectedProfile: Profile = {
-          id: '42',
-          name: 'Profile Name',
-          description: 'Profile Description',
-          applicationName: 'USERS_APP',
-          level : '',
-          customerId: 'customerId',
-          groupsCount : 1,
-          enabled: true,
-          usersCount: 0,
-          tenantName: 'tenant name',
-          tenantIdentifier: 420,
-          roles: [],
-          readonly : false,
-          externalParamId : null
+        id: '42',
+        name: 'Profile Name',
+        description: 'Profile Description',
+        applicationName: 'USERS_APP',
+        level: '',
+        customerId: 'customerId',
+        groupsCount: 1,
+        enabled: true,
+        usersCount: 0,
+        tenantName: 'tenant name',
+        tenantIdentifier: 420,
+        roles: [],
+        readonly: false,
+        externalParamId: null,
       };
       rngProfileService.get('42').subscribe((profile) => expect(profile).toEqual(expectedProfile), fail);
       const req = httpTestingController.expectOne('/fake-api/profiles/42?embedded=ALL');
@@ -99,34 +95,31 @@ describe('ProfileService', () => {
         name: 'Profile Group Name',
       };
       const expectedResponse: Profile = {
-          id: '42',
-          name: 'Profile Group Name',
-          description: 'Profile Group Description',
-          level : '',
-          customerId: 'customerId',
-          groupsCount : 1,
-          applicationName: 'USERS_APP',
-          enabled: true,
-          usersCount: 42,
-          tenantName: 'tenant name',
-          tenantIdentifier: 420,
-          roles: [],
-          readonly : false,
-          externalParamId : null
+        id: '42',
+        name: 'Profile Group Name',
+        description: 'Profile Group Description',
+        level: '',
+        customerId: 'customerId',
+        groupsCount: 1,
+        applicationName: 'USERS_APP',
+        enabled: true,
+        usersCount: 42,
+        tenantName: 'tenant name',
+        tenantIdentifier: 420,
+        roles: [],
+        readonly: false,
+        externalParamId: null,
       };
       rngProfileService.updated.subscribe((profileGroup) => expect(profileGroup).toEqual(expectedResponse), fail);
-      rngProfileService.patch(expectedRequest).subscribe(
-        (profileGroup) => {
-          expect(profileGroup).toEqual(expectedResponse);
-          expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-          expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'profileUpdate', name: expectedResponse.name },
-            duration: 10000
-          });
-        },
-        fail
-      );
+      rngProfileService.patch(expectedRequest).subscribe((profileGroup) => {
+        expect(profileGroup).toEqual(expectedResponse);
+        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
+        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          data: { type: 'profileUpdate', name: expectedResponse.name },
+          duration: 10000,
+        });
+      }, fail);
       const req = httpTestingController.expectOne('/fake-api/profiles/42');
       expect(req.request.method).toEqual('PATCH');
       expect(req.request.body).toEqual(expectedRequest);
@@ -139,19 +132,16 @@ describe('ProfileService', () => {
         id: '42',
         name: 'Profile Group Name',
       };
-      rngProfileService.patch(expectedRequest).subscribe(
-        fail,
-        () => {
-          expect(snackBar.open).toHaveBeenCalledTimes(1);
-          expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
-      );
+      rngProfileService.patch(expectedRequest).subscribe(fail, () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      });
       const req = httpTestingController.expectOne('/fake-api/profiles/42');
       expect(req.request.method).toEqual('PATCH');
-      req.flush({ message: 'Expected message' }, {status: 400, statusText: 'Bad request'});
+      req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
     });
   });
 });

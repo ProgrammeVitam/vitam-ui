@@ -52,11 +52,13 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
 @Component({
   selector: 'app-profiles-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => ProfilesFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProfilesFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() applicationNameExclude: string[];
@@ -70,34 +72,29 @@ let fixture: ComponentFixture<HierarchyCreateComponent>;
 let component: HierarchyCreateComponent;
 
 describe('HierarchyCreateComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const hierarchyServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
 
     TestBed.configureTestingModule({
       imports: [
-          MatProgressBarModule,
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          VitamUICommonTestModule,
-          LevelInputModule,
-          TranslateModule.forRoot(),
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        LevelInputModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [
-        ProfilesFormStubComponent,
-        HierarchyCreateComponent,
-      ],
+      declarations: [ProfilesFormStubComponent, HierarchyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {tenantId : 10} },
+        { provide: MAT_DIALOG_DATA, useValue: { tenantId: 10 } },
         { provide: AuthService, useValue: { user: { customerId: '4242442' } } },
-        { provide : HierarchyService, useValue: hierarchyServiceSpy },
+        { provide: HierarchyService, useValue: hierarchyServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: []
-    })
-    .compileComponents();
+      schemas: [],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -109,5 +106,4 @@ describe('HierarchyCreateComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

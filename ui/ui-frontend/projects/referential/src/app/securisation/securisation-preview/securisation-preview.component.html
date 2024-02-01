@@ -1,36 +1,37 @@
 <div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
-        <div class="d-flex justify-content-end">
-        <button class="btn link cancel" (click)="emitClose()">
-            <i class="vitamui-icon vitamui-icon-close"></i>
-        </button>
-        </div>
-
-        <div class="title">
-            <div matTooltipClass="vitamui-tooltip"
-            matTooltip="{{ securisation?.id }}">
-                <h5 class="m-0 text-primary">{{ securisation?.id | truncate: 30}}</h5>
-                <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
-            </div>
-        </div>
-        <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
-            <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
-        </ng-container>
+  <div class="vitamui-sidepanel-header">
+    <div class="d-flex justify-content-end">
+      <button class="btn link cancel" (click)="emitClose()">
+        <i class="vitamui-icon vitamui-icon-close"></i>
+      </button>
     </div>
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group">
-            <mat-tab label="Informations" i18n-label="History tab@@userPreviewTabVerification">
-                <app-securisation-information-tab [securisation]="securisation"></app-securisation-information-tab>
-            </mat-tab>
 
-            <mat-tab label="Vérification" i18n-label="History tab@@userPreviewTabVerification">
-                <app-securisation-check-tab [id]="securisation?.id" [securisation]="securisation"></app-securisation-check-tab>
-            </mat-tab>
-
-            <mat-tab label="Détails" i18n-label="History tab@@userPreviewTabHistory">
-                <vitamui-common-operation-history-tab [id]="securisation?.id" [identifier]="securisation?.id" collectionName="operation">
-                </vitamui-common-operation-history-tab>
-            </mat-tab>
-        </mat-tab-group>
+    <div class="title">
+      <div matTooltipClass="vitamui-tooltip" matTooltip="{{ securisation?.id }}">
+        <h5 class="m-0 text-primary">{{ securisation?.id | truncate: 30 }}</h5>
+        <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
+      </div>
     </div>
+    <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
+      <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">
+        Télécharger le rapport
+      </button>
+    </ng-container>
+  </div>
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group">
+      <mat-tab label="Informations" i18n-label="History tab@@userPreviewTabVerification">
+        <app-securisation-information-tab [securisation]="securisation"></app-securisation-information-tab>
+      </mat-tab>
+
+      <mat-tab label="Vérification" i18n-label="History tab@@userPreviewTabVerification">
+        <app-securisation-check-tab [id]="securisation?.id" [securisation]="securisation"></app-securisation-check-tab>
+      </mat-tab>
+
+      <mat-tab label="Détails" i18n-label="History tab@@userPreviewTabHistory">
+        <vitamui-common-operation-history-tab [id]="securisation?.id" [identifier]="securisation?.id" collectionName="operation">
+        </vitamui-common-operation-history-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

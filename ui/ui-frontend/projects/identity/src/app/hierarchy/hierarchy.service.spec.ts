@@ -48,14 +48,9 @@ describe('HierarchyService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        HierarchyService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      providers: [HierarchyService, { provide: VitamUISnackBar, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
-  }
-  );
+  });
 
   it('should be created', () => {
     const service: HierarchyService = TestBed.inject(HierarchyService);

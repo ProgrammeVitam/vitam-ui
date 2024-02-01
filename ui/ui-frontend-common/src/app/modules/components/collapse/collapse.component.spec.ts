@@ -41,11 +41,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseComponent } from './collapse.component';
 
 @Component({
-  template: `
-    <vitamui-common-collapse collapseTitle="Test Collapse Title">
-      Test Collapse Content
-    </vitamui-common-collapse>
-  `
+  template: ` <vitamui-common-collapse collapseTitle="Test Collapse Title"> Test Collapse Content </vitamui-common-collapse> `,
 })
 class TesthostComponent {
   @ViewChild(CollapseComponent) component: CollapseComponent;
@@ -57,10 +53,9 @@ describe('CollapseComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NoopAnimationsModule ],
-      declarations: [ CollapseComponent, TesthostComponent ]
-    })
-    .compileComponents();
+      imports: [NoopAnimationsModule],
+      declarations: [CollapseComponent, TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -96,6 +91,5 @@ describe('CollapseComponent', () => {
     elTitle.click();
     fixture.detectChanges();
     expect(testhost.component.collapseState).toBe('expanded');
-
   });
 });

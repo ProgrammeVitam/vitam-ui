@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -48,17 +47,17 @@ const expectedProfile: Profile = {
   id: '42',
   name: 'Profile Name',
   description: 'Profile Description',
-  level : '',
-  customerId : 'customerId',
-  groupsCount : 1,
+  level: '',
+  customerId: 'customerId',
+  groupsCount: 1,
   applicationName: 'USERS_APP',
   enabled: true,
   usersCount: 0,
   tenantName: 'Nom du tenant',
   tenantIdentifier: 420,
   roles: [],
-  readonly : false,
-  externalParamId : null
+  readonly: false,
+  externalParamId: null,
 };
 
 describe('ProfileResolver', () => {
@@ -69,11 +68,7 @@ describe('ProfileResolver', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      providers: [
-        ProfileResolver,
-        { provide: ProfileService, useValue: profileServiceSpy },
-        { provide: Router, useValue: routerSpy },
-      ]
+      providers: [ProfileResolver, { provide: ProfileService, useValue: profileServiceSpy }, { provide: Router, useValue: routerSpy }],
     });
 
     profileResolver = TestBed.inject(ProfileResolver);

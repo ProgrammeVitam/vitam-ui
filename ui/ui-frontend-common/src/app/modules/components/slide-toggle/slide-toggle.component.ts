@@ -42,17 +42,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SlideToggleComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-slide-toggle',
   templateUrl: './slide-toggle.component.html',
   styleUrls: ['./slide-toggle.component.scss'],
-  providers: [SLIDE_TOGGLE_VALUE_ACCESSOR]
+  providers: [SLIDE_TOGGLE_VALUE_ACCESSOR],
 })
 export class SlideToggleComponent implements ControlValueAccessor {
-
   @Input() required: boolean;
   @Input() tabIndex: number;
   @Input() checked: boolean;
@@ -62,10 +61,12 @@ export class SlideToggleComponent implements ControlValueAccessor {
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  constructor() { }
+  constructor() {}
 
   toggle() {
-    if (this.disabled) { return; }
+    if (this.disabled) {
+      return;
+    }
     this.checked = !this.checked;
     this.onChange(this.checked);
   }
@@ -85,5 +86,4 @@ export class SlideToggleComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
-
 }

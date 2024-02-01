@@ -46,7 +46,11 @@ import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-sna
   providedIn: 'root',
 })
 export class ProbativeValueService extends SearchService<Event> {
-  constructor(private operationApiService: OperationApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private operationApiService: OperationApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient,
+  ) {
     super(http, operationApiService, 'ALL');
   }
 
@@ -75,8 +79,8 @@ export class ProbativeValueService extends SearchService<Event> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 

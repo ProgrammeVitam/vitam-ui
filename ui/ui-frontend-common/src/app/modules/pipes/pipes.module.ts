@@ -50,8 +50,8 @@ import { DateTimePipe } from './datetime.pipe';
 import { FileSizePipe } from './filesize.pipe';
 
 @NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
+  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe, FileSizePipe],
   imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe,FileSizePipe],
+  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe, DateTimePipe, FileSizePipe],
 })
 export class PipesModule {}

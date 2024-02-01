@@ -49,14 +49,16 @@ import { EditablePatternsComponent } from './editable-patterns.component';
 @Component({
   selector: 'app-pattern',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => PatternStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PatternStubComponent),
+      multi: true,
+    },
+  ],
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;
@@ -67,22 +69,16 @@ class PatternStubComponent implements ControlValueAccessor {
 }
 
 @Component({
-  template: `
-    <app-editable-patterns
-      [(ngModel)]="value"
-      [label]="label"
-      [options]="options"
-    ></app-editable-patterns>
-  `
+  template: ` <app-editable-patterns [(ngModel)]="value" [label]="label" [options]="options"></app-editable-patterns> `,
 })
 class TesthostComponent {
   value: string[];
   options = [
-      { value: 'test1.com', disabled: false },
-      { value: 'test2.com', disabled: false },
-      { value: 'test3.com', disabled: false },
-      { value: 'test4.com', disabled: true },
-      { value: 'test5.com', disabled: true },
+    { value: 'test1.com', disabled: false },
+    { value: 'test2.com', disabled: false },
+    { value: 'test3.com', disabled: false },
+    { value: 'test4.com', disabled: true },
+    { value: 'test5.com', disabled: true },
   ];
   label = 'Test label';
   @ViewChild(EditablePatternsComponent, { static: false }) component: EditablePatternsComponent;
@@ -95,21 +91,9 @@ describe('EditablePatternsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        OverlayModule,
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        TesthostComponent,
-        EditablePatternsComponent,
-        PatternStubComponent
-      ]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [TesthostComponent, EditablePatternsComponent, PatternStubComponent],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -127,7 +111,6 @@ describe('EditablePatternsComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -146,7 +129,7 @@ describe('EditablePatternsComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const elPatterns = fixture.nativeElement.querySelectorAll(
-        '.editable-field .editable-field-content .editable-field-text-content > div'
+          '.editable-field .editable-field-content .editable-field-text-content > div',
         );
         expect(elPatterns.length).toBe(2);
         expect(elPatterns[0].textContent).toContain(testhost.value[0]);
@@ -198,11 +181,9 @@ describe('EditablePatternsComponent', () => {
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test3.com'];
       fixture.detectChanges();

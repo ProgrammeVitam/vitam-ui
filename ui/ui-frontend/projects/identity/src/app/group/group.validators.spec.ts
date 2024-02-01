@@ -44,7 +44,7 @@ import { GroupValidators } from './group.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -52,7 +52,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('ProfileGroupValidators nameExist', () => {
-
   it('should return null', fakeAsync(() => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
     groupServiceSpy.exists.and.returnValue(of(false));
@@ -99,7 +98,6 @@ describe('ProfileGroupValidators nameExist', () => {
 });
 
 describe('ProfileGroupValidators unitExists', () => {
-
   it('should return null', fakeAsync(() => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
     groupServiceSpy.unitExists.and.returnValue(of(false));

@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import {
   AuthService,
   Event,
@@ -44,9 +44,9 @@ import {
   ExternalParametersService,
   fadeInOutAnimation,
   LogbookOperationReportState,
-  LogbookService
+  LogbookService,
 } from 'ui-frontend-common';
-import {LogbookDownloadService} from '../logbook-download.service';
+import { LogbookDownloadService } from '../logbook-download.service';
 
 @Component({
   selector: 'app-logbook-operation-detail',
@@ -73,21 +73,20 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   showDownloadButton: boolean = false;
   disableDownloadButton: boolean = true;
 
-
   constructor(
     private logbookService: LogbookService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
-  ) {
-  }
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters()
-      .subscribe(parameters => this.setAccessContractId(parameters));
-    this.logbookDownloadService.logbookOperationsReloaded.subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
+    this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperations) =>
+      this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations),
+    );
     this.refreshLogbookOperation();
   }
 
@@ -96,7 +95,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
-    const logbookOperationUpdated = logbookOperations.find(e => e.id == this.eventId);
+    const logbookOperationUpdated = logbookOperations.find((e) => e.id == this.eventId);
     if (logbookOperationUpdated) {
       this.event = logbookOperationUpdated;
       this.updateDownloadButton();
@@ -122,7 +121,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   }
 
   private doesNotHaveTenant(): boolean {
-    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId
+    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId;
   }
 
   downloadReports() {
@@ -135,7 +134,9 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   private updateDownloadButton() {
     this.downloadButtonTitle = this.event.typeProc === 'EXPORT_DIP' ? 'Télécharger le DIP' : 'Télécharger le rapport';
     const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
-    this.showDownloadButton = logbookOperationReportState == LogbookOperationReportState.IN_PROGRESS || logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE;
+    this.showDownloadButton =
+      logbookOperationReportState == LogbookOperationReportState.IN_PROGRESS ||
+      logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE;
     this.disableDownloadButton = !(logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
   }
 
@@ -167,12 +168,11 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     if (this.doesNotHaveTenant()) {
       return;
     }
-    this.setAccessContractLogbookIdentifier()
+    this.setAccessContractLogbookIdentifier();
     this.loading = true;
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier)
-      .subscribe((event) => {
-        this.logbookDownloadService.logbookOperationsReloaded.next([event]);
-        this.loading = false;
-      });
+    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
+      this.logbookDownloadService.logbookOperationsReloaded.next([event]);
+      this.loading = false;
+    });
   }
 }

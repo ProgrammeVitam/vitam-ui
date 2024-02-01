@@ -34,27 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
-import {AppGuard, AuthGuard} from 'ui-frontend-common';
-import {SecurityProfileComponent} from './security-profile.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { AppGuard, AuthGuard } from 'ui-frontend-common';
+import { SecurityProfileComponent } from './security-profile.component';
 
 const routes: Route[] = [
   {
     path: '',
     component: SecurityProfileComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: {appId: 'SECURITY_PROFILES_APP'}
-  }
+    data: { appId: 'SECURITY_PROFILES_APP' },
+  },
 ];
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class SecurityProfileRoutingModule {
-}
+export class SecurityProfileRoutingModule {}

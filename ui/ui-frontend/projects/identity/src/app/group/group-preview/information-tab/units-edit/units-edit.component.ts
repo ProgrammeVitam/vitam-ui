@@ -48,10 +48,9 @@ import { GroupService } from '../../../group.service';
 @Component({
   selector: 'app-units-edit',
   templateUrl: './units-edit.component.html',
-  styleUrls: ['./units-edit.component.css']
+  styleUrls: ['./units-edit.component.css'],
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
@@ -61,32 +60,37 @@ export class UnitsEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { group: Group },
     private groupService: GroupService,
     private confirmDialogService: ConfirmDialogService,
-    formBuilder: FormBuilder
-    ) {
-      this.form = formBuilder.group({
-        units: [this.data.group.units]
-      });
-     }
+    formBuilder: FormBuilder,
+  ) {
+    this.form = formBuilder.group({
+      units: [this.data.group.units],
+    });
+  }
 
-    ngOnInit() {
-      this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+  ngOnInit() {
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+  }
+
+  ngOnDestroy() {
+    this.keyPressSubscription.unsubscribe();
+  }
+
+  onSubmit() {
+    if (this.form.pristine || this.form.invalid) {
+      return;
     }
-
-    ngOnDestroy() {
-      this.keyPressSubscription.unsubscribe();
-    }
-
-    onSubmit() {
-      if (this.form.pristine || this.form.invalid) { return; }
-      this.groupService.patch({ id: this.data.group.id, units: this.form.value.units}).pipe(take(1)).subscribe(
+    this.groupService
+      .patch({ id: this.data.group.id, units: this.form.value.units })
+      .pipe(take(1))
+      .subscribe(
         (response) => this.dialogRef.close(response),
         (error) => {
           console.error(error);
-        });
-    }
+        },
+      );
+  }
 
-    onCancel() {
-      this.form.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
-    }
-
+  onCancel() {
+    this.form.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
+  }
 }

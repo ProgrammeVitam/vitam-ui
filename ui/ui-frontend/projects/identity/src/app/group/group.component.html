@@ -6,12 +6,12 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'GROUP.HOME.TITLE' | translate}}
+        {{ 'GROUP.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'GROUP.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
-          <span>{{'GROUP.HOME.ACTION_BUTTON' | translate}}</span>
+          <span>{{ 'GROUP.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>

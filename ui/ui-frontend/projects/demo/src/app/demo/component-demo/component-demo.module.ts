@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
@@ -48,18 +48,8 @@ import { ComponentsComponent } from './components/components.component';
 import { CssComponent } from './css/css.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    RouterModule,
-    FormsModule,
-    MatTabsModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-  ],
+  imports: [CommonModule, VitamUICommonModule, RouterModule, FormsModule, MatTabsModule, MatProgressSpinnerModule, MatDialogModule],
   declarations: [ComponentDemoComponent, CssComponent, ComponentsComponent],
-  providers: [
-  ]
-
+  providers: [],
 })
-export class ComponentDemoModule { }
+export class ComponentDemoModule {}

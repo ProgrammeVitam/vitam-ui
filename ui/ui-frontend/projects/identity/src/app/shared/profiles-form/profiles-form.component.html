@@ -1,25 +1,38 @@
 <div class="d-flex align-items-center">
   <div>
     <div class="mb-3">
-      <vitamui-common-vitamui-autocomplete [options]="applications" [formControl]="appSelect"
-        [placeholder]="'GROUP.PROFILE.MODAL.APP' | translate">
+      <vitamui-common-vitamui-autocomplete
+        [options]="applications"
+        [formControl]="appSelect"
+        [placeholder]="'GROUP.PROFILE.MODAL.APP' | translate"
+      >
       </vitamui-common-vitamui-autocomplete>
     </div>
-    <div class="mb-3" *ngIf="!tenantIdentifier" >
-      <vitamui-common-vitamui-autocomplete [options]="filteredTenants" [formControl]="tenantSelect"
-        #tenantInput [placeholder]="'GROUP.PROFILE.MODAL.SAFE' | translate">
+    <div class="mb-3" *ngIf="!tenantIdentifier">
+      <vitamui-common-vitamui-autocomplete
+        [options]="filteredTenants"
+        [formControl]="tenantSelect"
+        #tenantInput
+        [placeholder]="'GROUP.PROFILE.MODAL.SAFE' | translate"
+      >
       </vitamui-common-vitamui-autocomplete>
     </div>
     <div class="mb-3">
-      <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect"
-        [placeholder]="'GROUP.PROFILE.MODAL.PROFILE' | translate" #profileInput>
+      <vitamui-common-vitamui-autocomplete
+        [options]="filteredProfiles"
+        [formControl]="profileSelect"
+        [placeholder]="'GROUP.PROFILE.MODAL.PROFILE' | translate"
+        #profileInput
+      >
       </vitamui-common-vitamui-autocomplete>
     </div>
   </div>
 
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center">
-      <button type="button" class="btn primary" (click)="add()" [disabled]="!canAddProfile" #addButton>{{'COMMON.ADD' | translate}}</button>
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!canAddProfile" #addButton>
+        {{ 'COMMON.ADD' | translate }}
+      </button>
       <button type="button" class="btn link" (click)="resetTree()">
         <i class="material-icons">replay</i>
       </button>
@@ -29,17 +42,17 @@
 
 <div class="vitamui-table mt-2">
   <div class="vitamui-table-head">
-    <div class="col-3">{{'GROUP.PROFILE.MODAL.APP' | translate}}</div>
-    <div *ngIf="!tenantIdentifier" class="col-3">{{'GROUP.PROFILE.MODAL.SAFE' | translate}}</div>
-    <div class="col-5">{{'GROUP.PROFILE.MODAL.PROFILE' | translate}}</div>
+    <div class="col-3">{{ 'GROUP.PROFILE.MODAL.APP' | translate }}</div>
+    <div *ngIf="!tenantIdentifier" class="col-3">{{ 'GROUP.PROFILE.MODAL.SAFE' | translate }}</div>
+    <div class="col-5">{{ 'GROUP.PROFILE.MODAL.PROFILE' | translate }}</div>
   </div>
   <div *ngIf="!loading" class="vitamui-table-body">
-    <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index=index">
+    <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index = index">
       <div class="vitamui-row d-flex align-items-center">
         <div class="col-3" vitamuiCommonEllipsis>{{ getApplicationFromId(id)?.name }}</div>
         <div *ngIf="!tenantIdentifier" class="col-3" vitamuiCommonEllipsis>{{ getProfileFromId(id)?.tenantName }}</div>
         <div class="col-5" vitamuiCommonEllipsis>{{ getProfileFromId(id)?.name }}</div>
-        <div class="d-flex justify-content-end" [ngClass]="{'col-1': !tenantIdentifier, 'col-4': tenantIdentifier}">
+        <div class="d-flex justify-content-end" [ngClass]="{ 'col-1': !tenantIdentifier, 'col-4': tenantIdentifier }">
           <button class="btn link" (click)="remove(index)">
             <i class="material-icons">clear</i>
           </button>

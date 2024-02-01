@@ -38,7 +38,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { CountryOption,  CountryService, diff, Owner, Tenant } from 'ui-frontend-common';
+import { CountryOption, CountryService, diff, Owner, Tenant } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
@@ -51,10 +51,9 @@ const UPDATE_DEBOUNCE_TIME = 200;
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss']
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnChanges, OnInit {
-
   @Input() owner: Owner;
   @Input() tenant: Tenant;
   @Input() readOnly: boolean;
@@ -62,32 +61,32 @@ export class InformationTabComponent implements OnChanges, OnInit {
   ownerForm: FormGroup;
   tenantForm: FormGroup;
   previousOwner: {
-    id: string,
-    identifier: string,
-    customerId: string,
-    code: string,
-    name: string,
-    companyName: string,
+    id: string;
+    identifier: string;
+    customerId: string;
+    code: string;
+    name: string;
+    companyName: string;
     address: {
-      street: string,
-      zipCode: string,
-      city: string,
-      country: 'FR',
-    },
-    internalCode: string
+      street: string;
+      zipCode: string;
+      city: string;
+      country: 'FR';
+    };
+    internalCode: string;
   };
   previousTenant: {
-    id: string,
-    identifier: string,
-    customerId: string,
-    proof: boolean,
-    ownerId: string,
-    name: string,
-    enabled: boolean,
-    ingestContractHoldingIdentifier: string,
-    itemIngestContractIdentifier: string,
-    accessContractHoldingIdentifier: string,
-    accessContractLogbookIdentifier: string,
+    id: string;
+    identifier: string;
+    customerId: string;
+    proof: boolean;
+    ownerId: string;
+    name: string;
+    enabled: boolean;
+    ingestContractHoldingIdentifier: string;
+    itemIngestContractIdentifier: string;
+    accessContractHoldingIdentifier: string;
+    accessContractLogbookIdentifier: string;
   };
 
   public countries: CountryOption[];
@@ -102,13 +101,9 @@ export class InformationTabComponent implements OnChanges, OnInit {
   ) {
     this.ownerForm = this.formBuilder.group({
       id: [null, Validators.required],
-      identifier: [{value: null, disabled: true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       customerId: [null, Validators.required],
-      code: [
-        null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
-        this.ownerFormValidators.uniqueCode(),
-      ],
+      code: [null, [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)], this.ownerFormValidators.uniqueCode()],
       name: [null, Validators.required],
       companyName: [null, Validators.required],
       address: this.formBuilder.group({
@@ -117,7 +112,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         city: null,
         country: 'FR',
       }),
-      internalCode: [null]
+      internalCode: [null],
     });
 
     this.tenantForm = this.formBuilder.group({
@@ -125,16 +120,12 @@ export class InformationTabComponent implements OnChanges, OnInit {
       identifier: [null, Validators.required],
       customerId: [null, Validators.required],
       ownerId: [null, Validators.required],
-      name: [
-        null,
-        [Validators.required],
-        this.tenantFormValidators.uniqueName(),
-      ],
+      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
       enabled: [true, Validators.required],
       ingestContractHoldingIdentifier: [null],
       itemIngestContractIdentifier: [null],
       accessContractHoldingIdentifier: [null],
-      accessContractLogbookIdentifier: [null]
+      accessContractLogbookIdentifier: [null],
     });
 
     merge(this.ownerForm.valueChanges, this.ownerForm.statusChanges)
@@ -143,7 +134,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         map(() => diff(this.ownerForm.value, this.previousOwner)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.owner.id }, formData)),
-        switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((owner: Owner) => this.resetOwnerForm(owner));
 
@@ -153,7 +144,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         map(() => diff(this.tenantForm.value, this.previousTenant)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.tenant.id }, formData)),
-        switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null)))),
       )
       .subscribe((tenant: Tenant) => {
         this.resetTenantForm(tenant);
@@ -185,7 +176,6 @@ export class InformationTabComponent implements OnChanges, OnInit {
     if (this.owner) {
       this.resetOwnerForm(this.owner);
     }
-
   }
 
   private resetOwnerForm(owner: Owner) {
@@ -203,5 +193,4 @@ export class InformationTabComponent implements OnChanges, OnInit {
 
     this.previousTenant = this.tenantForm.value;
   }
-
 }

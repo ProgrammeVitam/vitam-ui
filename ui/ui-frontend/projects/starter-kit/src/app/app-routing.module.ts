@@ -52,7 +52,6 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
-
 const routes: Routes = [
   { path: '', component: StarterKitComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
@@ -74,11 +73,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
+      preloadingStrategy: QuicklinkStrategy,
+    }),
   ],
   exports: [RouterModule],
-  providers: [
-  ]
+  providers: [],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

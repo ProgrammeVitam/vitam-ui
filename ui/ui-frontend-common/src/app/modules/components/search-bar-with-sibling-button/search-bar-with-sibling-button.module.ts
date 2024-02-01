@@ -34,18 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import {SearchBarWithSiblingButtonComponent} from "./search-bar-with-sibling-button.component";
+import { SearchBarWithSiblingButtonComponent } from './search-bar-with-sibling-button.component';
 
 @NgModule({
   declarations: [SearchBarWithSiblingButtonComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-  ],
-  exports: [SearchBarWithSiblingButtonComponent]
+  imports: [CommonModule, FormsModule],
+  exports: [SearchBarWithSiblingButtonComponent],
 })
-export class SearchBarWithSiblingButtonModule { }
+export class SearchBarWithSiblingButtonModule {}

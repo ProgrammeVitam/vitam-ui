@@ -34,32 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {TestBed} from '@angular/core/testing';
-import {BASE_URL,LoggerModule} from 'ui-frontend-common';
-import {VitamUISnackBar,VitamUISnackBarModule} from '../shared/vitamui-snack-bar';
-import {ExternalParamProfileService} from './external-param-profile.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL, LoggerModule } from 'ui-frontend-common';
+import { VitamUISnackBar, VitamUISnackBarModule } from '../shared/vitamui-snack-bar';
+import { ExternalParamProfileService } from './external-param-profile.service';
 
-
-describe('ExternalParamProfileService',() => {
+describe('ExternalParamProfileService', () => {
   let service: ExternalParamProfileService;
-  const snackBarSpy=jasmine.createSpyObj('VitamUISnackBar',['open','openFromComponent']);
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        VitamUISnackBarModule,
-        LoggerModule.forRoot()],
+      imports: [HttpClientTestingModule, VitamUISnackBarModule, LoggerModule.forRoot()],
       providers: [
         ExternalParamProfileService,
-        {provide: VitamUISnackBar,useValue: snackBarSpy},
-        {provide: BASE_URL,useValue: '/fake-api'},
-      ]
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: BASE_URL, useValue: '/fake-api' },
+      ],
     });
-    service=TestBed.inject(ExternalParamProfileService);
+    service = TestBed.inject(ExternalParamProfileService);
   });
 
-  it('should be created',() => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 });

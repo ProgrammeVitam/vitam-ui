@@ -8,19 +8,8 @@ import { SampleDialogModule } from '../miscellaneous/sample-dialog/sample-dialog
 import { ArraysComponent } from './arrays.component';
 
 @NgModule({
-  declarations: [
-    ArraysComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    MatButtonToggleModule,
-    SampleDialogModule,
-    SharedModule
-  ],
-  exports: [
-    ArraysComponent
-  ]
+  declarations: [ArraysComponent],
+  imports: [CommonModule, ReactiveFormsModule, VitamUICommonModule, MatButtonToggleModule, SampleDialogModule, SharedModule],
+  exports: [ArraysComponent],
 })
-export class ArraysModule { }
+export class ArraysModule {}

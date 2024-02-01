@@ -46,104 +46,99 @@ import { ProviderApiService } from './provider-api.service';
 
 @Injectable()
 export class IdentityProviderService {
-
   updated = new Subject<IdentityProvider>();
 
   constructor(
     private providerApi: ProviderApiService,
     private snackBar: VitamUISnackBar,
-    private startupService: StartupService
-    ) { }
+    private startupService: StartupService,
+  ) {}
 
   create(idp: IdentityProvider): Observable<IdentityProvider> {
-    return this.providerApi.create(idp)
-      .pipe(
-        map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
-        tap(
-          (newIDP: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerCreate', name: newIDP.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.providerApi.create(idp).pipe(
+      map((newIDP: IdentityProvider) => this.addMetadataUrl(newIDP)),
+      tap(
+        (newIDP: IdentityProvider) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'providerCreate', name: newIDP.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
-  patch(idp: { id: string, [key: string]: any }): Observable<IdentityProvider> {
-    return this.providerApi.patch(idp)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(idp: { id: string; [key: string]: any }): Observable<IdentityProvider> {
+    return this.providerApi.patch(idp).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'providerUpdate', name: updatedIdp.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   updateMetadataFile(id: string, idpMetadata: File): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderIdpMetadata(id, idpMetadata)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.providerApi.patchProviderIdpMetadata(id, idpMetadata).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'providerUpdate', name: updatedIdp.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   updateKeystore(id: string, file: File, password: string): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderKeystore(id, file, password)
-      .pipe(
-        map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
-        tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-        tap(
-          (updatedIdp: IdentityProvider) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'providerUpdate', name: updatedIdp.name },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.providerApi.patchProviderKeystore(id, file, password).pipe(
+      map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),
+      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
+      tap(
+        (updatedIdp: IdentityProvider) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'providerUpdate', name: updatedIdp.name },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      ),
+    );
   }
 
   getAll(customerId?: string): Observable<IdentityProvider[]> {
@@ -156,21 +151,19 @@ export class IdentityProviderService {
 
     const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
 
-    return this.providerApi.getAll(httpParams)
-      .pipe(
-        map((identityProviders) => {
-          return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
-        })
-      );
+    return this.providerApi.getAll(httpParams).pipe(
+      map((identityProviders) => {
+        return identityProviders.map((identityProvider) => this.addMetadataUrl(identityProvider));
+      }),
+    );
   }
 
   getDomainByCustomerId(customerId: string): Observable<string[]> {
-    return this.getAll(customerId)
-      .pipe(
-        map((identityProviders: IdentityProvider[]) => {
-            return identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []);
-        })
-      );
+    return this.getAll(customerId).pipe(
+      map((identityProviders: IdentityProvider[]) => {
+        return identityProviders.reduce((acc, idp) => acc.concat(idp.patterns.map((p) => p.replace('.*@', ''))), []);
+      }),
+    );
   }
 
   private addMetadataUrl(identityProvider: IdentityProvider): IdentityProvider {
@@ -178,5 +171,4 @@ export class IdentityProviderService {
 
     return identityProvider;
   }
-
 }

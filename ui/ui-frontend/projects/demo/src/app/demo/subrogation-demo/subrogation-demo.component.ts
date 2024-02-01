@@ -41,29 +41,26 @@ import { Subrogation, SubrogationModalService } from 'ui-frontend-common';
 @Component({
   selector: 'demo-subrogation-demo',
   templateUrl: './subrogation-demo.component.html',
-  styleUrls: ['./subrogation-demo.component.scss']
+  styleUrls: ['./subrogation-demo.component.scss'],
 })
 export class SubrogationDemoComponent implements OnInit {
-
   surrogateUser = 'julien@vitamui.com';
   subrogation: Subrogation;
 
-  constructor(private subrogationModalService: SubrogationModalService) { }
+  constructor(private subrogationModalService: SubrogationModalService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   createSubrogation(email?: string) {
     if (email) {
       const user = {
         email,
         firstname: 'Jean Michel',
-        lastname: 'Good Enough'
+        lastname: 'Good Enough',
       };
       this.subrogationModalService.open(['vitamui.com', 'vitamui.fr'], user);
     } else {
       this.subrogationModalService.open(['vitamui.com', 'vitamui.fr']);
     }
   }
-
 }

@@ -1,20 +1,19 @@
 import { getColorFromMaps } from './colors.util';
 
 describe('Colors', () => {
-
   const defaultMap = {
     defaultColor: '#123',
     appColor: '#123',
-    bothColor: '#123'
+    bothColor: '#123',
   };
 
   const appColorMap = {
     appColor: '#234',
-    bothColor: '#ABC'
+    bothColor: '#ABC',
   };
   const customerColorMap = {
     bothColor: '#DEF',
-    custom: '#5cbaa9'
+    custom: '#5cbaa9',
   };
 
   it('should return null if the color name does not exist', () => {
@@ -52,5 +51,4 @@ describe('Colors', () => {
   it('should not overflow black color', () => {
     expect(getColorFromMaps('appColor-dark-100', defaultMap, appColorMap, customerColorMap)).toEqual('#000000');
   });
-
 });

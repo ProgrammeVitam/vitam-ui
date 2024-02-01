@@ -8,16 +8,17 @@ import { HomepageMessageUpdateComponent } from './homepage-message-update/homepa
 @Component({
   selector: 'app-homepage-message-tab',
   templateUrl: './homepage-message-tab.component.html',
-  styleUrls: ['./homepage-message-tab.component.scss']
+  styleUrls: ['./homepage-message-tab.component.scss'],
 })
 export class HomepageMessageTabComponent implements OnInit, OnDestroy {
-
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
     this.resetTab(this.customer);
   }
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   // tslint:disable-next-line:variable-name
   private _customer: Customer;
 
@@ -25,7 +26,9 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   set readOnly(readOnly: boolean) {
     this._readonly = readOnly;
   }
-  get readonly(): boolean { return this._readonly; }
+  get readonly(): boolean {
+    return this._readonly;
+  }
 
   // tslint:disable-next-line:variable-name
   private _readonly: boolean;
@@ -41,11 +44,14 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
     [key: string]: string;
   };
 
-  public language : string;
+  public language: string;
 
-  constructor(private dialog: MatDialog, private startupService: StartupService, private authService: AuthService,
-    private userInfoService: UserInfoService) {
-  }
+  constructor(
+    private dialog: MatDialog,
+    private startupService: StartupService,
+    private authService: AuthService,
+    private userInfoService: UserInfoService,
+  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();
@@ -54,7 +60,7 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const userInfosId = this.authService.user.userInfoId;
     this.userInfoService.get(userInfosId).subscribe((userInfo) => {
-        this.language = userInfo.language;
+      this.language = userInfo.language;
     });
   }
 
@@ -74,15 +80,15 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.portalTitle = (this.portalTitles && this.portalTitles[this.language]) ? (this.portalTitles[this.language]) : title;
-    this.portalMessage = (this.portalMessages && this.portalMessages[this.language]) ? this.portalMessages[this.language] : message;
+    this.portalTitle = this.portalTitles && this.portalTitles[this.language] ? this.portalTitles[this.language] : title;
+    this.portalMessage = this.portalMessages && this.portalMessages[this.language] ? this.portalMessages[this.language] : message;
   }
 
   openUpdateHomepageMessage() {
     const dialogRef = this.dialog.open(HomepageMessageUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: { customer: this.customer }
+      data: { customer: this.customer },
     });
     dialogRef.afterClosed().subscribe();
   }

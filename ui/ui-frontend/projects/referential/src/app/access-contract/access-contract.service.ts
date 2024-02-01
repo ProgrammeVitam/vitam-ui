@@ -45,12 +45,16 @@ import { AccessContractApiService } from '../core/api/access-contract-api.servic
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
-  constructor(private accessContractApi: AccessContractApiService, private snackBar: MatSnackBar, http: HttpClient) {
+  constructor(
+    private accessContractApi: AccessContractApiService,
+    private snackBar: MatSnackBar,
+    http: HttpClient,
+  ) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -96,16 +100,16 @@ export class AccessContractService extends SearchService<AccessContract> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-            data: { type: 'accessContractUpdate', name: response.name }
+            data: { type: 'accessContractUpdate', name: response.name },
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -116,16 +120,16 @@ export class AccessContractService extends SearchService<AccessContract> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'accessContractCreate', name: response.name },
-            duration: 10000
+            duration: 10000,
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 

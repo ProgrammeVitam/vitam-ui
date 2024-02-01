@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {IngestApiService} from '../api/ingest-api.service';
-import {IngestInfo, IngestList, IngestUploadStatus} from './ingest-list';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { IngestApiService } from '../api/ingest-api.service';
+import { IngestInfo, IngestList, IngestUploadStatus } from './ingest-list';
 
 const tenantKey = 'X-Tenant-Id';
 const contextIdKey = 'X-Context-Id';
@@ -48,8 +48,10 @@ const actionKey = 'X-Action';
 export class UploadService {
   uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 
-  constructor(private ingestApiService: IngestApiService, private httpClient: HttpClient) {
-  }
+  constructor(
+    private ingestApiService: IngestApiService,
+    private httpClient: HttpClient,
+  ) {}
 
   filesStatus(): BehaviorSubject<IngestList> {
     return this.uploadStatus;
@@ -75,7 +77,7 @@ export class UploadService {
     contextId: string,
     action: string,
     file: Blob,
-    fileName: string
+    fileName: string,
   ): Observable<HttpEvent<void>> {
     let headers = new HttpHeaders();
     headers = headers.set(tenantKey, tenantIdentifier.toString());
@@ -114,7 +116,7 @@ export class UploadService {
       (error) => {
         this.updateFileStatus(fileName, IngestUploadStatus.ERROR);
         console.log('ERROR: ', error);
-      }
+      },
     );
     return this.uploadStatus;
   }

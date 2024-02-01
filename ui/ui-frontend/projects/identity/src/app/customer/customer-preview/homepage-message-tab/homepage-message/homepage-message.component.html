@@ -2,41 +2,57 @@
   <div class="justify-content-between">
     <div class="d-flex flex-column">
       <div class="text large bold mb-4">
-        {{ "CUSTOMER.HOMEPAGE_MESSAGE.TITLE" | translate }}
+        {{ 'CUSTOMER.HOMEPAGE_MESSAGE.TITLE' | translate }}
       </div>
 
-      <vitamui-common-input class="pb-2" formControlName="portalTitle" required [placeholder]="
-          'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_TITLE' | translate
-        ">
-        <vitamui-common-input-error *ngIf="
-            homepageMessageForm.get('portalTitle')?.touched &&
-            !!homepageMessageForm.get('portalTitle')?.errors?.required
-          ">
-          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+      <vitamui-common-input
+        class="pb-2"
+        formControlName="portalTitle"
+        required
+        [placeholder]="'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_TITLE' | translate"
+      >
+        <vitamui-common-input-error
+          *ngIf="homepageMessageForm.get('portalTitle')?.touched && !!homepageMessageForm.get('portalTitle')?.errors?.required"
+        >
+          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+        >
       </vitamui-common-input>
 
-      <vitamui-common-textarea class="pb-2" formControlName="portalMessage" required [placeholder]="
-          'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_MESSAGE' | translate
-        " [maxlength]="500">
-        <vitamui-common-input-error *ngIf="
-            homepageMessageForm.get('portalMessage')?.touched &&
-            !!homepageMessageForm.get('portalMessage')?.errors?.required
-          ">
-          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+      <vitamui-common-textarea
+        class="pb-2"
+        formControlName="portalMessage"
+        required
+        [placeholder]="'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_MESSAGE' | translate"
+        [maxlength]="500"
+      >
+        <vitamui-common-input-error
+          *ngIf="homepageMessageForm.get('portalMessage')?.touched && !!homepageMessageForm.get('portalMessage')?.errors?.required"
+        >
+          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+        >
       </vitamui-common-textarea>
-      <small class="d-flex justify-content-end">{{ homepageMessageForm.get("portalMessage")?.value?.length }}
-        {{
-          "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate
-        }}</small>
-
+      <small class="d-flex justify-content-end"
+        >{{ homepageMessageForm.get('portalMessage')?.value?.length }}
+        {{ 'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH' | translate }}</small
+      >
     </div>
-    
+
     <div *ngFor="let item of homepageMessageForm.get('translations').value; let index = index">
-      <app-homepage-message-translation [form]="item" [index]="index + 1" [languages]="getLanguages(index)" (formChange)="update()" (formRemove)="remove(index)">
+      <app-homepage-message-translation
+        [form]="item"
+        [index]="index + 1"
+        [languages]="getLanguages(index)"
+        (formChange)="update()"
+        (formRemove)="remove(index)"
+      >
       </app-homepage-message-translation>
     </div>
-    <button class="pl-4 btn link" [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length -1 && isLanguageSet())" (click)="onAdd()">
-      <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
+    <button
+      class="pl-4 btn link"
+      [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length - 1 && isLanguageSet())"
+      (click)="onAdd()"
+    >
+      <span> {{ 'CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE' | translate }}</span>
     </button>
   </div>
 </form>

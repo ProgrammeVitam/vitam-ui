@@ -44,16 +44,12 @@ import { HasAnyRoleDirective } from './has-any-role.directive';
 const TEST_ELEMENT_ID = 'test';
 
 @Component({
-  template: `
-    <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="{ appId: 'FAKE_APP', tenantIdentifier: 42, roles: roles }">
-        Lorem ipsum
-    </span>`
+  template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="{ appId: 'FAKE_APP', tenantIdentifier: 42, roles: roles }">
+    Lorem ipsum
+  </span>`,
 })
 class TestHostComponent {
-  public roles: string[] = [
-    'ROLE_GET',
-    'ROLE_CREATE',
-  ];
+  public roles: string[] = ['ROLE_GET', 'ROLE_CREATE'];
 }
 
 function getTestElement(fixture: ComponentFixture<TestHostComponent>) {
@@ -63,13 +59,11 @@ function getTestElement(fixture: ComponentFixture<TestHostComponent>) {
 describe('HasAnyRoleDirective', () => {
   beforeEach(() => {
     const authStubService = {
-      userLoaded: new Subject()
+      userLoaded: new Subject(),
     };
     TestBed.configureTestingModule({
       declarations: [TestHostComponent, HasAnyRoleDirective],
-      providers: [
-        { provide: AuthService, useValue: authStubService },
-      ]
+      providers: [{ provide: AuthService, useValue: authStubService }],
     });
   });
 
@@ -84,38 +78,34 @@ describe('HasAnyRoleDirective', () => {
 
     // Sets a logged user with the required role
     authService.userLoaded.next({
-      profileGroup : {
+      profileGroup: {
         profiles: [
           {
             applicationName: 'FAKE_APP',
             tenantIdentifier: 42,
-            roles: [{ name: 'ROLE_CREATE' }]
+            roles: [{ name: 'ROLE_CREATE' }],
           },
-        ]
-      }
+        ],
+      },
     } as any);
     fixture.detectChanges();
     // The element should now be displayed
     expect(getTestElement(fixture)).toBeTruthy();
     // Sets a logged user without the required roles
     authService.userLoaded.next({
-      profileGroup : {
+      profileGroup: {
         profiles: [
           {
             applicationName: 'FAKE_APP',
             tenantIdentifier: 42,
-            roles: [
-              { name: 'ROLE_UPDATE' },
-              { name: 'ROLE_DELETE' },
-            ]
+            roles: [{ name: 'ROLE_UPDATE' }, { name: 'ROLE_DELETE' }],
           },
-        ]
-      }
+        ],
+      },
     } as any);
     fixture.detectChanges();
     // The element should not be displayed
     expect(getTestElement(fixture)).toBeNull();
-
   });
 
   it('should show or clear content based on the input roles', () => {
@@ -124,18 +114,15 @@ describe('HasAnyRoleDirective', () => {
     const authService = TestBed.inject(AuthService);
     // Sets a logged user with the required role
     authService.userLoaded = new BehaviorSubject({
-      profileGroup : {
+      profileGroup: {
         profiles: [
           {
             applicationName: 'FAKE_APP',
             tenantIdentifier: 42,
-            roles: [
-              { name: 'ROLE_GET' },
-              { name: 'ROLE_DELETE' },
-            ]
+            roles: [{ name: 'ROLE_GET' }, { name: 'ROLE_DELETE' }],
           },
-        ]
-      }
+        ],
+      },
     } as any);
     // Triggers a change detection cycle for the component.
     fixture.detectChanges();
@@ -155,35 +142,29 @@ describe('HasAnyRoleDirective', () => {
     const authService = TestBed.inject(AuthService);
 
     authService.userLoaded = new BehaviorSubject({
-      profileGroup : {
+      profileGroup: {
         profiles: [
           {
             applicationName: 'FAKE_APP',
             tenantIdentifier: 42,
-            roles: [
-              { name: 'ROLE_GET' },
-              { name: 'ROLE_DELETE' },
-            ]
+            roles: [{ name: 'ROLE_GET' }, { name: 'ROLE_DELETE' }],
           },
-        ]
-      }
+        ],
+      },
     } as any);
 
     fixture.detectChanges();
 
     authService.userLoaded.next({
-      profileGroup : {
+      profileGroup: {
         profiles: [
           {
             applicationName: 'FAKE_APP',
             tenantIdentifier: 42,
-            roles: [
-              { name: 'ROLE_GET' },
-              { name: 'ROLE_DELETE' },
-            ]
+            roles: [{ name: 'ROLE_GET' }, { name: 'ROLE_DELETE' }],
           },
-        ]
-      }
+        ],
+      },
     } as any);
 
     fixture.detectChanges();
@@ -191,5 +172,4 @@ describe('HasAnyRoleDirective', () => {
     const elContent = fixture.nativeElement.querySelectorAll('span');
     expect(elContent.length).toBe(1, 'should only find one element');
   });
-
 });

@@ -48,7 +48,7 @@ describe('RuleInformationTabComponent', () => {
 
   const ruleServiceMock = {
     // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    patch: (_data: any) => of(null),
   };
 
   const ruleValue = {
@@ -56,7 +56,7 @@ describe('RuleInformationTabComponent', () => {
     ruleDescription: 'Règle de gestion XXXX',
     ruleDuration: '20',
     ruleMeasurement: 'Day',
-    ruleValue: 'RuleValue'
+    ruleValue: 'RuleValue',
   };
 
   const previousValue: Rule = {
@@ -70,18 +70,16 @@ describe('RuleInformationTabComponent', () => {
     ruleDuration: '10',
     ruleMeasurement: 'Day',
     creationDate: '20/02/2020',
-    updateDate: '20/02/2020'
+    updateDate: '20/02/2020',
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RuleInformationTabComponent],
-        providers: [FormBuilder, { provide: RuleService, useValue: ruleServiceMock }],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RuleInformationTabComponent],
+      providers: [FormBuilder, { provide: RuleService, useValue: ruleServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleInformationTabComponent);

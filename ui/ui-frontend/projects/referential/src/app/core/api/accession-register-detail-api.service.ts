@@ -50,7 +50,7 @@ export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionR
   public getAllPaginated(
     pageRequest: PageRequest,
     embedded?: string,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
   ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
   }
