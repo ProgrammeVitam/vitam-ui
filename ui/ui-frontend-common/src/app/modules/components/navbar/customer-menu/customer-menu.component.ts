@@ -48,10 +48,9 @@ import { MenuOption } from './menu-option.interface';
 @Component({
   selector: 'vitamui-common-customer-menu',
   templateUrl: './customer-menu.component.html',
-  styleUrls: ['./customer-menu.component.scss']
+  styleUrls: ['./customer-menu.component.scss'],
 })
 export class CustomerMenuComponent implements OnInit, OnDestroy {
-
   @Input() customers: MenuOption[];
 
   @Output() customerSelect = new EventEmitter<string>();
@@ -63,7 +62,8 @@ export class CustomerMenuComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private customerMenuService: CustomerMenuService,
     private customerSelectionService: CustomerSelectionService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: any) => {
@@ -89,12 +89,11 @@ export class CustomerMenuComponent implements OnInit, OnDestroy {
   openCustomerMenu(): void {
     this.dialog.open(CommonMenuComponent, {
       panelClass: 'vitamui-modal',
-      data: { menuType: MenuType.customer, items: this.customers }
+      data: { menuType: MenuType.customer, items: this.customers },
     });
   }
 
   ngOnDestroy(): void {
     this.customerSelection.unsubscribe();
   }
-
 }

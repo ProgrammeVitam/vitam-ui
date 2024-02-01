@@ -86,7 +86,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     },
     private archiveSearchService: ArchiveService,
     private startupService: StartupService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   async parseXmlToTransferDetails(xmlFileContent: any) {
@@ -113,7 +113,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
         this.hasError = true;
         this.isLoadingData = false;
         this.logger.error('Error with parsing the xml file :', error);
-      }
+      },
     );
   }
 
@@ -238,13 +238,13 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
 
           this.archiveSearchService.openSnackBarForWorkflow(
             this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REQUEST_MESSAGE'),
-            serviceUrl
+            serviceUrl,
           );
         },
         (error: any) => {
           this.isSubmitBtnDisabled = false;
           this.logger.error('Error message :', error);
-        }
+        },
       );
   }
 }

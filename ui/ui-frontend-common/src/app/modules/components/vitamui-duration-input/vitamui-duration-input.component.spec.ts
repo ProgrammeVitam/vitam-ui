@@ -46,14 +46,9 @@ describe('VitamUIDurationInputComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ VitamUIDurationInputComponent ]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [VitamUIDurationInputComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

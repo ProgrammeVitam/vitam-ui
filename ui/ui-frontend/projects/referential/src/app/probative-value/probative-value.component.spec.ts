@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {ProbativeValueComponent} from './probative-value.component';
+import { ProbativeValueComponent } from './probative-value.component';
 
 describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
@@ -54,30 +54,28 @@ describe('ProbativeValueComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'PROBATIVE_VALUE_APP'})
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'PROBATIVE_VALUE_APP' }),
     };
     TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUICommonTestModule,
-          NoopAnimationsModule,
-          MatSelectModule,
-          InjectorModule,
-          MatSidenavModule,
-          LoggerModule.forRoot()
-        ],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        MatSelectModule,
+        InjectorModule,
+        MatSidenavModule,
+        LoggerModule.forRoot(),
+      ],
       declarations: [ProbativeValueComponent],
       providers: [
         FormBuilder,
-        {provide: MatDialog, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        { provide: Router, useValue: { navigate: () => {} } }
+        { provide: MatDialog, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: Router, useValue: { navigate: () => {} } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

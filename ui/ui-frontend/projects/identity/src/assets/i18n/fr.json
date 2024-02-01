@@ -512,9 +512,9 @@
     "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Application des seuils de plateforme",
     "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} unités archivistiques",
     "TABS": {
-      "INFORMATIONS":"Informations",
-      "THRESHOLDS":"Seuils",
-      "HISTORY":"Historique"
+      "INFORMATIONS": "Informations",
+      "THRESHOLDS": "Seuils",
+      "HISTORY": "Historique"
     }
   }
 }

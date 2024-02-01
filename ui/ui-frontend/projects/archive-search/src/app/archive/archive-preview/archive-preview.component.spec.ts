@@ -46,15 +46,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  Unit,
-  WINDOW_LOCATION
-} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
@@ -63,7 +55,7 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({name: 'truncate'})
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -72,13 +64,13 @@ describe('ArchivePreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP'}),
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
     };
 
     const archiveServiceMock = {
       getBaseUrl: () => '/fake-api',
-      buildArchiveUnitPath: () => of({resumePath: '', fullPath: ''}),
+      buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
       receiveDownloadProgressSubject: () => of(true),
     };
 
@@ -97,16 +89,17 @@ describe('ArchivePreviewComponent', () => {
       ],
       declarations: [ArchivePreviewComponent, MockTruncatePipe],
       providers: [
-        {provide: ArchiveService, useValue: archiveServiceMock},
-        {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: ENVIRONMENT, useValue: environment},
-        {provide: WINDOW_LOCATION, useValue: window.location},
+        { provide: ArchiveService, useValue: archiveServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         {
-          provide: StartupService, useValue: {
-            getPortalUrl: () => '', setTenantIdentifier: () => {
-            }
-          }
+          provide: StartupService,
+          useValue: {
+            getPortalUrl: () => '',
+            setTenantIdentifier: () => {},
+          },
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -123,8 +116,8 @@ describe('ArchivePreviewComponent', () => {
       '#unitType': '',
       '#unitups': [],
       '#opi': '',
-      Title_: {fr: 'Teste', en: 'Test'},
-      Description_: {fr: 'DescriptionFr', en: 'DescriptionEn'},
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     component.archiveUnit = archiveUnit;
     fixture.detectChanges();

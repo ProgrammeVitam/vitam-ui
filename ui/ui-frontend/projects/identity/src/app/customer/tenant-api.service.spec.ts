@@ -41,14 +41,12 @@ import { BASE_URL } from 'ui-frontend-common';
 import { TenantApiService } from './tenant-api.service';
 
 describe('TenantApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-    ],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    }),
+  );
 
   it('should be created', () => {
     const service: TenantApiService = TestBed.inject(TenantApiService);

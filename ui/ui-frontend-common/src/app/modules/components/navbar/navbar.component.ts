@@ -50,12 +50,9 @@ import { MenuOption } from './customer-menu/menu-option.interface';
   selector: 'vitamui-common-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  animations: [
-    rotateUpAnimation,
-  ]
+  animations: [rotateUpAnimation],
 })
 export class NavbarComponent {
-
   @Input() appId: string;
   @Input() hideTenantMenu = false;
   @Input() hideCustomerMenu = false;
@@ -75,19 +72,22 @@ export class NavbarComponent {
     public authService: AuthService,
     startupService: StartupService,
     private subrogationService: SubrogationService,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer,
+  ) {
     this.portalUrl = startupService.getPortalUrl();
     this.base64Logo = startupService.getLogo();
 
-    this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
-    this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
+    this.trustedAppLogoUrl = startupService.getAppLogoURL()
+      ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL())
+      : null;
 
     if (this.authService.user) {
       this.currentUser = this.authService.user;
-      this.trustedInlineLogoUrl = startupService.getCustomerLogoURL() ?
-      this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getCustomerLogoURL()) : null;
-      this.hasAccountProfile = this.authService.user.profileGroup.profiles.find((profile) =>
-                                                                  profile.applicationName === ApplicationId.ACCOUNTS_APP) !== undefined;
+      this.trustedInlineLogoUrl = startupService.getCustomerLogoURL()
+        ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getCustomerLogoURL())
+        : null;
+      this.hasAccountProfile =
+        this.authService.user.profileGroup.profiles.find((profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP) !== undefined;
     }
   }
 
@@ -102,5 +102,4 @@ export class NavbarComponent {
   enabledSubrogation() {
     this.subrogationService.checkSubrogation();
   }
-
 }

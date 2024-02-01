@@ -51,7 +51,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     public dialog: MatDialog,
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -98,7 +98,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     this.subscriptions.add(
       this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').subscribe((value) => {
         this.isSlaveMode = value;
-      })
+      }),
     );
   }
 

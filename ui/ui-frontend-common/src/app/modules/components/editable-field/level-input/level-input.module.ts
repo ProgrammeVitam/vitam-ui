@@ -42,12 +42,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LevelInputComponent } from './level-input.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslateModule,
-  ],
+  imports: [CommonModule, FormsModule, TranslateModule],
   declarations: [LevelInputComponent],
-  exports: [LevelInputComponent]
+  exports: [LevelInputComponent],
 })
-export class LevelInputModule { }
+export class LevelInputModule {}

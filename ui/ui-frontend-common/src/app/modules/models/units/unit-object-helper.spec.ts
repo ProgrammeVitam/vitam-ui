@@ -25,12 +25,11 @@
  * accept its terms.
  */
 
-import {QualifierDto, VersionDto} from './unit-object-api.interface';
-import {qualifiersToVersionsWithQualifier} from './unit-object-helper';
-import {ObjectQualifierType} from './unit.enums';
+import { QualifierDto, VersionDto } from './unit-object-api.interface';
+import { qualifiersToVersionsWithQualifier } from './unit-object-helper';
+import { ObjectQualifierType } from './unit.enums';
 
 describe('unit-object-helper tests', () => {
-
   it('qualifiersToVersionsWithQualifier tests', () => {
     expect(qualifiersToVersionsWithQualifier(null)).toEqual([]);
     const qualifiers = [
@@ -62,7 +61,7 @@ describe('unit-object-helper tests', () => {
     return {
       qualifier,
       versions,
-      '#nbc': null
+      '#nbc': null,
     };
   }
 
@@ -93,8 +92,7 @@ describe('unit-object-helper tests', () => {
       OtherMetadata: null,
       '#opi': null,
       '#storage': null,
-      DataObjectProfile: null
+      DataObjectProfile: null,
     };
   }
-
 });

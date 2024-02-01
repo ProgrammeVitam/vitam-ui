@@ -30,4 +30,3 @@ export interface AccessionRegisterDetail extends Id {
   obIdIn: string;
   comment: string[];
 }
-

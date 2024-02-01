@@ -26,7 +26,7 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { Project, SearchService } from 'ui-frontend-common';
 import { ProjectsApiService } from '../core/api/project-api.service';
@@ -60,7 +60,11 @@ export class ProjectsService extends SearchService<Project> {
     { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService,private translationService: TranslateService) {
+  constructor(
+    http: HttpClient,
+    private projectsApiService: ProjectsApiService,
+    private translationService: TranslateService,
+  ) {
     super(http, projectsApiService, 'ALL');
   }
 
@@ -68,12 +72,11 @@ export class ProjectsService extends SearchService<Project> {
     return this.projectsApiService.create(project);
   }
 
-  public getLegalStatusList(){
+  public getLegalStatusList() {
     return this.legalStatusList;
   }
 
-
-  public getAcquisitionInformationsList(){
+  public getAcquisitionInformationsList() {
     return this.acquisitionInformationsList;
   }
 
@@ -85,9 +88,7 @@ export class ProjectsService extends SearchService<Project> {
     return this.projectsApiService.getById(projectId);
   }
 
-  public deleteProjectId(projectId: string) : Observable<void> {
+  public deleteProjectId(projectId: string): Observable<void> {
     return this.projectsApiService.deletebyId(projectId);
   }
-
-
 }

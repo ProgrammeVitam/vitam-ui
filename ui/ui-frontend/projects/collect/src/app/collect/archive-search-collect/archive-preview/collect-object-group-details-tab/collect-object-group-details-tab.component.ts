@@ -25,9 +25,9 @@
  * accept its terms.
  */
 
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
-import {Clipboard} from '@angular/cdk/clipboard';
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
   DescriptionLevel,
@@ -35,9 +35,9 @@ import {
   FormatIdentificationDto,
   qualifiersToVersionsWithQualifier,
   Unit,
-  VersionWithQualifierDto
+  VersionWithQualifierDto,
 } from 'ui-frontend-common';
-import {ArchiveCollectService} from '../../archive-collect.service';
+import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
   selector: 'app-collect-object-group-details-tab',
@@ -45,8 +45,8 @@ import {ArchiveCollectService} from '../../archive-collect.service';
   styleUrls: ['./collect-object-group-details-tab.component.scss'],
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
@@ -57,11 +57,12 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
-  constructor(private archiveCollectService: ArchiveCollectService, private clipboard: Clipboard) {
-  }
+  constructor(
+    private archiveCollectService: ArchiveCollectService,
+    private clipboard: Clipboard,
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
@@ -84,7 +85,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
       this.archiveUnit['#object'],
       this.archiveUnit['#tenant'],
       versionWithQualifier.qualifier,
-      versionWithQualifier.version
+      versionWithQualifier.version,
     );
   }
 

@@ -81,7 +81,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private tenantService: TenantSelectionService,
     private translateService: TranslateService,
     private router: Router,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {}
 
   ngOnInit() {
@@ -147,7 +147,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             value
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
-              .toLowerCase()
+              .toLowerCase(),
           );
       });
 
@@ -211,7 +211,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       application,
       this.router,
       this.startupService.getConfigStringValue('UI_URL'),
-      this.selectedTenant.value.identifier
+      this.selectedTenant.value.identifier,
     );
 
     this.onClose();

@@ -117,23 +117,21 @@ describe('GraphicIdentityUpdateComponent', () => {
   let component: GraphicIdentityUpdateComponent;
   let fixture: ComponentFixture<GraphicIdentityUpdateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-        declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
-        providers: [
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: VitamUISnackBarService, useValue: snackBarSpy },
-          { provide: ENVIRONMENT, useValue: environment },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphicIdentityUpdateComponent);

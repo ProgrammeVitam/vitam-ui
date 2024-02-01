@@ -35,31 +35,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output} from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {SecurityProfileService} from '../security-profile.service';
-import {SecurityProfileCreateComponent} from './security-profile-create.component';
-import {SecurityProfileCreateValidators} from './security-profile-create.validators';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { SecurityProfileService } from '../security-profile.service';
+import { SecurityProfileCreateComponent } from './security-profile-create.component';
+import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
 @Component({
   selector: 'app-domains-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DomainInputStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DomainInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -76,35 +78,33 @@ class DomainInputStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'app-security-profile-edit-permission',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => SecurityProfileEditPermissionStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SecurityProfileEditPermissionStubComponent),
+      multi: true,
+    },
+  ],
 })
 class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor {
-  writeValue() {
-  }
+  writeValue() {}
 
-  registerOnChange() {
-  }
+  registerOnChange() {}
 
-  registerOnTouched() {
-  }
+  registerOnTouched() {}
 }
 
 const expectedSecurityProfile = {
   name: 'Name',
   identifier: 'identifier',
   fullAccess: true,
-  permissions: ['']
+  permissions: [''],
 };
 
 let component: SecurityProfileCreateComponent;
 let fixture: ComponentFixture<SecurityProfileCreateComponent>;
 
 class Page {
-
   get submit() {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
@@ -112,23 +112,19 @@ class Page {
   control(name: string) {
     return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
-
 }
 
 let page: Page;
 
 describe('SecurityProfileCreateComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', {create: of({})});
-    const customerCreateValidatorsSpy = jasmine.createSpyObj(
-      'SecurityProfileCreateValidators',
-      {
-        uniqueName: () => of(null),
-        uniqueIdentifier: () => of(null), identifierToIgnore: ''
-      }
-    );
+    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', { create: of({}) });
+    const customerCreateValidatorsSpy = jasmine.createSpyObj('SecurityProfileCreateValidators', {
+      uniqueName: () => of(null),
+      uniqueIdentifier: () => of(null),
+      identifierToIgnore: '',
+    });
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -140,21 +136,16 @@ describe('SecurityProfileCreateComponent', () => {
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
       ],
-      declarations: [
-        SecurityProfileCreateComponent,
-        SecurityProfileEditPermissionStubComponent,
-        DomainInputStubComponent
-      ],
+      declarations: [SecurityProfileCreateComponent, SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
       providers: [
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: SecurityProfileService, useValue: customerServiceSpy},
-        {provide: SecurityProfileCreateValidators, useValue: customerCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: SecurityProfileService, useValue: customerServiceSpy },
+        { provide: SecurityProfileCreateValidators, useValue: customerCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -195,7 +186,6 @@ describe('SecurityProfileCreateComponent', () => {
     });
 
     describe('Validators', () => {
-
       describe('fields', () => {
         it('should be required', () => {
           expect(setControlValue('name', '').invalid).toBeTruthy('empty name invalid');
@@ -235,5 +225,4 @@ describe('SecurityProfileCreateComponent', () => {
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
-
 });

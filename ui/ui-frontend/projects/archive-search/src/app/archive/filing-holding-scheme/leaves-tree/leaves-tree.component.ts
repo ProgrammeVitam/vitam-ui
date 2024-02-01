@@ -35,7 +35,7 @@ import {
   DescriptionLevel,
   FilingHoldingSchemeNode,
   VitamuiIcons,
-  VitamuiUnitTypes
+  VitamuiUnitTypes,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -63,7 +63,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
   showEveryNodes = false;
   private searchCriterias: SearchCriteriaDto;
@@ -72,7 +72,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private archiveService: ArchiveService,
     private archiveSharedDataService: ArchiveSharedDataService,
-    private archiveFacetsService: ArchiveFacetsService
+    private archiveFacetsService: ArchiveFacetsService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,7 +86,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(
       this.archiveSharedDataService.getLastSearchCriteriaDtoSubject().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.searchCriterias = searchCriteriaDto;
-      })
+      }),
     );
   }
 
@@ -137,7 +137,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
         FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
         this.refreshTreeNodes();
         this.loadingNodesDetails = false;
-      })
+      }),
     );
   }
 
@@ -181,7 +181,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
         parentNode.isLoadingChildren = false;
         this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
         this.refreshTreeNodes();
-      })
+      }),
     );
   }
 
@@ -321,9 +321,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.HOLDING_UNIT
       ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
       : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+        ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+        : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
+          ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+          : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

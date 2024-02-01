@@ -67,7 +67,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private router: Router,
     globalEventService: GlobalEventService,
     private securityService: SecurityService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
   ) {
     super(route, globalEventService);
   }

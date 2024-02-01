@@ -85,7 +85,7 @@ export class ApplicationService {
     private applicationApi: ApplicationApiService,
     private authService: AuthService,
     private tenantService: TenantSelectionService,
-    private globalEventService: GlobalEventService
+    private globalEventService: GlobalEventService,
   ) {}
 
   /**
@@ -101,7 +101,7 @@ export class ApplicationService {
         this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
         this._applications$.next(this._applications);
         return applicationInfo;
-      })
+      }),
     );
   }
 
@@ -111,7 +111,7 @@ export class ApplicationService {
   public getActiveTenantAppsMap(): Observable<Map<Category, Application[]>> {
     return this.tenantService.getSelectedTenant$().pipe(
       mergeMap((tenant: Tenant) => this.getTenantAppMap(tenant)),
-      tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap))
+      tap((appMap: Map<Category, Application[]>) => this.appMap$.next(appMap)),
     );
   }
 
@@ -143,7 +143,7 @@ export class ApplicationService {
           const convertedMap = this.convertToCategoryMap(resultMap);
           return this.sortMapByCategory(convertedMap);
         }
-      })
+      }),
     );
   }
 
@@ -203,9 +203,9 @@ export class ApplicationService {
               return true;
             }
             return app ? app.hasTenantList : false;
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -214,14 +214,14 @@ export class ApplicationService {
       catchError(() => of([])),
       map((result: boolean) => {
         return result;
-      })
+      }),
     );
   }
 
   public getApplications$(): Observable<Application[]> {
     return this._applications$.pipe(
       filter((apps: Application[]) => !!apps),
-      take(1)
+      take(1),
     );
   }
 

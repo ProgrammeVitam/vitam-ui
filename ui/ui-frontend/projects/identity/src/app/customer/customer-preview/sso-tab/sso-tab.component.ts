@@ -50,38 +50,27 @@ import { IdentityProviderService } from './identity-provider.service';
   animations: [
     trigger('panelTransition', [
       state('previous', style({ transform: 'translate3d(-100%, 0, 0)' })),
-      state('next', style({ transform: 'translate3d(100%, 0, 0)'  })),
+      state('next', style({ transform: 'translate3d(100%, 0, 0)' })),
       state('current', style({ transform: 'translate3d(0, 0, 0)' })),
       transition('* <=> current', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
     trigger('slideLeftTransition', [
-      transition(':enter', [
-        style({ transform: 'translate3d(-100%, 0, 0)' }),
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ]),
-      transition(':leave', [
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(-100%, 0, 0)' })),
-      ]),
+      transition(':enter', [style({ transform: 'translate3d(-100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
+      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(-100%, 0, 0)' }))]),
     ]),
     trigger('slideRightTransition', [
       state('*', style({ transform: 'translate3d(0, 0, 0)' })),
-      transition(':enter', [
-        style({ transform: 'translate3d(100%, 0, 0)' }),
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ]),
-      transition(':leave', [
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' })),
-      ]),
+      transition(':enter', [style({ transform: 'translate3d(100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
+      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
     ]),
-  ]
+  ],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
-
   providers: IdentityProvider[];
   panel1Position = 'current';
   panel2Position = 'next';
   selectedIdentityProvider: IdentityProvider;
-  domains: Array<{ value: string, disabled: boolean }> = [];
+  domains: Array<{ value: string; disabled: boolean }> = [];
 
   @Input()
   set customer(customer: Customer) {
@@ -95,14 +84,19 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     });
     this.refreshAvailableDomains();
   }
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   private _customer: Customer;
 
   @Input() readOnly: boolean;
 
   private updatedProviderSub: Subscription;
 
-  constructor(public dialog: MatDialog, private identityProviderService: IdentityProviderService) { }
+  constructor(
+    public dialog: MatDialog,
+    private identityProviderService: IdentityProviderService,
+  ) {}
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {
@@ -122,10 +116,10 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(IdentityProviderCreateComponent, {
       data: {
         customer: this.customer,
-        domains: this.domains
+        domains: this.domains,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
     dialogRef.afterClosed().subscribe((result: IdentityProvider) => {
       if (result) {
@@ -150,5 +144,4 @@ export class SsoTabComponent implements OnDestroy, OnInit {
       });
     });
   }
-
 }

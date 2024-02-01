@@ -72,7 +72,7 @@ export class ProjectPreviewComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private translationService: TranslateService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -210,7 +210,7 @@ export class ProjectPreviewComponent implements OnInit {
               }
             });
             return combineLatest(updateTransactionOperation$).pipe(map(() => transactionsKO));
-          })
+          }),
         )
         .subscribe(
           (transactionsKO: Transaction[]) => {
@@ -225,7 +225,7 @@ export class ProjectPreviewComponent implements OnInit {
           },
           () => {
             this.project = previousProject;
-          }
+          },
         );
     } else {
       updateProjectOperation$.subscribe(
@@ -240,7 +240,7 @@ export class ProjectPreviewComponent implements OnInit {
         },
         () => {
           this.project = previousProject;
-        }
+        },
       );
     }
   }

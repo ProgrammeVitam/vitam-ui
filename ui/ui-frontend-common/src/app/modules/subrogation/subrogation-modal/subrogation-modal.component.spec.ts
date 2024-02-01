@@ -44,9 +44,8 @@ describe('SubrogationModalComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubrogationModalComponent ]
-    })
-    .compileComponents();
+      declarations: [SubrogationModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -44,13 +44,7 @@ import { ApplicationsListComponent } from './application-list.component';
 
 @NgModule({
   declarations: [ApplicationsListComponent],
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatTabsModule,
-    VitamUICommonModule,
-    AngularSvgIconModule
-  ],
-  exports: [ApplicationsListComponent]
+  imports: [CommonModule, MatCardModule, MatTabsModule, VitamUICommonModule, AngularSvgIconModule],
+  exports: [ApplicationsListComponent],
 })
-export class ApplicationListModule { }
+export class ApplicationListModule {}

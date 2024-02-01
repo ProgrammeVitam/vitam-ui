@@ -46,7 +46,7 @@ export class UpdateUnitManagementRuleService {
     private archiveService: ArchiveService,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
@@ -57,7 +57,7 @@ export class UpdateUnitManagementRuleService {
 
   goToUpdateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],    
+    criteriaSearchList: SearchCriteriaEltDto[],
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
@@ -65,12 +65,12 @@ export class UpdateUnitManagementRuleService {
     itemSelected: number,
     updateArchiveUnitAlerteMessageDialogSubscription: Subscription,
     updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-      { panelClass: 'vitamui-dialog' }
+      { panelClass: 'vitamui-dialog' },
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
@@ -85,7 +85,7 @@ export class UpdateUnitManagementRuleService {
           router,
           itemSelected,
           updateArchiveUnitAlerteMessageDialogSubscription,
-          updateArchiveUnitAlerteMessageDialog
+          updateArchiveUnitAlerteMessageDialog,
         );
       });
   }
@@ -112,14 +112,14 @@ export class UpdateUnitManagementRuleService {
 
   private updateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    criteriaSearchList: SearchCriteriaEltDto[],    
+    criteriaSearchList: SearchCriteriaEltDto[],
     currentPage: number,
     tenantIdentifier: number,
     numberOfHoldingUnitType: number,
     router: Router,
     itemSelected: number,
     updateArchiveUnitAlerteMessageDialogSubscription: Subscription,
-    updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>
+    updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
@@ -175,7 +175,7 @@ export class UpdateUnitManagementRuleService {
     actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
     confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
-    bulkOperationsThreshold: number
+    bulkOperationsThreshold: number,
   ) {
     if (bulkOperationsThreshold !== -1) {
       // We defined a threshold
@@ -208,7 +208,7 @@ export class UpdateUnitManagementRuleService {
                 itemSelected,
                 updateArchiveUnitAlerteMessageDialogSubscription,
                 updateArchiveUnitAlerteMessageDialog,
-                confirmSecondActionBigNumberOfResultsActionDialog
+                confirmSecondActionBigNumberOfResultsActionDialog,
               );
             });
         } else {
@@ -223,7 +223,7 @@ export class UpdateUnitManagementRuleService {
             itemSelected,
             updateArchiveUnitAlerteMessageDialogSubscription,
             updateArchiveUnitAlerteMessageDialog,
-            confirmSecondActionBigNumberOfResultsActionDialog
+            confirmSecondActionBigNumberOfResultsActionDialog,
           );
         }
       }
@@ -249,7 +249,7 @@ export class UpdateUnitManagementRuleService {
               itemSelected,
               updateArchiveUnitAlerteMessageDialogSubscription,
               updateArchiveUnitAlerteMessageDialog,
-              confirmSecondActionBigNumberOfResultsActionDialog
+              confirmSecondActionBigNumberOfResultsActionDialog,
             );
           });
       } else {
@@ -264,7 +264,7 @@ export class UpdateUnitManagementRuleService {
           itemSelected,
           updateArchiveUnitAlerteMessageDialogSubscription,
           updateArchiveUnitAlerteMessageDialog,
-          confirmSecondActionBigNumberOfResultsActionDialog
+          confirmSecondActionBigNumberOfResultsActionDialog,
         );
       }
     }

@@ -1,25 +1,24 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {FormBuilder,ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Ontology} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {OntologyService} from '../../ontology.service';
-import {OntologyInformationTabComponent} from './ontology-information-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { OntologyService } from '../../ontology.service';
+import { OntologyInformationTabComponent } from './ontology-information-tab.component';
 
-
-describe('OntologyInformationTabComponent',() => {
+describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;
   let fixture: ComponentFixture<OntologyInformationTabComponent>;
 
-  const ontologyServiceMock={
+  const ontologyServiceMock = {
     // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    patch: (_data: any) => of(null),
   };
 
-  const ontologyValue: Ontology={
+  const ontologyValue: Ontology = {
     id: 'id',
     tenant: 0,
     version: 1,
@@ -32,35 +31,26 @@ describe('OntologyInformationTabComponent',() => {
     identifier: 'SP-000001',
     type: 'EXTERNAL',
     collections: [''],
-    description: 'Mon Ontologie'
+    description: 'Mon Ontologie',
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        NoopAnimationsModule,
-        MatSelectModule
-      ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, NoopAnimationsModule, MatSelectModule],
       declarations: [OntologyInformationTabComponent],
-      providers: [
-        FormBuilder,
-        {provide: OntologyService,useValue: ontologyServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [FormBuilder, { provide: OntologyService, useValue: ontologyServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(OntologyInformationTabComponent);
-    component=fixture.componentInstance;
-    component.inputOntology=ontologyValue;
+    fixture = TestBed.createComponent(OntologyInformationTabComponent);
+    component = fixture.componentInstance;
+    component.inputOntology = ontologyValue;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

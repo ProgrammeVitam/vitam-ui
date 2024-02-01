@@ -1,27 +1,30 @@
 <mat-icon [class.disabled]="disabled" *ngIf="imageUrl && canDelete" (click)="onDelete()" class="delete pointer">clear</mat-icon>
 <div [class.disabled]="disabled">
-    <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
-        vitamuiCommonDragAndDrop
-        (fileToUploadEmitter)="onImageDropped($event)"
-        (fileDragOverEmitter)="onImageDragOver($event)"
-        (fileDragLeaveEmitter)="onImageDragLeave($event)">
-        <input type="file" #fileSearch class="d-none" (change)="handleFileInput($event.target.files)">
-        <div class="image-area d-flex flex-column justify-content-center align-items-center">
-            <div *ngIf="!imageUrl && messContent" class="">
-                <h5>
-                    {{messContent}}
-                </h5>
-            </div>
-            <img *ngIf="imageUrl" [src]="imageUrl"/>
-        </div>
+  <div
+    class="drag-and-drop-area"
+    [ngClass]="{ 'on-over': hasDropZoneOver }"
+    vitamuiCommonDragAndDrop
+    (fileToUploadEmitter)="onImageDropped($event)"
+    (fileDragOverEmitter)="onImageDragOver($event)"
+    (fileDragLeaveEmitter)="onImageDragLeave($event)"
+  >
+    <input type="file" #fileSearch class="d-none" (change)="handleFileInput($event.target.files)" />
+    <div class="image-area d-flex flex-column justify-content-center align-items-center">
+      <div *ngIf="!imageUrl && messContent" class="">
+        <h5>
+          {{ messContent }}
+        </h5>
+      </div>
+      <img *ngIf="imageUrl" [src]="imageUrl" />
     </div>
-    <div class="d-flex flex-column pt-2">
-        <span (click)="addLogo()" class="upload pointer text caption light bold">
-            <mat-icon class="pj">attach_file</mat-icon>
-            {{messPj}}
-        </span>
-        <small class="error-message">
-            <div *ngIf="hasError">  {{ message }}</div>
-        </small>
-    </div>
+  </div>
+  <div class="d-flex flex-column pt-2">
+    <span (click)="addLogo()" class="upload pointer text caption light bold">
+      <mat-icon class="pj">attach_file</mat-icon>
+      {{ messPj }}
+    </span>
+    <small class="error-message">
+      <div *ngIf="hasError">{{ message }}</div>
+    </small>
+  </div>
 </div>

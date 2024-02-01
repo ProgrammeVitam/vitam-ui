@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum PositionType {
-   SERIAL = 'SERIAL',
-   NODE = 'NODE',
-   SOLIDARY = 'SOLIDARY',
-   FINAL = 'FINAL',
+  SERIAL = 'SERIAL',
+  NODE = 'NODE',
+  SOLIDARY = 'SOLIDARY',
+  FINAL = 'FINAL',
 }

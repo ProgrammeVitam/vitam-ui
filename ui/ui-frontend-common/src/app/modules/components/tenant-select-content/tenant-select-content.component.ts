@@ -42,10 +42,9 @@ import { TenantMenuService } from '../navbar/tenant-menu/tenant-menu.service';
 @Component({
   selector: 'vitamui-common-tenant-select-content',
   templateUrl: './tenant-select-content.component.html',
-  styleUrls: ['./tenant-select-content.component.scss']
+  styleUrls: ['./tenant-select-content.component.scss'],
 })
 export class TenantSelectContentComponent {
-
   @Input() tenants: MenuOption[];
   @Input() isModalMenu: boolean;
 
@@ -54,7 +53,8 @@ export class TenantSelectContentComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tenantMenuService: TenantMenuService) { }
+    private tenantMenuService: TenantMenuService,
+  ) {}
 
   selectTenantIdentifier(tenantIdentifier: number) {
     if (this.isModalMenu) {
@@ -64,5 +64,4 @@ export class TenantSelectContentComponent {
     }
     this.tenantSelected.emit(tenantIdentifier);
   }
-
 }

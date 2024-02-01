@@ -39,13 +39,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'demo-component-demo',
   templateUrl: './component-demo.component.html',
-  styleUrls: ['./component-demo.component.scss']
+  styleUrls: ['./component-demo.component.scss'],
 })
 export class ComponentDemoComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

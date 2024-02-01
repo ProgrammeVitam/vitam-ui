@@ -65,7 +65,7 @@ describe('LeavesTreeComponent', () => {
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true)
+    hasAccessContractPermissions: () => of(true),
   };
   const archiveFacetsServicStube = {
     extractNodesFacetsResults: () => of(),

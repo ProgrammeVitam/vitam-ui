@@ -42,10 +42,7 @@ import { AppGuardDemoComponent } from './app-guard-demo.component';
 import { GuardedPageComponent } from './guarded-page.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-  ],
-  declarations: [AppGuardDemoComponent, GuardedPageComponent]
+  imports: [CommonModule, RouterModule],
+  declarations: [AppGuardDemoComponent, GuardedPageComponent],
 })
-export class AppGuardDemoModule { }
+export class AppGuardDemoModule {}

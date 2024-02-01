@@ -48,7 +48,7 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { OwnerPopupComponent } from './owner-popup.component';
 import { OwnerPreviewComponent } from './owner-preview.component';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 
 @NgModule({
@@ -64,6 +64,6 @@ import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab
   ],
   declarations: [OwnerPopupComponent, OwnerPreviewComponent, InformationTabComponent, OwnerOperationHistoryTabComponent],
   exports: [OwnerPopupComponent, OwnerPreviewComponent],
-  providers: [TenantFormValidators]
+  providers: [TenantFormValidators],
 })
-export class OwnerPreviewModule { }
+export class OwnerPreviewModule {}

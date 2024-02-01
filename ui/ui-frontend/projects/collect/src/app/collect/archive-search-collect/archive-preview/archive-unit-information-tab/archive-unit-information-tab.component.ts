@@ -35,26 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subscription} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Option, Unit} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {ArchiveCollectService} from '../../archive-collect.service';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Option, Unit } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
@@ -88,10 +77,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   updateFormSub: Subscription;
   @Output()
   showNormalPanel = new EventEmitter<any>();
-  @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', {static: true})
+  @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteMessageDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
 
-  @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', {static: true})
+  @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteFormCancelDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
   updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription: Subscription;
 
@@ -101,22 +90,21 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private archiveService: ArchiveCollectService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private translateService: TranslateService
-  ) {
-  }
+    private translateService: TranslateService,
+  ) {}
 
   descriptionLevels: Option[] = [
-    {key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM')},
-    {key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE')},
-    {key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP')},
-    {key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP')},
-    {key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES')},
-    {key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES')},
-    {key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION')},
-    {key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS')},
-    {key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS')},
-    {key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS')},
-    {key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL')},
+    { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
+    { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
+    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP') },
+    { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
+    { key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES') },
+    { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
+    { key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION') },
+    { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
+    { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
+    { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') },
+    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') },
   ];
 
   ngOnInit() {
@@ -280,11 +268,11 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
               startDate: this.getStartDate(this.previousValue.startDate),
               endDate: this.getStartDate(this.previousValue.endDate),
             },
-            formData
-          )
+            formData,
+          ),
         ),
         switchMap((formData) => of(formData)),
-        catchError((error) => of(error))
+        catchError((error) => of(error)),
       )
       .subscribe((formData: any) => console.log('value au = ', formData));
   }
@@ -334,7 +322,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   cancelUpdate() {
     if (this.form.dirty) {
       const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
-      const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
       this.updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription = dialogRef
         .afterClosed()
         .pipe(filter((result) => !!result))
@@ -357,12 +345,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       if (this.archiveUnit && this.archiveUnit.StartDate) {
         this.unsetAction.push('StartDate');
       }
-      this.form.get(date).reset(null, {emitEvent: false});
+      this.form.get(date).reset(null, { emitEvent: false });
     } else if (date === 'endDate') {
       if (this.archiveUnit && this.archiveUnit.EndDate) {
         this.unsetAction.push('EndDate');
       }
-      this.form.get(date).reset(null, {emitEvent: false});
+      this.form.get(date).reset(null, { emitEvent: false });
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }

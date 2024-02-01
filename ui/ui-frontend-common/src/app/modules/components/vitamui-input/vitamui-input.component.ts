@@ -43,17 +43,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-input',
   templateUrl: './vitamui-input.component.html',
   styleUrls: ['./vitamui-input.component.scss'],
-  providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
+  providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
 })
 export class VitamUIInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
-
   @Input() type = 'text';
   @Input() minValue;
   @Input() maxValue;
@@ -62,19 +61,31 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit, Afte
   @Input() autofocus: boolean;
   @Input() value: string | number;
   @Input()
-  get autoFocus(): boolean { return this._autoFocus; }
-  set autoFocus(value: boolean) { this._autoFocus = coerceBooleanProperty(value); }
+  get autoFocus(): boolean {
+    return this._autoFocus;
+  }
+  set autoFocus(value: boolean) {
+    this._autoFocus = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _autoFocus = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _required = false;
   @ViewChild('vitamUIInput') private input: ElementRef;
@@ -82,8 +93,8 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit, Afte
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   @HostListener('click')
   onClick() {

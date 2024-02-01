@@ -135,7 +135,7 @@ export class CollectUploadService {
               this.updateUploadedZipFile(data);
             }
           }),
-          catchError((error) => of(error))
+          catchError((error) => of(error)),
         );
       });
   }
@@ -224,11 +224,11 @@ export class CollectUploadService {
   private async parse(zip: JSZip, item: any) {
     if (item.isDirectory) {
       const dirEntries: any[] = await this.parseDirectoryEntry(item);
-      if(dirEntries.length === 0){
+      if (dirEntries.length === 0) {
         zip.folder(item.fullPath.substring(1));
       }
       for (let entry of dirEntries) {
-        await this.parse(zip, entry); 
+        await this.parse(zip, entry);
       }
     } else {
       const f = await this.parseFileEntry(item);
@@ -244,7 +244,7 @@ export class CollectUploadService {
         },
         (err: any) => {
           reject(err);
-        }
+        },
       );
     });
   }
@@ -258,7 +258,7 @@ export class CollectUploadService {
         },
         (err: any) => {
           reject(err);
-        }
+        },
       );
     });
   }

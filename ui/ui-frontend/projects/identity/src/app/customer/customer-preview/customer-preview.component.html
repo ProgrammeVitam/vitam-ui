@@ -1,26 +1,39 @@
-  <vitamui-common-sidenav-header [title]="customer?.name" [subtitle]="'(' +  customer?.code + ')'" [icon]="'vitamui-icon-bank'"
-   (onclose)="emitClose()"></vitamui-common-sidenav-header>
+<vitamui-common-sidenav-header
+  [title]="customer?.name"
+  [subtitle]="'(' + customer?.code + ')'"
+  [icon]="'vitamui-icon-bank'"
+  (onclose)="emitClose()"
+></vitamui-common-sidenav-header>
 
-  <div class="vitamui-sidepanel-body" >
-    <mat-tab-group class="preview-tab-group show-pagination">
-      <mat-tab [label]="'CUSTOMER.TAB.INFORMATION' | translate">
-        <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"></app-information-tab>
-      </mat-tab>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group show-pagination">
+    <mat-tab [label]="'CUSTOMER.TAB.INFORMATION' | translate">
+      <app-information-tab
+        [customer]="customer"
+        [readOnly]="isPopup || customer?.readonly"
+        [gdprReadOnlyStatus]="gdprReadOnlyStatus"
+      ></app-information-tab>
+    </mat-tab>
 
-      <mat-tab [label]="'CUSTOMER.TAB.SSO' | translate" class="no-padding">
-        <app-sso-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-sso-tab>
-      </mat-tab>
+    <mat-tab [label]="'CUSTOMER.TAB.SSO' | translate" class="no-padding">
+      <app-sso-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-sso-tab>
+    </mat-tab>
 
-      <mat-tab [label]="'CUSTOMER.TAB.GRAPHIC_ID' | translate">
-        <app-graphic-identity-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-graphic-identity-tab>
-      </mat-tab>
+    <mat-tab [label]="'CUSTOMER.TAB.GRAPHIC_ID' | translate">
+      <app-graphic-identity-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-graphic-identity-tab>
+    </mat-tab>
 
-      <mat-tab [label]="'CUSTOMER.TAB.HOMEPAGE_MESSAGE' | translate">
-        <app-homepage-message-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-homepage-message-tab>
-      </mat-tab>
+    <mat-tab [label]="'CUSTOMER.TAB.HOMEPAGE_MESSAGE' | translate">
+      <app-homepage-message-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-homepage-message-tab>
+    </mat-tab>
 
-      <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
-        <vitamui-common-operation-history-tab [id]="customer?.id" [identifier]="customer?.identifier" collectionName="customers" [filter]="filterEvents"></vitamui-common-operation-history-tab>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+    <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
+      <vitamui-common-operation-history-tab
+        [id]="customer?.id"
+        [identifier]="customer?.identifier"
+        collectionName="customers"
+        [filter]="filterEvents"
+      ></vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

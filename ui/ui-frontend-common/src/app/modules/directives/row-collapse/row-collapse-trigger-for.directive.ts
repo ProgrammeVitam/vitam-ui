@@ -39,13 +39,12 @@ import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 import { RowCollapseDirective } from './row-collapse.directive';
 
 @Directive({
-  selector: '[vitamuiCommonRowCollapseTriggerFor]'
+  selector: '[vitamuiCommonRowCollapseTriggerFor]',
 })
 export class RowCollapseTriggerForDirective {
-
   @Input() vitamuiCommonRowCollapseTriggerFor: RowCollapseDirective;
 
-  constructor() { }
+  constructor() {}
 
   @HostBinding('style.cursor')
   cursor = 'pointer';
@@ -57,5 +56,4 @@ export class RowCollapseTriggerForDirective {
   toggle() {
     this.vitamuiCommonRowCollapseTriggerFor.toggle();
   }
-
 }

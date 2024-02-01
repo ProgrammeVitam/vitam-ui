@@ -36,18 +36,18 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 export interface CardinalityValues {
-    value: string;
-    viewValue: string;
-  }
+  value: string;
+  viewValue: string;
+}
 
 export interface MetadataHeaders {
-    id: number;
-    nomDuChamp: string;
-    nomDuChampFr: string;
-    nomDuChampEdit: string;
-    type: string;
-    valeurFixe: string;
-    cardinalite: string[];
-    commentaire: string;
-    enumeration: string[];
-  }
+  id: number;
+  nomDuChamp: string;
+  nomDuChampFr: string;
+  nomDuChampEdit: string;
+  type: string;
+  valeurFixe: string;
+  cardinalite: string[];
+  commentaire: string;
+  enumeration: string[];
+}

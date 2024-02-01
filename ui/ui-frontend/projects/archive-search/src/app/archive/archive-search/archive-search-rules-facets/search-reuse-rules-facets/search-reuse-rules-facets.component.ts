@@ -50,7 +50,11 @@ import { RuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-reuse-rules-facets.component.scss'],
 })
 export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private facetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   reuseRuleFacets: RuleFacets;
@@ -118,7 +122,7 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -134,7 +138,7 @@ export class SearchReuseRulesFacetsComponent implements OnInit, OnChanges {
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.reuseRuleFacets.rulesListFacets.length,
           this.exactCount,
-          this.totalResults
+          this.totalResults,
         ),
         clickable: false,
         color: Colors.GRAY,

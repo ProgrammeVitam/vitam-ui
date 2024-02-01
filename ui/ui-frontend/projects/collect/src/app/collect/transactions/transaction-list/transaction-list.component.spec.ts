@@ -44,7 +44,7 @@ import {
   StartupService,
   Transaction,
   TransactionStatus,
-  WINDOW_LOCATION
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
@@ -75,7 +75,7 @@ describe('TransactionListComponent', () => {
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
     archiveProfile: 'archivalProfile',
     comment: 'comment',
-    legalStatus:'A legal status'
+    legalStatus: 'A legal status',
   };
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
@@ -95,7 +95,7 @@ describe('TransactionListComponent', () => {
       editTransaction: of({}),
       validateTransaction: of({}),
       search: of([transaction]),
-    }
+    },
   );
 
   const TransactionResolverStub = {

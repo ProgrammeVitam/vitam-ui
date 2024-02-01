@@ -40,21 +40,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { CancelledSnackBarComponent } from './cancelled-snack-bar.component';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    TranslateModule,
-  ],
-  declarations: [
-    CancelledSnackBarComponent,
-  ],
-  exports: [
-    CancelledSnackBarComponent,
-  ],
-  entryComponents: [
-    CancelledSnackBarComponent,
-  ]
+  imports: [CommonModule, MatDialogModule, TranslateModule],
+  declarations: [CancelledSnackBarComponent],
+  exports: [CancelledSnackBarComponent],
+  entryComponents: [CancelledSnackBarComponent],
 })
-export class CancelledSnackBarModule { }
+export class CancelledSnackBarModule {}

@@ -94,7 +94,7 @@ describe('ArchiveSearchComponent', () => {
     getOntologiesFromJson: () => of([]),
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
-    getAccessContractById: () => of({})
+    getAccessContractById: () => of({}),
   };
   const archiveSearchCommonService = {
     addCriteria: () => of(),

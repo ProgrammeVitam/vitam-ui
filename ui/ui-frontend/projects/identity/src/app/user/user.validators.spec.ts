@@ -39,36 +39,43 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { UserValidators } from './user.validators';
 
 describe('UserValidators', () => {
+  describe('missingPhoneNumber', () => {
+    function testValid(value: FormGroup) {
+      expect(
+        UserValidators.missingPhoneNumber(
+          new FormGroup({
+            phone: new FormControl(null),
+            mobile: new FormControl(null),
+            otp: new FormControl(null),
+          }),
+        ),
+      ).toBe(null, 'testing with "' + value + '"');
+    }
 
-    describe('missingPhoneNumber', () => {
-
-        function testValid(value: FormGroup) {
-            expect(UserValidators.missingPhoneNumber(new FormGroup({
-                phone: new FormControl(null),
-                mobile: new FormControl(null),
-                otp: new FormControl(null)
-            }))).toBe(null, 'testing with "' + value + '"');
-        }
-
-        it('should return null', () => {
-            testValid(new FormGroup({
-                phone: new FormControl(''),
-                mobile: new FormControl(''),
-                otp: new FormControl(false)
-            }));
-            testValid(new FormGroup({
-                phone: new FormControl('0146596574'),
-                mobile: new FormControl(null),
-                otp: new FormControl(true)
-            }));
-            testValid(new FormGroup({
-                phone: new FormControl(''),
-                mobile: new FormControl('0645789654'),
-                otp: new FormControl(true)
-            }));
-        });
-
-        it('should return an error object');
+    it('should return null', () => {
+      testValid(
+        new FormGroup({
+          phone: new FormControl(''),
+          mobile: new FormControl(''),
+          otp: new FormControl(false),
+        }),
+      );
+      testValid(
+        new FormGroup({
+          phone: new FormControl('0146596574'),
+          mobile: new FormControl(null),
+          otp: new FormControl(true),
+        }),
+      );
+      testValid(
+        new FormGroup({
+          phone: new FormControl(''),
+          mobile: new FormControl('0645789654'),
+          otp: new FormControl(true),
+        }),
+      );
     });
 
+    it('should return an error object');
+  });
 });

@@ -26,7 +26,8 @@
           >
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+            >
 
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"

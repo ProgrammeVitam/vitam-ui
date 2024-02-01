@@ -9,16 +9,16 @@ import { CustomerService } from '../../../../core/customer.service';
 @Component({
   selector: 'app-homepage-message-update',
   templateUrl: './homepage-message-update.component.html',
-  styleUrls: ['./homepage-message-update.component.scss']
+  styleUrls: ['./homepage-message-update.component.scss'],
 })
-
 export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
-
   private destroy = new Subject();
 
   // tslint:disable-next-line: variable-name
   private _customForm: FormGroup;
-  public get customForm(): FormGroup { return this._customForm; }
+  public get customForm(): FormGroup {
+    return this._customForm;
+  }
   public set customForm(form: FormGroup) {
     this._customForm = form;
     this.disabled = !(this._customForm && this._customForm.valid && this.checkValidation(this._customForm.value.translations));
@@ -38,14 +38,13 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<HomepageMessageUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer },
     private customerService: CustomerService,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
   ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onCancel() {
     if (this.customForm.dirty) {
@@ -57,28 +56,36 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
 
   private checkValidation(forms: FormGroup[]): boolean {
     let isValid = true;
-    forms.forEach(((x) => {if (!x.valid) { isValid = false; }}));
+    forms.forEach((x) => {
+      if (!x.valid) {
+        isValid = false;
+      }
+    });
     return isValid;
   }
 
   public updateHomepageMessage(): void {
     if (this.customForm.valid && this.checkValidation(this.customForm.value.translations)) {
-      const form = {...{
-        id : this.customForm.get('id').value,
-        portalTitles: this.portalTitles,
-        portalMessages: this.portalMessages
-      }};
-
-      this.customerService.patch(form)
-      .pipe(takeUntil(this.destroy))
-      .subscribe(
-        () => {
-          this.dialogRef.close(true);
+      const form = {
+        ...{
+          id: this.customForm.get('id').value,
+          portalTitles: this.portalTitles,
+          portalMessages: this.portalMessages,
         },
-        (error: any) => {
-          this.dialogRef.close(false);
-          console.error(error);
-        });
+      };
+
+      this.customerService
+        .patch(form)
+        .pipe(takeUntil(this.destroy))
+        .subscribe(
+          () => {
+            this.dialogRef.close(true);
+          },
+          (error: any) => {
+            this.dialogRef.close(false);
+            console.error(error);
+          },
+        );
     }
   }
 }

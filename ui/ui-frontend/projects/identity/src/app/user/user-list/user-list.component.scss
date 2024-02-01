@@ -1,5 +1,5 @@
-@import "~ui-frontend-common/sass/variables/colors";
-@import "~ui-frontend-common/sass/mixins/elevation";
+@import '~ui-frontend-common/sass/variables/colors';
+@import '~ui-frontend-common/sass/mixins/elevation';
 
 .parent {
   position: relative;
@@ -49,7 +49,7 @@ vitamui-common-table-filter-option .vitamui-icon {
   }
 }
 
-.vitamui-table-head{
+.vitamui-table-head {
   > div {
     display: flex;
     align-items: center;
@@ -57,7 +57,7 @@ vitamui-common-table-filter-option .vitamui-icon {
   }
 }
 .padding-user {
- padding-left: 2.5rem;
+  padding-left: 2.5rem;
 }
 
 .text-right {

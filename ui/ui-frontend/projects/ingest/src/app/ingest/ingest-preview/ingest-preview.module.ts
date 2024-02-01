@@ -38,7 +38,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule} from '@angular/material/menu' ;
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -46,7 +46,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatTreeModule} from '@angular/material/tree';
+import { MatTreeModule } from '@angular/material/tree';
 
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
@@ -56,14 +56,14 @@ import { EventDisplayHelperService } from './event-display-helper.service';
 import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 
-
 @NgModule({
   declarations: [
     IngestPreviewComponent,
     IngestInformationTabComponent,
     IngestEventDetailComponent,
     EventDisplayComponent,
-    IngestErrorsDetailsTabComponent],
+    IngestErrorsDetailsTabComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -78,18 +78,10 @@ import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ing
     MatOptionModule,
     MatTabsModule,
     MatTooltipModule,
-    MatTreeModule
+    MatTreeModule,
   ],
-  exports: [
-    IngestPreviewComponent,
-    IngestInformationTabComponent,
-    IngestEventDetailComponent,
-    EventDisplayComponent
-  ],
-  providers: [
-    EventDisplayHelperService
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
+  exports: [IngestPreviewComponent, IngestInformationTabComponent, IngestEventDetailComponent, EventDisplayComponent],
+  providers: [EventDisplayHelperService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class IngestPreviewModule { }
+export class IngestPreviewModule {}

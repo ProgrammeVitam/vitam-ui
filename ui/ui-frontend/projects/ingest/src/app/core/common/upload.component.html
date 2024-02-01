@@ -42,17 +42,17 @@
           </div>
         </div>
 
-        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)"/>
+        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
 
         <div class="drop-area">
-          <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br/></div>
+          <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>
           <div *ngIf="!fileSize || !hasSip">
             <div class="sip-drop">
               <div class="upload">
                 <span class="url-select" (click)="addSip()">{{ 'INGEST_UPLOAD.BROWSE' | translate }}</span>
               </div>
               <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate }}</span
-              ><br/>
+              ><br />
               <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate }}</span>
             </div>
           </div>
@@ -61,7 +61,7 @@
     </div>
     <div class="actions">
       <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">
-        {{(contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
+        {{ (contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
     </div>

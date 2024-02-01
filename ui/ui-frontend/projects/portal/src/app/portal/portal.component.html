@@ -1,8 +1,8 @@
 <div class="vitamui-heading mb-0">
-    <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="portalLogoUrl"></app-welcome-message>
+  <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="portalLogoUrl"></app-welcome-message>
 </div>
 
 <div class="vitamui-content">
-    <app-application-list [appMap]="applications"></app-application-list>
-    <mat-spinner class="vitamui-spinner large my-4 mx-auto" *ngIf="loading"></mat-spinner>
+  <app-application-list [appMap]="applications"></app-application-list>
+  <mat-spinner class="vitamui-spinner large my-4 mx-auto" *ngIf="loading"></mat-spinner>
 </div>

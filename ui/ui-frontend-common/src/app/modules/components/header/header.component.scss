@@ -37,7 +37,8 @@ vitamui-common-item-select {
   @include elevation-0;
 }
 
-vitamui-common-select-language, .select-tenant {
+vitamui-common-select-language,
+.select-tenant {
   height: $header-height;
 }
 
@@ -86,27 +87,34 @@ vitamui-common-select-language, .select-tenant {
 // Override item selection component css properties for header display only,
 // since the design is not common anymore with the other component usages.
 :host::ng-deep {
-  mat-select, .mat-select-value, .mat-select-arrow, .selected-item-label, .unselected-item-label, .mat-select-value-text, .mat-toolbar-row, .mat-toolbar-single-row {
-    color: var(--vitamui-header-footer-font)!important;
+  mat-select,
+  .mat-select-value,
+  .mat-select-arrow,
+  .selected-item-label,
+  .unselected-item-label,
+  .mat-select-value-text,
+  .mat-toolbar-row,
+  .mat-toolbar-single-row {
+    color: var(--vitamui-header-footer-font) !important;
   }
 
   .mat-select-arrow-wrapper {
-    vertical-align: top!important;
+    vertical-align: top !important;
   }
 
   mat-form-field {
-    background-color: transparent!important;
-    box-shadow: none!important;
-    height: 100%!important;
-    padding-left: 0 1rem!important;
-    border: none!important;
-    border-radius: 0!important;
-    padding: 0 1rem!important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    height: 100% !important;
+    padding-left: 0 1rem !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 1rem !important;
 
-    .mat-form-field-wrapper  {
+    .mat-form-field-wrapper {
       .mat-form-field-flex {
-        background-color: transparent!important;
+        background-color: transparent !important;
       }
     }
-}
+  }
 }

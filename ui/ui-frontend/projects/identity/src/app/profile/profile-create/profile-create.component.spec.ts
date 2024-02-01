@@ -58,17 +58,11 @@ describe('ProfileCreateComponent', () => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', { create: of({}) });
     const startupServiceSpy = jasmine.createSpyObj('StartupService', { create: of({}) });
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}) });
-    const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { create: of({})});
+    const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { create: of({}) });
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        MatProgressBarModule,
-        CollapseModule,
-        MatButtonToggleModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [ ProfileCreateComponent, GroupDetailComponent ],
+      imports: [ReactiveFormsModule, MatProgressBarModule, CollapseModule, MatButtonToggleModule, VitamUICommonTestModule],
+      declarations: [ProfileCreateComponent, GroupDetailComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -76,9 +70,8 @@ describe('ProfileCreateComponent', () => {
         { provide: StartupService, useValue: startupServiceSpy },
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

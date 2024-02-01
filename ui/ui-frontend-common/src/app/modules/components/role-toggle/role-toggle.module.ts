@@ -38,18 +38,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-
 import { SlideToggleModule } from '../slide-toggle/slide-toggle.module';
 import { RoleToggleComponent } from './role-toggle.component';
 import { RoleComponent } from './role.component';
 
 @NgModule({
   declarations: [RoleToggleComponent, RoleComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    SlideToggleModule,
-  ],
-  exports: [RoleToggleComponent, RoleComponent]
+  imports: [CommonModule, FormsModule, SlideToggleModule],
+  exports: [RoleToggleComponent, RoleComponent],
 })
-export class RoleToggleModule { }
+export class RoleToggleModule {}

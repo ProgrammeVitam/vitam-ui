@@ -34,7 +34,7 @@ import { AccessionRegistersService } from '../accession-register.service';
 @Component({
   selector: 'app-accession-register-list',
   templateUrl: './accession-register-list.component.html',
-  styleUrls: [ './accession-register-list.component.scss' ],
+  styleUrls: ['./accession-register-list.component.scss'],
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
@@ -59,11 +59,13 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   private orderChange = new BehaviorSubject<string>(this.orderBy);
   private textToSearch: string;
 
-
   searchSub: Subscription;
   advancedSearchSub: Subscription;
 
-  constructor(public accessionRegistersService: AccessionRegistersService, @Inject(LOCALE_ID) private locale: string) {
+  constructor(
+    public accessionRegistersService: AccessionRegistersService,
+    @Inject(LOCALE_ID) private locale: string,
+  ) {
     super(accessionRegistersService);
   }
 
@@ -77,8 +79,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
           this.filterChange,
           this.orderChange,
           this.accessionRegistersService.getDateIntervalChanges(),
-          this.accessionRegistersService.getAdvancedSearchData()
-        )
+          this.accessionRegistersService.getAdvancedSearchData(),
+        ),
       )
       .subscribe((changes) => {
         const globalSearch = changes[0];
@@ -177,5 +179,4 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   onSelectRow(accessionRegisterDetail: AccessionRegisterDetail) {
     this.accessionRegisterClick.emit(accessionRegisterDetail);
   }
-
 }

@@ -41,7 +41,6 @@ import { Tenant } from 'ui-frontend-common';
 
 @Injectable()
 export class CustomerDataService {
-
   private tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
 
   // tslint:disable-next-line: variable-name
@@ -55,7 +54,7 @@ export class CustomerDataService {
     this._tenants = tenant;
   }
 
-  constructor() { }
+  constructor() {}
 
   addTenants(tenants: Tenant[]) {
     this._tenants = Array.from(new Set([...this.tenants, ...tenants]));
@@ -73,5 +72,4 @@ export class CustomerDataService {
   get tenantsUpdated$(): Observable<Tenant[]> {
     return this.tenantsUpdatedSource.asObservable();
   }
-
 }

@@ -2,17 +2,17 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content">{{control?.value?.name}}</span>
-          <div class="editable-field-control">
-            <div class="vitamui-input-file">
-              <label for="vitamui-input-file">
-                <span class="text primary underline">{{'SHARED.EDITABLE_FIELD.UPLOAD_FILE' | translate}}</span>
-                <div class="vitamui-input-file-filename">{{file?.name}}</div>
-              </label>
-              <input id="vitamui-input-file" type="file" [accept]="accept" (change)="setFile($event.target.files)" #fileInput>
-            </div>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ control?.value?.name }}</span>
+        <div class="editable-field-control">
+          <div class="vitamui-input-file">
+            <label for="vitamui-input-file">
+              <span class="text primary underline">{{ 'SHARED.EDITABLE_FIELD.UPLOAD_FILE' | translate }}</span>
+              <div class="vitamui-input-file-filename">{{ file?.name }}</div>
+            </label>
+            <input id="vitamui-input-file" type="file" [accept]="accept" (change)="setFile($event.target.files)" #fileInput />
           </div>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -29,15 +29,18 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
     [cdkConnectedOverlayOrigin]="origin"
-    [cdkConnectedOverlayPositions]="positions">
+    [cdkConnectedOverlayPositions]="positions"
+  >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
 </div>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div>{{control?.value?.name}}</div>
+  <label>{{ label }}</label>
+  <div>{{ control?.value?.name }}</div>
 </div>

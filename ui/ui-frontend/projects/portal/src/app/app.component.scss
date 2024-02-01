@@ -1,16 +1,16 @@
 @import '~ui-frontend-common/sass/variables';
 
 ::ng-deep {
-    vitamui-common-body {
-        > div {
-            margin-top: 0!important;
-        }
+  vitamui-common-body {
+    > div {
+      margin-top: 0 !important;
     }
+  }
 }
 
 .portal-app {
-    position: relative;
-    top: $header-height;
-    overflow-y: scroll;
-    height: calc(100% - #{$header-height});
+  position: relative;
+  top: $header-height;
+  overflow-y: scroll;
+  height: calc(100% - #{$header-height});
 }

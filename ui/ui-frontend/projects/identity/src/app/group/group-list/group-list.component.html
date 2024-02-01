@@ -10,38 +10,63 @@
           <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
+                <span class="badge-state">{{ 'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
+                <span class="badge-state">{{ 'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
         </ng-template>
 
         <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
-        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="status"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span>{{'GROUP.HOME.RESULTS_TABLE.NAME' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <span>{{ 'GROUP.HOME.RESULTS_TABLE.NAME' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="name"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
-        <span>{{'COMMON.ID' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <span>{{ 'COMMON.ID' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span>{{'GROUP.HOME.RESULTS_TABLE.DESCRIPTION' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <span>{{ 'GROUP.HOME.RESULTS_TABLE.DESCRIPTION' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="description"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
-        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate" [class.active]="filterMap['level'] && filterMap['level'].length > 0" #levelFilterTrigger="vitamuiCommonTableFilter">
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="levelFilterTemplate"
+          [class.active]="filterMap['level'] && filterMap['level'].length > 0"
+          #levelFilterTrigger="vitamuiCommonTableFilter"
+        >
           <i class="material-icons vitamui-row-icon">filter_list</i>
         </button>
 
@@ -51,12 +76,18 @@
             [options]="levelFilterOptions"
             (filterChange)="onFilterChange('level', $event)"
             (filterClose)="levelFilterTrigger?.close()"
-            [emptyValueOption]="'GROUP.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
+            [emptyValueOption]="'GROUP.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate"
+          >
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span>{{'GROUP.HOME.RESULTS_TABLE.LEVEL' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <span>{{ 'GROUP.HOME.RESULTS_TABLE.LEVEL' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="level"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
     </div>
 
@@ -64,31 +95,29 @@
       <div class="vitamui-table-rows" *ngFor="let group of dataSource" (click)="groupClick.emit(group)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-2 d-flex align-items-center">
-            <i class="vitamui-icon vitamui-icon-keys"
-              [ngClass]=" group?.enabled ? 'status-badge-green' :'status-badge-grey'">
-            </i>
+            <i class="vitamui-icon vitamui-icon-keys" [ngClass]="group?.enabled ? 'status-badge-green' : 'status-badge-grey'"> </i>
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ group.name }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ group.identifier }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ group.description | truncate:50 }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ group.description | truncate: 50 }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ group.level }}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && groupService.canLoadMore && !pending then loadMore"></div>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && groupService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
- <ng-template #loadMore>
+<ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="groupService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -96,4 +125,4 @@
   <div class="vitamui-min-content">
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
-  </ng-template>
+</ng-template>

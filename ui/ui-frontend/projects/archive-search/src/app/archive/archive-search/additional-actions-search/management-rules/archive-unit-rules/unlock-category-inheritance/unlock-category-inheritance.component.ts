@@ -81,7 +81,7 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     private archiveService: ArchiveService,
     private translateService: TranslateService,
     private dialog: MatDialog,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
@@ -115,7 +115,7 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory
+      (action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory,
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
@@ -175,8 +175,8 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
             data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
               ? this.resultNumberToShow
               : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-              ? this.resultNumberToShow
-              : (this.selectedItem - data.totalResults).toString();
+                ? this.resultNumberToShow
+                : (this.selectedItem - data.totalResults).toString();
           this.isLoading = false;
         });
     }
@@ -192,14 +192,14 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);

@@ -55,7 +55,7 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
     private router: Router,
     private tenantService: TenantSelectionService,
     private translateService: TranslateService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
@@ -69,14 +69,14 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
     }
 
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find(
-      (applicationDetails) => applicationDetails.name === route.data.appId
+      (applicationDetails) => applicationDetails.name === route.data.appId,
     );
     if (tenantsByApp) {
       const tenants = tenantsByApp.tenants;
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
         this.router.navigate(
-          route.pathFromRoot.map((activeRouter) => activeRouter.url.toString()).concat([tenants[0].identifier.toString()])
+          route.pathFromRoot.map((activeRouter) => activeRouter.url.toString()).concat([tenants[0].identifier.toString()]),
         );
       }
       return true;

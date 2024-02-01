@@ -70,37 +70,37 @@ export class ArchiveFacetsService {
     if (facetResults) {
       archiveSearchResultFacets.appraisalRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.APPRAISAL_RULE
+        SearchCriteriaMgtRuleEnum.APPRAISAL_RULE,
       );
 
       archiveSearchResultFacets.accessRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.ACCESS_RULE
+        SearchCriteriaMgtRuleEnum.ACCESS_RULE,
       );
 
       archiveSearchResultFacets.disseminationRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.DISSEMINATION_RULE
+        SearchCriteriaMgtRuleEnum.DISSEMINATION_RULE,
       );
 
       archiveSearchResultFacets.reuseRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.REUSE_RULE
+        SearchCriteriaMgtRuleEnum.REUSE_RULE,
       );
 
       archiveSearchResultFacets.holdRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.HOLD_RULE
+        SearchCriteriaMgtRuleEnum.HOLD_RULE,
       );
 
       archiveSearchResultFacets.classificationRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.CLASSIFICATION_RULE
+        SearchCriteriaMgtRuleEnum.CLASSIFICATION_RULE,
       );
 
       archiveSearchResultFacets.storageRuleFacets = this.extractRulesFacetsResultsByCategory(
         facetResults,
-        SearchCriteriaMgtRuleEnum.STORAGE_RULE
+        SearchCriteriaMgtRuleEnum.STORAGE_RULE,
       );
     }
     return archiveSearchResultFacets;

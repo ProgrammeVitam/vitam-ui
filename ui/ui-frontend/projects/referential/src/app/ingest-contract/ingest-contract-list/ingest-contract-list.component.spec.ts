@@ -51,22 +51,20 @@ describe('IngestContractListComponent', () => {
     updated: new Subject(),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const ingestContractServiceMock = {
-        search: () => of(null),
-      };
+  beforeEach(waitForAsync(() => {
+    const ingestContractServiceMock = {
+      search: () => of(null),
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [IngestContractListComponent],
-        providers: [
-          { provide: IngestContractService, useValue: ingestContractServiceMock },
-          { provide: IngestContractService, useValue: ingestContractServiceSpy },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [IngestContractListComponent],
+      providers: [
+        { provide: IngestContractService, useValue: ingestContractServiceMock },
+        { provide: IngestContractService, useValue: ingestContractServiceSpy },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractListComponent);

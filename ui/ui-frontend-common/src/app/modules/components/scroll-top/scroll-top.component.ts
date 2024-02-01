@@ -14,8 +14,7 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   private routerSubscription: Subscription;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.routerSubscription = this.router.events.subscribe((evt) => {
@@ -31,26 +30,17 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (!this.contentRendered) {
       const bodyElement = document.getElementsByClassName('vitamui-content');
       if (bodyElement?.length > 0) {
-
         const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
         const windowElement = document.getElementsByTagName('div');
 
-        const scrollElement =
-          sideNavElement?.length > 0
-            ? sideNavElement[0] : windowElement[0];
+        const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];
 
         if (scrollElement) {
           this.contentRendered = true;
           scrollElement.addEventListener('scroll', () => {
-            if (
-              scrollElement.scrollTop && scrollElement.scrollTop > 250
-            ) {
+            if (scrollElement.scrollTop && scrollElement.scrollTop > 250) {
               this.windowScrolled = true;
-            } else if (
-              (this.windowScrolled && window.pageYOffset) ||
-              scrollElement.scrollTop ||
-              scrollElement.scrollTop < 10
-            ) {
+            } else if ((this.windowScrolled && window.pageYOffset) || scrollElement.scrollTop || scrollElement.scrollTop < 10) {
               this.windowScrolled = false;
             }
           });
@@ -65,15 +55,10 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   public scrollToTop() {
     (function smoothScroll() {
-
       const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
       const windowElement = document.getElementsByTagName('div');
       const scrollElement =
-          sideNavElement?.length > 0
-            ? sideNavElement[sideNavElement.length - 1]
-            : windowElement?.length > 0
-              ? windowElement[0]
-              : null;
+        sideNavElement?.length > 0 ? sideNavElement[sideNavElement.length - 1] : windowElement?.length > 0 ? windowElement[0] : null;
       const currentScroll = scrollElement.scrollTop;
       if (currentScroll > 0) {
         window.requestAnimationFrame(smoothScroll);
@@ -81,5 +66,4 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
       }
     })();
   }
-
 }

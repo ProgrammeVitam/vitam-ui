@@ -44,16 +44,16 @@ import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileFormatService extends SearchService<FileFormat> {
-
   updated = new Subject<FileFormat>();
 
   constructor(
     private fileFormatApiService: FileFormatApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, fileFormatApiService, 'ALL');
   }
 
@@ -68,7 +68,7 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.getAllByParams(params, headers);
   }
 
-  existsProperties(properties: { name?: string, puid?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; puid?: string }): Observable<any> {
     const existAgency: any = {};
     if (properties.name) {
       existAgency.name = properties.name;
@@ -82,52 +82,51 @@ export class FileFormatService extends SearchService<FileFormat> {
   }
 
   create(agency: FileFormat) {
-    return this.fileFormatApiService.create(agency, this.headers)
-      .pipe(
-        tap(
-          (_: FileFormat) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  patch(data: { id: string, [key: string]: any }): Observable<FileFormat> {
-    return this.fileFormatApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (_) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  delete(fileFormat: FileFormat): Observable<any> {
-    return this.fileFormatApiService.delete(fileFormat.puid).pipe(
-      tap(() => {
+    return this.fileFormatApiService.create(agency, this.headers).pipe(
+      tap(
+        (_: FileFormat) => {
           this.snackBarService.open({
-            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
-            icon: 'vitamui-icon-admin-key'
+            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
+            icon: 'vitamui-icon-admin-key',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        })
+        },
+      ),
     );
   }
 
+  patch(data: { id: string; [key: string]: any }): Observable<FileFormat> {
+    return this.fileFormatApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (_) => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
+
+  delete(fileFormat: FileFormat): Observable<any> {
+    return this.fileFormatApiService.delete(fileFormat.puid).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
 }

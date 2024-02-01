@@ -32,5 +32,5 @@ export enum LogbookOperationReportState {
 }
 
 export enum LogbookOperationTypeProc {
-  INGEST_TEST = 'INGEST_TEST'
+  INGEST_TEST = 'INGEST_TEST',
 }

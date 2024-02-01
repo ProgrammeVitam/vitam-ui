@@ -44,9 +44,7 @@ import { input } from '../../../../../testing/src/helpers';
 import { VitamUITextareaComponent } from './vitamui-textarea.component';
 
 @Component({
-  template: `
-    <vitamui-common-textarea [(ngModel)]="value" #input="ngModel"></vitamui-common-textarea>
-  `
+  template: ` <vitamui-common-textarea [(ngModel)]="value" #input="ngModel"></vitamui-common-textarea> `,
 })
 class TesthostComponent {
   @ViewChild(VitamUITextareaComponent) vitamuiTextareaComponent: VitamUITextareaComponent;
@@ -59,13 +57,11 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('VitamUITextareaComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUITextareaComponent, TesthostComponent]
-    })
-    .compileComponents();
+      declarations: [VitamUITextareaComponent, TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -111,5 +107,4 @@ describe('VitamUITextareaComponent', () => {
     testhost.vitamuiTextareaComponent.onBlur();
     expect(testhost.vitamuiTextareaComponent.focused).toBe(false);
   });
-
 });

@@ -45,35 +45,37 @@ import { MenuOption } from '../navbar';
 @Component({
   selector: 'vitamui-common-tenant-select',
   templateUrl: './vitamui-tenant-select.component.html',
-  styleUrls: ['./vitamui-tenant-select.component.scss']
+  styleUrls: ['./vitamui-tenant-select.component.scss'],
 })
 export class VitamUITenantSelectComponent implements OnInit {
+  appId: ApplicationId;
+  hideTenantMenu = false;
+  hideCustomerMenu = true;
+  appTenants: Tenant[];
+  tenants: MenuOption[];
 
-    appId: ApplicationId;
-    hideTenantMenu = false;
-    hideCustomerMenu = true;
-    appTenants: Tenant[];
-    tenants: MenuOption[];
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+  ) {
+    this.route.data.subscribe((data) => {
+      this.appId = data.appId;
+    });
+  }
 
-    constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
-      this.route.data.subscribe((data) => {
-        this.appId = data.appId;
-      });
+  ngOnInit() {
+    if (this.authService.user) {
+      const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === this.appId);
+      this.appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
+      this.tenants = [];
+      this.appTenants.forEach((tenant) => this.tenants.push({ value: tenant.identifier, label: tenant.name }));
+
+      this.tenants.sort((t1, t2) => t1.label.localeCompare(t2.label));
     }
-
-    ngOnInit() {
-      if (this.authService.user) {
-        const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === this.appId);
-        this.appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
-        this.tenants = [];
-        this.appTenants.forEach((tenant) => this.tenants.push({ value: tenant.identifier, label: tenant.name }));
-
-        this.tenants.sort((t1, t2) => t1.label.localeCompare(t2.label));
-      }
   }
 
-    selectTenantInNavbar(tenantIdentifier: Event) {
-      this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });
+  selectTenantInNavbar(tenantIdentifier: Event) {
+    this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });
   }
-
 }

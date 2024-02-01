@@ -41,7 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FilingPlanModule } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.module';
-import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUISnackBarService} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUISnackBarService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -52,35 +52,33 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
   let component: IngestContractNodeUpdateComponent;
   let fixture: ComponentFixture<IngestContractNodeUpdateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          HttpClientTestingModule,
-          VitamUICommonTestModule,
-          FilingPlanModule,
-          MatSnackBarModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-        ],
-        declarations: [IngestContractNodeUpdateComponent],
-        providers: [
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
-          },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: VitamUISnackBarService, useValue: snackBarSpy },
-          { provide: ENVIRONMENT, useValue: environment },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        FilingPlanModule,
+        MatSnackBarModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+      ],
+      declarations: [IngestContractNodeUpdateComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
+        },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractNodeUpdateComponent);

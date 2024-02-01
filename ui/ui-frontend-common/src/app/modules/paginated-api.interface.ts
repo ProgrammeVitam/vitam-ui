@@ -41,7 +41,5 @@ import { Id } from './models';
 import { PageRequest, PaginatedResponse } from './vitamui-table';
 
 export interface PaginatedApi<T extends Id> {
-
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<T>>;
-
 }

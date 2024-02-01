@@ -1,72 +1,74 @@
 <form [formGroup]="form" class="form-pad">
   <div class="row">
     <div class="col-2">
-      <label>{{'ACCOUNT.LASTNAME' | translate}}</label>
-      <span>{{form?.get('lastname')?.value}}</span>
+      <label>{{ 'ACCOUNT.LASTNAME' | translate }}</label>
+      <span>{{ form?.get('lastname')?.value }}</span>
     </div>
     <div class="col-2">
-      <label>{{'ACCOUNT.FIRSTNAME' | translate}}</label>
-      <span>{{form?.get('firstname')?.value}}</span>
+      <label>{{ 'ACCOUNT.FIRSTNAME' | translate }}</label>
+      <span>{{ form?.get('firstname')?.value }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-3">
-      <label>{{'ACCOUNT.MAIL' | translate}}</label>
-      <span>{{form?.get('email')?.value}}</span>
+      <label>{{ 'ACCOUNT.MAIL' | translate }}</label>
+      <span>{{ form?.get('email')?.value }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-2">
-      <label>{{'ACCOUNT.DEFAULT_LANGUAGE' | translate}}</label>
-      <span>{{'COMMON.LANGUAGE.'+language | translate: { default:'-'} }}</span>
+      <label>{{ 'ACCOUNT.DEFAULT_LANGUAGE' | translate }}</label>
+      <span>{{ 'COMMON.LANGUAGE.' + language | translate: { default: '-' } }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-3">
-      <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below">{{'ACCOUNT.OTP_AUTH' | translate}}
+      <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below"
+        >{{ 'ACCOUNT.OTP_AUTH' | translate }}
       </vitamui-common-slide-toggle>
     </div>
   </div>
 
   <div class="row">
     <div class="col-2">
-      <label>{{'ACCOUNT.PHONE.MOBILE' | translate}}</label>
-      <span>{{form?.get('mobile')?.value}}</span>
+      <label>{{ 'ACCOUNT.PHONE.MOBILE' | translate }}</label>
+      <span>{{ form?.get('mobile')?.value }}</span>
     </div>
 
     <div class="col-2">
-      <label>{{'ACCOUNT.PHONE.FIX' | translate}}</label>
-      <span>{{form?.get('phone')?.value}}</span>
+      <label>{{ 'ACCOUNT.PHONE.FIX' | translate }}</label>
+      <span>{{ form?.get('phone')?.value }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
-      <label>{{'ACCOUNT.DELIVERY_ADRESS' | translate}}</label>
-      <span *ngIf="form.get('address').value?.street">{{form.get('address').value?.street}}
+      <label>{{ 'ACCOUNT.DELIVERY_ADRESS' | translate }}</label>
+      <span *ngIf="form.get('address').value?.street"
+        >{{ form.get('address').value?.street }}
         <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
       </span>
       <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">
-        {{form.get('address').value?.zipCode}}, {{form.get('address').value?.city}}
+        {{ form.get('address').value?.zipCode }}, {{ form.get('address').value?.city }}
       </span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-3">
-      <label>{{'ACCOUNT.LEVEL' | translate}}</label>
-      <span>{{form?.get('level')?.value}}</span>
+      <label>{{ 'ACCOUNT.LEVEL' | translate }}</label>
+      <span>{{ form?.get('level')?.value }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
-      <label>{{'ACCOUNT.GROUP' | translate}}</label>
-      <span>{{form.get('profileGroup').value?.name}}</span>
-      <span>{{form.get('profileGroup').value?.description}}</span>
+      <label>{{ 'ACCOUNT.GROUP' | translate }}</label>
+      <span>{{ form.get('profileGroup').value?.name }}</span>
+      <span>{{ form.get('profileGroup').value?.description }}</span>
     </div>
   </div>
 </form>

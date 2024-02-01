@@ -51,21 +51,19 @@ describe('RuleListComponent', () => {
     search: () => of(null),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RuleListComponent],
-        providers: [
-          { provide: BASE_URL, useValue: '' },
-          { provide: RuleService, useValue: ruleServiceMock },
-          { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
-          { provide: VitamUISnackBarService, useValue: {} },
-          { provide: MatDialog, useValue: {} },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RuleListComponent],
+      providers: [
+        { provide: BASE_URL, useValue: '' },
+        { provide: RuleService, useValue: ruleServiceMock },
+        { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: MatDialog, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleListComponent);

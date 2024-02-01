@@ -1,57 +1,59 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-slide-toggle formControlName="everyOriginatingAgency">Tous les services producteurs
-            </vitamui-common-slide-toggle>
-            <div class="form-group" *ngIf="form?.get('everyOriginatingAgency')?.value === false">
-                <mat-form-field class="vitamui-mat-select">
-                    <mat-select [formControl]="originatingAgencySelect"
-                        placeholder="Sélectionnez les services producteurs"
-                        i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-                        panelclass="vitamui-mat-select" multiple required>
-                        <mat-option *ngFor='let originatingAgencie of originatingAgencies'
-                            [value]="originatingAgencie.key">
-                            {{originatingAgencie.label}}</mat-option>
-                    </mat-select>
-                    <div class="select-arrow">
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <mat-error *ngIf="originatingAgencySelect?.errors?.required"
-                        i18n="Application@@agenciesErrorRequiredField">Veuillez sélectionner au moins un service
-                    </mat-error>
-                </mat-form-field>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-slide-toggle formControlName="everyOriginatingAgency">Tous les services producteurs </vitamui-common-slide-toggle>
+      <div class="form-group" *ngIf="form?.get('everyOriginatingAgency')?.value === false">
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select
+            [formControl]="originatingAgencySelect"
+            placeholder="Sélectionnez les services producteurs"
+            i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+            panelclass="vitamui-mat-select"
+            multiple
+            required
+          >
+            <mat-option *ngFor="let originatingAgencie of originatingAgencies" [value]="originatingAgencie.key">
+              {{ originatingAgencie.label }}</mat-option
+            >
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+          <mat-error *ngIf="originatingAgencySelect?.errors?.required" i18n="Application@@agenciesErrorRequiredField"
+            >Veuillez sélectionner au moins un service
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
+  </div>
 
-
-    <div class="row">
-        <div class="col-10 form-control">
-            <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous les usages
-            </vitamui-common-slide-toggle>
-            <div class="form-group" *ngIf="form?.get('everyDataObjectVersion')?.value === false">
-                <mat-form-field class="vitamui-mat-select">
-                    <mat-select [formControl]="usageSelect" placeholder="Sélectionnez les usages"
-                        i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-                        panelclass="vitamui-mat-select" multiple required>
-                        <mat-option *ngFor='let usage of usages' [value]="usage.key">
-                            {{usage.label}}</mat-option>
-                    </mat-select>
-                    <div class="select-arrow">
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <mat-error *ngIf="usageSelect?.errors?.required"
-                        i18n="Application@@usagesErrorRequiredField">Veuillez sélectionner au moins un usage
-                    </mat-error>
-                </mat-form-field>
-            </div>
-        </div>
-
+  <div class="row">
+    <div class="col-10 form-control">
+      <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous les usages </vitamui-common-slide-toggle>
+      <div class="form-group" *ngIf="form?.get('everyDataObjectVersion')?.value === false">
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select
+            [formControl]="usageSelect"
+            placeholder="Sélectionnez les usages"
+            i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+            panelclass="vitamui-mat-select"
+            multiple
+            required
+          >
+            <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+          <mat-error *ngIf="usageSelect?.errors?.required" i18n="Application@@usagesErrorRequiredField"
+            >Veuillez sélectionner au moins un usage
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
+  </div>
 
-    <div class="form-group bottom">
-        <button type="submit" class="btn secondary"
-            [disabled]="unchanged() || isInvalid() || submited">Enregistrer</button>
-    </div>
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="unchanged() || isInvalid() || submited">Enregistrer</button>
+  </div>
 </form>

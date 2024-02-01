@@ -27,7 +27,7 @@ describe('AnalyticsResolver', () => {
           },
         },
       ],
-    })
+    }),
   );
 
   it('should be created', () => {

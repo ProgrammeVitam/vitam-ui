@@ -1,4 +1,2 @@
-<div *ngIf="!hideCounter" class="text normal bold primary">
-  {{'PROGRESS_BAR.STEP' | translate}} {{index +1 }} / {{count}}
-</div>
+<div *ngIf="!hideCounter" class="text normal bold primary">{{ 'PROGRESS_BAR.STEP' | translate }} {{ index + 1 }} / {{ count }}</div>
 <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>

@@ -77,7 +77,7 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private ruleService: RuleService,
     private formBuilder: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     this.previousRuleDetails = {
       rule: '',
@@ -97,7 +97,7 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
-        filter((formData) => this.patchForm(formData))
+        filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
@@ -164,11 +164,11 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction;
 
       if (rule.rule !== this.lastRuleId) {
@@ -178,12 +178,12 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
         }
         this.ruleTypeDUA.preventRulesIdToAdd.push(rule.rule);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         this.ruleTypeDUA = { rules: [], preventRulesIdToAdd: [rule.rule] };
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {

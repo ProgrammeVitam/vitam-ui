@@ -41,7 +41,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, Logger, SidenavPage, Unit } from 'ui-frontend-common';
+import {
+  AccessContract,
+  ExternalParameters,
+  ExternalParametersService,
+  GlobalEventService,
+  Logger,
+  SidenavPage,
+  Unit,
+} from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
@@ -75,7 +83,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
-    private loggerService: Logger
+    private loggerService: Logger,
   ) {
     super(route, globalEventService);
   }
@@ -123,7 +131,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
                 panelClass: 'vitamui-snack-bar',
                 duration: 10000,
               });
-            })
+            }),
           )
           .subscribe();
       }
@@ -151,7 +159,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 

@@ -76,7 +76,7 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
   constructor(
     public externalParamProfileServiceService: ExternalParamProfileService,
     private profileService: ProfileService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
   ) {
     super(externalParamProfileServiceService);
   }

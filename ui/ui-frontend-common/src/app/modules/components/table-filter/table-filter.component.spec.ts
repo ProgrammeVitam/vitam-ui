@@ -46,25 +46,20 @@ import { TableFilterComponent } from './table-filter.component';
 
 @Component({
   template: `
-    <vitamui-common-table-filter
-      [(filter)]="filter"
-      [showSearchBar]="showSearchBar"
-      (search)="onSearch($event)"
-      (close)="onClose()"
-    >
+    <vitamui-common-table-filter [(filter)]="filter" [showSearchBar]="showSearchBar" (search)="onSearch($event)" (close)="onClose()">
       <vitamui-common-table-filter-option [value]="0">Option 0</vitamui-common-table-filter-option>
       <vitamui-common-table-filter-option [value]="1">Option 1</vitamui-common-table-filter-option>
       <vitamui-common-table-filter-option [value]="2">Option 2</vitamui-common-table-filter-option>
       <vitamui-common-table-filter-option [value]="3">Option 3</vitamui-common-table-filter-option>
     </vitamui-common-table-filter>
-  `
+  `,
 })
 export class TestHostComponent {
   filter: any;
   showSearchBar = false;
 
-  onSearch() { }
-  onClose() { }
+  onSearch() {}
+  onClose() {}
 }
 
 describe('TableFilterComponent', () => {
@@ -73,13 +68,9 @@ describe('TableFilterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatPseudoCheckboxModule,
-        FormsModule,
-      ],
-      declarations: [TestHostComponent, TableFilterComponent, TableFilterOptionComponent]
-    })
-      .compileComponents();
+      imports: [MatPseudoCheckboxModule, FormsModule],
+      declarations: [TestHostComponent, TableFilterComponent, TableFilterOptionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -165,5 +156,4 @@ describe('TableFilterComponent', () => {
 
     expect(testhost.onSearch).toHaveBeenCalledWith('toto');
   });
-
 });

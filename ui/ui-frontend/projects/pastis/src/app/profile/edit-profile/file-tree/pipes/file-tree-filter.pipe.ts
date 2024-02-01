@@ -38,12 +38,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filetreeFilter'
+  name: 'filetreeFilter',
 })
 export class FiletreeFilterPipe implements PipeTransform {
-
   transform(): any {
     return null;
   }
-
 }

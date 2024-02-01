@@ -77,12 +77,11 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
         useState: identityProvider.useState,
         useNonce: identityProvider.useNonce,
         usePkce: identityProvider.usePkce,
-      })
+      }),
     );
 
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });
   }
-
 
   patch(partialIDP: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
     return super.patch(partialIDP, headers);
@@ -101,7 +100,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     identityProviderId: string,
     keystore: File,
     keystorePassword: string,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
   ): Observable<IdentityProvider> {
     const formData = new FormData();
 

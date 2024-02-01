@@ -46,7 +46,7 @@ import { PageRequest, PaginatedResponse } from '../vitamui-table';
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RuleApiService extends BaseHttpClient<Rule> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {

@@ -43,31 +43,34 @@ import { CustomerService } from '../../core/customer.service';
 @Component({
   selector: 'app-customer-preview',
   templateUrl: './customer-preview.component.html',
-  styleUrls: ['./customer-preview.component.scss']
+  styleUrls: ['./customer-preview.component.scss'],
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
-
   @Input() customer: Customer;
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
 
   @Input() gdprReadOnlyStatus: boolean;
 
-
   customerUpdatedSub: Subscription;
 
-  constructor(private customerService: CustomerService, private startupService: StartupService) {}
+  constructor(
+    private customerService: CustomerService,
+    private startupService: StartupService,
+  ) {}
 
   ngOnInit() {
     this.customerUpdatedSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
       this.customer = updatedCustomer;
     });
-
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/customer/' + this.customer.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/customer/' + this.customer.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
@@ -80,11 +83,9 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   }
 
   filterEvents(event: any): boolean {
-
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_CUSTOMER') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_CUSTOMER')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_CUSTOMER') || event.outDetail.includes('EXT_VITAMUI_CREATE_CUSTOMER'))
     );
   }
-
 }

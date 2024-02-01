@@ -102,7 +102,7 @@ export class ContextInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private contextService: ContextService,
-    private securityProfileService: SecurityProfileService
+    private securityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
       name: [null],
@@ -156,7 +156,7 @@ export class ContextInformationTabComponent {
           }
         }
         return this.contextService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -174,7 +174,7 @@ export class ContextInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

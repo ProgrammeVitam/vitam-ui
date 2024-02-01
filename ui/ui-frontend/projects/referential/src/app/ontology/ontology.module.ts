@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import {SharedModule} from '../shared/shared.module';
-import {OntologyCreateModule} from './ontology-create/ontology-create.module';
-import {OntologyListComponent} from './ontology-list/ontology-list.component';
-import {OntologyPreviewModule} from './ontology-preview/ontology-preview.module';
-import {OntologyRoutingModule} from './ontology-routing.module';
-import {OntologyComponent} from './ontology.component';
+import { SharedModule } from '../shared/shared.module';
+import { OntologyCreateModule } from './ontology-create/ontology-create.module';
+import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
+import { OntologyRoutingModule } from './ontology-routing.module';
+import { OntologyComponent } from './ontology.component';
 
 @NgModule({
   imports: [
@@ -67,13 +67,8 @@ import {OntologyComponent} from './ontology.component';
     MatSidenavModule,
     MatProgressSpinnerModule,
     SharedModule,
-    TableFilterModule
+    TableFilterModule,
   ],
-  declarations: [
-    OntologyComponent,
-    OntologyListComponent
-  ]
-
+  declarations: [OntologyComponent, OntologyListComponent],
 })
-export class OntologyModule {
-}
+export class OntologyModule {}

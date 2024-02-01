@@ -39,17 +39,14 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-common-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss']
+  styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent implements OnInit {
-
   @Input() dialogTitle: string;
   @Input() cancelLabel: string;
   @Input() confirmLabel: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

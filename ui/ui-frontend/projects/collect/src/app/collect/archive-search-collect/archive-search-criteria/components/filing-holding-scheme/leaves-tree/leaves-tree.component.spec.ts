@@ -39,7 +39,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -119,7 +119,7 @@ describe('LeavesTreeComponent', () => {
 
   it('LeavesTreeComponent should be stable after creation', () => {
     expect(component).toBeTruthy();
-    // expect(component.projectId).toBeDefined();    
+    // expect(component.projectId).toBeDefined();
     expect(component.nestedTreeControlLeaves).toBeDefined();
   });
 

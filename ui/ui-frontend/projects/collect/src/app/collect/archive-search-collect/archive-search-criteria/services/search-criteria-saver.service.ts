@@ -41,13 +41,12 @@ import { ProjectsApiService } from '../../../core/api/project-api.service';
 import { SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchCriteriaSaverService extends SearchService<any> {
-
   constructor(
     private projectsApiService: ProjectsApiService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, projectsApiService, 'ALL');
   }

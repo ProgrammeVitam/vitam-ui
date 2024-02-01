@@ -3,19 +3,18 @@
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
-  <cdk-step>
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold">{{ 'GROUP.PROFILE.MODAL.TITLE' | translate }} "{{ data?.group?.name }}"</div>
 
-  <div class="content">
-    <div class="text large bold">{{'GROUP.PROFILE.MODAL.TITLE' | translate}} "{{ data?.group?.name }}"</div>
+        <app-profiles-form formControlName="profileIds" [level]="data?.group?.level"></app-profiles-form>
 
-      <app-profiles-form formControlName="profileIds" [level]="data?.group?.level"></app-profiles-form>
-    
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
-    </div>
-  </div>
-  </cdk-step>
-</vitamui-common-stepper>
+        <div class="actions">
+          <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
 </form>

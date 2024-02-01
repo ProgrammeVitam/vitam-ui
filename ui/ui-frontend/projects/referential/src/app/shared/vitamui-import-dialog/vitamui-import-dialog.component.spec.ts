@@ -58,34 +58,32 @@ describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;
   let fixture: ComponentFixture<VitamUIImportDialogComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [VitamUIImportDialogComponent],
-        imports: [
-          LoggerModule.forRoot(),
-          NoopAnimationsModule,
-          HttpClientTestingModule,
-          VitamUICommonTestModule,
-          MatSidenavModule,
-          MatSnackBarModule,
-          MatDialogModule,
-          MatProgressBarModule,
-          MatMenuModule,
-          MatOptionModule,
-          CdkStepperModule,
-        ],
-        providers: [
-          { provide: MatDialogRef, useValue: '' },
-          { provide: CdkStepper },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: BASE_URL, useValue: '' },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [VitamUIImportDialogComponent],
+      imports: [
+        LoggerModule.forRoot(),
+        NoopAnimationsModule,
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        MatSidenavModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatProgressBarModule,
+        MatMenuModule,
+        MatOptionModule,
+        CdkStepperModule,
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: '' },
+        { provide: CdkStepper },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: BASE_URL, useValue: '' },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamUIImportDialogComponent);

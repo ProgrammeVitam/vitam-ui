@@ -86,7 +86,7 @@ export class FilingHoldingSchemeHandler {
       if (!node.children || node.children.length < 1) {
         if (
           !attachmenUnitsFromCollect.some(
-            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id
+            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id,
           )
         ) {
           continue;
@@ -98,7 +98,7 @@ export class FilingHoldingSchemeHandler {
       // Add the parent children
       const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(
         node.children,
-        attachmenUnitsFromCollect
+        attachmenUnitsFromCollect,
       );
       const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
       if (addedCount < node.count) {
@@ -142,7 +142,7 @@ export class FilingHoldingSchemeHandler {
   public static addChildrenAndCheckPaternity(
     parentNode: FilingHoldingSchemeNode,
     units: Unit[],
-    initCount: boolean = false
+    initCount: boolean = false,
   ): MatchingNodesNumbers {
     const matchingNodes = new MatchingNodesNumbers();
     units.forEach((unit) => {

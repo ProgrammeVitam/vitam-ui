@@ -53,8 +53,7 @@ export class CriteriaSearchComponent implements OnInit {
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
     this.criteriaRemoveEvent.emit({ keyElt, valueElt });

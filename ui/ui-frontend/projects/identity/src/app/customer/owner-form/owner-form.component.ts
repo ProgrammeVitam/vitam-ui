@@ -47,14 +47,14 @@ import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => OwnerFormComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-owner-form',
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
-  providers: [OWNER_FORM_VALUE_ACCESSOR]
+  providers: [OWNER_FORM_VALUE_ACCESSOR],
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;
@@ -67,11 +67,15 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   @Input()
   set customerId(customerId: string) {
     this._customerId = customerId;
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     this.form.get('customerId').setValue(customerId);
   }
 
-  get customerId() { return this._customerId; }
+  get customerId() {
+    return this._customerId;
+  }
 
   // tslint:disable-next-line:variable-name
   private _customerId: string;
@@ -81,14 +85,16 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     this._customerInfo = customerInfo;
     if (customerInfo && this.form) {
       this.form.patchValue({
-          code: customerInfo.code,
-          name: customerInfo.name,
-          companyName: customerInfo.companyName,
-        });
+        code: customerInfo.code,
+        name: customerInfo.name,
+        companyName: customerInfo.companyName,
+      });
     }
   }
 
-  get customerInfo() { return this._customerInfo; }
+  get customerInfo() {
+    return this._customerInfo;
+  }
   // tslint:disable-next-line:variable-name
   private _customerInfo: any;
 
@@ -96,7 +102,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     private formBuilder: FormBuilder,
     private ownerFormValidators: OwnerFormValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -117,7 +123,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
         city: null,
         country: 'FR',
       }),
-      readonly: false
+      readonly: false,
     });
   }
 
@@ -139,20 +145,22 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   writeValue(owner: Owner) {
     this.sub.unsubscribe();
 
-    this.form.reset(owner || {
-      customerId: this.customerId,
-      code: null,
-      name: null,
-      companyName: null,
-      internalCode: null,
-      address: {
-        street: null,
-        zipCode: null,
-        city: null,
-        country: 'FR'
+    this.form.reset(
+      owner || {
+        customerId: this.customerId,
+        code: null,
+        name: null,
+        companyName: null,
+        internalCode: null,
+        address: {
+          street: null,
+          zipCode: null,
+          city: null,
+          country: 'FR',
+        },
+        readonly: false,
       },
-      readonly: false
-    });
+    );
 
     this.subscribeToValueChanges();
   }
@@ -168,10 +176,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   subscribeToValueChanges() {
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
-        map(() => this.form.pending || this.form.invalid ? null : this.form.value),
-        distinctUntilChanged()
+        map(() => (this.form.pending || this.form.invalid ? null : this.form.value)),
+        distinctUntilChanged(),
       )
       .subscribe((value) => this.onChange(value));
   }
-
 }

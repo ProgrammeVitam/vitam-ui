@@ -1,49 +1,51 @@
 <ng-container *ngIf="!disabled">
-    <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-      <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
-        <div class="editable-field-content">
-          <label>{{label}}</label>
-            <span class="editable-field-text-content">
-              <div *ngFor="let email of control.value">
-                {{ email }}
-              </div>
-            </span>
-            <div class="editable-field-control" [ngStyle]="{'margin-top': (label) ? '15px' : '0'}">
-              <vitamui-common-emails-input
-                class="domains-input-mini"
-                [formControl]="control"
-                [placeholder]="'MULTIPLE_EMAILS_INPUT.PLACEHOLDER' | translate"
-                spinnerDiameter="18"
-                (click)="onEmailInputClick()"
-              ></vitamui-common-emails-input>
-            </div>
-            <div class="text-error" *ngIf="control?.value?.length === 0">{{'MULTIPLE_EMAILS_INPUT.ERROR' | translate}}</div>
+  <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+    <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
+      <div class="editable-field-content">
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">
+          <div *ngFor="let email of control.value">
+            {{ email }}
+          </div>
+        </span>
+        <div class="editable-field-control" [ngStyle]="{ 'margin-top': label ? '15px' : '0' }">
+          <vitamui-common-emails-input
+            class="domains-input-mini"
+            [formControl]="control"
+            [placeholder]="'MULTIPLE_EMAILS_INPUT.PLACEHOLDER' | translate"
+            spinnerDiameter="18"
+            (click)="onEmailInputClick()"
+          ></vitamui-common-emails-input>
         </div>
-        <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
-        <div class="vitamui-input-errors" *ngIf="showSpinner">
-          <mat-spinner diameter="24" color="accent"></mat-spinner>
-        </div>
+        <div class="text-error" *ngIf="control?.value?.length === 0">{{ 'MULTIPLE_EMAILS_INPUT.ERROR' | translate }}</div>
       </div>
-    </div>
-
-    <div class="vitamui-input-errors"></div>
-
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOpen]="editMode"
-      [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayPositions]="positions"
-    >
-      <div class="editable-field-actions">
-        <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
-        <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
+      <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
+      <div class="vitamui-input-errors" *ngIf="showSpinner">
+        <mat-spinner diameter="24" color="accent"></mat-spinner>
       </div>
-    </ng-template>
-  </ng-container>
-
-  <div *ngIf="disabled" class="read-only-field">
-    <label>{{label}}</label>
-    <div *ngFor="let email of control?.value">
-      {{ email }}
     </div>
   </div>
+
+  <div class="vitamui-input-errors"></div>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOpen]="editMode"
+    [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayPositions]="positions"
+  >
+    <div class="editable-field-actions">
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
+      <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
+    </div>
+  </ng-template>
+</ng-container>
+
+<div *ngIf="disabled" class="read-only-field">
+  <label>{{ label }}</label>
+  <div *ngFor="let email of control?.value">
+    {{ email }}
+  </div>
+</div>

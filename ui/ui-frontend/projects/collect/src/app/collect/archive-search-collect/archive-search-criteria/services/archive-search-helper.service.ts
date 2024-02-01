@@ -68,7 +68,7 @@ export class ArchiveSearchHelperService {
     category: SearchCriteriaTypeEnum,
     valueTranslated: boolean,
     dataType: string,
-    emit: boolean
+    emit: boolean,
   ) {
     if (keyElt && valueElt) {
       if (valueElt && valueElt.id === ORIGIN_WAITING_RECALCULATE) {
@@ -84,7 +84,7 @@ export class ArchiveSearchHelperService {
           SearchCriteriaTypeEnum.FIELDS,
           valueTranslated,
           dataType,
-          emit
+          emit,
         );
 
         if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
@@ -116,7 +116,7 @@ export class ArchiveSearchHelperService {
           const filtredValues = values.filter((elt) =>
             criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
               ? elt.value.value === valueElt.value
-              : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
+              : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval,
           );
           if (filtredValues.length === 0) {
             values.push({
@@ -191,7 +191,7 @@ export class ArchiveSearchHelperService {
     listOfUAIdToInclude: CriteriaValue[],
     listOfUAIdToExclude: CriteriaValue[],
     isAllchecked: boolean,
-    isIndeterminate: boolean
+    isIndeterminate: boolean,
   ) {
     const listOfUACriteriaSearch = [];
     if (criteriaSearchList && criteriaSearchList.length > 0) {
@@ -231,7 +231,7 @@ export class ArchiveSearchHelperService {
     emit: boolean,
     searchCriteriaKeys: string[],
     searchCriterias: Map<string, SearchCriteria>,
-    nbQueryCriteria: number
+    nbQueryCriteria: number,
   ) {
     if (searchCriterias && searchCriterias.size > 0) {
       if (valueElt && valueElt.id === WAITING_RECALCULATE) {
@@ -275,7 +275,7 @@ export class ArchiveSearchHelperService {
           emit,
           searchCriteriaKeys,
           searchCriterias,
-          nbQueryCriteria
+          nbQueryCriteria,
         );
       }
       searchCriterias.forEach((val, key) => {
@@ -348,7 +348,7 @@ export class ArchiveSearchHelperService {
   updateCriteriaStatus(
     searchCriterias: Map<string, SearchCriteria>,
     oldStatusFilter: SearchCriteriaStatusEnum,
-    newStatus: SearchCriteriaStatusEnum
+    newStatus: SearchCriteriaStatusEnum,
   ) {
     searchCriterias.forEach((value: SearchCriteria) => {
       value.values.forEach((elt) => {
@@ -440,7 +440,7 @@ export class ArchiveSearchHelperService {
   buildManagementRulesCriteriaListForQuery(
     managementRuleType: string,
     searchCriterias: Map<string, SearchCriteria>,
-    criteriaSearchList: SearchCriteriaEltDto[]
+    criteriaSearchList: SearchCriteriaEltDto[],
   ) {
     searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.category.toString() === managementRuleType) {
@@ -498,7 +498,7 @@ export class ArchiveSearchHelperService {
     nodeId: string,
     searchCriterias: Map<string, SearchCriteria>,
     searchCriteriaKeys: string[],
-    nbQueryCriteria: number
+    nbQueryCriteria: number,
   ) {
     nodeArray.forEach((node) => {
       if (node.id === nodeId) {
@@ -516,7 +516,7 @@ export class ArchiveSearchHelperService {
           SearchCriteriaTypeEnum.NODES,
           false,
           CriteriaDataType.STRING,
-          false
+          false,
         );
       } else if (node.children.length > 0) {
         this.fillNodeTitle(node.children, nodeId, searchCriterias, searchCriteriaKeys, nbQueryCriteria);

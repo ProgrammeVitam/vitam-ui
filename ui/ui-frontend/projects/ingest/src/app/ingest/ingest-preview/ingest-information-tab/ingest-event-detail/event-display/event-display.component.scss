@@ -1,36 +1,35 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 .ingestDetails {
-    margin-top: 10px;
-    text-align: left;
-    font-size: 14px;
-    word-wrap: normal;
+  margin-top: 10px;
+  text-align: left;
+  font-size: 14px;
+  word-wrap: normal;
 }
 .white-bg {
-    background-color: white;
+  background-color: white;
 }
 
 .bold-text {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .errorRow {
-    color: $red;
+  color: $red;
 }
 .warningRow {
-    color: $mustard-yellow
+  color: $mustard-yellow;
 }
 
 .outMessage {
-    font-size: 12px;
-    padding: 5px 0 0 0;
+  font-size: 12px;
+  padding: 5px 0 0 0;
 }
 
-
 .no-padding {
-    padding: 0;
+  padding: 0;
 }
 
 .eventChild {
-    padding-left: 10px;
+  padding-left: 10px;
 }

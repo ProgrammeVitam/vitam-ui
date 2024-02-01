@@ -57,7 +57,6 @@
     }
 
     .label {
-
     }
 
     div {
@@ -67,7 +66,7 @@
   }
 
   .row-separator {
-    border-bottom: 1px solid #E0E0E0;
+    border-bottom: 1px solid #e0e0e0;
     margin-bottom: 5px;
     margin-top: 5px;
   }
@@ -75,7 +74,6 @@
   &.download-object {
     padding: 15px 0px 15px 20px;
   }
-
 }
 
 .object-container {
@@ -85,7 +83,7 @@
     padding: 0 5px;
     border-radius: 5px;
     display: flex;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     flex-direction: row;
     font-size: 16px;
     font-weight: 700;
@@ -127,7 +125,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--vitamui-primary-800)
+        background-color: var(--vitamui-primary-800);
       }
     }
   }
@@ -135,7 +133,7 @@
   .object-details {
     padding: 0 15px;
     margin-top: 5px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     // object-details-group
   }
 }

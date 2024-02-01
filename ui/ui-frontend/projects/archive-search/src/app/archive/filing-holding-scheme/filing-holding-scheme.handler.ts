@@ -111,7 +111,7 @@ export class FilingHoldingSchemeHandler {
   public static addDirectChildrenOnly(
     parentNode: FilingHoldingSchemeNode,
     units: Unit[],
-    initCount: boolean = false
+    initCount: boolean = false,
   ): MatchingNodesNumbers {
     const matchingNodes = new MatchingNodesNumbers();
     if (!parentNode.children) {
@@ -150,7 +150,7 @@ export class FilingHoldingSchemeHandler {
   public static addChildrenRecursively(
     parentNodes: FilingHoldingSchemeNode[],
     units: Unit[],
-    initCount: boolean = false
+    initCount: boolean = false,
   ): MatchingNodesNumbers {
     const matchingNodesNumbers = new MatchingNodesNumbers();
     if (!parentNodes || parentNodes.length < 1) {

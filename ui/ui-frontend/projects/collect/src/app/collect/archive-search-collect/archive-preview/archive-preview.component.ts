@@ -124,9 +124,9 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     return this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.HOLDING_UNIT
       ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
       : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+        ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+        : this.getArchiveUnitType(archiveUnit) === VitamuiUnitTypes.INGEST && !archiveUnit['#object']
+          ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+          : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

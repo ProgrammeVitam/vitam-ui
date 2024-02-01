@@ -20,9 +20,13 @@
         </div>
       </div>
       <div class="form-control read-only-field" *ngIf="updateStarted">
-        <vitamui-common-input formControlName="title" required
-                              placeholder="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
-                              class="col-6 px-0" [value]="getAuTitle(archiveUnit)">
+        <vitamui-common-input
+          formControlName="title"
+          required
+          placeholder="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
+          class="col-6 px-0"
+          [value]="getAuTitle(archiveUnit)"
+        >
         </vitamui-common-input>
         <div class="col-6"></div>
       </div>

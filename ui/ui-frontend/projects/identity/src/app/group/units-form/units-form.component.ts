@@ -44,7 +44,7 @@ import { GroupValidators } from '../group.validators';
 export const UNITS_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => UnitsFormComponent),
-  multi: true
+  multi: true,
 };
 
 /**
@@ -54,10 +54,9 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   selector: 'app-units-form',
   templateUrl: './units-form.component.html',
   styleUrls: ['./units-form.component.scss'],
-  providers: [UNITS_FORM_VALUE_ACCESSOR]
+  providers: [UNITS_FORM_VALUE_ACCESSOR],
 })
-export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
-
+export class UnitsFormComponent implements ControlValueAccessor, OnInit {
   units: string[] = [];
 
   removedUnits: string[] = [];
@@ -66,9 +65,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
 
   @Input() customer: string;
 
-  constructor(
-    private groupValidators: GroupValidators,
-    ) { }
+  constructor(private groupValidators: GroupValidators) {}
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -86,8 +83,11 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
   }
 
   ngOnInit(): void {
-    this.unitControl = new FormControl('', [this.unitAlreadyAdd.bind(this)],
-                                        this.groupValidators.unitExists(this.customer, this.removedUnits));
+    this.unitControl = new FormControl(
+      '',
+      [this.unitAlreadyAdd.bind(this)],
+      this.groupValidators.unitExists(this.customer, this.removedUnits),
+    );
   }
 
   /**
@@ -127,13 +127,12 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
 
   unitAlreadyAdd(control: AbstractControl): ValidationErrors {
     const unit: string = control.value;
-    if (unit && this.units.map(u => u.toLocaleLowerCase()).includes(unit.trim().toLocaleLowerCase())) {
-        return {
-          unitAlreadyAdd: true
-        };
+    if (unit && this.units.map((u) => u.toLocaleLowerCase()).includes(unit.trim().toLocaleLowerCase())) {
+      return {
+        unitAlreadyAdd: true,
+      };
     }
 
     return null;
   }
-
 }

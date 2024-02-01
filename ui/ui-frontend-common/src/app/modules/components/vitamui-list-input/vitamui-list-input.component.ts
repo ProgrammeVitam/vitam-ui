@@ -43,21 +43,19 @@ import { AsyncValidatorFn, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR,
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
-
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIListInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-list-input',
   templateUrl: './vitamui-list-input.component.html',
   styleUrls: ['./vitamui-list-input.component.scss'],
-  providers: [LIST_INPUT_ACCESSOR]
+  providers: [LIST_INPUT_ACCESSOR],
 })
 export class VitamUIListInputComponent implements AfterContentInit, ControlValueAccessor {
-
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
   @Input()
@@ -72,8 +70,12 @@ export class VitamUIListInputComponent implements AfterContentInit, ControlValue
     this.control.updateValueAndValidity({ emitEvent: false });
   }
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _required = false;
 
@@ -87,10 +89,7 @@ export class VitamUIListInputComponent implements AfterContentInit, ControlValue
   onTouched: () => void;
 
   constructor() {
-    this.control = new FormControl(
-      null,
-      [ Validators.required ]
-    );
+    this.control = new FormControl(null, [Validators.required]);
   }
 
   ngAfterContentInit() {
@@ -114,9 +113,13 @@ export class VitamUIListInputComponent implements AfterContentInit, ControlValue
   }
 
   add(): void {
-    if (this.control.invalid || this.control.pending) { return; }
+    if (this.control.invalid || this.control.pending) {
+      return;
+    }
     const val = this.control.value.trim();
-    if (this.values.includes(val)) { return; }
+    if (this.values.includes(val)) {
+      return;
+    }
     this.values.push(val);
     this.onChange(this.values);
     this.control.reset();
@@ -138,5 +141,4 @@ export class VitamUIListInputComponent implements AfterContentInit, ControlValue
   get valueExists(): boolean {
     return this.values.includes((this.control.value || '').trim());
   }
-
 }

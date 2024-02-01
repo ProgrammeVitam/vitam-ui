@@ -68,7 +68,7 @@ export class StartupService {
     private themeService: ThemeService,
     private applicationService: ApplicationService,
     private userInfoApiService: BaseUserInfoApiService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
   load(): Promise<any> {
@@ -79,7 +79,7 @@ export class StartupService {
           this.authService.loginUrl = this.configurationData.CAS_URL;
           this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
           this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
-        })
+        }),
       );
 
       const authSource = this.refreshUser().pipe(
@@ -88,9 +88,9 @@ export class StartupService {
             .getMyUserInfo()
             .pipe(
               tap((userInfo: UserInfo) => (this.authService.userInfo = userInfo)),
-              take(1)
+              take(1),
             )
-            .subscribe()
+            .subscribe(),
         ),
         tap(() => this.applicationService.list().pipe(take(1)).subscribe()),
         tap(() => {
@@ -108,11 +108,11 @@ export class StartupService {
                 const customerColorMap = graphicIdentity.hasCustomGraphicIdentity ? graphicIdentity.themeColors : null;
                 this.themeService.init(this.configurationData, customerColorMap);
               }),
-              take(1)
+              take(1),
             )
             .subscribe();
         }),
-        take(1)
+        take(1),
       );
 
       zip(confSource, authSource).subscribe(() => {
@@ -150,7 +150,7 @@ export class StartupService {
       tap((data) => {
         this.authService.user = data;
         this.userRefresh.next(data);
-      })
+      }),
     );
   }
 
@@ -303,5 +303,4 @@ export class StartupService {
       return this.configurationData.CUSTOMER;
     }
   }
-
 }

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
- import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {AccessContractCreateValidators} from '../../access-contract-create/access-contract-create.validators';
-import {AccessContractService} from '../../access-contract.service';
-import {AccessContractInformationTabComponent} from './access-contract-information-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
+import { AccessContractService } from '../../access-contract.service';
+import { AccessContractInformationTabComponent } from './access-contract-information-tab.component';
 
 // TODO fix test
 xdescribe('AccessContractInformationTabComponent', () => {
@@ -53,12 +53,11 @@ xdescribe('AccessContractInformationTabComponent', () => {
       providers: [
         FormBuilder,
         AccessContractCreateValidators,
-        {provide: AccessContractService, useValue: {}},
-        {provide: AccessContractService, useValue: {}}
+        { provide: AccessContractService, useValue: {} },
+        { provide: AccessContractService, useValue: {} },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

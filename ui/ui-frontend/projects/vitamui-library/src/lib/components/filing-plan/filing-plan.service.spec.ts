@@ -120,7 +120,7 @@ describe('FilingPlanService', () => {
     req.error(
       new ErrorEvent('Network error', {
         message: 'Error',
-      })
+      }),
     );
 
     httpTestingController.verify();

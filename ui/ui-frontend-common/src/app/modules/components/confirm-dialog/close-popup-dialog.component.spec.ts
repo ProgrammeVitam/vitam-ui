@@ -47,10 +47,9 @@ describe('ClosePopupDialogComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ ClosePopupDialogComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      declarations: [ClosePopupDialogComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

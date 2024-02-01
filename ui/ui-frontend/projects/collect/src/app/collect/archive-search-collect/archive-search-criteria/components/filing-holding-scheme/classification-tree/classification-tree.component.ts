@@ -85,9 +85,9 @@ export class ClassificationTreeComponent {
     return this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.HOLDING_UNIT
       ? VitamuiIcons.VITAMUI_HOLDING_UNIT_ICON_
       : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.FILING_UNIT
-      ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
-      : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
-      ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
-      : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
+        ? VitamuiIcons.VITAMUI_FILING_UNIT_ICON_
+        : this.getNodeUnitType(filingholdingscheme) === VitamuiUnitTypes.INGEST && !filingholdingscheme?.hasObject
+          ? VitamuiIcons.VITAMUI_INGEST_WITHOUT_OBJECT_ICON_
+          : VitamuiIcons.VITAMUI_INGEST_WITH_OBJECT_ICON_;
   }
 }

@@ -56,26 +56,20 @@ describe('TenantCreateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null)
+      uniqueName: () => of(null),
     });
 
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [ TenantCreateComponent ],
+      imports: [MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { owner: { id: '42', name: 'OwnerName', customerId: '424242', enabled: true } } },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -89,7 +83,7 @@ describe('TenantCreateComponent', () => {
   });
 
   it('should call dialogRef.close', () => {
-    const matDialogRef =  TestBed.inject(MatDialogRef);
+    const matDialogRef = TestBed.inject(MatDialogRef);
     component.onCancel();
     expect(matDialogRef.close).toHaveBeenCalled();
   });
@@ -99,20 +93,21 @@ describe('TenantCreateComponent', () => {
       name: 'toto',
       customerId: '424242',
       ownerId: '42',
-      enabled: true
+      enabled: true,
     };
     const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.setValue(tenant);
 
     component.onSubmit();
     expect(tenantServiceSpy.create).toHaveBeenCalledWith(
-    {
-      name: tenant.name,
-      customerId: tenant.customerId,
-      ownerId: tenant.ownerId,
-      enabled: tenant.enabled
-    },
-    'OwnerName');
+      {
+        name: tenant.name,
+        customerId: tenant.customerId,
+        ownerId: tenant.ownerId,
+        enabled: tenant.enabled,
+      },
+      'OwnerName',
+    );
   });
 
   it('should not call create()', () => {

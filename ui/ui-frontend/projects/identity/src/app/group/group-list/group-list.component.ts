@@ -35,12 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output} from '@angular/core';
-import {merge, Subject, Subscription} from 'rxjs';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject, Subscription } from 'rxjs';
 
 import {
   buildCriteriaFromSearch,
-  collapseAnimation, DEFAULT_PAGE_SIZE,
+  collapseAnimation,
+  DEFAULT_PAGE_SIZE,
   Direction,
   Group,
   InfiniteScrollTable,
@@ -49,19 +50,15 @@ import {
   SearchQuery,
 } from 'ui-frontend-common';
 import { GroupService } from '../group.service';
-import {buildCriteriaFromGroupFilters} from './group-criteria-builder.util';
+import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
-
   @Output() groupClick = new EventEmitter<Group>();
 
   private updatedGroupSub: Subscription;
@@ -73,17 +70,11 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   }
   // tslint:disable-next-line:variable-name
   private _search: string;
-  private readonly searchKeys = [
-    'identifier',
-    'name',
-    'level',
-    'description',
-    'units'
-  ];
+  private readonly searchKeys = ['identifier', 'name', 'level', 'description', 'units'];
 
   filterMap: { [key: string]: any[] } = {
     status: ['ENABLED'],
-    level: null
+    level: null,
   };
 
   orderBy = 'name';
@@ -93,10 +84,12 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   private readonly orderChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
 
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
 
-  constructor(public groupService: GroupService,
-              @Inject(LOCALE_ID) private locale: string) {
+  constructor(
+    public groupService: GroupService,
+    @Inject(LOCALE_ID) private locale: string,
+  ) {
     super(groupService);
   }
 
@@ -109,23 +102,18 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
       if (profileGroupIndex > -1) {
         this.dataSource[profileGroupIndex] = updatedGroup;
       }
-
     });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange);
 
     searchCriteriaChange.subscribe(() => {
       const query: SearchQuery = {
-        criteria: [
-          ...buildCriteriaFromGroupFilters(this.filterMap),
-          ...buildCriteriaFromSearch(this._search, this.searchKeys)
-          ]
+        criteria: [...buildCriteriaFromGroupFilters(this.filterMap), ...buildCriteriaFromSearch(this._search, this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 
       this.search(pageRequest);
     });
-
   }
 
   onFilterChange(key: string, values: any[]) {
@@ -143,12 +131,11 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
   private refreshLevelOptions(query?: SearchQuery) {
     this.groupService.getNonEmptyLevels(query).subscribe((levels: string[]) => {
-      this.levelFilterOptions = levels.map((level: string) => ({value: level, label: level }));
+      this.levelFilterOptions = levels.map((level: string) => ({ value: level, label: level }));
       this.levelFilterOptions.sort(sortByLabel(this.locale));
     });
   }
 }
-
 
 function sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
   return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);

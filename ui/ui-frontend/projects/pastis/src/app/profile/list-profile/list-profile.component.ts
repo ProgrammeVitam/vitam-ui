@@ -35,32 +35,30 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {FileUploader} from 'ng2-file-upload';
-import {Subscription} from 'rxjs';
-import {Direction, GlobalEventService, SidenavPage, StartupService} from 'ui-frontend-common';
-import {environment} from '../../../environments/environment';
-import {PastisConfiguration} from '../../core/classes/pastis-configuration';
-import {NoticeService} from '../../core/services/notice.service';
-import {ProfileService} from '../../core/services/profile.service';
-import {ToggleSidenavService} from '../../core/services/toggle-sidenav.service';
-import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
-import {BreadcrumbDataTop} from '../../models/breadcrumb';
-import {MetadataHeaders} from '../../models/models';
-import {Profile} from '../../models/profile';
-import {ProfileDescription} from '../../models/profile-description.model';
-import {ProfileResponse} from '../../models/profile-response';
-import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {CreateProfileComponent} from '../create-profile/create-profile.component';
-import {
-  ProfileInformationTabComponent
-} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
-import { ProfileType } from "../../models/profile-type.enum";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { FileUploader } from 'ng2-file-upload';
+import { Subscription } from 'rxjs';
+import { Direction, GlobalEventService, SidenavPage, StartupService } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment';
+import { PastisConfiguration } from '../../core/classes/pastis-configuration';
+import { NoticeService } from '../../core/services/notice.service';
+import { ProfileService } from '../../core/services/profile.service';
+import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
+import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import { BreadcrumbDataTop } from '../../models/breadcrumb';
+import { MetadataHeaders } from '../../models/models';
+import { Profile } from '../../models/profile';
+import { ProfileDescription } from '../../models/profile-description.model';
+import { ProfileResponse } from '../../models/profile-response';
+import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { CreateProfileComponent } from '../create-profile/create-profile.component';
+import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { ProfileType } from '../../models/profile-type.enum';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -77,10 +75,10 @@ function constantToTranslate() {
   styleUrls: ['./list-profile.component.scss'],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
-  @ViewChild(ProfileInformationTabComponent, {static: true}) profileInformationTabComponent: ProfileInformationTabComponent;
+  @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 
   @Input()
-  uploader: FileUploader = new FileUploader({url: ''});
+  uploader: FileUploader = new FileUploader({ url: '' });
 
   retrievedProfiles: ProfileDescription[] = [];
 
@@ -153,7 +151,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     globalEventService: GlobalEventService,
     private dataGeneriquePopupService: DataGeneriquePopupService,
     private translateService: TranslateService,
-    private toggleService: ToggleSidenavService
+    private toggleService: ToggleSidenavService,
   ) {
     super(route, globalEventService);
     this.expanded = false;
@@ -179,7 +177,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         url: this.startupService.getPortalUrl(),
         external: true,
       },
-      {label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'},
+      { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' },
     ];
 
     this.subscription1$ = this.refreshListProfiles();
@@ -188,11 +186,11 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   private isEditable(profileDescription: ProfileDescription): boolean {
     return (
-      (profileDescription.type === ProfileType.PA && !profileDescription.path
-        && profileDescription.status === 'ACTIVE') ||
-      (profileDescription.type === ProfileType.PUA && profileDescription.status === 'ACTIVE'
-        && (!profileDescription.controlSchema || profileDescription.controlSchema === '{}'))
-    )
+      (profileDescription.type === ProfileType.PA && !profileDescription.path && profileDescription.status === 'ACTIVE') ||
+      (profileDescription.type === ProfileType.PUA &&
+        profileDescription.status === 'ACTIVE' &&
+        (!profileDescription.controlSchema || profileDescription.controlSchema === '{}'))
+    );
   }
 
   private refreshListProfiles() {
@@ -200,13 +198,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.profileService.refreshListProfiles();
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
-
         this.retrievedProfiles = profileList;
-        this.retrievedProfiles.forEach(
-          profileDescription => {
-            profileDescription.isEditable = this.isEditable(profileDescription);
-          }
-        )
+        this.retrievedProfiles.forEach((profileDescription) => {
+          profileDescription.isEditable = this.isEditable(profileDescription);
+        });
         this.profilesChargees = true;
         this.toggleService.hidePending();
       }
@@ -238,7 +233,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (d.external) {
       window.location.assign(d.url);
     } else {
-      this.router.navigate([d.url], {skipLocationChange: false});
+      this.router.navigate([d.url], { skipLocationChange: false });
     }
   }
 
@@ -258,7 +253,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
         if (response) {
-          this.router.navigate([this.pastisConfig.pastisNewProfile], {state: response, relativeTo: this.route});
+          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -286,7 +281,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
             .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
             .subscribe((response: ProfileResponse) => {
               if (response) {
-                this.router.navigate([this.pastisConfig.pastisNewProfile], {state: response, relativeTo: this.route});
+                this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
               }
             });
         }
@@ -302,7 +297,8 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.search = search;
     let profileDescriptions = this.retrievedProfiles.filter(
       (profile) =>
-        profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 || profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
+        profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 ||
+        profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0,
     );
     // console.log(this.retrievedProfiles)
     this.totalProfileNum = profileDescriptions.length;
@@ -379,10 +375,8 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeExpand(element: ProfileDescription) {
-
     if (element.isEditable) {
       this.expanded = !this.expanded;
     }
-
   }
 }

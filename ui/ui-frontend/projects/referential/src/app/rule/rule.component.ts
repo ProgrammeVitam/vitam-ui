@@ -72,7 +72,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     private router: Router,
     globalEventService: GlobalEventService,
     private formBuilder: FormBuilder,
-    private securityService: SecurityService
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {

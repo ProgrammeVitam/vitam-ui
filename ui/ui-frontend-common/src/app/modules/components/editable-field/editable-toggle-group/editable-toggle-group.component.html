@@ -2,13 +2,13 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content">{{content(control?.value)}}</span>
-          <div class="editable-field-control">
-            <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group">
-              <mat-button-toggle *ngFor="let button of buttons" [value]="button?.value">{{button?.content}}</mat-button-toggle>
-            </mat-button-toggle-group>
-          </div>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ content(control?.value) }}</span>
+        <div class="editable-field-control">
+          <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group">
+            <mat-button-toggle *ngFor="let button of buttons" [value]="button?.value">{{ button?.content }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -23,17 +23,18 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
     [cdkConnectedOverlayOrigin]="origin"
-    [cdkConnectedOverlayPositions]="positions">
-
+    [cdkConnectedOverlayPositions]="positions"
+  >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div>{{content(control?.value)}}</div>
+  <label>{{ label }}</label>
+  <div>{{ content(control?.value) }}</div>
 </div>

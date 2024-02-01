@@ -49,7 +49,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   tenantIdentifier: number;
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
   nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
   nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
@@ -70,7 +70,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   constructor(
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
-    private archiveSharedDataService: ArchiveSharedDataService
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -98,7 +98,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
           FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
           FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
         }
-      })
+      }),
     );
   }
 
@@ -117,7 +117,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
           }
         }
         this.filterNodesToLeavesOnly();
-      })
+      }),
     );
   }
 
@@ -128,7 +128,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
           this.fullNodes = nodes;
           this.switchViewAllNodes();
         }
-      })
+      }),
     );
   }
 
@@ -141,7 +141,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         this.nestedTreeControlFull.dataNodes = nodes;
         this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
         this.loadingHolding = false;
-      })
+      }),
     );
   }
 
@@ -151,7 +151,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
     this.showEveryNodes = false;
   }
-
 
   addToSearchCriteria(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
@@ -185,11 +184,10 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       size: 1,
     };
     this.subscriptions.add(
-      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria)
-        .subscribe((pageResult: PagedResult) => {
-          this.showArchiveUnitDetails.emit(pageResult.results[0]);
-          this.loadingArchiveUnit[`${from}`] = false;
-        })
+      this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult: PagedResult) => {
+        this.showArchiveUnitDetails.emit(pageResult.results[0]);
+        this.loadingArchiveUnit[`${from}`] = false;
+      }),
     );
   }
 }
