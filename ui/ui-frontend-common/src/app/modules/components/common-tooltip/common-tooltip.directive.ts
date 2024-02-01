@@ -35,22 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import {
-  ConnectedPosition,
-  Overlay,
-  OverlayPositionBuilder,
-  OverlayRef,
-} from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import {
-  ComponentRef,
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
 import { TooltipPosition } from './TooltipPosition.enum';
 import { TooltipType } from './TooltipType.enum';
@@ -65,9 +52,11 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input() vitamuiCommonToolTipClass: string;
   @Input() type = 'BOTTOM';
 
- /** Disables the display of the tooltip. */
+  /** Disables the display of the tooltip. */
   @Input('vitamuiCommonToolTipDisabled')
-  get disabled(): boolean { return this._disabled; }
+  get disabled(): boolean {
+    return this._disabled;
+  }
   set disabled(value) {
     this._disabled = coerceBooleanProperty(value);
 
@@ -84,16 +73,14 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   constructor(
     private overlay: Overlay,
     private overlayPositionBuilder: OverlayPositionBuilder,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
-      const position = this.buildPosition(this.type);
-      const positionStrategy = this.overlayPositionBuilder
-          .flexibleConnectedTo(this.elementRef)
-          .withPositions([position]);
+    const position = this.buildPosition(this.type);
+    const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
 
-      this.overlayRef = this.overlay.create({ positionStrategy });
+    this.overlayRef = this.overlay.create({ positionStrategy });
   }
 
   ngOnDestroy() {
@@ -107,9 +94,7 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     }
     const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
     if (this.overlayRef) {
-      const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
-        tooltipPortal
-      );
+      const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(tooltipPortal);
       tooltipRef.instance.text = this.text;
       tooltipRef.instance.position = this.position;
       tooltipRef.instance.outline = this.outline;
@@ -119,8 +104,8 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
 
   @HostListener('mouseout')
   hide() {
-     this.overlayRef?.detach();
-     this.overlayRef.detach();
+    this.overlayRef?.detach();
+    this.overlayRef.detach();
   }
 
   private buildPosition(type: string): ConnectedPosition {

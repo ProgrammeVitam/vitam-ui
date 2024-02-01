@@ -2,56 +2,50 @@
 @import '../../../../../sass/mixins/elevation';
 
 .menu-container {
+  .menu-modal {
+    background-color: $pale-grey;
+    border-radius: 10px;
+    padding: 40px;
+  }
 
-    .menu-modal {
-        background-color: $pale-grey;
-        border-radius: 10px;
-        padding: 40px;
+  h2 {
+    padding-top: 24px;
+    padding-bottom: 32px;
+    color: $charcoal-grey;
+    font-size: 24px;
+    text-align: center;
+    font-weight: normal;
+    margin: 0;
 
+    span {
+      font-weight: bold;
     }
-
-    h2 {
-        padding-top: 24px;
-        padding-bottom: 32px;
-        color: $charcoal-grey;
-        font-size: 24px;
-        text-align: center;
-        font-weight: normal;
-        margin: 0;
-
-        span {
-            font-weight: bold;
-        }
-    }
+  }
 }
 
 .item-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .tile {
-    @include elevation-2-dark;
-    width: 250px;
-    height: 60px;
-    background: $white;
-    border-radius: 10px;
-    margin-left: 22px;
-    margin-bottom: 50px;
-    padding: 20px;
-    white-space: nowrap;
+  @include elevation-2-dark;
+  width: 250px;
+  height: 60px;
+  background: $white;
+  border-radius: 10px;
+  margin-left: 22px;
+  margin-bottom: 50px;
+  padding: 20px;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  i {
+    margin-right: 10px;
+    color: var(--vitamui-primary);
+    font-size: 24px;
     vertical-align: middle;
-
-
-    i {
-        margin-right: 10px;
-        color: var(--vitamui-primary);
-        font-size: 24px;
-        vertical-align: middle;
-
-    }
-
+  }
 }

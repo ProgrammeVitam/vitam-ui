@@ -30,7 +30,6 @@ import { qualifiersToVersionsWithQualifier } from './object-group.utils';
 import { ObjectQualifierType } from './object-qualifier.enums';
 
 describe('unit-object-helper tests', () => {
-
   it('qualifiersToVersionsWithQualifier tests', () => {
     expect(qualifiersToVersionsWithQualifier(null)).toEqual([]);
     const qualifiers = [
@@ -62,7 +61,7 @@ describe('unit-object-helper tests', () => {
     return {
       qualifier,
       versions,
-      '#nbc': null
+      '#nbc': null,
     };
   }
 
@@ -93,8 +92,7 @@ describe('unit-object-helper tests', () => {
       OtherMetadata: null,
       '#opi': null,
       '#storage': null,
-      DataObjectProfile: null
+      DataObjectProfile: null,
     };
   }
-
 });

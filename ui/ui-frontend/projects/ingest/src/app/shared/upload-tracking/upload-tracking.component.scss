@@ -1,25 +1,25 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 .material-icons {
-    color: white;
-    vertical-align: middle;
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    white-space: nowrap;
-    direction: ltr;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    font-feature-settings: 'liga';
+  color: white;
+  vertical-align: middle;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
 }
 .btn-circle {
-    background-color: var(--vitamui-primary);
+  background-color: var(--vitamui-primary);
 }
 
 .purcent {
-    color: var(--vitamui-primary);
+  color: var(--vitamui-primary);
 }

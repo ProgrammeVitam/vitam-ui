@@ -35,18 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import * as moment from 'moment';
-import {
-  Event, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery
-} from 'ui-frontend-common';
+import { Event, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LogbookSearchService extends SearchService<Event> {
-
   constructor(http: HttpClient, logbookApi: LogbookApiService) {
     super(http, logbookApi);
   }
@@ -57,14 +54,14 @@ export class LogbookSearchService extends SearchService<Event> {
       $filter: {
         $limit: pageRequest.size,
         $offset: Math.max(0, pageRequest.page - 1) * pageRequest.size,
-        $orderby: { evDateTime: -1 }
-      }
+        $orderby: { evDateTime: -1 },
+      },
     };
 
     if (!criteria) {
       return {
         $query: {} as VitamSelectOperator,
-        ...baseParameters
+        ...baseParameters,
       };
     }
 
@@ -73,17 +70,15 @@ export class LogbookSearchService extends SearchService<Event> {
     if (queryOperators.length === 0) {
       return {
         $query: {} as VitamSelectOperator,
-        ...baseParameters
+        ...baseParameters,
       };
     }
 
     return {
       $query: {
-        $and: [
-          ...this.buildQueryOperators(criteria),
-        ]
+        $and: [...this.buildQueryOperators(criteria)],
       },
-      ...baseParameters
+      ...baseParameters,
     };
   }
 
@@ -112,5 +107,4 @@ export class LogbookSearchService extends SearchService<Event> {
 
     return operators;
   }
-
 }

@@ -13,5 +13,4 @@ export enum ThemeColorType {
   VITAMUI_SECONDARY_LIGHT = 'vitamui-secondary-light',
   VITAMUI_SECONDARY_LIGHT_8 = 'vitamui-secondary-light-8',
   VITAMUI_SECONDARY_DARK_5 = 'vitamui-secondary-dark-5',
-
 }

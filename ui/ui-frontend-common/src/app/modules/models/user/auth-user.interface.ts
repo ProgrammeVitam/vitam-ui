@@ -48,10 +48,10 @@ export interface AuthUser extends User {
   enabled: boolean;
   profileGroup: Group;
   proofTenantIdentifier: string;
-  roles: Array<{ name: string, filter: string }>;
+  roles: Array<{ name: string; filter: string }>;
   superUser?: string;
   superUserIdentifier?: string;
-  tenantsByApp?: Array<{ name: string, tenants: Tenant[] }>;
+  tenantsByApp?: Array<{ name: string; tenants: Tenant[] }>;
   username: string;
   customerIdentifier: string;
   basicCustomer: BasicCustomer;

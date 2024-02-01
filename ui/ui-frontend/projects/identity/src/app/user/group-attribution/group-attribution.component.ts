@@ -46,7 +46,7 @@ import { UserService } from '../user.service';
 export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => GroupAttributionComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -56,8 +56,6 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   providers: [GROUP_ATTRIBUTION_VALUE_ACCESSOR],
 })
 export class GroupAttributionComponent implements OnInit {
-
-
   user: User;
   activeGroups: GroupSelection[];
   selectedGroupName: string;
@@ -75,7 +73,8 @@ export class GroupAttributionComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<GroupAttributionComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
 
   public ngOnInit(): void {
     this.user = this.data[0];
@@ -84,9 +83,8 @@ export class GroupAttributionComponent implements OnInit {
   }
 
   public resetActiveGroups(): void {
-
     this.activeGroups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX];
-    this.activeGroups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
+    this.activeGroups.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1));
     if (this.data[1]) {
       this.selectedGroupName = this.data[1].name;
       const selectedGroup = this.activeGroups.find((group) => group.id === this.data[1].id);
@@ -96,24 +94,23 @@ export class GroupAttributionComponent implements OnInit {
     }
   }
 
-    updateGroup(event: any) {
-      const selectedGroup: GroupSelection = event;
-      this.selectedGroupName = selectedGroup.name;
-      this.user.groupId = selectedGroup.id;
-      this.user.level = selectedGroup.level;
+  updateGroup(event: any) {
+    const selectedGroup: GroupSelection = event;
+    this.selectedGroupName = selectedGroup.name;
+    this.user.groupId = selectedGroup.id;
+    this.user.level = selectedGroup.level;
   }
 
   public saveUserUpdate(): void {
-    this.userService.patch({ id: this.user.id, groupId: this.user.groupId })
-      .subscribe(
-        () => this.dialogRef.close(true),
-        (error) => {
-          console.error(error);
-        });
+    this.userService.patch({ id: this.user.id, groupId: this.user.groupId }).subscribe(
+      () => this.dialogRef.close(true),
+      (error) => {
+        console.error(error);
+      },
+    );
   }
 
   public onCancel(): void {
     this.dialogRef.close();
   }
-
 }

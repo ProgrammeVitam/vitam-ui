@@ -70,7 +70,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: ContextPermission[],
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private contextCreateValidators: ContextCreateValidators
+    private contextCreateValidators: ContextCreateValidators,
   ) {
     this.permissions = data;
 
@@ -134,7 +134,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     // Update the context permissions
     this.permissions = this.form.value.permissions.map(
       (item: { tenant: string; accessContracts: string[]; ingestContracts: string[] }) =>
-        new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts)
+        new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts),
     );
 
     this.dialogRef.close({ permissions: this.permissions });

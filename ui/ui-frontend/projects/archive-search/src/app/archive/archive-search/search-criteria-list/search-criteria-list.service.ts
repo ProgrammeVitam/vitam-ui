@@ -41,13 +41,12 @@ import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchCriteriaListService extends SearchService<any> {
-
   constructor(
     private archiveApiService: ArchiveApiService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, archiveApiService, 'ALL');
   }

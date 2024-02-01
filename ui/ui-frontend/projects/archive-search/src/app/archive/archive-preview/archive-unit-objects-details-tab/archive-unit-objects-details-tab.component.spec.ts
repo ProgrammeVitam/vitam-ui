@@ -91,7 +91,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       'archiveUnitTestID',
       1,
       ObjectQualifierType.BINARYMASTER,
-      1
+      1,
     );
     expect(preventDefaultSpy).toHaveBeenCalled();
   });

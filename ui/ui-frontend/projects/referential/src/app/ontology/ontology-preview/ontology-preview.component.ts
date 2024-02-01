@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {ConfirmActionComponent, Ontology} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {OntologyService} from '../ontology.service';
-import {OntologyInformationTabComponent} from './ontology-information-tab/ontology-information-tab.component';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { ConfirmActionComponent, Ontology } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { OntologyService } from '../ontology.service';
+import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
 
 @Component({
   selector: 'app-ontology-preview',
   templateUrl: './ontology-preview.component.html',
-  styleUrls: ['./ontology-preview.component.scss']
+  styleUrls: ['./ontology-preview.component.scss'],
 })
 export class OntologyPreviewComponent implements AfterViewInit {
-
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -58,15 +57,13 @@ export class OntologyPreviewComponent implements AfterViewInit {
   inputOntology: Ontology;
   // tab indexes: info = 0; history = 2;
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
   tabLinks: Array<OntologyInformationTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: OntologyInformationTabComponent;
+  @ViewChild('infoTab', { static: false }) infoTab: OntologyInformationTabComponent;
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('STP_UPDATE_ONTOLOGY') ||
-      event.outDetail.includes('STP_IMPORT_ONTOLOGY'));
+    return event.outDetail && (event.outDetail.includes('STP_UPDATE_ONTOLOGY') || event.outDetail.includes('STP_IMPORT_ONTOLOGY'));
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -78,8 +75,10 @@ export class OntologyPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private ontologyService: OntologyService) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private ontologyService: OntologyService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -95,11 +94,9 @@ export class OntologyPreviewComponent implements AfterViewInit {
       const submitOntologyUpdate: Observable<Ontology> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitOntologyUpdate.subscribe(() => {
-        this.ontologyService.get(this.inputOntology.identifier).subscribe(
-          response => {
-            this.inputOntology = response;
-          }
-        );
+        this.ontologyService.get(this.inputOntology.identifier).subscribe((response) => {
+          this.inputOntology = response;
+        });
       });
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputOntology);
@@ -116,7 +113,7 @@ export class OntologyPreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
@@ -124,5 +121,4 @@ export class OntologyPreviewComponent implements AfterViewInit {
   emitClose() {
     this.previewClose.emit();
   }
-
 }

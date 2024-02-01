@@ -7,8 +7,7 @@
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
-          <div
-            class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
+          <div class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
           <div class="text large bold header-subtitle">
             {{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP_SUBTITLE' | translate }}
           </div>
@@ -31,12 +30,12 @@
           >
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
             >
 
             <vitamui-common-input-error
               *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
-            >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
+              >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
             >
           </vitamui-common-input>
 
@@ -52,7 +51,7 @@
               *ngIf="
                 externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required
               "
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
             >
           </vitamui-common-input>
 
@@ -64,9 +63,8 @@
               panelclass="vitamui-mat-select"
               class="w-100"
             >
-              <mat-option *ngFor="let accessContract of activeAccessContracts$ | async"
-                          [value]="accessContract.identifier"
-              >{{ accessContract.identifier }}
+              <mat-option *ngFor="let accessContract of activeAccessContracts$ | async" [value]="accessContract.identifier"
+                >{{ accessContract.identifier }}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
@@ -76,8 +74,7 @@
           </mat-form-field>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext
-                  [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
           <button type="button" class="btn link cancel" (click)="onCancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
@@ -88,10 +85,8 @@
     <cdk-step>
       <div class="content">
         <div class="vitamui-form">
-          <div
-            class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
-          <div
-            class="text large bold header-subtitle">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
+          <div class="text large header-title">{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE_POPUP' | translate }}</div>
+          <div class="text large bold header-subtitle">{{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}</div>
 
           <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
@@ -110,7 +105,7 @@
                 class="w-100"
               >
                 <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
-                  {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate : { threshold: thresholdValue | number } }}
+                  {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate: { threshold: thresholdValue | number } }}
                 </mat-option>
               </mat-select>
               <div class="select-arrow">
@@ -119,12 +114,12 @@
               </div>
             </mat-form-field>
 
-            <i class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-               [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
-               matTooltipClass="vitamui-tooltip"
-               [matTooltipShowDelay]="300"
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [matTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
             ></i>
-
           </div>
         </div>
         <div class="actions">
@@ -138,7 +133,7 @@
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
           <ng-container
-          ><span>{{ 'COMMON.BACK' | translate }}</span></ng-container
+            ><span>{{ 'COMMON.BACK' | translate }}</span></ng-container
           >
         </button>
       </div>

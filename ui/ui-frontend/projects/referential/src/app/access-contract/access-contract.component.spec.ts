@@ -71,28 +71,26 @@ describe('AccessContractComponent', () => {
     isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
-        imports: [
-          VitamUICommonTestModule,
-          RouterTestingModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          NoopAnimationsModule,
-          MatSidenavModule,
-          MatDialogModule,
-        ],
-        providers: [
-          { provide: AccessContractService, useValue: accessContractServiceMock },
-          { provide: ApplicationService, useValue: applicationServiceMock },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
+      imports: [
+        VitamUICommonTestModule,
+        RouterTestingModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        NoopAnimationsModule,
+        MatSidenavModule,
+        MatDialogModule,
+      ],
+      providers: [
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractComponent);

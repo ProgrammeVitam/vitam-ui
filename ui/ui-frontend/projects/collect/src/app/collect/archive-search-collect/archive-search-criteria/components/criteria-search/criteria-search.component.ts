@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum }  from 'ui-frontend-common';
+import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-criteria-search',
@@ -53,8 +53,7 @@ export class CriteriaSearchComponent implements OnInit {
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
     this.criteriaRemoveEvent.emit({ keyElt, valueElt });

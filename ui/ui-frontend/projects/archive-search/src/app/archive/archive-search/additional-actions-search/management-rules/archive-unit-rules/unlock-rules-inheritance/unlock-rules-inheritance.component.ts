@@ -30,9 +30,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
-import {
-  UpdateUnitManagementRuleService
-} from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
+import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -100,7 +98,7 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private translateService: TranslateService,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
@@ -121,7 +119,7 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
-        filter((formData) => this.patchForm(formData))
+        filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
@@ -144,11 +142,11 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       ).ruleCategoryAction;
 
       if (rule.rule !== this.lastRuleId) {
@@ -158,12 +156,12 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
         }
         this.ruleTypeDUA.preventRulesIdToRemove.push(rule.rule);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         this.ruleTypeDUA = { rules: [], preventRulesIdToRemove: [rule.rule] };
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
@@ -259,8 +257,8 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
             data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
               ? this.resultNumberToShow
               : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-              ? this.resultNumberToShow
-              : (this.selectedItem - data.totalResults).toString();
+                ? this.resultNumberToShow
+                : (this.selectedItem - data.totalResults).toString();
 
           this.isLoading = false;
         });

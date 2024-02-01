@@ -62,5 +62,5 @@ export enum VitamInternalFields {
   ALL_UNIT_UPS = '#allunitups',
   UNIT_UPS = '#unitups',
   OPI = '#opi',
-  UNIT_TYPE = '#unitType'
+  UNIT_TYPE = '#unitType',
 }

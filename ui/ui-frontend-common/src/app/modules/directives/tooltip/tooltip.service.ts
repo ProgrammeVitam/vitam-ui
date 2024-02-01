@@ -62,7 +62,10 @@ export class TooltipService {
   private closeTooltip = new Subject<any>();
   public Information: string;
 
-  constructor(private injector: Injector, private overlay: Overlay) {}
+  constructor(
+    private injector: Injector,
+    private overlay: Overlay,
+  ) {}
 
   open(origin: ElementRef, component: ComponentType<{}>, config: TooltipOverlayConfig = {}) {
     const overlayConfig = { ...DEFAULT_CONFIG, ...config };

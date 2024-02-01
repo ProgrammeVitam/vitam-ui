@@ -52,10 +52,10 @@ const expectedTenant: Tenant = {
   enabled: true,
   proof: true,
   accessContractHoldingIdentifier: 'AC-000001',
-  readonly : false,
+  readonly: false,
   accessContractLogbookIdentifier: 'AC-000002',
   ingestContractHoldingIdentifier: 'IC-000001',
-  itemIngestContractIdentifier: 'IC-000001'
+  itemIngestContractIdentifier: 'IC-000001',
 };
 
 describe('TenantResolver', () => {
@@ -66,11 +66,7 @@ describe('TenantResolver', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      providers: [
-        TenantResolver,
-        { provide: TenantService, useValue: tenantServiceSpy },
-        { provide: Router, useValue: routerSpy },
-      ],
+      providers: [TenantResolver, { provide: TenantService, useValue: tenantServiceSpy }, { provide: Router, useValue: routerSpy }],
     });
 
     tenantResolver = TestBed.inject(TenantResolver);

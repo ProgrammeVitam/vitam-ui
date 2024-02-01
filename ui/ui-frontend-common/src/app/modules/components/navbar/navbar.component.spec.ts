@@ -59,7 +59,6 @@ import { NavbarComponent } from './navbar.component';
 import { TranslateService } from '@ngx-translate/core';
 import { VitamUISnackBarService } from '../vitamui-snack-bar/vitamui-snack-bar.service';
 
-
 @Directive({ selector: '[vitamuiCommonTriggerFor]' })
 class TriggerForStubDirective {
   @Input() appTriggerFor: any;
@@ -72,7 +71,7 @@ class DropdownStubDirective {
 
 @Component({
   selector: 'vitamui-common-application-menu',
-  template: ''
+  template: '',
 })
 export class ApplicationMenuStubComponent {
   @Input() appId: ApplicationId;
@@ -80,7 +79,7 @@ export class ApplicationMenuStubComponent {
 
 @Component({
   selector: 'vitamui-common-tenant-menu',
-  template: ''
+  template: '',
 })
 export class TenantMenuStubComponent {
   @Input() appId: ApplicationId;
@@ -88,7 +87,7 @@ export class TenantMenuStubComponent {
 
 @Component({
   selector: 'vitamui-common-customer-menu',
-  template: ''
+  template: '',
 })
 export class CustomerMenuStubComponent {
   @Input() customers: any;
@@ -105,14 +104,13 @@ export class RouterLinkStubDirective {
   }
 }
 
-
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
   beforeEach(waitForAsync(() => {
-    const authServiceStub = { logout: () => { } };
-    const startupServiceStub = { getPortalUrl: () => { }, getLogo: () => { }, getAppLogoURL: () => { } , getCustomerLogoURL: () => { }  };
+    const authServiceStub = { logout: () => {} };
+    const startupServiceStub = { getPortalUrl: () => {}, getLogo: () => {}, getAppLogoURL: () => {}, getCustomerLogoURL: () => {} };
 
     TestBed.configureTestingModule({
       imports: [
@@ -121,7 +119,7 @@ describe('NavbarComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         LoggerModule.forRoot(),
-        VitamUICommonTestModule
+        VitamUICommonTestModule,
       ],
       declarations: [
         DropdownStubDirective,
@@ -130,7 +128,7 @@ describe('NavbarComponent', () => {
         ApplicationMenuStubComponent,
         TenantMenuStubComponent,
         CustomerMenuStubComponent,
-        RouterLinkStubDirective
+        RouterLinkStubDirective,
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fakeapi' },
@@ -141,10 +139,9 @@ describe('NavbarComponent', () => {
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
-      ]
-    })
-      .compileComponents();
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

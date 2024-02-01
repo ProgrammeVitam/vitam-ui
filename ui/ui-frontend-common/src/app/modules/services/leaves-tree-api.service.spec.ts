@@ -1,17 +1,28 @@
 import { of } from 'rxjs';
 import {
-  CriteriaDataType, CriteriaOperator, CriteriaValue, DescriptionLevel, FilingHoldingSchemeNode, PagedResult, ResultBucket, ResultFacetList,
-  SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaSort, SearchCriteriaTypeEnum, Unit, UnitType
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  PagedResult,
+  ResultBucket,
+  ResultFacetList,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaSort,
+  SearchCriteriaTypeEnum,
+  Unit,
+  UnitType,
 } from '../models';
 import { newNode } from '../models/nodes/filing-holding-scheme.handler.spec';
 import { DEFAULT_UNIT_PAGE_SIZE, LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 
-
 export function newToggledNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -91,12 +102,7 @@ export function newResultFacetList(name, resultBuckets: ResultBucket[]) {
   };
 }
 
-export function newPagedResult(
-  results: Unit[] = [],
-  totalResults = 0,
-  pageNumbers = 0,
-  facets?: ResultFacetList[],
-): PagedResult {
+export function newPagedResult(results: Unit[] = [], totalResults = 0, pageNumbers = 0, facets?: ResultFacetList[]): PagedResult {
   return {
     pageNumbers,
     results,
@@ -107,8 +113,9 @@ export function newPagedResult(
 
 describe('FilingHoldingSchemeNodeService', () => {
   let leavesTreeApiService: LeavesTreeApiService;
-  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface',
-    ['searchArchiveUnitsByCriteria']);
+  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', [
+    'searchArchiveUnitsByCriteria',
+  ]);
   beforeEach(() => {
     searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.calls.reset();
     leavesTreeApiService = new LeavesTreeApiService(searchArchiveUnitsByCriteriaSpy);
@@ -190,7 +197,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [],
-        totalResults: 0
+        totalResults: 0,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, false);
@@ -209,7 +216,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [],
-        totalResults: 0
+        totalResults: 0,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, true);
@@ -228,7 +235,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [{ item: 1 }],
-        totalResults: 5
+        totalResults: 5,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, false);
@@ -247,7 +254,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [{ item: 1 }],
-        totalResults: 5
+        totalResults: 5,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, true);
@@ -266,7 +273,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [{ item: 1 }, { item: 2 }, { item: 3 }, { item: 4 }, { item: 5 }],
-        totalResults: 5
+        totalResults: 5,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, false);
@@ -285,7 +292,7 @@ describe('FilingHoldingSchemeNodeService', () => {
       const pagedResult: PagedResult = {
         pageNumbers: 0,
         results: [{ item: 1 }, { item: 2 }, { item: 3 }, { item: 4 }, { item: 5 }],
-        totalResults: 5
+        totalResults: 5,
       };
       // When
       leavesTreeApiService.finishSearch(parentNode, pagedResult, true);
@@ -318,13 +325,15 @@ describe('FilingHoldingSchemeNodeService', () => {
     it('should send a search request withhout adding external criteria', () => {
       const parentNode = newNode('node-0', []);
       leavesTreeApiService.firstToggle(parentNode);
-      const searchCriterias = newSearchCriteriaDto([newSearchCriteriaEltDto(
-        'criteria-searchOrphans',
-        'operator-searchOrphans',
-        'category-searchOrphans',
-        [newCriteriaValue('criteria-value-searchOrphans')],
-        'dataType-searchOrphans',
-      )]);
+      const searchCriterias = newSearchCriteriaDto([
+        newSearchCriteriaEltDto(
+          'criteria-searchOrphans',
+          'operator-searchOrphans',
+          'category-searchOrphans',
+          [newCriteriaValue('criteria-value-searchOrphans')],
+          'dataType-searchOrphans',
+        ),
+      ]);
       const pagedResult = newPagedResult();
       searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.and.returnValue(of(pagedResult));
 
@@ -334,31 +343,32 @@ describe('FilingHoldingSchemeNodeService', () => {
         expect(results).toEqual(pagedResult);
       });
       expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
-      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith({
-        pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
-        size: DEFAULT_UNIT_PAGE_SIZE,
-        criteriaList: [
-          {
-            criteria: '#unitups',
-            operator: CriteriaOperator.MISSING,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [],
-            dataType: CriteriaDataType.STRING,
-          },
-          {
-            criteria: '#unitType',
-            operator: CriteriaOperator.IN,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [
-              { id: UnitType.INGEST, value: UnitType.INGEST },
-            ],
-            dataType: CriteriaDataType.STRING,
-          },
-        ],
-        sortingCriteria: searchCriterias.sortingCriteria,
-        trackTotalHits: false,
-        computeFacets: false,
-      }, undefined);
+      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        {
+          pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
+          size: DEFAULT_UNIT_PAGE_SIZE,
+          criteriaList: [
+            {
+              criteria: '#unitups',
+              operator: CriteriaOperator.MISSING,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [],
+              dataType: CriteriaDataType.STRING,
+            },
+            {
+              criteria: '#unitType',
+              operator: CriteriaOperator.IN,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [{ id: UnitType.INGEST, value: UnitType.INGEST }],
+              dataType: CriteriaDataType.STRING,
+            },
+          ],
+          sortingCriteria: searchCriterias.sortingCriteria,
+          trackTotalHits: false,
+          computeFacets: false,
+        },
+        undefined,
+      );
     });
   });
 
@@ -380,13 +390,15 @@ describe('FilingHoldingSchemeNodeService', () => {
     it('should send a search request with the criteria passed', () => {
       const parentNode = newNode('node-0', []);
       leavesTreeApiService.firstToggle(parentNode);
-      const searchCriterias = newSearchCriteriaDto([newSearchCriteriaEltDto(
-        'criteria-searchOrphansWithSearchCriterias',
-        'operator-searchOrphansWithSearchCriterias',
-        'category-searchOrphansWithSearchCriterias',
-        [newCriteriaValue('criteria-value-searchOrphansWithSearchCriterias')],
-        'dataType-searchOrphansWithSearchCriterias',
-      )]);
+      const searchCriterias = newSearchCriteriaDto([
+        newSearchCriteriaEltDto(
+          'criteria-searchOrphansWithSearchCriterias',
+          'operator-searchOrphansWithSearchCriterias',
+          'category-searchOrphansWithSearchCriterias',
+          [newCriteriaValue('criteria-value-searchOrphansWithSearchCriterias')],
+          'dataType-searchOrphansWithSearchCriterias',
+        ),
+      ]);
       const pagedResult = newPagedResult();
       searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.and.returnValue(of(pagedResult));
 
@@ -396,35 +408,40 @@ describe('FilingHoldingSchemeNodeService', () => {
         expect(results).toEqual(pagedResult);
       });
       expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
-      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith({
-        pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
-        size: DEFAULT_UNIT_PAGE_SIZE,
-        criteriaList: [
-          {
-            criteria: 'criteria-searchOrphansWithSearchCriterias',
-            operator: 'operator-searchOrphansWithSearchCriterias',
-            category: 'category-searchOrphansWithSearchCriterias',
-            values: [{
-              id: 'criteria-value-searchOrphansWithSearchCriterias',
-              value: undefined,
-              label: undefined,
-              beginInterval: undefined,
-              endInterval: undefined
-            }],
-            dataType: 'dataType-searchOrphansWithSearchCriterias'
-          },
-          {
-            criteria: '#unitups',
-            operator: CriteriaOperator.MISSING,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [],
-            dataType: CriteriaDataType.STRING,
-          },
-        ],
-        sortingCriteria: searchCriterias.sortingCriteria,
-        trackTotalHits: false,
-        computeFacets: false,
-      }, undefined);
+      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        {
+          pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
+          size: DEFAULT_UNIT_PAGE_SIZE,
+          criteriaList: [
+            {
+              criteria: 'criteria-searchOrphansWithSearchCriterias',
+              operator: 'operator-searchOrphansWithSearchCriterias',
+              category: 'category-searchOrphansWithSearchCriterias',
+              values: [
+                {
+                  id: 'criteria-value-searchOrphansWithSearchCriterias',
+                  value: undefined,
+                  label: undefined,
+                  beginInterval: undefined,
+                  endInterval: undefined,
+                },
+              ],
+              dataType: 'dataType-searchOrphansWithSearchCriterias',
+            },
+            {
+              criteria: '#unitups',
+              operator: CriteriaOperator.MISSING,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [],
+              dataType: CriteriaDataType.STRING,
+            },
+          ],
+          sortingCriteria: searchCriterias.sortingCriteria,
+          trackTotalHits: false,
+          computeFacets: false,
+        },
+        undefined,
+      );
     });
   });
 
@@ -446,13 +463,15 @@ describe('FilingHoldingSchemeNodeService', () => {
     it('should send a search request withhout adding external criteria', () => {
       const parentNode = newNode('node-0', []);
       leavesTreeApiService.firstToggle(parentNode);
-      const searchCriterias = newSearchCriteriaDto([newSearchCriteriaEltDto(
-        'criteria-searchOrphans',
-        'operator-searchOrphans',
-        'category-searchOrphans',
-        [newCriteriaValue('criteria-value-searchOrphans')],
-        'dataType-searchOrphans',
-      )]);
+      const searchCriterias = newSearchCriteriaDto([
+        newSearchCriteriaEltDto(
+          'criteria-searchOrphans',
+          'operator-searchOrphans',
+          'category-searchOrphans',
+          [newCriteriaValue('criteria-value-searchOrphans')],
+          'dataType-searchOrphans',
+        ),
+      ]);
       const pagedResult = newPagedResult();
       searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.and.returnValue(of(pagedResult));
 
@@ -462,22 +481,25 @@ describe('FilingHoldingSchemeNodeService', () => {
         expect(results).toEqual(pagedResult);
       });
       expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
-      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith({
-        pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
-        size: DEFAULT_UNIT_PAGE_SIZE,
-        criteriaList: [
-          {
-            criteria: '#unitups',
-            operator: CriteriaOperator.IN,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [{ id: 'node-0', value: 'node-0' }],
-            dataType: CriteriaDataType.STRING,
-          },
-        ],
-        sortingCriteria: searchCriterias.sortingCriteria,
-        trackTotalHits: false,
-        computeFacets: false,
-      }, undefined);
+      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        {
+          pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
+          size: DEFAULT_UNIT_PAGE_SIZE,
+          criteriaList: [
+            {
+              criteria: '#unitups',
+              operator: CriteriaOperator.IN,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [{ id: 'node-0', value: 'node-0' }],
+              dataType: CriteriaDataType.STRING,
+            },
+          ],
+          sortingCriteria: searchCriterias.sortingCriteria,
+          trackTotalHits: false,
+          computeFacets: false,
+        },
+        undefined,
+      );
     });
   });
 
@@ -499,13 +521,15 @@ describe('FilingHoldingSchemeNodeService', () => {
     it('should send a search request with the criteria passed', () => {
       const parentNode = newNode('node-0', []);
       leavesTreeApiService.firstToggle(parentNode);
-      const searchCriterias = newSearchCriteriaDto([newSearchCriteriaEltDto(
-        'criteria-searchUnderNodeWithSearchCriterias',
-        'operator-searchUnderNodeWithSearchCriterias',
-        'category-searchUnderNodeWithSearchCriterias',
-        [newCriteriaValue('criteria-value-searchUnderNodeWithSearchCriterias')],
-        'dataType-searchUnderNodeWithSearchCriterias',
-      )]);
+      const searchCriterias = newSearchCriteriaDto([
+        newSearchCriteriaEltDto(
+          'criteria-searchUnderNodeWithSearchCriterias',
+          'operator-searchUnderNodeWithSearchCriterias',
+          'category-searchUnderNodeWithSearchCriterias',
+          [newCriteriaValue('criteria-value-searchUnderNodeWithSearchCriterias')],
+          'dataType-searchUnderNodeWithSearchCriterias',
+        ),
+      ]);
       const pagedResult = newPagedResult();
       searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.and.returnValue(of(pagedResult));
 
@@ -515,35 +539,40 @@ describe('FilingHoldingSchemeNodeService', () => {
         expect(results).toEqual(pagedResult);
       });
       expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
-      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith({
-        pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
-        size: DEFAULT_UNIT_PAGE_SIZE,
-        criteriaList: [
-          {
-            criteria: 'criteria-searchUnderNodeWithSearchCriterias',
-            operator: 'operator-searchUnderNodeWithSearchCriterias',
-            category: 'category-searchUnderNodeWithSearchCriterias',
-            values: [{
-              id: 'criteria-value-searchUnderNodeWithSearchCriterias',
-              value: undefined,
-              label: undefined,
-              beginInterval: undefined,
-              endInterval: undefined
-            }],
-            dataType: 'dataType-searchUnderNodeWithSearchCriterias'
-          },
-          {
-            criteria: '#unitups',
-            operator: CriteriaOperator.IN,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [{ id: 'node-0', value: 'node-0' }],
-            dataType: CriteriaDataType.STRING,
-          },
-        ],
-        sortingCriteria: searchCriterias.sortingCriteria,
-        trackTotalHits: false,
-        computeFacets: false,
-      }, undefined);
+      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        {
+          pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
+          size: DEFAULT_UNIT_PAGE_SIZE,
+          criteriaList: [
+            {
+              criteria: 'criteria-searchUnderNodeWithSearchCriterias',
+              operator: 'operator-searchUnderNodeWithSearchCriterias',
+              category: 'category-searchUnderNodeWithSearchCriterias',
+              values: [
+                {
+                  id: 'criteria-value-searchUnderNodeWithSearchCriterias',
+                  value: undefined,
+                  label: undefined,
+                  beginInterval: undefined,
+                  endInterval: undefined,
+                },
+              ],
+              dataType: 'dataType-searchUnderNodeWithSearchCriterias',
+            },
+            {
+              criteria: '#unitups',
+              operator: CriteriaOperator.IN,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [{ id: 'node-0', value: 'node-0' }],
+              dataType: CriteriaDataType.STRING,
+            },
+          ],
+          sortingCriteria: searchCriterias.sortingCriteria,
+          trackTotalHits: false,
+          computeFacets: false,
+        },
+        undefined,
+      );
     });
   });
 
@@ -565,13 +594,15 @@ describe('FilingHoldingSchemeNodeService', () => {
     it('should send a search request with the criteria passed', () => {
       const parentNode = newNode('node-0', []);
       leavesTreeApiService.firstToggle(parentNode);
-      const searchCriterias = newSearchCriteriaDto([newSearchCriteriaEltDto(
-        'criteria-searchAtNodeWithSearchCriterias',
-        'operator-searchAtNodeWithSearchCriterias',
-        'category-searchAtNodeWithSearchCriterias',
-        [newCriteriaValue('criteria-value-searchAtNodeWithSearchCriterias')],
-        'dataType-searchAtNodeWithSearchCriterias',
-      )]);
+      const searchCriterias = newSearchCriteriaDto([
+        newSearchCriteriaEltDto(
+          'criteria-searchAtNodeWithSearchCriterias',
+          'operator-searchAtNodeWithSearchCriterias',
+          'category-searchAtNodeWithSearchCriterias',
+          [newCriteriaValue('criteria-value-searchAtNodeWithSearchCriterias')],
+          'dataType-searchAtNodeWithSearchCriterias',
+        ),
+      ]);
       const pagedResult = newPagedResult();
       searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.and.returnValue(of(pagedResult));
 
@@ -581,36 +612,40 @@ describe('FilingHoldingSchemeNodeService', () => {
         expect(results).toEqual(pagedResult);
       });
       expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
-      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith({
-        pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
-        size: DEFAULT_UNIT_PAGE_SIZE,
-        criteriaList: [
-          {
-            criteria: 'criteria-searchAtNodeWithSearchCriterias',
-            operator: 'operator-searchAtNodeWithSearchCriterias',
-            category: 'category-searchAtNodeWithSearchCriterias',
-            values: [{
-              id: 'criteria-value-searchAtNodeWithSearchCriterias',
-              value: undefined,
-              label: undefined,
-              beginInterval: undefined,
-              endInterval: undefined
-            }],
-            dataType: 'dataType-searchAtNodeWithSearchCriterias'
-          },
-          {
-            criteria: '#allunitups',
-            operator: CriteriaOperator.EQ,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            values: [{ id: 'node-0', value: 'node-0' }],
-            dataType: CriteriaDataType.STRING,
-          },
-        ],
-        sortingCriteria: searchCriterias.sortingCriteria,
-        trackTotalHits: false,
-        computeFacets: false,
-      }, undefined);
+      expect(searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        {
+          pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
+          size: DEFAULT_UNIT_PAGE_SIZE,
+          criteriaList: [
+            {
+              criteria: 'criteria-searchAtNodeWithSearchCriterias',
+              operator: 'operator-searchAtNodeWithSearchCriterias',
+              category: 'category-searchAtNodeWithSearchCriterias',
+              values: [
+                {
+                  id: 'criteria-value-searchAtNodeWithSearchCriterias',
+                  value: undefined,
+                  label: undefined,
+                  beginInterval: undefined,
+                  endInterval: undefined,
+                },
+              ],
+              dataType: 'dataType-searchAtNodeWithSearchCriterias',
+            },
+            {
+              criteria: '#allunitups',
+              operator: CriteriaOperator.EQ,
+              category: SearchCriteriaTypeEnum.FIELDS,
+              values: [{ id: 'node-0', value: 'node-0' }],
+              dataType: CriteriaDataType.STRING,
+            },
+          ],
+          sortingCriteria: searchCriterias.sortingCriteria,
+          trackTotalHits: false,
+          computeFacets: false,
+        },
+        undefined,
+      );
     });
   });
-
 });

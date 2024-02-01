@@ -48,7 +48,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     private transactionService: TransactionsService,
     private translateService: TranslateService,
     private router: Router,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     super(transactionService);
   }
@@ -84,7 +84,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
       },
       () => {
         transaction.status = TransactionStatus.KO;
-      }
+      },
     );
   }
 
@@ -100,7 +100,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
       },
       () => {
         transaction.status = TransactionStatus.KO;
-      }
+      },
     );
   }
 
@@ -116,7 +116,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
       },
       () => {
         transaction.status = TransactionStatus.KO;
-      }
+      },
     );
   }
 
@@ -132,7 +132,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
       },
       () => {
         transaction.status = TransactionStatus.KO;
-      }
+      },
     );
   }
 

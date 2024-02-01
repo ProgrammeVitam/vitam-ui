@@ -40,7 +40,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'vitamui-common-drag-drop-file',
   templateUrl: './vitamui-drag-drop-file.component.html',
-  styleUrls: ['./vitamui-drag-drop-file.component.scss']
+  styleUrls: ['./vitamui-drag-drop-file.component.scss'],
 })
 export class VitamuiDragDropFileComponent implements OnInit {
   private IMAGE_TYPE_PREFIX = 'image';
@@ -52,7 +52,9 @@ export class VitamuiDragDropFileComponent implements OnInit {
 
   // tslint:disable-next-line: variable-name
   private _imageUrl: string | SafeResourceUrl;
-  public get imageUrl(): string | SafeResourceUrl { return this._imageUrl; }
+  public get imageUrl(): string | SafeResourceUrl {
+    return this._imageUrl;
+  }
   public set imageUrl(val: string | SafeResourceUrl) {
     this._imageUrl = val;
     if (this.imageToUpload) {
@@ -80,7 +82,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
   }
 
   @Input()
-  public logoSize: {width: number, height: number} = {width: 1000, height: 1000};
+  public logoSize: { width: number; height: number } = { width: 1000, height: 1000 };
 
   @Output()
   public file = new EventEmitter<File>();
@@ -90,7 +92,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
@@ -105,7 +107,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
     this.message = null;
     this.imageToUpload = files.item(0);
     if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
-      this.message = 'Le fichier que vous essayez de déposer n\'est pas une image';
+      this.message = "Le fichier que vous essayez de déposer n'est pas une image";
       this.hasError = true;
       return;
     }

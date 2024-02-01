@@ -85,7 +85,7 @@ export class AccessContractInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators
+    private accessContractCreateValidators: AccessContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -179,7 +179,7 @@ export class AccessContractInformationTabComponent {
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -198,7 +198,7 @@ export class AccessContractInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

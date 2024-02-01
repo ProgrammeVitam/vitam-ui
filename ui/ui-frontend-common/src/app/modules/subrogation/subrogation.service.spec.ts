@@ -54,26 +54,20 @@ import { TranslateService } from '@ngx-translate/core';
 import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 
 describe('SubrogationService', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule
-      ],
+      imports: [HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         SubrogationService,
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: Router, useValue: { navigate: () => {},  navigateByUrl: () => {}, url : 'subrogations/customers/customerId' } },
+        { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: 'subrogations/customers/customerId' } },
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
-      ]
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+      ],
     });
   });
 

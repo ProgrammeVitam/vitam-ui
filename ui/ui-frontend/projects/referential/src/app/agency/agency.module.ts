@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-import {SharedModule} from '../shared/shared.module';
-import {AgencyCreateModule} from './agency-create';
-import {AgencyListComponent} from './agency-list/agency-list.component';
-import {AgencyPreviewModule} from './agency-preview/agency-preview.module';
-import {AgencyRoutingModule} from './agency-routing.module';
-import {AgencyComponent} from './agency.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { SharedModule } from '../shared/shared.module';
+import { AgencyCreateModule } from './agency-create';
+import { AgencyListComponent } from './agency-list/agency-list.component';
+import { AgencyPreviewModule } from './agency-preview/agency-preview.module';
+import { AgencyRoutingModule } from './agency-routing.module';
+import { AgencyComponent } from './agency.component';
 
 @NgModule({
   imports: [
@@ -66,13 +66,8 @@ import {AgencyComponent} from './agency.component';
     MatSidenavModule,
     MatProgressSpinnerModule,
     SharedModule,
-    TableFilterModule
+    TableFilterModule,
   ],
-  declarations: [
-    AgencyComponent,
-    AgencyListComponent
-  ]
-
+  declarations: [AgencyComponent, AgencyListComponent],
 })
-export class AgencyModule {
-}
+export class AgencyModule {}

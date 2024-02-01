@@ -57,8 +57,8 @@ describe('CustomerSelectService', () => {
         CustomerSelectService,
         { provide: AuthService, useValue: authStubService },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -71,15 +71,12 @@ describe('CustomerSelectService', () => {
 
   it('should call /fake-api/customers with the right params', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe(
-      (response) => {
-        expect(response).toEqual([
-          { value: 'idteamvitamui', label: '000000 - teamvitamui' },
-          { value: 'idtotal', label: '000001 - total' },
-        ]);
-      },
-      fail
-    );
+    searchService.getAll(true).subscribe((response) => {
+      expect(response).toEqual([
+        { value: 'idteamvitamui', label: '000000 - teamvitamui' },
+        { value: 'idtotal', label: '000001 - total' },
+      ]);
+    }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };
@@ -93,12 +90,9 @@ describe('CustomerSelectService', () => {
 
   it('should return an empty list if the API returns an error', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe(
-      (response) => {
-        expect(response).toEqual([]);
-      },
-      fail
-    );
+    searchService.getAll(true).subscribe((response) => {
+      expect(response).toEqual([]);
+    }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };
@@ -110,12 +104,9 @@ describe('CustomerSelectService', () => {
 
   it('should return an empty list if the API returns nothing', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe(
-      (response) => {
-        expect(response).toEqual([]);
-      },
-      fail
-    );
+    searchService.getAll(true).subscribe((response) => {
+      expect(response).toEqual([]);
+    }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };

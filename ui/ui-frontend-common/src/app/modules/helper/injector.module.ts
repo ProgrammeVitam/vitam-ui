@@ -42,7 +42,7 @@ import { InjectorHelper } from './injector-helper';
 This module must be loaded in AppModule only
 */
 @NgModule({
-  declarations: []
+  declarations: [],
 })
 export class InjectorModule {
   // tslint:disable-next-line:no-shadowed-variable

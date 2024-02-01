@@ -48,7 +48,7 @@ import { EMPTY } from 'rxjs';
 
 const expectedOwner: Owner = {
   id: '42',
-  identifier : '42',
+  identifier: '42',
   customerId: '43',
   name: 'Julien Cornille',
   code: '10234665',
@@ -57,9 +57,9 @@ const expectedOwner: Owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
-  readonly : false
+  readonly: false,
 };
 
 describe('OwnerService', () => {
@@ -75,7 +75,7 @@ describe('OwnerService', () => {
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-      ]
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -95,18 +95,15 @@ describe('OwnerService', () => {
 
   it('should call /fake-api/owners and display a success message', () => {
     const snackBarService = TestBed.inject(VitamUISnackBarService);
-    ownerService.create(expectedOwner).subscribe(
-      (response: Owner) => {
-        expect(response).toEqual(expectedOwner);
-        expect(snackBarService.open).toHaveBeenCalledWith({
-          message: 'SHARED.SNACKBAR.OWNER_CREATE',
-          translateParams: {
-            param1: expectedOwner.name,
-          }
-        });
-      },
-      fail
-    );
+    ownerService.create(expectedOwner).subscribe((response: Owner) => {
+      expect(response).toEqual(expectedOwner);
+      expect(snackBarService.open).toHaveBeenCalledWith({
+        message: 'SHARED.SNACKBAR.OWNER_CREATE',
+        translateParams: {
+          param1: expectedOwner.name,
+        },
+      });
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/owners');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedOwner);
@@ -114,14 +111,11 @@ describe('OwnerService', () => {
 
   it('should display an error message', () => {
     const snackBarService = TestBed.inject(VitamUISnackBarService);
-    ownerService.create(expectedOwner).subscribe(
-      fail,
-      () => {
-        expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false});
-      }
-    );
+    ownerService.create(expectedOwner).subscribe(fail, () => {
+      expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+    });
     const req = httpTestingController.expectOne('/fake-api/owners');
     expect(req.request.method).toEqual('POST');
-    req.flush({ message: 'Expected message' }, {status: 400, statusText: 'Bad request'});
+    req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 });

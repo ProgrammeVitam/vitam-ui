@@ -1,28 +1,27 @@
 <div class="vitamui-snack-bar-container">
-
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
-
     <ng-container *ngSwitchCase="'SUBRO_ACCEPT'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACCEPT_SUBROGATION' | translate}}
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACCEPT_SUBROGATION' | translate }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'SUBRO_CANCEL'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.CANCEL_SUBROGATION' | translate}}
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.CANCEL_SUBROGATION' | translate }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'SUBRO_DENY'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.DENIED_SUBROGATION' | translate}}
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.DENIED_SUBROGATION' | translate }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'SUBRO_UNAVAILABLE'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.IMPOSSIBLE_SUBROGATION' | translate}}
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i>
+      {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.IMPOSSIBLE_SUBROGATION' | translate }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'SUBRO_ALREADY_RUNNING_WITH_OTHER_USERS'">
-      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACTIVE_SUBROGATION' | translate}} : {{data.email}}
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i>
+      {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACTIVE_SUBROGATION' | translate }} : {{ data.email }}
     </ng-container>
   </span>
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
-
 </div>

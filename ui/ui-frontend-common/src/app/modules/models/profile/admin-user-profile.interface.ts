@@ -37,12 +37,12 @@
 import { DisplayProfileGroup } from './display-profile-group.interface';
 
 export interface AdminUserProfile {
-    multifactorAllowed: boolean;
-    createUser: boolean;
-    genericAllowed: boolean;
-    anonymizationAllowed: boolean;
-    standardAttrsAllowed: boolean;
-    type: string;
-    profilGroupIds: string [];
-    profilGroup?: DisplayProfileGroup [];
-  }
+  multifactorAllowed: boolean;
+  createUser: boolean;
+  genericAllowed: boolean;
+  anonymizationAllowed: boolean;
+  standardAttrsAllowed: boolean;
+  type: string;
+  profilGroupIds: string[];
+  profilGroup?: DisplayProfileGroup[];
+}

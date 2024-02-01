@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -46,23 +46,26 @@ import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
-  styleUrls: ['./graphic-identity-tab.component.scss']
+  styleUrls: ['./graphic-identity-tab.component.scss'],
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
-
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
     this.resetTab(this.customer);
   }
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   private _customer: Customer;
 
   @Input()
   set readOnly(readOnly: boolean) {
     this._readonly = readOnly;
   }
-  get readonly(): boolean { return this._readonly; }
+  get readonly(): boolean {
+    return this._readonly;
+  }
 
   private _readonly: boolean;
   private destroy = new Subject();
@@ -70,12 +73,14 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   public customerLogos: LogosSafeResourceUrl = {};
 
   public theme: Theme;
-  public COLOR_NAME: {[colorId: string]: string};
+  public COLOR_NAME: { [colorId: string]: string };
   public THEME_COLORS = ThemeColorType;
 
-  constructor(private customerService: CustomerService, private dialog: MatDialog,
-              private themeService: ThemeService) {
-  }
+  constructor(
+    private customerService: CustomerService,
+    private dialog: MatDialog,
+    private themeService: ThemeService,
+  ) {}
   ngOnDestroy(): void {
     this.destroy.next();
   }
@@ -84,21 +89,18 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     this.COLOR_NAME = this.themeService.getBaseColors();
   }
 
-  private majTheme(colors: {[colorId: string]: string}): Theme {
+  private majTheme(colors: { [colorId: string]: string }): Theme {
     return {
       colors,
     };
   }
 
   private resetTab(customer: Customer): void {
-
     if (customer.hasCustomGraphicIdentity) {
       const colors = this.themeService.getThemeColors(customer.themeColors);
       this.theme = this.majTheme(colors);
     } else {
-      this.theme = this.majTheme(
-        this.themeService.getThemeColors(this.themeService.defaultTheme.colors)
-      );
+      this.theme = this.majTheme(this.themeService.getThemeColors(this.themeService.defaultTheme.colors));
       this.theme.headerUrl = this.themeService.defaultTheme.headerUrl;
       this.theme.portalUrl = this.themeService.defaultTheme.portalUrl;
       this.theme.footerUrl = this.themeService.defaultTheme.footerUrl;
@@ -106,21 +108,22 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     if (customer.hasCustomGraphicIdentity) {
       this.isLoading = true;
     }
-    this.customerService.getLogos(customer.id)
-    .pipe(takeUntil(this.destroy))
-    .subscribe((logos: LogosSafeResourceUrl[]) => {
-      this.customerLogos = {
-        headerUrl: logos[0],
-        footerUrl: logos[1],
-        portalUrl: logos[2],
-      };
-      if (customer.hasCustomGraphicIdentity) {
-        this.theme.headerUrl = this.customerLogos.headerUrl;
-        this.theme.footerUrl = this.customerLogos.footerUrl;
-        this.theme.portalUrl = this.customerLogos.portalUrl;
-      }
-      this.isLoading = false;
-    });
+    this.customerService
+      .getLogos(customer.id)
+      .pipe(takeUntil(this.destroy))
+      .subscribe((logos: LogosSafeResourceUrl[]) => {
+        this.customerLogos = {
+          headerUrl: logos[0],
+          footerUrl: logos[1],
+          portalUrl: logos[2],
+        };
+        if (customer.hasCustomGraphicIdentity) {
+          this.theme.headerUrl = this.customerLogos.headerUrl;
+          this.theme.footerUrl = this.customerLogos.footerUrl;
+          this.theme.portalUrl = this.customerLogos.portalUrl;
+        }
+        this.isLoading = false;
+      });
     this.themeService.overloadLocalTheme(this.theme.colors, 'div.vitamui-sidepanel');
   }
 
@@ -128,7 +131,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(GraphicIdentityUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: { customer: this.customer, logos: this.customerLogos }
+      data: { customer: this.customer, logos: this.customerLogos },
     });
     dialogRef.afterClosed().subscribe();
   }

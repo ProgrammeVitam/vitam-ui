@@ -44,16 +44,16 @@ import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OntologyService extends SearchService<Ontology> {
-
   updated = new Subject<Ontology>();
 
   constructor(
     private ontologyApiService: OntologyApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, ontologyApiService, 'ALL');
   }
 
@@ -61,7 +61,7 @@ export class OntologyService extends SearchService<Ontology> {
     return this.ontologyApiService.getOne(encodeURI(id));
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existOntology: any = {};
     if (properties.name) {
       existOntology.name = properties.name;
@@ -75,51 +75,51 @@ export class OntologyService extends SearchService<Ontology> {
   }
 
   create(ontology: Ontology) {
-    return this.ontologyApiService.create(ontology, this.headers)
-      .pipe(
-        tap(
-          (_: Ontology) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.ONTOLOGY_CREATED',
-              icon: 'vitamui-icon-ontologie'
-            });
-          },
-          (error: any) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  patch(data: { id: string, [key: string]: any }): Observable<Ontology> {
-    return this.ontologyApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          () => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.ONTOLOGY_UPDATED',
-              icon: 'vitamui-icon-ontologie'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  delete(ontology: Ontology): Observable<any> {
-    return this.ontologyApiService.delete(ontology.id).pipe(
-      tap(() => {
+    return this.ontologyApiService.create(ontology, this.headers).pipe(
+      tap(
+        (_: Ontology) => {
           this.snackBarService.open({
-            message: 'SNACKBAR.ONTOLOGY_DELETED',
-            icon: 'vitamui-icon-ontologie'
+            message: 'SNACKBAR.ONTOLOGY_CREATED',
+            icon: 'vitamui-icon-ontologie',
+          });
+        },
+        (error: any) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
+
+  patch(data: { id: string; [key: string]: any }): Observable<Ontology> {
+    return this.ontologyApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ONTOLOGY_UPDATED',
+            icon: 'vitamui-icon-ontologie',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        })
+        },
+      ),
+    );
+  }
+
+  delete(ontology: Ontology): Observable<any> {
+    return this.ontologyApiService.delete(ontology.id).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ONTOLOGY_DELETED',
+            icon: 'vitamui-icon-ontologie',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
     );
   }
 
@@ -130,15 +130,16 @@ export class OntologyService extends SearchService<Ontology> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([ response ], { type: 'octet/stream' });
+        const blob = new Blob([response], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'agencies.csv';
         a.click();
         window.URL.revokeObjectURL(url);
-      }, (error) => {
+      },
+      (error) => {
         this.snackBarService.open({ message: error.error.message, translate: false });
-      }
+      },
     );
   }
 

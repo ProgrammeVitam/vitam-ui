@@ -3,51 +3,50 @@
 // TODO Refactor
 
 :host {
-    width: 100%;
-    background: var(--vitamui-primary);
-    padding: 14px 24px;
+  width: 100%;
+  background: var(--vitamui-primary);
+  padding: 14px 24px;
 }
 
 .download-label {
-    padding: 15px;
+  padding: 15px;
 }
 
 .download-bar-container {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .download-bar-content {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-grow: 1;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1;
 
-    > i.material-icons {
-        margin-right: 10px;
-    }
-
+  > i.material-icons {
+    margin-right: 10px;
+  }
 }
 
 .download-progress-bar-container {
-    width: 100%;
-    max-width: 300px;
-    padding: 0 15px;
+  width: 100%;
+  max-width: 300px;
+  padding: 0 15px;
 }
 
 .cancel-link {
-    background: none;
-    border: none;
-    color: white;
-    text-decoration: underline;
-    outline: none;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 14px;
-    font-weight: bold;
+  background: none;
+  border: none;
+  color: white;
+  text-decoration: underline;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
 }

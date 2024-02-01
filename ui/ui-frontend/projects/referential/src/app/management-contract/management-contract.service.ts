@@ -44,7 +44,7 @@ export class ManagementContractService extends SearchService<ManagementContract>
     private managementContractApi: ManagementContractsApiService,
     private snackBarService: VitamUISnackBarService,
     private translateService: TranslateService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, managementContractApi, 'ALL');
   }
@@ -93,8 +93,8 @@ export class ManagementContractService extends SearchService<ManagementContract>
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -108,8 +108,8 @@ export class ManagementContractService extends SearchService<ManagementContract>
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message });
-        }
-      )
+        },
+      ),
     );
   }
 }

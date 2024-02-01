@@ -41,9 +41,7 @@ import { OrderByButtonComponent } from './order-by-button.component';
 
 @NgModule({
   declarations: [OrderByButtonComponent],
-  imports: [
-    CommonModule,
-  ],
-  exports: [OrderByButtonComponent]
+  imports: [CommonModule],
+  exports: [OrderByButtonComponent],
 })
-export class OrderByButtonModule { }
+export class OrderByButtonModule {}

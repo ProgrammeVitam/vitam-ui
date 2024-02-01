@@ -47,7 +47,11 @@ import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleTypeEnum } from '../../../models/rule-type-enum';
 import {
-  ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto
+  ActionsRules,
+  RuleActions,
+  RuleActionsEnum,
+  RuleCategoryAction,
+  RuleSearchCriteriaDto,
 } from '../../../models/ruleAction.interface';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
@@ -145,7 +149,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private startupService: StartupService,
     private translateService: TranslateService,
-    private logger: Logger
+    private logger: Logger,
   ) {
     this.applyChanges();
   }
@@ -156,7 +160,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
         ).length !== 0;
       this.isUpdateValidActionsWithProperty =
         data.filter(
@@ -164,7 +168,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
             rule.category === this.ruleCategorySelected &&
             rule.actionType === RuleActionsEnum.ADD_RULES &&
             rule.ruleCategoryAction.rules?.length === 0 &&
-            rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0
+            rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0,
         ).length !== 0;
 
       this.isUpdateValidActionsWithFinalAction =
@@ -172,14 +176,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.finalAction &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
 
       this.isAddValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
         ).length !== 0;
       this.isAddPropertyValidActions =
         data.filter(
@@ -187,14 +191,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
       this.isDeleteValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules?.length !== 0 &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
         ).length !== 0;
 
       this.isDeleteValidActionsWithProperty =
@@ -202,7 +206,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules?.length === 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
 
       this.isBlockInheritanceCategoryDisabled =
@@ -210,14 +214,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           .length !== 0;
       this.isUnlockInheritanceCategoryDisabled =
         data.filter(
-          (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+          (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE,
         ).length !== 0;
 
       this.isUnlockRulesInheritanceDisabled =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
         ).length !== 0;
     });
   }
@@ -234,22 +238,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.ACCESSRULE &&
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
       )?.ruleCategoryAction.preventInheritance;
 
       const preventRulesIdToAdd: string[] = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       )?.ruleCategoryAction?.preventRulesIdToAdd;
 
       const preventRulesIdToRemove: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          managementRule.category === RuleTypeEnum.ACCESSRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       )?.ruleCategoryAction?.preventRulesIdToRemove;
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -271,7 +274,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.AccessRule = {
@@ -283,7 +286,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.AccessRule = {
@@ -356,22 +359,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.REUSERULE &&
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
       )?.ruleCategoryAction.preventInheritance;
 
       const preventRulesIdToAdd: string[] = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       )?.ruleCategoryAction?.preventRulesIdToAdd;
 
       const preventRulesIdToRemove: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          managementRule.category === RuleTypeEnum.REUSERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       )?.ruleCategoryAction?.preventRulesIdToRemove;
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -393,7 +395,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.ReuseRule = {
@@ -405,7 +407,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.ReuseRule = {
@@ -525,7 +527,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         rule === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE) &&
       (this.ruleCategorySelected === RuleTypeEnum.APPRAISALRULE || this.ruleCategorySelected === RuleTypeEnum.STORAGERULE) &&
       this.ruleActions.filter(
-        (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategorySelected
+        (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategorySelected,
       ).length === 0
     ) {
       this.ruleActions.push({
@@ -595,19 +597,12 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         }
         break;
       case 'BLOCK_RULE_INHERITANCE':
-        if (
-          this.isRuleCategorySelected &&
-          !this.isAddValidActions
-        ) {
+        if (this.isRuleCategorySelected && !this.isAddValidActions) {
           this.prepareActionToAdd(rule);
         }
         break;
       case 'UNLOCK_RULE_INHERITANCE':
-        if (
-          this.isRuleCategorySelected &&
-          !this.isDeleteValidActions &&
-          !this.isUnlockRulesInheritanceDisabled
-        ) {
+        if (this.isRuleCategorySelected && !this.isDeleteValidActions && !this.isUnlockRulesInheritanceDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
@@ -672,7 +667,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           },
           (error: any) => {
             this.logger.error('Error message :', error);
-          }
+          },
         );
       });
   }
@@ -695,22 +690,22 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.APPRAISALRULE &&
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
       )?.ruleCategoryAction.preventInheritance;
 
       const preventRulesIdToAdd: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       )?.ruleCategoryAction?.preventRulesIdToAdd;
 
       const preventRulesIdToRemove: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       )?.ruleCategoryAction?.preventRulesIdToRemove;
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules?.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -734,7 +729,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
       ) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.AppraisalRule = {
@@ -748,7 +743,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
       ) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.AppraisalRule = {
@@ -791,22 +786,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.STORAGERULE &&
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
       )?.ruleCategoryAction.preventInheritance;
 
       const preventRulesIdToAdd: string[] = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       )?.ruleCategoryAction?.preventRulesIdToAdd;
 
       const preventRulesIdToRemove: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          managementRule.category === RuleTypeEnum.STORAGERULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       )?.ruleCategoryAction?.preventRulesIdToRemove;
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -828,7 +822,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.StorageRule = {
@@ -840,7 +834,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.StorageRule = {
@@ -884,24 +878,24 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         (managementRule) =>
           managementRule.category === RuleTypeEnum.DISSEMINATIONRULE &&
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
       )?.ruleCategoryAction.preventInheritance;
 
       const preventRulesIdToAdd: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       )?.ruleCategoryAction?.preventRulesIdToAdd;
 
       const preventRulesIdToRemove: string[] = data.find(
         (managementRule) =>
-          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       )?.ruleCategoryAction?.preventRulesIdToRemove;
 
       if (
         data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1
       ) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -926,7 +920,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         -1
       ) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.DisseminationRule = {
@@ -941,7 +935,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         -1
       ) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.DisseminationRule = {

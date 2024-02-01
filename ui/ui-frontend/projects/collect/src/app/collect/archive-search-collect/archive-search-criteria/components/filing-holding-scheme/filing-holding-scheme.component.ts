@@ -30,8 +30,17 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
-  CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet,
-  SearchCriteriaEltDto, SearchCriteriaTypeEnum, StartupService, Unit
+  CriteriaDataType,
+  CriteriaOperator,
+  Direction,
+  FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode,
+  PagedResult,
+  ResultFacet,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  StartupService,
+  Unit,
 } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
@@ -45,7 +54,6 @@ import { ArchiveSharedDataService } from '../../services/archive-shared-data.ser
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
   @Input() searchRequestTotalResults: number;
@@ -56,7 +64,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
   private subscriptions = new Subscription();
   tenantIdentifier: string;
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
   nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
   nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode> = new MatTreeNestedDataSource();
@@ -80,7 +88,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     private translateService: TranslateService,
     private archiveService: ArchiveCollectService,
     private startupService: StartupService,
-    private archiveSharedDataService: ArchiveSharedDataService
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {
     this.tenantIdentifier = this.startupService.getTenantIdentifier();
   }
@@ -94,8 +102,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.loadAttachementUnits();
   }
 
-  ngOnChanges(_: SimpleChanges): void {
-  }
+  ngOnChanges(_: SimpleChanges): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -110,7 +117,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
           FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
           FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
         }
-      })
+      }),
     );
   }
 
@@ -124,10 +131,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
         // Re-init attachment units to render children by criteria
         this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
         if (this.searchRequestTotalResults > 0 && isEmpty(this.attachmentNodes)) {
-          FilingHoldingSchemeHandler.addOrphansNodeFromTree(this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'), this.searchRequestTotalResults);
+          FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+            this.nestedDataSourceLeaves.data,
+            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
+            this.searchRequestTotalResults,
+          );
         }
-      })
+      }),
     );
   }
 
@@ -155,13 +165,11 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
       trackTotalHits: false,
       computeFacets: false,
     };
-    this.archiveService
-      .searchArchiveUnitsByCriteria(searchCriteria, this.transactionId)
-      .subscribe((pagedResult: PagedResult) => {
-        this.attachmentUnits = pagedResult.results;
-        this.attachmentUnitsLoaded = true;
-        this.setAttachmentNodes();
-      });
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe((pagedResult: PagedResult) => {
+      this.attachmentUnits = pagedResult.results;
+      this.attachmentUnitsLoaded = true;
+      this.setAttachmentNodes();
+    });
   }
 
   private setAttachmentNodes() {
@@ -223,15 +231,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.subscriptions.add(
       Boolean(archiveUniParams.value)
         ? this.archiveService.getCollectUnitDetails(archiveUniParams.key.toString()).subscribe((unit) => {
-          this.showArchiveUnitDetails.emit(unit);
-          this.loadingArchiveUnit[`${from}`] = false;
-        })
-        : this.archiveService
-          .getReferentialUnitDetails(archiveUniParams.key.toString())
-          .subscribe((searchResponse) => {
-            this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
+            this.showArchiveUnitDetails.emit(unit);
             this.loadingArchiveUnit[`${from}`] = false;
           })
+        : this.archiveService.getReferentialUnitDetails(archiveUniParams.key.toString()).subscribe((searchResponse) => {
+            this.showArchiveUnitDetails.emit(searchResponse.$results[0]);
+            this.loadingArchiveUnit[`${from}`] = false;
+          }),
     );
   }
 
@@ -242,7 +248,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
         if (this.nestedDataSourceLeaves.data.length === 1 && this.nestedDataSourceLeaves.data[0].count + 1 !== totalResults) {
           this.nestedDataSourceLeaves.data[0].count = totalResults;
         }
-      })
+      }),
     );
   }
 }

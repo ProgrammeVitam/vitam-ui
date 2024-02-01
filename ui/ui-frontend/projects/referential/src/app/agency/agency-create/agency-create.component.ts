@@ -72,7 +72,7 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private agencyService: AgencyService,
-    private agencyCreateValidators: AgencyCreateValidators
+    private agencyCreateValidators: AgencyCreateValidators,
   ) {}
 
   ngOnInit() {
@@ -111,7 +111,7 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      }
+      },
     );
   }
 
@@ -125,7 +125,7 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'restart' });
         console.error(error);
-      }
+      },
     );
   }
 

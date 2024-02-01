@@ -47,7 +47,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
-  BASE_URL, DescriptionLevel, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, Unit, UnitType, WINDOW_LOCATION
+  BASE_URL,
+  DescriptionLevel,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  StartupService,
+  Unit,
+  UnitType,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';

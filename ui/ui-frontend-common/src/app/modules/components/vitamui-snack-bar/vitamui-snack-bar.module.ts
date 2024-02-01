@@ -41,11 +41,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule,
-    PipesModule
-  ],
+  imports: [CommonModule, TranslateModule, PipesModule],
   declarations: [VitamUISnackBarComponent],
 })
-export class VitamUISnackBarModule { }
+export class VitamUISnackBarModule {}

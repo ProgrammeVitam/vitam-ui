@@ -1,16 +1,14 @@
 <div class="row">
   <div class="col-2 read-only-field">
-    <label>{{ 'ACCESSION_REGISTER.PREVIEW.DATE' | translate}}</label>
+    <label>{{ 'ACCESSION_REGISTER.PREVIEW.DATE' | translate }}</label>
     <div>
       <p>{{ accessionRegisterDetail.endDate | date: 'dd/MM/yyyy' }}</p>
     </div>
   </div>
   <div class="col-9 read-only-field">
-    <label>{{ 'ACCESSION_REGISTER.PREVIEW.ORIGINATING_AGENCY' | translate}}</label>
+    <label>{{ 'ACCESSION_REGISTER.PREVIEW.ORIGINATING_AGENCY' | translate }}</label>
     <div>
-      <p matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}"
-         matTooltipClass="vitamui-tooltip"
-         [matTooltipShowDelay]="300">
+      <p matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
         {{ accessionRegisterDetail.originatingAgency }}
       </p>
     </div>
@@ -20,33 +18,33 @@
 <div class="violet">
   <div class="row">
     <div class="col-2 read-only-field">
-      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_AGREEMENT' | translate}}</label>
+      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_AGREEMENT' | translate }}</label>
       <div>
         <p>{{ accessionRegisterDetail.archivalAgreement }}</p>
       </div>
     </div>
     <div class="col-2 read-only-field">
-      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_PROFILE' | translate}}</label>
+      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_PROFILE' | translate }}</label>
       <div>
-        <p>{{accessionRegisterDetail.archivalProfile}}</p>
+        <p>{{ accessionRegisterDetail.archivalProfile }}</p>
       </div>
     </div>
     <div class="col-3 read-only-field">
-      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ACQUISITION_INFORMATION' | translate}}</label>
+      <label>{{ 'ACCESSION_REGISTER.PREVIEW.ACQUISITION_INFORMATION' | translate }}</label>
       <div>
-        <p>{{accessionRegisterDetail.acquisitionInformation}}</p>
+        <p>{{ accessionRegisterDetail.acquisitionInformation }}</p>
       </div>
     </div>
     <div class="col-2 read-only-field">
-      <label>{{ 'ACCESSION_REGISTER.PREVIEW.STATUS' | translate}}</label>
+      <label>{{ 'ACCESSION_REGISTER.PREVIEW.STATUS' | translate }}</label>
       <div>
         <p>{{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate }}</p>
       </div>
     </div>
     <div class="col-2 read-only-field">
-      <label>{{ 'ACCESSION_REGISTER.PREVIEW.LEGAL_STATUS' | translate}}</label>
+      <label>{{ 'ACCESSION_REGISTER.PREVIEW.LEGAL_STATUS' | translate }}</label>
       <div>
-        <p>{{accessionRegisterDetail.legalStatus}}</p>
+        <p>{{ accessionRegisterDetail.legalStatus }}</p>
       </div>
     </div>
   </div>
@@ -55,15 +53,13 @@
     <div class="col-6 read-only-field">
       <label>{{ 'ACCESSION_REGISTER.PREVIEW.OPERATION_TECHNICAL_IDENTIFIER' | translate }}</label>
       <div>
-        <p>{{accessionRegisterDetail.opi}}</p>
+        <p>{{ accessionRegisterDetail.opi }}</p>
       </div>
     </div>
     <div class="col-6 read-only-field">
       <label>{{ 'ACCESSION_REGISTER.PREVIEW.SUBMISSION_AGENCY' | translate }}</label>
       <div>
-        <p matTooltip="{{ accessionRegisterDetail.submissionAgencyLabel }}"
-           matTooltipClass="vitamui-tooltip"
-           [matTooltipShowDelay]="300">
+        <p matTooltip="{{ accessionRegisterDetail.submissionAgencyLabel }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
           {{ accessionRegisterDetail.submissionAgency }}
         </p>
       </div>
@@ -79,12 +75,10 @@
         </div>
         <div class="button" *ngIf="hasLongComment">
           <button class="btn-circle" (click)="onClicShowMoreOrLessOfComment()">
-            <i class="material-icons"
-               [@rotateAnimation]="showFullComment ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+            <i class="material-icons" [@rotateAnimation]="showFullComment ? 'collapse' : 'expand'">keyboard_arrow_down</i>
           </button>
         </div>
       </div>
     </div>
   </div>
-
 </div>

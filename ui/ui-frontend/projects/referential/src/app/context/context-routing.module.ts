@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
-import {AppGuard, AuthGuard} from 'ui-frontend-common';
-import {ContextComponent} from './context.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { AppGuard, AuthGuard } from 'ui-frontend-common';
+import { ContextComponent } from './context.component';
 
 const routes: Route[] = [
   {
@@ -46,16 +46,11 @@ const routes: Route[] = [
 
     component: ContextComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: {appId: 'CONTEXTS_APP'}
-  }
+    data: { appId: 'CONTEXTS_APP' },
+  },
 ];
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class ContextRoutingModule {
-}
+export class ContextRoutingModule {}

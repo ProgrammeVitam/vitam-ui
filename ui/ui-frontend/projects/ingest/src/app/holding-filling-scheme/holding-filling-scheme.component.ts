@@ -34,29 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
-import {IngestType} from '../core/common/ingest-type.enum';
-import {UploadComponent} from '../core/common/upload.component';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { IngestType } from '../core/common/ingest-type.enum';
+import { UploadComponent } from '../core/common/upload.component';
 
 @Component({
   selector: 'app-holding-filling-scheme',
   templateUrl: './holding-filling-scheme.component.html',
-  styleUrls: ['./holding-filling-scheme.component.scss']
+  styleUrls: ['./holding-filling-scheme.component.scss'],
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
   IngestType = IngestType;
 
   tenantIdentifier: string;
 
-  constructor(private router: Router, private route: ActivatedRoute, globalEventService: GlobalEventService, public dialog: MatDialog) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+    public dialog: MatDialog,
+  ) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
   }
@@ -69,7 +74,7 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
 
     dialogConfig.data = {
       tenantIdentifier: this.tenantIdentifier,
-      givenContextId: type
+      givenContextId: type,
     };
 
     const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
@@ -78,7 +83,6 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
-
 }

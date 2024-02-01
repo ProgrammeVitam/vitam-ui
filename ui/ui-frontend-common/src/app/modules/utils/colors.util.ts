@@ -4,11 +4,19 @@ const LIGHTEN_PATTERN = /-light-(\d*)/gm;
 const DARKEN_PATTERN = /-dark-(\d*)/gm;
 
 class RGB {
-  constructor(public r: number, public g: number, public b: number) { }
+  constructor(
+    public r: number,
+    public g: number,
+    public b: number,
+  ) {}
 }
 
 class HSL {
-  constructor(public h: number, public s: number, public l: number) { }
+  constructor(
+    public h: number,
+    public s: number,
+    public l: number,
+  ) {}
 }
 
 /**
@@ -20,16 +28,14 @@ class HSL {
  * @return The hex RBG color find or computed from all sources
  */
 export function getColorFromMaps(name: string, defaultMap: any, fallbackMap: any, priorityMap: any): string {
-
   const customColor = getColorFromMap(name, priorityMap);
 
-  if ( customColor ) {
+  if (customColor) {
     return customColor;
   }
 
-
   const applicationColor = getColorFromMap(name, fallbackMap);
-  if ( applicationColor ) {
+  if (applicationColor) {
     return applicationColor;
   }
 
@@ -37,35 +43,37 @@ export function getColorFromMaps(name: string, defaultMap: any, fallbackMap: any
 }
 
 function getColorFromMap(colorName: string, colorMap: any) {
-  if (!colorMap) { return null; }
+  if (!colorMap) {
+    return null;
+  }
 
   if (colorMap[colorName]) {
     return colorMap[colorName];
   }
 
-  if ( colorName.endsWith(DARK_SUFFIX) && colorMap[colorName.substring(0, colorName.length - DARK_SUFFIX.length)] ) {
+  if (colorName.endsWith(DARK_SUFFIX) && colorMap[colorName.substring(0, colorName.length - DARK_SUFFIX.length)]) {
     return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - DARK_SUFFIX.length)]);
   }
 
-  if ( colorName.endsWith(LIGHT_SUFFIX) && colorMap[colorName.substring(0, colorName.length - LIGHT_SUFFIX.length)] ) {
+  if (colorName.endsWith(LIGHT_SUFFIX) && colorMap[colorName.substring(0, colorName.length - LIGHT_SUFFIX.length)]) {
     return convertToLightColor(colorMap[colorName.substring(0, colorName.length - LIGHT_SUFFIX.length)]);
   }
 
   LIGHTEN_PATTERN.lastIndex = 0;
   let match = LIGHTEN_PATTERN.exec(colorName);
-  if ( match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)] ) {
+  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
     return convertToLightColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
   }
 
   DARKEN_PATTERN.lastIndex = 0;
   match = DARKEN_PATTERN.exec(colorName);
-  if ( match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)] ) {
+  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
     return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
   }
 
   DARKEN_PATTERN.lastIndex = 0;
   match = DARKEN_PATTERN.exec(colorName);
-  if ( match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)] ) {
+  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
     return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
   }
 
@@ -99,7 +107,7 @@ export function convertLighten(rgbValue: RGB, lightModificator: number) {
   hslValue.l = hslValue.l + lightModificator;
   if (hslValue.l > 100) {
     hslValue.l = 100;
-  } else if (hslValue.l < 0 ) {
+  } else if (hslValue.l < 0) {
     hslValue.l = 0;
   }
   const lightRGBvalue: RGB = hslToRgb(hslValue);
@@ -134,12 +142,10 @@ function toHex(componentValue: number) {
 
 export function hexToRgb(hex): RGB {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) =>  r + r + g + g + b + b );
+  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ?
-    new RGB(parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)) :
-    null;
+  return result ? new RGB(parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)) : null;
 }
 
 export function hexToRgbString(hex) {
@@ -148,11 +154,11 @@ export function hexToRgbString(hex) {
 }
 
 function hslToRgb(inputHSL): RGB {
-  const hsl: HSL = new HSL( inputHSL.h * 360, inputHSL.s / 100, inputHSL.l / 100);
+  const hsl: HSL = new HSL(inputHSL.h * 360, inputHSL.s / 100, inputHSL.l / 100);
   let rgb: RGB;
 
   const c = (1 - Math.abs(2 * hsl.l - 1)) * hsl.s;
-  const x = c * (1 - Math.abs((hsl.h / 60) % 2 - 1));
+  const x = c * (1 - Math.abs(((hsl.h / 60) % 2) - 1));
   const m = hsl.l - c / 2;
 
   if (hsl.h < 60) {
@@ -174,7 +180,6 @@ function hslToRgb(inputHSL): RGB {
   rgb.b = Math.round((rgb.b + m) * 255);
 
   return rgb;
-
 }
 
 export function rgbToHsl(inputRGB: RGB): HSL {
@@ -186,13 +191,19 @@ export function rgbToHsl(inputRGB: RGB): HSL {
   hsl.l = (max + min) / 2;
 
   // if min = max: achromatic, h = s = 0 => Nothing to update
-  if ( max !== min ) {
+  if (max !== min) {
     const d = max - min;
     hsl.s = hsl.l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case rgb.r: hsl.h = (rgb.g - rgb.b) / d + (rgb.g < rgb.b ? 6 : 0); break;
-      case rgb.g: hsl.h = (rgb.b - rgb.r) / d + 2; break;
-      case rgb.b: hsl.h = (rgb.r - rgb.g) / d + 4; break;
+      case rgb.r:
+        hsl.h = (rgb.g - rgb.b) / d + (rgb.g < rgb.b ? 6 : 0);
+        break;
+      case rgb.g:
+        hsl.h = (rgb.b - rgb.r) / d + 2;
+        break;
+      case rgb.b:
+        hsl.h = (rgb.r - rgb.g) / d + 4;
+        break;
     }
     hsl.h /= 6;
   }

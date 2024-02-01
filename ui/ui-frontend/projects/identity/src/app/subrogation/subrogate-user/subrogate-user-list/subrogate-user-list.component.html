@@ -2,9 +2,9 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-user"></i></div>
-      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.NAME' | translate}}</div>
-      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.CRITICITY' | translate}}</div>
-      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.GROUP' | translate}}</div>
+      <div class="col-2">{{ 'SUBROGATION.HOME.RESULTS_TABLE.NAME' | translate }}</div>
+      <div class="col-2">{{ 'SUBROGATION.HOME.RESULTS_TABLE.CRITICITY' | translate }}</div>
+      <div class="col-2">{{ 'SUBROGATION.HOME.RESULTS_TABLE.GROUP' | translate }}</div>
       <div class="col-1">ID</div>
       <div class="col-4"></div>
     </div>
@@ -13,9 +13,15 @@
       <div class="vitamui-table-rows" *ngFor="let subrogableUser of dataSource">
         <div class="vitamui-row d-flex align-items-center">
           <div class="col-1">
-            <i class="vitamui-icon vitamui-icon-user"
-              [ngClass]="subrogableUser?.status === 'ENABLED' ? 'status-badge-green' :
-              (subrogableUser?.status === 'DISABLED' || subrogableUser?.status === 'ANONYM' ? 'status-badge-grey' : 'status-badge-orange')"
+            <i
+              class="vitamui-icon vitamui-icon-user"
+              [ngClass]="
+                subrogableUser?.status === 'ENABLED'
+                  ? 'status-badge-green'
+                  : subrogableUser?.status === 'DISABLED' || subrogableUser?.status === 'ANONYM'
+                    ? 'status-badge-grey'
+                    : 'status-badge-orange'
+              "
             ></i>
           </div>
           <div class="col-2" vitamuiCommonEllipsis>{{ subrogableUser?.lastname }} {{ subrogableUser?.firstname }}</div>
@@ -40,21 +46,30 @@
           </div>
           <div class="col-2" vitamuiCommonEllipsis>{{ getGroup(subrogableUser)?.name }}</div>
           <div class="col-1" vitamuiCommonEllipsis>{{ subrogableUser?.identifier }}</div>
-          <div class="col-2 d-flex justify-content-end"> 
-              <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail === currenteUser.email"
-                class="text normal bold danger" vitamuiCommonEllipsis>{{'SUBROGATION.HOME.SUBROGATION_WIP' | translate}}</span>
-      
-              <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail !== currenteUser.email"
-                class="text normal bold danger" vitamuiCommonEllipsis>{{'SUBROGATION.HOME.SUBROGATE_BY' | translate : {param1: subrogableUser.superUserEmail} }}</span>
+          <div class="col-2 d-flex justify-content-end">
+            <span
+              *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail === currenteUser.email"
+              class="text normal bold danger"
+              vitamuiCommonEllipsis
+              >{{ 'SUBROGATION.HOME.SUBROGATION_WIP' | translate }}</span
+            >
+
+            <span
+              *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail !== currenteUser.email"
+              class="text normal bold danger"
+              vitamuiCommonEllipsis
+              >{{ 'SUBROGATION.HOME.SUBROGATE_BY' | translate: { param1: subrogableUser.superUserEmail } }}</span
+            >
           </div>
 
           <div class="col-2 d-flex justify-content-end">
             <button
-              *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail === currenteUser.email" 
+              *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail === currenteUser.email"
               class="btn outline-primary"
               (click)="openUserSubrogationDialog(subrogableUser)"
-              [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable">
-                {{'SUBROGATION.HOME.RESULTS_TABLE.ACTION_BUTTON' | translate}}
+              [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable"
+            >
+              {{ 'SUBROGATION.HOME.RESULTS_TABLE.ACTION_BUTTON' | translate }}
             </button>
           </div>
         </div>
@@ -62,18 +77,18 @@
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && subrogationService.canLoadMore && !pending then loadMore"></div>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && subrogationService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
- <ng-template #loadMore>
+<ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="subrogationService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 

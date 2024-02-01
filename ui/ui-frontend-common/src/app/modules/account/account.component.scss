@@ -1,4 +1,4 @@
-@import "../../../sass/variables/colors";
+@import '../../../sass/variables/colors';
 
 h2 {
   display: flex;
@@ -15,7 +15,7 @@ h2 {
 
 :host::ng-deep {
   --radius: 20px;
-  
+
   .mat-tab-body-wrapper {
     border-top-right-radius: var(--radius);
     border-bottom-right-radius: var(--radius);
@@ -37,14 +37,16 @@ h2 {
     border-bottom: none;
   }
 
-  .mat-tab-header, .mat-tab-nav-bar {
+  .mat-tab-header,
+  .mat-tab-nav-bar {
     border-bottom: 0;
   }
   .mat-ink-bar {
     display: none;
   }
 
-  &.mat-tab-label-active, &.mat-tab-label-active:not(.mat-tab-disabled):focus {
+  &.mat-tab-label-active,
+  &.mat-tab-label-active:not(.mat-tab-disabled):focus {
     background-color: $white;
     font-weight: bold;
     color: var(--vitamui-grey-700);

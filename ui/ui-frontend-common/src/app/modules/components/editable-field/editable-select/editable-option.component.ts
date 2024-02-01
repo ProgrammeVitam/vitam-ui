@@ -38,12 +38,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-editable-option',
-  template: ''
+  template: '',
 })
 export class EditableOptionComponent {
-
   @Input() value: any;
   @Input() content: string;
   @Input() disabled: string;
-
 }

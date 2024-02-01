@@ -102,7 +102,7 @@ export class FileTreeComponent implements OnDestroy {
     private sedaLanguageService: PastisPopupMetadataLanguageService,
     public fileTreeService: FileTreeService,
     private translateService: TranslateService,
-    public profileService: ProfileService
+    public profileService: ProfileService,
   ) {}
 
   static archiveUnits: FileNode;
@@ -218,7 +218,7 @@ export class FileTreeComponent implements OnDestroy {
       },
       (error) => {
         console.log(error);
-      }
+      },
     );
     this.sedaData = this.sedaService.sedaRules[0];
     this.sedaService.selectedSedaNode.next(this.sedaService.sedaRules[0]);
@@ -390,7 +390,7 @@ export class FileTreeComponent implements OnDestroy {
               childAttribute.sedaData = sedaChild;
               attributes.push(childAttribute);
             }
-          }
+          },
         );
         this.insertAttributes(newNode, attributes);
       }
@@ -553,7 +553,7 @@ export class FileTreeComponent implements OnDestroy {
         node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
       this.removeItem(node, this.fileService.nodeChange.getValue());
       this.loggingService.showSuccess(
-        nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo
+        nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo,
       );
     }
   }
@@ -584,7 +584,7 @@ export class FileTreeComponent implements OnDestroy {
       addedItems.push(elementToDuplicate);
       this.insertItem(node.parent, addedItems, node, true);
       this.loggingService.showSuccess(
-        nodeType + node.name + this.notificationDuplicateSuccessOne + duplicateTypeText + this.notificationDuplicateSuccessTwo
+        nodeType + node.name + this.notificationDuplicateSuccessOne + duplicateTypeText + this.notificationDuplicateSuccessTwo,
       );
     }
   }
@@ -690,7 +690,7 @@ export class FileTreeComponent implements OnDestroy {
     const includedDataObjectPackageChildren = ['DataObjectGroup', 'BinaryDataObject', 'PhysicalDataObject'];
     if (rootNodeName === 'DataObjectPackage' && !includedDataObjectPackageChildren.includes(node.name)) {
       filteredNode.children = filteredNode.children.filter(
-        (child: { name: string }) => child.name !== 'DescriptiveMetadata' && child.name !== 'ManagementMetadata'
+        (child: { name: string }) => child.name !== 'DescriptiveMetadata' && child.name !== 'ManagementMetadata',
       );
       const childFound = this.fileService.getFileNodeById(filteredNode, node.id);
       return !!childFound;

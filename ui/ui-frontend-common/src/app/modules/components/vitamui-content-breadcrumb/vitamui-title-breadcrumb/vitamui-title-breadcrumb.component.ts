@@ -48,10 +48,9 @@ import { StartupService } from '../../../startup.service';
 @Component({
   selector: 'vitamui-common-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
-  styleUrls: ['./vitamui-title-breadcrumb.component.scss']
+  styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
 })
 export class VitamuiTitleBreadcrumbComponent implements OnInit {
-
   @Input()
   public data?: BreadCrumbData[];
 
@@ -60,8 +59,8 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,
-    private logger: Logger
-  ) { }
+    private logger: Logger,
+  ) {}
 
   ngOnInit() {}
 

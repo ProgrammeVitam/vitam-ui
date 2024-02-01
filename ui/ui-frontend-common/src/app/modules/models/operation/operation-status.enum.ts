@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum OperationStatus {
-    WAITING = 'WAITING',
-    PAUSED = 'PAUSED',
-    RUNNING = 'RUNNING',
-    FAILED = 'FAILED',
-    CANCELED = 'CANCELED',
-    COMPLETED = 'COMPLETED',
+  WAITING = 'WAITING',
+  PAUSED = 'PAUSED',
+  RUNNING = 'RUNNING',
+  FAILED = 'FAILED',
+  CANCELED = 'CANCELED',
+  COMPLETED = 'COMPLETED',
 }

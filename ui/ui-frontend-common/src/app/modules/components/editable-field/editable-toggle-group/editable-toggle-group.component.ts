@@ -44,17 +44,16 @@ import { EditableButtonToggleComponent } from './editable-button-toggle.componen
 export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableToggleGroupComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-toggle-group',
   templateUrl: './editable-toggle-group.component.html',
   styleUrls: ['./editable-toggle-group.component.scss'],
-  providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR]
+  providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR],
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {
-
   @ContentChildren(EditableButtonToggleComponent) buttons: QueryList<EditableButtonToggleComponent>;
 
   constructor(elementRef: ElementRef) {
@@ -66,5 +65,4 @@ export class EditableToggleGroupComponent extends EditableFieldComponent {
 
     return found ? found.content : null;
   }
-
 }

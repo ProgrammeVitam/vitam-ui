@@ -44,7 +44,6 @@ import { SearchService } from './search.service';
 export const INFINITE_SCROLL_MAX_ITEMS = 100;
 
 export class InfiniteScrollTable<T extends Id> {
-
   infiniteScrollDisabled = false;
   pending = false;
   dataSource: T[];
@@ -72,7 +71,7 @@ export class InfiniteScrollTable<T extends Id> {
           }
           this.updatedData.next();
         },
-        () => this.pending = false
+        () => (this.pending = false),
       );
     }
   }
@@ -91,7 +90,7 @@ export class InfiniteScrollTable<T extends Id> {
           }
           this.updatedData.next();
         },
-        () => this.pending = false
+        () => (this.pending = false),
       );
     }
   }
@@ -99,5 +98,4 @@ export class InfiniteScrollTable<T extends Id> {
   onScroll() {
     this.loadMore();
   }
-
 }

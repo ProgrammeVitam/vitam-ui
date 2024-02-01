@@ -51,33 +51,37 @@ const expectedApp = [
     id: 'CUSTOMERS_APP',
     identifier: 'CUSTOMERS_APP',
     name: 'Organisations',
-    url: ''
+    url: '',
   },
   {
     id: 'USERS_APP',
     identifier: 'USERS_APP',
     name: 'Utilisateurs',
-    url: ''
+    url: '',
   },
   {
     id: 'GROUPS_APP',
     identifier: 'GROUPS_APP',
     name: 'Groupes de profils',
-    url: ''
+    url: '',
   },
   {
     id: 'PROFILES_APP',
     identifier: 'PROFILES_APP',
     name: 'Profils APP Utilisateurs',
-    url: ''
+    url: '',
   },
 ];
 
 class TranslateServiceStub {
-  setDefaultLang(lang: string) { }
-  use(lang: string) { }
-  instant() {return EMPTY; }
-  get onLangChange(){return of({lang: 'en'}); }
+  setDefaultLang(lang: string) {}
+  use(lang: string) {}
+  instant() {
+    return EMPTY;
+  }
+  get onLangChange() {
+    return of({ lang: 'en' });
+  }
 }
 
 describe('AppGuard', () => {
@@ -87,11 +91,11 @@ describe('AppGuard', () => {
       providers: [
         AppGuard,
         { provide: AuthService, useValue: { user: { profileGroup: { profiles: [{ applicationName: 'USERS_APP' }] } } } },
-        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => { } } },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: TranslateService,  useClass: TranslateServiceStub}
-      ]
+        { provide: TranslateService, useClass: TranslateServiceStub },
+      ],
     });
   });
 
@@ -107,14 +111,14 @@ describe('AppGuard', () => {
 
   it('should not allow and redirect if no profile match appId in user permissions', inject([AppGuard], (guard: AppGuard) => {
     const param: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
-    param.data = {appId: 'BAD_APP'};
+    param.data = { appId: 'BAD_APP' };
 
     expect(guard.canActivate(param)).toBeFalsy();
   }));
 
   it('should allow activation with good app', inject([AppGuard], (guard: AppGuard) => {
     const param: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
-    param.data = {appId: 'USERS_APP'};
+    param.data = { appId: 'USERS_APP' };
 
     expect(guard.canActivate(param)).toBeTruthy();
   }));

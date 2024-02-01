@@ -7,14 +7,9 @@ import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 import { SampleDialogModule } from './sample-dialog/sample-dialog.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SampleDialogModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule
-  ],
+  imports: [CommonModule, SampleDialogModule, MatProgressSpinnerModule, VitamUICommonModule],
   declarations: [MiscellaneousComponent],
   entryComponents: [SampleDialogComponent],
-  exports: [MiscellaneousComponent]
+  exports: [MiscellaneousComponent],
 })
-export class MiscellaneousModule { }
+export class MiscellaneousModule {}

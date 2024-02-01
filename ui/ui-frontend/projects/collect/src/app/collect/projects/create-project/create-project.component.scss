@@ -1,8 +1,6 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
-
 .content {
-
   .main-content {
     display: flex;
     flex-direction: column;
@@ -74,7 +72,6 @@ h4 {
       align-items: center;
     }
   }
-
 }
 
 .on-over {
@@ -87,7 +84,7 @@ h4 {
 
   .drop-area {
     height: 100%;
-    background: #5CBAA9;
+    background: #5cbaa9;
     opacity: 0.9;
     color: $white;
     overflow: hidden;
@@ -137,7 +134,8 @@ h4 {
 }
 
 .mat-form-field {
-  label, .mat-select {
+  label,
+  .mat-select {
     padding: 0 20px !important;
   }
 
@@ -212,13 +210,12 @@ h4 {
     .delete-button {
       border: 1px solid var(--vitamui-primary);
       border-radius: 50%;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       width: 30px;
       height: 30px;
       font-size: medium;
       color: var(--vitamui-primary);
       cursor: pointer;
-
     }
   }
 
@@ -235,7 +232,6 @@ h4 {
       &.delete-button {
         padding: 15px 0 15px 20px;
       }
-
     }
   }
 }

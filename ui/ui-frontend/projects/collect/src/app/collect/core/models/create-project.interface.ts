@@ -33,5 +33,5 @@ export enum Workflow {
 
 export enum FlowType {
   FIX = 'FIX',
-  RULES = 'RULES'
+  RULES = 'RULES',
 }

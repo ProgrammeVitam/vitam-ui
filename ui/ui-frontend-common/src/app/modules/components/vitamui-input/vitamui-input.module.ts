@@ -45,12 +45,8 @@ import { VitamUIInputComponent } from './vitamui-input.component';
 import { VitamUITextareaComponent } from './vitamui-textarea.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-  ],
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
   declarations: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent, VitamUIInputPositiveNumberComponent],
-  exports: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent, VitamUIInputPositiveNumberComponent]
+  exports: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent, VitamUIInputPositiveNumberComponent],
 })
-export class VitamUIInputModule { }
+export class VitamUIInputModule {}

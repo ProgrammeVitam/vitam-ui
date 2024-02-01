@@ -45,24 +45,19 @@ const routes: Route[] = [
   {
     path: '',
     component: GroupComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: ':id',
     component: GroupPopupComponent,
     resolve: { group: GroupResolver },
-    data: { isPopup: true, appId: 'GROUPS_APP' }
-  }
+    data: { isPopup: true, appId: 'GROUPS_APP' },
+  },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class GroupRoutingModule { }
+export class GroupRoutingModule {}

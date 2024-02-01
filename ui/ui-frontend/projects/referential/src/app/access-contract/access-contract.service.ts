@@ -47,7 +47,11 @@ import { AccessContractApiService } from '../core/api/access-contract-api.servic
 export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
-  constructor(private accessContractApi: AccessContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private accessContractApi: AccessContractApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -97,8 +101,8 @@ export class AccessContractService extends SearchService<AccessContract> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -113,8 +117,8 @@ export class AccessContractService extends SearchService<AccessContract> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 

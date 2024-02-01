@@ -1,38 +1,38 @@
 :host {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .vitamui-snack-bar-container {
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    padding: 0;
+  background: none;
+  border: none;
+  padding: 0;
 
-    > i {
-        color: white;
-        opacity: 0.5;
-        font-size: 36px;
-    }
+  > i {
+    color: white;
+    opacity: 0.5;
+    font-size: 36px;
+  }
 }
 
 .vitamui-snack-bar-content {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
 
-    > i {
-        margin-right: 10px;
-    }
+  > i {
+    margin-right: 10px;
+  }
 }

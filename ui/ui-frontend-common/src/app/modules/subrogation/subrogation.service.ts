@@ -54,10 +54,9 @@ import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-
 const moment = moment_;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationService {
-
   subrogationCancel = new Subject();
 
   private subrogationSnackBarComponent: MatSnackBarRef<SubrogationSnackBarComponent>;
@@ -70,7 +69,8 @@ export class SubrogationService {
     private snackBarService: VitamUISnackBarService,
     private authService: AuthService,
     @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
-    @Inject(LOCALE_ID) private local: string) {}
+    @Inject(LOCALE_ID) private local: string,
+  ) {}
 
   intervalCheck: number;
 
@@ -85,14 +85,14 @@ export class SubrogationService {
       takeUntil(this.subrogationCancel),
       switchMap(() => this.getSubrogation(subrogationCreated.id, dialogRef)),
       filter((subrogationWatched) => subrogationWatched.status === 'ACCEPTED'),
-      take(1)
+      take(1),
     );
   }
 
   checkCurrentUserIsInSubrogation(): Observable<Subrogation> {
     return this.subrogationApi.getMySubrogationAsSuperuser().pipe(
       map((response) => response),
-      catchError(() => of(undefined))
+      catchError(() => of(undefined)),
     );
   }
 
@@ -108,10 +108,10 @@ export class SubrogationService {
           dialogRef.close();
           this.snackBarService.open({
             message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.DENIED_SUBROGATION',
-            icon: 'vitamui-icon-link banner-icon'
+            icon: 'vitamui-icon-link banner-icon',
           });
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -121,14 +121,14 @@ export class SubrogationService {
         next: () => {
           this.snackBarService.open({
             message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.CANCEL_SUBROGATION',
-            icon: 'vitamui-icon-link banner-icon'
+            icon: 'vitamui-icon-link banner-icon',
           });
           this.subrogationCancel.next();
         },
         error: (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -148,43 +148,44 @@ export class SubrogationService {
     const callCount = this.TIMEOUT_SUBROGATION_MS / this.subrogationRefreshRateMs;
     const endTime = new Date();
     endTime.setMilliseconds(endTime.getMilliseconds() + this.TIMEOUT_SUBROGATION_MS);
-    this.snackBarService.open( {
+    this.snackBarService.open({
       message: 'SNACKBAR.ACTIVATED_SUBROGATION',
-      translateParams: { duration: '5', hours: formatDate(endTime, 'H', this.local), minutes: formatDate(endTime, 'mm', this.local )},
+      translateParams: { duration: '5', hours: formatDate(endTime, 'H', this.local), minutes: formatDate(endTime, 'mm', this.local) },
       duration: 50000,
     });
     this.logger.log(this, callCount);
     const subrogationAccepted = new Subject();
-    interval(this.subrogationRefreshRateMs).pipe(
-      startWith(),
-      take(callCount),
-      takeUntil(subrogationAccepted),
-      map(() => this.authService.user),
-      filter((user) => !!user),
-      switchMap(() => this.subrogationApi.getMySubrogationAsSurrogate()),
-      filter((data) => data !== null),
-      tap((data) => {
-        if (data.status === 'CREATED' && !this.subrogationSnackBarComponent) {
-          this.subrogationSnackBarComponent = this.snackBarService.openFromComponent(SubrogationSnackBarComponent, { subro: data }, 0);
-          this.subrogationSnackBarComponent.afterDismissed().subscribe(() => this.subrogationSnackBarComponent = null);
-        }
-      }),
-      map((data) => {
-        if (data.status === 'ACCEPTED') {
-          subrogationAccepted.next();
+    interval(this.subrogationRefreshRateMs)
+      .pipe(
+        startWith(),
+        take(callCount),
+        takeUntil(subrogationAccepted),
+        map(() => this.authService.user),
+        filter((user) => !!user),
+        switchMap(() => this.subrogationApi.getMySubrogationAsSurrogate()),
+        filter((data) => data !== null),
+        tap((data) => {
+          if (data.status === 'CREATED' && !this.subrogationSnackBarComponent) {
+            this.subrogationSnackBarComponent = this.snackBarService.openFromComponent(SubrogationSnackBarComponent, { subro: data }, 0);
+            this.subrogationSnackBarComponent.afterDismissed().subscribe(() => (this.subrogationSnackBarComponent = null));
+          }
+        }),
+        map((data) => {
+          if (data.status === 'ACCEPTED') {
+            subrogationAccepted.next();
 
-          return true;
-        }
+            return true;
+          }
 
-        return false;
-      }),
-      last()
-    )
+          return false;
+        }),
+        last(),
+      )
       .subscribe((accepted) => {
         if (!accepted) {
           this.snackBarService.open({
             message: 'SNACKBAR.FINISHED_SUBROGATION',
-            icon: 'vitamui-icon-link banner-icon'
+            icon: 'vitamui-icon-link banner-icon',
           });
         }
       });

@@ -47,7 +47,10 @@ import { ExternalParamProfileService } from '../../external-param-profile.servic
   styleUrls: ['./thresholds-tab.component.css'],
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
-  constructor(private formBuilder: FormBuilder, private externalParamProfileService: ExternalParamProfileService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private externalParamProfileService: ExternalParamProfileService,
+  ) {}
 
   form: FormGroup;
   previousValue: ExternalParamProfile;
@@ -110,7 +113,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
           idExternalParam: this.externalParamProfile.idExternalParam,
           idProfile: this.externalParamProfile.idProfile,
         },
-        updated
+        updated,
       );
       if (updated.usePlatformThreshold) {
         delete updated.bulkOperationsThreshold;

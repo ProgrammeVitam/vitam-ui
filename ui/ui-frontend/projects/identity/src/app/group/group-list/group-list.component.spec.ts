@@ -42,10 +42,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import {of, Subject} from 'rxjs';
+import { of, Subject } from 'rxjs';
 
-import {Group, TableFilterModule} from 'ui-frontend-common';
-import {OrderByButtonModule} from 'ui-frontend-common';
+import { Group, TableFilterModule } from 'ui-frontend-common';
+import { OrderByButtonModule } from 'ui-frontend-common';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
@@ -71,13 +71,21 @@ let component: GroupListComponent;
 let fixture: ComponentFixture<GroupListComponent>;
 
 class Page {
-
-  get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
-  get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head > .align-items-center'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-row'); }
-  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable'); }
-  get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
-
+  get table() {
+    return fixture.nativeElement.querySelector('.vitamui-table');
+  }
+  get columns() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-table-head > .align-items-center');
+  }
+  get rows() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-row');
+  }
+  get loadMoreButton() {
+    return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable');
+  }
+  get infiniteScroll() {
+    return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
+  }
 }
 
 let page: Page;
@@ -85,7 +93,6 @@ let groups: Group[];
 const levels: string[] = ['level1', 'level2'];
 
 describe('GroupListComponent', () => {
-
   beforeEach(waitForAsync(() => {
     groups = [
       {
@@ -95,23 +102,23 @@ describe('GroupListComponent', () => {
         name: 'Profile Group Name 1',
         description: 'Profile Group Description 2',
         usersCount: 0,
-        level : '',
+        level: '',
         profileIds: [],
         profiles: [],
         units: [],
-        readonly : false
+        readonly: false,
       },
       {
         id: '2',
         customerId: '4242442',
         name: 'Profile Group Name 2',
         description: 'Profile Group Description 2',
-        level : '',
+        level: '',
         usersCount: 0,
         profileIds: [],
         profiles: [],
         units: [],
-        readonly : false
+        readonly: false,
       },
     ];
 
@@ -120,38 +127,25 @@ describe('GroupListComponent', () => {
       canLoadMore: true,
       loadMore: () => of(groups),
       updated: new Subject(),
-      getNonEmptyLevels: () => of(levels)
+      getNonEmptyLevels: () => of(levels),
     };
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        TableFilterModule,
-        OrderByButtonModule
-      ],
-      declarations: [
-        GroupListComponent,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent
-      ],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, TableFilterModule, OrderByButtonModule],
+      declarations: [GroupListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
 
     const groupService = TestBed.inject(GroupService);
     spyOn(groupService, 'search').and.callThrough();
     spyOn(groupService, 'loadMore').and.callThrough();
-
   }));
 
   beforeEach(() => {
@@ -199,7 +193,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should hide the "load more" button ', () => {
-      TestBed.inject(GroupService);
+    TestBed.inject(GroupService);
     fixture.detectChanges();
     expect(page.loadMoreButton).toBeFalsy();
   });
@@ -230,5 +224,4 @@ describe('GroupListComponent', () => {
     const cells = page.rows[index].querySelectorAll('div');
     expect(cells.length).toBe(5);
   }
-
 });

@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { of ,  timer } from 'rxjs';
+import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { OwnerService } from '../owner.service';
@@ -46,20 +46,17 @@ export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
 
 @Injectable()
 export class OwnerFormValidators {
+  private debounceTime = 400;
 
-    private debounceTime = 400;
+  constructor(private ownerService: OwnerService) {}
 
-    constructor(private ownerService: OwnerService) {}
-
-    uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime)
-          .pipe(
-            switchMap(() => control.value !== codeToIgnore ? this.ownerService.exists(control.value) : of(false)),
-            take(1),
-            map((exists: boolean) => exists ? { uniqueCode: true } : null)
-          );
-      };
-    }
-
+  uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
+    return (control: AbstractControl) => {
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== codeToIgnore ? this.ownerService.exists(control.value) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? { uniqueCode: true } : null)),
+      );
+    };
+  };
 }

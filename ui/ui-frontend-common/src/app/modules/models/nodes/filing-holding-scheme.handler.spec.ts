@@ -33,7 +33,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -81,7 +81,7 @@ export function newAttachmentUnit(currentId: string, parentId?: string): Unit {
       DisseminationRule: undefined,
       AccessRule: undefined,
       UpdateOperation: { SystemId: currentId },
-    }
+    },
   };
 }
 
@@ -314,7 +314,9 @@ describe('FilingHoldingSchemeHandler', () => {
       const treePlanNodes: FilingHoldingSchemeNode[] = [];
 
       const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
-        treePlanNodes, attachmentUnits);
+        treePlanNodes,
+        attachmentUnits,
+      );
 
       expect(leaves).toEqual([]);
     });
@@ -354,7 +356,9 @@ describe('FilingHoldingSchemeHandler', () => {
       ];
 
       const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
-        treePlanNodes, attachmentUnits);
+        treePlanNodes,
+        attachmentUnits,
+      );
 
       expect(leaves.length).toEqual(6);
       expect(leaves[0].id).toEqual('node-0');
@@ -406,7 +410,9 @@ describe('FilingHoldingSchemeHandler', () => {
       ];
 
       const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
-        treePlanNodes, attachmentUnits);
+        treePlanNodes,
+        attachmentUnits,
+      );
 
       expect(leaves.length).toEqual(6);
       expect(leaves[0].id).toEqual('node-0-0');
@@ -458,7 +464,9 @@ describe('FilingHoldingSchemeHandler', () => {
       ];
 
       const leaves: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
-        treePlanNodes, attachmentUnits);
+        treePlanNodes,
+        attachmentUnits,
+      );
 
       expect(leaves.length).toEqual(6);
       expect(leaves[0].id).toEqual('node-0-0-1');
@@ -530,12 +538,21 @@ describe('FilingHoldingSchemeHandler', () => {
 
   describe('filterUnknownFacets', () => {
     it('should return an empty array if the newFacets array is full of already known facets', () => {
-      const oldFacets: ResultFacet[] = [{ node: 'node-0', count: 1 }, { node: 'node-1', count: 65 }];
-      const newFacets: ResultFacet[] = [{ node: 'node-0', count: 5 }, { node: 'node-1', count: 42 }];
+      const oldFacets: ResultFacet[] = [
+        { node: 'node-0', count: 1 },
+        { node: 'node-1', count: 65 },
+      ];
+      const newFacets: ResultFacet[] = [
+        { node: 'node-0', count: 5 },
+        { node: 'node-1', count: 42 },
+      ];
       expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([]);
     });
     it('should return all the facets in the newFacets array if there are no known facets', () => {
-      const oldFacets: ResultFacet[] = [{ node: 'node-0', count: 1 }, { node: 'node-1', count: 65 }];
+      const oldFacets: ResultFacet[] = [
+        { node: 'node-0', count: 1 },
+        { node: 'node-1', count: 65 },
+      ];
       const newFacets = [{ node: 'node-2', count: 5 }];
       expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual(newFacets);
     });
@@ -545,7 +562,10 @@ describe('FilingHoldingSchemeHandler', () => {
       expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual(newFacets);
     });
     it('should return an empty array if the newFacets array is empty', () => {
-      const oldFacets: ResultFacet[] = [{ node: 'node-0', count: 1 }, { node: 'node-1', count: 65 }];
+      const oldFacets: ResultFacet[] = [
+        { node: 'node-0', count: 1 },
+        { node: 'node-1', count: 65 },
+      ];
       const newFacets: ResultFacet[] = [];
       expect(FilingHoldingSchemeHandler.filterUnknownFacets(oldFacets, newFacets)).toEqual([]);
     });
@@ -580,10 +600,7 @@ describe('FilingHoldingSchemeHandler', () => {
     });
     it('should return the child node found ', () => {
       const nodeToFound = newTreeNode('node-1-1', 0);
-      const parentNode = newTreeNode('node-1', 0, [
-        newTreeNode('node-1-0', 0),
-        nodeToFound,
-      ]);
+      const parentNode = newTreeNode('node-1', 0, [newTreeNode('node-1-0', 0), nodeToFound]);
       expect(FilingHoldingSchemeHandler.foundChild(parentNode, 'node-1-1')).toEqual(nodeToFound);
     });
   });
@@ -653,9 +670,7 @@ describe('FilingHoldingSchemeHandler', () => {
     });
 
     it('should recursively search the child nodes if the node with the specified ID is not found', () => {
-      const nodes: FilingHoldingSchemeNode[] = [
-        newTreeNode('node-1', 1, [newNode('node-1-1')]),
-      ];
+      const nodes: FilingHoldingSchemeNode[] = [newTreeNode('node-1', 1, [newNode('node-1-1')])];
       const checked = true;
       const nodeHasBeenChecked = FilingHoldingSchemeHandler.foundNodeAndSetCheck(nodes, checked, 'node-1-1');
       expect(nodeHasBeenChecked).toBe(true);
@@ -747,5 +762,4 @@ describe('FilingHoldingSchemeHandler', () => {
       expect(parentNodes.length).toBe(1);
     });
   });
-
 });

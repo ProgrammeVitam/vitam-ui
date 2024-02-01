@@ -1,76 +1,74 @@
 .vitamui-navbar {
-    position: relative;
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  align-items: center;
+  padding: 10px 0;
+
+  .vitamui-navbar-logo {
+    margin-right: 50px;
+  }
+
+  .menu {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
-    width: 100%;
-    margin: 0 auto;
-    align-items: center;
-    padding: 10px 0;
 
-    .vitamui-navbar-logo {
-        margin-right: 50px;
+    > li:not(:first-child) {
+      margin-left: 20px;
     }
+  }
 
-    .menu {
-        flex-grow: 1;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: flex;
-
-        > li:not(:first-child) {
-            margin-left: 20px;
-        }
-    }
-
-    &:after {
-        content: '';
-        background-color: $warm-grey;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -1px;
-        height: 1px;
-        opacity: 0.25;
-    }
-
+  &:after {
+    content: '';
+    background-color: $warm-grey;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    opacity: 0.25;
+  }
 }
 
-
 .vitamui-menu-button {
-    border: none;
-    min-height: 60px;
-    max-width: 250px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.85);
-    padding: 0 20px 0 20px;
-    
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1em;
-    text-align: left;
-    color: var(--vitamui-primary);
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
+  border: none;
+  min-height: 60px;
+  max-width: 250px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 0 20px 0 20px;
 
-    > span {
-        flex-grow: 1;
-    }
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1em;
+  text-align: left;
+  color: var(--vitamui-primary);
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 
-    > .vitamui-icon {
-        font-size: 24px;
-        margin-right: 16px;
-    }
+  > span {
+    flex-grow: 1;
+  }
+
+  > .vitamui-icon {
+    font-size: 24px;
+    margin-right: 16px;
+  }
 }
 
 .vitamui-menu-icon {
-    margin-right: 15px;
-    font-size: 24px;
+  margin-right: 15px;
+  font-size: 24px;
 }
 
 .vitamui-menu-caret {
-    margin-left: 15px;
-    color: var(--vitamui-primary);
+  margin-left: 15px;
+  color: var(--vitamui-primary);
 }

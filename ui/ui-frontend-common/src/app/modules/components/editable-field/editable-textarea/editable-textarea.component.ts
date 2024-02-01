@@ -43,17 +43,16 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableTextareaComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-textarea',
   templateUrl: './editable-textarea.component.html',
   styleUrls: ['./editable-textarea.component.scss'],
-  providers: [EDITABLE_TEXTAREA_VALUE_ACCESSOR]
+  providers: [EDITABLE_TEXTAREA_VALUE_ACCESSOR],
 })
 export class EditableTextareaComponent extends EditableFieldComponent {
-
   @Input() maxlength: number;
   @ViewChild('input') private input: ElementRef;
 
@@ -65,5 +64,4 @@ export class EditableTextareaComponent extends EditableFieldComponent {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }
-
 }

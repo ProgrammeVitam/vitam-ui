@@ -40,7 +40,7 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
-  styleUrls: [ './confirm-action.component.scss' ]
+  styleUrls: ['./confirm-action.component.scss'],
 })
 export class ConfirmActionComponent implements OnInit {
   // delete or changeTab
@@ -51,10 +51,7 @@ export class ConfirmActionComponent implements OnInit {
   @Input() objectType: string;
   @Input() objectGender = 'M';
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

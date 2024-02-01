@@ -35,7 +35,7 @@ import {
   FormatIdentificationDto,
   qualifiersToVersionsWithQualifier,
   Unit,
-  VersionWithQualifierDto
+  VersionWithQualifierDto,
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
@@ -53,11 +53,14 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   ],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges {
-  @Input() archiveUnit: Unit;  
+  @Input() archiveUnit: Unit;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 
-  constructor(private archiveCollectService: ArchiveCollectService, private clipboard: Clipboard) {}
+  constructor(
+    private archiveCollectService: ArchiveCollectService,
+    private clipboard: Clipboard,
+  ) {}
 
   ngOnInit() {}
 
@@ -82,7 +85,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
       this.archiveUnit['#object'],
       this.archiveUnit['#tenant'],
       versionWithQualifier.qualifier,
-      versionWithQualifier.version
+      versionWithQualifier.version,
     );
   }
 

@@ -40,9 +40,24 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract, AccessContractApiService, ApiUnitObject, CriteriaDataType, CriteriaOperator, FilingHoldingSchemeHandler,
-  FilingHoldingSchemeNode, Ontology, PagedResult, SearchArchiveUnitsInterface, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum, SearchResponse, SearchService, SecurityService, Unit
+  AccessContract,
+  AccessContractApiService,
+  ApiUnitObject,
+  CriteriaDataType,
+  CriteriaOperator,
+  FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode,
+  Ontology,
+  PagedResult,
+  SearchArchiveUnitsInterface,
+  SearchCriteria,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  SearchResponse,
+  SearchService,
+  SecurityService,
+  Unit,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
@@ -62,7 +77,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
-    private accessContractApiService: AccessContractApiService
+    private accessContractApiService: AccessContractApiService,
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -87,7 +102,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
         return of({ $hits: null, $results: [] });
       }),
       map((response) => response.$results),
-      map((results) => this.buildNestedTreeLevels(results))
+      map((results) => this.buildNestedTreeLevels(results)),
     );
   }
 
@@ -134,7 +149,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
             duration: 10000,
           });
         }
-      }
+      },
     );
   }
 
@@ -150,7 +165,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => this.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results)),
     );
   }
 
@@ -298,7 +313,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
           fullPath,
           resumePath,
         };
-      })
+      }),
     );
   }
 
@@ -321,7 +336,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
       }),
       catchError(() => {
         return of(-1);
-      })
+      }),
     );
   }
 

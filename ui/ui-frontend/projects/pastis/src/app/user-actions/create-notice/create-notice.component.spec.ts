@@ -25,17 +25,13 @@ describe('CreateNoticeComponent', () => {
 
   const popupServiceMock = {
     externalIdentifierEnabled: true,
-    btnYesShoudBeDisabled: of(true)
+    btnYesShoudBeDisabled: of(true),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateNoticeComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         ProfileService,
@@ -47,9 +43,8 @@ describe('CreateNoticeComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: matDialogData },
         { provide: PopupService, useValue: popupServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-      ]
-    })
-      .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

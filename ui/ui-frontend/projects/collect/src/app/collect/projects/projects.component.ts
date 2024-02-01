@@ -46,7 +46,11 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
   @ViewChild(ProjectListComponent, { static: true }) projectListComponent: ProjectListComponent;
 
-  constructor(projectsService: ProjectsService, route: ActivatedRoute, private dialog: MatDialog) {
+  constructor(
+    projectsService: ProjectsService,
+    route: ActivatedRoute,
+    private dialog: MatDialog,
+  ) {
     super(route, projectsService);
     route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;

@@ -45,10 +45,12 @@ import { TenantApiService } from './tenant-api.service';
 
 @Injectable()
 export class TenantService {
-
   updated = new Subject<Tenant>();
 
-  constructor(private tenantApi: TenantApiService, private snackBarService: VitamUISnackBarService) {}
+  constructor(
+    private tenantApi: TenantApiService,
+    private snackBarService: VitamUISnackBarService,
+  ) {}
 
   get(id: string): Observable<Tenant> {
     return this.tenantApi.getOne(id);
@@ -68,49 +70,47 @@ export class TenantService {
   }
 
   create(tenant: Tenant, ownerName: string): Observable<Tenant> {
-    return this.tenantApi.create(tenant)
-      .pipe(
-        tap(
-          (newTenant: Tenant) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_CREATE',
-              translateParams:{
-                param1: newTenant.name,
-                param2: ownerName,
-              },
-              icon: 'vitamui-icon-safe'
-            });
-          },
-          () => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
-              icon: 'vitamui-icon-danger'
-            });
-          }
-        )
-      );
+    return this.tenantApi.create(tenant).pipe(
+      tap(
+        (newTenant: Tenant) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.SAFE_CREATE',
+            translateParams: {
+              param1: newTenant.name,
+              param2: ownerName,
+            },
+            icon: 'vitamui-icon-safe',
+          });
+        },
+        () => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
+            icon: 'vitamui-icon-danger',
+          });
+        },
+      ),
+    );
   }
 
-  patch(partialTenant: { id: string, [key: string]: any }, ownerName: string): Observable<Tenant> {
-    return this.tenantApi.patch(partialTenant)
-      .pipe(
-        tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),
-        tap(
-          (updatedTenant: Tenant) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.SAFE_UPDATE',
-              translateParams:{
-                param1: updatedTenant.name,
-                param2: ownerName,
-              },
-              icon: 'vitamui-icon-safe'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(partialTenant: { id: string; [key: string]: any }, ownerName: string): Observable<Tenant> {
+    return this.tenantApi.patch(partialTenant).pipe(
+      tap((updatedTenant: Tenant) => this.updated.next(updatedTenant)),
+      tap(
+        (updatedTenant: Tenant) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.SAFE_UPDATE',
+            translateParams: {
+              param1: updatedTenant.name,
+              param2: ownerName,
+            },
+            icon: 'vitamui-icon-safe',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   exists(name: string): Observable<any> {
@@ -118,9 +118,8 @@ export class TenantService {
     const criterionCode: Criterion = { key: 'name', value: name, operator: Operators.equals };
     criterionArray.push(criterionCode);
     const query: SearchQuery = { criteria: criterionArray };
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.tenantApi.checkExistsByParam(params);
   }
-
 }

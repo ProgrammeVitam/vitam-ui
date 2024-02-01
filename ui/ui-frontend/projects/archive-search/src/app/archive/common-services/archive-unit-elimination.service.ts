@@ -25,16 +25,16 @@
  * accept its terms.
  */
 
-import {Injectable, TemplateRef} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
-import {SearchCriteriaEltDto, StartupService} from 'ui-frontend-common';
-import {ArchiveSearchComponent} from '../archive-search/archive-search.component';
-import {ArchiveService} from '../archive.service';
-import {ArchiveSearchHelperService} from './archive-search-helper.service';
+import { Injectable, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
+import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
+import { ArchiveService } from '../archive.service';
+import { ArchiveSearchHelperService } from './archive-search-helper.service';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
@@ -47,9 +47,8 @@ export class ArchiveUnitEliminationService {
     private startupService: StartupService,
     private archiveHelperService: ArchiveSearchHelperService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
-  ) {
-  }
+    public dialog: MatDialog,
+  ) {}
 
   launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
@@ -58,37 +57,27 @@ export class ArchiveUnitEliminationService {
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
-    showConfirmBigNumberOfResultsSuscription: Subscription
+    showConfirmBigNumberOfResultsSuscription: Subscription,
   ) {
     if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
-
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
-        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        {panelClass: 'vitamui-dialog'}
-      );
+      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen, {
+        panelClass: 'vitamui-dialog',
+      });
 
       showConfirmBigNumberOfResultsSuscription
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
-          this.launchEliminationAnalysis(
-            listOfUACriteriaSearch,
-            tenantIdentifier,
-            currentPage
-          );
+          this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
         });
     }
     showConfirmBigNumberOfResultsSuscription?.unsubscribe();
   }
 
-  private launchEliminationAnalysis(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    tenantIdentifier: number,
-    currentPage: number
-  ) {
+  private launchEliminationAnalysis(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {
     const exportDIPSearchCriteria = {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
@@ -111,11 +100,11 @@ export class ArchiveUnitEliminationService {
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     tenantIdentifier: number,
     currentPage: number,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       confirmSecondActionBigNumberOfResultsActionDialog,
-      {panelClass: 'vitamui-dialog'}
+      { panelClass: 'vitamui-dialog' },
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
@@ -125,11 +114,7 @@ export class ArchiveUnitEliminationService {
       });
   }
 
-  private launchEliminationAction(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    tenantIdentifier: number,
-    currentPage: number
-  ) {
+  private launchEliminationAction(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {
     const exportDIPSearchCriteria = {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,

@@ -1,8 +1,6 @@
 <vitamui-common-sidenav-header
   [extended]="isPanelextended"
-  [title]="
-    (archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate : 29
-  "
+  [title]="(archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate: 29"
   [icon]="getArchiveUnitIcon(archiveUnit)"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
@@ -22,7 +20,7 @@
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
@@ -30,10 +28,11 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  <mat-tab-group [selectedIndex]="selectedIndex"
-                 [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'"
-                 (selectedTabChange)="selectedTabChangeEvent($event)">
-
+  <mat-tab-group
+    [selectedIndex]="selectedIndex"
+    [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'"
+    (selectedTabChange)="selectedTabChangeEvent($event)"
+  >
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
@@ -45,16 +44,15 @@
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
-      <app-archive-unit-rules-details-tab
-        [archiveUnit]="archiveUnit">
-      </app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"> </app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}">
       <app-archive-unit-objects-details-tab
         [archiveUnit]="archiveUnit"
         [accessContract]="accessContract"
-        [tenantIdentifier]="tenantIdentifier">
+        [tenantIdentifier]="tenantIdentifier"
+      >
       </app-archive-unit-objects-details-tab>
     </mat-tab>
   </mat-tab-group>

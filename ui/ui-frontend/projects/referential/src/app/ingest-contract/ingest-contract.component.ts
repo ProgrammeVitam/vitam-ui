@@ -65,7 +65,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     private router: Router,
     globalEventService: GlobalEventService,
     private applicationService: ApplicationService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -120,7 +120,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
         return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
-      })
+      }),
     );
 
     this.updateSlaveMode();

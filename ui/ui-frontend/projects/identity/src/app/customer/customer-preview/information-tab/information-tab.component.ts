@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { CountryOption,  CountryService, Customer, diff, OtpState, StartupService } from 'ui-frontend-common';
+import { CountryOption, CountryService, Customer, diff, OtpState, StartupService } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { CustomerService } from '../../../core/customer.service';
@@ -50,30 +50,30 @@ const UPDATE_DEBOUNCE_TIME = 200;
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss']
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
   public readonly form: FormGroup;
   public maxStreetLength: number;
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
   previousValue: {
-    code: string,
-    identifier: string,
-    name: string,
-    companyName: string,
-    passwordRevocationDelay: number,
-    otp: OtpState,
+    code: string;
+    identifier: string;
+    name: string;
+    companyName: string;
+    passwordRevocationDelay: number;
+    otp: OtpState;
     address: {
-      street: string,
-      zipCode: string,
-      city: string,
-      country: string,
-    },
-    language: string,
-    emailDomains: string[],
-    defaultEmailDomain: string
-    gdprAlert: boolean,
-    gdprAlertDelay: number,
+      street: string;
+      zipCode: string;
+      city: string;
+      country: string;
+    };
+    language: string;
+    emailDomains: string[];
+    defaultEmailDomain: string;
+    gdprAlert: boolean;
+    gdprAlertDelay: number;
   };
 
   @Input()
@@ -82,13 +82,16 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     this.resetForm(this.customer);
   }
 
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   // tslint:disable-next-line:variable-name
   private _customer: Customer;
   // tslint:disable-next-line:variable-name
   private _gdprReadOnlyStatus: boolean;
-  get gdprReadOnlyStatus(): boolean { return this._gdprReadOnlyStatus; }
-
+  get gdprReadOnlyStatus(): boolean {
+    return this._gdprReadOnlyStatus;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
@@ -104,16 +107,14 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-
   @Input()
-  set gdprReadOnlyStatus(gdprReadOnlyStatus : boolean){
+  set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean) {
     this._gdprReadOnlyStatus = gdprReadOnlyStatus;
-    if(gdprReadOnlyStatus ) {
+    if (gdprReadOnlyStatus) {
       this.form.get('gdprAlertDelay').disable({ emitEvent: false });
       this.form.get('gdprAlert').disable({ emitEvent: false });
     }
-  };
-
+  }
 
   private sub: Subscription;
 
@@ -124,7 +125,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -150,32 +151,28 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
       gdprAlert: false,
-      gdprAlertDelay: [
-        72,
-        [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]{1,20}$/)]]
+      gdprAlertDelay: [72, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]{1,20}$/)]],
     });
   }
 
   ngOnInit() {
-    this.form.valueChanges.subscribe((data) => console.log(data))
-    
+    this.form.valueChanges.subscribe((data) => console.log(data));
+
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
-    .pipe(
-      debounceTime(UPDATE_DEBOUNCE_TIME),
-      filter(() => this.form.valid),
-      map(() => diff(this.form.value, this.previousValue)),
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.customer.id }, formData)),
-      switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null))))
-    )
-    .subscribe((customer: Customer) => this.resetForm(customer));
+      .pipe(
+        debounceTime(UPDATE_DEBOUNCE_TIME),
+        filter(() => this.form.valid),
+        map(() => diff(this.form.value, this.previousValue)),
+        filter((formData) => !isEmpty(formData)),
+        map((formData) => extend({ id: this.customer.id }, formData)),
+        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null)))),
+      )
+      .subscribe((customer: Customer) => this.resetForm(customer));
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
     });
-
   }
-
 
   ngOnDestroy() {
     if (this.sub) {
@@ -190,5 +187,4 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     this.form.reset(customer, { emitEvent: false });
     this.previousValue = this.form.value;
   }
-
 }

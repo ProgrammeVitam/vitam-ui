@@ -44,14 +44,9 @@ import { TenantCreateComponent } from './tenant-create.component';
 import { TenantFormValidators } from './tenant-form.validators';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, MatProgressBarModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [TenantCreateComponent],
   entryComponents: [TenantCreateComponent],
-  providers: [TenantFormValidators]
+  providers: [TenantFormValidators],
 })
-export class TenantCreateModule { }
+export class TenantCreateModule {}

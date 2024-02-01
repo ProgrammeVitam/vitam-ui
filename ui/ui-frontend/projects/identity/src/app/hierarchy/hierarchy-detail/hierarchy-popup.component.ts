@@ -41,21 +41,18 @@ import { Profile } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-hierarchy-popup',
-  template: '<app-hierarchy-detail (previewClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-hierarchy-detail>'
+  template: '<app-hierarchy-detail (previewClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-hierarchy-detail>',
 })
 export class HierarchyPopupComponent implements OnInit {
-
   profile: Profile;
 
   constructor(private route: ActivatedRoute) {
     this.profile = this.route.snapshot.data.profile;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

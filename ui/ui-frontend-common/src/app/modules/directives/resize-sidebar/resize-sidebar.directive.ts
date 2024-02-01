@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {DOCUMENT} from '@angular/common';
-import {Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonResizeSidebar]',
@@ -70,14 +70,14 @@ export class ResizeSidebarDirective implements OnInit {
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    const mouse = {x: event.clientX, y: event.clientY};
+    const mouse = { x: event.clientX, y: event.clientY };
     if (this.status === 1) {
       const space = Number(mouse.x) ? mouse.x : 0;
       if (this.orientation === 'left') {
         this.width = space;
         this.elementRef.nativeElement.style.width = this.width + 'px';
       } else {
-        const {left} = this.elementRef.nativeElement.getBoundingClientRect();
+        const { left } = this.elementRef.nativeElement.getBoundingClientRect();
         this.width = left - space + this.width;
         this.elementRef.nativeElement.style.width = this.width + 'px';
       }
@@ -89,8 +89,11 @@ export class ResizeSidebarDirective implements OnInit {
     this.status = 0;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document) {
-  }
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document,
+  ) {}
 
   ngOnInit(): void {
     const nativeElt = this.elementRef.nativeElement;

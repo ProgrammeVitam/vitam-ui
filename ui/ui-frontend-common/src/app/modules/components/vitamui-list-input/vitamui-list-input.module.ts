@@ -43,13 +43,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { VitamUIListInputComponent } from './vitamui-list-input.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule],
   declarations: [VitamUIListInputComponent],
-  exports: [VitamUIListInputComponent]
+  exports: [VitamUIListInputComponent],
 })
-export class VitamUIListInputModule { }
+export class VitamUIListInputModule {}

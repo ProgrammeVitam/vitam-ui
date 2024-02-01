@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
-import {OntologyCreateComponent} from './ontology-create.component';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { OntologyCreateComponent } from './ontology-create.component';
 
 @NgModule({
   imports: [
@@ -61,12 +61,9 @@ import {OntologyCreateComponent} from './ontology-create.component';
     MatSnackBarModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    VitamUICommonModule
+    VitamUICommonModule,
   ],
-  declarations: [
-    OntologyCreateComponent
-  ],
-  entryComponents: [OntologyCreateComponent]
+  declarations: [OntologyCreateComponent],
+  entryComponents: [OntologyCreateComponent],
 })
-export class OntologyCreateModule {
-}
+export class OntologyCreateModule {}

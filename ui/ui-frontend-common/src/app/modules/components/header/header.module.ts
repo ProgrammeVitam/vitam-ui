@@ -12,7 +12,6 @@ import { SelectLanguageModule } from './select-language/select-language.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
 import { UserPhotoModule } from './user-photo/user-photo.module';
 
-
 @NgModule({
   declarations: [HeaderComponent],
   entryComponents: [SelectTenantDialogComponent],
@@ -26,10 +25,8 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     UserPhotoModule,
     MenuModule.forRoot(),
     TranslateModule,
-    SelectLanguageModule
+    SelectLanguageModule,
   ],
-  exports : [
-    HeaderComponent
-  ]
+  exports: [HeaderComponent],
 })
-export class HeaderModule { }
+export class HeaderModule {}

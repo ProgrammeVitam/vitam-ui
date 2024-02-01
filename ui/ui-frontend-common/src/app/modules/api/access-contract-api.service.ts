@@ -47,7 +47,10 @@ export class AccessContractApiService {
   private readonly apiUrl: string;
   private readonly baseUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+  ) {
     this.apiUrl = baseUrl + '/accesscontracts';
     this.baseUrl = baseUrl;
   }

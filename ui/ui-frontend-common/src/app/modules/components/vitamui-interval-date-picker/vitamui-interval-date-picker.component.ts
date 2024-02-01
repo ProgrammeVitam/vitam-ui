@@ -1,14 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {debounceTime} from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'vitamui-interval-date-picker',
   templateUrl: './vitamui-interval-date-picker.component.html',
-  styleUrls: ['./vitamui-interval-date-picker.component.scss']
+  styleUrls: ['./vitamui-interval-date-picker.component.scss'],
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
-
   constructor(private formBuilder: FormBuilder) {}
   @Input() label: string;
   @Output() criteriaChange = new EventEmitter<{ dateMin: string; dateMax: string }>();

@@ -45,7 +45,7 @@ import { RuleInformationTabComponent } from './rule-information-tab/rule-informa
 @Component({
   selector: 'app-rule-preview',
   templateUrl: './rule-preview.component.html',
-  styleUrls: ['./rule-preview.component.scss']
+  styleUrls: ['./rule-preview.component.scss'],
 })
 export class RulePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
@@ -66,7 +66,10 @@ export class RulePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private ruleService: RuleService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private ruleService: RuleService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

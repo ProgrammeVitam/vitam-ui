@@ -41,10 +41,9 @@ import { Direction } from '../../vitamui-table';
 @Component({
   selector: 'vitamui-common-order-by-button',
   templateUrl: './order-by-button.component.html',
-  styleUrls: ['./order-by-button.component.scss']
+  styleUrls: ['./order-by-button.component.scss'],
 })
 export class OrderByButtonComponent implements OnInit {
-
   @Input() orderByKey: string;
   @Input() orderBy: string;
   @Input() direction: Direction;
@@ -53,10 +52,9 @@ export class OrderByButtonComponent implements OnInit {
   @Output() readonly orderByChange = new EventEmitter<string>();
   @Output() readonly directionChange = new EventEmitter<Direction>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   toggleOrder() {
     if (this.orderBy === this.orderByKey) {
@@ -69,5 +67,4 @@ export class OrderByButtonComponent implements OnInit {
     this.directionChange.emit(this.direction);
     this.orderChange.emit();
   }
-
 }

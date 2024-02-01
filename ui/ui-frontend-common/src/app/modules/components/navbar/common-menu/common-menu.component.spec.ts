@@ -45,7 +45,7 @@ import { CommonMenuComponent } from './common-menu.component';
 
 @Component({
   selector: 'vitamui-common-customer-select-content',
-  template: ''
+  template: '',
 })
 export class CustomerSelectContentStubComponent {
   @Input() customers: any;
@@ -54,7 +54,7 @@ export class CustomerSelectContentStubComponent {
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',
-  template: ''
+  template: '',
 })
 export class TenantSelectContentStubComponent {
   @Input() tenants: any;
@@ -67,10 +67,7 @@ describe('CommonMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        MatDialogModule,
-      ],
+      imports: [FormsModule, MatDialogModule],
       declarations: [
         CommonMenuComponent,
         ApplicationSelectContentStubComponent,
@@ -80,9 +77,8 @@ describe('CommonMenuComponent', () => {
       providers: [
         { provide: MatDialogRef, useValue: { close: () => {} } },
         { provide: MAT_DIALOG_DATA, useValue: { items: [], menuType: null } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

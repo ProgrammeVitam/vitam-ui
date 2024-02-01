@@ -107,7 +107,7 @@ export class ContextPermissionTabComponent implements OnInit {
     private tenantApiService: TenantApiService,
     private authService: AuthService,
     private accessService: AccessContractService,
-    private ingestService: IngestContractService
+    private ingestService: IngestContractService,
   ) {}
 
   ngOnInit(): void {
@@ -126,9 +126,9 @@ export class ContextPermissionTabComponent implements OnInit {
                 accessContracts.forEach((accessContract) => {
                   this.accessContracts.set(accessContract.identifier, accessContract);
                 });
-              })
+              }),
             );
-          })
+          }),
         );
       }
 
@@ -142,9 +142,9 @@ export class ContextPermissionTabComponent implements OnInit {
                 ingestContracts.forEach((ingestContract) => {
                   this.ingestContracts.set(ingestContract.identifier, ingestContract);
                 });
-              })
+              }),
             );
-          })
+          }),
         );
       }
     }
@@ -225,7 +225,7 @@ export class ContextPermissionTabComponent implements OnInit {
     return of(diff({ permissions: this.updatedPermissions }, this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null))))
+      switchMap((formData: { id: string; [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
@@ -241,7 +241,7 @@ export class ContextPermissionTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

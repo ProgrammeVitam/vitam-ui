@@ -80,7 +80,7 @@ export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpL
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location },DatePipe],
+  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

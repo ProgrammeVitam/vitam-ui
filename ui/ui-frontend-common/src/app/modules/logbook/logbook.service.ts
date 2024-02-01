@@ -48,7 +48,10 @@ import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
   providedIn: 'root',
 })
 export class LogbookService {
-  constructor(private logger: Logger, private logbookApi: LogbookApiService) {}
+  constructor(
+    private logger: Logger,
+    private logbookApi: LogbookApiService,
+  ) {}
 
   protected extractEvents(response: { $results: Event[] }): Event[] {
     if (response && response.$results) {
@@ -68,7 +71,7 @@ export class LogbookService {
 
     return this.logbookApi.findOperations(identifier, obIdReq, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
-      map((response) => response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate))
+      map((response) => response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate)),
     );
   }
 
@@ -77,7 +80,7 @@ export class LogbookService {
 
     return this.logbookApi.findUnitLifeCyclesByUnitId(unitId, headers).pipe(
       catchError(() => of({ $hits: null, $results: [] })),
-      map((response) => this.extractEvents(response).sort(sortEventByDate))
+      map((response) => this.extractEvents(response).sort(sortEventByDate)),
     );
   }
 
@@ -86,7 +89,7 @@ export class LogbookService {
 
     return this.logbookApi.findObjectGroupLifeCyclesByUnitId(objectId, headers).pipe(
       catchError(() => of({ $hits: null, $results: [] })),
-      map((response) => this.extractEvents(response).sort(sortEventByDate))
+      map((response) => this.extractEvents(response).sort(sortEventByDate)),
     );
   }
 
@@ -99,8 +102,8 @@ export class LogbookService {
         response.$results
           .reduce(flattenChildEvents, [])
           .filter((e) => e.obIdReq.toLowerCase() === collectionName.toLowerCase())
-          .sort(sortEventByDate)
-      )
+          .sort(sortEventByDate),
+      ),
     );
   }
 
@@ -108,7 +111,7 @@ export class LogbookService {
     resourcePath: string,
     identifier: string,
     collectionName: string,
-    tenantIdentifier: number
+    tenantIdentifier: number,
   ): Observable<Event[]> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
 
@@ -118,8 +121,8 @@ export class LogbookService {
         response.$results
           .reduce(flattenChildEvents, [])
           .filter((e) => e.obIdReq === collectionName)
-          .sort(sortEventByDate)
-      )
+          .sort(sortEventByDate),
+      ),
     );
   }
 
@@ -128,13 +131,13 @@ export class LogbookService {
     identifier: string,
     collectionName: string,
     tenantIdentifier: number,
-    filterPredicate: (event: Event) => boolean
+    filterPredicate: (event: Event) => boolean,
   ): Observable<Event[]> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
 
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
-      map((response) => response.$results.reduce(flattenChildEvents, []).filter(filterPredicate).sort(sortEventByDate))
+      map((response) => response.$results.reduce(flattenChildEvents, []).filter(filterPredicate).sort(sortEventByDate)),
     );
   }
 
@@ -142,7 +145,7 @@ export class LogbookService {
     id: string,
     identifier: string,
     collectionName: string,
-    tenantIdentifier: number
+    tenantIdentifier: number,
   ): Observable<Event[]> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
 
@@ -152,8 +155,8 @@ export class LogbookService {
         response.$results
           .reduce(flattenChildEvents, [])
           .filter((e) => e.obIdReq === collectionName && e.obId === identifier)
-          .sort(sortEventByDate)
-      )
+          .sort(sortEventByDate),
+      ),
     );
   }
 
@@ -164,7 +167,7 @@ export class LogbookService {
     return forkJoin([ownerEventsObservable, tenantEventsObservable]).pipe(
       map((results) => {
         return results[0].concat(results[1]).sort(sortEventByDate);
-      })
+      }),
     );
   }
 
@@ -175,7 +178,7 @@ export class LogbookService {
     return forkJoin([profileEventsObservable, archiveParamEventsObservable]).pipe(
       map((results) => {
         return results[0].concat(results[1]).sort(sortEventByDate);
-      })
+      }),
     );
   }
 
@@ -194,7 +197,7 @@ export class LogbookService {
           events = events.concat(event);
         });
         return events.sort(sortEventByDate);
-      })
+      }),
     );
   }
 
@@ -205,7 +208,7 @@ export class LogbookService {
       catchError(() => of({ $results: [] as Event[] })),
       map((response) => {
         return response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate);
-      })
+      }),
     );
   }
 
@@ -223,7 +226,7 @@ export class LogbookService {
 
         return of(response);
       }),
-      map((response) => (response.$results.length === 1 ? LogbookApiService.toEvent(response.$results[0]) : null))
+      map((response) => (response.$results.length === 1 ? LogbookApiService.toEvent(response.$results[0]) : null)),
     );
   }
 

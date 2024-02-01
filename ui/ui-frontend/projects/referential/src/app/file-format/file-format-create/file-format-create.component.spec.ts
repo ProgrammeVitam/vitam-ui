@@ -77,37 +77,35 @@ class Page {
 let page: Page;
 
 xdescribe('  FileFormatCreateComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
-      const fileFormatCreateValidatorsSpy = jasmine.createSpyObj('FileFormatCreateValidators', {
-        uniquePuid: () => of(null),
-        uniqueName: () => of(null),
-      });
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          MatFormFieldModule,
-          MatSelectModule,
-          MatButtonToggleModule,
-          MatProgressBarModule,
-          NoopAnimationsModule,
-          MatProgressSpinnerModule,
-          VitamUICommonTestModule,
-        ],
-        declarations: [FileFormatCreateComponent],
-        providers: [
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: FileFormatService, useValue: fileFormatServiceSpy },
-          { provide: FileFormatCreateValidators, useValue: fileFormatCreateValidatorsSpy },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
+    const fileFormatCreateValidatorsSpy = jasmine.createSpyObj('FileFormatCreateValidators', {
+      uniquePuid: () => of(null),
+      uniqueName: () => of(null),
+    });
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatProgressBarModule,
+        NoopAnimationsModule,
+        MatProgressSpinnerModule,
+        VitamUICommonTestModule,
+      ],
+      declarations: [FileFormatCreateComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: FileFormatService, useValue: fileFormatServiceSpy },
+        { provide: FileFormatCreateValidators, useValue: fileFormatCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileFormatCreateComponent);

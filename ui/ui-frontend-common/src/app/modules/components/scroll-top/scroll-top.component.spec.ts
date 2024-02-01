@@ -12,11 +12,8 @@ describe('ScrollTopComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ScrollTopComponent],
       imports: [MatIconModule],
-      providers: [
-        { provide: Router, useValue: { events: EMPTY } },
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: Router, useValue: { events: EMPTY } }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

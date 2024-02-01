@@ -34,32 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import {IngestComponent} from './ingest.component';
-import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {IngestService} from './ingest.service';
-import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatDialog} from '@angular/material/dialog';
-import {IngestListComponent} from './ingest-list/ingest-list.component';
-import {UploadService} from '../core/common/upload.service';
-import {IngestType} from "../core/common/ingest-type.enum";
+import { IngestComponent } from './ingest.component';
+import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { IngestService } from './ingest.service';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDialog } from '@angular/material/dialog';
+import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { UploadService } from '../core/common/upload.service';
+import { IngestType } from '../core/common/ingest-type.enum';
 
-@Component({selector: 'app-ingest-list', template: ''})
+@Component({ selector: 'app-ingest-list', template: '' })
 export class IngestListStubComponent {
-  emitOrderChange() {
-  }
+  emitOrderChange() {}
 }
 
 describe('IngestComponent test:', () => {
@@ -68,13 +67,13 @@ describe('IngestComponent test:', () => {
 
   const ingestServiceMock = {
     ingest: () => of('test ingest'),
-    search: () => of([])
+    search: () => of([]),
   };
-  const uploadServiceSpy = jasmine.createSpyObj('UploadService', {uploadFile: of({}), filesStatus: of([])});
+  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}), filesStatus: of([]) });
 
   beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,
@@ -88,26 +87,22 @@ describe('IngestComponent test:', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule
+        SearchBarModule,
       ],
-      declarations: [
-        IngestComponent,
-        IngestListStubComponent
-      ],
+      declarations: [IngestComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
-        {provide: MatDialog, useValue: matDialogSpy},
-        {provide: IngestService, useValue: ingestServiceMock},
-        {provide: UploadService, useValue: uploadServiceSpy},
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: IngestService, useValue: ingestServiceMock },
+        { provide: UploadService, useValue: uploadServiceSpy },
         {
           provide: ActivatedRoute,
-          useValue: {params: of({tenantIdentifier: 1}), data: of({appId: 'INGEST_MANAGEMENT_APP'})}
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) },
         },
-        {provide: environment, useValue: environment}
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

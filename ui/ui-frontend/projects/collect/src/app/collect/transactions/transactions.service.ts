@@ -38,13 +38,17 @@ export class TransactionsService extends SearchService<Transaction> {
   transactions$: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
   project$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
-  constructor(http: HttpClient, private transactionApiService: TransactionApiService, private projectApiService: ProjectsApiService) {
+  constructor(
+    http: HttpClient,
+    private transactionApiService: TransactionApiService,
+    private projectApiService: ProjectsApiService,
+  ) {
     super(http, transactionApiService, 'ALL');
   }
 
   public getTransactionsByProjectId(
     projectId: string,
-    pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT)
+    pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT),
   ): Observable<PaginatedResponse<Transaction>> {
     this.pageRequest = pageRequest;
     return this.projectApiService.getTransactionsByProjectId(this.pageRequest, projectId);

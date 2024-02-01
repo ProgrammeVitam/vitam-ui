@@ -38,29 +38,22 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService , rotateAnimation} from 'ui-frontend-common';
-
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, rotateAnimation } from 'ui-frontend-common';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
-
 
 @Component({
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   public stepIndex = 0;
   public stepCount = 3;
   subLevelIsRequired: boolean;
-
 
   private keyPressSubscription: Subscription;
 
@@ -71,18 +64,18 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private groupService: GroupService,
     private groupValidators: GroupValidators,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
   ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       name: [null, Validators.required, this.groupValidators.nameExists(this.authService.user.customerId)],
-      enabled : [true],
-      level : ['', buildValidators(this.authService.user)],
+      enabled: [true],
+      level: ['', buildValidators(this.authService.user)],
       description: [null, Validators.required],
       profileIds: [null, Validators.required],
       customerId: [this.authService.user.customerId],
-      units: [null]
+      units: [null],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -101,17 +94,19 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     this.groupService.create(this.form.getRawValue()).subscribe(
       () => this.dialogRef.close(true),
       (error) => {
         console.error(error);
-      });
+      },
+    );
   }
 
   firstStepInvalid(): boolean {
-    return this.form.get('name').invalid ||
-      this.form.get('description').invalid || this.form.get('level').invalid;
+    return this.form.get('name').invalid || this.form.get('description').invalid || this.form.get('level').invalid;
   }
 
   secondStepInvalid(): boolean {
@@ -121,5 +116,4 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   formValid(): boolean {
     return this.form.pending || this.form.invalid;
   }
-
 }

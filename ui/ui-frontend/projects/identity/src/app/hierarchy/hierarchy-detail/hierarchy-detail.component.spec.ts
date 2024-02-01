@@ -74,14 +74,14 @@ class TestHostComponent {
 describe('HierarchyDetailComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-  const authServiceMock = { user : { level: ''}};
+  const authServiceMock = { user: { level: '' } };
 
   const expectedProfile = {
     id: '42',
     name: 'Profile Name',
     description: 'description',
-    level : '',
-    groupsCount : 1,
+    level: '',
+    groupsCount: 1,
     applicationName: 'USERS_APP',
     enabled: true,
     usersCount: 0,
@@ -98,22 +98,20 @@ describe('HierarchyDetailComponent', () => {
           street: 'rue des bois',
           zipCode: '75019',
           city: 'Paris',
-          country: 'FRANCE'
+          country: 'FRANCE',
         },
         customerId: 'customer_id',
-        readonly : false
+        readonly: false,
       },
       ownerId: 'owner_id',
       customerId: 'customer_id',
       enabled: true,
       proof: false,
-      readonly : false
+      readonly: false,
     },
     tenantIdentifier: '42',
-    roles: [
-      'role_name',
-    ],
-    readonly : false
+    roles: ['role_name'],
+    readonly: false,
   };
 
   beforeEach(waitForAsync(() => {
@@ -124,26 +122,20 @@ describe('HierarchyDetailComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
-        VitamUICommonTestModule
+        VitamUICommonTestModule,
       ],
-      declarations: [
-        TestHostComponent,
-        HierarchyDetailComponent,
-        SidePanelStubComponent,
-        InformationTabStubComponent,
-      ],
+      declarations: [TestHostComponent, HierarchyDetailComponent, SidePanelStubComponent, InformationTabStubComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { data: of({ isPopup: true, profile: expectedProfile }) } },
         { provide: HierarchyService, useValue: { updated: new Subject() } },
-        { provide: AuthService, useValue: authServiceMock},
+        { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } }
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -158,18 +150,14 @@ describe('HierarchyDetailComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have a header', () => {
       const elTitle = fixture.nativeElement.querySelector('vitamui-common-sidenav-header');
       expect(elTitle).toBeTruthy();
     });
 
     it('should have a mat-tab-group', () => {
-      const elTabGroup = fixture.nativeElement
-      .querySelector('.mat-tab-group');
+      const elTabGroup = fixture.nativeElement.querySelector('.mat-tab-group');
       expect(elTabGroup).toBeTruthy();
     });
-
   });
-
 });

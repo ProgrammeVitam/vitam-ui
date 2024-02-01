@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import {SharedModule} from '../shared/shared.module';
-import {ContextCreateModule} from './context-create';
-import {ContextEditModule} from './context-edit/context-edit.module';
-import {ContextListComponent} from './context-list/context-list.component';
-import {ContextPreviewModule} from './context-preview/context-preview.module';
-import {ContextRoutingModule} from './context-routing.module';
-import {ContextComponent} from './context.component';
+import { SharedModule } from '../shared/shared.module';
+import { ContextCreateModule } from './context-create';
+import { ContextEditModule } from './context-edit/context-edit.module';
+import { ContextListComponent } from './context-list/context-list.component';
+import { ContextPreviewModule } from './context-preview/context-preview.module';
+import { ContextRoutingModule } from './context-routing.module';
+import { ContextComponent } from './context.component';
 
 @NgModule({
   imports: [
@@ -67,13 +67,8 @@ import {ContextComponent} from './context.component';
     MatSidenavModule,
     MatProgressSpinnerModule,
     SharedModule,
-    TableFilterModule
+    TableFilterModule,
   ],
-  declarations: [
-    ContextComponent,
-    ContextListComponent
-  ]
-
+  declarations: [ContextComponent, ContextListComponent],
 })
-export class ContextModule {
-}
+export class ContextModule {}

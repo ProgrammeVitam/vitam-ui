@@ -47,7 +47,7 @@ export class PastisConfiguration {
             Object.assign(this, content);
             r(this);
           },
-          (reason) => e(reason)
+          (reason) => e(reason),
         );
       });
     } else {
@@ -57,7 +57,7 @@ export class PastisConfiguration {
             Object.assign(this, content);
             r(this);
           },
-          (reason) => e(reason)
+          (reason) => e(reason),
         );
       });
     }

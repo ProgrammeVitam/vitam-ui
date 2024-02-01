@@ -82,7 +82,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
-    private translatePipe: TranslatePipe
+    private translatePipe: TranslatePipe,
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -127,7 +127,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: {type: 'searchCriteriaHistoryCreated', name: response.name},
+            data: { type: 'searchCriteriaHistoryCreated', name: response.name },
             duration: 10000,
           });
         },
@@ -137,7 +137,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
+        },
       );
   }
 
@@ -194,7 +194,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: {type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name},
+            data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
             duration: 10000,
           });
         },
@@ -203,7 +203,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
+        },
       );
   }
 
@@ -260,7 +260,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     }
     return [...searchCriteriaMap.values()]
       .map((searchCriteria) => {
-        const {dataType, category, keyTranslated, key, values} = searchCriteria;
+        const { dataType, category, keyTranslated, key, values } = searchCriteria;
         const categoryName = this.getCategoryName(category);
         const label = keyTranslated ? this.translatePipe.transform(`COLLECT.SEARCH_CRITERIA_FILTER.${categoryName}.${key}`) : key;
         const tooltip = label;

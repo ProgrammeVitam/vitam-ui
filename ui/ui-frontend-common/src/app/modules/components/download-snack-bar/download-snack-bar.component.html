@@ -1,5 +1,4 @@
 <div class="download-bar-container">
-
   <div class="download-bar-content">
     <i class="vitamui-icon vitamui-icon-download"></i>
     <div *ngIf="isCompressed" class="download-label">
@@ -9,24 +8,23 @@
       </ng-container>
     </div>
     <div *ngIf="!isCompressed" class="download-label">
-      {{'DOWNLOAD.FILE_GENERATION' | translate}}
+      {{ 'DOWNLOAD.FILE_GENERATION' | translate }}
     </div>
     <div class="download-progress-bar-container">
       <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>
     </div>
-    <button class="cancel-link" (click)="confirmClose()">{{'DOWNLOAD.CANCEL_ACTION' | translate}}</button>
+    <button class="cancel-link" (click)="confirmClose()">{{ 'DOWNLOAD.CANCEL_ACTION' | translate }}</button>
   </div>
 
   <button class="close-btn" (click)="confirmClose()"><i class="material-icons">clear</i></button>
-
 </div>
 
 <ng-template #confirmDialog>
   <mat-dialog-content>
-    <p>{{'DOWNLOAD.CONFIRM_CANCEL_ACTION' | translate}}</p>
+    <p>{{ 'DOWNLOAD.CONFIRM_CANCEL_ACTION' | translate }}</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button [matDialogClose]="true" class="btn primary">{{'COMMON.CONFIRM' | translate}}</button>
-    <button matDialogClose class="btn cancel link ml-3 mr-1">{{'COMMON.BACK' | translate}}</button>
+    <button [matDialogClose]="true" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button matDialogClose class="btn cancel link ml-3 mr-1">{{ 'COMMON.BACK' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

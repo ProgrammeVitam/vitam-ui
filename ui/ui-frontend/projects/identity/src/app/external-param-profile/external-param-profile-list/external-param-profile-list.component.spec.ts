@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {TranslateLoader,TranslateModule} from '@ngx-translate/core';
-import {Observable,of,Subject} from 'rxjs';
-import {CollapseModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {ProfileValidators} from '../../hierarchy/profile.validators';
-import {ProfileService} from '../../profile/profile.service';
-import {ExternalParamProfileService} from '../external-param-profile.service';
-import {ExternalParamProfileListComponent} from './external-param-profile-list.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of, Subject } from 'rxjs';
+import { CollapseModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ProfileValidators } from '../../hierarchy/profile.validators';
+import { ProfileService } from '../../profile/profile.service';
+import { ExternalParamProfileService } from '../external-param-profile.service';
+import { ExternalParamProfileListComponent } from './external-param-profile-list.component';
 
-
-const translations: any={TEST: 'Mock translate test'};
+const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -58,55 +57,52 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-describe('ExternalParamProfileListComponent',() => {
+describe('ExternalParamProfileListComponent', () => {
   let component: ExternalParamProfileListComponent;
   let fixture: ComponentFixture<ExternalParamProfileListComponent>;
 
-  const matDialogRefSpy=jasmine.createSpyObj('MatDialogRef',['close']);
-  const profileServiceSpy=jasmine.createSpyObj('ProfileService',{create: of({})});
-  const profileValidatorsSpy=jasmine.createSpyObj('ProfileValidators',{create: of({})});
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const profileServiceSpy = jasmine.createSpyObj('ProfileService', { create: of({}) });
+  const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { create: of({}) });
 
-
-  const externalParamListServiceSpy={
+  const externalParamListServiceSpy = {
     search: () => of([]),
     canLoadMore: true,
     loadMore: () => of([]),
-    updated: new Subject()
+    updated: new Subject(),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader,useClass: FakeLoader}
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         ReactiveFormsModule,
         MatProgressBarModule,
         CollapseModule,
         MatButtonToggleModule,
-        VitamUICommonTestModule
-
+        VitamUICommonTestModule,
       ],
       declarations: [ExternalParamProfileListComponent],
       providers: [
-        {provide: MatDialogRef,useValue: matDialogRefSpy},
-        {provide: ExternalParamProfileService,useValue: externalParamListServiceSpy},
-        {provide: MAT_DIALOG_DATA,useValue: {}},
-        {provide: ProfileService,useValue: profileServiceSpy},
-        {provide: ProfileValidators,useValue: profileValidatorsSpy},
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: ExternalParamProfileService, useValue: externalParamListServiceSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: ProfileService, useValue: profileServiceSpy },
+        { provide: ProfileValidators, useValue: profileValidatorsSpy },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(ExternalParamProfileListComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(ExternalParamProfileListComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

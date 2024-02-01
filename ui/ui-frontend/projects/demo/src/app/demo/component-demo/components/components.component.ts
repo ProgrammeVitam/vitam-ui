@@ -44,10 +44,9 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 @Component({
   selector: 'demo-components',
   templateUrl: './components.component.html',
-  styleUrls: ['./components.component.scss']
+  styleUrls: ['./components.component.scss'],
 })
 export class ComponentsComponent implements OnInit {
-
   @ViewChild('confirmDialogTemplate', { static: true }) confirmDialogTemplate: TemplateRef<ComponentsComponent>;
 
   appId = ApplicationId.ACCOUNTS_APP; // FIXME: Why this app id, can we replace easy ?
@@ -77,11 +76,11 @@ export class ComponentsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private appService: ApplicationService,
-    private confirmDialogService: ConfirmDialogService
-  ) { }
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
   ngOnInit() {
-    this.appService.list().subscribe((apps) => this.applications = apps);
+    this.appService.list().subscribe((apps) => (this.applications = apps));
   }
 
   onTenantSelect(tenantIdentifier: number) {
@@ -102,22 +101,19 @@ export class ComponentsComponent implements OnInit {
 
   onScroll() {
     this.infiniteScrollDisabled = true;
-    setTimeout(
-      () => {
-        this.infiniteScrollDisabled = false;
-        this.infiniteValues = this.infiniteValues.concat([1, 1, 1, 1, 1]);
-      },
-      INFINITE_SCROLL_FAKE_DELAY_MS
-    );
+    setTimeout(() => {
+      this.infiniteScrollDisabled = false;
+      this.infiniteValues = this.infiniteValues.concat([1, 1, 1, 1, 1]);
+    }, INFINITE_SCROLL_FAKE_DELAY_MS);
   }
 
   openConfirmDialog() {
-    this.confirmDialogService.confirm(this.confirmDialogTemplate).subscribe(() => this.confirmResult = true);
+    this.confirmDialogService.confirm(this.confirmDialogTemplate).subscribe(() => (this.confirmResult = true));
   }
 
   onKeyPress(event: KeyboardEvent): boolean {
     // tslint:disable-next-line: deprecation
-    const charCode = (event.which) ? event.which : event.keyCode;
+    const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     }

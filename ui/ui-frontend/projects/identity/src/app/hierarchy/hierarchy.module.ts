@@ -63,12 +63,9 @@ import { HierarchyComponent } from './hierarchy.component';
     MatProgressBarModule,
     ReactiveFormsModule,
     MatSidenavModule,
-    HierarchyRoutingModule
+    HierarchyRoutingModule,
   ],
   declarations: [HierarchyComponent],
-  providers: [
-    HierarchyService,
-    HierarchyResolver,
-  ]
+  providers: [HierarchyService, HierarchyResolver],
 })
-export class HierarchyModule { }
+export class HierarchyModule {}

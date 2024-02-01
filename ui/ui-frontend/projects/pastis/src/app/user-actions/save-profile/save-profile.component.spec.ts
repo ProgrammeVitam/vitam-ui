@@ -60,7 +60,7 @@ describe('UserActionOpenProfileComponent', () => {
 
   const popupServiceMock = {
     externalIdentifierEnabled: true,
-    btnYesShoudBeDisabled: of(true)
+    btnYesShoudBeDisabled: of(true),
   };
   const startUpServiceMock = {
     getPortalUrl: () => '',

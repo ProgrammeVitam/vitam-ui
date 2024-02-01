@@ -202,8 +202,8 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.showText).toBeTruthy();
     expect(
       component.ruleActions.find(
-        (ruleAction) => ruleAction.actionType === RuleActionsEnum.UPDATE_PROPERTY && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE
-      ).stepValid
+        (ruleAction) => ruleAction.actionType === RuleActionsEnum.UPDATE_PROPERTY && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE,
+      ).stepValid,
     ).toBeTruthy();
   });
 
@@ -257,8 +257,8 @@ describe('AddUpdatePropertyComponent', () => {
     expect(component.ruleActions.length).toBe(5);
     expect(
       component.ruleActions.find(
-        (ruleAction) => ruleAction.actionType === RuleActionsEnum.UPDATE_PROPERTY && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE
-      ).stepValid
+        (ruleAction) => ruleAction.actionType === RuleActionsEnum.UPDATE_PROPERTY && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE,
+      ).stepValid,
     ).toBeFalsy();
   });
 

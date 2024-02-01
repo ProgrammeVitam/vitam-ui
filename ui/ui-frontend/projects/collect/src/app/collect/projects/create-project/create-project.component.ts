@@ -127,7 +127,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
-    private ontologyService: OntologyService
+    private ontologyService: OntologyService,
   ) {}
 
   get linkParentIdControl() {
@@ -387,7 +387,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 
@@ -425,7 +425,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
                   panelClass: 'vitamui-snack-bar',
                   duration: 10000,
                 });
-              }
+              },
             );
           })
           .catch((error) => {

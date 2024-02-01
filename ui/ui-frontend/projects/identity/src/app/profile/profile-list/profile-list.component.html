@@ -2,24 +2,25 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-gestion-de-profil"></i></div>
-      <div class="col-3">{{'USER_PROFILE.HOME.RESULTS_TABLE.NAME' | translate}}</div>
-      <div class="col-2">{{'COMMON.ID' | translate}}</div>
-      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.DESCRIPTION' | translate}}</div>
-      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.LEVEL' | translate}}</div>
-      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.USERS_NUMBER' | translate}}</div>
+      <div class="col-3">{{ 'USER_PROFILE.HOME.RESULTS_TABLE.NAME' | translate }}</div>
+      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
+      <div class="col-2">{{ 'USER_PROFILE.HOME.RESULTS_TABLE.DESCRIPTION' | translate }}</div>
+      <div class="col-2">{{ 'USER_PROFILE.HOME.RESULTS_TABLE.LEVEL' | translate }}</div>
+      <div class="col-2">{{ 'USER_PROFILE.HOME.RESULTS_TABLE.USERS_NUMBER' | translate }}</div>
     </div>
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="profileClick.emit(profile)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-1">
-            <i class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"
+            <i
+              class="vitamui-icon vitamui-icon-gestion-de-profil"
+              [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
             ></i>
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ profile.description | truncate:50 }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.description | truncate: 50 }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ profile.usersCount }}</div>
         </div>
@@ -27,18 +28,18 @@
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && rngProfileService.canLoadMore && !pending then loadMore"></div>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && rngProfileService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
- <ng-template #loadMore>
+<ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="rngProfileService.loadMore()">
-    <span class="clickable">A{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 

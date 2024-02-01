@@ -39,18 +39,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PopupService {
-
   popUpDataBeforeClose = new BehaviorSubject<any>(null);
   popUpDataAfterOpen = new BehaviorSubject<any>(null);
   btnYesShoudBeDisabled = new BehaviorSubject<boolean>(false);
 
   externalIdentifierEnabled: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
   getPopUpDataOnOpen() {
     return this.popUpDataAfterOpen.getValue();
@@ -71,5 +69,4 @@ export class PopupService {
   disableYesButton(condition: boolean) {
     condition ? this.btnYesShoudBeDisabled.next(true) : this.btnYesShoudBeDisabled.next(false);
   }
-
 }

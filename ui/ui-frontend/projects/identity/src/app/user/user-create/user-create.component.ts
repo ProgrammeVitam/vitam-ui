@@ -98,7 +98,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private countryService: CountryService,
     private startupService: StartupService,
-    private loggerService: Logger
+    private loggerService: Logger,
   ) {}
 
   ngOnInit() {
@@ -161,7 +161,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         centerCode: [null],
         autoProvisioningEnabled: false,
       },
-      { validator: UserValidators.missingPhoneNumber }
+      { validator: UserValidators.missingPhoneNumber },
     );
     this.applyUserProfile();
     this.onChanges();
@@ -171,7 +171,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       .get('address')
       .valueChanges.pipe(
         map((value) => !value.street && !value.zipCode && !value.city),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe((addressEmpty) => {
         this.addressEmpty = addressEmpty;
@@ -235,13 +235,13 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           (error) => {
             this.creating = false;
             this.loggerService.error(error);
-          }
+          },
         );
       },
       (error) => {
         this.creating = false;
         this.loggerService.error(error);
-      }
+      },
     );
   }
 

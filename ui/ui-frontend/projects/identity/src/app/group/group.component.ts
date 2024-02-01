@@ -45,32 +45,39 @@ import { GroupListComponent } from './group-list/group-list.component';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.scss']
+  styleUrls: ['./group.component.scss'],
 })
 export class GroupComponent extends SidenavPage<Group> {
-
   public groups: Group[];
   public search: string;
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
-  constructor(public route: ActivatedRoute, public globalEventService: GlobalEventService, private dialog: MatDialog) {
+  constructor(
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+    private dialog: MatDialog,
+  ) {
     super(route, globalEventService);
   }
 
   public openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshList(); }
+      if (result) {
+        this.refreshList();
+      }
     });
   }
 
   public onSearchSubmit(search: string): void {
-      this.search = search;
+    this.search = search;
   }
 
   private refreshList(): void {
-    if (!this.groupListComponent) { return; }
+    if (!this.groupListComponent) {
+      return;
+    }
     this.groupListComponent.search();
   }
 }

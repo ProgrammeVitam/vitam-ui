@@ -65,7 +65,10 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnInit, OnChanges, O
 
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
 
-  constructor(private archiveSearchService: ArchiveService, private translateService: TranslateService) {}
+  constructor(
+    private archiveSearchService: ArchiveService,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {

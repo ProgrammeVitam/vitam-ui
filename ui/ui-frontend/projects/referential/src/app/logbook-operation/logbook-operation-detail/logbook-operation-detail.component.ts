@@ -91,15 +91,15 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     private route: ActivatedRoute,
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
     this.subscriptions.add(
       this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperations) =>
-        this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations)
-      )
+        this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations),
+      ),
     );
     this.refreshLogbookOperation();
   }

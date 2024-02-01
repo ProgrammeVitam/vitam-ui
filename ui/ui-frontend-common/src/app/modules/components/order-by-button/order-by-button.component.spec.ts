@@ -44,9 +44,8 @@ describe('OrderByButtonComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderByButtonComponent ]
-    })
-    .compileComponents();
+      declarations: [OrderByButtonComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

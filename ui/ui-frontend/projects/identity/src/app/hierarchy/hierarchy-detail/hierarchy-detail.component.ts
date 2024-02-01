@@ -43,13 +43,12 @@ import { HierarchyService } from '../hierarchy.service';
 @Component({
   selector: 'app-hierarchy-detail',
   templateUrl: './hierarchy-detail.component.html',
-  styleUrls: ['./hierarchy-detail.component.scss']
+  styleUrls: ['./hierarchy-detail.component.scss'],
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
-
   @Input()
   set id(id: string) {
-    this.hierarchyService.get(id).subscribe((profile) => this.profile = profile);
+    this.hierarchyService.get(id).subscribe((profile) => (this.profile = profile));
   }
   @Input() profile: Profile;
   @Input() isPopup: boolean;
@@ -59,14 +58,15 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   profileUpdateSub: Subscription;
 
   constructor(
-    private hierarchyService: HierarchyService, private authService: AuthService,
-    private startupService: StartupService
+    private hierarchyService: HierarchyService,
+    private authService: AuthService,
+    private startupService: StartupService,
   ) {}
 
   ngOnInit() {
     this.profileUpdateSub = this.hierarchyService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
-          this.profile = updatedProfile;
+        this.profile = updatedProfile;
       }
     });
   }
@@ -76,8 +76,11 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/profile-hierarchy/' + this.profile.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/profile-hierarchy/' + this.profile.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
@@ -92,10 +95,8 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   }
 
   filterEvents(event: Event): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
     );
   }
-
 }

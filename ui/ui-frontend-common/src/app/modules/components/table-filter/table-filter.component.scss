@@ -2,57 +2,57 @@
 @import '../../../../sass/mixins/elevation';
 
 .table-filter-panel {
-    @include elevation-3-dark;
-    background: $white;
-    border: 1px solid var(--vitamui-grey-400);
-    border-radius: 5px;
+  @include elevation-3-dark;
+  background: $white;
+  border: 1px solid var(--vitamui-grey-400);
+  border-radius: 5px;
 }
 
 .table-filter-header {
-    padding: 7px 11px;
-    border-bottom: 1px solid #E0E0E0;
-    display: flex;
-    align-items: center;
+  padding: 7px 11px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
 
-    .table-filter-search-input {
-        position: relative;
-        flex-grow: 1;
+  .table-filter-search-input {
+    position: relative;
+    flex-grow: 1;
 
-        input {
-            height: 36px;
-            border-radius: 18px;
-            border: 1px solid rgba(0, 0, 0, 0.5);
-            padding: 8px 36px 8px 24px;
-            outline: none;
-            width: 100%;
-        }
-
-        .search-icon {
-            display: block;
-            position: absolute;
-            right: 0;
-            top: 6px;
-            color: rgba(0, 0, 0, 0.5);
-            padding: 0 12px 0 0;
-        }
-
-        .btn-search-cancel {
-            display: block;
-            position: absolute;
-            right: 12px;
-            top: 0;
-            color: rgba(0, 0, 0, 0.5);
-            height: 36px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            outline: none;
-        }
+    input {
+      height: 36px;
+      border-radius: 18px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      padding: 8px 36px 8px 24px;
+      outline: none;
+      width: 100%;
     }
+
+    .search-icon {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 6px;
+      color: rgba(0, 0, 0, 0.5);
+      padding: 0 12px 0 0;
+    }
+
+    .btn-search-cancel {
+      display: block;
+      position: absolute;
+      right: 12px;
+      top: 0;
+      color: rgba(0, 0, 0, 0.5);
+      height: 36px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+    }
+  }
 }
 
 .table-filter-content {
-    max-height: 300px;
-    overflow: auto;
+  max-height: 300px;
+  overflow: auto;
 }

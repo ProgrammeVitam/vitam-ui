@@ -27,7 +27,7 @@
  *
  */
 
-import {Id} from '../id.interface';
+import { Id } from '../id.interface';
 
 export interface IngestContract extends Id {
   tenant: number;

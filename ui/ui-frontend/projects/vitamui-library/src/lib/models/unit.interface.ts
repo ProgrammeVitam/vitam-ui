@@ -22,18 +22,16 @@ export interface Unit {
   DuaEndDate?: Date;
   OriginatingAgencyArchiveUnitIdentifier?: string;
   Status?: string;
-  Vtag?: Array<{ Key: string[], Value: string[] }>;
-  Keyword?: Array<{ KeywordReference: string, KeywordContent: string }>;
+  Vtag?: Array<{ Key: string[]; Value: string[] }>;
+  Keyword?: Array<{ KeywordReference: string; KeywordContent: string }>;
   Type?: string;
   PhysicalAgency?: string[];
   PhysicalStatus?: string[];
   PhysicalType?: string[];
-
 
   // This does not come from the API. It is built from the unit info
   isDigital?: boolean;
   isPhysical?: boolean;
 
   [key: string]: any;
-
 }
