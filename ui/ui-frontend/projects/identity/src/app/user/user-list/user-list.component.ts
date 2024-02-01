@@ -37,19 +37,40 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, DEFAULT_PAGE_SIZE,
-  Direction, Group, InfiniteScrollTable, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBarService
+  AdminUserProfile,
+  ApplicationId,
+  AuthService,
+  buildCriteriaFromSearch,
+  collapseAnimation,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  Group,
+  InfiniteScrollTable,
+  PageRequest,
+  Role,
+  rotateAnimation,
+  SearchQuery,
+  User,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 
 import {
-  Component, ElementRef, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output,
-  TemplateRef, ViewChild
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 
 import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
-
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -57,16 +78,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
-
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
-
-
-
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -86,30 +100,25 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string, label: string }> = [];
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  groupFilterOptions: Array<{ value: string; label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
   totalMonth: number;
   isInactifUsers = false;
 
-  private userGroups: Array<{ id: string, group: any }> = [];
+  private userGroups: Array<{ id: string; group: any }> = [];
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
-  private readonly searchKeys = [
-    'firstname',
-    'lastname',
-    'email',
-    'mobile',
-    'phone',
-    'identifier',
-  ];
+  private readonly searchKeys = ['firstname', 'lastname', 'email', 'mobile', 'phone', 'identifier'];
 
   @Input()
-  get connectedUserInfo(): AdminUserProfile { return this._connectedUserInfo; }
+  get connectedUserInfo(): AdminUserProfile {
+    return this._connectedUserInfo;
+  }
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
@@ -117,7 +126,9 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
-  get groups(): Group[] { return this._groups; }
+  get groups(): Group[] {
+    return this._groups;
+  }
   set groups(groupList: Group[]) {
     this._groups = groupList;
     if (groupList) {
@@ -143,7 +154,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
@@ -160,15 +171,11 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       }
     });
 
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: SearchQuery = {
-        criteria: [
-          ...buildCriteriaFromUserFilters(this.filterMap),
-          ...buildCriteriaFromSearch(this._searchText, this.searchKeys),
-        ]
+        criteria: [...buildCriteriaFromUserFilters(this.filterMap), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 
@@ -180,14 +187,14 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     const groupIds = new Set(this.dataSource.map((user: User) => user.groupId));
 
     groupIds.forEach((groupId) => {
-        const existingGroup =  this.userGroups.find((group) => group.id === groupId);
-        if (!existingGroup) {
-          const newGroup = groups.find((group) => group.id === groupId);
-          if (newGroup) {
-            this.userGroups.push({ id: newGroup.id, group: newGroup });
-          }
+      const existingGroup = this.userGroups.find((group) => group.id === groupId);
+      if (!existingGroup) {
+        const newGroup = groups.find((group) => group.id === groupId);
+        if (newGroup) {
+          this.userGroups.push({ id: newGroup.id, group: newGroup });
         }
-      });
+      }
+    });
     this.groupFilterOptions = this.userGroups.map((group) => ({ value: group.id, label: group.group.name }));
     this.groupFilterOptions.sort(sortByLabel(this.locale));
   }
@@ -222,39 +229,38 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     if (user.status === 'REMOVED') {
       this.snackBarService.open({
         message: 'SHARED.SNACKBAR.USER_ALREADY_DELETED',
-        icon: 'vitamui-icon-bank'
+        icon: 'vitamui-icon-bank',
       });
     } else {
       this.userClick.emit(user);
     }
   }
 
-
   checkInactifUsers() {
-
     this.customerService.getMyCustomer().subscribe((customer) => {
       if (customer.gdprAlert) {
+        this.dataSource
+          .filter((user: User) => user.status === 'DISABLED' && user.disablingDate !== null)
+          .forEach((u: User) => {
+            this.totalMonth =
+              (new Date().getFullYear() - new Date(u.disablingDate).getFullYear()) * 12 -
+              new Date(u.disablingDate).getMonth() +
+              new Date().getMonth();
 
-        this.dataSource.filter((user: User) => user.status === 'DISABLED' && user.disablingDate !== null).forEach((u: User) => {
-
-          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12
-            - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
-
-          if (this.totalMonth > customer.gdprAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
-            this.isInactifUsers = true;
-          }
-        });
+            if (this.totalMonth > customer.gdprAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
+              this.isInactifUsers = true;
+            }
+          });
 
         if (this.isInactifUsers) {
           this.snackBarService.open({
             message: 'SHARED.SNACKBAR.USER_TO_DELETE',
-            icon: 'vitamui-icon-bank'
+            icon: 'vitamui-icon-bank',
           });
         }
       }
     });
   }
-
 }
 
 function sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {

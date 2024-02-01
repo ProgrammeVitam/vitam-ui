@@ -1,7 +1,7 @@
 <div class="flex-row">
   <div class="tree-text">
     <div class="tree-title">
-      <span>{{'ARCHIVE_SEARCH.FILING_SHCEMA.TREE_TITLE' | translate}}</span>
+      <span>{{ 'ARCHIVE_SEARCH.FILING_SHCEMA.TREE_TITLE' | translate }}</span>
       <mat-spinner diameter="20" color="accent" *ngIf="loadingNodeUnit"></mat-spinner>
     </div>
   </div>
@@ -10,64 +10,65 @@
   </button>
 </div>
 <div *ngIf="!loadingHolding">
-
   <div class="tree-filing-scheme">
-    <mat-tree [dataSource]="nestedDataSourceFull" [treeControl]="nestedTreeControlFull"
-              class="filing-holding-scheme-tree">
-
-      <mat-tree-node *matTreeNodeDef="let node; when nodeHasNoChidren">
+    <mat-tree [dataSource]="nestedDataSourceFull" [treeControl]="nestedTreeControlFull" class="filing-holding-scheme-tree">
+      <mat-tree-node *matTreeNodeDef="let node; when: nodeHasNoChidren">
         <div *ngIf="nodeHasMatchsOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
           <div class="tree-text">
-            <vitamui-tree-node [node]="node"
-                               (nodeToggle)="nestedTreeControlFull.toggle(node)"
-                               (checkboxClick)="addToSearchCriteriaList(node)"
-                               (labelClick)="onShowNodeDetails(node.id)"
-                               disabled
+            <vitamui-tree-node
+              [node]="node"
+              (nodeToggle)="nestedTreeControlFull.toggle(node)"
+              (checkboxClick)="addToSearchCriteriaList(node)"
+              (labelClick)="onShowNodeDetails(node.id)"
+              disabled
             >
             </vitamui-tree-node>
           </div>
-          <span *ngIf="hasMatchesInSearch && node?.count != null  &&  node?.count > 0 "
-                class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
+          <span *ngIf="hasMatchesInSearch && node?.count != null && node?.count > 0" class="badge badge-secondary pad">{{
+            node?.count | number: '1.0'
+          }}</span>
         </div>
       </mat-tree-node>
 
-      <mat-nested-tree-node *matTreeNodeDef="let node; when nodeHasChidren">
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeHasChidren">
         <div *ngIf="nodeHasMatchsOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node">
-          <vitamui-tree-node [node]="node"
-                             [expanded]="nestedTreeControlFull.isExpanded(node)"
-                             (nodeToggle)="nestedTreeControlFull.toggle(node)"
-                             (checkboxClick)="addToSearchCriteriaList(node)"
-                             (labelClick)="onShowNodeDetails(node.id)"
+          <vitamui-tree-node
+            [node]="node"
+            [expanded]="nestedTreeControlFull.isExpanded(node)"
+            (nodeToggle)="nestedTreeControlFull.toggle(node)"
+            (checkboxClick)="addToSearchCriteriaList(node)"
+            (labelClick)="onShowNodeDetails(node.id)"
           >
           </vitamui-tree-node>
-          <span *ngIf="hasMatchesInSearch && node?.count != null && node?.count > 0"
-                class="badge badge-secondary pad">
-                    {{node?.count | number : '1.0'}}
-            </span>
+          <span *ngIf="hasMatchesInSearch && node?.count != null && node?.count > 0" class="badge badge-secondary pad">
+            {{ node?.count | number: '1.0' }}
+          </span>
         </div>
-        <div *ngIf="nodeHasMatchsOrShowAll(node)"
-             [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull.isExpanded(node)"
-             class="flex-column childs">
-          <ng-container matTreeNodeOutlet *ngIf="nestedTreeControlFull.isExpanded(node)">
-          </ng-container>
+        <div
+          *ngIf="nodeHasMatchsOrShowAll(node)"
+          [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull.isExpanded(node)"
+          class="flex-column childs"
+        >
+          <ng-container matTreeNodeOutlet *ngIf="nestedTreeControlFull.isExpanded(node)"> </ng-container>
         </div>
       </mat-nested-tree-node>
 
-      <mat-tree-node class="hide" *matTreeNodeDef="let node;">
+      <mat-tree-node class="hide" *matTreeNodeDef="let node">
         <!-- default is hidden node. -->
       </mat-tree-node>
-
     </mat-tree>
   </div>
 
-  <div class="area-show-tree " *ngIf="nestedDataSourceFull.data.length <= 0">
-    {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}
+  <div class="area-show-tree" *ngIf="nestedDataSourceFull.data.length <= 0">
+    {{ 'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate }}
   </div>
 
   <div class="tree-text">
-    <a *ngIf="hasMatchesInSearch" class="tree-show-link"
-       (click)="onViewSwitched()">
-      {{(this.showEveryNodes ? 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' : 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE') | translate}}
+    <a *ngIf="hasMatchesInSearch" class="tree-show-link" (click)="onViewSwitched()">
+      {{
+        (this.showEveryNodes ? 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' : 'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE')
+          | translate
+      }}
     </a>
   </div>
 </div>
@@ -75,6 +76,3 @@
 <div *ngIf="loadingHolding">
   <mat-spinner diameter="50" color="accent"></mat-spinner>
 </div>
-
-
-

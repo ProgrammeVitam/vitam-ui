@@ -129,8 +129,8 @@
       "CONFIRM": "Confirm",
       "CANCEL": "Cancel"
     },
-    "TRANSFER_ACKNOWLEDGMENT" : {
-      "ACTION_TITLE" : "Acknowledge an archive transfer",
+    "TRANSFER_ACKNOWLEDGMENT": {
+      "ACTION_TITLE": "Acknowledge an archive transfer",
       "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
       "TITLE_FIRST_STEP": "Acknowledgment of a transfer operation",
       "DOWNLOAD_ATR_FILE": "Download Transfer Acknowledgment",
@@ -140,7 +140,7 @@
       "DRAG_AND_DROP": "Drag or drop",
       "BROWSE": "Or browse",
       "ACCEPTED_FORMAT": "Accepted format: xml",
-      "MAX_SIZE" : "Maximum recommended size: 10 GB",
+      "MAX_SIZE": "Maximum recommended size: 10 GB",
       "TRANSFER_REPLY_OPERATION": "Acknowledgment of a transfer operation",
       "OPERATION_MESSAGE_IDENTIFIER": "Original transfer request identifier",
       "TRANSFER_REALISATION_DATE": "Date of completion of the transfer",
@@ -153,12 +153,12 @@
       "PREVIOUS_STEP": "Back",
       "ACKNOWLEDGMENT_TRANSFER_CONTROL": "Transfer acknowledgment control",
       "ACKNOWLEDGMENT_TRANSFER_VALIDATION": "Transfer acknowledgment validation",
-      "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE" : "Transfer acknowledgment status is:",
-      "CONFIRM_SUCCESS_TRANSFER" : "Do you want to confirm the SUCCESS of the transfer?",
+      "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE": "Transfer acknowledgment status is:",
+      "CONFIRM_SUCCESS_TRANSFER": "Do you want to confirm the SUCCESS of the transfer?",
       "CONFIRM_FAILURE_TRANSFER": "Do you want to confirm the transfer FAILED? No elimination will be carried out at this stage.",
       "REPLY_TRANSFER": "Acknowledge the transfer",
       "ACKNOWLEDGMENT_TRANSFER": "Transfer acknowledgment",
-      "CANCEL_TRANSFER_OPERATION" : "Are you sure you want to cancel the transfer acknowledgment operation?",
+      "CANCEL_TRANSFER_OPERATION": "Are you sure you want to cancel the transfer acknowledgment operation?",
       "TRANSFER_CONFIRM": "Confirm",
       "REQUEST_MESSAGE": "Your transfer acknowledgment request has been taken into account "
     },

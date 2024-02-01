@@ -44,7 +44,7 @@ import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use RuleApiService of ui-frontend-commons instead!

@@ -37,35 +37,31 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import {
-  ActiveTenantGuard,
-  TenantSelectionGuard,
-  VitamUITenantSelectComponent
-} from 'ui-frontend-common';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
 
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
     pathMatch: 'full',
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: ExternalParamProfileComponent,
-    canActivate: [ActiveTenantGuard]
-  }
+    canActivate: [ActiveTenantGuard],
+  },
 ];
 
 @NgModule({
   declarations: [],
   imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ExternalParamProfileRoutingModule {}

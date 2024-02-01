@@ -48,13 +48,7 @@ import { TableFilterDirective } from './table-filter.directive';
 
 @NgModule({
   declarations: [TableFilterComponent, TableFilterOptionComponent, TableFilterDirective, TableFilterSearchComponent],
-  imports: [
-    CommonModule,
-    MatPseudoCheckboxModule,
-    MatCheckboxModule,
-    OverlayModule,
-    FormsModule,
-  ],
-  exports: [TableFilterComponent, TableFilterOptionComponent, TableFilterDirective, TableFilterSearchComponent]
+  imports: [CommonModule, MatPseudoCheckboxModule, MatCheckboxModule, OverlayModule, FormsModule],
+  exports: [TableFilterComponent, TableFilterOptionComponent, TableFilterDirective, TableFilterSearchComponent],
 })
-export class TableFilterModule { }
+export class TableFilterModule {}

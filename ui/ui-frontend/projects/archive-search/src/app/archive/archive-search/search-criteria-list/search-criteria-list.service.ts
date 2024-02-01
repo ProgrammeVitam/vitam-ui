@@ -42,13 +42,12 @@ import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchCriteriaListService extends SearchService<any> {
-
   constructor(
     private archiveApiService: ArchiveApiService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, archiveApiService, 'ALL');
   }

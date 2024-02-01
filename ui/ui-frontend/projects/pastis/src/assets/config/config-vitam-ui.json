@@ -10,9 +10,9 @@
   "getFileUrl": "/pastis/getfile",
   "savePAasFileUrl": "/pastis/archiveprofile",
   "savePUAasFileUrl": "/pastis/getarchiveunitprofile",
-  "pastisApiPath":"/pastis",
-  "archivalProfileUnitApiPath":"/archival-profile",
-  "archiveProfileApiPath":"/profile",
+  "pastisApiPath": "/pastis",
+  "archivalProfileUnitApiPath": "/archival-profile",
+  "archiveProfileApiPath": "/profile",
 
   "getAllArchivalProfileUrl": "/profile",
   "getProfilePaginatedUrl": "/profile",

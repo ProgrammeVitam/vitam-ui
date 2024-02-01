@@ -34,16 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {ResizeSidebarDirective} from './resize-sidebar.directive';
-import {ResizeVerticalDirective} from "./resize-vertical.directive";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ResizeSidebarDirective } from './resize-sidebar.directive';
+import { ResizeVerticalDirective } from './resize-vertical.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [ResizeSidebarDirective, ResizeVerticalDirective],
-  exports: [ResizeSidebarDirective, ResizeVerticalDirective]
+  exports: [ResizeSidebarDirective, ResizeVerticalDirective],
 })
-export class ResizeSidebarModule { }
+export class ResizeSidebarModule {}

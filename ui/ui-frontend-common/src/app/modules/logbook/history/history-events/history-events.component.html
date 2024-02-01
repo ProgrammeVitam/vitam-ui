@@ -1,19 +1,24 @@
 <ng-container *ngFor="let event of events">
-  <div class="history-event-item" [class.event-error]="event.outcome === 'KO' || event.outcome === 'FATAL'"
-    [class.event-warning]="event.outcome === 'WARNING'">
+  <div
+    class="history-event-item"
+    [class.event-error]="event.outcome === 'KO' || event.outcome === 'FATAL'"
+    [class.event-warning]="event.outcome === 'WARNING'"
+  >
     <div class="history-event-date">
       <ng-container *ngIf="event.parsedData && event.parsedData['Date d\'opération']">
-        {{ event.parsedData['Date d\'opération'] | dateTime:'dd/MM/yyyy | HH:mm:ss' }}
+        {{ event.parsedData["Date d'opération"] | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
       </ng-container>
       <ng-container *ngIf="!event.parsedData || !event.parsedData['Date d\'opération']">
-        {{ event.dateTime | dateTime:'dd/MM/yyyy | HH:mm:ss' }}
+        {{ event.dateTime | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
       </ng-container>
     </div>
     <div class="history-event-title">
       <vitamui-common-event-type-label [key]="event.type"></vitamui-common-event-type-label> -
       <span class="history-event-outcome">{{ event.outcome }}</span>
     </div>
-    <div class="history-event-outmessage">{{ event.outMessage }}<span *ngIf="event.userIdentifier"> par l'utilisateur {{ event.userIdentifier }}</span><span *ngIf="event.subrogatorIdentifier"> (subrogé par {{ event.subrogatorIdentifier }})</span>.
+    <div class="history-event-outmessage">
+      {{ event.outMessage }}<span *ngIf="event.userIdentifier"> par l'utilisateur {{ event.userIdentifier }}</span
+      ><span *ngIf="event.subrogatorIdentifier"> (subrogé par {{ event.subrogatorIdentifier }})</span>.
     </div>
     <div class="history-event-details" *ngIf="event.data !== '{}'">{{ event.data }}</div>
   </div>

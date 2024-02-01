@@ -1,31 +1,34 @@
 <div class="d-flex">
-    <button class="btn primary mb-20" (click)="openUpdateHomepageMessage()" [disabled]="readonly">
-      <div>
-        {{'COMMON.UPDATE' | translate}}
-      </div>
-    </button>
+  <button class="btn primary mb-20" (click)="openUpdateHomepageMessage()" [disabled]="readonly">
+    <div>
+      {{ 'COMMON.UPDATE' | translate }}
+    </div>
+  </button>
 </div>
 
 <div class="col-12 d-flex flex-column mt-4">
-  <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_TITLE' | translate}}</label>
-  <span>{{portalTitle}}</span>
+  <label class="text normal light">{{ 'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_TITLE' | translate }}</label>
+  <span>{{ portalTitle }}</span>
 </div>
 
 <div class="col-12 d-flex flex-column mt-4">
-  <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE' | translate}}</label>
-  {{portalMessage}}
+  <label class="text normal light">{{ 'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE' | translate }}</label>
+  {{ portalMessage }}
 </div>
 
-<div *ngFor="let item of portalTitles | keyvalue;">
+<div *ngFor="let item of portalTitles | keyvalue">
   <div *ngIf="item.key !== language">
-  <div class="col-12 d-flex flex-column mt-4">
-    <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate}} {{ 'COMMON.LANGUAGE.'+item.key | translate}}</label>
-    <span>{{item.value}}</span>
-  </div>
-  <div *ngIf="portalMessages[item.key]" class="col-12 d-flex flex-column mt-4">
-    <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate}} {{ 'COMMON.LANGUAGE.'+item.key | translate}}</label>
-    {{portalMessages[item.key]}}
-  </div>  
+    <div class="col-12 d-flex flex-column mt-4">
+      <label class="text normal light"
+        >{{ 'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate }} {{ 'COMMON.LANGUAGE.' + item.key | translate }}</label
+      >
+      <span>{{ item.value }}</span>
+    </div>
+    <div *ngIf="portalMessages[item.key]" class="col-12 d-flex flex-column mt-4">
+      <label class="text normal light"
+        >{{ 'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate }} {{ 'COMMON.LANGUAGE.' + item.key | translate }}</label
+      >
+      {{ portalMessages[item.key] }}
+    </div>
   </div>
 </div>
-

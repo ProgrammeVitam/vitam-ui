@@ -1,153 +1,150 @@
 .vitamui-menu-panel.mat-menu-panel {
-    border-radius: 10px;
-    background: transparent;
-    @include elevation-5-dark;
+  border-radius: 10px;
+  background: transparent;
+  @include elevation-5-dark;
 
-    .mat-menu-content {
-        padding-top: 0;
-        padding-bottom: 0;
+  .mat-menu-content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .mat-menu-item {
+    color: var(--vitamui-primary);
+    background: white;
+    font-size: 16px;
+    font-weight: 500;
+    min-height: 60px;
+    padding: 0 20px 0 20px;
+    line-height: 1em;
+    display: flex;
+    align-items: center;
+    white-space: normal;
+
+    &:not(:first-child) {
+      border-top: 1px solid rgba(151, 151, 151, 0.2);
     }
 
-    .mat-menu-item {
-        color: var(--vitamui-primary);
-        background: white;
-        font-size: 16px;
-        font-weight: 500;
-        min-height: 60px;
-        padding: 0 20px 0 20px;
-        line-height: 1em;
-        display: flex;
-        align-items: center;
-        white-space: normal;
+    .vitamui-icon {
+      font-size: 24px;
+      margin-right: 16px;
+      width: 27px;
+    }
+  }
 
-        &:not(:first-child) {
-            border-top: 1px solid rgba(151,151,151, 0.2);
-        }
+  .mat-menu-item:hover:not([disabled]),
+  .mat-menu-item.cdk-program-focused:not([disabled]),
+  .mat-menu-item.cdk-keyboard-focused:not([disabled]),
+  .mat-menu-item-highlighted:not([disabled]) {
+    color: white;
+    background-color: var(--vitamui-primary);
+  }
 
-        .vitamui-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 27px;
-        }
+  .mat-menu-item.vitamui-menu-item-header {
+    padding: 0 14px 0 20px;
+
+    > span {
+      flex-grow: 1;
     }
 
-    .mat-menu-item:hover:not([disabled]),
-    .mat-menu-item.cdk-program-focused:not([disabled]),
-    .mat-menu-item.cdk-keyboard-focused:not([disabled]),
-    .mat-menu-item-highlighted:not([disabled]) {
-        color: white;
-        background-color: var(--vitamui-primary);
+    > span,
+    > i {
+      opacity: 0.5;
     }
 
-    .mat-menu-item.vitamui-menu-item-header {
-        padding: 0 14px 0 20px;
-
-        > span {
-            flex-grow: 1;
-        }
-
-        > span,
-        > i {
-            opacity: 0.5;
-        }
-
-        > .vitamui-icon {
-            font-size: 24px;
-            margin-right: 16px;
-        }
+    > .vitamui-icon {
+      font-size: 24px;
+      margin-right: 16px;
     }
-
+  }
 }
 
 // DEPRECATED : REMOVE AT THE END OF THE REDESIGN
 .vitamui-more-action-menu.mat-menu-panel {
-    background: none;
-    box-shadow: none;
-    overflow: visible;
-    border-radius: 10px;
-    max-width: none;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+  border-radius: 10px;
+  max-width: none;
 
-    > .mat-menu-content {
-        padding: 0;
-        position: relative;
+  > .mat-menu-content {
+    padding: 0;
+    position: relative;
 
-        &:before {
-            content: '';
-            display: block;
-            width: 100%;
-            position: absolute;
-            top: 40px;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            border-radius: 10px 0 10px 10px;
-            @include elevation-7-dark;
-        }
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 10px 0 10px 10px;
+      @include elevation-7-dark;
+    }
+  }
+
+  .mat-menu-item.menu-cancel-button {
+    width: 40px;
+    border-radius: 10px 10px 0 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    float: right;
+    border-top: none;
+
+    > i {
+      font-size: 18px;
     }
 
-    .mat-menu-item.menu-cancel-button {
-        width: 40px;
-        border-radius: 10px 10px 0 0;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        float: right;
-        border-top: none;
-
-        > i {
-            font-size: 18px;
-        }
-
-        &:hover:not([disabled]),
-        &.cdk-program-focused:not([disabled]),
-        &.cdk-keyboard-focused:not([disabled]),
-        &.mat-menu-item-highlighted:not([disabled]) {
-            background-color: var(--vitamui-primary);
-        }
+    &:hover:not([disabled]),
+    &.cdk-program-focused:not([disabled]),
+    &.cdk-keyboard-focused:not([disabled]),
+    &.mat-menu-item-highlighted:not([disabled]) {
+      background-color: var(--vitamui-primary);
     }
+  }
 
+  .menu-cancel-button + .mat-menu-item {
+    border-top-left-radius: 10px;
+    border-top: none;
+  }
 
+  .mat-menu-item:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 
-    .menu-cancel-button + .mat-menu-item {
-        border-top-left-radius: 10px;
-        border-top: none;
+  .mat-menu-item {
+    background-color: var(--vitamui-primary);
+    color: white;
+    transition: background-color 200ms ease-out;
+    font-size: 15px;
+    padding: 0 30px;
+    width: 100%;
+  }
+
+  .mat-menu-item {
+    border-top: 1px solid var(--vitamui-primary);
+  }
+
+  .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
+    background-color: var(--vitamui-primary-light);
+  }
+
+  .mat-menu-item[disabled] {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .more-action-divider {
+    height: 10px;
+    width: 100%;
+    background-color: var(--vitamui-primary-light-8);
+
+    + .mat-menu-item {
+      border-top-color: transparent;
     }
-
-    .mat-menu-item:last-child {
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-
-    .mat-menu-item {
-        background-color: var(--vitamui-primary);
-        color: white;
-        transition: background-color 200ms ease-out;
-        font-size: 15px;
-        padding: 0 30px;
-        width: 100%;
-    }
-
-    .mat-menu-item {
-        border-top: 1px solid var(--vitamui-primary);
-    }
-
-    .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
-        background-color: var(--vitamui-primary-light);
-    }
-
-    .mat-menu-item[disabled] {
-        color: rgba(255, 255, 255, 0.4);
-    }
-
-    .more-action-divider {
-        height: 10px;
-        width: 100%;
-        background-color: var(--vitamui-primary-light-8);
-
-        + .mat-menu-item {
-            border-top-color: transparent;
-        }
-    }
+  }
 }

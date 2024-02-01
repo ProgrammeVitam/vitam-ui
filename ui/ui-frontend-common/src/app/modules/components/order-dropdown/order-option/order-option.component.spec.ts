@@ -44,9 +44,8 @@ describe('OrderOptionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderOptionComponent ]
-    })
-    .compileComponents();
+      declarations: [OrderOptionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

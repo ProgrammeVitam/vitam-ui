@@ -43,10 +43,9 @@ const UNKNOW_APP_FILE_NAME = 'UNKNOWN_APP';
 @Component({
   selector: 'app-application-list',
   templateUrl: './application-list.component.html',
-  styleUrls: ['./application-list.component.scss']
+  styleUrls: ['./application-list.component.scss'],
 })
 export class ApplicationsListComponent {
-
   @Input() appMap: Map<Category, Application[]>;
 
   public unknownAppName = UNKNOW_APP_FILE_NAME;
@@ -54,8 +53,8 @@ export class ApplicationsListComponent {
   constructor(
     private router: Router,
     private startupService: StartupService,
-    private applicationService: ApplicationService
-    ) { }
+    private applicationService: ApplicationService,
+  ) {}
 
   public openApplication(application: Application): boolean {
     this.applicationService.openApplication(application, this.router, this.startupService.getConfigStringValue('UI_URL'));
@@ -65,5 +64,4 @@ export class ApplicationsListComponent {
   public getApplicationUrl(application: Application): string {
     return this.applicationService.getApplicationUrl(application);
   }
-
 }

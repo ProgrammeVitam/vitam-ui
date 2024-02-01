@@ -106,7 +106,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private archiveExchangeDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.archiveService.getOntologiesFromJson().subscribe((data: Ontology[]) => {
       this.ontologies = data.filter((ontology) => ontology.ApiField !== undefined);
@@ -159,7 +159,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         filter(() => this.simpleCriteriaForm.valid),
         map(() => this.simpleCriteriaForm.value),
         map(() => diff(this.simpleCriteriaForm.value, this.previousSimpleCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
         this.resetSimpleCriteriaForm();
@@ -186,7 +186,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.EQ,
           false,
-          CriteriaDataType.STRING
+          CriteriaDataType.STRING,
         );
         return true;
       } else if (formData.description) {
@@ -197,7 +197,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.EQ,
           false,
-          CriteriaDataType.STRING
+          CriteriaDataType.STRING,
         );
         return true;
       } else if (formData.beginDt) {
@@ -208,7 +208,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.GTE,
           false,
-          CriteriaDataType.DATE
+          CriteriaDataType.DATE,
         );
         return true;
       } else if (formData.endDt) {
@@ -219,7 +219,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.LTE,
           false,
-          CriteriaDataType.DATE
+          CriteriaDataType.DATE,
         );
         return true;
       } else if (formData.serviceProdCode) {
@@ -230,7 +230,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.EQ,
           false,
-          CriteriaDataType.STRING
+          CriteriaDataType.STRING,
         );
         return true;
       } else if (formData.serviceProdLabel) {
@@ -241,7 +241,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           CriteriaOperator.EQ,
           false,
-          CriteriaDataType.STRING
+          CriteriaDataType.STRING,
         );
         return true;
       } else if (formData.guid) {
@@ -255,7 +255,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
               true,
               CriteriaOperator.EQ,
               false,
-              CriteriaDataType.STRING
+              CriteriaDataType.STRING,
             );
           }
         });
@@ -268,7 +268,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           true,
           'IN',
           false,
-          CriteriaDataType.STRING
+          CriteriaDataType.STRING,
         );
         return true;
       } else if (formData.otherCriteriaValue) {
@@ -281,7 +281,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             false,
             CriteriaOperator.EQ,
             false,
-            CriteriaDataType.DATE
+            CriteriaDataType.DATE,
           );
         } else {
           this.addCriteria(
@@ -291,7 +291,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             false,
             CriteriaOperator.EQ,
             false,
-            CriteriaDataType.STRING
+            CriteriaDataType.STRING,
           );
         }
         return true;
@@ -330,10 +330,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           criteriaSearch.operator,
           this.isValueTranslated(criteriaSearch.criteria),
           criteriaSearch.dataType,
-          criteriaSearch.category as SearchCriteriaTypeEnum
+          criteriaSearch.category as SearchCriteriaTypeEnum,
         );
       });
-    });    
+    });
   }
 
   onSelectOtherCriteria() {
@@ -362,7 +362,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     operator: string,
     valueTranslated: boolean,
     dataType: string,
-    category?: SearchCriteriaTypeEnum
+    category?: SearchCriteriaTypeEnum,
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
@@ -392,7 +392,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             CriteriaOperator.EQ,
             false,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS
+            SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
           this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT });
@@ -408,7 +408,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             CriteriaOperator.EQ,
             false,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS
+            SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
           this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT });
@@ -424,7 +424,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             CriteriaOperator.EQ,
             false,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS
+            SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
           this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS });
@@ -440,7 +440,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             CriteriaOperator.EQ,
             false,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS
+            SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
           this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS });
@@ -465,7 +465,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       CriteriaOperator.EQ,
       false,
       CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.FIELDS
+      SearchCriteriaTypeEnum.FIELDS,
     );
     this.archiveUnitTypesCriteria.set(unitObjectProperty, true);
   }

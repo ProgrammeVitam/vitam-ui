@@ -46,9 +46,8 @@ describe('VitamUIInputErrorComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
-      declarations: [ VitamUIInputErrorComponent ]
-    })
-    .compileComponents();
+      declarations: [VitamUIInputErrorComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 @import '../../../../sass/variables';
 
 div {
-    background-color: var(--vitamui-background);
-    min-height: calc(100vh - #{$header-height} + #{$layout-margin-y});
-    margin: #{$header-height} auto 0;
+  background-color: var(--vitamui-background);
+  min-height: calc(100vh - #{$header-height} + #{$layout-margin-y});
+  margin: #{$header-height} auto 0;
 }

@@ -40,11 +40,11 @@ import { FilingHoldingSchemeHandler } from '../filing-holding-scheme.handler';
 @Component({
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
-  styleUrls: [ './leaves-tree.component.scss' ],
+  styleUrls: ['./leaves-tree.component.scss'],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
-  
+
   @Input() loadingNodeUnit: boolean;
   loadingNodesDetails: boolean;
   // Already a graph
@@ -56,16 +56,17 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
-    (node) => node.children
+    (node) => node.children,
   );
   showEveryNodes = false;
   private searchCriterias: SearchCriteriaDto;
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private archiveService: ArchiveService,
-              private archiveSharedDataService: ArchiveSharedDataService,
-              private archiveFacetsService: ArchiveFacetsService,) {
-  }
+  constructor(
+    private archiveService: ArchiveService,
+    private archiveSharedDataService: ArchiveSharedDataService,
+    private archiveFacetsService: ArchiveFacetsService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
@@ -78,7 +79,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(
       this.archiveSharedDataService.getLastSearchCriteriaDtoSubject().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.searchCriterias = searchCriteriaDto;
-      })
+      }),
     );
   }
 
@@ -113,31 +114,29 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           criteria: '#id',
           operator: CriteriaOperator.IN,
           category: SearchCriteriaTypeEnum.FIELDS,
-          values: facets.map(facet => {
+          values: facets.map((facet) => {
             return { id: facet.node, value: facet.node };
           }),
           dataType: CriteriaDataType.STRING,
         },
       ],
       trackTotalHits: false,
-      computeFacets: false
+      computeFacets: false,
     };
     // Can be improve with a projection (only nodes fields are needed)
     this.subscriptions.add(
-      this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-        .subscribe(pageResult => {
-            FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pageResult.results, true);
-            FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
-            this.refreshTreeNodes();
-            this.loadingNodesDetails = false;
-          }
-        )
+      this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
+        FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pageResult.results, true);
+        FilingHoldingSchemeHandler.setCountRecursively(parentNodes, facets);
+        this.refreshTreeNodes();
+        this.loadingNodesDetails = false;
+      }),
     );
   }
 
   private compareAddedNodeWithKnownFacets(nodes: FilingHoldingSchemeNode[]) {
     for (const node of nodes) {
-      const matchingFacet = this.searchRequestResultFacets.find(resultFacet => resultFacet.node === node.id);
+      const matchingFacet = this.searchRequestResultFacets.find((resultFacet) => resultFacet.node === node.id);
       if (!matchingFacet) {
         continue;
       }
@@ -159,7 +158,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           criteria: '#unitups',
           operator: CriteriaOperator.IN,
           category: SearchCriteriaTypeEnum.FIELDS,
-          values: [ { id: parentNode.id, value: parentNode.id } ],
+          values: [{ id: parentNode.id, value: parentNode.id }],
           dataType: CriteriaDataType.STRING,
         },
       ],
@@ -168,15 +167,14 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       computeFacets: false,
     };
     this.subscriptions.add(
-      this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-        .subscribe((pageResult) => {
-          const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results);
-          parentNode.paginatedChildrenLoaded += pageResult.results.length;
-          parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
-          parentNode.isLoadingChildren = false;
-          this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
-          this.refreshTreeNodes();
-        })
+      this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results);
+        parentNode.paginatedChildrenLoaded += pageResult.results.length;
+        parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
+        parentNode.isLoadingChildren = false;
+        this.compareAddedNodeWithKnownFacets(matchingNodesNumbers.nodesAddedList);
+        this.refreshTreeNodes();
+      }),
     );
   }
 
@@ -184,12 +182,12 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.prepareSearch(parentNode, true)) {
       return;
     }
-    const newCriteriaList = [ ...this.searchCriterias.criteriaList ];
+    const newCriteriaList = [...this.searchCriterias.criteriaList];
     newCriteriaList.push({
       criteria: '#allunitups',
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
-      values: [ { id: parentNode.id, value: parentNode.id } ],
+      values: [{ id: parentNode.id, value: parentNode.id }],
       dataType: CriteriaDataType.STRING,
     });
     const searchCriteria: SearchCriteriaDto = {
@@ -198,25 +196,23 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       criteriaList: newCriteriaList,
       sortingCriteria: this.searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false
+      computeFacets: false,
     };
-    this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .subscribe(pageResult => {
-          // warning: if returned order is random, direct children may be at the end of pagination and will not be returned on first call
-          // it may require a third call with criterias and only on direct childrens
-          const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results, true);
-          const loadedNodes = matchingNodesNumbers.nodesAdded + matchingNodesNumbers.nodesUpdated;
-          parentNode.paginatedMatchingChildrenLoaded += loadedNodes;
-          parentNode.canLoadMoreMatchingChildren = loadedNodes >= this.DEFAULT_UNIT_PAGE_SIZE;
-          if (parentNode.paginatedMatchingChildrenLoaded >= pageResult.totalResults) {
-            parentNode.canLoadMoreMatchingChildren = false;
-          }
-          const newFacets: ResultFacet[] = this.getAndSaveNewFacets(pageResult);
-          this.loadNodesDetailsFromFacetsIds([ parentNode ], newFacets);
-          parentNode.isLoadingChildren = false;
-          this.refreshTreeNodes();
-        }
-      );
+    this.sendSearchArchiveUnitsByCriteria(searchCriteria).subscribe((pageResult) => {
+      // warning: if returned order is random, direct children may be at the end of pagination and will not be returned on first call
+      // it may require a third call with criterias and only on direct childrens
+      const matchingNodesNumbers = FilingHoldingSchemeHandler.addDirectChildrenOnly(parentNode, pageResult.results, true);
+      const loadedNodes = matchingNodesNumbers.nodesAdded + matchingNodesNumbers.nodesUpdated;
+      parentNode.paginatedMatchingChildrenLoaded += loadedNodes;
+      parentNode.canLoadMoreMatchingChildren = loadedNodes >= this.DEFAULT_UNIT_PAGE_SIZE;
+      if (parentNode.paginatedMatchingChildrenLoaded >= pageResult.totalResults) {
+        parentNode.canLoadMoreMatchingChildren = false;
+      }
+      const newFacets: ResultFacet[] = this.getAndSaveNewFacets(pageResult);
+      this.loadNodesDetailsFromFacetsIds([parentNode], newFacets);
+      parentNode.isLoadingChildren = false;
+      this.refreshTreeNodes();
+    });
   }
 
   private getAndSaveNewFacets(pageResult: PagedResult): ResultFacet[] {
@@ -230,8 +226,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private sendSearchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto): Observable<PagedResult> {
-    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(first());
+    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).pipe(first());
   }
 
   private refreshTreeNodes() {
@@ -248,7 +243,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (!node.children) {
       node.children = [];
     }
-    node.paginatedMatchingChildrenLoaded = 0
+    node.paginatedMatchingChildrenLoaded = 0;
     node.canLoadMoreMatchingChildren = true;
     node.paginatedChildrenLoaded = 0;
     node.canLoadMoreChildren = true;
@@ -280,7 +275,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       return false;
     }
     if (!this.showEveryNodes) {
-      return node.canLoadMoreMatchingChildren
+      return node.canLoadMoreMatchingChildren;
     }
     return node.canLoadMoreChildren;
   }
@@ -308,5 +303,4 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   switchViewAllNodes(): void {
     this.showEveryNodes = !this.showEveryNodes;
   }
-
 }

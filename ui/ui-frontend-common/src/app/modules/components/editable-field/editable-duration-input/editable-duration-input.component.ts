@@ -45,17 +45,16 @@ const moment = moment_;
 export const EDITABLE_DURATION_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableDurationInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-duration-input',
   templateUrl: './editable-duration-input.component.html',
   styleUrls: ['./editable-duration-input.component.scss'],
-  providers: [EDITABLE_DURATION_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_DURATION_INPUT_VALUE_ACCESSOR],
 })
 export class EditableDurationInputComponent extends EditableFieldComponent {
-
   delaySlaForm: FormGroup;
 
   constructor(formBuilder: FormBuilder, elementRef: ElementRef) {
@@ -64,7 +63,7 @@ export class EditableDurationInputComponent extends EditableFieldComponent {
     this.delaySlaForm = formBuilder.group({
       days: [null],
       hours: [null],
-      minutes: [null]
+      minutes: [null],
     });
 
     this.delaySlaForm.valueChanges.subscribe((delayData) => {
@@ -86,15 +85,13 @@ export class EditableDurationInputComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
-    if (
-      this.isInside(target, this.elementRef.nativeElement) ||
-      this.isInside(target, overlayRef.hostElement)
-    ) {
+    if (this.isInside(target, this.elementRef.nativeElement) || this.isInside(target, overlayRef.hostElement)) {
       return;
     }
     this.cancel();
   }
-
 }

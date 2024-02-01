@@ -30,7 +30,7 @@
 
     <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
       <app-delete-unit-rules
-        *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"        
+        *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
         (delete)="deleteForm(actionName.id, $event, action)"

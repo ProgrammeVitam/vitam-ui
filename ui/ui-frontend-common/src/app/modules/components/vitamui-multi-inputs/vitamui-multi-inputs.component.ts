@@ -35,34 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {
-  Component,
-  ElementRef,
-  forwardRef, HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import {EditableFieldComponent} from "../editable-field/editable-field.component";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Subscription} from "rxjs";
+import { Component, ElementRef, forwardRef, HostListener, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { EditableFieldComponent } from '../editable-field/editable-field.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamuiMultiInputsComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-multi-inputs',
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
-  providers: [MULTIPLE_INPUT_VALUE_ACCESSOR]
+  providers: [MULTIPLE_INPUT_VALUE_ACCESSOR],
 })
 export class VitamuiMultiInputsComponent extends EditableFieldComponent implements OnDestroy, OnChanges {
-
   values: string[] = [];
 
   @Input() maxlength: number;
@@ -83,9 +73,13 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   }
 
   confirm() {
-    if (this.control.invalid || this.control.pending) { return; }
+    if (this.control.invalid || this.control.pending) {
+      return;
+    }
     const val = this.control.value;
-    if (this.values.includes(val)) { return; }
+    if (this.values.includes(val)) {
+      return;
+    }
     this.values.push(val);
     this.onChange(this.values);
     this.originValue = this.values;
@@ -107,12 +101,11 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['reset']?.currentValue) {
+    if (changes['reset']?.currentValue) {
       this.values = [];
       this.originValue = this.values;
       this.onChange(this.values);
       this.control.reset(this.values);
     }
   }
-
 }

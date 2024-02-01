@@ -36,8 +36,8 @@
  */
 
 /**
- * This class is used as a tuple of 2 values to represent a Pair structure. 
- * Both key and value have the native object type in order to apply polymorphism 
+ * This class is used as a tuple of 2 values to represent a Pair structure.
+ * Both key and value have the native object type in order to apply polymorphism
  * on the wanted types!
  */
 export class Pair {
@@ -55,13 +55,11 @@ export class Pair {
  * and optimize code !
  */
 export enum VitamInternalFields {
-  
   // UNITS
   ID = '#id',
   MANAGEMENT = '#management',
   ALL_UNIT_UPS = '#allunitups',
   UNIT_UPS = '#unitups',
   OPI = '#opi',
-  UNIT_TYPE = '#unitType'
+  UNIT_TYPE = '#unitType',
 }
-

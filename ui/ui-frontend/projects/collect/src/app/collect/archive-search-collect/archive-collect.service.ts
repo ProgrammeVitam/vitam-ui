@@ -57,7 +57,7 @@ export class ArchiveCollectService extends SearchService<any> {
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
-    private accessContractApiService: AccessContractApiService
+    private accessContractApiService: AccessContractApiService,
   ) {
     super(http, projectsApiService, 'ALL');
   }
@@ -115,7 +115,7 @@ export class ArchiveCollectService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => ArchiveCollectService.buildPagedResults(results))
+      map((results) => ArchiveCollectService.buildPagedResults(results)),
     );
   }
 
@@ -132,7 +132,7 @@ export class ArchiveCollectService extends SearchService<any> {
       }),
       catchError(() => {
         return of(-1);
-      })
+      }),
     );
   }
 
@@ -210,7 +210,7 @@ export class ArchiveCollectService extends SearchService<any> {
             duration: 10000,
           });
         }
-      }
+      },
     );
   }
 
@@ -226,7 +226,7 @@ export class ArchiveCollectService extends SearchService<any> {
       }),
       map((response) => {
         return this.buildNestedTreeLevels(response.$results);
-      })
+      }),
     );
   }
 

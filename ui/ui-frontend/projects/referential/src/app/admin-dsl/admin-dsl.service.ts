@@ -34,33 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminDslService {
-
-  constructor(
-    private unitApiService: SearchUnitApiService) {
-  }
+  constructor(private unitApiService: SearchUnitApiService) {}
 
   getById(unitId: string, accessContractId: string) {
-    const headers = new HttpHeaders()
-      .append('X-Access-Contract-Id', accessContractId)
-      .append('Content-Type', 'application/stream');
+    const headers = new HttpHeaders().append('X-Access-Contract-Id', accessContractId).append('Content-Type', 'application/stream');
     return this.unitApiService.getById(unitId, headers);
   }
 
   getByDsl(unitId: string, dsl: any, accessContractId: string) {
-    let headers = new HttpHeaders()
-      .append('Content-Type', 'application/json')
-      .append('X-Access-Contract-Id', accessContractId);
+    let headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', accessContractId);
 
     // We don't want to display the error popup launched in the http interceptor
     // if the unit id is unknown
@@ -70,7 +62,7 @@ export class AdminDslService {
     return this.unitApiService.getByDsl(unitId, dsl, headers).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
         return of(httpErrorResponse.error);
-      })
+      }),
     );
   }
 
@@ -83,7 +75,7 @@ export class AdminDslService {
     return this.unitApiService.getUnitObjectsByDsl(unitId, dsl, headers).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
         return of(httpErrorResponse.error);
-      })
+      }),
     );
   }
 }

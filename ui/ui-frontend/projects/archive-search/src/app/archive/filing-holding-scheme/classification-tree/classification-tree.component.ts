@@ -35,7 +35,6 @@ import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch } from 'ui-front
   styleUrls: ['./classification-tree.component.scss'],
 })
 export class ClassificationTreeComponent {
-
   @Input() accessContract: string;
   @Input() loadingHolding: boolean;
   @Input() nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;

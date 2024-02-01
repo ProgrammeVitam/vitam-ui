@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {RouterModule} from '@angular/router';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {MatInputModule} from '@angular/material/input';
-import {SharedModule} from '../shared/shared.module';
-import {AdminDslRoutingModule} from './admin-dsl-routing.module';
-import {AdminDslComponent} from './admin-dsl.component';
+import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../shared/shared.module';
+import { AdminDslRoutingModule } from './admin-dsl-routing.module';
+import { AdminDslComponent } from './admin-dsl.component';
 
 @NgModule({
   imports: [
@@ -68,11 +68,8 @@ import {AdminDslComponent} from './admin-dsl.component';
     MatDatepickerModule,
     MatSelectModule,
     SharedModule,
-    MatInputModule
+    MatInputModule,
   ],
-  declarations: [
-    AdminDslComponent
-  ]
+  declarations: [AdminDslComponent],
 })
-export class AdminDslModule {
-}
+export class AdminDslModule {}

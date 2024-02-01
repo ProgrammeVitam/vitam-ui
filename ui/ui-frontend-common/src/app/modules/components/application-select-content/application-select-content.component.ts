@@ -42,10 +42,9 @@ import { Category } from '../../models/application/category.interface';
 @Component({
   selector: 'vitamui-common-application-select-content',
   templateUrl: './application-select-content.component.html',
-  styleUrls: ['./application-select-content.component.scss']
+  styleUrls: ['./application-select-content.component.scss'],
 })
 export class ApplicationSelectContentComponent {
-
   @Input() isModalMenu: boolean;
 
   @Input()
@@ -56,7 +55,9 @@ export class ApplicationSelectContentComponent {
       this.computeAppCategories();
     }
   }
-  get applications(): Application[] { return this._applications; }
+  get applications(): Application[] {
+    return this._applications;
+  }
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
@@ -67,17 +68,21 @@ export class ApplicationSelectContentComponent {
       this.computeAppCategories();
     }
   }
-  get categories(): Category[] { return this._categories; }
+  get categories(): Category[] {
+    return this._categories;
+  }
   // tslint:disable-next-line:variable-name
   private _categories: Category[];
 
   @Output() applicationSelected = new EventEmitter<string>();
 
-  get target(): string { return '_blank'; }
+  get target(): string {
+    return '_blank';
+  }
 
   categoryList: any[];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   checkTenantNumberByApp(apps: Application[]) {
     apps.forEach((application) => {
@@ -102,17 +107,17 @@ export class ApplicationSelectContentComponent {
       title: 'Autres', // FIXME : MDI - handle this property when translating categories
       displayTitle: true,
       order: 99,
-      applications: []
+      applications: [],
     };
     this.categoryList.push(defaultCategory);
 
     // recreate categories list before assembling applications by categories
     // add a default category in order to view applications linked to a non existent category
-    this.categories.forEach(category => {
+    this.categories.forEach((category) => {
       if (category.identifier === 'default') {
         // do not compute category when identifier is the default ;
       } else {
-        const categoryTmp: any = this._categories.find(tmp => tmp.identifier === category.identifier);
+        const categoryTmp: any = this._categories.find((tmp) => tmp.identifier === category.identifier);
         categoryTmp.identifier = category.identifier;
         categoryTmp.applications = [];
         this.categoryList.push(categoryTmp);
@@ -120,7 +125,7 @@ export class ApplicationSelectContentComponent {
       }
     });
 
-    this.categoryList.forEach(category => {
+    this.categoryList.forEach((category) => {
       if (category.identifier === 'default') {
         category.applications = sortedApps.filter((app) => !identifiers.includes(app.category));
       } else {

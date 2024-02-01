@@ -1,50 +1,63 @@
 <div>
-  <h4>{{ "TRANSLATION.TITLE" | translate }}</h4>
+  <h4>{{ 'TRANSLATION.TITLE' | translate }}</h4>
 
-  <h5>{{ "TRANSLATION.CONVENTION" | translate }}</h5>
+  <h5>{{ 'TRANSLATION.CONVENTION' | translate }}</h5>
 
-  <div class="text medium mb-2">{{ "TRANSLATION.ALWAYS_TRANSLATE" | translate }}</div>
-  <div class="text medium mb-2">{{ "TRANSLATION.KEY_NAMING" | translate }}</div>
-  <div class="text medium mb-2">{{ "TRANSLATION.KEY_NAMING_COMMON" | translate }}</div>
-  <div class="text medium mb-2">{{ "TRANSLATION.DO_NOT_SPLIT_WORDS" | translate }}</div>
+  <div class="text medium mb-2">{{ 'TRANSLATION.ALWAYS_TRANSLATE' | translate }}</div>
+  <div class="text medium mb-2">{{ 'TRANSLATION.KEY_NAMING' | translate }}</div>
+  <div class="text medium mb-2">{{ 'TRANSLATION.KEY_NAMING_COMMON' | translate }}</div>
+  <div class="text medium mb-2">{{ 'TRANSLATION.DO_NOT_SPLIT_WORDS' | translate }}</div>
 
-
-  <h5 class="mt-4">{{ "TRANSLATION.USAGE" | translate }}</h5>
+  <h5 class="mt-4">{{ 'TRANSLATION.USAGE' | translate }}</h5>
 
   <div class="text medium mb-3">Texte en dur non traduit</div>
 
   <!-- Pipe translate examples -->
-  <div class="text large bold mb-4">{{ "TRANSLATION.WITH_PIPE" | translate }}</div>
+  <div class="text large bold mb-4">{{ 'TRANSLATION.WITH_PIPE' | translate }}</div>
 
-  <div class="text medium mb-3">{{ "WHAT_HAPPEN_WHEN_KEY_DOES_NOT_EXIST" }}</div>
+  <div class="text medium mb-3">{{ 'WHAT_HAPPEN_WHEN_KEY_DOES_NOT_EXIST' }}</div>
 
-  <div class="text medium mb-3">{{ "WHAT_HAPPEN_WHEN_KEY_DOES_NOT_EXIST" | translate: {default: 'Clé non existante avec valeur par défaut' } }}</div>
+  <div class="text medium mb-3">
+    {{ 'WHAT_HAPPEN_WHEN_KEY_DOES_NOT_EXIST' | translate: { default: 'Clé non existante avec valeur par défaut' } }}
+  </div>
 
-  <div class="text medium mb-3">{{ "TRANSLATION.TRANSLATE_FRENCH_ONLY" | translate }}</div>
+  <div class="text medium mb-3">{{ 'TRANSLATION.TRANSLATE_FRENCH_ONLY' | translate }}</div>
 
-  <div class="text medium mb-3">{{ "TRANSLATION.TRANSLATE_PIPE" | translate }}</div>
+  <div class="text medium mb-3">{{ 'TRANSLATION.TRANSLATE_PIPE' | translate }}</div>
 
   <div class="d-flex align-items-center">
-    <span class="text medium mb-3">{{ "TRANSLATION.TRANSLATE_PARAMETERS" | translate : { param1: firstInput.value, param2: secondInput.value } }}</span>
-    <vitamui-common-input class="ml-3" [formControl]="firstInput" [placeholder]="'TRANSLATION.FIRST_INPUT' | translate"></vitamui-common-input>
-    <vitamui-common-input class="ml-3" [formControl]="secondInput" [placeholder]="'TRANSLATION.SECOND_INPUT' | translate"></vitamui-common-input>
+    <span class="text medium mb-3">{{
+      'TRANSLATION.TRANSLATE_PARAMETERS' | translate: { param1: firstInput.value, param2: secondInput.value }
+    }}</span>
+    <vitamui-common-input
+      class="ml-3"
+      [formControl]="firstInput"
+      [placeholder]="'TRANSLATION.FIRST_INPUT' | translate"
+    ></vitamui-common-input>
+    <vitamui-common-input
+      class="ml-3"
+      [formControl]="secondInput"
+      [placeholder]="'TRANSLATION.SECOND_INPUT' | translate"
+    ></vitamui-common-input>
   </div>
 
   <div class="d-flex align-items-center">
-    <span class="text medium mb-3">{{ nbApples.value | i18nPlural: nbApplesTextMap | translate : { number: nbApples.value } }}</span>
-    <vitamui-common-input class="ml-3" [formControl]="nbApples" [placeholder]="'TRANSLATION.NUMBER_OF_APPLE' | translate"></vitamui-common-input>
+    <span class="text medium mb-3">{{ nbApples.value | i18nPlural: nbApplesTextMap | translate: { number: nbApples.value } }}</span>
+    <vitamui-common-input
+      class="ml-3"
+      [formControl]="nbApples"
+      [placeholder]="'TRANSLATION.NUMBER_OF_APPLE' | translate"
+    ></vitamui-common-input>
   </div>
 
   <div class="text medium mb-3" innerHtml="{{ 'TRANSLATION.TRANSLATE_HTML' | translate }}"></div>
 
-
   <!-- Translate service examples -->
-  <div class="text large bold mt-4 mb-4">{{ "TRANSLATION.TRANSLATE_SERVICE" | translate }}</div>
+  <div class="text large bold mt-4 mb-4">{{ 'TRANSLATION.TRANSLATE_SERVICE' | translate }}</div>
 
-  <div class="text medium mb-3"> {{ myInstantText }} </div>
+  <div class="text medium mb-3">{{ myInstantText }}</div>
 
-  <div class="text medium mb-3"> {{ getMyInstantTrad() }} </div>
+  <div class="text medium mb-3">{{ getMyInstantTrad() }}</div>
 
-  <div *ngFor="let text of myGetTexts" class="text medium mb-1"> {{ text }} </div>
-
+  <div *ngFor="let text of myGetTexts" class="text medium mb-1">{{ text }}</div>
 </div>

@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
 
-import {AccessContractService} from '../../access-contract.service';
+import { AccessContractService } from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',
   templateUrl: './access-contract-write-access-tab.component.html',
-  styleUrls: ['./access-contract-write-access-tab.component.scss']
+  styleUrls: ['./access-contract-write-access-tab.component.scss'],
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
-
   @Input()
   set accessContract(accessContract: AccessContract) {
     this._accessContract = accessContract;
@@ -72,17 +71,20 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private accessContractService: AccessContractService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private accessContractService: AccessContractService,
+  ) {
     this.form = this.formBuilder.group({
       writingRestrictedDesc: [true],
-      writingPermission: [false]
+      writingPermission: [false],
     });
   }
 
@@ -95,7 +97,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   private _accessContract: AccessContract;
   previousValue = (): AccessContract => {
     return this._accessContract;
-  }
+  };
 
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
@@ -108,31 +110,32 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap(
-        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
+    );
   }
 
   onSubmit() {
     this.submited = true;
     // if (this.isInvalid()) { return; }
-    this.prepareSubmit().subscribe(() => {
-      this.accessContractService.get(this._accessContract.identifier).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
           this.submited = false;
           this.accessContract = response;
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      },
+    );
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   resetForm(accessContract: AccessContract) {
-    this.form.reset(accessContract, {emitEvent: false});
+    this.form.reset(accessContract, { emitEvent: false });
   }
 }

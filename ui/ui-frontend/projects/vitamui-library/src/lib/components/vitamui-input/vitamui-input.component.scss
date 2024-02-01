@@ -1,24 +1,24 @@
-@import "~ui-frontend-common/sass/variables/colors";
-@import "~ui-frontend-common/sass/mixins/elevation";
+@import '~ui-frontend-common/sass/variables/colors';
+@import '~ui-frontend-common/sass/mixins/elevation';
 
 $input-height: 60px;
 $input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
 :host {
-    display: inline-block;
+  display: inline-block;
 
-    &.ng-valid.ng-touched .vitamui-input {
-        border-color: $green;
-    }
+  &.ng-valid.ng-touched .vitamui-input {
+    border-color: $green;
+  }
 
-    &.ng-invalid.ng-touched .vitamui-input {
-        border-color: $red;
-    }
+  &.ng-invalid.ng-touched .vitamui-input {
+    border-color: $red;
+  }
 }
 
 :host {
-    .vitamui-input mat-spinner {
-        display: block;
-    }
+  .vitamui-input mat-spinner {
+    display: block;
+  }
 }

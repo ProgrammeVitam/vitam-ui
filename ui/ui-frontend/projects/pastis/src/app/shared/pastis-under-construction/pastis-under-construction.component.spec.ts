@@ -45,9 +45,8 @@ describe('PastisUnderConstructionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PastisUnderConstructionComponent ]
-    })
-    .compileComponents();
+      declarations: [PastisUnderConstructionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

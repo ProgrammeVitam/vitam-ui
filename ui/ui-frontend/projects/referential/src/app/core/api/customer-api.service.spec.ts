@@ -42,19 +42,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BASE_URL } from 'ui-frontend-common';
 import { CustomerApiService } from './customer-api.service';
 
-
 describe('CustomerApiService', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        LoggerModule.forRoot(),
-        HttpClientTestingModule
-      ],
-      providers: [
-        {provide: BASE_URL, useValue: ''}
-      ]
-    })
-      .compileComponents();
+      imports: [LoggerModule.forRoot(), HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '' }],
+    }).compileComponents();
   }));
 
   it('should be created', () => {

@@ -4,10 +4,7 @@ import { ElevationComponent } from './elevations.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule
-  ],
-  declarations: [ElevationComponent]
+  imports: [CommonModule, VitamUICommonModule],
+  declarations: [ElevationComponent],
 })
-export class ElevationModule { }
+export class ElevationModule {}

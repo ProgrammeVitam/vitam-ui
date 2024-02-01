@@ -35,24 +35,36 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
-import { AfterContentInit, ContentChildren, Directive, ElementRef, EventEmitter,
-   HostBinding, HostListener, Input, Output, QueryList, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  Output,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
 @Directive({
-  selector: 'editable-field-component'
+  selector: 'editable-field-component',
 })
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
-
   @Input() label: string;
   @Input()
   set disabled(disabled: boolean) {
     this._disabled = disabled;
     this.readonly = this._disabled;
   }
-  get disabled(): boolean { return this._disabled; }
+  get disabled(): boolean {
+    return this._disabled;
+  }
   // tslint:disable-next-line:variable-name
   private _disabled: boolean;
 
@@ -84,24 +96,28 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
       originX: 'end',
       originY: 'center',
       overlayX: 'start',
-      overlayY: 'center'
+      overlayY: 'center',
     },
     {
       originX: 'end',
       originY: 'bottom',
       overlayX: 'end',
-      overlayY: 'top'
+      overlayY: 'top',
     },
     {
       originX: 'end',
       originY: 'top',
       overlayX: 'end',
-      overlayY: 'bottom'
+      overlayY: 'bottom',
     },
   ];
 
-  get showSpinner(): boolean { return this.control.pending && this.control.dirty; }
-  get canConfirm() { return this.editMode && !this.control.pending && this.control.valid && this.control.dirty; }
+  get showSpinner(): boolean {
+    return this.control.pending && this.control.dirty;
+  }
+  get canConfirm() {
+    return this.editMode && !this.control.pending && this.control.valid && this.control.dirty;
+  }
 
   constructor(protected elementRef: ElementRef) {}
 
@@ -151,7 +167,9 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
 
   @HostListener('document:click', ['$event.target'])
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
     if (this.isInside(target, this.elementRef.nativeElement) || this.isInside(target, overlayRef.hostElement)) {
       return;
@@ -160,7 +178,9 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   }
 
   confirm() {
-    if (!this.canConfirm) { return; }
+    if (!this.canConfirm) {
+      return;
+    }
     this.editMode = false;
     this.onChange(this.control.value);
     this.originValue = this.control.value;
@@ -168,7 +188,9 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   }
 
   cancel() {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     this.editMode = false;
     this.control.reset(this.originValue);
   }
@@ -176,5 +198,4 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   protected isInside(target: HTMLElement, element: HTMLElement): boolean {
     return element && (target === element || element.contains(target));
   }
-
 }

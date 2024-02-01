@@ -45,13 +45,13 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
 
 @Component({
   selector: 'app-information-tab',
-  templateUrl: './information-tab.component.html'
+  templateUrl: './information-tab.component.html',
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private externalParamProfileService: ExternalParamProfileService,
-    private externalParamProfileValidators: ExternalParamProfileValidators
+    private externalParamProfileValidators: ExternalParamProfileValidators,
   ) {}
   form: FormGroup;
   permissionForm: FormGroup;
@@ -113,11 +113,11 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
               idExternalParam: this.externalParamProfile.idExternalParam,
               idProfile: this.externalParamProfile.idProfile,
             },
-            formData
-          )
+            formData,
+          ),
         ),
         switchMap((formData) => this.externalParamProfileService.patch(formData).pipe(catchError((error) => of(error)))),
-        catchError((error) => of(error))
+        catchError((error) => of(error)),
       )
       .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(this.form, externalParamProfile, this.readOnly));
   }
@@ -135,8 +135,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         this.externalParamProfileValidators.nameExists(
           +this.tenantIdentifier,
           ApplicationId.EXTERNAL_PARAM_PROFILE_APP,
-          externalParamProfile.name
-        )
+          externalParamProfile.name,
+        ),
       );
   }
 }

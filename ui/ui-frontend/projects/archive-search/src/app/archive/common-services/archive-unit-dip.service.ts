@@ -38,7 +38,10 @@ const PAGE_SIZE = 10;
 
 @Injectable()
 export class ArchiveUnitDipService {
-  constructor(private translateService: TranslateService, public dialog: MatDialog) {}
+  constructor(
+    private translateService: TranslateService,
+    public dialog: MatDialog,
+  ) {}
 
   launchExportDipModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
@@ -48,7 +51,7 @@ export class ArchiveUnitDipService {
     itemSelected: number,
     currentPage: number,
     isAllchecked: boolean,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
       this.launchExportDIP(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
@@ -56,7 +59,7 @@ export class ArchiveUnitDipService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' }
+        { panelClass: 'vitamui-dialog' },
       );
 
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -74,7 +77,7 @@ export class ArchiveUnitDipService {
     accessContract: string,
     tenantIdentifier: number,
     itemSelected: number,
-    currentPage: number
+    currentPage: number,
   ) {
     const exportDIPSearchCriteria = {
       criteriaList: listOfUACriteriaSearch,
@@ -109,7 +112,7 @@ export class ArchiveUnitDipService {
     itemSelected: number,
     currentPage: number,
     isAllchecked: boolean,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
       this.launchTransferRequest(
@@ -118,12 +121,12 @@ export class ArchiveUnitDipService {
         accessContract,
         tenantIdentifier,
         itemSelected,
-        currentPage
+        currentPage,
       );
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         confirmSecondActionBigNumberOfResultsActionDialog,
-        { panelClass: 'vitamui-dialog' }
+        { panelClass: 'vitamui-dialog' },
       );
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
         .afterClosed()
@@ -135,7 +138,7 @@ export class ArchiveUnitDipService {
             accessContract,
             tenantIdentifier,
             itemSelected,
-            currentPage
+            currentPage,
           );
         });
     }
@@ -147,7 +150,7 @@ export class ArchiveUnitDipService {
     accessContract: string,
     tenantIdentifier: number,
     itemSelected: number,
-    currentPage: number
+    currentPage: number,
   ) {
     const searchCriteria = {
       criteriaList: listOfUACriteriaSearch,

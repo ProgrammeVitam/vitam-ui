@@ -1,22 +1,25 @@
 <form [formGroup]="form">
-
-  <vitamui-common-slide-toggle formControlName="enabled"
-  [matTooltip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate" [matTooltipDisabled]="profile?.groupsCount == 0" matTooltipClass="vitamui-tooltip"> 
-  <span *ngIf="!form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
-  <span *ngIf="form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
+  <vitamui-common-slide-toggle
+    formControlName="enabled"
+    [matTooltip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
+    [matTooltipDisabled]="profile?.groupsCount == 0"
+    matTooltipClass="vitamui-tooltip"
+  >
+    <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+    <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
   </vitamui-common-slide-toggle>
 
   <div class="row">
-      <div class="col-12">
-        <vitamui-common-editable-input
-          formControlName="identifier"
-          maxlength="12"
-          [label]="'COMMON.ID' |translate"
-          [validator]="form?.get('identifier')?.validator"
-          [asyncValidator]="form?.get('identifier')?.asyncValidator"
-        >
-        </vitamui-common-editable-input>
-      </div>
+    <div class="col-12">
+      <vitamui-common-editable-input
+        formControlName="identifier"
+        maxlength="12"
+        [label]="'COMMON.ID' | translate"
+        [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator"
+      >
+      </vitamui-common-editable-input>
+    </div>
   </div>
 
   <div class="row">
@@ -28,20 +31,27 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{
+          'HIERARCHY.INFORMATIONS.EXISTING_NAME' | translate
+        }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
-      <div class="col-5">
+    <div class="col-5">
       <div class="read-only-field">
-          <label>{{'HIERARCHY.INFORMATIONS.LEVEL' | translate}}</label>
-          <div>{{userLevel}}</div>
+        <label>{{ 'HIERARCHY.INFORMATIONS.LEVEL' | translate }}</label>
+        <div>{{ userLevel }}</div>
       </div>
     </div>
-    <div class="col-5" [matTooltip]="'HIERARCHY.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
+    <div
+      class="col-5"
+      [matTooltip]="'HIERARCHY.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
+      matTooltipClass="vitamui-tooltip"
+      [matTooltipDisabled]="profile?.groupsCount == 0"
+    >
       <vitamui-common-editable-level-input
         formControlName="level"
         maxlength="250"
@@ -49,8 +59,10 @@
         [label]="'HIERARCHY.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator"
       >
-        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{
+          'HIERARCHY.INFORMATIONS.WRONG_FORMAT' | translate
+        }}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
   </div>
@@ -63,7 +75,7 @@
         [label]="'HIERARCHY.INFORMATIONS.DESCRIPTION' | translate"
         [validator]="form?.get('description')?.validator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-textarea>
     </div>
   </div>

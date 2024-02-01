@@ -5,8 +5,12 @@ export enum IngestUploadStatus {
 }
 
 export class IngestInfo {
-  constructor(public name: string, public size: number, public sizeUploaded: number, public status: IngestUploadStatus) {
-  }
+  constructor(
+    public name: string,
+    public size: number,
+    public sizeUploaded: number,
+    public status: IngestUploadStatus,
+  ) {}
 }
 
 export class IngestList {

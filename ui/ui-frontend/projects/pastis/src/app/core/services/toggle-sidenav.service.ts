@@ -39,26 +39,25 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToggleSidenavService {
+  constructor() {}
+  isOpened = new BehaviorSubject<boolean>(true);
+  isPending = new BehaviorSubject<boolean>(false);
 
-    constructor() { }
-    isOpened = new BehaviorSubject<boolean>(true);
-    isPending = new BehaviorSubject<boolean>(false);
+  show() {
+    this.isOpened.next(true);
+  }
+  hide() {
+    this.isOpened.next(false);
+  }
 
-    show() {
-        this.isOpened.next(true);
-    }
-    hide() {
-        this.isOpened.next(false);
-    }
+  showPending() {
+    this.isPending.next(true);
+  }
 
-    showPending(){
-        this.isPending.next(true);
-    }
-
-    hidePending(){
-        this.isPending.next(false);
-    }
+  hidePending() {
+    this.isPending.next(false);
+  }
 }

@@ -34,22 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
-import {debounceTime, filter} from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -60,16 +50,16 @@ import {
   PageRequest,
   Role,
   User,
-  VitamUISnackBarService
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
-import {FileFormatService} from '../file-format.service';
+import { FileFormatService } from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
-  styleUrls: ['./file-format-list.component.scss']
+  styleUrls: ['./file-format-list.component.scss'],
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -84,16 +74,16 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   @Output() fileFormatClick = new EventEmitter<FileFormat>();
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<FileFormatListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<FileFormatListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
@@ -113,24 +103,24 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     public fileFormatService: FileFormatService,
     private authService: AuthService,
     private matDialog: MatDialog,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {
     super(fileFormatService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
   ngOnInit() {
-    this.fileFormatService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
+    this.fileFormatService
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: FileFormat[]) => {
         this.dataSource = data;
       });
 
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildFileFormatCriteriaFromSearch();
@@ -172,24 +162,23 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   }
 
   deleteFileFormatDialog(fileFormat: FileFormat) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
 
     dialog.componentInstance.objectType = 'format de fichier';
     dialog.componentInstance.objectName = fileFormat.puid;
 
-    dialog.afterClosed().pipe(
-      filter((result) => !!result)
-    ).subscribe(() => {
-      this.snackBarService.open({
-        message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETING',
-        duration: 5000,
-        icon: 'vitamui-icon-admin-key'
+    dialog
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.snackBarService.open({
+          message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETING',
+          duration: 5000,
+          icon: 'vitamui-icon-admin-key',
+        });
+        this.fileFormatService.delete(fileFormat).subscribe(() => {
+          this.searchFileFormatOrdered();
+        });
       });
-      this.fileFormatService.delete(fileFormat).subscribe(() => {
-        this.searchFileFormatOrdered();
-      });
-    });
-
   }
-
 }

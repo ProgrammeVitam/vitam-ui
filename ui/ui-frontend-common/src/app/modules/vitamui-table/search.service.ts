@@ -45,38 +45,34 @@ import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
 import { PaginatedResponse } from './paginated-response.interface';
 
 export class SearchService<T extends Id> {
-
   protected pageRequest: PageRequest;
   totalElements: number;
   protected hasMore: boolean;
   protected data: T[];
   protected optionalValues: BehaviorSubject<Map<string, any>> = new BehaviorSubject(new Map());
 
-
   constructor(
     protected http: HttpClient,
     protected paginatedApi: PaginatedApi<T>,
     protected embedded?: string,
-    protected headers?: HttpHeaders
-  ) {
-  }
+    protected headers?: HttpHeaders,
+  ) {}
 
   search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT)): Observable<T[]> {
     this.pageRequest = pageRequest;
 
     // TODO catch errors
-    return this.paginatedApi.getAllPaginated(this.pageRequest, this.embedded, this.headers)
-      .pipe(
-        map((paginated: PaginatedResponse<T>) => {
-          this.data = paginated.values;
-          this.pageRequest.page = paginated.pageNum;
-          this.hasMore = paginated.hasMore;
-          this.totalElements = paginated.totalElements;
-          this.optionalValues.next(paginated.optionalValues);
+    return this.paginatedApi.getAllPaginated(this.pageRequest, this.embedded, this.headers).pipe(
+      map((paginated: PaginatedResponse<T>) => {
+        this.data = paginated.values;
+        this.pageRequest.page = paginated.pageNum;
+        this.hasMore = paginated.hasMore;
+        this.totalElements = paginated.totalElements;
+        this.optionalValues.next(paginated.optionalValues);
 
-          return this.data;
-        })
-      );
+        return this.data;
+      }),
+    );
   }
 
   loadMore(): Observable<T[]> {
@@ -86,18 +82,17 @@ export class SearchService<T extends Id> {
     this.pageRequest.page += 1;
 
     // TODO catch errors
-    return this.paginatedApi.getAllPaginated(this.pageRequest, this.embedded, this.headers)
-      .pipe(
-        map((paginated: PaginatedResponse<T>) => {
-          this.data = this.data.concat(paginated.values);
-          this.pageRequest.page = paginated.pageNum;
-          this.totalElements = paginated.totalElements;
-          this.hasMore = paginated.hasMore;
-          this.optionalValues.next(paginated.optionalValues);
+    return this.paginatedApi.getAllPaginated(this.pageRequest, this.embedded, this.headers).pipe(
+      map((paginated: PaginatedResponse<T>) => {
+        this.data = this.data.concat(paginated.values);
+        this.pageRequest.page = paginated.pageNum;
+        this.totalElements = paginated.totalElements;
+        this.hasMore = paginated.hasMore;
+        this.optionalValues.next(paginated.optionalValues);
 
-          return this.data;
-        })
-      );
+        return this.data;
+      }),
+    );
   }
 
   get canLoadMore() {
@@ -107,5 +102,4 @@ export class SearchService<T extends Id> {
   get getTotalElements(): number {
     return this.totalElements;
   }
-
 }

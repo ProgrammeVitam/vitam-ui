@@ -2,61 +2,65 @@
   <div class="col-6 mr-4 d-flex justify-content-center align-items-center">
     <button class="btn primary mb-20" (click)="openUpdateCustomerLogo()" [disabled]="readonly">
       <div>
-        {{'COMMON.UPDATE' | translate}}
+        {{ 'COMMON.UPDATE' | translate }}
       </div>
     </button>
   </div>
   <div class="col-6">
-    <label class="text normal light">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate}}</label>
-    <div class="image-area small d-flex flex-column justify-content-center align-items-center"
+    <label class="text normal light">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate }}</label>
+    <div
+      class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"
     >
       <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.portalUrl">
+      <img *ngIf="!isLoading" [src]="theme?.portalUrl" />
     </div>
   </div>
 </div>
- 
+
 <div class="d-flex mt-4">
   <div class="col-6 mr-4">
-    <label class="text normal light">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate}}</label>
-    <div class="image-area small d-flex flex-column justify-content-center align-items-center"
+    <label class="text normal light">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate }}</label>
+    <div
+      class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
       <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.headerUrl">
+      <img *ngIf="!isLoading" [src]="theme?.headerUrl" />
     </div>
   </div>
 
   <div class="col-6">
-    <label class="text normal light">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate}}</label>
-    <div class="image-area small d-flex flex-column justify-content-center align-items-center"
+    <label class="text normal light">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate }}</label>
+    <div
+      class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
       <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.footerUrl">
+      <img *ngIf="!isLoading" [src]="theme?.footerUrl" />
     </div>
   </div>
 </div>
 
 <div *ngFor="let colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
-    <label class="text normal light">{{COLOR_NAME[colorName] | translate}}</label>
-    {{theme.colors[colorName]}}
+    <label class="text normal light">{{ COLOR_NAME[colorName] | translate }}</label>
+    {{ theme.colors[colorName] }}
   </div>
   <div class="pl-2">
-    <span 
-      *ngFor="let light of ['-900','-800','-700','-600','','-400','-300','-200','-100','-50']"
+    <span
+      *ngFor="let light of ['-900', '-800', '-700', '-600', '', '-400', '-300', '-200', '-100', '-50']"
       class="field-color-preview"
-      [style.background-color]="theme.colors[colorName + light] | safeStyle">
+      [style.background-color]="theme.colors[colorName + light] | safeStyle"
+    >
     </span>
   </div>
 </div>
-  
+
 <div class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
-    <label class="text normal light">{{'COLOR.TERTIARY' | translate}}</label>
-    {{theme.colors[THEME_COLORS.VITAMUI_TERTIARY]}}
+    <label class="text normal light">{{ 'COLOR.TERTIARY' | translate }}</label>
+    {{ theme.colors[THEME_COLORS.VITAMUI_TERTIARY] }}
   </div>
   <div class="pl-2">
     <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_TERTIARY] | safeStyle"></span>
@@ -65,8 +69,8 @@
 
 <div class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
-    <label class="text normal light">{{'COLOR.HEADER_FOOTER' | translate}}</label>
-    {{theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER]}}
+    <label class="text normal light">{{ 'COLOR.HEADER_FOOTER' | translate }}</label>
+    {{ theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] }}
   </div>
   <div class="pl-2">
     <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"></span>
@@ -75,8 +79,8 @@
 
 <div class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
-    <label class="text normal light">{{'COLOR.BACKGROUND' | translate}}</label>
-    {{theme.colors[THEME_COLORS.VITAMUI_BACKGROUND]}}
+    <label class="text normal light">{{ 'COLOR.BACKGROUND' | translate }}</label>
+    {{ theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] }}
   </div>
   <div class="pl-2">
     <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"></span>

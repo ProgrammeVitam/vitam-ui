@@ -42,12 +42,12 @@ import { SearchBarComponent } from './search-bar.component';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  template: `<vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`
+  template: `<vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
 })
 export class TestHostComponent implements OnInit {
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 }
 
 describe('SearchBarComponent', () => {
@@ -57,9 +57,8 @@ describe('SearchBarComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [ TestHostComponent, SearchBarComponent ]
-    })
-    .compileComponents();
+      declarations: [TestHostComponent, SearchBarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

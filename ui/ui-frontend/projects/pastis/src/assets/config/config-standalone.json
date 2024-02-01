@@ -10,6 +10,4 @@
   "getFileUrl": "/getfile",
   "savePAasFileUrl": "/archiveprofile",
   "savePUAasFileUrl": "/getarchiveunitprofile"
-
-
 }

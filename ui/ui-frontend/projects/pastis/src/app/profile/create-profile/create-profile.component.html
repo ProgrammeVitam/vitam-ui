@@ -1,34 +1,42 @@
 <!-- Pastis dialog title qnd subtitle-->
 <h2 class="pastis-dialog-config-title" matDialogTitle>
   <i (click)="onNoClick()" class="vitamui-icon vitamui-icon-close icon-close"></i>
-  <p class="pastis-dialog-subtitle"><b>{{data.subTitleDialog}}</b></p>
-  <P class="pastis-dialog-title">{{data.titleDialog}}</P>
+  <p class="pastis-dialog-subtitle">
+    <b>{{ data.subTitleDialog }}</b>
+  </p>
+  <P class="pastis-dialog-title">{{ data.titleDialog }}</P>
 </h2>
 
-
 <div class="conteneur">
-
-  <div class="gauche"><pastis-generic-popup [firstChoice]="firstChoice" [secondChoice]="secondChoice" [title]="title" (changeStatusEvent)="changeChoiceCreateProfile($event)">
+  <div class="gauche">
+    <pastis-generic-popup
+      [firstChoice]="firstChoice"
+      [secondChoice]="secondChoice"
+      [title]="title"
+      (changeStatusEvent)="changeChoiceCreateProfile($event)"
+    >
     </pastis-generic-popup>
   </div>
 
   <div class="droite">
-    <i class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable" [style.fontSize.px]="25"
-    matTooltip="{{'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PA' | translate}} &#13; {{'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PA' | translate}}  &#13; {{'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PUA' | translate}} &#13; {{'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PUA' | translate}}"
-       matTooltipPosition="right"
-       [matTooltipShowDelay]="300"
-       matTooltipClass="custom-tooltip"></i>
+    <i
+      class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"
+      [style.fontSize.px]="25"
+      matTooltip="{{ 'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PA' | translate }} &#13; {{
+        'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PA' | translate
+      }}  &#13; {{ 'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PUA' | translate }} &#13; {{
+        'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PUA' | translate
+      }}"
+      matTooltipPosition="right"
+      [matTooltipShowDelay]="300"
+      matTooltipClass="custom-tooltip"
+    ></i>
   </div>
 </div>
 
-
 <div class="btn-container">
   <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-    <button type="submit" class="pastis-btn-oui-dialog-confirm" (click)="onYesClick()">{{data.okLabel}}
-    </button>
-    <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{data.cancelLabel}}</button>
+    <button type="submit" class="pastis-btn-oui-dialog-confirm" (click)="onYesClick()">{{ data.okLabel }}</button>
+    <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{ data.cancelLabel }}</button>
   </mat-dialog-actions>
 </div>
-
-
-

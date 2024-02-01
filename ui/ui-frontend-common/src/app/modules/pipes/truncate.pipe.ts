@@ -37,10 +37,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'truncate'
+  name: 'truncate',
 })
 export class TruncatePipe implements PipeTransform {
-
   transform(value: string = '', limit: number): any {
     const ellipsis = '...';
     if (!value) {
@@ -49,5 +48,4 @@ export class TruncatePipe implements PipeTransform {
 
     return value.length > limit ? value.slice(0, Math.max(1, limit - ellipsis.length)) + ellipsis : value;
   }
-
 }

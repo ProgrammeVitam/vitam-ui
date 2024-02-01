@@ -2,98 +2,133 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2">
-        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate"
-          [class.active]="filterMap['status'] && filterMap['status'].length > 0">
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="statusFilterTemplate"
+          [class.active]="filterMap['status'] && filterMap['status'].length > 0"
+        >
           <i class="material-icons vitamui-row-icon">filter_list</i>
         </button>
 
         <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="filterMap['status']"
-            (filterChange)="onFilterChange('status', $event)">
+          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
+                <span class="badge-state">{{ 'USER.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="BLOCKED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.BLOCKED' | translate}}</span>
+                <span class="badge-state">{{ 'USER.HOME.RESULTS_TABLE.STATUS_FILTER.BLOCKED' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
+                <span class="badge-state">{{ 'USER.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="REMOVED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.DELETED' | translate}}</span>
+                <span class="badge-state">{{ 'USER.HOME.RESULTS_TABLE.STATUS_FILTER.DELETED' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC"
-              [separator]="true">
+            <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC" [separator]="true">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.GENERIC' | translate}}</span>
+                <span class="badge-state">{{ 'USER.HOME.RESULTS_TABLE.STATUS_FILTER.GENERIC' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
         </ng-template>
 
-        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon " [style.fontSize.px]="30"></i>
-        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-
+        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon" [style.fontSize.px]="30"></i>
+        <vitamui-common-order-by-button
+          orderByKey="status"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
-      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.NAME' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="lastname" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      <div class="col-2">
+        <span>{{ 'USER.HOME.RESULTS_TABLE.NAME' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="lastname"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
-      <div class="col-2"><span>{{'COMMON.ID' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
-        </vitamui-common-order-by-button>
-      </div>
-      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.LAST_CONNEXION' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="lastConnection" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
+      <div class="col-2">
+        <span>{{ 'COMMON.ID' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2">
-        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate"
+        <span>{{ 'USER.HOME.RESULTS_TABLE.LAST_CONNEXION' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="lastConnection"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
+        </vitamui-common-order-by-button>
+      </div>
+      <div class="col-2">
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="levelFilterTemplate"
           [class.active]="filterMap['level'] && filterMap['level'].length > 0"
-          #levelFilterTrigger="vitamuiCommonTableFilter">
+          #levelFilterTrigger="vitamuiCommonTableFilter"
+        >
           <i class="material-icons vitamui-row-icon">filter_list</i>
         </button>
 
         <ng-template #levelFilterTemplate>
-          <vitamui-common-table-filter-search [(filter)]="filterMap['level']" [options]="levelFilterOptions"
-            (filterChange)="onFilterChange('level', $event)" (filterClose)="levelFilterTrigger?.close()"
-            [emptyValueOption]="'USER.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
+          <vitamui-common-table-filter-search
+            [(filter)]="filterMap['level']"
+            [options]="levelFilterOptions"
+            (filterChange)="onFilterChange('level', $event)"
+            (filterClose)="levelFilterTrigger?.close()"
+            [emptyValueOption]="'USER.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate"
+          >
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span>{{'USER.HOME.RESULTS_TABLE.GROUP_LEVEL' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
+        <span>{{ 'USER.HOME.RESULTS_TABLE.GROUP_LEVEL' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="level"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2">
-        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="groupFilterTemplate"
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="groupFilterTemplate"
           [class.active]="filterMap['group'] && filterMap['group'].length > 0"
-          #groupFilterTrigger="vitamuiCommonTableFilter">
+          #groupFilterTrigger="vitamuiCommonTableFilter"
+        >
           <i class="material-icons vitamui-row-icon">filter_list</i>
         </button>
 
         <ng-template #groupFilterTemplate>
-          <vitamui-common-table-filter-search [(filter)]="filterMap['group']" [options]="groupFilterOptions"
-            (filterChange)="onFilterChange('group', $event)" (filterClose)="groupFilterTrigger?.close()">
+          <vitamui-common-table-filter-search
+            [(filter)]="filterMap['group']"
+            [options]="groupFilterOptions"
+            (filterChange)="onFilterChange('group', $event)"
+            (filterClose)="groupFilterTrigger?.close()"
+          >
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span>{{'USER.HOME.RESULTS_TABLE.GROUP' | translate}}</span>
+        <span>{{ 'USER.HOME.RESULTS_TABLE.GROUP' | translate }}</span>
       </div>
-
-
     </div>
     <div *ngIf="groups" class="vitamui-table-body">
       <div class="vitamui-table-rows" *ngFor="let user of dataSource; let index = index" (click)="userClick.emit(user)">
@@ -102,45 +137,41 @@
             <ng-container *ngIf="user?.type !== 'GENERIC'; else genericUserIcon">
               <ng-container [ngSwitch]="user?.status">
                 <div *ngSwitchCase="'ENABLED'">
-                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close"
-                    [style.fontSize.px]="30"></i>
+                  <i
+                    class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close"
+                    [style.fontSize.px]="30"
+                  ></i>
                 </div>
                 <div *ngSwitchCase="'BLOCKED'">
-                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange"
-                    [style.fontSize.px]="30"></i>
+                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" [style.fontSize.px]="30"></i>
                 </div>
                 <div *ngSwitchCase="'DISABLED'">
-                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey"
-                    [style.fontSize.px]="30"></i>
+                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey" [style.fontSize.px]="30"></i>
                 </div>
               </ng-container>
-              <div *ngIf="user?.status === 'REMOVED'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"
-                  [style.fontSize.px]="30"></i><span class="status-badge-anonym">x</span></div>
+              <div *ngIf="user?.status === 'REMOVED'">
+                <i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent" [style.fontSize.px]="30"></i
+                ><span class="status-badge-anonym">x</span>
+              </div>
             </ng-container>
             <ng-template #genericUserIcon>
               <i [style.fontSize.px]="30" class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
             </ng-template>
           </div>
           <div class="col-2">
-            <div vitamuiCommonEllipsis> {{ user?.lastname | uppercase }} {{ user?.firstname }} </div>
+            <div vitamuiCommonEllipsis>{{ user?.lastname | uppercase }} {{ user?.firstname }}</div>
             <span class="email" vitamuiCommonEllipsis> {{ user?.email }}</span>
           </div>
           <div class="col-2" vitamuiCommonEllipsis>{{ user?.identifier }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ user?.lastConnection|date:'dd/MM/yyyy'|empty}}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ user?.lastConnection | date: 'dd/MM/yyyy' | empty }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ user?.level }}</div>
           <div class="col-2" vitamuiCommonEllipsis>{{ getGroup(user)?.name }}</div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
-  <div *ngIf="!dataSource || pending || !groups then loadingSpinner"></div>
-
-
+  <div *ngIf="!dataSource || pending || !groups; then loadingSpinner"></div>
 </div>
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">

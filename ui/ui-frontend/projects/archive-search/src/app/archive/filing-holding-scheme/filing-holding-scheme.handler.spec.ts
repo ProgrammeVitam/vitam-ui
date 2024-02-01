@@ -34,7 +34,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -150,9 +150,7 @@ describe('FilingHoldingSchemeHandler', () => {
     node = uaNodes[2].children[2];
     expect(node.id).toEqual('node-2-2');
     expect(node.count).toEqual(65);
-    facets = [
-      { node: 'node-2-2', count: 12 },
-    ];
+    facets = [{ node: 'node-2-2', count: 12 }];
     expect(FilingHoldingSchemeHandler.setCountRecursively(uaNodes, facets)).toEqual(1);
     node = uaNodes[0].children[0].children[2];
     expect(node.id).toEqual('node-0-0-2');

@@ -49,7 +49,11 @@ import { IngestContractApiService } from '../core/api/ingest-contract-api.servic
 export class IngestContractService extends SearchService<IngestContract> {
   updated = new Subject<IngestContract>();
 
-  constructor(private ingestContractApi: IngestContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private ingestContractApi: IngestContractApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, ingestContractApi, 'ALL');
   }
 
@@ -92,15 +96,15 @@ export class IngestContractService extends SearchService<IngestContract> {
       tap((response) => this.updated.next(response)),
       tap(
         (_) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
-              icon: 'vitamui-icon-contrat'
+          this.snackBarService.open({
+            message: 'SNACKBAR.INGEST_CONTRACT_UPDATED',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
     );
   }
 
@@ -108,15 +112,15 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.create(ingestContract).pipe(
       tap(
         (_: IngestContract) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
-              icon: 'vitamui-icon-contrat'
+          this.snackBarService.open({
+            message: 'SNACKBAR.INGEST_CONTRACT_CREATED',
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
     );
   }
 }

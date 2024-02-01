@@ -55,11 +55,14 @@ export class UserPhotoComponent implements OnInit {
   @Output() photoClicked = new EventEmitter<any>();
   public userDefaultLogoUrl: SafeResourceUrl;
 
-  constructor(private themeService: ThemeService, private authService: AuthService) {}
+  constructor(
+    private themeService: ThemeService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit() {
     this.themeService.getData$(this.authService.user, ThemeDataType.USER_LOGO).subscribe((userLogoUrl: SafeResourceUrl) => {
-        this.userDefaultLogoUrl = userLogoUrl;
+      this.userDefaultLogoUrl = userLogoUrl;
     });
   }
 }

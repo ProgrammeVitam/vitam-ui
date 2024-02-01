@@ -4,13 +4,13 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="content">
-    <div class="text large bold">{{'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate}} "{{data?.owner?.name}}"</div>
+    <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ data?.owner?.name }}"</div>
 
     <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
 
     <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
   </div>
 </form>

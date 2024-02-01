@@ -43,11 +43,7 @@ import { WINDOW_LOCATION } from './injection-tokens';
 describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: AuthService, useValue: {} },
-        AuthGuard,
-      ]
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }, { provide: AuthService, useValue: {} }, AuthGuard],
     });
   });
 

@@ -37,7 +37,7 @@ h4 {
 
   .drop-area {
     height: 100%;
-    background: #5CBAA9;
+    background: #5cbaa9;
     opacity: 0.9;
     color: $white;
     overflow: hidden;
@@ -88,7 +88,8 @@ h4 {
 }
 
 .mat-form-field {
-  label, .mat-select {
+  label,
+  .mat-select {
     padding: 0 20px !important;
   }
 

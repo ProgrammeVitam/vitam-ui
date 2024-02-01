@@ -41,11 +41,14 @@ import { BaseHttpClient, BASE_URL, Customer, Logger, Logo, PageRequest, Paginate
 import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerApiService extends BaseHttpClient<Customer> {
-
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private logger: Logger) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+    private logger: Logger,
+  ) {
     super(http, baseUrl + '/customers');
   }
 
@@ -61,7 +64,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -73,39 +76,41 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     formData.append('customerDto', JSON.stringify(customerTmp));
 
     if (logos) {
-      logos.forEach(logo => {
+      logos.forEach((logo) => {
         formData.append(logo.attr.toLowerCase(), logo.file);
       });
     }
     return super.getHttp().post<any>(super.getApiUrl(), formData, { headers });
   }
 
-  patchCustomer(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
+  patchCustomer(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
-    formData.append('partialCustomerDto', JSON.stringify({
-      id: partialCustomer.id,
-      hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
-      themeColors: partialCustomer.themeColors,
-      portalTitles: partialCustomer.portalTitles,
-      portalMessages: partialCustomer.portalMessages,
-      identifier: partialCustomer.identifier,
-      code: partialCustomer.code,
-      name: partialCustomer.name,
-      companyName: partialCustomer.companyName,
-      passwordRevocationDelay: partialCustomer.passwordRevocationDelay,
-      otp: partialCustomer.otp,
-      address: partialCustomer.address,
-      internalCode: partialCustomer.internalCode,
-      language: partialCustomer.language,
-      emailDomains: partialCustomer.emailDomains,
-      defaultEmailDomain: partialCustomer.defaultEmailDomain,
-      gdprAlert: partialCustomer.gdprAlert,
-      gdprAlertDelay: partialCustomer.gdprAlertDelay,
-
-    }));
+    formData.append(
+      'partialCustomerDto',
+      JSON.stringify({
+        id: partialCustomer.id,
+        hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
+        themeColors: partialCustomer.themeColors,
+        portalTitles: partialCustomer.portalTitles,
+        portalMessages: partialCustomer.portalMessages,
+        identifier: partialCustomer.identifier,
+        code: partialCustomer.code,
+        name: partialCustomer.name,
+        companyName: partialCustomer.companyName,
+        passwordRevocationDelay: partialCustomer.passwordRevocationDelay,
+        otp: partialCustomer.otp,
+        address: partialCustomer.address,
+        internalCode: partialCustomer.internalCode,
+        language: partialCustomer.language,
+        emailDomains: partialCustomer.emailDomains,
+        defaultEmailDomain: partialCustomer.defaultEmailDomain,
+        gdprAlert: partialCustomer.gdprAlert,
+        gdprAlertDelay: partialCustomer.gdprAlertDelay,
+      }),
+    );
 
     if (logos) {
-      logos.forEach(logo => {
+      logos.forEach((logo) => {
         formData.append(logo.attr.toLowerCase(), logo.file);
       });
     }
@@ -125,5 +130,4 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   getGdprSettingStatus(): Observable<boolean> {
     return this.http.get<boolean>(this.apiUrl + '/gdpr-status');
   }
-
 }

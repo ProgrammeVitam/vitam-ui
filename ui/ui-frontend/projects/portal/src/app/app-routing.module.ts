@@ -40,21 +40,20 @@ import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'ui-frontend-common';
 import { PortalComponent } from './portal';
 
-
 const routes: Routes = [
   {
     path: '',
     component: PortalComponent,
     canActivate: [AuthGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.PORTAL_APP }
+    data: { appId: ApplicationId.PORTAL_APP },
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.ACCOUNTS_APP }
+    data: { appId: ApplicationId.ACCOUNTS_APP },
   },
   { path: '**', redirectTo: '' },
 ];
@@ -62,12 +61,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
+      preloadingStrategy: QuicklinkStrategy,
+    }),
   ],
   exports: [RouterModule],
-  providers: [
-    AuthGuard,
-  ]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -41,14 +41,7 @@ import { ConfirmActionModule } from '../archive-search/search-criteria-list/conf
 import { VitamUISnackBarModule } from './vitamui-snack-bar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule,
-    ConfirmActionModule
-  ],
-  exports: [
-    VitamUISnackBarModule,
-    ConfirmActionModule
-  ]
+  imports: [CommonModule, VitamUISnackBarModule, ConfirmActionModule],
+  exports: [VitamUISnackBarModule, ConfirmActionModule],
 })
-export class SharedModule { }
+export class SharedModule {}

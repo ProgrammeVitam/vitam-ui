@@ -41,7 +41,7 @@ import { ArchiveService } from '../../../archive.service';
 import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
-  ReclassificationQueryActionType
+  ReclassificationQueryActionType,
 } from '../../../models/reclassification-request.interface';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
@@ -101,7 +101,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       selectedItemCountKnown?: boolean;
       archiveUnitGuidSelected: string;
       archiveUnitAllunitup: string[];
-    }
+    },
   ) {}
 
   ngOnInit() {
@@ -174,7 +174,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         this.pendingGetChilds = false;
         this.waitingForLoadExactTotalTrackHits = false;
         this.logger.error('error message', error.message);
-      }
+      },
     );
   }
 
@@ -209,7 +209,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
           this.pendingGetFixedCount = false;
           this.waitingForLoadExactTotalTrackHits = false;
           this.logger.error('error message', error.message);
-        }
+        },
       );
     }
   }
@@ -298,12 +298,12 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
         this.archiveService.openSnackBarForWorkflow(
           this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
-          serviceUrl
+          serviceUrl,
         );
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 

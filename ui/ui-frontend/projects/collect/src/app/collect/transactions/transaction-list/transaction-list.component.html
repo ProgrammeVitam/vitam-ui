@@ -11,10 +11,10 @@
         <div class="vitamui-table-head title-text result-layout">
           <div class="col-13">
             <ng-container *ngIf="dataSource?.length <= 1">
-              {{ 'COLLECT.SINGLE_TRANSACTION' | translate: {nb: dataSource?.length} }}
+              {{ 'COLLECT.SINGLE_TRANSACTION' | translate: { nb: dataSource?.length } }}
             </ng-container>
-            <ng-container *ngIf="dataSource?.length >1 ">
-              {{ 'COLLECT.NB_ENTRIES_TRANSACTIONS' | translate: {nb: dataSource?.length} }}
+            <ng-container *ngIf="dataSource?.length > 1">
+              {{ 'COLLECT.NB_ENTRIES_TRANSACTIONS' | translate: { nb: dataSource?.length } }}
             </ng-container>
           </div>
         </div>
@@ -22,24 +22,32 @@
           <div class="col-1"></div>
           <div class="col-3">
             <span>{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-                                            [(orderBy)]="orderBy"
-                                            orderByKey="messageIdentifier"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="messageIdentifier"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-3">
             <span>{{ 'COLLECT.FIELD_OPERATION_ID' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-                                            [(orderBy)]="orderBy"
-                                            orderByKey="id"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="id"
+            ></vitamui-common-order-by-button>
           </div>
           <div class="col-4">
             <span>{{ 'COLLECT.FIELD_STATUS_TRANSACTION' | translate }}</span>
-            <vitamui-common-order-by-button (orderChange)="emitOrderChange($event)" [(direction)]="direction"
-                                            [(orderBy)]="orderBy"
-                                            orderByKey="submissionAgencyIdentifier"></vitamui-common-order-by-button>
+            <vitamui-common-order-by-button
+              (orderChange)="emitOrderChange($event)"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              orderByKey="submissionAgencyIdentifier"
+            ></vitamui-common-order-by-button>
           </div>
-          <div class="col-1">
-          </div>
+          <div class="col-1"></div>
         </div>
 
         <div class="vitamui-table-body">
@@ -55,27 +63,22 @@
               </div>
               <div class="col-3">{{ transaction.messageIdentifier }}</div>
               <div class="col-3">{{ transaction.id }}</div>
-              <div class="col-4">{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate}}</div>
+              <div class="col-4">{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}</div>
               <div class="col-1">
                 <vitamui-common-menu-button [icon]="'vitamui-icon-more-horiz'" [overlayPos]="'end'" [isLarge]="false">
-                  <button mat-menu-item
-                          (click)="searchArchiveUnitsByTransaction(transaction)">
+                  <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsOpen(transaction)"
-                          (click)="validateTransaction(transaction)">
+                  <button mat-menu-item [disabled]="!transactionIsOpen(transaction)" (click)="validateTransaction(transaction)">
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsReady(transaction)"
-                          (click)="sendTransaction(transaction)">
+                  <button mat-menu-item [disabled]="!transactionIsReady(transaction)" (click)="sendTransaction(transaction)">
                     {{ 'COLLECT.INGEST_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsEditable(transaction)"
-                          (click)="editTransaction(transaction)">
+                  <button mat-menu-item [disabled]="!transactionIsEditable(transaction)" (click)="editTransaction(transaction)">
                     {{ 'COLLECT.EDIT_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsAbortable(transaction)"
-                          (click)="abortTransaction(transaction)">
+                  <button mat-menu-item [disabled]="!transactionIsAbortable(transaction)" (click)="abortTransaction(transaction)">
                     {{ 'COLLECT.ABORT_ACTION' | translate }}
                   </button>
                 </vitamui-common-menu-button>
@@ -84,7 +87,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <ng-template #noResults>

@@ -51,10 +51,9 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
-  styleUrls: ['./agency.component.scss']
+  styleUrls: ['./agency.component.scss'],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
-
   search = '';
   tenantIdentifier: number;
 
@@ -70,7 +69,8 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private router: Router,
     globalEventService: GlobalEventService,
     private securityService: SecurityService,
-    private agencyService: AgencyService) {
+    private agencyService: AgencyService,
+  ) {
     super(route, globalEventService);
   }
 
@@ -97,11 +97,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   openAgencyImportDialog() {
-    const dialogRef = this.dialog.open(
-      VitamUIImportDialogComponent, {
+    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
       panelClass: 'vitamui-modal',
       data: Referential.AGENCY,
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
@@ -132,5 +131,4 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   changeTenant(tenantIdentifier: number) {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
-
 }

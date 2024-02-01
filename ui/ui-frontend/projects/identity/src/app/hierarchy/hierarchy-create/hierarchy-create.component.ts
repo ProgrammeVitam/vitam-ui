@@ -42,12 +42,13 @@ import {
   AuthService,
   buildValidators,
   collapseAnimation,
-  ConfirmDialogService, Operators, Profile,
+  ConfirmDialogService,
+  Operators,
+  Profile,
   rotateAnimation,
-  SearchQuery
+  SearchQuery,
 } from 'ui-frontend-common';
 import { HierarchyService } from '../hierarchy.service';
-
 
 @Component({
   selector: 'app-hierarchy-create',
@@ -68,7 +69,7 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private formBuilder: FormBuilder,
     private hierarchyService: HierarchyService,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
   ) {}
 
   ngOnInit() {
@@ -79,9 +80,7 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
       customerId: [this.authService.user.customerId],
     });
 
-    this.keyPressSubscription = this.confirmDialogService
-      .listenToEscapeKeyPress(this.dialogRef)
-      .subscribe(() => this.onCancel());
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
   ngOnDestroy() {
@@ -115,7 +114,10 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
         observables.push(this.hierarchyService.create(profile));
       });
 
-      forkJoin(observables).subscribe(() => this.dialogRef.close(true), () => this.dialogRef.close());
+      forkJoin(observables).subscribe(
+        () => this.dialogRef.close(true),
+        () => this.dialogRef.close(),
+      );
     });
   }
 

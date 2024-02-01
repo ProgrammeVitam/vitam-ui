@@ -50,7 +50,11 @@ import { RuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
 })
 export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private facetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   appraisalRuleFacets: RuleFacets;
@@ -120,7 +124,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -136,7 +140,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.appraisalRuleFacets.rulesListFacets.length,
           this.exactCount,
-          this.totalResults
+          this.totalResults,
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -169,7 +173,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('KEEP'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GREEN,
@@ -182,7 +186,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('DESTROY'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.ORANGE,
@@ -195,7 +199,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('CONFLICT'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.RED,

@@ -42,13 +42,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamuiSidenavHeaderComponent } from './vitamui-sidenav-header.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatTooltipModule],
   declarations: [VitamuiSidenavHeaderComponent],
-  exports: [VitamuiSidenavHeaderComponent]
+  exports: [VitamuiSidenavHeaderComponent],
 })
-export class VitamuiSidenavHeaderModule { }
+export class VitamuiSidenavHeaderModule {}

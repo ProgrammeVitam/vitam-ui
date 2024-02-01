@@ -37,20 +37,31 @@
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
-  AdminUserProfile, Criterion, Operators, Profile, ProfileApiService, Role, SearchQuery, SearchService, VitamUISnackBarService
+  AdminUserProfile,
+  Criterion,
+  Operators,
+  Profile,
+  ProfileApiService,
+  Role,
+  SearchQuery,
+  SearchService,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService extends SearchService<Profile> {
-
   updated = new Subject<Profile>();
 
-  constructor(private profileApi: ProfileApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private profileApi: ProfileApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, profileApi, 'ALL');
   }
 
@@ -63,53 +74,51 @@ export class ProfileService extends SearchService<Profile> {
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
     const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
-    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals};
+    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.profileApi.checkExistsByParam(params, this.headers);
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Profile> {
-    return this.profileApi.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (response) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-              translateParams:{
-                param1: response.name,
-              },
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Profile> {
+    return this.profileApi.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (response) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
+            translateParams: {
+              param1: response.name,
+            },
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   create(profile: Profile) {
-    return this.profileApi.create(profile)
-      .pipe(
-        tap(
-          (response: Profile) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.PROFILE_CREATE',
-              translateParams:{
-                param1: response.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.profileApi.create(profile).pipe(
+      tap(
+        (response: Profile) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.PROFILE_CREATE',
+            translateParams: {
+              param1: response.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   /**
@@ -117,8 +126,7 @@ export class ProfileService extends SearchService<Profile> {
    * @param roles List of roles.
    * @returns The list of linked roles.
    */
-  convertToAdminUserProfile(roles: Array<{ name: string; }>): AdminUserProfile {
-
+  convertToAdminUserProfile(roles: Array<{ name: string }>): AdminUserProfile {
     const adminUserProfile: AdminUserProfile = {
       multifactorAllowed: false,
       createUser: false,
@@ -148,7 +156,7 @@ export class ProfileService extends SearchService<Profile> {
     return adminUserProfile;
   }
 
-  private hasRole(roles: Array<{ name: string; }>, role: Role): boolean {
+  private hasRole(roles: Array<{ name: string }>, role: Role): boolean {
     return roles.some((element) => element.name === role);
   }
 }

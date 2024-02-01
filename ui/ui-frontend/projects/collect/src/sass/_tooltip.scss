@@ -5,12 +5,12 @@
 $arrow-size: 20px;
 
 .vitamui-tooltip.mat-tooltip {
-  background: #E1F3F0;
+  background: #e1f3f0;
   font-size: 13px;
   font-weight: 600;
   color: #666666;
   border-radius: 15px;
-  border: 1px solid #E1F3F0;
+  border: 1px solid #e1f3f0;
   padding: 5px 20px;
   position: relative;
   overflow: visible;
@@ -21,7 +21,7 @@ $arrow-size: 20px;
     position: absolute;
     top: 0;
     left: 50%;
-    border-color: transparent transparent #E1F3F0 transparent;
+    border-color: transparent transparent #e1f3f0 transparent;
     border-width: $arrow-size * 0.5;
     border-style: solid;
     width: $arrow-size;
@@ -36,7 +36,7 @@ $arrow-size: 20px;
     position: absolute;
     top: 0;
     left: 50%;
-    border-color: transparent transparent #E1F3F0 transparent;
+    border-color: transparent transparent #e1f3f0 transparent;
     border-width: ($arrow-size - 2px) * 0.5;
     border-style: solid;
     width: $arrow-size - 2px;

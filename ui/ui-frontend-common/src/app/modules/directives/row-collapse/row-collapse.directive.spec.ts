@@ -60,7 +60,7 @@ import { RowCollapseDirective } from './row-collapse.directive';
         <div vitamuiCommonRowCollapse #collapse5="vitamuiRowCollapse"></div>
       </ng-container>
     </div>
-  `
+  `,
 })
 class TesthostComponent {
   @ViewChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;
@@ -71,26 +71,19 @@ let fixture: ComponentFixture<TesthostComponent>;
 let testhost: TesthostComponent;
 
 class Page {
-
-  get buttons() { return fixture.debugElement.queryAll(By.css('button')); }
-
+  get buttons() {
+    return fixture.debugElement.queryAll(By.css('button'));
+  }
 }
 
 let page: Page;
 
 describe('CollapseContainerDirective', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TesthostComponent,
-        RowCollapseContainerDirective,
-        RowCollapseTriggerForDirective,
-        RowCollapseDirective,
-      ],
-      providers: []
-    })
-    .compileComponents();
+      declarations: [TesthostComponent, RowCollapseContainerDirective, RowCollapseTriggerForDirective, RowCollapseDirective],
+      providers: [],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -166,5 +159,4 @@ describe('CollapseContainerDirective', () => {
     expect(testhost.collapseDirectives.toArray()[0].state).toBe('expanded');
     expect(testhost.collapseDirectives.toArray()[4].state).toBe('collapsed');
   });
-
 });

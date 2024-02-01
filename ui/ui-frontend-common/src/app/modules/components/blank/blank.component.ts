@@ -41,18 +41,16 @@ import { ApplicationId } from '../../application-id.enum';
 @Component({
   selector: 'vitamui-common-blank',
   templateUrl: './blank.component.html',
-  styleUrls: ['./blank.component.scss']
+  styleUrls: ['./blank.component.scss'],
 })
 export class BlankComponent {
-
   appId: ApplicationId;
   hideTenantMenu = true;
   hideCustomerMenu = true;
 
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe((data) => {
-    this.appId = data.appId;
+      this.appId = data.appId;
     });
   }
-
 }

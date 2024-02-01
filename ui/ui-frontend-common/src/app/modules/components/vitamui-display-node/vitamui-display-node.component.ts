@@ -39,15 +39,12 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-common-display-node',
   templateUrl: './vitamui-display-node.component.html',
-  styleUrls: ['./vitamui-display-node.component.scss']
+  styleUrls: ['./vitamui-display-node.component.scss'],
 })
 export class VitamUIDisplayNodeComponent implements OnInit {
-
   @Input() node: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

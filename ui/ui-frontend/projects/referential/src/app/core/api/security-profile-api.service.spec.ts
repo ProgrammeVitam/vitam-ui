@@ -34,24 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {TestBed} from '@angular/core/testing';
-import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {environment} from './../../../environments/environment';
-import {AgencyApiService} from './agency-api.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { environment } from './../../../environments/environment';
+import { AgencyApiService } from './agency-api.service';
 
 describe('AgencyApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      InjectorModule,
-      LoggerModule.forRoot()
-    ],
-    providers: [
-      {provide: BASE_URL, useValue: '/fake-api'},
-      {provide: ENVIRONMENT, useValue: environment}
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }),
+  );
 
   it('should be created', () => {
     const service: AgencyApiService = TestBed.inject(AgencyApiService);

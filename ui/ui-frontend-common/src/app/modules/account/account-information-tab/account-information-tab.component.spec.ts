@@ -52,29 +52,18 @@ describe('AccountInformationTabComponent', () => {
   let fixture: ComponentFixture<AccountInformationTabComponent>;
 
   const accountServiceSpy = {
-    getMyAccount: () => of({})
+    getMyAccount: () => of({}),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        EditableFieldModule,
-        SlideToggleModule,
-        TranslateModule.forRoot(),
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        AccountInformationTabComponent,
-        VitamUIFieldErrorStubComponent,
-        NavbarStubComponent,
-      ],
+      imports: [ReactiveFormsModule, EditableFieldModule, SlideToggleModule, TranslateModule.forRoot(), NoopAnimationsModule],
+      declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent, NavbarStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: AccountService, useValue: accountServiceSpy }
+        { provide: AccountService, useValue: accountServiceSpy },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

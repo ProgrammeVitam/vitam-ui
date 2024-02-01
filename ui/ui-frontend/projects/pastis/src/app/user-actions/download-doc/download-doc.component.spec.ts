@@ -8,9 +8,8 @@ describe('DownloadDocComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserActionsDownloadDocComponent ]
-    })
-    .compileComponents();
+      declarations: [UserActionsDownloadDocComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -2,68 +2,68 @@
 @import '../../../../sass/mixins/elevation';
 
 .app-box {
-    @include btn-elevation-dark;
+  @include btn-elevation-dark;
 
-    height: 90px;
-    display: flex;
-    align-items: center;
-    font-size: 17px;
-    font-style: medium;
-    font-weight: 500;
-    background: $white;
-    box-sizing: border-box;
-    border-radius: 10px;
-    padding-top: 25px;
-    padding-bottom: 26px;
-    padding-left: 23px;
-    margin-bottom: 24px;
-    color: #474747;
-    transition: box-shadow 240ms ease-out;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  font-style: medium;
+  font-weight: 500;
+  background: $white;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding-top: 25px;
+  padding-bottom: 26px;
+  padding-left: 23px;
+  margin-bottom: 24px;
+  color: #474747;
+  transition: box-shadow 240ms ease-out;
 
-    i {
-        font-size: 42px;
-        margin-right: 15px;
-    }
+  i {
+    font-size: 42px;
+    margin-right: 15px;
+  }
 }
 
 .category-app {
-    i {
-        color: var(--vitamui-primary);
+  i {
+    color: var(--vitamui-primary);
 
-        &.chevron-icon {
-            font-size: 24px;
-            margin-left: auto;
-        }
+    &.chevron-icon {
+      font-size: 24px;
+      margin-left: auto;
     }
+  }
 
-    &.highlight {
-        border: 1px solid var(--vitamui-primary);
-    }
+  &.highlight {
+    border: 1px solid var(--vitamui-primary);
+  }
 }
 
 .chevron-icon {
-    font-size: 24px;
-    margin-left: auto;
+  font-size: 24px;
+  margin-left: auto;
 }
 
 .archive-tile {
-    background-color: var(--vitamui-primary);
-    color: $white;
+  background-color: var(--vitamui-primary);
+  color: $white;
 
-    i {
-        color: $white;
-    }
+  i {
+    color: $white;
+  }
 }
 
 .modal-app-box {
-    height: 60px;
-    font-size: 14px;
+  height: 60px;
+  font-size: 14px;
 
-    i {
-        font-size: 30px;
-    }
+  i {
+    font-size: 30px;
+  }
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }

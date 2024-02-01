@@ -49,7 +49,7 @@ describe('ProjectService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    })
+    }),
   );
   it('should be created', () => {
     const service: ProjectsApiService = TestBed.get(ProjectsApiService);

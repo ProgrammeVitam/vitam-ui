@@ -43,13 +43,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { HierarchyListComponent } from './hierarchy-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, SharedModule, MatProgressSpinnerModule, VitamUICommonModule],
   declarations: [HierarchyListComponent],
-  exports: [HierarchyListComponent]
+  exports: [HierarchyListComponent],
 })
-export class HierarchyListModule { }
+export class HierarchyListModule {}

@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {ExternalParameters,ExternalParametersService} from 'ui-frontend-common';
-import {IngestContractAttachmentTabComponent} from './ingest-contract-attachment-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 
-
-describe('IngestContractAttachmentTabComponent',() => {
+describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
   let fixture: ComponentFixture<IngestContractAttachmentTabComponent>;
 
-  const ingestContractValue={
+  const ingestContractValue = {
     tenant: 0,
     version: 1,
     description: 'desc',
@@ -71,42 +70,40 @@ describe('IngestContractAttachmentTabComponent',() => {
     formatType: [''],
     archiveProfiles: [''],
     managementContractId: 'MC-000001',
-    computeInheritedRulesAtIngest: true
+    computeInheritedRulesAtIngest: true,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const parameters: Map<string,string>=new Map<string,string>();
-      parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT,'1');
-      const externalParametersServiceMock={
-        getUserExternalParameters: () => of(parameters),
-      };
+  beforeEach(waitForAsync(() => {
+    const parameters: Map<string, string> = new Map<string, string>();
+    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      const unitValueMock={
-        getByDsl: () => of({}),
-      };
+    const unitValueMock = {
+      getByDsl: () => of({}),
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [IngestContractAttachmentTabComponent],
-        imports: [MatSnackBarModule],
-        providers: [
-          {provide: MatDialog,useValue: {}},
-          {provide: SearchUnitApiService,useValue: unitValueMock},
-          {provide: ExternalParametersService,useValue: externalParametersServiceMock},
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [IngestContractAttachmentTabComponent],
+      imports: [MatSnackBarModule],
+      providers: [
+        { provide: MatDialog, useValue: {} },
+        { provide: SearchUnitApiService, useValue: unitValueMock },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(IngestContractAttachmentTabComponent);
-    component=fixture.componentInstance;
-    component.ingestContract=ingestContractValue;
+    fixture = TestBed.createComponent(IngestContractAttachmentTabComponent);
+    component = fixture.componentInstance;
+    component.ingestContract = ingestContractValue;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

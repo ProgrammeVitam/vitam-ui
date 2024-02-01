@@ -42,11 +42,7 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { SubrogationDemoComponent } from './subrogation-demo.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    VitamUICommonModule,
-  ],
-  declarations: [SubrogationDemoComponent]
+  imports: [CommonModule, FormsModule, VitamUICommonModule],
+  declarations: [SubrogationDemoComponent],
 })
-export class SubrogationDemoModule { }
+export class SubrogationDemoModule {}

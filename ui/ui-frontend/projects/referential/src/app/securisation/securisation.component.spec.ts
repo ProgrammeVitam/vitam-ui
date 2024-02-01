@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import { FormBuilder } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
 
-import {SecurisationComponent} from './securisation.component';
+import { SecurisationComponent } from './securisation.component';
 
 describe('SecurisationComponent', () => {
   let component: SecurisationComponent;
@@ -55,8 +55,8 @@ describe('SecurisationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
-      params: of({tenantIdentifier: 1}),
-      data: of({appId: 'SECURISATION_APP'})
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'SECURISATION_APP' }),
     };
 
     TestBed.configureTestingModule({
@@ -67,19 +67,18 @@ describe('SecurisationComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         InjectorModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
       declarations: [SecurisationComponent],
       providers: [
         FormBuilder,
         GlobalEventService,
-        {provide: MatDialog, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: Router, useValue: { navigate: () => {} }}
+        { provide: MatDialog, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: Router, useValue: { navigate: () => {} } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

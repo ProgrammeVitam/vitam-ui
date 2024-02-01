@@ -68,8 +68,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
-  constructor(private translateService: TranslateService) {
-  }
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit() {}
 

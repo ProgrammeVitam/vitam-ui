@@ -71,7 +71,10 @@ export class IngestContractHeritageTabComponent implements OnInit {
     return this._ingestContract;
   }
 
-  constructor(private formBuilder: FormBuilder, private ingestContractService: IngestContractService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private ingestContractService: IngestContractService,
+  ) {}
 
   ngOnInit() {
     const rule = this.ingestContract !== undefined ? this.ingestContract.computeInheritedRulesAtIngest : false;
@@ -97,7 +100,7 @@ export class IngestContractHeritageTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 
@@ -106,8 +109,8 @@ export class IngestContractHeritageTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 

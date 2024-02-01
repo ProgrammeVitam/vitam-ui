@@ -1,36 +1,38 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-file-format-preview *ngIf="openedItem" (previewClose)="closePanel()" [fileFormat]="openedItem"></app-file-format-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
-
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
 
         <h2 i18n="Search fileFormat@@fileFormatSearchHeader">
-          <img src="assets/mini-logo-vitam.png"> Paramétrer les <strong>Formats de Fichiers</strong>
+          <img src="assets/mini-logo-vitam.png" /> Paramétrer les <strong>Formats de Fichiers</strong>
         </h2>
 
         <div class="controls">
-
           <vitamui-common-search-bar
             name="file-format-search"
             (search)="onSearchSubmit($event)"
-            placeholder="Nom, PUID" i18n-placeholder="@@fileFormatSearchPlaceholder"
+            placeholder="Nom, PUID"
+            i18n-placeholder="@@fileFormatSearchPlaceholder"
           ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateFileFormatDialog()">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create fileFormat button label@@fileFormatListCreateButton">Créer un format de fichier</span>
+              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i>
+              <span i18n="Create fileFormat button label@@fileFormatListCreateButton">Créer un format de fichier</span>
             </button>
-            <button class="btn more-actions" (click)="openFileFormatImportDialog()" i18n="Import fileFormat button label@@fileFormatListImportButton">
+            <button
+              class="btn more-actions"
+              (click)="openFileFormatImportDialog()"
+              i18n="Import fileFormat button label@@fileFormatListImportButton"
+            >
               Importer
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -39,5 +41,4 @@
       <app-file-format-list (fileFormatClick)="showFileFormat($event)" [search]="search"></app-file-format-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

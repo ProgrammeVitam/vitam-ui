@@ -85,7 +85,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   statusControl = new FormControl(false);
@@ -150,7 +150,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -224,7 +224,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 

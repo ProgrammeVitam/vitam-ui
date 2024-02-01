@@ -42,30 +42,30 @@ import { OwnerService } from '../owner.service';
 
 @Component({
   selector: 'app-owner-popup',
-  template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>'
+  template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
 })
 export class OwnerPopupComponent implements OnInit {
-
   owner: Owner;
   tenant: Tenant;
 
-  constructor(private route: ActivatedRoute, private ownerService: OwnerService) {
+  constructor(
+    private route: ActivatedRoute,
+    private ownerService: OwnerService,
+  ) {
     if (this.route.snapshot.data.tenant) {
       this.tenant = this.route.snapshot.data.tenant;
       this.owner = this.route.snapshot.data.owner;
       if (!this.owner) {
-        this.ownerService.get(this.tenant.ownerId).subscribe((owner) => this.owner = owner);
+        this.ownerService.get(this.tenant.ownerId).subscribe((owner) => (this.owner = owner));
       }
     } else {
       this.owner = this.route.snapshot.data.owner;
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

@@ -44,25 +44,25 @@ import { CustomerService } from '../core/customer.service';
 
 @Injectable()
 export class CustomerResolver implements Resolve<Customer> {
-
-  constructor(private customerService: CustomerService, private router: Router) { }
+  constructor(
+    private customerService: CustomerService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Customer> {
     const id = route.paramMap.get('id');
 
-    return this.customerService.get(id)
-      .pipe(
-        take(1),
-        map((customer: Customer) => {
-          if (customer) {
-            return customer;
-          } else {
-            this.router.navigate(['/']);
+    return this.customerService.get(id).pipe(
+      take(1),
+      map((customer: Customer) => {
+        if (customer) {
+          return customer;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

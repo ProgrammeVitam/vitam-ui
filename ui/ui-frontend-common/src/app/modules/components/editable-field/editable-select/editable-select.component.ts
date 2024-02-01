@@ -37,9 +37,7 @@
 import { filter } from 'rxjs/operators';
 
 /* tslint:disable: no-use-before-declare */
-import {
-  Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, TemplateRef, ViewChild
-} from '@angular/core';
+import { Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, TemplateRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
@@ -50,17 +48,16 @@ import { EditableOptionComponent } from './editable-option.component';
 export const EDITABLE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableSelectComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-select',
   templateUrl: './editable-select.component.html',
   styleUrls: ['./editable-select.component.scss'],
-  providers: [EDITABLE_SELECT_VALUE_ACCESSOR]
+  providers: [EDITABLE_SELECT_VALUE_ACCESSOR],
 })
 export class EditableSelectComponent extends EditableFieldComponent {
-
   @ContentChildren(EditableOptionComponent) options: QueryList<EditableOptionComponent>;
 
   @ViewChild('select') select: MatSelect;
@@ -72,7 +69,10 @@ export class EditableSelectComponent extends EditableFieldComponent {
 
   private dialogRef: MatDialogRef<EditableFieldComponent>;
 
-  constructor(private matDialog: MatDialog, elementRef: ElementRef) {
+  constructor(
+    private matDialog: MatDialog,
+    elementRef: ElementRef,
+  ) {
     super(elementRef);
   }
 
@@ -83,7 +83,9 @@ export class EditableSelectComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
     const selectOverlayRef = this.select.overlayDir.overlayRef;
     if (
@@ -99,13 +101,15 @@ export class EditableSelectComponent extends EditableFieldComponent {
   }
 
   confirm() {
-    if (!this.canConfirm) { return; }
+    if (!this.canConfirm) {
+      return;
+    }
 
     if (this.showConfirmDialog) {
       this.dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'vitamui-confirm-dialog' });
-      this.dialogRef.afterClosed().pipe(
-        filter((result) => !!result)
-      )
+      this.dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
         .subscribe(() => {
           this.dialogRef = null;
           this.applyChange();
@@ -127,5 +131,4 @@ export class EditableSelectComponent extends EditableFieldComponent {
     super.enterEditMode();
     setTimeout(() => this.select.open(), 0);
   }
-
 }

@@ -513,9 +513,9 @@
     "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Set plateform thresholds",
     "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} archive units",
     "TABS": {
-      "INFORMATIONS":"Informations",
-      "THRESHOLDS":"Thresholds",
-      "HISTORY":"History"
+      "INFORMATIONS": "Informations",
+      "THRESHOLDS": "Thresholds",
+      "HISTORY": "History"
     }
   }
 }

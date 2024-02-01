@@ -50,14 +50,10 @@ import { StepperModule } from '../components/stepper/stepper.module';
 import { VitamUIInputModule } from '../components/vitamui-input/vitamui-input.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
-import {
-  NotificationSnackBarComponent
-} from './notification-snack-bar/notification-snack-bar.component';
+import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
 import { SubrogationBannerComponent } from './subrogation-banner/subrogation-banner.component';
 import { SubrogationModalComponent } from './subrogation-modal/subrogation-modal.component';
-import {
-  SubrogationSnackBarComponent
-} from './subrogation-snack-bar/subrogation-snack-bar.component';
+import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
 
 @NgModule({
   imports: [
@@ -73,22 +69,11 @@ import {
     ConfirmDialogModule,
     CommonProgressBarModule,
     TranslateModule,
-    PipesModule
+    PipesModule,
   ],
-  declarations: [
-    NotificationSnackBarComponent,
-    SubrogationBannerComponent,
-    SubrogationModalComponent,
-    SubrogationSnackBarComponent
-  ],
-  entryComponents: [
-    NotificationSnackBarComponent,
-    SubrogationModalComponent,
-    SubrogationSnackBarComponent
-  ],
+  declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
+  entryComponents: [NotificationSnackBarComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],
-  providers: [
-    { provide: WINDOW_LOCATION, useValue: window.location }
-  ]
+  providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
 })
-export class SubrogationModule { }
+export class SubrogationModule {}

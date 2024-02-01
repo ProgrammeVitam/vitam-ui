@@ -52,7 +52,7 @@ import { EditableToggleGroupComponent } from './editable-toggle-group.component'
       <vitamui-common-editable-button-toggle value="value2" content="Content 2"></vitamui-common-editable-button-toggle>
       <vitamui-common-editable-button-toggle value="value3" content="Content 3"></vitamui-common-editable-button-toggle>
     </vitamui-common-editable-toggle-group>
-  `
+  `,
 })
 class TesthostComponent {
   value: string;
@@ -69,20 +69,9 @@ describe('EditableSelectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OverlayModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        MatButtonToggleModule,
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableToggleGroupComponent,
-        EditableButtonToggleComponent,
-      ]
-    })
-    .compileComponents();
+      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonToggleModule],
+      declarations: [TesthostComponent, EditableToggleGroupComponent, EditableButtonToggleComponent],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -100,7 +89,6 @@ describe('EditableSelectComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -171,11 +159,9 @@ describe('EditableSelectComponent', () => {
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = 'value1';
       fixture.detectChanges();
@@ -254,6 +240,5 @@ describe('EditableSelectComponent', () => {
         expect(testhost.component.control.value).toEqual('value1');
       });
     }));
-
   });
 });

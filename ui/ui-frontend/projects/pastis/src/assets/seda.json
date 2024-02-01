@@ -3679,16 +3679,7 @@
                         "Type": "decimal",
                         "Choice": "no",
                         "Extensible": "no",
-                        "Enumeration": [
-                          "microgram",
-                          "MC",
-                          "milligram",
-                          "MGM",
-                          "gram",
-                          "GRM",
-                          "kilogram",
-                          "KGM"
-                        ],
+                        "Enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
                         "Definition": "Métadonnée de dimension physique : poids du document.",
                         "Collection": "Objets",
                         "Children": [
@@ -5090,16 +5081,7 @@
                     "Type": "decimal",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "microgram",
-                      "MC",
-                      "milligram",
-                      "MGM",
-                      "gram",
-                      "GRM",
-                      "kilogram",
-                      "KGM"
-                    ],
+                    "Enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
                     "Definition": "Métadonnée de dimension physique : poids du document.",
                     "Collection": "Objets",
                     "Children": [
@@ -5362,10 +5344,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5405,11 +5384,7 @@
                             "Type": "token",
                             "Choice": "no",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "RestrictAccess",
-                              "Transfer",
-                              "Copy"
-                            ],
+                            "Enumeration": ["RestrictAccess", "Transfer", "Copy"],
                             "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5476,10 +5451,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5519,10 +5491,7 @@
                             "Type": "token",
                             "Choice": "no",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "Keep",
-                              "Destroy"
-                            ],
+                            "Enumeration": ["Keep", "Destroy"],
                             "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5589,10 +5558,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5686,10 +5652,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5783,10 +5746,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5893,10 +5853,7 @@
                             "Type": "boolean",
                             "Choice": "yes",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "false",
-                              "true"
-                            ],
+                            "Enumeration": ["false", "true"],
                             "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -5975,10 +5932,7 @@
                             "Type": "boolean",
                             "Choice": "no",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "true",
-                              "false"
-                            ],
+                            "Enumeration": ["true", "false"],
                             "Definition": "Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
                             "Collection": "Unités d'archives",
                             "Children": []
@@ -6152,10 +6106,7 @@
                         "Type": "boolean",
                         "Choice": "no",
                         "Extensible": "no",
-                        "Enumeration": [
-                          "true",
-                          "false"
-                        ],
+                        "Enumeration": ["true", "false"],
                         "Definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
                         "Collection": "Unités d'archives",
                         "Children": []
@@ -12412,11 +12363,7 @@
                 "Type": "token",
                 "Choice": "no",
                 "Extensible": "no",
-                "Enumeration": [
-                  "Public Archive",
-                  "Private Archive",
-                  "Public and Private Archive"
-                ],
+                "Enumeration": ["Public Archive", "Private Archive", "Public and Private Archive"],
                 "Definition": "Statut des archives échangées.",
                 "Collection": "Règles",
                 "Children": []
@@ -12691,10 +12638,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -12734,11 +12678,7 @@
                     "Type": "token",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "RestrictAccess",
-                      "Transfer",
-                      "Copy"
-                    ],
+                    "Enumeration": ["RestrictAccess", "Transfer", "Copy"],
                     "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                     "Collection": "Règles",
                     "Children": []
@@ -12805,10 +12745,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -12848,10 +12785,7 @@
                     "Type": "token",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "Keep",
-                      "Destroy"
-                    ],
+                    "Enumeration": ["Keep", "Destroy"],
                     "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                     "Collection": "Règles",
                     "Children": []
@@ -12918,10 +12852,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -13015,10 +12946,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -13112,10 +13040,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -13222,10 +13147,7 @@
                     "Type": "boolean",
                     "Choice": "yes",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "false",
-                      "true"
-                    ],
+                    "Enumeration": ["false", "true"],
                     "Definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                     "Collection": "Règles",
                     "Children": []
@@ -13304,10 +13226,7 @@
                     "Type": "boolean",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "true",
-                      "false"
-                    ],
+                    "Enumeration": ["true", "false"],
                     "Definition": "Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
                     "Collection": "Règles",
                     "Children": []
@@ -13481,10 +13400,7 @@
                 "Type": "boolean",
                 "Choice": "no",
                 "Extensible": "no",
-                "Enumeration": [
-                  "true",
-                  "false"
-                ],
+                "Enumeration": ["true", "false"],
                 "Definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
                 "Collection": "Règles",
                 "Children": []

@@ -44,16 +44,16 @@ import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
 import { AgencyApiService } from '../core/api/agency-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AgencyService extends SearchService<Agency> {
-
   updated = new Subject<Agency>();
 
   constructor(
     private agencyApiService: AgencyApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, agencyApiService, 'ALL');
   }
 
@@ -66,7 +66,7 @@ export class AgencyService extends SearchService<Agency> {
     return this.agencyApiService.getAllByParams(params);
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existAgency: any = {};
     if (properties.name) {
       existAgency.name = properties.name;
@@ -80,65 +80,65 @@ export class AgencyService extends SearchService<Agency> {
   }
 
   create(agency: Agency) {
-    return this.agencyApiService.create(agency, this.headers)
-      .pipe(
-        tap(
-          () => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.agencyApiService.create(agency, this.headers).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.AGENCY_CONTRACT_CREATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
-  patch(data: { id: string, [key: string]: any }): Observable<Agency> {
-    return this.agencyApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          () => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(data: { id: string; [key: string]: any }): Observable<Agency> {
+    return this.agencyApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   delete(agency: Agency): Observable<any> {
     return this.agencyApiService.delete(agency.id).pipe(
-      tap((response) => {
+      tap(
+        (response) => {
           if (response === false) {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
-              icon: 'vitamui-icon-admin-key'
+              icon: 'vitamui-icon-admin-key',
             });
           } else {
             this.snackBarService.open({
               message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
-              icon: 'vitamui-icon-admin-key'
+              icon: 'vitamui-icon-admin-key',
             });
           }
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        })
+        },
+      ),
     );
   }
 
   export() {
     this.snackBarService.open({
       message: 'SNACKBAR.AGENCY_CONTRACT_EXPORT_ALL',
-      icon: 'vitamui-icon-admin-key'
+      icon: 'vitamui-icon-admin-key',
     });
 
     this.agencyApiService.export().subscribe(
@@ -147,15 +147,16 @@ export class AgencyService extends SearchService<Agency> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([ response ], { type: 'octet/stream' });
+        const blob = new Blob([response], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'agencies.csv';
         a.click();
         window.URL.revokeObjectURL(url);
-      }, (error) => {
+      },
+      (error) => {
         this.snackBarService.open({ message: error.error.message, translate: false });
-      }
+      },
     );
   }
 

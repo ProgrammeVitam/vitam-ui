@@ -46,7 +46,10 @@ import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interf
 
 @Injectable()
 export class ManagementRulesValidatorService {
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private ruleService: RuleService) {}
+  constructor(
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private ruleService: RuleService,
+  ) {}
   debounceTime = 400;
   ruleActions: RuleCategoryAction;
   managementRules: ManagementRules[];
@@ -62,7 +65,7 @@ export class ManagementRulesValidatorService {
     });
     if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategorySelected) !== -1) {
       this.ruleActions = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategorySelected
+        (managementRule) => managementRule.category === this.ruleCategorySelected,
       ).ruleCategoryAction;
       if (this.ruleActions.rules) {
         return this.ruleActions.rules?.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length !== 0 ? true : false;
@@ -78,7 +81,7 @@ export class ManagementRulesValidatorService {
 
     if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
       this.ruleActions = this.managementRules.find(
-        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE,
       ).ruleCategoryAction;
       if (this.ruleActions.preventRulesIdToAdd) {
         return this.ruleActions.preventRulesIdToAdd?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
@@ -95,7 +98,7 @@ export class ManagementRulesValidatorService {
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterPreventRulesId(control.value)) : of(false))),
         take(1),
-        map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null))
+        map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null)),
       );
     };
   }
@@ -105,7 +108,7 @@ export class ManagementRulesValidatorService {
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterRuleActions(control.value)) : of(false))),
         take(1),
-        map((exists: boolean) => (exists ? { uniqueRuleId: true } : null))
+        map((exists: boolean) => (exists ? { uniqueRuleId: true } : null)),
       );
     };
   }
@@ -135,7 +138,7 @@ export class ManagementRulesValidatorService {
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => (exists ? null : existField))
+        map((exists: boolean) => (exists ? null : existField)),
       );
     };
   }

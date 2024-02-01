@@ -308,8 +308,8 @@ describe('UnlockCategoryInheritanceComponent', () => {
     expect(
       component.ruleActions.find(
         (ruleAction) =>
-          ruleAction.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE
-      ).stepValid
+          ruleAction.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE,
+      ).stepValid,
     ).toBeTruthy();
   });
 

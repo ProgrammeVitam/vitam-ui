@@ -50,10 +50,9 @@ export enum CriteriaDataType {
   STRING = 'STRING',
   DATE = 'DATE',
   INTERVAL = 'INTERVAL',
-
 }
 
 export enum ActionOnCriteria {
   REMOVE = 'REMOVE',
-  ADD = 'ADD'
+  ADD = 'ADD',
 }

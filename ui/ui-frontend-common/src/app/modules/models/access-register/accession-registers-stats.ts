@@ -1,4 +1,3 @@
-
 export interface AccessionRegisterStats {
   totalUnits: number;
   totalObjectsGroups: number;

@@ -88,7 +88,6 @@ export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHo
   };
 };
 
-
 export class MatchingNodesNumbers {
   nodesAdded: number;
   nodesAddedList: FilingHoldingSchemeNode[];

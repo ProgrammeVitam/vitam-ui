@@ -44,16 +44,16 @@ import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/securit
 import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SecurityProfileService extends SearchService<SecurityProfile> {
-
   updated = new Subject<SecurityProfile>();
 
   constructor(
     private securityProfileApiService: SecurityProfileApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient) {
+    http: HttpClient,
+  ) {
     super(http, securityProfileApiService, 'ALL');
   }
 
@@ -66,7 +66,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
     return this.securityProfileApiService.getAllByParams(params);
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existSecurityProfile: any = {};
     if (properties.name) {
       existSecurityProfile.name = properties.name;
@@ -80,52 +80,51 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   }
 
   create(profile: SecurityProfile) {
-    return this.securityProfileApiService.create(profile, this.headers)
-      .pipe(
-        tap(
-          (_: SecurityProfile) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.SECURITY_CREATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  patch(data: { id: string, [key: string]: any }): Observable<SecurityProfile> {
-    return this.securityProfileApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          (_) => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.SECURITY_UPDATED',
-              icon: 'vitamui-icon-admin-key'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
-  }
-
-  delete(profile: SecurityProfile): Observable<any> {
-    return this.securityProfileApiService.delete(profile.id).pipe(
-      tap(() => {
+    return this.securityProfileApiService.create(profile, this.headers).pipe(
+      tap(
+        (_: SecurityProfile) => {
           this.snackBarService.open({
-            message: 'SNACKBAR.SECURITY_DELETED',
-            icon: 'vitamui-icon-admin-key'
+            message: 'SNACKBAR.SECURITY_CREATED',
+            icon: 'vitamui-icon-admin-key',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        })
+        },
+      ),
     );
   }
 
+  patch(data: { id: string; [key: string]: any }): Observable<SecurityProfile> {
+    return this.securityProfileApiService.patch(data).pipe(
+      tap((response) => this.updated.next(response)),
+      tap(
+        (_) => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.SECURITY_UPDATED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
+
+  delete(profile: SecurityProfile): Observable<any> {
+    return this.securityProfileApiService.delete(profile.id).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.SECURITY_DELETED',
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
 }

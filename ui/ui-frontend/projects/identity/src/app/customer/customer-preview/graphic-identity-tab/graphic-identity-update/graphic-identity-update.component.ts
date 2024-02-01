@@ -46,13 +46,14 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 @Component({
   selector: 'app-graphic-identity-update',
   templateUrl: './graphic-identity-update.component.html',
-  styleUrls: ['./graphic-identity-update.component.scss']
+  styleUrls: ['./graphic-identity-update.component.scss'],
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
-
   private destroy = new Subject();
   private _customForm: FormGroup;
-  public get customForm(): FormGroup { return this._customForm; }
+  public get customForm(): FormGroup {
+    return this._customForm;
+  }
   public set customForm(form: FormGroup) {
     this._customForm = form;
     this.disabled = !(this._customForm && this._customForm.valid);
@@ -65,7 +66,7 @@ export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<GraphicIdentityUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, logos: LogosSafeResourceUrl },
+    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; logos: LogosSafeResourceUrl },
     private customerService: CustomerService,
   ) {}
 
@@ -82,18 +83,19 @@ export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
   }
 
   public updateGraphicIdentity(): void {
-
     if (this.customForm.valid) {
-      this.customerService.patch(this.customForm.value, this.logos)
-      .pipe(takeUntil(this.destroy))
-      .subscribe(
-        () => {
-          this.dialogRef.close(true);
-        },
-        (error) => {
-          this.dialogRef.close(false);
-          console.error(error);
-        });
+      this.customerService
+        .patch(this.customForm.value, this.logos)
+        .pipe(takeUntil(this.destroy))
+        .subscribe(
+          () => {
+            this.dialogRef.close(true);
+          },
+          (error) => {
+            this.dialogRef.close(false);
+            console.error(error);
+          },
+        );
     }
   }
 }

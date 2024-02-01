@@ -24,23 +24,17 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {VitamuiTreeNodeComponent} from "./vitamui-tree-node.component";
-import {MatButtonModule} from "@angular/material/button";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {FormsModule} from "@angular/forms";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, MatTooltipModule],
   declarations: [VitamuiTreeNodeComponent],
   exports: [VitamuiTreeNodeComponent],
 })
-export class VitamuiTreeNodeModule { }
+export class VitamuiTreeNodeModule {}

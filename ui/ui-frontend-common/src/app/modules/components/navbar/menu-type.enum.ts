@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum MenuType {
-    tenant = 'TENANT',
-    customer = 'CUSTOMER',
-    application = 'APPLICATION'
+  tenant = 'TENANT',
+  customer = 'CUSTOMER',
+  application = 'APPLICATION',
 }

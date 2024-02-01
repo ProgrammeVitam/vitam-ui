@@ -22,7 +22,7 @@ function constantToTranslate() {
 @Component({
   selector: 'save-profile-options',
   templateUrl: './save-profile-options.component.html',
-  styleUrls: ['./save-profile-options.component.scss']
+  styleUrls: ['./save-profile-options.component.scss'],
 })
 export class SaveProfileOptionsComponent implements OnInit {
   firstChoiceEnregistrement: string;
@@ -41,9 +41,12 @@ export class SaveProfileOptionsComponent implements OnInit {
   isStandalone: boolean = environment.standalone;
   editProfile: boolean;
 
-
-  constructor(public dialogRef: MatDialogRef<SaveProfileOptionsComponent>, private translateService: TranslateService,
-              @Inject(MAT_DIALOG_DATA) public data: PastisDialogData, private router: Router) {
+  constructor(
+    public dialogRef: MatDialogRef<SaveProfileOptionsComponent>,
+    private translateService: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
+    private router: Router,
+  ) {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 
@@ -56,7 +59,7 @@ export class SaveProfileOptionsComponent implements OnInit {
       this.secondChoiceEnregistrement = 'SAE';
       this.titleEnregistrement = 'Où souhaitez-vous l’enregistrer ?';
 
-      this.firstChoiceGestionNotice = 'Création d\'une nouvelle notice';
+      this.firstChoiceGestionNotice = "Création d'une nouvelle notice";
       this.secondChoiceGestionNotice = 'Rattachement à une notice existante';
       this.titleGestionNotice = 'Gestion de la notice du profil';
 
@@ -68,11 +71,10 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((_: LangChangeEvent) => {
-        constantToTranslate.call(this);
-        // console.log(event.lang);
-      });
+    this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
+      constantToTranslate.call(this);
+      // console.log(event.lang);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -92,7 +94,7 @@ export class SaveProfileOptionsComponent implements OnInit {
 
   changeStatusGestionNoticeProfil($event: string) {
     // console.log($event);
-    if ($event ==  this.firstChoiceGestionNotice) {
+    if ($event == this.firstChoiceGestionNotice) {
       this.gestionNotice = true;
     } else {
       this.gestionNotice = false;
@@ -109,11 +111,11 @@ export class SaveProfileOptionsComponent implements OnInit {
 
   onYesClick() {
     if (this.valueSelected && this.gestionNotice) {
-      this.dialogRef.close({success: true, action: 'creation'});
+      this.dialogRef.close({ success: true, action: 'creation' });
     } else if (!this.valueSelected) {
-      this.dialogRef.close({success: true, action: 'local'});
+      this.dialogRef.close({ success: true, action: 'local' });
     } else if (this.valueSelected && !this.gestionNotice) {
-      this.dialogRef.close({success: true, action: 'rattachement'});
+      this.dialogRef.close({ success: true, action: 'rattachement' });
     }
   }
 }

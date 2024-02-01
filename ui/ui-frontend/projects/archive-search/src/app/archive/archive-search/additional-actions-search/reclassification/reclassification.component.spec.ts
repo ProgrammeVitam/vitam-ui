@@ -45,7 +45,7 @@ import {
   InjectorModule,
   LoggerModule,
   StartupService,
-  WINDOW_LOCATION
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ArchiveService } from '../../../archive.service';

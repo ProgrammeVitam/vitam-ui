@@ -54,16 +54,16 @@ export interface IdentityProvider extends Id {
   identifierAttribute?: string;
   authnRequestBinding: AuthnRequestBindingEnum;
   autoProvisioningEnabled: boolean;
-  clientId?:string;
-  clientSecret?:string;
-  discoveryUrl?:string;
-  scope?:string;
-  preferredJwsAlgorithm?:string;
-  customParams?:Map<string,string>;
-  useState?:boolean;
-  useNonce?:boolean;
-  usePkce?:boolean;
-  protocoleType?:string;
+  clientId?: string;
+  clientSecret?: string;
+  discoveryUrl?: string;
+  scope?: string;
+  preferredJwsAlgorithm?: string;
+  customParams?: Map<string, string>;
+  useState?: boolean;
+  useNonce?: boolean;
+  usePkce?: boolean;
+  protocoleType?: string;
 }
 
 /**

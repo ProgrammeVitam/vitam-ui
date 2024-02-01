@@ -63,7 +63,7 @@ import { EditableFileComponent } from './editable-file.component';
       <vitamui-common-field-error errorKey="required">Expected required error message</vitamui-common-field-error>
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-file>
-  `
+  `,
 })
 class TesthostComponent {
   value: File;
@@ -74,7 +74,7 @@ class TesthostComponent {
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {
     return of(control.value !== 'invalid value' ? null : { async: true });
-  }
+  };
 }
 
 describe('EditableFileComponent', () => {
@@ -93,16 +93,9 @@ describe('EditableFileComponent', () => {
         HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableFileComponent,
-        VitamUIFieldErrorComponent,
-      ],
-    })
-    .compileComponents();
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+      declarations: [TesthostComponent, EditableFileComponent, VitamUIFieldErrorComponent],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -120,7 +113,6 @@ describe('EditableFileComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -217,11 +209,9 @@ describe('EditableFileComponent', () => {
       expect(elErrors.length).toBe(2);
       expect(elErrors[1].textContent).toContain('Expected async error message');
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = newFile([''], 'test-file.txt');
       fixture.detectChanges();

@@ -40,11 +40,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogService } from './confirm-dialog.service';
 
 describe('ConfirmDialogService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      { provide: MatDialog, useValue: {} },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      providers: [{ provide: MatDialog, useValue: {} }],
+    }),
+  );
 
   it('should be created', () => {
     const service: ConfirmDialogService = TestBed.inject(ConfirmDialogService);

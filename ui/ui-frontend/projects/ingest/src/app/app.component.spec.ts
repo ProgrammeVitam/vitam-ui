@@ -37,7 +37,7 @@
 /* tslint:disable:component-selector max-classes-per-file */
 
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { waitForAsync, TestBed  } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -53,25 +53,17 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
     TestBed.configureTestingModule({
-      imports: [
-        MatSidenavModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        AppComponent,
-        SubrogationBannerStubComponent,
-        RouterOutletStubComponent,
-      ],
+      imports: [MatSidenavModule, NoopAnimationsModule],
+      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -88,5 +80,4 @@ describe('AppComponent', () => {
     console.log('Title App: ', app);
     expect(app.title).toEqual('Ingest App');
   }));
-
 });

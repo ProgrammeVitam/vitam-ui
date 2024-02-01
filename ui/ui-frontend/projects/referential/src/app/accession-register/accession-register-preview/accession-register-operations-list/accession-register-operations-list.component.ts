@@ -35,34 +35,30 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'ui-f
   styleUrls: ['./accession-register-operations-list.component.scss'],
   animations: [
     trigger('collapse', [
-      state('false', style({height: AUTO_STYLE, visibility: AUTO_STYLE})),
-      state('true', style({height: '0', visibility: 'hidden'})),
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
-
   @Input() operationsIds: string[];
   @Input() operations: RegisterValueEventModel[];
 
-  orderColumn: keyof RegisterValueEventModel = 'OpType'
+  orderColumn: keyof RegisterValueEventModel = 'OpType';
   orderDirection = Direction.ASCENDANT;
-  availableOperationsType: Array<{ name: RegisterValueEventType, translation: string }> = [];
+  availableOperationsType: Array<{ name: RegisterValueEventType; translation: string }> = [];
   selectedFilters: Array<string>;
   operationsProcessed: RegisterValueEventModel[] = [];
 
-  orderKeyOperationGots: keyof RegisterValueEventModel = 'Gots'
-  orderKeyOperationUnits: keyof RegisterValueEventModel = 'Units'
-  orderKeyOperationObjects: keyof RegisterValueEventModel = 'Objects'
-  orderKeyOperationObjSize: keyof RegisterValueEventModel = 'ObjSize'
-  orderKeyOperationCreationDate: keyof RegisterValueEventModel = 'CreationDate'
+  orderKeyOperationGots: keyof RegisterValueEventModel = 'Gots';
+  orderKeyOperationUnits: keyof RegisterValueEventModel = 'Units';
+  orderKeyOperationObjects: keyof RegisterValueEventModel = 'Objects';
+  orderKeyOperationObjSize: keyof RegisterValueEventModel = 'ObjSize';
+  orderKeyOperationCreationDate: keyof RegisterValueEventModel = 'CreationDate';
 
-  constructor(
-    private translateService: TranslateService,
-  ) {
-  }
+  constructor(private translateService: TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.operations) {
@@ -71,16 +67,17 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   }
 
   private reloadOperations() {
-    this.availableOperationsType = this.operations.map(o => o.OpType)
+    this.availableOperationsType = this.operations
+      .map((o) => o.OpType)
       .filter((value, index, array) => index === array.indexOf(value))
-      .map(operationType => {
+      .map((operationType) => {
         return {
           name: operationType,
           translation: this.translateService.instant('ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operationType),
-        }
+        };
       });
-    this.selectedFilters = this.availableOperationsType.map(operationType => operationType.name);
-    this.operationsProcessed = [...this.operations]
+    this.selectedFilters = this.availableOperationsType.map((operationType) => operationType.name);
+    this.operationsProcessed = [...this.operations];
   }
 
   changeOrderDirection(direction: Direction) {
@@ -94,15 +91,12 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   sortTable() {
     const sens: number = this.orderDirection === Direction.ASCENDANT ? -1 : 1;
     this.operationsProcessed.sort((a, b) => {
-        return a[this.orderColumn] === b[this.orderColumn] ? 0 :
-          a[this.orderColumn] > b[this.orderColumn] ? sens : -sens;
-      }
-    );
+      return a[this.orderColumn] === b[this.orderColumn] ? 0 : a[this.orderColumn] > b[this.orderColumn] ? sens : -sens;
+    });
   }
 
   changeFilter(selectedFilters: string[]) {
     this.operationsProcessed = this.operations.filter((a) => selectedFilters.includes(a.OpType));
     this.sortTable();
   }
-
 }

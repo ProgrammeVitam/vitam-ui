@@ -43,12 +43,16 @@ import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
 import { AccessContractApiService } from '../core/api/access-contract-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
-  constructor(private accessContractApi: AccessContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private accessContractApi: AccessContractApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -73,7 +77,7 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.check(accessContract, this.headers);
   }
 
-  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+  existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {
     const existContract: any = {};
     if (properties.name) {
       existContract.name = properties.name;
@@ -93,31 +97,30 @@ export class AccessContractService extends SearchService<AccessContract> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
-            icon: 'vitamui-icon-contrat'
+            icon: 'vitamui-icon-contrat',
           });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
   create(accessContract: AccessContract) {
-    return this.accessContractApi.create(accessContract)
-      .pipe(
-        tap(
-          () => {
-            this.snackBarService.open({
-              message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
-              icon: 'vitamui-icon-contrat'
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.accessContractApi.create(accessContract).pipe(
+      tap(
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
+            icon: 'vitamui-icon-contrat',
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   setTenantId(tenantIdentifier: number) {

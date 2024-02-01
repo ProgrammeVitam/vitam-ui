@@ -102,7 +102,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator
+    private ruleValidator: RuleValidator,
   ) {
     this.disseminationRuleCriteriaForm = this.formBuilder.group({
       disseminationRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
@@ -117,7 +117,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.disseminationRuleCriteriaForm.value),
         map(() => diff(this.disseminationRuleCriteriaForm.value, this.previousDisseminationCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
         this.resetDisseminationRuleCriteriaForm();
@@ -136,7 +136,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE
+          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
         );
         this.resetDisseminationRuleCriteriaForm();
       }
@@ -171,7 +171,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.DISSEMINATION_RULE
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -191,7 +191,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.MISSING,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.DISSEMINATION_RULE
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -211,7 +211,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EQ,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.DISSEMINATION_RULE
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -231,7 +231,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
             CriteriaOperator.EXISTS,
             true,
             CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.DISSEMINATION_RULE
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -260,7 +260,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.LTE,
         false,
         CriteriaDataType.INTERVAL,
-        SearchCriteriaTypeEnum.DISSEMINATION_RULE
+        SearchCriteriaTypeEnum.DISSEMINATION_RULE,
       );
       this.disseminationRuleCriteriaForm.controls.disseminationRuleStartDate.setValue(null);
     }
@@ -280,7 +280,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.EQ,
         false,
         CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.DISSEMINATION_RULE
+        SearchCriteriaTypeEnum.DISSEMINATION_RULE,
       );
       this.disseminationRuleCriteriaForm.controls.disseminationRuleIdentifier.setValue(null);
     }
@@ -306,7 +306,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         CriteriaOperator.BETWEEN,
         false,
         CriteriaDataType.INTERVAL,
-        SearchCriteriaTypeEnum.DISSEMINATION_RULE
+        SearchCriteriaTypeEnum.DISSEMINATION_RULE,
       );
       this.disseminationRuleCriteriaForm.controls.disseminationRuleStartDate.setValue(null);
       this.disseminationRuleCriteriaForm.controls.disseminationRuleEndDate.setValue(null);
@@ -325,7 +325,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE
+          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
         );
         this.resetDisseminationRuleCriteriaForm();
         return true;
@@ -338,7 +338,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           CriteriaOperator.EQ,
           false,
           CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE
+          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
         );
         return true;
       }
@@ -386,7 +386,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       CriteriaOperator.EXISTS,
       true,
       CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.DISSEMINATION_RULE
+      SearchCriteriaTypeEnum.DISSEMINATION_RULE,
     );
     this.addCriteria(
       RULE_ORIGIN + RULE_TYPE_SUFFIX,
@@ -396,7 +396,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       CriteriaOperator.EXISTS,
       true,
       CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.DISSEMINATION_RULE
+      SearchCriteriaTypeEnum.DISSEMINATION_RULE,
     );
     this.disseminationAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
     this.disseminationAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
@@ -414,7 +414,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     operator: string,
     valueTranslated: boolean,
     dataType: string,
-    category?: SearchCriteriaTypeEnum
+    category?: SearchCriteriaTypeEnum,
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({

@@ -50,33 +50,31 @@ describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
   let fixture: ComponentFixture<IngestContractComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'INGEST_CONTRACT_APP' }),
-      };
+  beforeEach(waitForAsync(() => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'INGEST_CONTRACT_APP' }),
+    };
 
-      const applicationServiceMock = {
-        applications: new Array<any>(),
-        isApplicationExternalIdentifierEnabled: () => of(true),
-      };
+    const applicationServiceMock = {
+      applications: new Array<any>(),
+      isApplicationExternalIdentifierEnabled: () => of(true),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
-        declarations: [IngestContractComponent],
-        providers: [
-          GlobalEventService,
-          { provide: ApplicationService, useValue: applicationServiceMock },
-          { provide: ActivatedRoute, useValue: activatedRouteMock },
-          { provide: Router, useValue: {} },
-          { provide: MatDialog, useValue: {} },
-          { provide: BASE_URL, useValue: '' },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
+      declarations: [IngestContractComponent],
+      providers: [
+        GlobalEventService,
+        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: Router, useValue: {} },
+        { provide: MatDialog, useValue: {} },
+        { provide: BASE_URL, useValue: '' },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractComponent);

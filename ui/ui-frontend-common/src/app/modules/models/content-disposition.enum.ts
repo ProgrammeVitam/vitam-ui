@@ -35,6 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum ContentDisposition {
-    attachment = 'ATTACHMENT',
-    inline = 'INLINE',
+  attachment = 'ATTACHMENT',
+  inline = 'INLINE',
 }

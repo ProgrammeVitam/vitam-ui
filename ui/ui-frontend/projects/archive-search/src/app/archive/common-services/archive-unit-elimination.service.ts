@@ -48,9 +48,8 @@ export class ArchiveUnitEliminationService {
     private startupService: StartupService,
     private archiveHelperService: ArchiveSearchHelperService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
-  ) {
-  }
+    public dialog: MatDialog,
+  ) {}
 
   launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
@@ -59,37 +58,27 @@ export class ArchiveUnitEliminationService {
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
-    showConfirmBigNumberOfResultsSuscription: Subscription
+    showConfirmBigNumberOfResultsSuscription: Subscription,
   ) {
     if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
-
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(
-        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' }
-      );
+      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen, {
+        panelClass: 'vitamui-dialog',
+      });
 
       showConfirmBigNumberOfResultsSuscription
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
-          this.launchEliminationAnalysis(
-            listOfUACriteriaSearch,
-            tenantIdentifier,
-            currentPage
-          );
+          this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
         });
     }
     showConfirmBigNumberOfResultsSuscription?.unsubscribe();
   }
 
-  private launchEliminationAnalysis(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    tenantIdentifier: number,
-    currentPage: number
-  ) {
+  private launchEliminationAnalysis(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {
     const exportDIPSearchCriteria = {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
@@ -112,11 +101,11 @@ export class ArchiveUnitEliminationService {
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     tenantIdentifier: number,
     currentPage: number,
-    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       confirmSecondActionBigNumberOfResultsActionDialog,
-      { panelClass: 'vitamui-dialog' }
+      { panelClass: 'vitamui-dialog' },
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
@@ -126,11 +115,7 @@ export class ArchiveUnitEliminationService {
       });
   }
 
-  private launchEliminationAction(
-    listOfUACriteriaSearch: SearchCriteriaEltDto[],
-    tenantIdentifier: number,
-    currentPage: number
-  ) {
+  private launchEliminationAction(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {
     const exportDIPSearchCriteria = {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,

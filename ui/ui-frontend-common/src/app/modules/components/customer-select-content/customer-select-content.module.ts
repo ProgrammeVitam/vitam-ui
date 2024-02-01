@@ -41,12 +41,8 @@ import { RouterModule } from '@angular/router';
 import { CustomerSelectContentComponent } from './customer-select-content.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   declarations: [CustomerSelectContentComponent],
   exports: [CustomerSelectContentComponent],
 })
-export class CustomerSelectContentModule { }
+export class CustomerSelectContentModule {}

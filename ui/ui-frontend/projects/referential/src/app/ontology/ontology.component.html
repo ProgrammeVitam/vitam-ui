@@ -1,36 +1,36 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-ontology-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputOntology]="openedItem"></app-ontology-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
-
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
 
-        <h2>
-          <img src="assets/mini-logo-vitam.png"> Paramétrer les <strong>Vocabulaires</strong>
-        </h2>
+        <h2><img src="assets/mini-logo-vitam.png" /> Paramétrer les <strong>Vocabulaires</strong></h2>
 
         <div class="controls">
-
           <vitamui-common-search-bar
             name="ontology-search"
             (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant" i18n-placeholder="@@ontologySearchPlaceholder"
+            placeholder="Nom, Identifiant"
+            i18n-placeholder="@@ontologySearchPlaceholder"
           ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateOntologyDialog()">
-              <i class="vitamui-icon vitamui-icon-add-ontologie btn-create"></i> <span i18n="Create ontology button label@@ontologyListCreateButton">Créer un vocabulaire</span>
+              <i class="vitamui-icon vitamui-icon-add-ontologie btn-create"></i>
+              <span i18n="Create ontology button label@@ontologyListCreateButton">Créer un vocabulaire</span>
             </button>
-            <button class="btn more-actions" (click)="openOntologyImportDialog()" i18n="Import ontology button label@@ontologyListImportButton">
+            <button
+              class="btn more-actions"
+              (click)="openOntologyImportDialog()"
+              i18n="Import ontology button label@@ontologyListImportButton"
+            >
               Importer
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -39,5 +39,4 @@
       <app-ontology-list (ontologyClick)="showOntology($event)" [search]="search"></app-ontology-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

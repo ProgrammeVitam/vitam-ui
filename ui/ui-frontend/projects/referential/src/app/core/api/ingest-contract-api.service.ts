@@ -34,21 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {IngestContract} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IngestContractApiService extends BaseHttpClient<IngestContract> {
-
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/ingestcontract');
   }
@@ -65,20 +63,22 @@ export class IngestContractApiService extends BaseHttpClient<IngestContract> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
   create(ingestContract: IngestContract, headers?: HttpHeaders): Observable<IngestContract> {
-    return super.getHttp().post<any>(super.getApiUrl(), ingestContract, {headers});
+    return super.getHttp().post<any>(super.getApiUrl(), ingestContract, { headers });
   }
 
   check(ingestContract: IngestContract, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', ingestContract, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', ingestContract, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialIngestContract: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialIngestContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialIngestContract, headers);
   }
 }

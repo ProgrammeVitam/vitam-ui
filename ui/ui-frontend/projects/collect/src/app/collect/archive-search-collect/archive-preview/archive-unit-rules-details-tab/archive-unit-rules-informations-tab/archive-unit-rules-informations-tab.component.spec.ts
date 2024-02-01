@@ -171,7 +171,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).not.toBeNaN();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toBeDefined();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toEqual(
-      'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED'
+      'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED',
     );
   });
 
@@ -234,7 +234,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       ClassificationRule: classificationRule,
       DisseminationRule: null,
       AccessRule: null,
-      UpdateOperation: null
+      UpdateOperation: null,
     };
     const archiveUnit: Unit = {
       '#management': unitManagementRules,

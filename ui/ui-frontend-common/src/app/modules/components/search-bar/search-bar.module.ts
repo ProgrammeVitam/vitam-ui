@@ -42,10 +42,7 @@ import { SearchBarComponent } from './search-bar.component';
 
 @NgModule({
   declarations: [SearchBarComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-  ],
-  exports: [SearchBarComponent]
+  imports: [CommonModule, FormsModule],
+  exports: [SearchBarComponent],
 })
-export class SearchBarModule { }
+export class SearchBarModule {}

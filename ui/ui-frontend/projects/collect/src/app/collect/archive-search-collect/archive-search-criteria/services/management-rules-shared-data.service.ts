@@ -63,7 +63,7 @@ export class ManagementRulesSharedDataService {
   allManagementRules = this.managementRules.asObservable();
   hasExactCounts = this.hasExactCount.asObservable();
 
-  constructor(private ruleApiService: RuleApiService) { }
+  constructor(private ruleApiService: RuleApiService) {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);

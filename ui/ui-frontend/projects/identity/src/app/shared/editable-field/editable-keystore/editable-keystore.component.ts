@@ -38,17 +38,14 @@ import { EditableFieldComponent, IdentityProvider, newFile } from 'ui-frontend-c
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import {
-  IdentityProviderService
-} from '../../../customer/customer-preview/sso-tab/identity-provider.service';
+import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 
 @Component({
   selector: 'app-editable-keystore',
   templateUrl: './editable-keystore.component.html',
-  styleUrls: ['./editable-keystore.component.scss']
+  styleUrls: ['./editable-keystore.component.scss'],
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
-
   @Input() identityProvider: IdentityProvider;
 
   file: File;
@@ -56,9 +53,14 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  get canConfirm() { return this.editMode && !!this.file && this.control.valid; }
+  get canConfirm() {
+    return this.editMode && !!this.file && this.control.valid;
+  }
 
-  constructor(private identityProviderService: IdentityProviderService, elementRef: ElementRef) {
+  constructor(
+    private identityProviderService: IdentityProviderService,
+    elementRef: ElementRef,
+  ) {
     super(elementRef);
   }
 
@@ -67,25 +69,27 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
   }
 
   confirm() {
-    if (!this.canConfirm) { return; }
-    this.identityProviderService.updateKeystore(this.identityProvider.id, this.file, this.control.value)
-    .subscribe(
+    if (!this.canConfirm) {
+      return;
+    }
+    this.identityProviderService.updateKeystore(this.identityProvider.id, this.file, this.control.value).subscribe(
       () => {
         this.originValue = this.file;
         this.cancel();
       },
       () => {
         this.control.setErrors({ badPassword: true });
-      });
-
+      },
+    );
   }
 
   cancel() {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     this.editMode = false;
     this.file = null;
     this.fileInput.nativeElement.value = null;
     this.control.reset();
   }
-
 }

@@ -94,7 +94,7 @@ describe('TransactionListComponent', () => {
       editTransaction: of({}),
       validateTransaction: of({}),
       search: of([transaction]),
-    }
+    },
   );
 
   const TransactionResolverStub = {

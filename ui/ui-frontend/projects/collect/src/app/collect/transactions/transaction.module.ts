@@ -34,32 +34,23 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
-import {CommonModule} from '@angular/common';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
-import {TransactionResolver} from './transaction-resolver.service';
-import {TransactionRoutingModule} from './transaction-routing.module';
-import {TransactionsComponent} from './transactions.component';
-
+import { TransactionResolver } from './transaction-resolver.service';
+import { TransactionRoutingModule } from './transaction-routing.module';
+import { TransactionsComponent } from './transactions.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        TransactionRoutingModule,
-        MatMenuModule,
-        MatSidenavModule,
-        VitamUICommonModule,
-        MatProgressSpinnerModule,
-    ],
-  providers: [TransactionResolver, {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}],
+  imports: [CommonModule, TransactionRoutingModule, MatMenuModule, MatSidenavModule, VitamUICommonModule, MatProgressSpinnerModule],
+  providers: [TransactionResolver, { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [TransactionsComponent, TransactionListComponent],
 })
-export class TransactionModule {
-}
+export class TransactionModule {}

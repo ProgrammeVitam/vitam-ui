@@ -73,9 +73,6 @@ import { ProfileService } from './profile.service';
     ProfileRoutingModule,
   ],
   declarations: [ProfileComponent],
-  providers: [
-    ProfileResolver,
-    ProfileService,
-  ]
+  providers: [ProfileResolver, ProfileService],
 })
-export class ProfileModule { }
+export class ProfileModule {}

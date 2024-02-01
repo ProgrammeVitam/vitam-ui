@@ -1,18 +1,18 @@
 <div>
   <form [formGroup]="form">
-    <vitamui-common-slide-toggle formControlName="usePlatformThreshold" >
+    <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
       {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
     </vitamui-common-slide-toggle>
 
     <div class="row">
       <div class="col-12">
         <div *ngIf="!form.get('usePlatformThreshold').value">
-          <mat-form-field class="vitamui-mat-select"   required="required">
+          <mat-form-field class="vitamui-mat-select" required="required">
             <mat-select
               formControlName="bulkOperationsThreshold"
               placeholder="{{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}"
               required="required"
-              class="form-select  h-100 w-100 vitamui-mat-select"
+              class="form-select h-100 w-100 vitamui-mat-select"
             >
               <mat-option *ngFor="let thresholdValue of thresholdValues" [value]="thresholdValue">
                 {{ 'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES' | translate: { threshold: thresholdValue | number } }}
@@ -25,9 +25,14 @@
         </div>
       </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
-      <button type="submit" class="btn primary mr-4" (click)="submitModification()" [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid ">
+      <button
+        type="submit"
+        class="btn primary mr-4"
+        (click)="submitModification()"
+        [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid"
+      >
         {{ 'COMMON.SUBMIT' | translate }}
       </button>
     </div>

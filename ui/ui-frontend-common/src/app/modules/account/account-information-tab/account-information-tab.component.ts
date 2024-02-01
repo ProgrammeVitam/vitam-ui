@@ -43,7 +43,7 @@ import { AccountService } from '../account.service';
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
-  styleUrls: ['./account-information-tab.component.scss']
+  styleUrls: ['./account-information-tab.component.scss'],
 })
 export class AccountInformationTabComponent implements OnInit {
   public form: FormGroup;
@@ -54,7 +54,7 @@ export class AccountInformationTabComponent implements OnInit {
   set account(account: Account) {
     this._account = account;
     if (this.account?.userInfo) {
-        this.language = this.account.userInfo.language;
+      this.language = this.account.userInfo.language;
     }
     this.resetForm(this.account);
   }
@@ -66,26 +66,17 @@ export class AccountInformationTabComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
   ) {
     this.form = this.formBuilder.group({
       id: [null],
       firstname: [{ value: null, disabled: true }, Validators.required],
       lastname: [{ value: null, disabled: true }, Validators.required],
-      email: [
-        { value: null, disabled: true },
-        [Validators.required, Validators.email],
-      ],
+      email: [{ value: null, disabled: true }, [Validators.required, Validators.email]],
       level: [{ value: null, disabled: true }],
       otp: [{ value: null, disabled: true }],
-      mobile: [
-        { value: null, disabled: true },
-        [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
-      ],
-      phone: [
-        { value: null, disabled: true },
-        [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
-      ],
+      mobile: [{ value: null, disabled: true }, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
+      phone: [{ value: null, disabled: true }, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
       address: [{ value: null, disabled: true }, Validators.required],
       type: [{ value: null, disabled: true }],
       profileGroup: [{ value: null, disabled: true }],

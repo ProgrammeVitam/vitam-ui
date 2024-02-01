@@ -57,7 +57,7 @@ export class CustomerService {
     private customerApi: CustomerApiService,
     private snackBarService: VitamUISnackBarService,
     private sanitizer: DomSanitizer,
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ) {}
 
   get(id: string): Observable<Customer> {
@@ -84,47 +84,45 @@ export class CustomerService {
   }
 
   create(customer: Customer, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.createCustomer(customer, logos)
-      .pipe(
-        tap(
-          (response: Customer) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
-              icon: 'vitamui-icon-bank',
-              translateParams: {
-                param1: response.code
-              }
-            });
-          },
-          () => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
-              icon: 'vitamui-icon-danger',
-            });
-          }
-        )
-      );
+    return this.customerApi.createCustomer(customer, logos).pipe(
+      tap(
+        (response: Customer) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
+            icon: 'vitamui-icon-bank',
+            translateParams: {
+              param1: response.code,
+            },
+          });
+        },
+        () => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
+            icon: 'vitamui-icon-danger',
+          });
+        },
+      ),
+    );
   }
 
-  patch(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.patchCustomer(partialCustomer, logos)
-      .pipe(
-        tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
-        tap(
-          (updatedCustomer: Customer) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.CUSTOMER_UPDATE',
-              icon: 'vitamui-icon-bank',
-              translateParams: {
-                param1: updatedCustomer.code
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[]): Observable<Customer> {
+    return this.customerApi.patchCustomer(partialCustomer, logos).pipe(
+      tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
+      tap(
+        (updatedCustomer: Customer) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.CUSTOMER_UPDATE',
+            icon: 'vitamui-icon-bank',
+            translateParams: {
+              param1: updatedCustomer.code,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   public getLogoUrl(id: string, type: AttachmentType): Observable<SafeResourceUrl> {
@@ -145,7 +143,7 @@ export class CustomerService {
           return null;
         }
         return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
-      })
+      }),
     );
   }
 

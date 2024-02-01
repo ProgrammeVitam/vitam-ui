@@ -2,9 +2,9 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label >{{ 'SHARED.EDITABLE_PARAMS.CUSTOM_SETTINGS' | translate }}</label>
+        <label>{{ 'SHARED.EDITABLE_PARAMS.CUSTOM_SETTINGS' | translate }}</label>
         <span class="editable-field-text-content">
-          <div *ngFor="let domain of getList(control.value) | keyvalue ">{{ domain.key }} : {{ domain.value }} </div>
+          <div *ngFor="let domain of getList(control.value) | keyvalue">{{ domain.key }} : {{ domain.value }}</div>
         </span>
         <div class="editable-field-control mt-1">
           <app-custom-params
@@ -12,9 +12,10 @@
             [formControl]="control"
             [selectedValues]="control?.value"
             (click)="onDomainInputClick()"
-            [keyPlaceholder]="'SHARED.EDITABLE_PARAMS.KEY'" [valuePlaceholder]="'SHARED.EDITABLE_PARAMS.VALUE'"
+            [keyPlaceholder]="'SHARED.EDITABLE_PARAMS.KEY'"
+            [valuePlaceholder]="'SHARED.EDITABLE_PARAMS.VALUE'"
           >
-        </app-custom-params>
+          </app-custom-params>
         </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
@@ -41,5 +42,4 @@
   </ng-template>
 </ng-container>
 
-<div *ngIf="false" class="read-only-field disabled-input">
-</div>
+<div *ngIf="false" class="read-only-field disabled-input"></div>

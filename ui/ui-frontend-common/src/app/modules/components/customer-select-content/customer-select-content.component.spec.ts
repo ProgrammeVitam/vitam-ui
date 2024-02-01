@@ -45,13 +45,12 @@ describe('CustomerSelectContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomerSelectContentComponent ],
+      declarations: [CustomerSelectContentComponent],
       providers: [
         { provide: ActivatedRoute, useValue: {} },
         { provide: Router, useValue: {} },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 .vitamui-mat-select.mat-select-panel {
-    @include mat-select-panel;
+  @include mat-select-panel;
 }
 
 .mat-drawer,
@@ -12,171 +12,169 @@
 }
 
 .vitamui-mat-select.mat-form-field {
-  
-    font-size: 16px;
-    font-weight: 500;
-    width: 240px;
+  font-size: 16px;
+  font-weight: 500;
+  width: 240px;
 
-    .mat-form-field-subscript-wrapper {
-        padding-left: 30px;
-        top: 50px;
-    }
+  .mat-form-field-subscript-wrapper {
+    padding-left: 30px;
+    top: 50px;
+  }
 
-    &.mat-focused {
-        .mat-form-field-label {
-            color: var(--vitamui-grey-600);
-        }
-    }
-
-    &:not(.vitamui-mat-select-mini).mat-focused {
-        .mat-form-field-flex {
-            outline: none;
-            border: solid 1px var(--vitamui-primary) !important;
-        }
-    }
-
-    .mat-form-field-wrapper {
-        padding-bottom: 0;
-        background-color: white;
-    }
-
-    &.no-bottom-padding .mat-form-field-wrapper {
-        padding-bottom: 0;
-    }
-
-    &.mat-form-field-invalid .mat-form-field-label {
-        color: $red;
-    }
-
+  &.mat-focused {
     .mat-form-field-label {
-        color: var(--vitamui-grey-600);
-        font-weight: 400;
-
-        .mat-form-field-required-marker {
-            color: $red;
-        }
+      color: var(--vitamui-grey-600);
     }
+  }
 
-    &.mat-form-field-type-mat-input {
-        .mat-form-field-flex .mat-form-field-infix {
-            transition: border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-                padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
-            padding-bottom: 0;
-        }
-
-        &:not(.mat-form-field-should-float) .mat-form-field-flex .mat-form-field-infix {
-            border-top-width: 0;
-        }
-    }
-
-    .mat-form-field-underline {
-        display: none;
-    }
-
-    &.mat-form-field-type-mat-select {
-        &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-            display: none;
-        }
-
-        &.mat-form-field-disabled {
-            .mat-form-field-flex {
-                background-color: var(--vitamui-grey-300);
-                border: none;
-                @include elevation-0;
-
-                .mat-select .mat-select-value {
-                    font-weight: normal;
-                    color: var(--vitamui-grey-700);
-                }
-
-                .select-arrow {
-                    i {
-                        color: var(--vitamui-grey-700);
-                    }
-                }
-            }
-        }
-    }
-
-    .mat-form-field-label {
-        color: var(--vitamui-grey-900);
-    }
-
+  &:not(.vitamui-mat-select-mini).mat-focused {
     .mat-form-field-flex {
-        vertical-align: top;
-        border-radius: 4px;
-        transition: box-shadow 200ms ease-out;
-        height: 60px;
-        align-items: center;
-        
-        padding: 0 30px;
-        border: none;
+      outline: none;
+      border: solid 1px var(--vitamui-primary) !important;
+    }
+  }
 
-        @include input-elevation-dark;
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+    background-color: white;
+  }
 
-        .mat-form-field-infix {
-            border-top-width: 0;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
+  &.no-bottom-padding .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
 
-        .mat-select .mat-select-arrow-wrapper {
-            visibility: hidden;
-        }
+  &.mat-form-field-invalid .mat-form-field-label {
+    color: $red;
+  }
 
-        .select-arrow {
-            display: flex;
-            flex-direction: column;
-            margin-top: -8px;
+  .mat-form-field-label {
+    color: var(--vitamui-grey-600);
+    font-weight: 400;
 
-            i {
-                height: 10px;
-                font-size: 18px;
-            }
-        }
+    .mat-form-field-required-marker {
+      color: $red;
+    }
+  }
+
+  &.mat-form-field-type-mat-input {
+    .mat-form-field-flex .mat-form-field-infix {
+      transition:
+        border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    :not(.mat-form-field-disabled).mat-form-field-flex {
-      
+    &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
+      padding-bottom: 0;
+    }
+
+    &:not(.mat-form-field-should-float) .mat-form-field-flex .mat-form-field-infix {
+      border-top-width: 0;
+    }
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  &.mat-form-field-type-mat-select {
+    &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      display: none;
+    }
+
+    &.mat-form-field-disabled {
+      .mat-form-field-flex {
+        background-color: var(--vitamui-grey-300);
+        border: none;
+        @include elevation-0;
 
         .mat-select .mat-select-value {
-            color: var(--vitamui-grey-900);
-            font-weight: 700;
+          font-weight: normal;
+          color: var(--vitamui-grey-700);
         }
 
         .select-arrow {
-            i {
-                color: var(--vitamui-primary);
-            }
+          i {
+            color: var(--vitamui-grey-700);
+          }
         }
+      }
+    }
+  }
+
+  .mat-form-field-label {
+    color: var(--vitamui-grey-900);
+  }
+
+  .mat-form-field-flex {
+    vertical-align: top;
+    border-radius: 4px;
+    transition: box-shadow 200ms ease-out;
+    height: 60px;
+    align-items: center;
+
+    padding: 0 30px;
+    border: none;
+
+    @include input-elevation-dark;
+
+    .mat-form-field-infix {
+      border-top-width: 0;
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
 
-    &.no-padding .mat-form-field-wrapper {
-        padding-bottom: 0;
+    .mat-select .mat-select-arrow-wrapper {
+      visibility: hidden;
     }
+
+    .select-arrow {
+      display: flex;
+      flex-direction: column;
+      margin-top: -8px;
+
+      i {
+        height: 10px;
+        font-size: 18px;
+      }
+    }
+  }
+
+  :not(.mat-form-field-disabled).mat-form-field-flex {
+    .mat-select .mat-select-value {
+      color: var(--vitamui-grey-900);
+      font-weight: 700;
+    }
+
+    .select-arrow {
+      i {
+        color: var(--vitamui-primary);
+      }
+    }
+  }
+
+  &.no-padding .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
 }
 
 .vitamui-mat-select.vitamui-mat-select-mini.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-flex {
+    height: 25px;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    @include elevation-0;
+  }
+
+  .mat-form-field-infix {
     width: 100%;
-
-    .mat-form-field-wrapper {
-        padding-bottom: 0;
-    }
-
-    .mat-form-field-flex {
-        height: 25px;
-        padding: 0;
-        border: none;
-        box-shadow: none;
-        @include elevation-0;
-    }
-
-    .mat-form-field-infix {
-        width: 100%;
-        padding: 0;
-    }
+    padding: 0;
+  }
 }

@@ -36,16 +36,13 @@
  */
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import {
-  Directive, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonTableFilter]',
-  exportAs: 'vitamuiCommonTableFilter'
+  exportAs: 'vitamuiCommonTableFilter',
 })
 export class TableFilterDirective {
-
   @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
 
   @Output() readonly filterClosed = new EventEmitter();
@@ -55,19 +52,22 @@ export class TableFilterDirective {
   constructor(
     private overlay: Overlay,
     private elementRef: ElementRef,
-    private viewContainerRef: ViewContainerRef
-  ) { }
+    private viewContainerRef: ViewContainerRef,
+  ) {}
 
   @HostListener('click')
   openTemplate() {
-    const positionStrategy = this.overlay.position()
+    const positionStrategy = this.overlay
+      .position()
       .flexibleConnectedTo(this.elementRef)
-      .withPositions([{
-        overlayX: 'start',
-        overlayY: 'top',
-        originX: 'start',
-        originY: 'bottom'
-      }]);
+      .withPositions([
+        {
+          overlayX: 'start',
+          overlayY: 'top',
+          originX: 'start',
+          originY: 'bottom',
+        },
+      ]);
     const scrollStrategy = this.overlay.scrollStrategies.reposition({ autoClose: true });
     this.overlayRef = this.overlay.create({
       positionStrategy,
@@ -89,5 +89,4 @@ export class TableFilterDirective {
       this.filterClosed.emit();
     }
   }
-
 }

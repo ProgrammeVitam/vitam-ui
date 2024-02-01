@@ -45,7 +45,7 @@ import { RoleComponent } from './role.component';
 export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RoleToggleComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -55,7 +55,6 @@ export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   providers: [ROLE_TOGGLE_VALUE_ACCESSOR],
 })
 export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterContentChecked, AfterContentInit {
-
   @ContentChildren(RoleComponent, { descendants: true }) roleComponents: QueryList<RoleComponent>;
 
   onChange: (_: any) => void;
@@ -89,7 +88,7 @@ export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterC
     // TODO
   }
 
-  writeValue(roles: Array<{ name: string, value: boolean }>): void {
+  writeValue(roles: Array<{ name: string; value: boolean }>): void {
     this.roles = roles || [];
     if (this.roleComponents) {
       this.roleComponents.forEach((roleComponent) => {
@@ -110,11 +109,7 @@ export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterC
     });
   }
 
-  constructor() {
+  constructor() {}
 
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
