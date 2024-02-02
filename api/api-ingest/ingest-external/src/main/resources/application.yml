@@ -10,7 +10,7 @@ spring:
     version: v1
   mvc:
     favicon:
-      enabled : false
+      enabled: false
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -27,7 +27,12 @@ management:
     prometheus:
       enabled: true
 
+server:
+  tomcat:
+    max-swallow-size: 100GB
+    max-http-form-post-size: 100GB
+
 swagger:
- layer: api-external
- file-path: file:../../../tools/swagger/docs/api-external/ingest-external/swagger.json
+  layer: api-external
+  file-path: file:../../../tools/swagger/docs/api-external/ingest-external/swagger.json
 

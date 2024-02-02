@@ -61,7 +61,13 @@ server {
 {% if groups['hosts_ui_ingest']|length > 0 %}
   # UI INGEST
   location /ingest {
+     {% if gateway.enabled | default(False) is sameas true %}
+      rewrite /ingest/(.*) /$1  break;
+      proxy_pass https://INGEST;
+    {% else %}
     proxy_pass https://INGEST/ingest;
+    {% endif %}
+
     include /etc/nginx/conf.d/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering

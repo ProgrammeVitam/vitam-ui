@@ -96,14 +96,14 @@ public class IngestExternalController {
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction)
         throws PreconditionFailedException, InvalidParseOperationException, IOException {
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        if(criteria.isPresent()) {
+        if (criteria.isPresent()) {
             SanityChecker.sanitizeCriteria(VitamUIUtils
                 .convertObjectFromJson(criteria.get(), Object.class));
         }
@@ -114,7 +114,8 @@ public class IngestExternalController {
 
     @Secured(ServicesData.ROLE_GET_INGEST)
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getOne(@PathVariable("id") final String id) throws PreconditionFailedException, InvalidParseOperationException {
+    public LogbookOperationDto getOne(@PathVariable("id") final String id)
+        throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get One Ingest id={}", id);
@@ -133,7 +134,7 @@ public class IngestExternalController {
 
     @Secured(ServicesData.ROLE_CREATE_INGEST)
     @ApiOperation(value = "Upload an streaming SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,

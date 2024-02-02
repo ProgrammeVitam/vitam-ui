@@ -52,7 +52,6 @@ public class CommonConstants {
 
 
 
-
     public static final String ADMIN_PATH = "/admin/v0";
 
     public static final String PATH_ID = "/{id}";
@@ -344,16 +343,9 @@ public class CommonConstants {
      * Constants of ingest operations
      */
 
-    public static final String VITAMUI_TEMP_DIRECTORY = "vitam.tmp.folder";
-
-    public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
     public static final String INGEST_UPLOAD = "/upload";
-    public static final String INGEST_UPLOAD_V2 = "/upload-v2";
     public static final String X_ACTION = "X-Action";
     public static final String X_CONTEXT_ID = "X-Context-Id";
-    public static final String X_SIZE_TOTAL = "X-Size-Total";
-    public static final String X_CHUNK_OFFSET = "X-Chunk-Offset";
-    public static final String LOGO = "LOGO";
     public static final String HISTORY = "history";
     public static final String EXTERNAL_ONTOLOGIES_LIST = "/external-ontologies";
     public static final String INTERNAL_ONTOLOGY_LIST = "/internal-ontologies";

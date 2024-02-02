@@ -93,14 +93,14 @@ public class IngestInternalController {
         @RequestParam(required = false) final Optional<DirectionDto> direction)
         throws PreconditionFailedException, InvalidParseOperationException, IOException {
 
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        if(criteria.isPresent()) {
+        if (criteria.isPresent()) {
             SanityChecker.sanitizeCriteria(VitamUIUtils
                 .convertObjectFromJson(criteria.get(), Object.class));
         }
@@ -112,7 +112,8 @@ public class IngestInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getOne(@PathVariable("id") String id) throws PreconditionFailedException , InvalidParseOperationException {
+    public LogbookOperationDto getOne(@PathVariable("id") String id)
+        throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get Ingest Entities for id={} ", id);
@@ -133,14 +134,14 @@ public class IngestInternalController {
         } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
-        } catch (PreconditionFailedException exception ) {
-            LOGGER.error("The id parameter is not valid" , exception.getMessage());
-            throw new PreconditionFailedException("The id parameter is not valid" ,exception.getMessage());
+        } catch (PreconditionFailedException exception) {
+            LOGGER.error("The id parameter is not valid", exception.getMessage());
+            throw new PreconditionFailedException("The id parameter is not valid", exception.getMessage());
         }
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,

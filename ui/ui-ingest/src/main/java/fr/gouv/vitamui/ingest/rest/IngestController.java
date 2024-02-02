@@ -97,13 +97,13 @@ public class IngestController extends AbstractUiRestController {
         @RequestParam final Optional<DirectionDto> direction) throws PreconditionFailedException,
         InvalidParseOperationException, IOException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
-        if(criteria.isPresent()) {
+        if (criteria.isPresent()) {
             SanityChecker.sanitizeCriteria(VitamUIUtils
                 .convertObjectFromJson(criteria.get(), Object.class));
         }
@@ -139,7 +139,7 @@ public class IngestController extends AbstractUiRestController {
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PostMapping(CommonConstants.INGEST_UPLOAD_V2)
+    @PostMapping(CommonConstants.INGEST_UPLOAD)
     public ResponseEntity<Void> ingest(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
         @RequestHeader(value = CommonConstants.X_ACTION) final String xAction,

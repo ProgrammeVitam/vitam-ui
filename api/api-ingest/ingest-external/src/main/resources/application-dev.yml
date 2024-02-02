@@ -1,10 +1,10 @@
 debug: false
+
 spring:
   config:
     use-legacy-processing: true
   profiles:
     active: dev, swagger
-
 
   cloud:
     consul: #disabled for dev
@@ -62,8 +62,23 @@ opentracing:
       host: localhost
       port: 6831
 
+
 logging:
   level:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.iam.security: DEBUG
     #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: gateway
+
+gateway:
+  enabled: true
+
+server:
+  ssl:
+    client-auth: want
+    client-certificate-header-name: x-ssl-cert
