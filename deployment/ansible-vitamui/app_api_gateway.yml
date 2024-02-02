@@ -79,3 +79,13 @@
     - { role: nginx_webapp, when: gateway.enabled | default(False) }
   vars:
     vitamui_struct: "{{ vitamui.collect }}"
+
+
+- hosts: hosts_ui_ingest
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - { role: assets_copy, when: gateway.enabled | default(False) }
+    - { role: nginx_webapp, when: gateway.enabled | default(False) }
+  vars:
+    vitamui_struct: "{{ vitamui.ingest }}"

@@ -54,10 +54,6 @@ export class IngestService extends SearchService<any> {
 
   logbookOperationsReloaded = new Subject<LogbookOperation[]>();
 
-  getBaseUrl() {
-    return this.ingestApiService.getBaseUrl();
-  }
-
   get(id: string, tenantIdentifier?: string): Observable<any> {
     const headers = new HttpHeaders();
     if (tenantIdentifier) {

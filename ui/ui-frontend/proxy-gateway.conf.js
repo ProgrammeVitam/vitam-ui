@@ -180,7 +180,7 @@ const PROXY_CONFIG = [
     },
   },
   {
-    // pastis to Referential External Backend
+    // Pastis to Referential External Backend
     context: [
       '/pastis-api/archival-profile',
       '/pastis-api/profile',
@@ -286,7 +286,7 @@ const PROXY_CONFIG = [
       protocol: 'https:',
       host: 'localhost',
       port: 8087,
-      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-archive-search.p12'),
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-collect.p12'),
       passphrase: 'changeme',
     },
     changeOrigin: true,
@@ -322,8 +322,73 @@ const PROXY_CONFIG = [
       '^/collect-api/transactions/archive-units/([^/]+)/update-units-metadata': '/collect-api/v1/transactions/$1/archive-units/update-units-metadata',
       '^/collect-api/transactions/archive-units': '/collect-api/v1/transactions',
       '^/collect-api/transactions': '/collect-api/v1/transactions',
+    }
+  },
+  {
+    // ingest to Referential External Backend
+    context: [
+      '/ingest-api/ontology'
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8087,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-ingest.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/ingest-api': '/ingest/v1',
     },
   },
+  {
+    // ingest to IAM External Backend
+    context: [
+      '/ingest-api/ui',
+      '/ingest-api/externalparameters',
+      '/ingest-api/security',
+      '/ingest-api/tenants',
+      '/ingest-api/userinfos/me',
+      '/ingest-api/users/analytics',
+      '/ingest-api/logbooks/operations',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8083,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-ingest.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/ingest-api/security': '/iam/v1/security',
+      '^/ingest-api/userinfos': '/iam/v1/userinfos',
+      '^/ingest-api/ui/applications': '/iam/v1/applications',
+      '^/ingest-api/users': '/iam/v1/users',
+      '^/ingest-api/externalparameters': '/iam/v1/externalparameters/me',
+      '^/ingest-api': '/v1',
+    },
+  },
+  {
+    context: ['/ingest-api/ingest'],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8088,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-ingest.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/ingest-api/': '/v1/'
+    },
+  }
 ];
 
 module.exports = PROXY_CONFIG;

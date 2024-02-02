@@ -90,28 +90,12 @@ spring:
               /referential-api/profiles/**,
               /referential-api/externalparameters/**,
 
-              /archive-api/ui/**,
-              /archive-api/security,
-              /archive-api/userinfos/me,
-              /archive-api/users/**,
-              /archive-api/profiles/**,
-              /archive-api/customers/**,
-              /archive-api/tenants/**,
-              /archive-api/logbooks/**,
-              /archive-api/subrogations/**,
-              /archive-api/owners/**,
-
-              /reporting-api/security,
-              /reporting-api/ui/**,
-              /reporting-api/userinfos/me,
-              /reporting-api/users/analytics,
-              /reporting-api/subrogations/**,
-
               /archive-search-api/ui/applications/**,
               /archive-search-api/externalparameters/**,
               /archive-search-api/security,
               /archive-search-api/tenants/**,
               /archive-search-api/userinfos/**,
+              /archive-search-api/subrogations/**,
               /archive-search-api/users/analytics,
               /archive-search-api/logbooks/operations/**,
               /archive-search-api/accesscontracts/**,
@@ -119,6 +103,7 @@ spring:
               /pastis-api/ui/**,
               /pastis-api/security,
               /pastis-api/userinfos/**,
+              /pastis-api/subrogations/**,
               /pastis-api/users/analytics,
               /pastis-api/logbooks/operations/**,
               /pastis-api/accesscontracts/**,
@@ -128,9 +113,20 @@ spring:
               /collect-api/security,
               /collect-api/tenants/**,
               /collect-api/userinfos/**,
+              /collect-api/subrogations/**,
               /collect-api/users/analytics,
               /collect-api/logbooks/operations/**,
-              /collect-api/accesscontracts/**
+              /collect-api/accesscontracts/**,
+
+              /ingest-api/ui/applications/**,
+              /ingest-api/externalparameters/**,
+              /ingest-api/security,
+              /ingest-api/tenants/**,
+              /ingest-api/userinfos/**,
+              /ingest-api/subrogations/**,
+              /ingest-api/users/analytics,
+              /ingest-api/logbooks/operations/**,
+              /ingest-api/accesscontracts/**
 
           filters:
             # Portal IAM API
@@ -147,12 +143,8 @@ spring:
             - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
             - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
-
-            # Archive IAM API
-            - RewritePath=/archive-api/ui(?<segment>.*),/iam/v1$\{segment}
-            - RewritePath=/archive-api/logbooks(?<segment>.*),/v1/logbooks/$\{segment}
-            - RewritePath=/archive-api/(?<segment>.*),/iam/v1/$\{segment}
 
             # Archive Search IAM API
             - RewritePath=/archive-search-api/ui/(?<segment>.*),/iam/v1/$\{segment}
@@ -161,6 +153,7 @@ spring:
             - RewritePath=/archive-search-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/archive-search-api/(?<segment>.*),/v1/$\{segment}
 
             # Pastis IAM API
@@ -168,6 +161,7 @@ spring:
             - RewritePath=/pastis-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/pastis-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/pastis-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/pastis-api/(?<segment>.*),/v1/$\{segment}
 
             # Collect IAM API
@@ -176,7 +170,19 @@ spring:
             - RewritePath=/collect-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/collect-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
+
+
+            # Ingest IAM API
+            - RewritePath=/ingest-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/ingest-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/ingest-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/ingest-api/security(?<segment>.*),/iam/v1/security$\{segment},
+            - RewritePath=/ingest-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
+            - RewritePath=/ingest-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+            - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
         - id: referential-external-service
           uri: {{ 'https' if vitamui.referential_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}
@@ -279,6 +285,17 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
+
+        - id: ingest-external-service
+          uri: {{ 'https' if vitamui.ingest_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.ingest_external.host }}:{{ vitamui.ingest_external.port_service }}
+          predicates:
+            - >
+              Path=
+              /ingest-api/**
+
+          filters:
+            # Ingest API
+            - RewritePath=/ingest-api/,/v1/
     discovery:
       enabled: false
 

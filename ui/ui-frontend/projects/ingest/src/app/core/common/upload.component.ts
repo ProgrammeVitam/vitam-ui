@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BytesPipe, Logger, StartupService } from 'ui-frontend-common';
 
@@ -142,7 +142,7 @@ export class UploadComponent implements OnInit {
     }
 
     this.uploadService
-      .uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
+      .uploadIngest(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
         this.snackBar.dismiss();
         if (
           this.contextId === IngestType.HOLDING_SCHEME ||
