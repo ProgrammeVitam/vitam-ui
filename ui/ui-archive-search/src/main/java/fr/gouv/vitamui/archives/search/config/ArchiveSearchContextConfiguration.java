@@ -25,6 +25,7 @@
  */
 package fr.gouv.vitamui.archives.search.config;
 
+import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
@@ -113,5 +114,9 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
 
- 
+    @Bean
+    public ArchiveUnitClient getArchiveUnitClient(
+        final ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory) {
+        return archiveSearchExternalRestClientFactory.getArchiveUnitClient();
+    }
 }

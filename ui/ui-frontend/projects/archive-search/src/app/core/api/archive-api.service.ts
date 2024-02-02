@@ -40,8 +40,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
   ApiUnitObject,
-  BaseHttpClient,
   BASE_URL,
+  BaseHttpClient,
   Ontology,
   PageRequest,
   PaginatedResponse,
@@ -50,7 +50,9 @@ import {
   SearchResponse,
   Unit,
 } from 'ui-frontend-common';
+import { ArchiveUnit } from '../../archive/models/archive-unit';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
+import { JsonPatchDto, MultiJsonPatchDto } from '../../archive/models/json-patch';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
 import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
@@ -198,5 +200,39 @@ export class ArchiveApiService extends BaseHttpClient<any> {
 
   getInternalOntologiesList(): Observable<Ontology[]> {
     return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
+  }
+
+  /**
+   * Updates many archive units asynchronously in one Vitam operation.
+   * Can perform only add or replace operations on current archive units.
+   *
+   * @param archiveUnits archive units to update.
+   * @param headers optionnal headers.
+   * @returns a wrapped operation id.
+   */
+  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[], headers?: HttpHeaders): Observable<{ operationId: String }> {
+    return this.http.patch<{ operationId: String }>(`${this.baseUrl}/archive-units`, archiveUnits, { headers });
+  }
+
+  /**
+   * Updates one archive unit asynchronously by using a jsonPatch in one Vitam operation.
+   *
+   * @param jsonPatchDto a jsonPatchDto.
+   * @param headers optionnal headers.
+   * @returns a wrapped operation id.
+   */
+  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto, headers?: HttpHeaders): Observable<{ operationId: String }> {
+    return this.http.patch<{ operationId: String }>(`${this.baseUrl}/archive-units/update/single`, jsonPatchDto, { headers });
+  }
+
+  /**
+   * Updates many archive unit asynchronously by using jsonPatches in one Vitam operation.
+   *
+   * @param multiJsonPatchDto a list of jsonPatchDto.
+   * @param headers optionnal headers.
+   * @returns a wrapped operation id.
+   */
+  asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto, headers?: HttpHeaders) {
+    return this.http.patch<{ operationId: String }>(`${this.baseUrl}/archive-units/update/multiple`, multiJsonPatchDto, { headers });
   }
 }
