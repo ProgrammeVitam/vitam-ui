@@ -38,7 +38,10 @@ package fr.gouv.vitamui.ui.commons.security;
 
 import fr.gouv.vitamui.commons.security.client.config.BaseCasSecurityConfigurer;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
+import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -119,6 +122,16 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public TomcatContextCustomizer sameSiteCookiesConfig() {
+        return context -> {
+            final Rfc6265CookieProcessor cookieProcessor = new Rfc6265CookieProcessor();
+            // setting SameSite to LAX : No third-party cookies are sent, except for Get requests that navigate to the target UR
+            cookieProcessor.setSameSiteCookies(SameSiteCookies.LAX.getValue());
+            context.setCookieProcessor(cookieProcessor);
+        };
     }
 
 }
