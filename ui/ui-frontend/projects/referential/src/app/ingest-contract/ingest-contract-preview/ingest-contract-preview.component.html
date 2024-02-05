@@ -38,12 +38,22 @@
       </mat-tab>
 
       <mat-tab label="Objets" i18n-label="Objets tab@@ingestContractPreviewTabObjects" class="no-padding">
-        <app-ingest-contract-object-tab [readOnly]="readOnly" [ingestContract]="ingestContract" (updated)="updatedChange($event, 2)" #objectsTab>
+        <app-ingest-contract-object-tab
+          [readOnly]="readOnly"
+          [ingestContract]="ingestContract"
+          (updated)="updatedChange($event, 2)"
+          #objectsTab
+        >
         </app-ingest-contract-object-tab>
       </mat-tab>
 
       <mat-tab label="Héritage" i18n-label="Objets tab@@ingestContractPreviewTabHeritage" class="no-padding">
-        <app-ingest-contract-heritage-tab  [readOnly]="readOnly" [ingestContract]="ingestContract" (updated)="updatedChange($event, 3)" #heritageTab>
+        <app-ingest-contract-heritage-tab
+          [readOnly]="readOnly"
+          [ingestContract]="ingestContract"
+          (updated)="updatedChange($event, 3)"
+          #heritageTab
+        >
         </app-ingest-contract-heritage-tab>
       </mat-tab>
 

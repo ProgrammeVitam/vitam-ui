@@ -1,7 +1,7 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {VitamUIRadioGroupComponent} from './vitamui-radio-group.component';
+import { VitamUIRadioGroupComponent } from './vitamui-radio-group.component';
 
 describe('VitamuiRadioGroupComponent', () => {
   let component: VitamUIRadioGroupComponent;
@@ -10,9 +10,8 @@ describe('VitamuiRadioGroupComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [VitamUIRadioGroupComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

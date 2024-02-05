@@ -2,54 +2,60 @@
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 
-<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
   <cdk-step>
     <div class="content">
-      <div class="large text bold">{{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.TITLE' | translate}}</div>
+      <div class="large text bold">{{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.TITLE' | translate }}</div>
 
       <form [formGroup]="form">
-          <div class="d-flex">
-            <vitamui-common-input formControlName="emailFirstPart" [placeholder]="'SUBROGATION.HOME.RESULTS_TABLE.MODAL.MAIL' | translate" required>
-              <ng-container *ngIf="form.get('emailFirstPart')?.touched">
-                <vitamui-common-input-error *ngIf="form?.get('emailFirstPart')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
-              </ng-container>
-            </vitamui-common-input>
+        <div class="d-flex">
+          <vitamui-common-input
+            formControlName="emailFirstPart"
+            [placeholder]="'SUBROGATION.HOME.RESULTS_TABLE.MODAL.MAIL' | translate"
+            required
+          >
+            <ng-container *ngIf="form.get('emailFirstPart')?.touched">
+              <vitamui-common-input-error *ngIf="form?.get('emailFirstPart')?.hasError('required')">{{
+                'COMMON.REQUIRED' | translate
+              }}</vitamui-common-input-error>
+            </ng-container>
+          </vitamui-common-input>
 
-            <h4 class="mx-2 mt-1 light">@</h4>
+          <h4 class="mx-2 mt-1 light">&#64;</h4>
 
-            <mat-form-field class="vitamui-mat-select">
-                <mat-select formControlName="domain" panelClass="vitamui-mat-select" required>
-                  <mat-option value="{{domainTmp}}" *ngFor="let domainTmp of domains">
-                    {{ domainTmp }}
-                  </mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                  <i class="material-icons">keyboard_arrow_up</i>
-                  <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-            </mat-form-field>
-          </div>
-        </form>
+          <mat-form-field class="vitamui-mat-select">
+            <mat-select formControlName="domain" panelClass="vitamui-mat-select" required>
+              <mat-option value="{{ domainTmp }}" *ngFor="let domainTmp of domains">
+                {{ domainTmp }}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
+      </form>
 
       <div class="actions">
         <button class="btn primary" appStepperNext (click)="askForSubrogation()">
-          {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.BUTTON' | translate}}
+          {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.BUTTON' | translate }}
         </button>
-        <button class="btn link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        <button class="btn link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
       </div>
     </div>
   </cdk-step>
 
   <cdk-step>
     <div class="content">
-      <div class="text large bold mb-1">{{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.WAITING_ACCEPTATION' | translate}}</div>
+      <div class="text large bold mb-1">{{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.WAITING_ACCEPTATION' | translate }}</div>
 
       <div class="text normal" *ngIf="user?.firstname && user?.lastname">
-        {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate}} {{ user?.firstname }} {{ user?.lastname }}
+        {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.firstname }} {{ user?.lastname }}
       </div>
 
       <div class="text normal" *ngIf="!user?.firstname || !user?.lastname">
-        {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate}} {{ user?.email }}
+        {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.email }}
       </div>
 
       <div class="d-flex justify-content-center align-items-center my-5">
@@ -57,7 +63,7 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn cancel link" (click)="cancelSubrogation()">{{'COMMON.UNDO' | translate}}</button>
+        <button type="button" class="btn cancel link" (click)="cancelSubrogation()">{{ 'COMMON.UNDO' | translate }}</button>
       </div>
     </div>
   </cdk-step>

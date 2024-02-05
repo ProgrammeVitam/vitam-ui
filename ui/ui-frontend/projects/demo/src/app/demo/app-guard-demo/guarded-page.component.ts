@@ -40,17 +40,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'demo-guarded-page',
   templateUrl: './guarded-page.component.html',
-  styleUrls: ['./guarded-page.component.scss']
+  styleUrls: ['./guarded-page.component.scss'],
 })
 export class GuardedPageComponent implements OnInit {
-
   appId: string;
 
   constructor(route: ActivatedRoute) {
     this.appId = route.snapshot.data.appId;
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -46,22 +46,27 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent extends SidenavPage<Profile> {
-
   public search: string;
 
   @ViewChild(ProfileListComponent, { static: true }) profileListComponent: ProfileListComponent;
 
-  constructor(public dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService) {
+  constructor(
+    public dialog: MatDialog,
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+  ) {
     super(route, globalEventService);
   }
 
   openProfilAdminCreateDialog() {
     const dialogRef = this.dialog.open(ProfileCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
-        if (result) { this.refreshList(); }
+      if (result) {
+        this.refreshList();
+      }
     });
   }
 
@@ -70,9 +75,10 @@ export class ProfileComponent extends SidenavPage<Profile> {
   }
 
   private refreshList() {
-    if (!this.profileListComponent) { return; }
+    if (!this.profileListComponent) {
+      return;
+    }
 
     this.profileListComponent.search();
   }
-
 }

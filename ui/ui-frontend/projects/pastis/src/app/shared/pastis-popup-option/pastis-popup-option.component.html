@@ -1,29 +1,34 @@
 <div class="pastis-vitamui-option-button" (click)="changeExpand()">
-    <button class="btn btn-circle secondary large" type="submit">
-      <i *ngIf="expanded" class="material-icons">close</i>
-      <i *ngIf="!expanded" [style.fontSize.px]="25"
-      class="vitamui-icon vitamui-icon-more-horiz"></i>
-    </button>
+  <button class="btn btn-circle secondary large" type="submit">
+    <i *ngIf="expanded" class="material-icons">close</i>
+    <i *ngIf="!expanded" [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-more-horiz"></i>
+  </button>
 </div>
 <div *ngIf="expanded" class="pastis-vitamui-option-container">
-    <button mat-menu-item (click)="fileInput.click()">
-        <i class="vitamui-icon vitamui-icon-download"></i>
-        &nbsp;&nbsp;&nbsp;
-        <span class="text normal">{{'PASTIS_POPUP_OPTION.OPEN_PROFIL' | translate}}</span>
-        <input #fileInput (change)="uploadProfile($event.target.files)" accept=".json, .rng" class="buttons"
-                 ng2FileSelect style="display:none;" type="file"/>
-    </button>
-    <mat-divider></mat-divider>
-    <button mat-menu-item (click)="createNotice()">
-        <i class="vitamui-icon vitamui-icon-electronic-file"></i>
-        &nbsp;&nbsp;&nbsp;
-        <span class="text normal">{{'PASTIS_POPUP_OPTION.CREATE_NOTICE' | translate}}</span>
-    </button>
-    <mat-divider></mat-divider>
-    <button (click)="goToSedaView()" mat-menu-item>
-        <i class="vitamui-icon vitamui-icon-visibility"></i>
-        &nbsp;&nbsp;&nbsp;
-        <span class="text normal">{{'PASTIS_POPUP_OPTION.SEDAVIEW' | translate}}</span>
-    </button>
-
+  <button mat-menu-item (click)="fileInput.click()">
+    <i class="vitamui-icon vitamui-icon-download"></i>
+    &nbsp;&nbsp;&nbsp;
+    <span class="text normal">{{ 'PASTIS_POPUP_OPTION.OPEN_PROFIL' | translate }}</span>
+    <input
+      #fileInput
+      (change)="uploadProfile($event.target.files)"
+      accept=".json, .rng"
+      class="buttons"
+      ng2FileSelect
+      style="display: none"
+      type="file"
+    />
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="createNotice()">
+    <i class="vitamui-icon vitamui-icon-electronic-file"></i>
+    &nbsp;&nbsp;&nbsp;
+    <span class="text normal">{{ 'PASTIS_POPUP_OPTION.CREATE_NOTICE' | translate }}</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button (click)="goToSedaView()" mat-menu-item>
+    <i class="vitamui-icon vitamui-icon-visibility"></i>
+    &nbsp;&nbsp;&nbsp;
+    <span class="text normal">{{ 'PASTIS_POPUP_OPTION.SEDAVIEW' | translate }}</span>
+  </button>
 </div>

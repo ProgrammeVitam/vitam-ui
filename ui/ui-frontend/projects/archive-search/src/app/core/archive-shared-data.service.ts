@@ -39,12 +39,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Direction, FilingHoldingSchemeNode, Unit } from 'ui-frontend-common';
 import { NodeData } from '../archive/models/nodedata.interface';
 import { SearchCriteriaHistory } from '../archive/models/search-criteria-history.interface';
-import {
-  ResultFacet,
-  SearchCriteriaAddAction,
-  SearchCriteriaDto,
-  SearchCriteriaRemoveAction
-} from '../archive/models/search.criteria';
+import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaDto, SearchCriteriaRemoveAction } from '../archive/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',

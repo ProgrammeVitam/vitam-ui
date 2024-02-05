@@ -1,30 +1,37 @@
 <div class="domain-input-control">
-    <div class="domain-input-wrapper">
-        <mat-form-field>
-            <mat-label>{{placeholder}}</mat-label>
-            <input  matInput type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
-        </mat-form-field>
-        <mat-spinner *ngIf="control.pending" [diameter]="spinnerDiameter"></mat-spinner>
-    </div>
+  <div class="domain-input-wrapper">
+    <mat-form-field>
+      <mat-label>{{ placeholder }}</mat-label>
+      <input
+        matInput
+        type="text"
+        size="10"
+        [formControl]="control"
+        [attr.placeholder]="placeholder"
+        (blur)="onTouched()"
+        (keydown.enter)="add()"
+      />
+    </mat-form-field>
+    <mat-spinner *ngIf="control.pending" [diameter]="spinnerDiameter"></mat-spinner>
+  </div>
 
-    <div class="actions">
-        <button mat-mini-fab (click)="add()" [disabled]="buttonAddDisabled()">
-            <i class="vitamui-icon vitamui-icon-add"></i>
-        </button>
-    </div>
+  <div class="actions">
+    <button mat-mini-fab (click)="add()" [disabled]="buttonAddDisabled()">
+      <i class="vitamui-icon vitamui-icon-add"></i>
+    </button>
+  </div>
 </div>
 
 <div class="vitamui-input-errors">
-    <div *ngIf="control?.errors?.pattern">{{'EMAILS_INPUT.WRONG_FORMAT' | translate}}</div>
-    <div *ngIf="control?.errors?.unknownUser">{{'EMAILS_INPUT.INVALID_USER' | translate}}</div>
+  <div *ngIf="control?.errors?.pattern">{{ 'EMAILS_INPUT.WRONG_FORMAT' | translate }}</div>
+  <div *ngIf="control?.errors?.unknownUser">{{ 'EMAILS_INPUT.INVALID_USER' | translate }}</div>
 </div>
 
 <div class="vitamui-chip-list">
-    <div *ngFor="let email of emails" class="vitamui-chip">
-        <div class="vitamui-chip-content">{{ email }}</div>
-        <div class="vitamui-remove-chip" (click)="remove(email)">
-        <i class="material-icons">clear</i>
-        </div>
+  <div *ngFor="let email of emails" class="vitamui-chip">
+    <div class="vitamui-chip-content">{{ email }}</div>
+    <div class="vitamui-remove-chip" (click)="remove(email)">
+      <i class="material-icons">clear</i>
     </div>
+  </div>
 </div>
-

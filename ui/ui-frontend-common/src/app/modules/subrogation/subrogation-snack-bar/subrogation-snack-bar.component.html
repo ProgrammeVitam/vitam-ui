@@ -1,11 +1,12 @@
 <div class="subrogation-banner">
   <div>
     <i class="vitamui-icon vitamui-icon-repeat mr-4"></i>
-    <span>{{'SNACKBAR.ASK_SUBROGATION' | translate : {user : data?.subro?.superUser} }}</span>
+    <span>{{ 'SNACKBAR.ASK_SUBROGATION' | translate: { user: data?.subro?.superUser } }}</span>
 
     <button class="btn outline outline-primary ml-5" (click)="accept()">
-      {{'SNACKBAR.ACCEPT_SUBROGATION' | translate}}</button>
-    <button class="btn link ml-4" (click)="decline()"> {{'SNACKBAR.DECLINE_SUBROGATION' | translate}}</button>
+      {{ 'SNACKBAR.ACCEPT_SUBROGATION' | translate }}
+    </button>
+    <button class="btn link ml-4" (click)="decline()">{{ 'SNACKBAR.DECLINE_SUBROGATION' | translate }}</button>
   </div>
 
   <div (click)="decline()">

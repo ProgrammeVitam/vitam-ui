@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import {ObjectQualifierType} from './unit.enums';
+import { ObjectQualifierType } from './unit.enums';
 
 /** Object associated to a unit */
 export interface ApiUnitObject {
@@ -39,7 +39,7 @@ export interface ApiUnitObject {
   '#originating_agencies': Array<string>;
   '#storage': StorageDto;
   '#nbobjects': StorageDto;
-  'FileInfo': FileInfoDto;
+  FileInfo: FileInfoDto;
   '#qualifiers': Array<QualifierDto>;
   '#approximate_creation_date': string;
   '#approximate_update_date': string;

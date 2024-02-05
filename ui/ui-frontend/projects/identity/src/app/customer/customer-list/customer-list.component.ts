@@ -40,14 +40,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { collapseAnimation,
+import {
+  collapseAnimation,
   Customer,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
-  Owner, PageRequest,
+  Owner,
+  PageRequest,
   rotateAnimation,
-  Tenant } from 'ui-frontend-common';
+  Tenant,
+} from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
@@ -58,13 +61,9 @@ import { CustomerListService } from './customer-list.service';
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
-  animations: [
-   collapseAnimation,
-   rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {
-
   @Output() customerClick = new EventEmitter<Customer>();
   @Output() ownerClick = new EventEmitter<Owner>();
   @Output() tenantClick = new EventEmitter<any>();
@@ -80,29 +79,28 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     public customerService: CustomerService,
     public tenantService: TenantService,
     private customerDataService: CustomerDataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     super(customerListService);
   }
 
-
   ngOnInit() {
-     this.searchCustomersOrderedByCode();
-     this.customerDataService.tenantsUpdated$.subscribe((tenants) => {
+    this.searchCustomersOrderedByCode();
+    this.customerDataService.tenantsUpdated$.subscribe((tenants) => {
       this.tenants = tenants;
     });
 
     this.updatedData.subscribe(() => {
+      const customerIds = this.dataSource
+        .filter((customer: Customer) => {
+          const existingTenant = this.tenants.find((tenant) => tenant.customerId === customer.id);
+          if (!existingTenant) {
+            return true;
+          }
 
-      const customerIds = this.dataSource.filter((customer: Customer) => {
-        const existingTenant = this.tenants.find((tenant) => tenant.customerId === customer.id);
-        if (!existingTenant) {
-          return true;
-        }
-
-        return false;
-      })
-      .map((customer: Customer) => customer.id);
+          return false;
+        })
+        .map((customer: Customer) => customer.id);
 
       if (customerIds && customerIds.length > 0) {
         this.tenantService.getTenantsByCustomerIds(customerIds).subscribe((results) => {
@@ -137,14 +135,15 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     const dialogRef = this.dialog.open(OwnerCreateComponent, {
       disableClose: true,
       data: { customer },
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
-    dialogRef.afterClosed().pipe(filter((result) => !!result))
-    .subscribe((result: { owner?: Owner, tenant?: Tenant }) => {
-      if (result.owner) {
-        customer.owners.push(result.owner);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
+        if (result.owner) {
+          customer.owners.push(result.owner);
+        }
+      });
   }
-
 }

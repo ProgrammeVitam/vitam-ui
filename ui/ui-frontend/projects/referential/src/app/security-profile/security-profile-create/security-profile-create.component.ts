@@ -75,7 +75,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private securityProfileService: SecurityProfileService,
-    private securityProfileCreateValidators: SecurityProfileCreateValidators
+    private securityProfileCreateValidators: SecurityProfileCreateValidators,
   ) {}
 
   ngOnInit() {
@@ -126,7 +126,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      }
+      },
     );
   }
 

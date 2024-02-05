@@ -1,7 +1,12 @@
-<div *ngIf="( project); let selectedProject; else loadingSpinner">
-  <vitamui-common-sidenav-header [extended]="isPanelextended" [title]="selectedProject.messageIdentifier"
-                                 [icon]="'vitamui-icon-file'" [hasToolTipOnTitle]="true" [toolTipTitleDuration]="300"
-                                 (onclose)="emitClose()">
+<div *ngIf="project; let selectedProject; else: loadingSpinner">
+  <vitamui-common-sidenav-header
+    [extended]="isPanelextended"
+    [title]="selectedProject.messageIdentifier"
+    [icon]="'vitamui-icon-file'"
+    [hasToolTipOnTitle]="true"
+    [toolTipTitleDuration]="300"
+    (onclose)="emitClose()"
+  >
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
       <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
@@ -15,18 +20,25 @@
       <button mat-menu-item (click)="searchArchiveUnitsByProject()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
       </button>
-      <button mat-menu-item
-              matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
-              matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300" (click)="updateMetadataDesc()"
-              [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)">
+      <button
+        mat-menu-item
+        matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+        matTooltipClass="vitamui-tooltip"
+        [matTooltipShowDelay]="300"
+        (click)="updateMetadataDesc()"
+        [disabled]="updateStarted || !hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole"
+      >
         {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
       </button>
     </vitamui-common-menu-button>
   </vitamui-common-sidenav-header>
 
   <form [formGroup]="form" class="vitamui-sidepanel-body">
-    <mat-tab-group [selectedIndex]="selectedTabIndex" #tabGroup
-                   [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+    <mat-tab-group
+      [selectedIndex]="selectedTabIndex"
+      #tabGroup
+      [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'"
+    >
       <!-- DESCRIPTION TAB -->
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate }}">
         <div class="row">
@@ -40,13 +52,14 @@
               </div>
             </div>
             <div class="form-control read-only-field" *ngIf="updateStarted">
-              <vitamui-common-input formControlName="messageIdentifier" required
-                                    placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
-                                    class="col-8 px-0 mr-4">
+              <vitamui-common-input
+                formControlName="messageIdentifier"
+                required
+                placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
+                class="col-8 px-0 mr-4"
+              >
               </vitamui-common-input>
-
             </div>
-
 
             <div class="read-only-field">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate }} :</label>
@@ -56,7 +69,6 @@
                 </ng-container>
               </div>
             </div>
-
 
             <div class="read-only-field" *ngIf="!updateStarted">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
@@ -79,13 +91,14 @@
               class="col-4 px-0"
               formControlName="originatingAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
-              required *ngIf="updateStarted"
+              required
+              *ngIf="updateStarted"
             >
             </vitamui-common-input>
 
             <vitamui-common-input
               [disabled]="true"
-              class="ml-2 col-4 "
+              class="ml-2 col-4"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
               *ngIf="updateStarted"
             >
@@ -100,21 +113,18 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class=" ml-2 col-4 "
+              class="ml-2 col-4"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
               *ngIf="updateStarted"
             >
             </vitamui-common-input>
             <div class="row padding-style" *ngIf="updateStarted">
               <div class="col-2 mr-10 actions">
-                <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty"
-                        (click)="launchUpdate()">
+                <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
                   {{ 'UNIT_UPDATE.SAVE' | translate }}
                 </button>
               </div>
-
             </div>
-
 
             <div class="read-only-field" *ngIf="!updateStarted">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} :</label>
@@ -197,7 +207,6 @@
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
                   required
                 >
-
                 </vitamui-common-input>
 
                 <vitamui-common-input
@@ -246,10 +255,9 @@
                     <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
                   </label>
                   <mat-select formControlName="acquisitionInformation">
-                    <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList"
-                                [value]="acquisitionInformation">{{
+                    <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation">{{
                       acquisitionInformation
-                      }}</mat-option>
+                    }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -259,22 +267,18 @@
                     <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
                   </label>
                   <mat-select formControlName="legalStatus" panelClass="legal-status">
-                    <mat-option *ngFor="let legalStatus of legalStatusList"
-                                [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
+                    <mat-option *ngFor="let legalStatus of legalStatusList" [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="form-control read-only-field">
                 <div class="col-2 mr-10 actions">
-                  <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty"
-                          (click)="launchUpdate()">
+                  <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
                     {{ 'UNIT_UPDATE.SAVE' | translate }}
                   </button>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
       </mat-tab>
@@ -308,39 +312,29 @@
 </ng-template>
 
 <ng-template #confirmEditProject>
-
   <mat-dialog-content class="row">
-
-    <div class=" text-title bold">
-      {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate}}
+    <div class="text-title bold">
+      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate }}
     </div>
 
-
-    <div class="text  d-flex mt-4">
-      {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ1' | translate}}
-      <br/>
-      {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ2' | translate}}
-      <br/>
-      {{'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ3' | translate}}
-
+    <div class="text d-flex mt-4">
+      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ1' | translate }}
+      <br />
+      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ2' | translate }}
+      <br />
+      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ3' | translate }}
     </div>
-
 
     <div class="mt-4">
-      <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue"
-                               class="vitamui-button-toggle-group">
-        <mat-button-toggle value="YES">
-          {{'COMMON.YES' | translate}}</mat-button-toggle>
-        <mat-button-toggle value="NO">{{'COMMON.NO' | translate}}
-        </mat-button-toggle>
+      <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue" class="vitamui-button-toggle-group">
+        <mat-button-toggle value="YES"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
+        <mat-button-toggle value="NO">{{ 'COMMON.NO' | translate }} </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-
   </mat-dialog-content>
 
   <mat-dialog-actions class="row mt-4">
-    <button (click)="onConfirm()"
-            class="btn primary btn-confirm-dialog mr-2 margin-btn">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog mr-2 margin-btn">{{ 'COMMON.CONFIRM' | translate }}</button>
 
     <button (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>

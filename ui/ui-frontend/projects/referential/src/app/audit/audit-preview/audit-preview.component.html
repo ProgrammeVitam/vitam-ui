@@ -1,33 +1,32 @@
 <div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
-        <div class="d-flex justify-content-end">
-        <button class="btn link cancel" (click)="emitClose()">
-            <i class="vitamui-icon vitamui-icon-close"></i>
-        </button>
-        </div>
-
-        <div class="title">
-            <div matTooltipClass="vitamui-tooltip"
-            matTooltip="{{ audit?.id }}">
-                <h5 class="m-0 text-primary">{{ audit?.id | truncate: 30}}</h5>
-                <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
-            </div>
-        </div>
-        <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
+  <div class="vitamui-sidepanel-header">
+    <div class="d-flex justify-content-end">
+      <button class="btn link cancel" (click)="emitClose()">
+        <i class="vitamui-icon vitamui-icon-close"></i>
+      </button>
     </div>
 
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group">
-
-            <mat-tab label="Informations">
-                <app-audit-information-tab [audit]="audit"></app-audit-information-tab>
-            </mat-tab>
-
-            <mat-tab label="Détails" i18n-label="History tab@@userPreviewTabHistory">
-                <vitamui-common-operation-history-tab [id]="audit?.id" [identifier]="audit?.id" collectionName="operation"
-                    [filter]="filterEvents">
-                </vitamui-common-operation-history-tab>
-            </mat-tab>
-        </mat-tab-group>
+    <div class="title">
+      <div matTooltipClass="vitamui-tooltip" matTooltip="{{ audit?.id }}">
+        <h5 class="m-0 text-primary">{{ audit?.id | truncate: 30 }}</h5>
+        <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
+      </div>
     </div>
+    <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">
+      Télécharger le rapport
+    </button>
+  </div>
+
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group">
+      <mat-tab label="Informations">
+        <app-audit-information-tab [audit]="audit"></app-audit-information-tab>
+      </mat-tab>
+
+      <mat-tab label="Détails" i18n-label="History tab@@userPreviewTabHistory">
+        <vitamui-common-operation-history-tab [id]="audit?.id" [identifier]="audit?.id" collectionName="operation" [filter]="filterEvents">
+        </vitamui-common-operation-history-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

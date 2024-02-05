@@ -1,6 +1,6 @@
-import {PositionType} from 'ui-frontend-common';
-import {MetadataPermission} from '../models/metadata.interface';
-import {Unit} from '../models/unit.interface';
+import { PositionType } from 'ui-frontend-common';
+import { MetadataPermission } from '../models/metadata.interface';
+import { Unit } from '../models/unit.interface';
 
 export function getBooleanValue(unit: Unit, key: string): boolean {
   const value = getKeywordValue(unit, key);
@@ -19,7 +19,7 @@ export function getKeywordValue(unit: Unit, keywordReference: string): string {
 
   const keyword = unit.Keyword.find((k) => k.KeywordReference === keywordReference);
 
-  return keyword ? keyword.KeywordContent as PositionType : null;
+  return keyword ? (keyword.KeywordContent as PositionType) : null;
 }
 
 export function getMetadataPermission(unit: Unit): MetadataPermission[] {

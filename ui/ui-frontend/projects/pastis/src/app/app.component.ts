@@ -40,10 +40,9 @@ import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   title = 'Pastis Application';
   subrogating = false;
   isStandalone: boolean = environment.standalone;
@@ -51,9 +50,7 @@ export class AppComponent implements OnInit {
 
   constructor() {
     this.sedaviewRoute = document.URL.substring(document.URL.lastIndexOf('/'), document.URL.length) === '/sedaview';
-
   }
 
   ngOnInit() {}
-
 }

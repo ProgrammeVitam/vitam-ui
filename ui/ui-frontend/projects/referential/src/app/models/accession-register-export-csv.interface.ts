@@ -26,26 +26,24 @@
  *  * accept its terms.
  *
  */
-import {Direction} from 'ui-frontend-common';
+import { Direction } from 'ui-frontend-common';
 
 export interface AccessionRegisterSearchDto {
-
-  orderBy?: string
+  orderBy?: string;
   direction?: Direction;
 
-  searchText?: string
-  filters?: Map<string, Array<string>>
-  endDateInterval?: EndDateInterval
+  searchText?: string;
+  filters?: Map<string, Array<string>>;
+  endDateInterval?: EndDateInterval;
   opi?: string;
   originatingAgency?: string;
-  originatingAgencies?: Array<string>
-  archivalAgreements?: Array<string>
-  archivalProfiles?: Array<string>
-  acquisitionInformations?: Array<string>
+  originatingAgencies?: Array<string>;
+  archivalAgreements?: Array<string>;
+  archivalProfiles?: Array<string>;
+  acquisitionInformations?: Array<string>;
 
   elimination?: string;
   transferReply?: string;
-
 }
 
 export interface EndDateInterval {

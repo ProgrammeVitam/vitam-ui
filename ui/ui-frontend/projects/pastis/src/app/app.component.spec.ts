@@ -43,7 +43,6 @@ import { of } from 'rxjs';
 import { AuthService, StartupService } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
-
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent {}
 
@@ -51,25 +50,16 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-
-
   beforeEach(async(() => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
     TestBed.configureTestingModule({
-      imports: [
-        MatSidenavModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        AppComponent,
-        SubrogationBannerStubComponent,
-        RouterOutletStubComponent,
-      ],
+      imports: [MatSidenavModule, NoopAnimationsModule],
+      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -86,6 +76,4 @@ describe('AppComponent', () => {
     // console.log('Title App: ', app);
     expect(app.title).toEqual('Pastis Application');
   }));
-
-
 });

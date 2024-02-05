@@ -70,7 +70,10 @@ export class AgencyPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private agencyService: AgencyService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private agencyService: AgencyService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

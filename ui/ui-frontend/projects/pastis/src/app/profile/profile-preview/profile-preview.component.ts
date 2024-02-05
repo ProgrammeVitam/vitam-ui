@@ -16,10 +16,9 @@ import { ProfileInformationTabComponent } from './profile-information-tab/profil
 @Component({
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
-  styleUrls: ['./profile-preview.component.scss']
+  styleUrls: ['./profile-preview.component.scss'],
 })
 export class ProfilePreviewComponent implements AfterViewInit {
-
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
   @Input()
@@ -46,9 +45,13 @@ export class ProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private router: Router,
-              private pastisConfig: PastisConfiguration, private profileService: ProfileService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private router: Router,
+    private pastisConfig: PastisConfiguration,
+    private profileService: ProfileService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -69,8 +72,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     if (await this.confirmAction()) {
       const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(this.inputProfile);
 
-      submitProfileUpdate.subscribe(() => {
-      });
+      submitProfileUpdate.subscribe(() => {});
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputProfile);
     }
@@ -99,7 +101,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   isProfilAttached() {
-    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path) {
+    if ((this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2) || this.inputProfile.path) {
       // console.log(this.inputProfile)
       return true;
     }
@@ -110,23 +112,26 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id],
-      { state: inputProfile, relativeTo: this.route, skipLocationChange: false });
+    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id], {
+      state: inputProfile,
+      relativeTo: this.route,
+      skipLocationChange: false,
+    });
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
     if (inputProfile.type === ProfileType.PA) {
-      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe(dataFile => {
+      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe((dataFile) => {
         if (dataFile) {
           this.downloadFile(dataFile, inputProfile.type, inputProfile);
         }
       });
     } else if (inputProfile.type === ProfileType.PUA) {
       // Send the retrieved JSON data to profile service
-      this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
+      this.profileService.getProfile(inputProfile).subscribe((retrievedData) => {
         const profileResponse = retrievedData as ProfileResponse;
         this.fileNode.push(profileResponse.profile);
-        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe(data => {
+        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe((data) => {
           this.downloadFile(data, inputProfile.type, inputProfile);
         });
       });

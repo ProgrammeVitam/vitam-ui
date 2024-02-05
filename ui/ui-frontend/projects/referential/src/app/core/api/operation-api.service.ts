@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, Event, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { BASE_URL, BaseHttpClient, Event, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',
@@ -65,8 +65,8 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   checkTraceabilityOperation(id: string, accessContract: string): Observable<any> {
-    const headers = new HttpHeaders({'X-Access-Contract-Id': accessContract});
-    return super.getHttp().get(`${this.apiUrl}/check/${id}`, {headers});
+    const headers = new HttpHeaders({ 'X-Access-Contract-Id': accessContract });
+    return super.getHttp().get(`${this.apiUrl}/check/${id}`, { headers });
   }
 
   getInfoFromTimestamp(timestamp: string): Observable<any> {
@@ -74,7 +74,7 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   downloadOperation(id: string, type: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/${id}/download/${type}`, {responseType: 'blob', headers});
+    return this.http.get(`${this.apiUrl}/${id}/download/${type}`, { responseType: 'blob', headers });
   }
 
   runAudit(audit: any, headers?: HttpHeaders): Observable<any> {
@@ -82,10 +82,10 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   runProbativeValue(probativeValue: any, headers?: HttpHeaders): Observable<any> {
-    return this.http.post(this.apiUrl + '/probativeValue', probativeValue, {headers});
+    return this.http.post(this.apiUrl + '/probativeValue', probativeValue, { headers });
   }
 
   downloadProbativeValue(id: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/probativeValue/${id}`, {responseType: 'blob', headers});
+    return this.http.get(`${this.apiUrl}/probativeValue/${id}`, { responseType: 'blob', headers });
   }
 }

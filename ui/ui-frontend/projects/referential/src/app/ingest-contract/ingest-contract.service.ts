@@ -48,7 +48,11 @@ import { IngestContractApiService } from '../core/api/ingest-contract-api.servic
 export class IngestContractService extends SearchService<IngestContract> {
   updated = new Subject<IngestContract>();
 
-  constructor(private ingestContractApi: IngestContractApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private ingestContractApi: IngestContractApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, ingestContractApi, 'ALL');
   }
 
@@ -98,8 +102,8 @@ export class IngestContractService extends SearchService<IngestContract> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -114,8 +118,8 @@ export class IngestContractService extends SearchService<IngestContract> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 }

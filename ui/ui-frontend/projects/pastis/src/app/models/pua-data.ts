@@ -1,4 +1,3 @@
-
 export interface PuaData {
   additionalProperties?: boolean;
   enum?: string[];

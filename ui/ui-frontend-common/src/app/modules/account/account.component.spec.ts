@@ -52,7 +52,7 @@ import { Account } from '../models/account/account.interface';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';
 
-@Component({selector: 'vitamui-common-account-information-tab', template: ''})
+@Component({ selector: 'vitamui-common-account-information-tab', template: '' })
 class InformationTabStubComponent {
   @Input() account: Account;
 }
@@ -62,38 +62,26 @@ describe('AccountComponent', () => {
   let fixture: ComponentFixture<AccountComponent>;
 
   const accountServiceSpy = {
-    getMyAccount: () => of({})
+    getMyAccount: () => of({}),
   };
 
-
   const userInfoApiServiceSpy = {
-    getMyUserInfo: () => of({})
+    getMyUserInfo: () => of({}),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        InjectorModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule
-      ],
-      declarations: [
-        AccountComponent,
-        InformationTabStubComponent,
-        NavbarStubComponent
-      ],
+      imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      declarations: [AccountComponent, InformationTabStubComponent, NavbarStubComponent],
       providers: [
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: AccountService, useValue: accountServiceSpy },
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -41,21 +41,18 @@ import { Customer } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-customer-popup',
-  template: '<app-customer-preview (previewClose)="closePopup()" [customer]="customer" [isPopup]="true"></app-customer-preview>'
+  template: '<app-customer-preview (previewClose)="closePopup()" [customer]="customer" [isPopup]="true"></app-customer-preview>',
 })
 export class CustomerPopupComponent implements OnInit {
-
   customer: Customer;
 
   constructor(private route: ActivatedRoute) {
     this.customer = this.route.snapshot.data.customer;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

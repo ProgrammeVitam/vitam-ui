@@ -4,30 +4,29 @@
 $input-height: 90px;
 
 :host {
-    align-items: baseline;
-    
-    &.ng-valid.ng-touched .vitamui-input {
-        border: 1px solid $green;
-    }
+  align-items: baseline;
 
-    &.ng-invalid.ng-touched .vitamui-input {
-        border: 1px solid $red;
-    }
+  &.ng-valid.ng-touched .vitamui-input {
+    border: 1px solid $green;
+  }
+
+  &.ng-invalid.ng-touched .vitamui-input {
+    border: 1px solid $red;
+  }
 }
 
 .vitamui-input {
-    height: 100% !important;
-    min-height: $input-height !important;
+  height: 100% !important;
+  min-height: $input-height !important;
 }
 
 :host.ng-pending {
-    .vitamui-input mat-spinner {
-        display: block;
-    }
+  .vitamui-input mat-spinner {
+    display: block;
+  }
 }
 
-label{
-    top: 15px;
-    pointer-events: none;
+label {
+  top: 15px;
+  pointer-events: none;
 }
-

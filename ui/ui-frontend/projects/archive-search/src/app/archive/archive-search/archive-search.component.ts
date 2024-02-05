@@ -38,7 +38,7 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -46,15 +46,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  FilingHoldingSchemeNode,
-  Logger,
-  Unit,
-  VitamuiRoles
-} from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, FilingHoldingSchemeNode, Logger, Unit, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -77,7 +69,7 @@ import {
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
   SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum
+  SearchCriteriaTypeEnum,
 } from '../models/search.criteria';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
@@ -89,7 +81,6 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
-
 
 @Component({
   selector: 'app-archive-search',
@@ -119,12 +110,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitEliminationService: ArchiveUnitEliminationService,
     private computeInheritedRulesService: ComputeInheritedRulesService,
     private archiveUnitDipService: ArchiveUnitDipService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
         this.bulkOperationsThreshold = bulkOperationsThreshold;
-      })
+      }),
     );
 
     this.subscriptions.add(
@@ -142,17 +133,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             SearchCriteriaTypeEnum.NODES,
             false,
             CriteriaDataType.STRING,
-            false
+            false,
           );
         } else {
           node.count = null;
           this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
         }
-      })
+      }),
     );
 
     this.subscriptions.add(
-      this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria))
+      this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria)),
     );
 
     this.archiveExchangeDataService
@@ -277,7 +268,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       criteria.category,
       criteria.valueTranslated,
       criteria.dataType,
-      false
+      false,
     );
   }
 
@@ -367,23 +358,24 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.managementRulesSharedDataService.emitManagementRules([]);
   }
 
-
-  private addInitalCriteriaValues(){
-
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+  private addInitalCriteriaValues() {
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
       { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
       this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
       true,
-      CriteriaOperator.EQ,SearchCriteriaTypeEnum.FIELDS,
+      CriteriaOperator.EQ,
+      SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
 
-    this.archiveHelperService.addCriteria(    this.searchCriterias,
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
       this.searchCriteriaKeys,
       this.nbQueryCriteria,
       ALL_ARCHIVE_UNIT_TYPES,
@@ -394,10 +386,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       SearchCriteriaTypeEnum.FIELDS,
       false,
       CriteriaDataType.STRING,
-      false
+      false,
     );
-
-}
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
@@ -522,7 +513,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         (error: HttpErrorResponse) => {
           this.pendingGetFixedCount = false;
           this.logger.error('Error message :', error.message);
-        }
+        },
       );
     }
   }
@@ -533,7 +524,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.listOfUAIdToInclude,
       this.listOfUAIdToExclude,
       this.isAllchecked,
-      this.isIndeterminate
+      this.isIndeterminate,
     );
   }
 
@@ -567,7 +558,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       (error: HttpErrorResponse) => {
         this.pendingComputeFacets = false;
         this.logger.error('Error message :', error.message);
-      }
+      },
     );
   }
 
@@ -622,7 +613,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.archiveHelperService.updateCriteriaStatus(
           this.searchCriterias,
           SearchCriteriaStatusEnum.IN_PROGRESS,
-          SearchCriteriaStatusEnum.INCLUDED
+          SearchCriteriaStatusEnum.INCLUDED,
         );
         this.pending = false;
         this.included = true;
@@ -639,9 +630,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.archiveHelperService.updateCriteriaStatus(
           this.searchCriterias,
           SearchCriteriaStatusEnum.IN_PROGRESS,
-          SearchCriteriaStatusEnum.NOT_INCLUDED
+          SearchCriteriaStatusEnum.NOT_INCLUDED,
         );
-      }
+      },
     );
   }
 
@@ -693,7 +684,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.subscriptions.add(
       this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
         this.nodeArray = nodes;
-      })
+      }),
     );
   }
 
@@ -730,7 +721,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             criteria.category,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
           this.archiveHelperService.addCriteria(
@@ -747,7 +738,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             SearchCriteriaTypeEnum.FIELDS,
             criteria.valueTranslated,
             criteria.dataType,
-            true
+            true,
           );
         }
       });
@@ -762,7 +753,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           nodeId.value,
           this.searchCriterias,
           this.searchCriteriaKeys,
-          this.nbQueryCriteria
+          this.nbQueryCriteria,
         );
       });
       this.nodeArray = null;
@@ -795,13 +786,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       return;
     }
 
-    if(this.waitingToGetFixedCount){
+    if (this.waitingToGetFixedCount) {
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .toPromise();
+        const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
           this.waitingToGetFixedCount = false;
@@ -980,7 +969,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
-          .subscribe(() => {})
+          .subscribe(() => {}),
       );
     } else if (this.itemSelected === 1) {
       this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
@@ -1009,7 +998,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           if (result) {
             return;
           }
-        })
+        }),
       );
     }
   }
@@ -1023,9 +1012,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       if (this.hasSearchCriterias()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
-        const exactCountResults: number = await this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchList)
-          .toPromise();
+        const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
           this.totalResults = exactCountResults;
           if (this.isAllchecked) {
@@ -1045,12 +1032,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   async launchComputedInheritedRulesModal() {
     await this.prepareToLaunchVitamAction();
     this.computeInheritedRulesService.launchComputedInheritedRulesModal(
-      this.listOfUACriteriaSearch,      
+      this.listOfUACriteriaSearch,
       this.numberOfHoldingUnitTypeOnComputedRules,
       this.tenantIdentifier,
       this.currentPage,
       this.launchComputeInheritedRuleAlerteMessageDialog,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+      this.confirmSecondActionBigNumberOfResultsActionDialog,
     );
   }
 
@@ -1078,7 +1065,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.actionsWithThresholdReachedAlerteMessageDialog,
       this.confirmImportantAllowedBulkOperationsDialog,
       this.confirmSecondActionBigNumberOfResultsActionDialog,
-      this.bulkOperationsThreshold
+      this.bulkOperationsThreshold,
     );
   }
 
@@ -1110,13 +1097,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               .pipe(filter((result) => !!result))
               .subscribe(() => {
                 this.archiveUnitEliminationService.launchEliminationAnalysisModal(
-                  this.listOfUACriteriaSearch,                  
+                  this.listOfUACriteriaSearch,
                   this.selectedItemCount,
                   this.itemSelected,
                   this.tenantIdentifier,
                   this.currentPage,
                   this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  this.showConfirmBigNumberOfResultsSuscription
+                  this.showConfirmBigNumberOfResultsSuscription,
                 );
               });
           } else {
@@ -1129,7 +1116,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               this.tenantIdentifier,
               this.currentPage,
               this.confirmSecondActionBigNumberOfResultsActionDialog,
-              this.showConfirmBigNumberOfResultsSuscription
+              this.showConfirmBigNumberOfResultsSuscription,
             );
           }
         }
@@ -1152,7 +1139,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
                 this.tenantIdentifier,
                 this.currentPage,
                 this.confirmSecondActionBigNumberOfResultsActionDialog,
-                this.showConfirmBigNumberOfResultsSuscription
+                this.showConfirmBigNumberOfResultsSuscription,
               );
             });
         } else {
@@ -1165,7 +1152,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             this.tenantIdentifier,
             this.currentPage,
             this.confirmSecondActionBigNumberOfResultsActionDialog,
-            this.showConfirmBigNumberOfResultsSuscription
+            this.showConfirmBigNumberOfResultsSuscription,
           );
         }
       }
@@ -1232,7 +1219,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.listOfUACriteriaSearch,
       this.tenantIdentifier,
       this.currentPage,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+      this.confirmSecondActionBigNumberOfResultsActionDialog,
     );
   }
 
@@ -1302,7 +1289,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.itemSelected,
       this.currentPage,
       this.isAllchecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+      this.confirmSecondActionBigNumberOfResultsActionDialog,
     );
   }
 
@@ -1370,7 +1357,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.itemSelected,
       this.currentPage,
       this.isAllchecked,
-      this.confirmSecondActionBigNumberOfResultsActionDialog
+      this.confirmSecondActionBigNumberOfResultsActionDialog,
     );
   }
 

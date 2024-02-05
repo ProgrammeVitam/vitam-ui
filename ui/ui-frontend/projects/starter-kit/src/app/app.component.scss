@@ -1,33 +1,31 @@
-:host  {
-    div {
-        margin: 3rem 5rem;;
+:host {
+  div {
+    margin: 3rem 5rem;
+  }
+
+  mat-list-item {
+    cursor: pointer;
+    &:focus {
+      color: white;
+      background-color: var(--vitamui-primary);
+      outline: none;
+      &:hover {
+        background-color: var(--vitamui-primary-700);
+      }
+    }
+  }
+
+  ::ng-deep {
+    .mat-drawer-container {
+      height: 100%;
     }
 
-    mat-list-item {
-        cursor: pointer;
-        &:focus {
-            color: white;
-            background-color: var(--vitamui-primary);
-            outline: none;
-            &:hover {
-                background-color: var(--vitamui-primary-700);
-            }
-        }
-    
+    .mat-list-item-content {
+      justify-content: center;
     }
-    
-    ::ng-deep {
-        .mat-drawer-container {
-            height: 100%;
-        }
-        
-        .mat-list-item-content {
-            justify-content: center;
-        }
 
-        h4 {
-            margin: 1rem 0;
-        }
+    h4 {
+      margin: 1rem 0;
     }
+  }
 }
-    

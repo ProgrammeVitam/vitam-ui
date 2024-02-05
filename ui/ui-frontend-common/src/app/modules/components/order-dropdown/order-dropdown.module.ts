@@ -43,12 +43,8 @@ import { OrderDropdownComponent } from './order-dropdown.component';
 import { OrderOptionComponent } from './order-option/order-option.component';
 
 @NgModule({
-    imports: [
-      CommonModule,
-      OverlayModule,
-      OrderByButtonModule,
-    ],
-    declarations: [OrderDropdownComponent, OrderOptionComponent],
-    exports: [OrderDropdownComponent, OrderOptionComponent]
-  })
-  export class OrderDropdownModule { }
+  imports: [CommonModule, OverlayModule, OrderByButtonModule],
+  declarations: [OrderDropdownComponent, OrderOptionComponent],
+  exports: [OrderDropdownComponent, OrderOptionComponent],
+})
+export class OrderDropdownModule {}

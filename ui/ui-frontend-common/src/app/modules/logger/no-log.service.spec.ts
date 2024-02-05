@@ -39,11 +39,11 @@ import { TestBed } from '@angular/core/testing';
 import { NoLogService } from './no-log.service';
 
 describe('NoLogService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      NoLogService
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      providers: [NoLogService],
+    }),
+  );
 
   it('should be created', () => {
     const service: NoLogService = TestBed.inject(NoLogService);

@@ -68,19 +68,18 @@ describe('OwnerPreviewComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
-        VitamUICommonTestModule
+        VitamUICommonTestModule,
       ],
-      declarations: [ OwnerPreviewComponent, InformationTabStubComponent ],
+      declarations: [OwnerPreviewComponent, InformationTabStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -92,5 +91,4 @@ describe('OwnerPreviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

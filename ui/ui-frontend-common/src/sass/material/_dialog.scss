@@ -1,18 +1,18 @@
 .vitamui-dialog > .mat-dialog-container {
-    border-radius: 20px;
-    padding: 30px;
+  border-radius: 20px;
+  padding: 30px;
 }
 
 .vitamui-confirm-dialog > .mat-dialog-container {
-    border-radius: 20px;
-    padding: 40px 60px 30px 40px;
+  border-radius: 20px;
+  padding: 40px 60px 30px 40px;
 
-    .mat-dialog-actions {
-        margin-bottom: 0;
-        padding-top: 30px;
+  .mat-dialog-actions {
+    margin-bottom: 0;
+    padding-top: 30px;
 
-        button + button {
-            margin-left: 20px;
-        }
+    button + button {
+      margin-left: 20px;
     }
+  }
 }

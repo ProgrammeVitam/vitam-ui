@@ -40,15 +40,14 @@ import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
 
 @Component({
-  templateUrl: './subrogation-snack-bar.component.html'
+  templateUrl: './subrogation-snack-bar.component.html',
 })
 export class SubrogationSnackBarComponent {
-
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
     private matSnackBarRef: MatSnackBarRef<SubrogationSnackBarComponent>,
     private subrogationApiService: SubrogationApiService,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
   close() {
@@ -59,7 +58,7 @@ export class SubrogationSnackBarComponent {
     this.subrogationApiService.accept(this.data.subro.id).subscribe(() => {
       this.snackBarService.open({
         message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACCEPT_SUBROGATION',
-        icon: 'vitamui-icon-link banner-icon'
+        icon: 'vitamui-icon-link banner-icon',
       });
       this.close();
     });

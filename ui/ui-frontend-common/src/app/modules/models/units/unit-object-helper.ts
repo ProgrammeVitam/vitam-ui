@@ -24,8 +24,8 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {QualifierDto, VersionDto, VersionWithQualifierDto} from './unit-object-api.interface';
-import {ObjectQualifierTypeList} from './unit.enums';
+import { QualifierDto, VersionDto, VersionWithQualifierDto } from './unit-object-api.interface';
+import { ObjectQualifierTypeList } from './unit.enums';
 
 export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto>): Array<VersionWithQualifierDto> {
   if (!qualifiers || qualifiers.length < 1) {

@@ -30,5 +30,5 @@ export enum ProjectStatus {
   SENT = 'SENT',
   WAITING_ACK = 'WAITING_ACK',
   ACK_OK = 'ACK_OK',
-  ACK_ERROR = 'ACK_ERROR'
+  ACK_ERROR = 'ACK_ERROR',
 }

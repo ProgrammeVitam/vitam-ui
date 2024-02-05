@@ -54,21 +54,11 @@
                 >
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
                 >
-                <mat-option
-                  [disabled]="
-                    !isRuleCategorySelected ||
-                    isAddValidActions
-                  "
-                  (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
-                >
+                <mat-option [disabled]="!isRuleCategorySelected || isAddValidActions" (click)="onSelectAction('BLOCK_RULE_INHERITANCE')">
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
                 <mat-option
-                  [disabled]="
-                    isUnlockRulesInheritanceDisabled ||
-                    isDeleteValidActions ||
-                    !isRuleCategorySelected
-                  "
+                  [disabled]="isUnlockRulesInheritanceDisabled || isDeleteValidActions || !isRuleCategorySelected"
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >
                   {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}</mat-option
@@ -85,13 +75,7 @@
           </div>
 
           <mat-form-field class="vitamui-mat-select select-more-actions">
-            <mat-select
-              placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
-              [disabled]="
-                !isRuleCategorySelected ||
-                !isAllActionsValid() 
-              "
-            >
+            <mat-select placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}" [disabled]="!isRuleCategorySelected || !isAllActionsValid()">
               <mat-option
                 [disabled]="
                   !isRuleCategorySelected ||

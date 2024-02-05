@@ -44,15 +44,8 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { VitamUICustomerSelectComponent } from './vitamui-customer-select.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-    NavbarModule,
-    CustomerSelectContentModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule, NavbarModule, CustomerSelectContentModule, TranslateModule],
   declarations: [VitamUICustomerSelectComponent],
   exports: [VitamUICustomerSelectComponent],
 })
-export class VitamUICustomerSelectModule { }
+export class VitamUICustomerSelectModule {}

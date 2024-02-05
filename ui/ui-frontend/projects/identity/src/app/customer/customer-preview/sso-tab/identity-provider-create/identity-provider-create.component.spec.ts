@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -53,14 +52,16 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
 @Component({
   selector: 'app-pattern',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => PatternStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PatternStubComponent),
+      multi: true,
+    },
+  ],
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;
@@ -69,7 +70,6 @@ class PatternStubComponent implements ControlValueAccessor {
   registerOnChange() {}
   registerOnTouched() {}
 }
-
 
 describe('IdentityProviderCreateComponent', () => {
   let component: IdentityProviderCreateComponent;
@@ -92,15 +92,14 @@ describe('IdentityProviderCreateComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
       ],
-      declarations: [ IdentityProviderCreateComponent, PatternStubComponent ],
+      declarations: [IdentityProviderCreateComponent, PatternStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },
         { provide: IdentityProviderService, useValue: identityProviderServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -114,22 +113,21 @@ describe('IdentityProviderCreateComponent', () => {
   });
 
   describe('Class', () => {
-
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close).toHaveBeenCalled();
     });
 
     it('should not call idpService.create()', () => {
-      const idpService =  TestBed.inject(IdentityProviderService);
+      const idpService = TestBed.inject(IdentityProviderService);
       component.onSubmit();
       expect(idpService.create).not.toHaveBeenCalled();
     });
 
     it('should call idpService.create()', () => {
-      const idpService =  TestBed.inject(IdentityProviderService);
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const idpService = TestBed.inject(IdentityProviderService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -141,7 +139,7 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType: "SAML"
+        protocoleType: 'SAML',
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -168,8 +166,8 @@ describe('IdentityProviderCreateComponent', () => {
     });
 
     it('should set an error', () => {
-      const idpService =  TestBed.inject(IdentityProviderService);
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const idpService = TestBed.inject(IdentityProviderService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       idpService.create = jasmine.createSpy().and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
       component.form.setValue({
         customerId: '1234',
@@ -182,7 +180,7 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType:'SAML'
+        protocoleType: 'SAML',
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -194,14 +192,12 @@ describe('IdentityProviderCreateComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have a title', () => {
       const elTitle = fixture.nativeElement.querySelector('.large');
       expect(elTitle.textContent).toContain('CUSTOMER.SSO.MODAL.TITLE "OwnerName"');
     });
 
     it('should have all the inputs', () => {
-
       const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();
       expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
@@ -218,7 +214,6 @@ describe('IdentityProviderCreateComponent', () => {
       const elAutoProvision = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=autoProvisioningEnabled]');
       expect(elAutoProvision).toBeTruthy();
       expect(elAutoProvision.textContent).toContain('CUSTOMER.SSO.AUTO_PROVISIONING');
-
     });
 
     it('should have a submit button', () => {
@@ -236,7 +231,7 @@ describe('IdentityProviderCreateComponent', () => {
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true,
-        protocoleType: "SAML",
+        protocoleType: 'SAML',
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -254,7 +249,5 @@ describe('IdentityProviderCreateComponent', () => {
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);
     });
-
   });
-
 });

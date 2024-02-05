@@ -4,19 +4,19 @@
       <div class="col-12">
         <div class="row justify-content-around">
           <div class="col-12 form-control mb-4">
-            <h5>{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.TITLE' | translate}}</h5>
+            <h5>{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.TITLE' | translate }}</h5>
           </div>
         </div>
         <div class="row justify-content-around">
           <div class="col-6 form-control">
             <label for="originating-agencies">
-              <span class="pb-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ORIGINATING_AGENCY' | translate}}</span>
+              <span class="pb-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ORIGINATING_AGENCY' | translate }}</span>
             </label>
             <vitamui-multi-inputs
               id="originating-agencies"
               formControlName="originatingAgencies"
-              [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [searchActivated]="globalSearchButtonEvent$ | async"
+              [reset]="!(isAdvancedFormChanged$ | async)"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ORIGINATING_AGENCY_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>
@@ -27,8 +27,8 @@
             <vitamui-multi-inputs
               id="archival-agreement"
               formControlName="archivalAgreements"
-              [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [searchActivated]="globalSearchButtonEvent$ | async"
+              [reset]="!(isAdvancedFormChanged$ | async)"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_AGREEMENT_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>
@@ -41,8 +41,8 @@
             <vitamui-multi-inputs
               id="archival-profil"
               formControlName="archivalProfiles"
-              [searchActivated]="globalSearchButtonEvent$|async"
-              [reset]="!(isAdvancedFormChanged$|async)"
+              [searchActivated]="globalSearchButtonEvent$ | async"
+              [reset]="!(isAdvancedFormChanged$ | async)"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_PROFILE_LABEL' | translate }}"
             ></vitamui-multi-inputs>
           </div>
@@ -80,10 +80,20 @@
                 <i class="vitamui-icon vitamui-icon-ic24-limination register-icon"></i>
               </div>
               <div class="col-3">
-                <mat-radio-group aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}" id="eliminations" formControlName="elimination">
-                  <mat-radio-button class="mr-2" value="true">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button class="mr-2" value="false">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button value="all">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate }}</mat-radio-button>
+                <mat-radio-group
+                  aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}"
+                  id="eliminations"
+                  formControlName="elimination"
+                >
+                  <mat-radio-button class="mr-2" value="true">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button class="mr-2" value="false">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button value="all">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate
+                  }}</mat-radio-button>
                 </mat-radio-group>
               </div>
             </div>
@@ -93,10 +103,20 @@
                 <i class="vitamui-icon vitamui-icon-ic24-user-transfer register-icon"></i>
               </div>
               <div class="col-3">
-                <mat-radio-group aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}" id="transferts" formControlName="transferReply">
-                  <mat-radio-button class="mr-2" value="true">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button class="mr-2" value="false">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button value="all">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate }}</mat-radio-button>
+                <mat-radio-group
+                  aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}"
+                  id="transferts"
+                  formControlName="transferReply"
+                >
+                  <mat-radio-button class="mr-2" value="true">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button class="mr-2" value="false">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button value="all">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate
+                  }}</mat-radio-button>
                 </mat-radio-group>
               </div>
             </div>
@@ -104,8 +124,7 @@
         </div>
         <div class="row">
           <div class="col mY-3">
-            <a (click)="showAdvancedSearchPanel.emit(true)"
-               class="head-title">
+            <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">
               {{ 'ACCESSION_REGISTER.FACETS.HIDE_SEARCH_FILTERS' | translate }}
             </a>
           </div>

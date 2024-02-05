@@ -1,35 +1,37 @@
 @import '../../../../../sass/variables/colors';
 @import '../../../../../sass/mixins/elevation';
 
-:host::ng-deep  {
+:host::ng-deep {
   --width: 900px;
   color: #747272;
   --headerHeight: 72px;
   font-weight: 400;
   font-size: 16px;
 
-  .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
+  .mat-tab-group.mat-primary .mat-ink-bar,
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
     background: var(--vitamui-primary);
   }
 
   .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
-    display: none!important;
+    display: none !important;
   }
 
   .mat-list-text {
     height: 100%;
-    padding: 0!important;
+    padding: 0 !important;
   }
 
   mat-pseudo-checkbox.mat-pseudo-checkbox {
     display: none;
   }
 
-  mat-list-option:focus, mat-list-option:hover {
+  mat-list-option:focus,
+  mat-list-option:hover {
     background-color: var(--vitamui-grey-300);
   }
 
-  .mat-tab-body-content  {
+  .mat-tab-body-content {
     overflow: hidden;
   }
 
@@ -53,7 +55,7 @@
     }
 
     .focus {
-      display: none!important;
+      display: none !important;
     }
   }
 
@@ -64,16 +66,15 @@
   }
 
   mat-list-option .mat-list-item-content {
-    padding: 0!important;
+    padding: 0 !important;
   }
 
-  mat-list-option:focus{
-    vitamui-common-menu-application-tile *  {
-  
+  mat-list-option:focus {
+    vitamui-common-menu-application-tile * {
       .appName {
         font-weight: bold;
       }
-  
+
       .mandatory {
         max-width: 65%;
       }
@@ -83,24 +84,23 @@
       }
 
       .focus {
-        display: flex!important;
+        display: flex !important;
       }
     }
   }
 
   mat-list-option:hover {
-    vitamui-common-menu-application-tile *  {
-  
+    vitamui-common-menu-application-tile * {
       .appName {
         font-weight: bold;
       }
-  
+
       .hover-focus {
         visibility: visible;
       }
     }
   }
-  
+
   .mat-tab-body-wrapper {
     height: 100%;
   }
@@ -109,7 +109,7 @@
     outline-color: transparent;
     outline-width: 0;
   }
-  
+
   .container {
     background: $white;
     width: var(--width);

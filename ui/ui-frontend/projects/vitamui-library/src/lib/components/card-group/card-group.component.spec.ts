@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatCard} from '@angular/material/card';
+import { MatCard } from '@angular/material/card';
 
-import {CardComponent} from '../card/card.component';
-import {CardGroupComponent} from './card-group.component';
+import { CardComponent } from '../card/card.component';
+import { CardGroupComponent } from './card-group.component';
 
 describe('CardGroupComponent', () => {
   let component: CardGroupComponent;
@@ -10,9 +10,8 @@ describe('CardGroupComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [CardGroupComponent, CardComponent, MatCard]
-    })
-      .compileComponents();
+      declarations: [CardGroupComponent, CardComponent, MatCard],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

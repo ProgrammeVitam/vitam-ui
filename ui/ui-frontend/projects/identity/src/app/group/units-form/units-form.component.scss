@@ -1,13 +1,13 @@
 .d-flex {
-    > div:first-of-type {
-      width: 65%;
-  
-      > div {
-        height: 60px;
-      }
+  > div:first-of-type {
+    width: 65%;
+
+    > div {
+      height: 60px;
     }
-  
-    > div:last-of-type {
-      width: 25%;
-    }
+  }
+
+  > div:last-of-type {
+    width: 25%;
+  }
 }

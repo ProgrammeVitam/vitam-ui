@@ -65,7 +65,7 @@ export class VitamUIImportDialogComponent implements OnInit {
     private referentialImportService: ReferentialImportService,
     private snackBarService: VitamUISnackBarService,
     public dialogRef: MatDialogRef<VitamUIImportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Referential
+    @Inject(MAT_DIALOG_DATA) public data: Referential,
   ) {}
 
   ngOnInit() {
@@ -85,10 +85,12 @@ export class VitamUIImportDialogComponent implements OnInit {
     this.fileToUpload = files.item(0);
 
     // Check the file format according to the provided referential
-    if ((this.referential === Referential.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
-    (this.referential === Referential.RULE && this.isCsvFile(this.fileToUpload.type)) ||
-    (this.referential === Referential.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
-    (this.referential === Referential.ONTOLOGY && this.fileToUpload.type === 'application/json')) {
+    if (
+      (this.referential === Referential.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === Referential.RULE && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === Referential.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
+      (this.referential === Referential.ONTOLOGY && this.fileToUpload.type === 'application/json')
+    ) {
       this.isfileFormatValid = true;
     } else {
       this.isfileFormatValid = false;
@@ -96,9 +98,11 @@ export class VitamUIImportDialogComponent implements OnInit {
   }
 
   private isCsvFile(type: string): boolean {
-    return type === 'text/csv'
-      || type === 'application/vnd.ms-excel'
-      || type ===  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    return (
+      type === 'text/csv' ||
+      type === 'application/vnd.ms-excel' ||
+      type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
   }
 
   onFileDragOver(inDropZone: boolean) {
@@ -129,7 +133,7 @@ export class VitamUIImportDialogComponent implements OnInit {
       },
       () => {
         this.isImportInProgress = false;
-      }
+      },
     );
   }
 

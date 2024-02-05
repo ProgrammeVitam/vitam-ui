@@ -89,9 +89,9 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
-      1,      
+      1,
       ObjectQualifierType.BINARYMASTER,
-      1
+      1,
     );
     expect(preventDefaultSpy).toHaveBeenCalled();
   });

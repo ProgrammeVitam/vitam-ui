@@ -106,7 +106,10 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(public contextService: ContextService, private authService: AuthService) {
+  constructor(
+    public contextService: ContextService,
+    private authService: AuthService,
+  ) {
     super(contextService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,

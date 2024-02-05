@@ -49,14 +49,13 @@ describe('TenantMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ MatDialogModule, VitamUICommonTestModule ],
-      declarations: [ TenantMenuComponent ],
+      imports: [MatDialogModule, VitamUICommonTestModule],
+      declarations: [TenantMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
         { provide: TenantMenuService, useValue: { getSelectedTenant: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

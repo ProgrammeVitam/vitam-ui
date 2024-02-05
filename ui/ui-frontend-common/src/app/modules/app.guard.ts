@@ -48,22 +48,19 @@ import { StartupService } from './startup.service';
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppGuard implements CanActivate {
-
   constructor(
     private authService: AuthService,
     private startupService: StartupService,
     private titleService: Title,
     private globalEventService: GlobalEventService,
     @Inject(WINDOW_LOCATION) private location: any,
-    private translateService: TranslateService
-    ) {}
+    private translateService: TranslateService,
+  ) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!next.data.hasOwnProperty('appId')) {
       console.error('AppGuard Error: Missing "appId" property in route declaration. Please add the property to the route\'s data');
       return false;

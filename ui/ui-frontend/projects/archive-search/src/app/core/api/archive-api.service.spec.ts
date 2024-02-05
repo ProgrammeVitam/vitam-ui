@@ -48,7 +48,7 @@ describe('ArchiveApiService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    })
+    }),
   );
   it('should be created', () => {
     const service: ArchiveApiService = TestBed.get(ArchiveApiService);

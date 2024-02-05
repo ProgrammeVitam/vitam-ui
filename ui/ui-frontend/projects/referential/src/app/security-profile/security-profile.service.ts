@@ -51,7 +51,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   constructor(
     private securityProfileApiService: SecurityProfileApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, securityProfileApiService, 'ALL');
   }
@@ -89,8 +89,8 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -106,8 +106,8 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -122,8 +122,8 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 }

@@ -44,9 +44,7 @@ import { input } from '../../../../../testing/src/helpers';
 import { VitamUIInputComponent } from './vitamui-input.component';
 
 @Component({
-  template: `
-    <vitamui-common-input [(ngModel)]="value" #input="ngModel"></vitamui-common-input>
-  `
+  template: ` <vitamui-common-input [(ngModel)]="value" #input="ngModel"></vitamui-common-input> `,
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputComponent) vitamuiInputComponent: VitamUIInputComponent;
@@ -59,13 +57,11 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('VitamUIInputComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUIInputComponent, TesthostComponent]
-    })
-    .compileComponents();
+      declarations: [VitamUIInputComponent, TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -111,5 +107,4 @@ describe('VitamUIInputComponent', () => {
     testhost.vitamuiInputComponent.onBlur();
     expect(testhost.vitamuiInputComponent.focused).toBe(false);
   });
-
 });

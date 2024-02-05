@@ -41,11 +41,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
 
 @NgModule({
-  imports: [
-    MatTooltipModule,
-    CommonModule,
-  ],
+  imports: [MatTooltipModule, CommonModule],
   declarations: [VitamUIDisplayNodeComponent],
   exports: [VitamUIDisplayNodeComponent],
 })
-export class VitamUIDisplayNodeModule { }
+export class VitamUIDisplayNodeModule {}

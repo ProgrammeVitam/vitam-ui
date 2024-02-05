@@ -39,10 +39,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { MenuOption } from './components/navbar/customer-menu/menu-option.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerSelectionService {
-
   private selectedCustomer$ = new BehaviorSubject(undefined);
   private customers$ = new BehaviorSubject(undefined);
 

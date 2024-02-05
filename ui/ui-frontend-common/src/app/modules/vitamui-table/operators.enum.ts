@@ -49,5 +49,5 @@ export enum Operators {
   notin = 'NOTIN',
   elemMatch = 'ELEMMATCH',
   isNull = 'ISNULL',
-  startWith = 'STARTWITH'
+  startWith = 'STARTWITH',
 }

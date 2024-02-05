@@ -1,6 +1,6 @@
 import { Logo } from './logo.interface';
 
 export interface CustomerTheme {
-    colors: {[colorId: string]: string};
-    logos: Logo[];
+  colors: { [colorId: string]: string };
+  logos: Logo[];
 }

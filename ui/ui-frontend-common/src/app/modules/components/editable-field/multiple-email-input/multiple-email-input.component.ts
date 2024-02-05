@@ -42,16 +42,15 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => MultipleEmailInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-multiple-email-input',
   templateUrl: './multiple-email-input.component.html',
-  providers: [MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR]
+  providers: [MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR],
 })
 export class MultipleEmailInputComponent extends EditableFieldComponent {
-
   private emailInputClicked = false;
 
   get canConfirm(): boolean {
@@ -63,7 +62,9 @@ export class MultipleEmailInputComponent extends EditableFieldComponent {
   }
 
   confirm() {
-    if (!this.canConfirm) { return; }
+    if (!this.canConfirm) {
+      return;
+    }
     super.confirm();
   }
 
@@ -72,7 +73,9 @@ export class MultipleEmailInputComponent extends EditableFieldComponent {
   }
 
   onClick(target: HTMLElement) {
-    if (!this.editMode) { return; }
+    if (!this.editMode) {
+      return;
+    }
     if (this.emailInputClicked) {
       this.emailInputClicked = false;
 
@@ -88,5 +91,4 @@ export class MultipleEmailInputComponent extends EditableFieldComponent {
   onEmailInputClick() {
     this.emailInputClicked = true;
   }
-
 }

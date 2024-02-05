@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +46,7 @@ import { input } from 'ui-frontend-common/testing';
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 import { DomainsInputComponent } from './domains-input.component';
 
-@Component({ template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>'})
+@Component({ template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>' })
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false }) component: DomainsInputComponent;
   domains: string[];
@@ -58,27 +57,15 @@ let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
 describe('DomainsInputComponent', () => {
-
   beforeEach(waitForAsync(() => {
-    const customerCreateValidatorsSpy = jasmine.createSpyObj(
-      'CustomerCreateValidators',
-      { uniqueDomain: of(null) }
-    );
+    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', { uniqueDomain: of(null) });
 
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        TranslateModule.forRoot()
-      ],
-      declarations: [ TestHostComponent, DomainsInputComponent ],
-      providers: [
-        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
+      declarations: [TestHostComponent, DomainsInputComponent],
+      providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -92,11 +79,7 @@ describe('DomainsInputComponent', () => {
   });
 
   it('should have a list of domains', waitForAsync(() => {
-    testhost.domains = [
-      'toto.titi',
-      'titi.tutu',
-      'tata.tete',
-    ];
+    testhost.domains = ['toto.titi', 'titi.tutu', 'tata.tete'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();

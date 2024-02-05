@@ -45,25 +45,24 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfirmDialogService {
-
-  constructor(private matDialog: MatDialog) { }
+  constructor(private matDialog: MatDialog) {}
 
   confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
-    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog' }).afterClosed().pipe(
-      filter((result) => !!result)
-    );
+    return this.matDialog
+      .open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog' })
+      .afterClosed()
+      .pipe(filter((result) => !!result));
   }
 
   // returns an observable that emits when escape is pressed
   listenToEscapeKeyPress(matDialogRef: MatDialogRef<unknown>): Observable<any> {
-    return matDialogRef.keydownEvents()
-      .pipe(
-        filter((event) => event.key === 'Escape' && !hasModifierKey(event)),
-        tap((event) => event.preventDefault)
-      );
+    return matDialogRef.keydownEvents().pipe(
+      filter((event) => event.key === 'Escape' && !hasModifierKey(event)),
+      tap((event) => event.preventDefault),
+    );
   }
 
   // Opens a confirmation dialog before closing the dialog

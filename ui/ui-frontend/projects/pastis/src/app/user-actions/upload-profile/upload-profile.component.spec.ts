@@ -44,7 +44,6 @@ import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { UserActionUploadProfileComponent } from './upload-profile.component';
 
-
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
@@ -54,19 +53,15 @@ describe('UserActionUploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      declarations: [ UserActionUploadProfileComponent ],
+      imports: [HttpClientTestingModule],
+      declarations: [UserActionUploadProfileComponent],
       providers: [
         ProfileService,
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-      ]
-
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

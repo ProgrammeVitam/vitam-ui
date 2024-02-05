@@ -99,7 +99,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
     private tenantService: TenantService,
     private tenantFormValidators: TenantFormValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.ownerForm = this.formBuilder.group({
@@ -143,7 +143,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         map(() => diff(this.ownerForm.value, this.previousOwner)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.owner.id }, formData)),
-        switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((owner: Owner) => this.resetOwnerForm(owner));
 
@@ -153,7 +153,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         map(() => diff(this.tenantForm.value, this.previousTenant)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.tenant.id }, formData)),
-        switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null)))),
       )
       .subscribe((tenant: Tenant) => {
         this.resetTenantForm(tenant);

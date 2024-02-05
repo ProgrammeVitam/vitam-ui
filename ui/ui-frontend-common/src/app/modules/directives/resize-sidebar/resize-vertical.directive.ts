@@ -77,7 +77,10 @@ export class ResizeVerticalDirective implements OnInit {
   isDragging = false;
   siblingElement: Element;
 
-  constructor(private elementRef: ElementRef, @Inject(DOCUMENT) private document: any) {}
+  constructor(
+    private elementRef: ElementRef,
+    @Inject(DOCUMENT) private document: any,
+  ) {}
 
   ngOnInit(): void {
     const id = 'vitamui-vertical-resize-bar' + Math.floor(Math.random() * 10);

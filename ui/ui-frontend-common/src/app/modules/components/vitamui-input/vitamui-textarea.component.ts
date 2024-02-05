@@ -42,29 +42,36 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUITextareaComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-textarea',
   templateUrl: './vitamui-textarea.component.html',
   styleUrls: ['./vitamui-textarea.component.scss'],
-  providers: [VITAMUI_TEXTAREA_VALUE_ACCESSOR]
+  providers: [VITAMUI_TEXTAREA_VALUE_ACCESSOR],
 })
 export class VitamUITextareaComponent implements ControlValueAccessor {
-
   @Input() maxlength: number;
   @Input() placeholder: string;
   @Input() rows = 2;
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
   @ViewChild('textarea', { static: true }) private textarea: ElementRef;

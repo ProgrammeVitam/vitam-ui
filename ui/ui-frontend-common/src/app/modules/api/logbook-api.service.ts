@@ -44,7 +44,6 @@ import { VitamResponse } from '../models/vitam/vitam-response.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
 
-
 const CAS_CONTEXT = 'Contexte CAS';
 const UNKNOWN_VALUE = '-';
 const USER_INDEX = 3;
@@ -52,14 +51,16 @@ const SUBROGATOR_INDEX = 4;
 const API_CONTEXT_INDEX = 2;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LogbookApiService implements PaginatedApi<Event> {
-
   private readonly apiUrl: string;
   private readonly baseUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+  ) {
     this.apiUrl = baseUrl + '/logbooks';
     this.baseUrl = baseUrl;
   }
@@ -90,13 +91,13 @@ export class LogbookApiService implements PaginatedApi<Event> {
       rightsStatementIdentifier: apiEvent.rightsStatementIdentifier,
       userIdentifier: user,
       subrogatorIdentifier: subrogator,
-      events: LogbookApiService.getSubEvents(apiEvent.events || [], user, subrogator)
+      events: LogbookApiService.getSubEvents(apiEvent.events || [], user, subrogator),
     };
   }
 
   private static getSubEvents(apiEvents: ApiEvent[], userIdentifier: string, subrogatorIdentifier: string): Event[] {
     const result: Event[] = [];
-    apiEvents.forEach(apiEvent => {
+    apiEvents.forEach((apiEvent) => {
       const event: Event = LogbookApiService.toEvent(apiEvent);
       event.userIdentifier = userIdentifier;
       event.subrogatorIdentifier = subrogatorIdentifier;
@@ -118,16 +119,16 @@ export class LogbookApiService implements PaginatedApi<Event> {
     return userIdentifier;
   }
 
-  findUnitLifeCyclesByUnitId(unitId: string, headers?: HttpHeaders): Observable<{ $hits: any, $results: Event[] }> {
-    return this.http.get<{ $hits: any, $results: ApiEvent[] }>(this.apiUrl + '/unitlifecycles/' + unitId, { headers }).pipe(
-      map((response) => ({ $hits: response.$hits, $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+  findUnitLifeCyclesByUnitId(unitId: string, headers?: HttpHeaders): Observable<{ $hits: any; $results: Event[] }> {
+    return this.http
+      .get<{ $hits: any; $results: ApiEvent[] }>(this.apiUrl + '/unitlifecycles/' + unitId, { headers })
+      .pipe(map((response) => ({ $hits: response.$hits, $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
-  findObjectGroupLifeCyclesByUnitId(objectId: string, headers?: HttpHeaders): Observable<{ $hits: any, $results: Event[] }> {
-    return this.http.get<{ $hits: any, $results: ApiEvent[] }>(this.apiUrl + '/objectslifecycles/' + objectId, { headers }).pipe(
-      map((response) => ({ $hits: response.$hits, $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+  findObjectGroupLifeCyclesByUnitId(objectId: string, headers?: HttpHeaders): Observable<{ $hits: any; $results: Event[] }> {
+    return this.http
+      .get<{ $hits: any; $results: ApiEvent[] }>(this.apiUrl + '/objectslifecycles/' + objectId, { headers })
+      .pipe(map((response) => ({ $hits: response.$hits, $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
   findOperationById(operationId: string, headers?: HttpHeaders): Observable<{ $results: any[] }> {
@@ -135,25 +136,23 @@ export class LogbookApiService implements PaginatedApi<Event> {
   }
 
   findOperations(obId: string, obIdReq: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    const params = new HttpParams()
-      .set('obId', obId)
-      .set('obIdReq', obIdReq);
+    const params = new HttpParams().set('obId', obId).set('obIdReq', obIdReq);
 
-    return this.http.get<{ $results: ApiEvent[] }>(this.apiUrl + '/operations/', { params, headers }).pipe(
-      map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+    return this.http
+      .get<{ $results: ApiEvent[] }>(this.apiUrl + '/operations/', { params, headers })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
   findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.get<{ $results: ApiEvent[] }>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers }).pipe(
-      map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+    return this.http
+      .get<{ $results: ApiEvent[] }>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
   findOperationsBySelectQuery(selectQuery: VitamSelectQuery, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers }).pipe(
-      map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+    return this.http
+      .post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
   downloadManifest(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
@@ -176,7 +175,6 @@ export class LogbookApiService implements PaginatedApi<Event> {
     return `${this.apiUrl}/operations/${id}/download/${downloadType}?tenantId=${tenantId}&contractId=${accessContractId}`;
   }
 
-
   getAllPaginated(pageRequest: PageRequest, _?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Event>> {
     const criteria = JSON.parse(pageRequest.criteria);
     criteria.$filter.$offset = pageRequest.page * pageRequest.size;
@@ -184,15 +182,14 @@ export class LogbookApiService implements PaginatedApi<Event> {
 
     // The pagination and order are defined in the Vitam DSL query stored in the `criteria` property
     // We don't actually need to use the other properties of the page request
-    return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers })
-      .pipe(
-        map((response) => ({
-          pageNum: pageRequest.page,
-          pageSize: pageRequest.size,
-          totalElements: response.$hits.total,
-          hasMore: (response.$hits.offset + response.$hits.size) < response.$hits.total,
-          values: response.$results.map(LogbookApiService.toEvent)
-        }))
-      );
+    return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers }).pipe(
+      map((response) => ({
+        pageNum: pageRequest.page,
+        pageSize: pageRequest.size,
+        totalElements: response.$hits.total,
+        hasMore: response.$hits.offset + response.$hits.size < response.$hits.total,
+        values: response.$results.map(LogbookApiService.toEvent),
+      })),
+    );
   }
 }

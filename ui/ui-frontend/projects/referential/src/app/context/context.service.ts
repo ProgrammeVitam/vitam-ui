@@ -48,7 +48,11 @@ import { ContextApiService } from '../core/api/context-api.service';
 export class ContextService extends SearchService<Context> {
   updated = new Subject<Context>();
 
-  constructor(private contextApiService: ContextApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private contextApiService: ContextApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, contextApiService, 'ALL');
   }
 
@@ -80,8 +84,8 @@ export class ContextService extends SearchService<Context> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -97,8 +101,8 @@ export class ContextService extends SearchService<Context> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 }

@@ -37,8 +37,15 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import {
-  ApplicationId, buildCriteriaFromSearch, Criterion, Direction,
-  InfiniteScrollTable, Operators, PageRequest, Profile, SearchQuery
+  ApplicationId,
+  buildCriteriaFromSearch,
+  Criterion,
+  Direction,
+  InfiniteScrollTable,
+  Operators,
+  PageRequest,
+  Profile,
+  SearchQuery,
 } from 'ui-frontend-common';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
@@ -52,10 +59,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 @Component({
   selector: 'app-hierarchy-list',
   templateUrl: './hierarchy-list.component.html',
-  styleUrls: ['./hierarchy-list.component.scss']
+  styleUrls: ['./hierarchy-list.component.scss'],
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
-
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -72,7 +78,10 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
   private readonly orderChange = new Subject<string>();
   private readonly searchKeys = ['name', 'description', 'identifier'];
 
-  constructor(public hierarchyService: HierarchyService, private route: ActivatedRoute) {
+  constructor(
+    public hierarchyService: HierarchyService,
+    private route: ActivatedRoute,
+  ) {
     super(hierarchyService);
     this.updatedProfileSub = this.hierarchyService.updated.subscribe((updatedProfile: Profile) => {
       const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
@@ -108,8 +117,9 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
       }),
     );
 
-    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
+      debounceTime(FILTER_DEBOUNCE_TIME_MS),
+    );
 
     searchCriteriaChange.subscribe(() => this.search());
   }
@@ -123,20 +133,16 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
       {
         key: 'applicationName',
         value: [ApplicationId.USERS_APP],
-        operator: Operators.notin
+        operator: Operators.notin,
       },
       { key: 'externalParamId', value: null, operator: Operators.equals },
-      { key: 'tenantIdentifier', value: this.tenantIdentifier, operator: Operators.equals }
+      { key: 'tenantIdentifier', value: this.tenantIdentifier, operator: Operators.equals },
     ];
 
     const query: SearchQuery = {
-      criteria: [
-        ...defaultCriteria,
-        ...buildCriteriaFromSearch(this._searchText, this.searchKeys),
-      ]
+      criteria: [...defaultCriteria, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
     };
 
     super.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT, JSON.stringify(query)));
   }
-
 }

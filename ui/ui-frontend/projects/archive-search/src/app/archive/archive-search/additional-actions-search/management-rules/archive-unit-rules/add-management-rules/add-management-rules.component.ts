@@ -114,7 +114,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     public ruleService: RuleService,
     private managementRulesValidatorService: ManagementRulesValidatorService,
     private translateService: TranslateService,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
@@ -140,7 +140,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
-        filter((formData) => this.patchForm(formData))
+        filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
@@ -225,8 +225,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
             data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
               ? this.resultNumberToShow
               : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-              ? this.resultNumberToShow
-              : (this.selectedItem - data.totalResults).toString();
+                ? this.resultNumberToShow
+                : (this.selectedItem - data.totalResults).toString();
 
           this.isLoading = false;
         });
@@ -271,12 +271,10 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
       if (this.hasExactCount) {
-        this.archiveService
-          .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
-          .subscribe((resultsNumber) => {
-            this.itemsWithSameRuleAndDate = resultsNumber.toString();
-            this.isWarningLoading = false;
-          });
+        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe((resultsNumber) => {
+          this.itemsWithSameRuleAndDate = resultsNumber.toString();
+          this.isWarningLoading = false;
+        });
       } else {
         this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
           this.itemsWithSameRuleAndDate =
@@ -363,23 +361,23 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction;
       if (this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule) === -1) {
         this.ruleTypeDUA.rules.push(rule);
         this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.rule !== this.lastRuleId);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         const index = this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule);
         this.ruleTypeDUA.rules[index] = rule;
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {

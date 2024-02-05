@@ -104,8 +104,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
-import {VitamuiTreeNodeModule} from "./components/vitamui-tree-node";
-
+import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -116,11 +115,7 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
-  declarations: [
-    BlankComponent,
-    ErrorDialogComponent,
-    VitamuiIntervalDatePickerComponent
-  ],
+  declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
     CommonModule,
     HttpClientModule,

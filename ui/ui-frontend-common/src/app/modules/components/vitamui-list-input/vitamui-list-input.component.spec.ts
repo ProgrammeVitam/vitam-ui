@@ -47,7 +47,7 @@ import { input } from '../../../../../testing/src';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { VitamUIListInputComponent } from './vitamui-list-input.component';
 
-@Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>'})
+@Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>' })
 class TestHostComponent {
   @ViewChild(VitamUIListInputComponent) component: VitamUIListInputComponent;
   values: string[];
@@ -58,23 +58,12 @@ let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
 describe('VitamUIListInputComponent', () => {
-
   beforeEach(waitForAsync(() => {
-
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-      ],
-      declarations: [ TestHostComponent, VitamUIListInputComponent ],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ]
-    })
-    .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      declarations: [TestHostComponent, VitamUIListInputComponent],
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -88,11 +77,7 @@ describe('VitamUIListInputComponent', () => {
   });
 
   it('should have a list of domains', waitForAsync(() => {
-    testhost.values = [
-      'toto.titi',
-      'titi.tutu',
-      'tata.tete',
-    ];
+    testhost.values = ['toto.titi', 'titi.tutu', 'tata.tete'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -157,5 +142,4 @@ describe('VitamUIListInputComponent', () => {
       expect(testhost.component.values).toEqual(['test.com', 'toto.co.uk']);
     });
   }));
-
 });

@@ -50,7 +50,11 @@ import { RuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-storage-rules-facets.component.scss'],
 })
 export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private facetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   storageRuleFacets: RuleFacets;
@@ -112,7 +116,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -128,7 +132,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.storageRuleFacets.rulesListFacets.length,
           this.exactCount,
-          this.totalResults
+          this.totalResults,
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -161,7 +165,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('COPY'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -173,7 +177,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('TRANSFER'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -185,7 +189,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('RESTRICTACCESS'),
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,

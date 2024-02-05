@@ -39,13 +39,12 @@ import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 import { CollapseDirective } from './collapse.directive';
 
 @Directive({
-  selector: '[vitamuiCommonCollapseTriggerFor]'
+  selector: '[vitamuiCommonCollapseTriggerFor]',
 })
 export class CollapseTriggerForDirective {
-
   @Input() vitamuiCommonCollapseTriggerFor: CollapseDirective;
 
-  constructor() { }
+  constructor() {}
 
   @HostBinding('style.cursor')
   cursor = 'pointer';
@@ -54,5 +53,4 @@ export class CollapseTriggerForDirective {
   toggle() {
     this.vitamuiCommonCollapseTriggerFor.toggle();
   }
-
 }

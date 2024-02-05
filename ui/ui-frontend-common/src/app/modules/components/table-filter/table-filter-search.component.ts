@@ -39,18 +39,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
-  styleUrls: ['./table-filter-search.component.scss']
+  styleUrls: ['./table-filter-search.component.scss'],
 })
 export class TableFilterSearchComponent implements OnInit {
-
   @Input() filter: any[];
   @Input()
-  set options(options: Array<{ label: string, value: any }>) {
+  set options(options: Array<{ label: string; value: any }>) {
     this._options = options;
     this.optionDisplayMap = this._options.map(() => true);
   }
   // tslint:disable-next-line:variable-name
-  _options: Array<{ label: string, value: any }>;
+  _options: Array<{ label: string; value: any }>;
   @Input() emptyValueOption: string;
 
   @Output() readonly filterChange = new EventEmitter<any[]>();
@@ -59,10 +58,9 @@ export class TableFilterSearchComponent implements OnInit {
   optionDisplayMap: Array<boolean>;
   hideEmptyValueOption = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   searchOptions(search: string) {
     if (!search) {
@@ -80,5 +78,4 @@ export class TableFilterSearchComponent implements OnInit {
   resetOptionList() {
     this.optionDisplayMap = this._options.map(() => true);
   }
-
 }

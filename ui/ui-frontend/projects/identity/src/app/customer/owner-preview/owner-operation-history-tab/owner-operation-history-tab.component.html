@@ -1,9 +1,9 @@
 <div *ngIf="loading; else elseBlock"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
 <ng-template #elseBlock>
-  <div *ngIf="!events?.length; else elseBlock" class="no-result">{{'COMMON.HISTORY.NO_HISTORY' | translate}}</div>
+  <div *ngIf="!events?.length; else elseBlock" class="no-result">{{ 'COMMON.HISTORY.NO_HISTORY' | translate }}</div>
   <ng-template #elseBlock>
     <vitamui-common-collapse [collapseTitle]="'COMMON.HISTORY.OPERATIONS' | translate">
-      <vitamui-common-history-events [events]="events" ></vitamui-common-history-events>
+      <vitamui-common-history-events [events]="events"></vitamui-common-history-events>
     </vitamui-common-collapse>
   </ng-template>
 </ng-template>

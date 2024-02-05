@@ -1,11 +1,16 @@
 <ng-template ngFor let-category [ngForOf]="categoryList">
-  <div *ngIf="category.applications.length > 0 && category.displayTitle"
-       class="row category-header" [class.modal-category]="isModalMenu">{{ category.title }}</div>
+  <div *ngIf="category.applications.length > 0 && category.displayTitle" class="row category-header" [class.modal-category]="isModalMenu">
+    {{ category.title }}
+  </div>
   <div class="app-container" [class.modal-container]="isModalMenu">
     <div class="row">
-      <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
-                                *ngFor="let app of category.applications" [application]="app" [isModalMenu]="isModalMenu"
-                                (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
+      <vitamui-common-menu-tile
+        class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+        *ngFor="let app of category.applications"
+        [application]="app"
+        [isModalMenu]="isModalMenu"
+        (appSelect)="selectApp($event)"
+      ></vitamui-common-menu-tile>
     </div>
   </div>
 </ng-template>

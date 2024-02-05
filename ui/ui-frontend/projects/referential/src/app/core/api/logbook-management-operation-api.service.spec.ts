@@ -31,14 +31,12 @@ import { BASE_URL, LoggerModule } from 'ui-frontend-common';
 import { LogbookManagementOperationApiService } from './logbook-management-operation-api.service';
 
 describe('LogbookManagementOperationApiService', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [LoggerModule.forRoot(), HttpClientTestingModule],
-        providers: [{ provide: BASE_URL, useValue: '' }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [LoggerModule.forRoot(), HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '' }],
+    }).compileComponents();
+  }));
 
   it('should be created', () => {
     const service: LogbookManagementOperationApiService = TestBed.inject(LogbookManagementOperationApiService);

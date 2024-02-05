@@ -81,7 +81,7 @@ export class VitamUISnackBarService {
   constructor(
     private matSnackBar: MatSnackBar,
     private applicationService: ApplicationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   public open(data: SnackBarData): MatSnackBarRef<VitamUISnackBarComponent> {
@@ -102,7 +102,7 @@ export class VitamUISnackBarService {
     data: SnackBarData,
     appId: ApplicationId,
     urlName: string,
-    urlParams?: Map<string, string>
+    urlParams?: Map<string, string>,
   ): MatSnackBarRef<VitamUISnackBarComponent> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
     urlName = this.getTranslateValue(data.translate, urlName, urlParams);
@@ -130,7 +130,7 @@ export class VitamUISnackBarService {
     url: string,
     urlName: string,
     cssClass?: string,
-    closeOnClick: boolean = false
+    closeOnClick: boolean = false,
   ): MatSnackBarRef<VitamUISnackBarComponent> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
     urlName = this.getTranslateValue(data.translate, urlName);

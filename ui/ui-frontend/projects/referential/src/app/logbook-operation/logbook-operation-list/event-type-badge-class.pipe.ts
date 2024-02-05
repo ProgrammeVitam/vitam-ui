@@ -42,14 +42,13 @@ const classMap: { [key: string]: string } = {
   OK: 'status-badge-green',
   WARNING: 'status-badge-orange',
   KO: 'status-badge-red',
-  FATAL: 'status-badge-red'
+  FATAL: 'status-badge-red',
 };
 
 @Pipe({
-  name: 'eventTypeBadgeClass'
+  name: 'eventTypeBadgeClass',
 })
 export class EventTypeBadgeClassPipe implements PipeTransform {
-
   transform(event: Event): string {
     if (!event || !event.events || event.events.length <= 0) {
       return 'status-badge-grey';
@@ -63,5 +62,4 @@ export class EventTypeBadgeClassPipe implements PipeTransform {
 
     return classMap[lastEvent.outcome] || 'status-badge-grey';
   }
-
 }

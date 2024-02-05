@@ -27,32 +27,29 @@
  *
  */
 
-
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {BehaviorSubject, Observable, of} from "rxjs";
-import {AccessionRegisterListComponent} from "./accession-register-list.component";
-import {AccessionRegistersService} from "../accession-register.service";
-import {Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule} from "ui-frontend-common";
-import {TranslateModule} from "@ngx-translate/core";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {VitamUICommonTestModule} from "ui-frontend-common/testing";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AccessionRegisterListComponent } from './accession-register-list.component';
+import { AccessionRegistersService } from '../accession-register.service';
+import { Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule } from 'ui-frontend-common';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AccessionRegisterListComponent', () => {
-
   let fixture: ComponentFixture<AccessionRegisterListComponent>;
   let component: AccessionRegisterListComponent;
 
   let accessionRegistersService: {
-    getAccessionRegisterStatus: () => Observable<any>,
-    getDateIntervalChanges: () => BehaviorSubject<any>,
-    getAdvancedSearchData: () => BehaviorSubject<any>,
+    getAccessionRegisterStatus: () => Observable<any>;
+    getDateIntervalChanges: () => BehaviorSubject<any>;
+    getAdvancedSearchData: () => BehaviorSubject<any>;
   };
-  let searchService: { search: () => Observable<{}>; };
+  let searchService: { search: () => Observable<{}> };
 
   beforeEach(waitForAsync(() => {
-
     accessionRegistersService = {
       getAccessionRegisterStatus: () => of({}),
       getDateIntervalChanges: () => new BehaviorSubject<any>({}),
@@ -64,18 +61,12 @@ describe('AccessionRegisterListComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AccessionRegisterListComponent],
-      imports: [
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-        MatProgressSpinnerModule,
-        HttpClientTestingModule,
-        TableFilterModule
-      ],
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
       providers: [
-        {provide: AccessionRegistersService, useValue: accessionRegistersService},
-        {provide: SearchService, useValue: searchService},
+        { provide: AccessionRegistersService, useValue: accessionRegistersService },
+        { provide: SearchService, useValue: searchService },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     fixture = TestBed.createComponent(AccessionRegisterListComponent);
     component = fixture.componentInstance;
@@ -85,20 +76,23 @@ describe('AccessionRegisterListComponent', () => {
     it('searchRequest should work', () => {
       // Given
       const search_emit = spyOn(InfiniteScrollTable.prototype, 'search');
-      accessionRegistersService.getDateIntervalChanges = () => new BehaviorSubject({
-        endDateMin: "",
-        endDateMax: "14/09/1988"
-      })
+      accessionRegistersService.getDateIntervalChanges = () =>
+        new BehaviorSubject({
+          endDateMin: '',
+          endDateMax: '14/09/1988',
+        });
       // When
       component.searchRequest();
       // Then
-      expect(search_emit).toHaveBeenCalledWith(new PageRequest(
-        0,
-        20,
-        'EndDate',
-        Direction.DESCENDANT,
-        '{"filters":{},"endDateInterval":{"endDateMin":"","endDateMax":"14/09/1988"}}'
-      ));
+      expect(search_emit).toHaveBeenCalledWith(
+        new PageRequest(
+          0,
+          20,
+          'EndDate',
+          Direction.DESCENDANT,
+          '{"filters":{},"endDateInterval":{"endDateMin":"","endDateMax":"14/09/1988"}}',
+        ),
+      );
     });
-  })
-})
+  });
+});

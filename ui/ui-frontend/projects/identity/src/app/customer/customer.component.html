@@ -1,26 +1,39 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-customer-preview *ngIf="previewType === 'CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem" [gdprReadOnlyStatus]="gdprReadOnlySettingStatus"></app-customer-preview>
+    <app-customer-preview
+      *ngIf="previewType === 'CUSTOMER'"
+      (previewClose)="closePanel()"
+      [customer]="openedItem"
+      [gdprReadOnlyStatus]="gdprReadOnlySettingStatus"
+    ></app-customer-preview>
     <app-owner-preview *ngIf="previewType === 'OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
-    <app-owner-preview *ngIf="previewType === 'TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
+    <app-owner-preview
+      *ngIf="previewType === 'TENANT'"
+      (previewClose)="closePanel()"
+      [owner]="owner"
+      [tenant]="openedItem"
+    ></app-owner-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'CUSTOMER.HOME.TITLE' | translate}}
+        {{ 'CUSTOMER.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.INFORMATIONS.CODE' | translate" [disableSearchBar]="true">
         <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
-          <span>{{'CUSTOMER.HOME.CREATE_TITLE' | translate}}</span>
+          <span>{{ 'CUSTOMER.HOME.CREATE_TITLE' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>
 
     <div class="vitamui-content">
-      <app-customer-list (customerClick)="openCustomerPanel($event)" (ownerClick)="openOwnerPanel($event)"
-        (tenantClick)="openTenantPanel($event)">
+      <app-customer-list
+        (customerClick)="openCustomerPanel($event)"
+        (ownerClick)="openOwnerPanel($event)"
+        (tenantClick)="openTenantPanel($event)"
+      >
       </app-customer-list>
     </div>
   </mat-sidenav-content>

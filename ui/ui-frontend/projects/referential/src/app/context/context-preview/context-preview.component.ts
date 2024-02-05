@@ -70,7 +70,10 @@ export class ContextPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private contextService: ContextService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private contextService: ContextService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

@@ -1,21 +1,20 @@
 /* tslint:disable:no-use-before-declare component-selector */
-import {Component, forwardRef, Input} from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import { Component, forwardRef, Input } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const CARD_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => CardSelectComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-card-select',
   templateUrl: './card-select.component.html',
   styleUrls: ['./card-select.component.scss'],
-  providers: [CARD_SELECT_VALUE_ACCESSOR]
+  providers: [CARD_SELECT_VALUE_ACCESSOR],
 })
 export class CardSelectComponent {
-
   @Input()
   placeholder: any;
 
@@ -46,13 +45,11 @@ export class CardSelectComponent {
     this.onChange(Array.from(this.values));
   }
 
-  onChange = (_: any) => {
-  }
-  onTouched = () => {
-  }
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   writeValue(value: Array<string>) {
-    this.values = new Set((value == null) ? new Array<string>() : value);
+    this.values = new Set(value == null ? new Array<string>() : value);
   }
 
   registerOnChange(fn: any): void {
@@ -62,6 +59,4 @@ export class CardSelectComponent {
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
-
 }

@@ -1,21 +1,21 @@
 <div class="breadcrumb">
-    <ng-container *ngFor="let d of data; let last = last">
-        <span class="text normal" (click)="onClick(d, !last)">
-            <ng-container [ngSwitch]="d.format">
-                <div *ngSwitchCase="'TITLECASE'">
-                    {{('APPLICATION.' + d.identifier + '.NAME' | translate:{default: d.label} ) | titlecase}}
-                </div>
-                <div *ngSwitchCase="'LOWERCASE'">
-                    {{('APPLICATION.' + d.identifier + '.NAME' | translate:{default: d.label} ) | lowercase}}
-                </div>
-                <div *ngSwitchCase="'UPPERCASE'">
-                    {{('APPLICATION.' + d.identifier + '.NAME' | translate:{default: d.label} ) | uppercase}}
-                </div>
-                <div *ngSwitchDefault>
-                    {{('APPLICATION.' + d.identifier + '.NAME' | translate:{default: d.label} )}}
-                </div>
-            </ng-container>
-        </span>
-        <i *ngIf="!last" class="material-icons px-2">trending_flat</i>
-    </ng-container>
+  <ng-container *ngFor="let d of data; let last = last">
+    <span class="text normal" (click)="onClick(d, !last)">
+      <ng-container [ngSwitch]="d.format">
+        <div *ngSwitchCase="'TITLECASE'">
+          {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | titlecase }}
+        </div>
+        <div *ngSwitchCase="'LOWERCASE'">
+          {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | lowercase }}
+        </div>
+        <div *ngSwitchCase="'UPPERCASE'">
+          {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | uppercase }}
+        </div>
+        <div *ngSwitchDefault>
+          {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } }}
+        </div>
+      </ng-container>
+    </span>
+    <i *ngIf="!last" class="material-icons px-2">trending_flat</i>
+  </ng-container>
 </div>

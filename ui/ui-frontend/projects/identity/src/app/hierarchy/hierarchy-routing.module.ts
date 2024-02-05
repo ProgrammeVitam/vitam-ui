@@ -46,13 +46,13 @@ const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
     canActivate: [TenantSelectionGuard],
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'tenant/:tenantIdentifier',
@@ -63,19 +63,13 @@ const routes: Route[] = [
     path: ':id',
     component: HierarchyPopupComponent,
     resolve: { profile: HierarchyResolver },
-    data: { isPopup: true, appId: 'HIERARCHY_PROFILE_APP' }
+    data: { isPopup: true, appId: 'HIERARCHY_PROFILE_APP' },
   },
 ];
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class HierarchyRoutingModule { }
+export class HierarchyRoutingModule {}

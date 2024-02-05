@@ -65,7 +65,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   findUserAccessContract() {
@@ -83,7 +83,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
                 panelClass: 'vitamui-snack-bar',
                 duration: 10000,
               });
-            })
+            }),
           )
           .subscribe();
       }

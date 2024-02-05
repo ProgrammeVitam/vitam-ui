@@ -61,12 +61,10 @@ import { SharedModule } from '../../shared/shared.module';
     MatSnackBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
-  declarations: [
-    UploadComponent,
-  ],
+  declarations: [UploadComponent],
   entryComponents: [UploadComponent],
-  providers: [UploadService]
+  providers: [UploadService],
 })
-export class UploadModule { }
+export class UploadModule {}

@@ -84,7 +84,10 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     this.tabLinks[2] = this.writeTab;
   }
 
-  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private accessContractService: AccessContractService,
+  ) {}
 
   filterEvents(event: any): boolean {
     return (

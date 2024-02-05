@@ -58,7 +58,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {

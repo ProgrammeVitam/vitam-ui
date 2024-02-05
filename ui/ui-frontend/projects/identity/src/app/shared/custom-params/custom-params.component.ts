@@ -81,10 +81,10 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   }
 
   writeValue(values: any) {
-    if(values!=null && values!= undefined)
-    Object.keys(values).forEach(key=>{
-      this.values.set(key,values[key]);
-    })
+    if (values != null && values != undefined)
+      Object.keys(values).forEach((key) => {
+        this.values.set(key, values[key]);
+      });
   }
 
   registerOnChange(fn: (_: any) => void) {

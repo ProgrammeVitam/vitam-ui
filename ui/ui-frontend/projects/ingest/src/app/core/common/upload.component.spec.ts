@@ -66,7 +66,7 @@ describe('UploadComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: UploadService, useValue: uploadServiceSpy },
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -81,14 +81,12 @@ describe('UploadComponent', () => {
   });
 
   describe('initContextIdentifier', () => {
-
     beforeEach(() => {
       spyOn(console, 'error');
     });
   });
 
   describe('checkFileExtension', () => {
-
     it('should return true when extension zip is correct', () => {
       expect(component.checkFileExtension('correct.zip')).toBeTruthy();
     });

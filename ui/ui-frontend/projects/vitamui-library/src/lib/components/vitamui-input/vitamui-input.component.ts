@@ -35,24 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:no-use-before-declare component-selector */
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-library-input',
   templateUrl: './vitamui-input.component.html',
   styleUrls: ['./vitamui-input.component.scss'],
-  providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
+  providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
 })
 export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
-
   @Input() type = 'text';
   @Input() maxlength: number;
   @Input() placeholder: string;
@@ -81,7 +80,7 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
 
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('input', {static: false}) private input: ElementRef<HTMLInputElement>;
+  @ViewChild('input', { static: false }) private input: ElementRef<HTMLInputElement>;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
@@ -89,10 +88,8 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   value: string | number;
 
-  onChange = (_: any) => {
-  }
-  onTouched = () => {
-  }
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   ngOnInit(): void {
     if (this.value != null) {

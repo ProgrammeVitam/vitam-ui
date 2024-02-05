@@ -24,8 +24,8 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {RegisterValueEventModel} from 'ui-frontend-common';
-import {RegisterValueEventType} from 'ui-frontend-common/app/modules/models/access-register/register-value-event-model';
+import { RegisterValueEventModel } from 'ui-frontend-common';
+import { RegisterValueEventType } from 'ui-frontend-common/app/modules/models/access-register/register-value-event-model';
 
 export class AccessionRegisterFixtures {
   public static valueNotUndefined(value: any) {
@@ -33,8 +33,8 @@ export class AccessionRegisterFixtures {
   }
 
   public static newOperations(name: RegisterValueEventType): RegisterValueEventModel {
-    const date = new Date()
-    date.setHours(Math.floor(Math.random() * (12 + 1)))
+    const date = new Date();
+    date.setHours(Math.floor(Math.random() * (12 + 1)));
     return {
       Opc: name,
       OpType: name,
@@ -43,6 +43,6 @@ export class AccessionRegisterFixtures {
       Objects: Math.floor(Math.random() * (10 + 1)),
       ObjSize: Math.floor(Math.random() * (100 + 1)),
       CreationDate: date.toISOString(),
-    }
+    };
   }
 }

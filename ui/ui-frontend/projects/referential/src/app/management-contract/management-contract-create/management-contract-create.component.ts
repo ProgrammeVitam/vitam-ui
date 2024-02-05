@@ -60,7 +60,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   statusControl = new FormControl(false);
@@ -126,7 +126,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         this.logger.error(error);
-      }
+      },
     );
   }
 

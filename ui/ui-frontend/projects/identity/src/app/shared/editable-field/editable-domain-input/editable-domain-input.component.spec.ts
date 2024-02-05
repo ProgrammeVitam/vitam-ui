@@ -42,19 +42,19 @@ import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/t
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import {
-  CustomerCreateValidators
-} from '../../../customer/customer-create/customer-create.validators';
+import { CustomerCreateValidators } from '../../../customer/customer-create/customer-create.validators';
 import { EditableDomainInputComponent } from './editable-domain-input.component';
 
 @Component({
   selector: 'app-domains-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DomainInputStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DomainInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -70,7 +70,7 @@ class DomainInputStubComponent implements ControlValueAccessor {
 @Component({
   template: `
     <app-editable-domain-input [(ngModel)]="value" [label]="label" [(defaultDomain)]="defaultValue"></app-editable-domain-input>
-  `
+  `,
 })
 class TesthostComponent {
   value: string[];
@@ -86,30 +86,17 @@ describe('EditableDomainInputComponent', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(waitForAsync(() => {
-    const customerCreateValidatorsSpy = jasmine.createSpyObj(
-      'CustomerCreateValidators',
-      { uniqueCode: () => of(null), uniqueDomain: () => of(null)
+    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
+      uniqueCode: () => of(null),
+      uniqueDomain: () => of(null),
     });
 
     TestBed.configureTestingModule({
-      imports: [
-        OverlayModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableDomainInputComponent,
-        DomainInputStubComponent
-      ],
-      providers: [
-        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
+      declarations: [TesthostComponent, EditableDomainInputComponent, DomainInputStubComponent],
+      providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -127,7 +114,6 @@ describe('EditableDomainInputComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -146,7 +132,7 @@ describe('EditableDomainInputComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const elDomains = fixture.nativeElement.querySelectorAll(
-          '.editable-field .editable-field-content .editable-field-text-content > div'
+          '.editable-field .editable-field-content .editable-field-text-content > div',
         );
         expect(elDomains.length).toBe(3);
         expect(elDomains[0].textContent).toContain(testhost.value[0]);
@@ -162,7 +148,7 @@ describe('EditableDomainInputComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const elDomains = fixture.nativeElement.querySelectorAll(
-          '.editable-field .editable-field-content .editable-field-text-content > div'
+          '.editable-field .editable-field-content .editable-field-text-content > div',
         );
         expect(elDomains.length).toBe(4);
         expect(elDomains[1].textContent).toContain('SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN');
@@ -217,11 +203,9 @@ describe('EditableDomainInputComponent', () => {
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
@@ -338,6 +322,5 @@ describe('EditableDomainInputComponent', () => {
       testhost.component.cancel();
       expect(testhost.defaultValue).toBe('default.com');
     });
-
   });
 });

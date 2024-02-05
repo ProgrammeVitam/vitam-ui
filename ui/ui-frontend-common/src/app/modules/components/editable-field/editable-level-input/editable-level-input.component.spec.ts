@@ -58,14 +58,9 @@ describe('EditableLevelInputComponent', () => {
         HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [
-        EditableLevelInputComponent,
-        SubLevelPipe],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ]
-    })
-      .compileComponents();
+      declarations: [EditableLevelInputComponent, SubLevelPipe],
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -135,7 +135,7 @@ export class ThemeService {
 
       // init default background
       const defaultBackground = this.backgroundChoice.find(
-        (color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND]
+        (color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND],
       );
       if (defaultBackground) {
         defaultBackground.isDefault = true;
@@ -156,31 +156,34 @@ export class ThemeService {
     const userGraphicIdentity: GraphicIdentity = authUser?.basicCustomer?.graphicIdentity;
     const hasCustomGraphicIdentity = userGraphicIdentity?.hasCustomGraphicIdentity;
 
-    return this._defaultTheme.pipe(filter((theme: Theme) => !!theme), map((theme: Theme) => {
-      let value: string | SafeResourceUrl;
-      switch (type) {
-        case ThemeDataType.PORTAL_LOGO:
-          const portal64 = hasCustomGraphicIdentity && userGraphicIdentity.portalDataBase64;
-          value = portal64 ? this.domSanitize(userGraphicIdentity.portalDataBase64) : theme.portalUrl;
-          break;
-        case ThemeDataType.HEADER_LOGO:
-          const header64 = hasCustomGraphicIdentity && userGraphicIdentity.headerDataBase64;
-          value = header64 ? this.domSanitize(userGraphicIdentity.headerDataBase64) : theme.headerUrl;
-          break;
-        case ThemeDataType.FOOTER_LOGO:
-          const footer64 = hasCustomGraphicIdentity && userGraphicIdentity.footerDataBase64;
-          value = footer64 ? this.domSanitize(userGraphicIdentity.footerDataBase64) : theme.footerUrl;
-          break;
-        case ThemeDataType.USER_LOGO:
-          const userData64 = hasCustomGraphicIdentity && userGraphicIdentity.userDataBase64;
-          value = userData64 ? this.domSanitize(userGraphicIdentity.userDataBase64) : theme.userUrl;
-          break;
-        default:
-          return;
-      }
+    return this._defaultTheme.pipe(
+      filter((theme: Theme) => !!theme),
+      map((theme: Theme) => {
+        let value: string | SafeResourceUrl;
+        switch (type) {
+          case ThemeDataType.PORTAL_LOGO:
+            const portal64 = hasCustomGraphicIdentity && userGraphicIdentity.portalDataBase64;
+            value = portal64 ? this.domSanitize(userGraphicIdentity.portalDataBase64) : theme.portalUrl;
+            break;
+          case ThemeDataType.HEADER_LOGO:
+            const header64 = hasCustomGraphicIdentity && userGraphicIdentity.headerDataBase64;
+            value = header64 ? this.domSanitize(userGraphicIdentity.headerDataBase64) : theme.headerUrl;
+            break;
+          case ThemeDataType.FOOTER_LOGO:
+            const footer64 = hasCustomGraphicIdentity && userGraphicIdentity.footerDataBase64;
+            value = footer64 ? this.domSanitize(userGraphicIdentity.footerDataBase64) : theme.footerUrl;
+            break;
+          case ThemeDataType.USER_LOGO:
+            const userData64 = hasCustomGraphicIdentity && userGraphicIdentity.userDataBase64;
+            value = userData64 ? this.domSanitize(userGraphicIdentity.userDataBase64) : theme.userUrl;
+            break;
+          default:
+            return;
+        }
 
-      return value;
-    }, take(1)));
+        return value;
+      }, take(1)),
+    );
   }
 
   private domSanitize(base64: string): SafeUrl {

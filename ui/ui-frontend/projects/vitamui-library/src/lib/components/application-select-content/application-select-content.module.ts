@@ -34,23 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {UpdatedVitamUIMenuTileModule} from '../vitamui-menu-tile/vitamui-menu-tile.module';
-import {UpdatedApplicationSelectContentComponent} from './application-select-content.component';
+import { UpdatedVitamUIMenuTileModule } from '../vitamui-menu-tile/vitamui-menu-tile.module';
+import { UpdatedApplicationSelectContentComponent } from './application-select-content.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-    UpdatedVitamUIMenuTileModule,
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule, UpdatedVitamUIMenuTileModule],
   declarations: [UpdatedApplicationSelectContentComponent],
   exports: [UpdatedApplicationSelectContentComponent],
 })
-export class UpdatedApplicationSelectContentModule {
-}
+export class UpdatedApplicationSelectContentModule {}

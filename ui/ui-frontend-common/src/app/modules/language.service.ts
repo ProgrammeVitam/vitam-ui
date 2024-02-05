@@ -74,15 +74,11 @@ export class LanguageService {
   constructor(private translateService: TranslateService) {}
 
   public getFullLangString(minLang: MinLangString): FullLangString {
-    return this.availableLanguages.find(
-      (value: VitamUILangague) => value.minLangString === minLang
-    ).fullLangString;
+    return this.availableLanguages.find((value: VitamUILangague) => value.minLangString === minLang).fullLangString;
   }
 
   public getShortLangString(fullLang: FullLangString): MinLangString {
-    return this.availableLanguages.find(
-      (value: VitamUILangague) => value.fullLangString === fullLang
-    ).minLangString;
+    return this.availableLanguages.find((value: VitamUILangague) => value.fullLangString === fullLang).minLangString;
   }
 
   public getAvailableLanguagesOptions(): Observable<Option[]> {
@@ -104,6 +100,6 @@ export class LanguageService {
   }
 
   public getAvaiableLanguages(): VitamUILangague[] {
-      return this.availableLanguages;
+    return this.availableLanguages;
   }
 }

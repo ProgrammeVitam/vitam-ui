@@ -2,13 +2,13 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content">
-            <div *ngFor="let pattern of control.value">{{pattern}}</div>
-          </span>
-          <div class="mt-2 editable-field-control">
-            <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
-          </div>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">
+          <div *ngFor="let pattern of control.value">{{ pattern }}</div>
+        </span>
+        <div class="mt-2 editable-field-control">
+          <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -26,13 +26,15 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
 </ng-container>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div *ngFor="let pattern of control?.value">{{pattern}}</div>
+  <label>{{ label }}</label>
+  <div *ngFor="let pattern of control?.value">{{ pattern }}</div>
 </div>

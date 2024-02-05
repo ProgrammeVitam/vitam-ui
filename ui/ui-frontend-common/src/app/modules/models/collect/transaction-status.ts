@@ -32,5 +32,5 @@ export enum TransactionStatus {
   SENDING = 'SENDING',
   ACK_KO = 'ACK_KO',
   KO = 'KO',
-  ABORTED = 'ABORTED'
+  ABORTED = 'ABORTED',
 }

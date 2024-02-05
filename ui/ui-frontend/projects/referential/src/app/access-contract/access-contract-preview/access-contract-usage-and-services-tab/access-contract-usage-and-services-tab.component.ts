@@ -83,7 +83,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
   ) {
     this.form = this.formBuilder.group({
       everyOriginatingAgency: [true, Validators.required],
@@ -170,8 +170,8 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -187,7 +187,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

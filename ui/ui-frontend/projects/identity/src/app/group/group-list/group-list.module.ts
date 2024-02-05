@@ -45,19 +45,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { GroupListComponent } from './group-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule,
-    MatRippleModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule,
-  ],
-  declarations: [
-    GroupListComponent,
-  ],
-  exports: [
-    GroupListComponent,
-  ]
+  imports: [CommonModule, SharedModule, RouterModule, MatRippleModule, MatProgressSpinnerModule, VitamUICommonModule],
+  declarations: [GroupListComponent],
+  exports: [GroupListComponent],
 })
-export class GroupListModule { }
+export class GroupListModule {}

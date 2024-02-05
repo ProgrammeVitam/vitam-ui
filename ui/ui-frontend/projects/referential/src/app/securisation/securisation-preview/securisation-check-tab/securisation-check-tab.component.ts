@@ -59,7 +59,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   constructor(
     private securisationService: SecurisationService,
     private accessContractService: AccessContractService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {

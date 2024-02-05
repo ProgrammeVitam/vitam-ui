@@ -45,7 +45,10 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   @Output()
   previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
 
-  constructor(public projectsService: ProjectsService, private router: Router) {
+  constructor(
+    public projectsService: ProjectsService,
+    private router: Router,
+  ) {
     super(projectsService);
   }
 

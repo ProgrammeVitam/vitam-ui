@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {BASE_URL, TableFilterModule, WINDOW_LOCATION} from 'ui-frontend-common';
-import {AccessContractListComponent} from './access-contract-list.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BASE_URL, TableFilterModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AccessContractListComponent } from './access-contract-list.component';
 
 import { AccessContractService } from '../access-contract.service';
 
@@ -55,25 +55,20 @@ describe('AccessContractListComponent', () => {
 
   const accessContractServiceMock = {
     getAll: () => of([]),
-    search: () => EMPTY
+    search: () => EMPTY,
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AccessContractListComponent],
-      imports: [
-        VitamUICommonTestModule,
-        MatProgressSpinnerModule,
-        HttpClientTestingModule,
-        TableFilterModule
-      ],
+      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
       providers: [
-        {provide: BASE_URL, useValue: ''},
-        {provide: MatSnackBar, useValue: {}},
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '' },
+        { provide: MatSnackBar, useValue: {} },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

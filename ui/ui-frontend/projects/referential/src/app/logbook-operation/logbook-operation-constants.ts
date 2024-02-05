@@ -46,7 +46,7 @@ export const LOGBOOK_OPERATION_CATEGORIES: Option[] = [
   { key: 'UPDATE', label: 'Mise à jour', info: '' },
   { key: 'PRESERVATION', label: 'Préservation', info: '' },
   { key: 'RECLASSIFICATION', label: 'Réorganisation', info: '' },
-  { key: 'STORAGE_BACKUP', label: 'Sauvegarde d\'écriture', info: '' },
+  { key: 'STORAGE_BACKUP', label: "Sauvegarde d'écriture", info: '' },
   { key: 'TRACEABILITY', label: 'Sécurisation', info: '' },
   { key: 'CHECK', label: 'Vérification', info: '' },
   { key: 'EXTERNAL_LOGBOOK', label: 'Journalisation externe', info: '' },

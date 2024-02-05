@@ -45,9 +45,7 @@ import { EMPTY } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 
-
 describe('AccountService', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -55,8 +53,8 @@ describe('AccountService', () => {
         AccountService,
         { provide: BASE_URL, useValue: {} },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } }
-      ]
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+      ],
     });
   });
 

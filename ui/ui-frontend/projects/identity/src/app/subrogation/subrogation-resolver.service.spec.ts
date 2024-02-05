@@ -40,7 +40,6 @@ import { CustomerSelectService } from './customer-select.service';
 import { SubrogationResolver } from './subrogation-resolver.service';
 
 describe('SubrogationResolverService', () => {
-
   beforeEach(() => {
     const customerSearchServiceSpy = jasmine.createSpyObj('CustomerSelectService', ['search']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
@@ -50,7 +49,7 @@ describe('SubrogationResolverService', () => {
         SubrogationResolver,
         { provide: CustomerSelectService, useValue: customerSearchServiceSpy },
         { provide: Router, useValue: routerSpy },
-      ]
+      ],
     });
   });
 

@@ -57,7 +57,10 @@ export class FilingPlanService {
   // tslint:disable-next-line:variable-name
   private _pending = 0;
 
-  constructor(private searchUnitApi: SearchUnitApiService, @Inject(LOCALE_ID) private locale: string) {}
+  constructor(
+    private searchUnitApi: SearchUnitApiService,
+    @Inject(LOCALE_ID) private locale: string,
+  ) {}
 
   get pending(): boolean {
     return this._pending > 0;
@@ -95,14 +98,14 @@ export class FilingPlanService {
         }),
         map((response) => response.$results),
         tap(() => this._pending--),
-        shareReplay(1)
+        shareReplay(1),
       );
       this.setCachedValue(units$, tenantId);
     }
     return units$.pipe(
       map((results) => {
         return this.getNestedChildren(results, idPrefix);
-      })
+      }),
     );
   }
 
