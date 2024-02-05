@@ -128,7 +128,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveX509() {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
-        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(List.of(provider));
 
         when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.of(IDENTIFIER)),
             eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
@@ -352,7 +352,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testNoUser() {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
-        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(List.of(provider));
         when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.empty()), eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))))
             .thenReturn(null);
 
@@ -364,7 +364,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testDisabledUser() {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
-        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(List.of(provider));
         when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.empty()), eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))))
             .thenReturn(userProfile(UserStatusEnum.DISABLED));
 
@@ -376,7 +376,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testUserCannotLogin() {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
-        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(List.of(provider));
         when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.empty()), eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))))
             .thenReturn(userProfile(UserStatusEnum.BLOCKED));
 

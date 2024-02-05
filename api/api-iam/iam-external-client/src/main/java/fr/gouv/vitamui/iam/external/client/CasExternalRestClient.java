@@ -36,20 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -59,11 +45,23 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A REST client to perform CAS-specific operations.
- *
- *
  */
 public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
 
@@ -91,33 +89,34 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         headers.put("username", Collections.singletonList(username));
         headers.put("password", Collections.singletonList(password));
-        final HttpEntity request = new HttpEntity(headers);
+        final HttpEntity request = new HttpEntity<>(headers);
         final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH, HttpMethod.POST, request, Boolean.class);
         checkResponse(response);
     }
 
-    public UserDto getUserByEmail(final ExternalHttpContext context, final String email, final Optional<String> embedded) {
+    public List<UserDto> getUsersByEmail(final ExternalHttpContext context, final String email, final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
         uriBuilder.queryParam("email", email);
-        if (embedded.isPresent()) {
-            uriBuilder.queryParam("embedded", embedded.get());
-        }
-
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, AuthUserDto.class);
+        embedded.ifPresent(s -> uriBuilder.queryParam("embedded", s));
+        final HttpEntity request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<List<AuthUserDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request,
+            new ParameterizedTypeReference<List<AuthUserDto>>() {
+            });
         checkResponse(response);
-        final AuthUserDto authUserDto = response.getBody();
-        if (authUserDto.getProfileGroup() != null) {
-            return authUserDto;
-        }
-        else {
-            return authUserDto.newBasicUserDto();
-        }
+        final List<AuthUserDto> authUsersDto = response.getBody();
+        return authUsersDto.stream().map(user -> {
+            if (user.getProfileGroup() != null) {
+                return user;
+            } else {
+                LOGGER.debug("Change to basic user DTO");
+                return user.newBasicUserDto();
+            }
+        }).collect(Collectors.toList());
     }
 
     public UserDto getUser(final ExternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
-            final Optional<String> embedded) {
+        final Optional<String> embedded) {
         LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
         uriBuilder.queryParam("email", email);
@@ -135,8 +134,8 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         final AuthUserDto authUserDto = response.getBody();
         if (authUserDto.getProfileGroup() != null) {
             return authUserDto;
-        }
-        else {
+        } else {
+            LOGGER.debug("Change to basic user DTO");
             return authUserDto.newBasicUserDto();
         }
     }
@@ -156,7 +155,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         LOGGER.debug("getMySubrogationAsSuperuser {}", superUserEmail);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-                getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request, getSubrogationDtoListClass());
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request, getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -165,7 +164,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId,
-                HttpMethod.GET, request, getSubrogationDtoListClass());
+            HttpMethod.GET, request, getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -192,4 +191,5 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
     public String getPathUrl() {
         return RestApi.V1_CAS_URL;
     }
+
 }

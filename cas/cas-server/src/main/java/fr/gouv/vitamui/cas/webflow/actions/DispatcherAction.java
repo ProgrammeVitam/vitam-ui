@@ -36,21 +36,25 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.jee.context.JEEContext;
@@ -59,7 +63,9 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This class can dispatch the user:
@@ -67,8 +73,6 @@ import java.util.Optional;
  * - or to an external IdP (authentication delegation)
  * - or to the bad configuration page if the user is not linked to any identity provider
  * - or to the disabled account page if the user is disabled.
- *
- *
  */
 @RequiredArgsConstructor
 public class DispatcherAction extends AbstractAction {
@@ -95,69 +99,84 @@ public class DispatcherAction extends AbstractAction {
 
         val credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
         val username = credential.getUsername().toLowerCase().trim();
-        String dispatchedUser = username;
+        String dispatchedUsername = username;
         String surrogate = null;
         if (username.contains(surrogationSeparator)) {
-            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator).trim();
+            dispatchedUsername = StringUtils.substringAfter(username, surrogationSeparator).trim();
             if (username.startsWith(surrogationSeparator)) {
-                WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
+                WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUsername, null));
             } else {
                 surrogate = StringUtils.substringBefore(username, surrogationSeparator).trim();
             }
         }
-        LOGGER.debug("Dispatched user: {} / surrogate: {}", dispatchedUser, surrogate);
+        LOGGER.debug("Dispatched user: {} / surrogate: {}", dispatchedUsername, surrogate);
 
-        // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
+        List<UserDto> dispatchedUsers;
         try {
-            val dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
-            if (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED) {
-                return userDisabled(dispatchedUser);
+            dispatchedUsers = casExternalRestClient.getUsersByEmail(utils.buildContext(dispatchedUsername), dispatchedUsername, Optional.empty());
+            if (dispatchedUsers.stream().allMatch(UserDto::notEnabled)) {
+                return userDisabledEvent(dispatchedUsername);
             }
         } catch (final InvalidFormatException e) {
-            return userDisabled(dispatchedUser);
-        } catch (final NotFoundException e) {
+            return userDisabledEvent(dispatchedUsername);
         }
+        dispatchedUsers = dispatchedUsers.stream().filter(UserDto::enabled).collect(Collectors.toList());
         if (surrogate != null) {
             try {
-                val surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
-                if (surrogateDto != null && surrogateDto.getStatus() != UserStatusEnum.ENABLED) {
-                    LOGGER.error("Bad status for surrogate: {}", surrogate);
-                    return userDisabled(surrogate);
+                List<UserDto> surrogateUsers = casExternalRestClient.getUsersByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
+                if (surrogateUsers.stream().allMatch(UserDto::notEnabled)) {
+                    return userDisabledEvent(surrogate);
                 }
             } catch (final InvalidFormatException e) {
-                return userDisabled(surrogate);
-            } catch (final NotFoundException e) {
+                return userDisabledEvent(surrogate);
             }
         }
 
-        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        boolean isInternal;
-        val provider = (Pac4jClientIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
-        if (provider != null) {
-            isInternal = provider.getInternal();
-        } else {
+        if (dispatchedUsers.size() > 1) {
+            // return all organisation
+            LOGGER.debug("Redirect the user to the selection customer page");
+            requestContext.getRequestScope().put(CustomLoginWebflowConfigurer.STATE_BINDING_CUSTOMER_MODEL, new CustomerModel());
+
+            return result(CasWebflowConstants.TRANSITION_ID_APPROVE, "customers", List.of(
+                new CustomerDto().setName("POUET-01").setCode("code-pouet-01"),
+                new CustomerDto().setName("POUET-02").setCode("code-pouet-02"),
+                new CustomerDto().setName("POUET-03").setCode("code-pouet-03"),
+                new CustomerDto().setName("POUET-04").setCode("code-pouet-04")
+            ));
+        }
+
+        //SELECTION ORGA (List<Pac4jClientIdentityProviderDto>)
+        val providers = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUsername);
+        if (providers.isEmpty()) {
             return new Event(this, BAD_CONFIGURATION);
         }
+        if (providers.size() > 1) {
+            throw new NotImplementedException("Multiple providers found for user.");
+        }
+
+        Pac4jClientIdentityProviderDto provider = (Pac4jClientIdentityProviderDto) providers.get(0);
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         val webContext = new JEEContext(request, response);
-        if (isInternal) {
+
+
+        if (provider.getInternal()) {
             sessionStore.set(webContext, Constants.SURROGATE, null);
-            LOGGER.debug("Redirect the user to the password page...");
+            LOGGER.debug("Redirect the user to the password page");
             return success();
         } else {
-
             // save the surrogate in the session to be retrieved by the UserPrincipalResolver and DelegatedSurrogateAuthenticationPostProcessor
             if (surrogate != null) {
                 LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
                 sessionStore.set(webContext, Constants.SURROGATE, surrogate);
             }
-
             return utils.performClientRedirection(this, provider.getClient(), requestContext);
         }
     }
 
-    private Event userDisabled(final String emailUser) {
+    private Event userDisabledEvent(final String emailUser) {
         LOGGER.error("Bad status for user: {}", emailUser);
         return new Event(this, DISABLED);
     }
+
 }

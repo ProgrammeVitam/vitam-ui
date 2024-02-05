@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
-    <h5 th:text="#{screen.accountbadconfiguration.heading}">Account bad configuration View</h5>
+<h5 th:text="#{screen.accountbadconfiguration.heading}">Account bad configuration View</h5>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 
-<div layout:fragment="content">
-    <div class="margin-bottom-form">
-        <h5 th:text="#{screen.accountbadconfiguration.heading}">This account has not properly configured.</h5>
-        <div class="text large normal" th:text="#{screen.accountbadconfiguration.message(${@environment.getProperty('theme.vitamui-platform-name')})}">Please contact the system administrator to regain access.</div>
-    </div>
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold" th:text="#{screen.accountbadconfiguration.heading}">
+    This account has not properly configured.
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.accountbadconfiguration.message(${@environment.getProperty('theme.vitamui-platform-name')})}">
+    Please contact the system administrator to regain access.
+  </div>
 </div>
+
+
 </body>
 </html>

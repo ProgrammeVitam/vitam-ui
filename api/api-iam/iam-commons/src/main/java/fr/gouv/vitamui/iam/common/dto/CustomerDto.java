@@ -46,6 +46,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -61,6 +62,7 @@ import java.util.Map;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Accessors(chain = true)
 public class CustomerDto extends IdDto {
 
     private static final long serialVersionUID = 997428479132350296L;
@@ -121,4 +123,5 @@ public class CustomerDto extends IdDto {
     private boolean gdprAlert = false;
 
     private int gdprAlertDelay;
+
 }

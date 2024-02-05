@@ -1,22 +1,19 @@
 package fr.gouv.vitamui.iam.common.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests {@link IdentityProviderHelper}.
- *
- *
  */
 public final class IdentityProviderHelperTest {
 
@@ -34,18 +31,19 @@ public final class IdentityProviderHelperTest {
     public void testFindByUserIdentifierOk() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
-        final Optional<IdentityProviderDto> result = helper.findByUserIdentifier(providers, GOOD_EMAIL);
+        final List<IdentityProviderDto> result = helper.findByUserIdentifier(providers, GOOD_EMAIL);
 
-        assertEquals(providers.get(0), result.get());
+        assertEquals(result.size(), 1);
+        assertEquals(providers.get(0), result.get(0));
     }
 
     @Test
     public void testFindByUserIdentifierKo() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
-        final Optional<IdentityProviderDto> result = helper.findByUserIdentifier(providers, BAD_EMAIL);
+        final List<IdentityProviderDto> result = helper.findByUserIdentifier(providers, BAD_EMAIL);
 
-        assertFalse(result.isPresent());
+        assertEquals(result.size(), 1);
     }
 
     @Test
@@ -96,4 +94,5 @@ public final class IdentityProviderHelperTest {
         providers.add(provider);
         return providers;
     }
+
 }

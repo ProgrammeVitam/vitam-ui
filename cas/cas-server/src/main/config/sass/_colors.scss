@@ -14,7 +14,7 @@
     limitations under the License.
  */
 
-$red: #C10000;
+$red-500: #C10000;
 $green: #27740A;
 $mustard-yellow: #FFA610;
 
@@ -41,5 +41,10 @@ $grey-400: #BDBDBD;
 
 $dp-dark: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
 
+.Grey-600 {
+  color: $grey-600;
+}
 
-
+.Red-500 {
+  color: $red-500;
+}

@@ -28,7 +28,7 @@ public class ApiIamExternalCasFindUserSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_CAS_USERS cherche un utilisateur par son email en demandant un token d'authentification dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_USERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_USERS_cherche_un_utilisateur_par_son_email_en_demandant_un_token_d_authentification_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_USERS() {
         testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
                         Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
@@ -40,7 +40,7 @@ public class ApiIamExternalCasFindUserSteps extends CommonSteps {
         getUserRestClient().create(getSystemTenantUserAdminContext(), basicUserDto);
         testContext.authUserDto = new AuthUserDto(basicUserDto);
         try {
-            getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(
+            getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(
                     getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(),
                     Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
         }
@@ -65,7 +65,7 @@ public class ApiIamExternalCasFindUserSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_USERS_cherche_un_utilisateur_inexistant_par_son_email_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_USERS() {
         try {
             getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_USERS })
-                    .getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), BAD_LOGIN, Optional.empty());
+                    .getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), BAD_LOGIN, Optional.empty());
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -82,7 +82,7 @@ public class ApiIamExternalCasFindUserSteps extends CommonSteps {
     @When("^cet utilisateur cherche un utilisateur par son email$")
     public void cet_utilisateur_cherche_un_utilisateur_par_son_email() {
         try {
-            getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles).getUserByEmail(
+            getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles).getUsersByEmail(
                     getContext(testContext.tenantIHMContext, testContext.tokenUser),
                     TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain, Optional.empty());
         }

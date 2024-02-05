@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
@@ -96,6 +97,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,6 +106,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Specific CAS service.
@@ -215,7 +218,8 @@ public class CasInternalService {
         }
 
         final String encodedPassword = passwordEncoder.encode(rawPassword);
-        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword, (passwordConfiguration !=null && passwordConfiguration.getMaxOldPassword() != null)  ? passwordConfiguration.getMaxOldPassword() : UserInternalService.MAX_OLD_PASSWORDS);
+        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword,
+            (passwordConfiguration != null && passwordConfiguration.getMaxOldPassword() != null) ? passwordConfiguration.getMaxOldPassword() : UserInternalService.MAX_OLD_PASSWORDS);
 
         final String existingPassword = user.getPassword();
 
@@ -249,7 +253,11 @@ public class CasInternalService {
     }
 
     private User checkUserInformations(final String email) {
-        final User user = userRepository.findByEmail(email);
+        final List<User> users = userRepository.findByEmail(email);
+        if (users.size() > 1) {
+            throw new IllegalStateException("TOO much users here");
+        }
+        User user = users.get(0);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
@@ -267,7 +275,7 @@ public class CasInternalService {
     }
 
     @Transactional
-    public UserDto getUserByEmail(final String email, final Optional<String> optEmbedded) {
+    public List<UserDto> getUserByEmail(final String email, final Optional<String> optEmbedded) {
         boolean loadFullProfile = false;
         boolean isSubrogation = false;
         boolean isApi = false;
@@ -285,31 +293,31 @@ public class CasInternalService {
             }
         }
 
-        final UserDto userDto = internalUserService.findUserByEmail(email);
-        if (userDto == null) {
-            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        }
-        checkStatus(userDto.getStatus(), userDto.getEmail());
+        final List<UserDto> usersDto = internalUserService.findUserByEmail(email);
+        //TODO CHECK ?? checkStatus(userDto.getStatus(), userDto.getEmail());
         if (loadFullProfile) {
-            final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
-            internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
-            internalUserService.addTenantsByAppInformation(authUserDto);
-            generateAndAddAuthToken(authUserDto, isSubrogation, isApi);
-            createEventsSubrogation(userDto, isSubrogation);
-            return authUserDto;
+            final boolean subrogation = isSubrogation;
+            final boolean api = isApi;
+            return usersDto.stream().map(user -> {
+                final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
+                internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
+                internalUserService.addTenantsByAppInformation(authUserDto);
+                generateAndAddAuthToken(authUserDto, subrogation, api);
+                createEventsSubrogation(user, subrogation);
+                return authUserDto;
+            }).collect(Collectors.toList());
 
         } else {
-            return userDto;
+            return usersDto;
         }
     }
 
     /**
      * Method to retrieve the user informations
+     *
      * @param email email of the user
      * @param idp can be null
      * @param userIdentifier can be null
-     * @param optEmbedded
-     * @return
      */
     @Transactional
     public UserDto getUser(String email, final String idp, final String userIdentifier, final String optEmbedded) {
@@ -321,34 +329,33 @@ public class CasInternalService {
             }
         }
 
-        return getUserByEmail(email, Optional.ofNullable(optEmbedded));
+        List<UserDto> users = getUserByEmail(email, Optional.ofNullable(optEmbedded));
+        //TODO: comment on le selectionne
+        return users.get(0);
     }
 
     /**
      * Method to perform auto provisioning
-     * @param email
-     * @param idp
-     * @param userIdentifier
      */
     public Optional<ProvidedUserDto> provisionUser(String email, final String idp, final String userIdentifier) {
         final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
-
         // Do nothing is autoProvisioning is disabled
         if (!identityProvider.isAutoProvisioningEnabled()) {
             return Optional.empty();
         }
-
         Optional<ProvidedUserDto> providedUser = Optional.empty();
-
         if (StringUtils.isBlank(email)) {
             providedUser = Optional.of(getProvidedUser(email, idp, userIdentifier, null, identityProvider.getCustomerId()));
             email = providedUser.get().getEmail();
         }
-
         final boolean userExist = userRepository.existsByEmail(email);
         // Try to update user
-        if(userExist) {
-            final UserDto user = internalUserService.findUserByEmail(email);
+        if (userExist) {
+            final List<UserDto> users = internalUserService.findUserByEmail(email);
+            if (users.size() > 1) {
+                throw new NotImplementedException("Multiple users found during provision user. NOT YET IMPLEMENTED");
+            }
+            UserDto user = users.get(0);
             if (user.isAutoProvisioningEnabled()) {
                 updateUser(user, getProvidedUser(email, idp, userIdentifier, user.getGroupId(), identityProvider.getCustomerId()));
             }
@@ -360,7 +367,6 @@ public class CasInternalService {
             }
             createNewUser(email, providedUser.get());
         }
-
         return providedUser;
     }
 
@@ -369,7 +375,8 @@ public class CasInternalService {
         userProvidedInfo = provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
 
         if (Objects.isNull(userProvidedInfo)) {
-            throw new NotFoundException(String.format("The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s", email, userIdentifier, groupId, idp, customerId));
+            throw new NotFoundException(
+                String.format("The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s", email, userIdentifier, groupId, idp, customerId));
         }
 
         return userProvidedInfo;
@@ -456,20 +463,20 @@ public class CasInternalService {
         if (userInfo.getAddress() != null) {
             final Map<String, Object> updatedAddress = new HashMap<>();
             if (userInfo.getAddress().getStreet() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
+                || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
                 updatedAddress.put("street", userInfo.getAddress().getStreet());
             }
             if (userInfo.getAddress().getZipCode() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
+                || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
                 updatedAddress.put("zipCode", userInfo.getAddress().getZipCode());
             }
             if (userInfo.getAddress().getCity() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
                 updatedAddress.put("city", userInfo.getAddress().getCity());
             }
 
             if (userInfo.getAddress().getCountry() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
                 updatedAddress.put("country", userInfo.getAddress().getCountry());
             }
 
@@ -497,9 +504,7 @@ public class CasInternalService {
         final Set<String> set = new HashSet<>();
         if (embedded != null) {
             final String[] pairs = embedded.split(",");
-            for (final String pair : pairs) {
-                set.add(pair);
-            }
+            set.addAll(Arrays.asList(pairs));
         }
         return set;
     }

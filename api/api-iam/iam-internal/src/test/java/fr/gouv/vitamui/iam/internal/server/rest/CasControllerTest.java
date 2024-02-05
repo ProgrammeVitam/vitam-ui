@@ -54,8 +54,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CasInternalController}.
- *
- *
  */
 
 public final class CasControllerTest extends AbstractServerIdentityBuilder {
@@ -129,7 +127,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
         internalSubrogationService = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService,
-                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
+            groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
 
         casService = spy(CasInternalService.class);
         casService.setInternalUserService(internalUserService);
@@ -159,7 +157,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setLastname("zz");
         user.setCustomerId(CUSTOMER_ID);
         user.setPasswordExpirationDate(OffsetDateTime.now());
-        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(List.of(user));
 
         final Customer customer = new Customer();
         customer.setPasswordRevocationDelay(156);
@@ -175,15 +173,15 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setStatus(UserStatusEnum.ENABLED);
         user.setLevel("DEV");
 
-        when(internalUserService.findUserByEmail(EMAIL)).thenReturn(user);
+        when(internalUserService.findUserByEmail(EMAIL)).thenReturn(List.of(user));
         final AuthUserDto userProfile = new AuthUserDto();
         userProfile.setProfileGroup(new GroupDto());
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
         when(tokenRepository.generateSuperId()).thenReturn("en");
-        final AuthUserDto result = (AuthUserDto) controller.getUserByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        final List<UserDto> result = controller.getUserByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         userProfile.setAuthToken("TOKEN");
-        assertEquals(userProfile, result);
+        assertEquals(List.of(userProfile), result);
         verify(tokenRepository, times(1)).save(any());
     }
 
@@ -236,8 +234,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         request.setPassword(PASSWORD);
         try {
             controller.login(request);
-        }
-        finally {
+        } finally {
             verify(iamLogbookService).loginEvent(user, null, null, "Too many login attempts for username: " + EMAIL);
         }
     }
@@ -264,8 +261,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         try {
             controller.login(request);
             fail("should fail");
-        }
-        catch (final UnAuthorizedException e) {
+        } catch (final UnAuthorizedException e) {
             verify(iamLogbookService).loginEvent(user, null, null, "Bad credentials for username: " + EMAIL);
             assertEquals("Bad credentials for username: " + EMAIL, e.getMessage());
         }
@@ -323,4 +319,5 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         subrogation.setSuperUser(SUPER_USER_EMAIL);
         return subrogation;
     }
+
 }

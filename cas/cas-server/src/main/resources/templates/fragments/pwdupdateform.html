@@ -1,259 +1,176 @@
 <script th:inline="javascript">
-    /*<![CDATA[*/
+  // const policyPattern = /^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{12,}$/gm
 
-    var policyPattern = /*[[${passwordPolicyPattern}]]*/;
-      var passwordStrengthI18n = {
-          0: /*[[#{screen.pm.password.strength.0}]]*/,
-          1: /*[[#{screen.pm.password.strength.1}]]*/,
-          2: /*[[#{screen.pm.password.strength.2}]]*/,
-          3: /*[[#{screen.pm.password.strength.3}]]*/,
-          4: /*[[#{screen.pm.password.strength.4}]]*/
-      };
-
-    /*]]>*/
+  /*<![CDATA[*/
+  var policyPattern = /*[[${passwordPolicyPattern}]]*/;
+  /*]]>*/
 </script>
 
-	<header>
-		<p th:utext="${expiredPass} ? #{screen.expiredpass.heading} : #{screen.mustchangepass.heading}">
-			Change Password Heading
-		</p><br>
-	</header>
-	<form id="passwordManagementForm" th:if="${passwordManagementEnabled}" method="post" th:object="${password}" class="password-init">
-
-       <div class="form-control w85">
-
-           <input required class="required"
-               type="password"
-               name="password" th:placeholder="#{cas.authentication.password.new}"
-               id="password"
-               size="25"
-               tabindex="2" oninput="checkRules();"
-               th:accesskey="#{screen.welcome.label.password.accesskey}"
-               th:field="*{password}">
-       </div>
-       <br>
-       <div class="form-control flex">
-
-           <input required class="required"
-               type="password"
-               name="confirmedPassword" th:placeholder="#{cas.authentication.password.confirm}"
-               id="confirmedPassword"
-               size="25"
-               tabindex="2" oninput="checkRules();"
-               th:accesskey="#{screen.welcome.label.password.accesskey}"
-               th:field="*{confirmedPassword}"/>
-           <span id="capslock-on" style="display:none;">
-               <p>
-                   <i class="fa fa-exclamation-circle"></i>
-                   <span th:text="#{screen.capslock.on}"/>
-               </p>
-           </span>
-	       <button type="submit" class="vitamui-primary" name="submit" id="submit" accesskey="s" th:value="#{screen.pm.button.submit}" disabled="true">
-	       OK
-	       </button>
-		</div>
-
-        <br>
-        <div id="password-policy-text" class="error-field" hidden>
-            <span th:text="#{screen.pm.init.security.policy}"></span>
-        </div>
-        <div th:if="${#fields.hasErrors('*')}" class="error-field">
-			<span th:each="err : ${#fields.errors('*')}" th:text="${err}">Error text</span>
-        </div>
-		<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-		<input type="hidden" name="_eventId" value="submit"/>
+<header>
+  <p th:utext="${expiredPass} ? #{screen.expiredpass.heading} : #{screen.mustchangepass.heading}">
+    Change Password Heading
+  </p><br>
+</header>
 
 
-		<p th:unless="${passwordManagementEnabled}" th:utext="${expiredPass} ? #{screen.expiredpass.message} : #{screen.mustchangepass.message}">
- 			Expired/Must Change Password text
-	    </p>
+<div class="step-password-reset" layout:fragment="content">
 
-	</form>
+  <div class="Text-large-bold"
+       th:text="#{screen.pm.reset.title}">
+    Veuillez saisir un nouveau mot de passe
+  </div>
 
-<div class="helper password-helper">
-		<span th:text="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
-    <ul>
-        <li id="security-valid-password">
-            <span th:text="#{screen.pm.init.security.valid.password}"></span>
-            <i class="material-icons">check</i>
-        </li>
-        <li id="security-four">
-            <span th:text="#{screen.pm.init.security.four}"></span>
-            <i class="material-icons">check</i>
-        </li>
-    </ul>
-    <div th:if="${application.maxOldPassword != null && application.passwordAnssiConstraints != null && application.checkOccurrence && application.occurrencesCharsNumber != null}">
-        <span th:utext="#{screen.pm.init.security.password.check.internal.anssi(${application.maxOldPassword}, ${application.occurrencesCharsNumber})}"></span>
+  <form id="main-form" class="margin-top-10" th:if="${passwordManagementEnabled}" method="post"
+        th:object="${password}">
+    <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+    <input type="hidden" name="_eventId" value="submit"/>
+    <div class="form-line">
+      <input required
+             id="password"
+             type="password"
+             name="password"
+             class="required"
+             size="25"
+             tabindex="2"
+             oninput="checkRules();"
+             th:accesskey="#{screen.welcome.label.password.accesskey}"
+             th:field="*{password}">
+      <label for="password" th:text="#{cas.authentication.password.new}">
+        Nouveau mot de passe *
+      </label>
     </div>
-    <div th:if="${application.maxOldPassword != null && application.passwordCustomConstraints != null }">
-        <span th:text="#{screen.pm.init.security.password.check.internal(${application.maxOldPassword})}"></span>
+    <div class="form-line flex">
+      <input required
+             id="confirmedPassword"
+             type="password"
+             name="confirmedPassword"
+             class="required"
+             size="25"
+             tabindex="2"
+             oninput="checkRules();"
+             th:accesskey="#{screen.welcome.label.password.accesskey}"
+             th:field="*{confirmedPassword}"/>
+      <label for="confirmedPassword" th:text="#{cas.authentication.password.confirm}">
+        Confirmer le nouveau mot de passe *
+      </label>
     </div>
-    <br/>
-</div>
-
-<span class="collapsible" style="color: #485053;">
-    <span th:utext="#{screen.pm.init.security.password.constraints}" class="collapsible">Password constraints validity</span>
-    <i class="material-icons " style="font-size: 14px;">add</i>
-</span>
-<div class="content" style="display: none">
-    <ul id="collapsible" style="color:#485053">
-        <div th:switch="${#locale.language}">
-            <div th:case="fr">
-                <div th:if="${application.passwordAnssiConstraints != null}">
-                    <div th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null}">
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('fr').messages != null}"
-                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('fr').messages}" th:text="${message}">
-                        </li>
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars.title != null}"
-                            th:utext="${application.passwordAnssiConstraints.defaults.get('fr').specialChars.title}">
-                        </li>
-
-                        <ul>
-                            <li th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars.messages != null}"
-                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('fr').specialChars.messages}" th:text="${specials}">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div th:if="${application.passwordCustomConstraints != null}">
-                    <div th:if="${application.passwordCustomConstraints.customs.get('fr') != null}">
-                        <li th:if="${application.passwordCustomConstraints.customs.get('fr') != null && application.passwordCustomConstraints.customs.get('fr').messages != null}"
-                                th:each="message : ${application.passwordCustomConstraints.customs.get('fr').messages}" th:text="${message}">
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <div th:case="en">
-                <div th:if="${application.passwordAnssiConstraints != null}">
-                    <div th:if="${application.passwordAnssiConstraints.defaults.get('en') != null}">
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en').messages != null}"
-                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('en').messages}" th:text="${message}">
-                        </li>
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.title != null}"
-                            th:utext="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
-                        </li>
-
-                        <ul>
-                            <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.messages != null}"
-                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('en').specialChars.messages}" th:text="${specials}">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div th:if="${application.passwordCustomConstraints != null}">
-                    <div th:if="${application.passwordCustomConstraints.customs.get('en') != null}">
-                            <li th:if="${application.passwordCustomConstraints.customs.get('en') != null && application.passwordCustomConstraints.customs.get('en').messages != null}"
-                                th:each="message : ${application.passwordCustomConstraints.customs.get('en').messages}" th:text="${message}">
-                            </li>
-                    </div>
-                </div>
-            </div>
-            <div th:case="de">
-                <div th:if="${application.passwordAnssiConstraints != null}">
-                    <div th:if="${application.passwordAnssiConstraints.defaults.get('de') != null}">
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('de').messages != null}"
-                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('de').messages}" th:text="${message}">
-                        </li>
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('de') != null && application.passwordAnssiConstraints.defaults.get('de').specialChars != null && application.passwordAnssiConstraints.defaults.get('de').specialChars.title != null}"
-                            th:utext="${application.passwordAnssiConstraints.defaults.get('de').specialChars.title}">
-                        </li>
-
-                        <ul>
-                            <li th:if="${application.passwordAnssiConstraints.defaults.get('de') != null && application.passwordAnssiConstraints.defaults.get('de').specialChars != null && application.passwordAnssiConstraints.defaults.get('de').specialChars.messages != null}"
-                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('de').specialChars.messages}" th:text="${specials}">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div th:if="${application.passwordCustomConstraints != null}">
-                    <div th:if="${application.passwordCustomConstraints.customs.get('de') != null}">
-                            <li th:if="${application.passwordCustomConstraints.customs.get('de') != null && application.passwordCustomConstraints.customs.get('de').messages != null}"
-                                th:each="message : ${application.passwordCustomConstraints.customs.get('de').messages}" th:text="${message}">
-                            </li>
-                    </div>
-                </div>
-            </div>
-            <div th:case="*">
-                <div th:if="${application.passwordAnssiConstraints != null}">
-                    <div th:if="${application.passwordAnssiConstraints.defaults.get('en') != null}">
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en').messages != null}"
-                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('en').messages}" th:text="${message}">
-                        </li>
-
-                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.title != null}"
-                            th:text="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
-                        </li>
-
-                        <ul>
-                            <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.messages != null}"
-                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('en').specialChars.messages}" th:text="${specials}">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div th:if="${application.passwordCustomConstraints != null}">
-                    <div th:if="${application.passwordCustomConstraints.customs.get('en') != null}">
-                            <li th:if="${application.passwordCustomConstraints.customs.get('en') != null && application.passwordCustomConstraints.customs.get('en').messages != null}"
-                                th:each="message : ${application.passwordCustomConstraints.customs.get('en').messages}" th:text="${message}">
-                            </li>
-                    </div>
-                </div>
-            </div>
+    <div id="capslock-on" class="warning Text-normal-bold" style="display: none;">
+      <i class="vitamui-icon vitamui-icon-anomalie"></i>
+      <span th:text="#{screen.capslock.on}">CAPSLOCK ON</span>
+    </div>
+    <div class="warning Caption" th:if="${#fields.hasErrors('*')}">
+      <i class="vitamui-icon vitamui-icon-anomalie"></i>
+      <div class="col">
+        <div class="element" th:each="err : ${#fields.errors('*')}" th:text="${err}">
+          Exemple d'erreur
         </div>
-    </ul>
+      </div>
+    </div>
+    <div class="Text-medium" th:unless="${passwordManagementEnabled}" style="display: none;"
+         th:utext="${expiredPass} ? #{screen.expiredpass.message} : #{screen.mustchangepass.message}">
+      Expired/Must Change Password text
+    </div>
+  </form>
+
+  <div class="password-helper margin-top-20 Grey-600">
+    <div id="passwords-strongness" class="password-helper-line Text-medium-bold">
+      <i class="vitamui-icon vitamui-icon-done"></i>
+      <span th:text="#{screen.pm.init.security.valid.password}">
+              Votre nouveau mot de passe doit respecter les contraintes ci-dessous :
+            </span>
+    </div>
+    <div class="Text-medium">
+      <ul>
+        <li>
+          minimum 12 caractères
+        </li>
+        <li>
+          minimum 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes :
+          <ul>
+            <li>
+              minuscules (a-z)
+            </li>
+            <li>
+              majuscules (A-Z)
+            </li>
+            <li>
+              numériques (0-9)
+            </li>
+            <li>
+              caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!--
+    <div th:with="lang=${#locale.language}">
+      <div
+        th:if="${application.passwordAnssiConstraints != null && application.passwordAnssiConstraints.defaults.get(lang) != null}">
+        <ul>
+          <li th:if="${application.passwordAnssiConstraints.defaults.get(lang).messages != null}"
+              th:each="message : ${application.passwordAnssiConstraints.defaults.get(lang).messages}"
+              th:text="${message}">
+            passwordAnssiConstraints defaults message 1
+          </li>
+          <li
+            th:if="${application.passwordAnssiConstraints.defaults.get(lang) != null && application.passwordAnssiConstraints.defaults.get(lang).specialChars != null && application.passwordAnssiConstraints.defaults.get(lang).specialChars.title != null}"
+            th:utext="${application.passwordAnssiConstraints.defaults.get(lang).specialChars.title}">
+            passwordAnssiConstraints defaults specialChars title
+          </li>
+        </ul>
+        <ul>
+          <li
+            th:if="${application.passwordAnssiConstraints.defaults.get(lang) != null && application.passwordAnssiConstraints.defaults.get(lang).specialChars != null && application.passwordAnssiConstraints.defaults.get(lang).specialChars.messages != null}"
+            th:each="specials : ${application.passwordAnssiConstraints.defaults.get(lang).specialChars.messages}"
+            th:text="${specials}">
+            passwordAnssiConstraints defaults specialChars messages 1
+          </li>
+        </ul>
+      </div>
+      <div th:if="${application.passwordCustomConstraints != null}">
+        <div th:if="${application.passwordCustomConstraints.customs.get(lang) != null}">
+          <ul>
+            <li
+              th:if="${application.passwordCustomConstraints.customs.get(lang) != null && application.passwordCustomConstraints.customs.get(lang).messages != null}"
+              th:each="message : ${application.passwordCustomConstraints.customs.get(lang).messages}"
+              th:text="${message}">
+              passwordCustomConstraints customs messages
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div id="passwords-equality" class="password-helper-line Text-medium-bold margin-top-20"
+         th:text="#{screen.pm.init.security.four}">
+      <i class="vitamui-icon vitamui-icon-done"></i>
+      <span>
+              Les deux mots de passe saisis doivent être identiques
+            </span>
+    </div>
+
+    <div class="Text-medium Grey-600 margin-top-20"
+         th:if="${application.maxOldPassword != null && application.passwordAnssiConstraints != null && application.checkOccurrence && application.occurrencesCharsNumber != null}"
+         th:utext="#{screen.pm.init.security.password.check.internal.anssi(${application.maxOldPassword}, ${application.occurrencesCharsNumber})}">
+      De plus, votre mot de passe doit être différent de vos 12 derniers mots de passe et ne doit pas contenir
+      plus de 3 caractères consécutifs issus de votre nom d’utilisateur.
+    </div>
+    <!--
+    <div class="Text-medium Grey-600"
+         th:if="${application.maxOldPassword != null && application.passwordCustomConstraints != null }"
+         th:text="#{screen.pm.init.security.password.check.internal(${application.maxOldPassword})}">
+      De plus, votre mot de passe doit Ãªtre diffÃ©rent de vos {0} derniers mots de passe.
+    </div>
+    -->
+  </div>
+
 </div>
-<br/>
-<br/>
 
 <script>
-        function checkRules() {
-
-        	var password = $("#password").val();
-        	var confirmPassword = $("#confirmedPassword").val();
-
-            checkValidity(password);
-			checkPasswordAndConfirmPasswordMatches(password,confirmPassword);
-        }
-
-        function checkValidity(password) {
-            var policyPatternRegex = new RegExp(policyPattern);
-        	var valid = policyPatternRegex.test(password);
-        	checkRule(valid, "#security-valid-password");
-        }
-
-        function checkPasswordAndConfirmPasswordMatches(password, confirmPassword) {
-        	checkRule(password == confirmPassword && password.length > 0,"#security-four");
-        }
-
-        function checkRule(valid, liToVerify) {
-        	if(valid) {
-        		$(liToVerify).addClass("valid");
-        	} else {
-        		$(liToVerify).removeClass("valid");
-        	}
-        }
-
-        var coll = document.getElementsByClassName("collapsible");
-          coll[0].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var i = this.lastElementChild;
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-              content.style.display = "none";
-              i.innerHTML='add'
-            } else {
-              content.style.display = "block";
-              i.innerHTML='remove'
-            }
-          });
+  $(document).ready(function () {
+    $("#submit-main-form").css("display", "flex");
+  });
 </script>

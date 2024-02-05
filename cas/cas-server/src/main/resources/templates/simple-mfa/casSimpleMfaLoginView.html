@@ -2,62 +2,80 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title th:text="#{cas.mfa.simple.pagetitle}"></title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title th:text="#{screen.error.page.title.requestunsupported}">Error - Unsupported Request</title>
 </head>
+<body>
 
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
 
-    <div class="mfa-login">
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold" th:utext="#{screen.mfa.sms.login.text1(${mobile})}">
+    Veuillez saisir le&nbsp;<strong> code de validation</strong>&nbsp;reÃ§u par SMS au {0}.
+  </div>
+  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.login.text2}">
+    Pour sÃ©curiser vos donnÃ©es, votre administrateur m'a demandÃ© d'activer la validation en deux Ã©tapes.
+  </div>
 
-        <h4  th:utext="#{screen.mfa.sms.login.text1(${mobile})}"></h4>
-        <div>
-            <div class="text large"  th:text="#{screen.mfa.sms.login.text2}"/>
-        </div>
-
-        <form method="post" id="loginForm" th:object="${credential}">
-            <div class="formfields flex-align-center marging-top-form">
-                <div class="textfield">
-                    <input type="text" autofocus class="required" id="token" name="token" th:size="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}" tabindex="1"
-                       autocomplete="off" th:maxlength="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"/>
-                    <div class="error" th:if="${#fields.hasErrors('*')}">
-                        <div>
-                            <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
-                        </div>
-                        <div>
-                            <div class="error-field" th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="buttonbckgrnd flex-justify-content-center">
-                    <a class="submittoken" th:text="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
-                </div>
-                <div class="countdown">
-                    <span th:text="#{screen.mfa.sms.login.countdown(${@environment.getProperty('cas.authn.mfa.simple.token.core.time-to-kill-in-seconds')})}"/>
-                </div>
-            </div>
-            <div>
-                <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-                <input type="hidden" name="geolocation"/>
-                <input type="hidden" name="_eventId" value="submit"/>
-            </div>
-        </form>
-
-        <div class="missingphone">
-            <p class="text3" th:text="#{screen.mfa.sms.login.text3}"/>
-        </div>
-
-        <form method="post" id="resendCodeForm">
-            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-            <input type="hidden" name="_eventId" value="resend"/>
-            <input type="hidden" name="token" value="ignored"/>
-            <span class="reset1" th:text="#{screen.mfa.sms.login.resetcode1}" /> <a class="reset2" th:text="#{screen.mfa.sms.login.resetcode2(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
-        </form>
-
+  <form method="post" id="main-form" th:object="${credential}" class="margin-top-20">
+    <div class="form-line">
+      <input id="token"
+             type="text"
+             name="token"
+             required
+             autofocus
+             autocomplete="off"
+             tabindex="1"
+             th:size="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"
+             th:maxlength="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"/>
+      <label for="token" th:text="#{cas.authentication.password.placeholder}">
+        Token *
+      </label>
     </div>
+    <div class="form-line Text-medium Grey-600">
+              <span
+                th:text="#{screen.mfa.sms.login.countdown(${@environment.getProperty('cas.authn.mfa.simple.token.core.time-to-kill-in-seconds')})}">
+                Vous avez {0} secondes pour saisir votre code SMS...
+              </span>
+    </div>
+    <div class="warning Caption" th:if="${#fields.hasErrors('*')}">
+      <i class="vitamui-icon vitamui-icon-anomalie"></i>
+      <div class="col">
+        <div class="element" th:each="err : ${#fields.errors('*')}" th:text="${err}">
+          Exemple d'erreur
+        </div>
+      </div>
+    </div>
+    <div>
+      <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+      <input type="hidden" name="geolocation"/>
+      <input type="hidden" name="_eventId" value="submit"/>
+    </div>
+  </form>
+
+  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.login.text3}">
+    Ce n'est pas votre numÃ©ro de tÃ©lÃ©phone ? Contactez votre administrateur
+  </div>
+
+  <div class="Text-medium row margin-top-10">
+    <div th:text="#{screen.mfa.sms.login.resetcode1}">
+      Vous n'avez pas reÃ§u de code par SMS ?&nbsp;
+    </div>
+    <form id="resendCodeForm" method="post">
+      <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+      <input type="hidden" name="_eventId" value="resend"/>
+      <input type="hidden" name="token" value="ignored"/>
+      <a href="javascript:void(0)"
+         onclick="$('#resendCodeForm').submit();"
+         th:text="#{screen.mfa.sms.login.resetcode2(${mobile})}">
+        RENVOYER UN NOUVEAU CODE AU {0}.
+      </a>
+    </form>
+  </div>
+
 </div>
+
+
 </body>
 </html>

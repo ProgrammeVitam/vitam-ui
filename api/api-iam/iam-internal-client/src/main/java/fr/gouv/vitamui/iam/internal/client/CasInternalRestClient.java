@@ -61,8 +61,6 @@ import java.util.Optional;
 
 /**
  * A REST client to perform CAS-specific operations.
- *
- *
  */
 public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
 
@@ -76,7 +74,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         LOGGER.debug("loginRequest: {}", loginRequest);
         final HttpEntity<LoginRequestDto> request = new HttpEntity<>(loginRequest, buildHeaders(context));
         final ResponseEntity<UserDto> response = restTemplate.exchange(getUrl() + RestApi.CAS_LOGIN_PATH,
-                HttpMethod.POST, request, UserDto.class);
+            HttpMethod.POST, request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
@@ -88,28 +86,26 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         headers.put("password", Collections.singletonList(password));
         final HttpEntity request = new HttpEntity(headers);
         final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH,
-                HttpMethod.POST, request, Boolean.class);
+            HttpMethod.POST, request, Boolean.class);
         checkResponse(response);
     }
 
-    public UserDto getUserByEmail(final InternalHttpContext context, final String email,
-                                  final Optional<String> embedded) {
+    public List<? extends UserDto> getUserByEmail(final InternalHttpContext context, final String email, final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail {}, embedded: {}", email, embedded);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
         uriBuilder.queryParam("email", email);
-        if (embedded.isPresent()) {
-            uriBuilder.queryParam("embedded", embedded.get());
-        }
+        embedded.ifPresent(s -> uriBuilder.queryParam("embedded", s));
 
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
-                request, AuthUserDto.class);
+        final HttpEntity request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<List<AuthUserDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
+            request, new ParameterizedTypeReference<List<AuthUserDto>>() {
+            });
         checkResponse(response);
         return response.getBody();
     }
 
     public UserDto getUser(final InternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
-            final Optional<String> embedded) {
+        final Optional<String> embedded) {
         LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
         uriBuilder.queryParam("email", email);
@@ -123,7 +119,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
 
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
-                request, AuthUserDto.class);
+            request, AuthUserDto.class);
         checkResponse(response);
         return response.getBody();
     }
@@ -135,29 +131,29 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
 
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<UserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
-                request, UserDto.class);
+            request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUserEmail(final InternalHttpContext context,
-                                                                final String superUserEmail) {
+        final String superUserEmail) {
         LOGGER.debug("getMySubrogationAsSuperuser {}", superUserEmail);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-                getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request,
-                getSubrogationDtoListClass());
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request,
+            getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUserId(final InternalHttpContext context,
-                                                             final String superUserId) {
+        final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-                getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId, HttpMethod.GET, request,
-                getSubrogationDtoListClass());
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId, HttpMethod.GET, request,
+            getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -184,4 +180,5 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
     public String getPathUrl() {
         return RestApi.V1_CAS_URL;
     }
+
 }

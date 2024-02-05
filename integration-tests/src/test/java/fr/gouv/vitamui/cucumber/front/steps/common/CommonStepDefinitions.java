@@ -1,11 +1,5 @@
 package fr.gouv.vitamui.cucumber.front.steps.common;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ContextConfiguration;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -16,12 +10,18 @@ import fr.gouv.vitamui.cucumber.front.pages.PreLoginPage;
 import fr.gouv.vitamui.cucumber.front.utils.UserEnum;
 import fr.gouv.vitamui.utils.TestConstants;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+
+import java.util.List;
+import java.util.Optional;
 
 @ContextConfiguration(classes = ContextFrontConfiguration.class)
 @Getter
 public class CommonStepDefinitions extends CommonSteps {
 
-	protected PreLoginPage preLoginPage;
+    protected PreLoginPage preLoginPage;
 
     // --------------------------- Application URls -----------------------------------------------
 
@@ -55,16 +55,16 @@ public class CommonStepDefinitions extends CommonSteps {
     protected String getEmailByUser(final UserEnum user) {
         String email = "";
         switch (user) {
-            case ADMIN :
+            case ADMIN:
                 email = adminEmail;
                 break;
-            case DEMO :
+            case DEMO:
                 email = demoEmail;
                 break;
-            case UNKNOW :
+            case UNKNOW:
                 email = unknowUser;
                 break;
-            default :
+            default:
                 break;
         }
         return email;
@@ -73,13 +73,13 @@ public class CommonStepDefinitions extends CommonSteps {
     protected String getPasswordByUser(final UserEnum user) {
         String password = "";
         switch (user) {
-            case ADMIN :
+            case ADMIN:
                 password = adminPassword;
                 break;
-            case DEMO :
+            case DEMO:
                 password = demoPassword;
                 break;
-            default :
+            default:
                 break;
         }
         return password;
@@ -100,19 +100,19 @@ public class CommonStepDefinitions extends CommonSteps {
 
     private UserDto getCurrentUser() {
         final ExternalHttpContext extneralHttpContext = getContext(casTenantIdentifier,
-                TestConstants.TOKEN_USER_CAS);
-        final UserDto basicUserDto = getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(extneralHttpContext, getCurrentUserEmail(),
-                        Optional.empty());
-        return basicUserDto;
+            TestConstants.TOKEN_USER_CAS);
+        final List<UserDto> basicUsersDto = getCasRestClient(false, new Integer[] {casTenantIdentifier},
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUsersByEmail(extneralHttpContext, getCurrentUserEmail(),
+            Optional.empty());
+        return basicUsersDto.get(0);
     }
 
     public void waitForPreLoginPage() {
-    	preLoginPage.waitForTitleToAppear();
+        preLoginPage.waitForTitleToAppear();
     }
 
     public ContextFront getContext() {
-    	return context;
+        return context;
     }
 
 }

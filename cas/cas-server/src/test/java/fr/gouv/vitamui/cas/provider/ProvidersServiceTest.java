@@ -3,11 +3,11 @@ package fr.gouv.vitamui.cas.provider;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +19,21 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link ProvidersService}.
- *
- *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
@@ -70,17 +76,18 @@ public final class ProvidersServiceTest {
     @Test
     public void testGetProviders() {
 
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenReturn(Arrays.asList(provider));
+        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenReturn(
+            Arrays.asList(provider));
 
         service.loadData();
 
-        val missingProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@vitamui.com");
-        assertFalse(missingProvider.isPresent());
+        List<IdentityProviderDto> missingProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@vitamui.com");
+        assertTrue(missingProvider.isEmpty());
 
         val userProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@company.com");
-        assertTrue(userProvider.isPresent());
-        assertEquals(PROVIDER_ID, userProvider.get().getId());
-        assertEquals(saml2Client, ((Pac4jClientIdentityProviderDto) userProvider.get()).getClient());
+        assertFalse(userProvider.isEmpty());
+        assertEquals(PROVIDER_ID, userProvider.get(0).getId());
+        assertEquals(saml2Client, ((Pac4jClientIdentityProviderDto) userProvider.get(0)).getClient());
     }
 
     @Test
@@ -104,7 +111,8 @@ public final class ProvidersServiceTest {
     @Test
     public void testBadProviderResponse() {
 
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenThrow(new RuntimeException(ERROR_MESSAGE));
+        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenThrow(
+            new RuntimeException(ERROR_MESSAGE));
 
         try {
             service.loadData();
@@ -113,4 +121,5 @@ public final class ProvidersServiceTest {
             assertEquals(ERROR_MESSAGE, e.getMessage());
         }
     }
+
 }
