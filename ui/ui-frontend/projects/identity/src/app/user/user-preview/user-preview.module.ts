@@ -65,13 +65,8 @@ import { UserPreviewComponent } from './user-preview.component';
     MatDialogModule,
     VitamUICommonModule,
   ],
-  declarations: [
-    UserPopupComponent,
-    UserPreviewComponent,
-    UserInfoTabComponent,
-    UserGroupTabComponent,
-  ],
+  declarations: [UserPopupComponent, UserPreviewComponent, UserInfoTabComponent, UserGroupTabComponent],
   exports: [UserPreviewComponent],
-  entryComponents: [GroupAttributionComponent]
+  entryComponents: [GroupAttributionComponent],
 })
-export class UserPreviewModule { }
+export class UserPreviewModule {}

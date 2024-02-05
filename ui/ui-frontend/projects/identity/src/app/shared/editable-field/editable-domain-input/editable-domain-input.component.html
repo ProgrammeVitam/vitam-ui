@@ -2,26 +2,27 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-          <label>{{label}}</label>
-          <span class="editable-field-text-content">
-            <div *ngFor="let domain of control.value">
-              {{domain}} <ng-container *ngIf="domain===defaultDomain">{{'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate}}</ng-container>
-            </div>
-          </span>
-          <div class="editable-field-control" [ngStyle]="{'margin-top': (label) ? '15px' : '0'}">
-            <app-domains-input
-              [style.width.%]="100"
-              [formControl]="control"
-              [(selected)]="selected"
-              [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
-              spinnerDiameter="18"
-              (click)="onDomainInputClick()"
-            ></app-domains-input>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">
+          <div *ngFor="let domain of control.value">
+            {{ domain }}
+            <ng-container *ngIf="domain === defaultDomain">{{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}</ng-container>
           </div>
+        </span>
+        <div class="editable-field-control" [ngStyle]="{ 'margin-top': label ? '15px' : '0' }">
+          <app-domains-input
+            [style.width.%]="100"
+            [formControl]="control"
+            [(selected)]="selected"
+            [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
+            spinnerDiameter="18"
+            (click)="onDomainInputClick()"
+          ></app-domains-input>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
-         <mat-spinner class="vitamui-spinner small"></mat-spinner>
+        <mat-spinner class="vitamui-spinner small"></mat-spinner>
       </div>
     </div>
   </div>
@@ -35,15 +36,17 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
 </ng-container>
 
 <div *ngIf="disabled" class="read-only-field disabled-input">
-  <label>{{label}}</label>
+  <label>{{ label }}</label>
   <div *ngFor="let domain of control?.value">
-    {{domain}} <ng-container *ngIf="domain===defaultDomain">{{'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate}}</ng-container>
+    {{ domain }} <ng-container *ngIf="domain === defaultDomain">{{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}</ng-container>
   </div>
 </div>

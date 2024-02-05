@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum Referential {
-    AGENCY = 'agency',
-    FILE_FORMAT = 'fileformat',
-    ONTOLOGY = 'ontology',
-    RULE = 'rule'
+  AGENCY = 'agency',
+  FILE_FORMAT = 'fileformat',
+  ONTOLOGY = 'ontology',
+  RULE = 'rule',
 }

@@ -37,7 +37,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
 import { of } from 'rxjs';
 import {
-  BASE_URL, CriteriaDataType, CriteriaOperator, CriteriaValue, InjectorModule, LoggerModule, WINDOW_LOCATION
+  BASE_URL,
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  InjectorModule,
+  LoggerModule,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { RuleValidator } from '../../rule.validator';

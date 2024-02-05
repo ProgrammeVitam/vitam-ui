@@ -42,18 +42,17 @@ import { MatSelect } from '@angular/material/select';
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => PatternComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-pattern',
   templateUrl: './pattern.component.html',
   styleUrls: ['./pattern.component.scss'],
-  providers: [PATTERN_VALUE_ACCESSOR]
+  providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor {
-
-  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() options: Array<{ value: string; disabled?: boolean }>;
   @Input() vitamuiMiniMode = false;
 
   @ViewChild('select', { static: true }) select: MatSelect;
@@ -79,7 +78,9 @@ export class PatternComponent implements ControlValueAccessor {
   }
 
   add() {
-    if (!this.controlValueValid()) { return; }
+    if (!this.controlValueValid()) {
+      return;
+    }
     this.patterns.push(this.control.value);
     this.onChange(this.patterns);
     if (this.enabledOptions.length <= 0 && this.control.enabled) {
@@ -95,11 +96,11 @@ export class PatternComponent implements ControlValueAccessor {
     }
   }
 
-  get availableOptions(): Array<{ value: string, disabled?: boolean }> {
+  get availableOptions(): Array<{ value: string; disabled?: boolean }> {
     return (this.options || []).filter((option) => this.isAvailable(option.value));
   }
 
-  get enabledOptions(): Array<{ value: string, disabled?: boolean }> {
+  get enabledOptions(): Array<{ value: string; disabled?: boolean }> {
     return this.availableOptions.filter((option) => !option.disabled);
   }
 
@@ -110,5 +111,4 @@ export class PatternComponent implements ControlValueAccessor {
   isAvailable(value: string): boolean {
     return !this.patterns.includes(value);
   }
-
 }

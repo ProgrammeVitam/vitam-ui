@@ -1,7 +1,7 @@
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {CardSelectComponent} from './card-select.component';
+import { CardSelectComponent } from './card-select.component';
 
 describe('CardSelectComponent', () => {
   let component: CardSelectComponent;
@@ -10,9 +10,8 @@ describe('CardSelectComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CardSelectComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

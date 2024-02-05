@@ -1,17 +1,34 @@
 <div *ngIf="!isEditableComponent" class="vitamui-input" [class.disabled]="disabled">
-    <label>
-        {{'LEVEL_INPUT.SUBLEVEL' | translate }}
-        <span *ngIf="required" class="required-marker">*</span>
-      </label>
-    <input #vitamUILevelInput type="text" [disabled]="disabled" [required]="required" [(ngModel)]="subLevel" (ngModelChange)="onValueChange($event)"
-    (blur)="onBlur()" (focus)="onFocus()" maxlength="250">
+  <label>
+    {{ 'LEVEL_INPUT.SUBLEVEL' | translate }}
+    <span *ngIf="required" class="required-marker">*</span>
+  </label>
+  <input
+    #vitamUILevelInput
+    type="text"
+    [disabled]="disabled"
+    [required]="required"
+    [(ngModel)]="subLevel"
+    (ngModelChange)="onValueChange($event)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    maxlength="250"
+  />
 </div>
 
-<div *ngIf="!isEditableComponent"  class="vitamui-input-errors">
-    <ng-content></ng-content>
+<div *ngIf="!isEditableComponent" class="vitamui-input-errors">
+  <ng-content></ng-content>
 </div>
 
 <div *ngIf="isEditableComponent">
-    <input #vitamUILevelInput [disabled]="disabled" [required]="required" [(ngModel)]="subLevel" (ngModelChange)="onValueChange($event)"
-    (blur)="onBlur()" maxlength="250" (focus)="onFocus()">
+  <input
+    #vitamUILevelInput
+    [disabled]="disabled"
+    [required]="required"
+    [(ngModel)]="subLevel"
+    (ngModelChange)="onValueChange($event)"
+    (blur)="onBlur()"
+    maxlength="250"
+    (focus)="onFocus()"
+  />
 </div>

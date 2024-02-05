@@ -35,7 +35,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import {
-  DescriptionLevel, FilingHoldingSchemeNode, InjectorModule, LoggerModule, PagedResult, ResultFacet, UnitType
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  InjectorModule,
+  LoggerModule,
+  PagedResult,
+  ResultFacet,
+  UnitType,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -54,7 +60,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -87,7 +93,7 @@ describe('LeavesTreeComponent', () => {
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true)
+    hasAccessContractPermissions: () => of(true),
   };
   const archiveFacetsServicStube = {
     extractNodesFacetsResults: () => of(),

@@ -37,5 +37,5 @@
 export interface EventFilter {
   type?: Array<string>;
   status?: 'RUNNING' | 'ERROR' | 'DONE';
-  dateRange?: { startDate: Date, endDate: Date };
+  dateRange?: { startDate: Date; endDate: Date };
 }

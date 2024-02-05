@@ -38,10 +38,9 @@
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Directive({
-  selector: '[vitamuiCommonDragAndDrop]'
+  selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {
-
   @Output() private fileToUploadEmitter: EventEmitter<FileList> = new EventEmitter();
   @Output() private fileDragOverEmitter: EventEmitter<boolean> = new EventEmitter();
   @Output() private fileDragLeaveEmitter: EventEmitter<boolean> = new EventEmitter();
@@ -52,7 +51,7 @@ export class DragAndDropDirective {
   // Set this input to false if you want the browser default behaviour.
   @Input() preventBodyDrop = true;
 
-  constructor() { }
+  constructor() {}
 
   @HostListener('dragover', ['$event']) public onDragOver(dragOverEvent: any) {
     dragOverEvent.preventDefault();
@@ -88,5 +87,4 @@ export class DragAndDropDirective {
       event.preventDefault();
     }
   }
-
 }

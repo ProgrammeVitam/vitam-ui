@@ -44,24 +44,18 @@ import { UserComponent } from './user.component';
 const routes: Route[] = [
   {
     path: '',
-    component: UserComponent
+    component: UserComponent,
   },
   {
     path: ':id',
     component: UserPopupComponent,
-    resolve: { user: UserResolver }
-  }
+    resolve: { user: UserResolver },
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {}

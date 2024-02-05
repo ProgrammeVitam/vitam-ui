@@ -1,36 +1,36 @@
 .date-filter-container {
-    display: flex;
+  display: flex;
 }
 
 .date-filter {
-    width: 140px;
-    height: 70px;
-    background-color: $white;
-    border: solid 1px var(--vitamui-secondary);
-    border-radius: 5px;
-    
+  width: 140px;
+  height: 70px;
+  background-color: $white;
+  border: solid 1px var(--vitamui-secondary);
+  border-radius: 5px;
+
+  font-size: 15px;
+  text-align: center;
+  color: var(--vitamui-secondary);
+  padding: 25px 12px 25px 13px;
+  margin-right: 10px;
+
+  > span {
+    vertical-align: middle;
+  }
+
+  .clear-date-icon {
     font-size: 15px;
-    text-align: center;
-    color: var(--vitamui-secondary);
-    padding: 25px 12px 25px 13px;
-    margin-right: 10px;
-
-    > span {
-        vertical-align: middle;
-    }
-
-    .clear-date-icon {
-        font-size: 15px;
-        font-weight: bold;
-        margin-left: 4px;
-    }
+    font-weight: bold;
+    margin-left: 4px;
+  }
 }
 
 // TODO Move these in a more global scss file
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }

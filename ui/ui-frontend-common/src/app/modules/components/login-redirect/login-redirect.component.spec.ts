@@ -47,14 +47,13 @@ describe('LoginRedirectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginRedirectComponent ],
+      declarations: [LoginRedirectComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: StartupService, useValue: {} },
         { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (): any => null } } } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

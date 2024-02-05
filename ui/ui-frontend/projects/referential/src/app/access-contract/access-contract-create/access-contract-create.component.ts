@@ -83,7 +83,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     private agencyService: AgencyService,
     private confirmDialogService: ConfirmDialogService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   statusControl = new FormControl(false);
@@ -128,7 +128,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -209,7 +209,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 

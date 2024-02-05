@@ -14,6 +14,6 @@
     {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} /
     {{ (displaySelectedArchiveUnitCount ? '' : 'ARCHIVE_SEARCH.MORE_THAN') | translate }}
     {{ displaySelectedArchiveUnitCount ? selectedArchiveUnitCount : threshold }}
-    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural : selectedArchiveUnitCount }}
+    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural: selectedArchiveUnitCount }}
   </span>
 </ng-container>

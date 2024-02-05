@@ -52,9 +52,7 @@ import { EmailsInputModule } from '../emails-input/emails-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input.component';
 
 @Component({
-  template: `
-    <vitamui-common-multiple-email-input [(ngModel)]="value" [label]="label"></vitamui-common-multiple-email-input>
-  `
+  template: ` <vitamui-common-multiple-email-input [(ngModel)]="value" [label]="label"></vitamui-common-multiple-email-input> `,
 })
 class TesthostComponent {
   value: string[];
@@ -70,7 +68,6 @@ describe('MultipleEmailInputComponent', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(waitForAsync(() => {
-
     // const flowValidatorsSpy = jasmine.createSpyObj(
     //   'FlowValidators',
     //   { nameExists: () => of(null), uniqueName: of(null)}
@@ -87,16 +84,12 @@ describe('MultipleEmailInputComponent', () => {
         HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [
-        TesthostComponent,
-        MultipleEmailInputComponent,
-      ],
+      declarations: [TesthostComponent, MultipleEmailInputComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         // { provide: FlowValidators, useValue: flowValidatorsSpy },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -114,7 +107,6 @@ describe('MultipleEmailInputComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -133,7 +125,7 @@ describe('MultipleEmailInputComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const elDomains = fixture.nativeElement.querySelectorAll(
-          '.editable-field .editable-field-content .editable-field-text-content > div'
+          '.editable-field .editable-field-content .editable-field-text-content > div',
         );
         expect(elDomains.length).toBe(3);
         expect(elDomains[0].textContent).toContain(testhost.value[0]);
@@ -149,7 +141,7 @@ describe('MultipleEmailInputComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const elDomains = fixture.nativeElement.querySelectorAll(
-          '.editable-field .editable-field-content .editable-field-text-content > div'
+          '.editable-field .editable-field-content .editable-field-text-content > div',
         );
         expect(elDomains.length).toBe(4);
       });
@@ -203,11 +195,9 @@ describe('MultipleEmailInputComponent', () => {
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();

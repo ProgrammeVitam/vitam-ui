@@ -93,7 +93,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
         this.dataSource = data;
       },
       () => {},
-      () => (this.pending = false)
+      () => (this.pending = false),
     );
 
     searchCriteriaChange.subscribe(() => {

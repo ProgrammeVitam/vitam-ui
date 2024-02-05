@@ -166,8 +166,8 @@ describe('BlockCategoryInheritanceComponent', () => {
     expect(
       component.ruleActions.find(
         (ruleAction) =>
-          ruleAction.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE
-      ).stepValid
+          ruleAction.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && ruleAction.ruleType === RuleTypeEnum.APPRAISALRULE,
+      ).stepValid,
     ).toBeTruthy();
   });
 

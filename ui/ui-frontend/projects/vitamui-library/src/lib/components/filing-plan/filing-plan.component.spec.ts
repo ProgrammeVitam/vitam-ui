@@ -321,10 +321,10 @@ describe('FilingPlanComponent', () => {
         // Then: Check selected and all children checked (and children disabled)
         expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
         expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled'
+          'Leaf 1 should be Checked and Disabled',
         );
         expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled'
+          'Leaf 2 should be Checked and Disabled',
         );
 
         // Then: Check sibling and parent nodes not checked nor disabled
@@ -346,10 +346,10 @@ describe('FilingPlanComponent', () => {
         // Then: Check selected and all children checked (and children disabled)
         expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
         expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled'
+          'Leaf 1 should be Checked and Disabled',
         );
         expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled'
+          'Leaf 2 should be Checked and Disabled',
         );
         expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and not Disabled');
 
@@ -378,10 +378,10 @@ describe('FilingPlanComponent', () => {
         expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
         expect(!nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should not be Checked nor Disabled');
         expect(!nodes[0].children[0].children[0].checked && !nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should not be Checked nor Disabled'
+          'Leaf 1 should not be Checked nor Disabled',
         );
         expect(!nodes[0].children[0].children[1].checked && !nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should not be Checked nor Disabled'
+          'Leaf 2 should not be Checked nor Disabled',
         );
 
         // Then: Check selected nodes
@@ -405,10 +405,10 @@ describe('FilingPlanComponent', () => {
         expect(nodes[0].children[0].checked && nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and Disabled');
         expect(nodes[0].children[1].checked && nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and Disabled');
         expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled'
+          'Leaf 1 should be Checked and Disabled',
         );
         expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled'
+          'Leaf 2 should be Checked and Disabled',
         );
 
         // Then: Check selected nodes

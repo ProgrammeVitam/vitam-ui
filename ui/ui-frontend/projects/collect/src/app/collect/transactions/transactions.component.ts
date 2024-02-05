@@ -24,12 +24,12 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction} from 'ui-frontend-common';
-import {TransactionsService} from './transactions.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'ui-frontend-common';
+import { TransactionsService } from './transactions.service';
 
 @Component({
   selector: 'app-projects',
@@ -37,27 +37,27 @@ import {TransactionsService} from './transactions.service';
   styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
-
   tenantIdentifier: string;
   projectName$: Observable<string>;
   transactions$: Observable<Transaction[]>;
   dataBreadcrumb: BreadCrumbData[];
 
-
-  constructor(route: ActivatedRoute, globalEventService: GlobalEventService, private transactionsService: TransactionsService) {
+  constructor(
+    route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+    private transactionsService: TransactionsService,
+  ) {
     super(route, globalEventService);
   }
 
   ngOnInit(): void {
     const TRANSACTION_MONITORING = 'TRANSACTIONS_MONITORING';
-    this.projectName$ = this.transactionsService.getProject$()
-      .pipe(map((project: Project) => project.messageIdentifier));
-    this.dataBreadcrumb = [{identifier: ApplicationId.PORTAL_APP},
-      {identifier: ApplicationId.COLLECT_APP},
-      {identifier: TRANSACTION_MONITORING}];
+    this.projectName$ = this.transactionsService.getProject$().pipe(map((project: Project) => project.messageIdentifier));
+    this.dataBreadcrumb = [
+      { identifier: ApplicationId.PORTAL_APP },
+      { identifier: ApplicationId.COLLECT_APP },
+      { identifier: TRANSACTION_MONITORING },
+    ];
     this.transactions$ = this.transactionsService.search();
-
   }
-
-
 }

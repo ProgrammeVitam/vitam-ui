@@ -44,7 +44,7 @@ import { ProfileValidators } from './profile.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -52,7 +52,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('ProfileValidators', () => {
-
   it('should return null', fakeAsync(() => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
     profileServiceSpy.exists.and.returnValue(of(false));
@@ -96,5 +95,4 @@ describe('ProfileValidators', () => {
     tick(400);
     expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '111111');
   }));
-
 });

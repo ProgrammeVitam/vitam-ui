@@ -40,10 +40,9 @@ import * as moment_ from 'moment';
 const moment = moment_;
 
 @Pipe({
-  name: 'humanizedDuration'
+  name: 'humanizedDuration',
 })
 export class HumanizedDurationPipe implements PipeTransform {
-
   /**
    * Method allowing to transform a duration (ISOString)
    * @param value String value (ISOString) linked to a duration.

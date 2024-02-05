@@ -1,66 +1,66 @@
 $anim-timing: 150ms ease-out;
 
 :host {
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
 }
 
 mat-chip i,
 mat-chip span {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .list-input-control {
-    // margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: stretch;
+  // margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
 
-    .list-input-wrapper {
-        position: relative;
-        margin-right: 15px;
-        flex-grow: 0.5;
+  .list-input-wrapper {
+    position: relative;
+    margin-right: 15px;
+    flex-grow: 0.5;
 
-        mat-spinner {
-            position: absolute;
-            right: 12px;
-            top: 12px;
-        }
+    mat-spinner {
+      position: absolute;
+      right: 12px;
+      top: 12px;
     }
+  }
 }
 
 .vitamui-chip-list {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 :host.list-input-mini {
-    .list-input-control {
-        button, input {
-            height: 34px;
-            border-radius: 17px;
-        }
-
-        > span {
-            font-size: 18px;
-        }
-
-        mat-spinner {
-            right: 8px;
-            top: 8px;
-        }
+  .list-input-control {
+    button,
+    input {
+      height: 34px;
+      border-radius: 17px;
     }
 
-    .vitamui-chip-list {
-        padding-left: 27px;
+    > span {
+      font-size: 18px;
     }
 
+    mat-spinner {
+      right: 8px;
+      top: 8px;
+    }
+  }
+
+  .vitamui-chip-list {
+    padding-left: 27px;
+  }
 }
 
 .required-marker {
-    color: red;
+  color: red;
 }
 
 .vitamui-input {
-    width: 45% !important;
+  width: 45% !important;
 }

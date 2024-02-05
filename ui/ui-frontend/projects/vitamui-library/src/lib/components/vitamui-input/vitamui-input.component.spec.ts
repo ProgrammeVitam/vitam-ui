@@ -34,22 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormsModule, NgModel} from '@angular/forms';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { FormsModule, NgModel } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import {VitamUIInputComponent} from './vitamui-input.component';
+import { VitamUIInputComponent } from './vitamui-input.component';
 
 @Component({
-  template: `
-    <vitamui-library-input [(ngModel)]="value"></vitamui-library-input>
-  `
+  template: ` <vitamui-library-input [(ngModel)]="value"></vitamui-library-input> `,
 })
 class TesthostComponent {
-  @ViewChild(VitamUIInputComponent, {static: false}) vitamuiInputComponent: VitamUIInputComponent;
-  @ViewChild('input', {static: false}) ngModel: NgModel;
+  @ViewChild(VitamUIInputComponent, { static: false }) vitamuiInputComponent: VitamUIInputComponent;
+  @ViewChild('input', { static: false }) ngModel: NgModel;
 
   value = 'initial value';
 }
@@ -58,13 +56,11 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('VitamUIInputComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUIInputComponent, TesthostComponent]
-    })
-      .compileComponents();
+      declarations: [VitamUIInputComponent, TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -103,5 +99,4 @@ describe('VitamUIInputComponent', () => {
     testhost.vitamuiInputComponent.onBlur();
     expect(testhost.vitamuiInputComponent.focused).toBe(false);
   });
-
 });

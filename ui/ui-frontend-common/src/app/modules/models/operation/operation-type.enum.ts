@@ -35,6 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum OperationType {
-    VITAMUI = 'VITAMUI',
-    VITAM = 'VITAM',
+  VITAMUI = 'VITAMUI',
+  VITAM = 'VITAM',
 }

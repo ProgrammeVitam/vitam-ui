@@ -48,7 +48,11 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   styleUrls: ['./search-dissemination-rules-facets.component.scss'],
 })
 export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private facetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   disseminationRuleFacets: RuleFacets;
@@ -116,7 +120,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -132,7 +136,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnInit, OnChange
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.disseminationRuleFacets.rulesListFacets.length,
           this.exactCount,
-          this.totalResults
+          this.totalResults,
         ),
         clickable: false,
         color: Colors.GRAY,

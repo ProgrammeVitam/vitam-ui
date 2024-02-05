@@ -4,15 +4,13 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
 
         <div class="vitamui-heading">
           <vitamui-common-title-breadcrumb>
             {{ 'APPLICATION.DSL_APP.NAME' | translate }}
           </vitamui-common-title-breadcrumb>
         </div>
-
       </div>
     </div>
 

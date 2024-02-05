@@ -48,7 +48,11 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   styleUrls: ['./search-access-rules-facets.component.scss'],
 })
 export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private facetsService: ArchiveFacetsService, private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private facetsService: ArchiveFacetsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   accessRuleFacets: RuleFacets;
@@ -108,7 +112,7 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         archiveUnitWithRules - expiredRulesNb,
         this.exactCount,
-        this.totalResults
+        this.totalResults,
       ),
       clickable: false,
       color: Colors.GRAY,
@@ -124,7 +128,7 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
           this.accessRuleFacets.rulesListFacets.length,
           this.exactCount,
-          this.totalResults
+          this.totalResults,
         ),
         clickable: false,
         color: Colors.GRAY,

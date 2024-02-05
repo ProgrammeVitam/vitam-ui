@@ -46,7 +46,7 @@ import { SlideToggleComponent } from './slide-toggle.component';
 
 @Component({
   template: `<vitamui-common-slide-toggle [(ngModel)]="stateOn" [disabled]="disabled" [required]="required">
-  </vitamui-common-slide-toggle>`
+  </vitamui-common-slide-toggle>`,
 })
 class TesthostComponent {
   stateOn = false;
@@ -57,16 +57,12 @@ let fixture: ComponentFixture<TesthostComponent>;
 let testhost: TesthostComponent;
 
 describe('SlideToggleComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ],
-      declarations: [ TesthostComponent, SlideToggleComponent ],
-    })
-    .compileComponents();
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+      declarations: [TesthostComponent, SlideToggleComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

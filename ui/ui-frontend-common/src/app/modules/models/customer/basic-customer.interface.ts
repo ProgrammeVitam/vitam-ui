@@ -37,12 +37,11 @@
 import { GraphicIdentity } from './graphic-identity.interface';
 
 export interface BasicCustomer {
-
-    id: string;
-    identifier: string;
-    name: string;
-    companyName: string;
-    portalTitles: {[language: string]: string};
-    portalMessages: {[language: string]: string};
-    graphicIdentity: GraphicIdentity;
-  }
+  id: string;
+  identifier: string;
+  name: string;
+  companyName: string;
+  portalTitles: { [language: string]: string };
+  portalMessages: { [language: string]: string };
+  graphicIdentity: GraphicIdentity;
+}

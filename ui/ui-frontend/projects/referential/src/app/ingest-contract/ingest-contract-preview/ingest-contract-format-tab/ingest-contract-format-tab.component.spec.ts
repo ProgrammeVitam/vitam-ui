@@ -42,8 +42,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
-import { IngestContract } from "ui-frontend-common";
-
+import { IngestContract } from 'ui-frontend-common';
 
 describe('IngestContractFormatTabComponent', () => {
   let component: IngestContractFormatTabComponent;
@@ -76,22 +75,20 @@ describe('IngestContractFormatTabComponent', () => {
     signaturePolicy: undefined,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      const fileFormatServiceMock = {
-        getAllForTenant: () => of([]),
-      };
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, VitamUICommonTestModule],
-        declarations: [IngestContractFormatTabComponent],
-        providers: [
-          { provide: IngestContractService, useValue: {} },
-          { provide: FileFormatService, useValue: fileFormatServiceMock },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const fileFormatServiceMock = {
+      getAllForTenant: () => of([]),
+    };
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [IngestContractFormatTabComponent],
+      providers: [
+        { provide: IngestContractService, useValue: {} },
+        { provide: FileFormatService, useValue: fileFormatServiceMock },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractFormatTabComponent);

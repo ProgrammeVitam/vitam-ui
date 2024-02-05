@@ -23,7 +23,7 @@ describe('FilingPlanService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should load a collection\'s tree', inject([FilingPlanService], (service: FilingPlanService) => {
+  it("should load a collection's tree", inject([FilingPlanService], (service: FilingPlanService) => {
     const rootNode: Node[] = [
       {
         id: 'prefix-2',
@@ -120,7 +120,7 @@ describe('FilingPlanService', () => {
     req.error(
       new ErrorEvent('Network error', {
         message: 'Error',
-      })
+      }),
     );
 
     httpTestingController.verify();

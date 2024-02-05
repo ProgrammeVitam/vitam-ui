@@ -47,7 +47,11 @@ import { AgencyApiService } from '../core/api/agency-api.service';
 export class AgencyService extends SearchService<Agency> {
   updated = new Subject<Agency>();
 
-  constructor(private agencyApiService: AgencyApiService, private snackBarService: VitamUISnackBarService, http: HttpClient) {
+  constructor(
+    private agencyApiService: AgencyApiService,
+    private snackBarService: VitamUISnackBarService,
+    http: HttpClient,
+  ) {
     super(http, agencyApiService, 'ALL');
   }
 
@@ -84,8 +88,8 @@ export class AgencyService extends SearchService<Agency> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -101,8 +105,8 @@ export class AgencyService extends SearchService<Agency> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -124,8 +128,8 @@ export class AgencyService extends SearchService<Agency> {
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -150,7 +154,7 @@ export class AgencyService extends SearchService<Agency> {
       },
       (error) => {
         this.snackBarService.open({ message: error.error.message, translate: false });
-      }
+      },
     );
   }
 

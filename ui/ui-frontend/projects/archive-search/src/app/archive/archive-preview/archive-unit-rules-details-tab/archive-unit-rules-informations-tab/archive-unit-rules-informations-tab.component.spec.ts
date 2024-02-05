@@ -44,7 +44,14 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
-  InheritedPropertyDto, InjectorModule, LoggerModule, ManagementRule, RuleCategoryVitamUiDto, Unit, UnitRuleDto, UnitType,
+  InheritedPropertyDto,
+  InjectorModule,
+  LoggerModule,
+  ManagementRule,
+  RuleCategoryVitamUiDto,
+  Unit,
+  UnitRuleDto,
+  UnitType,
   VitamuiMissingTranslationHandler,
 } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -141,7 +148,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   it('should the returned key as Final Action value be', () => {
     expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
-      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED',
     );
   });
 
@@ -176,7 +183,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).not.toBeNaN();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toBeDefined();
     expect(component.getFinalActionStatus(inheritedPropertyCarried)).toEqual(
-      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED'
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED',
     );
   });
 
@@ -185,7 +192,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getFinalActionStatus(inheritedProperty)).not.toBeNaN();
     expect(component.getFinalActionStatus(inheritedProperty)).toBeDefined();
     expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
-      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED',
     );
   });
 
@@ -295,7 +302,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
     expect(component.getClassificationRulePropertyStatus(property)).toEqual(
-      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED'
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED',
     );
   });
 

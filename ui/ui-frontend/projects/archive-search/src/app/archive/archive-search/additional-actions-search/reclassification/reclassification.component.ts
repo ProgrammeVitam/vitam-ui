@@ -36,13 +36,22 @@ import { TranslateService } from '@ngx-translate/core';
 import { intersection } from 'lodash';
 import { Subscription } from 'rxjs';
 import {
-  ConfirmDialogService, CriteriaDataType, CriteriaOperator, Logger, Option, PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum,
-  StartupService
+  ConfirmDialogService,
+  CriteriaDataType,
+  CriteriaOperator,
+  Logger,
+  Option,
+  PagedResult,
+  SearchCriteriaDto,
+  SearchCriteriaTypeEnum,
+  StartupService,
 } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import {
-  ReclassificationAction, ReclassificationCriteriaDto, ReclassificationQueryActionType
+  ReclassificationAction,
+  ReclassificationCriteriaDto,
+  ReclassificationQueryActionType,
 } from '../../../models/reclassification-request.interface';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 
@@ -103,7 +112,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       selectedItemCountKnown?: boolean;
       archiveUnitGuidSelected: string;
       archiveUnitAllunitup: string[];
-    }
+    },
   ) {}
 
   ngOnInit() {
@@ -177,7 +186,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         this.pendingGetChilds = false;
         this.waitingForLoadExactTotalTrackHits = false;
         this.logger.error('error message', error.message);
-      }
+      },
     );
   }
 
@@ -212,7 +221,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
           this.pendingGetFixedCount = false;
           this.waitingForLoadExactTotalTrackHits = false;
           this.logger.error('error message', error.message);
-        }
+        },
       );
     }
   }
@@ -301,12 +310,12 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
         this.archiveService.openSnackBarForWorkflow(
           this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
-          serviceUrl
+          serviceUrl,
         );
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 

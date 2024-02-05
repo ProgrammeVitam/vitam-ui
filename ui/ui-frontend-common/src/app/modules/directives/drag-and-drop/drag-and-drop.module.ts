@@ -38,12 +38,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DragAndDropDirective } from './drag-and-drop.directive';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [DragAndDropDirective],
-  exports: [DragAndDropDirective]
+  exports: [DragAndDropDirective],
 })
-export class DragAndDropModule { }
+export class DragAndDropModule {}

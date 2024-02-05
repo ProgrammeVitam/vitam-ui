@@ -40,9 +40,7 @@ import { NgModule } from '@angular/core';
 import { AccountDemoComponent } from './account-demo.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [AccountDemoComponent]
+  imports: [CommonModule],
+  declarations: [AccountDemoComponent],
 })
-export class AccountDemoModule { }
+export class AccountDemoModule {}

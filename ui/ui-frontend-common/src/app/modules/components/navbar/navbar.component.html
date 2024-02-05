@@ -1,16 +1,18 @@
 <nav class="vitamui-navbar">
-  <a href="{{portalUrl}}" class="vitamui-navbar-logo">
-    <img [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'">
+  <a href="{{ portalUrl }}" class="vitamui-navbar-logo">
+    <img [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'" />
   </a>
 
   <ul class="menu">
-
     <li><vitamui-common-application-menu [appId]="appId"></vitamui-common-application-menu></li>
-    <li *ngIf="!hideTenantMenu"><vitamui-common-tenant-menu [appId]="appId" (selectedTenant)="emitTenantSelect($event)"></vitamui-common-tenant-menu></li>
-    <li *ngIf="!hideCustomerMenu"><vitamui-common-customer-menu [customers]="customers" (customerSelect)="emitCustomerSelect($event)"></vitamui-common-customer-menu></li>
+    <li *ngIf="!hideTenantMenu">
+      <vitamui-common-tenant-menu [appId]="appId" (selectedTenant)="emitTenantSelect($event)"></vitamui-common-tenant-menu>
+    </li>
+    <li *ngIf="!hideCustomerMenu">
+      <vitamui-common-customer-menu [customers]="customers" (customerSelect)="emitCustomerSelect($event)"></vitamui-common-customer-menu>
+    </li>
 
     <ng-content></ng-content>
-
   </ul>
 
   <div *ngIf="!appId && currentUser?.basicCustomer?.graphicIdentity?.hasCustomGraphicIdentity" class="portal-logo">
@@ -27,17 +29,17 @@
       </div>
 
       <div class="account-info">
-        {{currentUser?.firstname}}
-      <br/>
-      {{currentUser?.lastname}}
+        {{ currentUser?.firstname }}
+        <br />
+        {{ currentUser?.lastname }}
       </div>
       <i class="material-icons vitamui-menu-caret">keyboard_arrow_down</i>
-  </div>
+    </div>
     <div class="account-menu">
       <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
         <ng-container>
-          <button mat-menu-item [routerLink]="['/account']" *ngIf=hasAccountProfile>{{'ACCOUNT.TITLE' | translate}}</button>
-          <button mat-menu-item (click)="enabledSubrogation()" *ngIf=!!!authService?.user?.superUser>Activer le mode subrogation</button>
+          <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{ 'ACCOUNT.TITLE' | translate }}</button>
+          <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!authService?.user?.superUser">Activer le mode subrogation</button>
           <button mat-menu-item (click)="authService.logout()">Déconnexion</button>
         </ng-container>
       </mat-menu>

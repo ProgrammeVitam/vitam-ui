@@ -1,21 +1,21 @@
 :host::ng-deep {
-    mat-form-field {
-        width: 50%;
-    }
+  mat-form-field {
+    width: 50%;
+  }
 
-    .mat-form-field-wrapper {
-        width: 83%;
-    }
+  .mat-form-field-wrapper {
+    width: 83%;
+  }
 
-    .mat-form-field-flex {
-        height: 100%;
-    }
+  .mat-form-field-flex {
+    height: 100%;
+  }
 
-    .mat-form-field-infix {
-        padding: 0.5rem 0rem!important;
-    }
+  .mat-form-field-infix {
+    padding: 0.5rem 0rem !important;
+  }
 
-    .mat-form-field-label span {
-        line-height: 15px;
-      }
+  .mat-form-field-label span {
+    line-height: 15px;
+  }
 }

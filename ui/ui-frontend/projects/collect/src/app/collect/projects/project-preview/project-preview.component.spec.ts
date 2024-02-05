@@ -32,14 +32,14 @@ describe('ProjectPreviewComponent', () => {
     status: TransactionStatus.OPEN,
     submissionAgencyIdentifier: 'submissionAgencyIdentifier',
     transferringAgencyIdentifier: 'transferringAgencyIdentifier',
-  }
+  };
   const transactionPaginatedResponse: PaginatedResponse<Transaction> = {
     pageNum: 0,
     pageSize: 1,
     totalElements: 1,
     hasMore: false,
     values: [transaction],
-  }
+  };
 
   const project: Project = {
     id: 'newId',
@@ -56,30 +56,39 @@ describe('ProjectPreviewComponent', () => {
   } as Project;
 
   const projectAfterUpdate = {
-    project, ...{messageIdentifier: 'test'}
-  }
+    project,
+    ...{ messageIdentifier: 'test' },
+  };
 
   const projectServiceMock = {
     getBaseUrl: () => '/fake-api',
     getProjectById: () => of(project),
     updateProject: () => of(projectAfterUpdate),
     getLegalStatusList: () => [
-      {id: 'Public Archive', value: 'Public archives'},
-      {id: 'Private Archive', value: 'Private archives'},
-      {id: 'Public and Private Archive', value: 'Public and private archives'},
+      { id: 'Public Archive', value: 'Public archives' },
+      { id: 'Private Archive', value: 'Private archives' },
+      { id: 'Public and Private Archive', value: 'Public and private archives' },
     ],
     getAcquisitionInformationsList: () => [
-      'Payment', 'Protocol', 'Purchase', 'Copy', 'Dation', 'Deposit', 'Devolution', 'Donation', 'Bequest', 'Reinstatement', 'Other', 'Unknown'
-    ]
+      'Payment',
+      'Protocol',
+      'Purchase',
+      'Copy',
+      'Dation',
+      'Deposit',
+      'Devolution',
+      'Donation',
+      'Bequest',
+      'Reinstatement',
+      'Other',
+      'Unknown',
+    ],
   };
 
-
   beforeEach(waitForAsync(() => {
-
-
     const projectApiServiceMock = {
       getTransactionsByProjectId: () => of(transactionPaginatedResponse),
-      updateTransaction: () => of(transaction)
+      updateTransaction: () => of(transaction),
     };
 
     TestBed.configureTestingModule({
@@ -87,20 +96,19 @@ describe('ProjectPreviewComponent', () => {
       imports: [MatDialogModule, VitamUICommonTestModule, MatSnackBarModule, BrowserModule, BrowserAnimationsModule, MatButtonToggleModule],
       providers: [
         FormBuilder,
-        {provide: ProjectsService, useValue: projectServiceMock},
+        { provide: ProjectsService, useValue: projectServiceMock },
         {
-          provide: MatDialogRef, useValue: {
-            close: () => {
-            }
-          }
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {},
+          },
         },
-        {provide: ProjectsApiService, useValue: projectApiServiceMock},
-        {provide: ActivatedRoute, useValue: {params: of('11')}},
-        {provide: TranslateService, useValue: {instant: () => EMPTY}},
-        {provide: Router, useValue: {}},
+        { provide: ProjectsApiService, useValue: projectApiServiceMock },
+        { provide: ActivatedRoute, useValue: { params: of('11') } },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: Router, useValue: {} },
       ],
     }).compileComponents();
-
   }));
 
   beforeEach(waitForAsync(() => {
@@ -118,7 +126,6 @@ describe('ProjectPreviewComponent', () => {
       // Make assertions about the component
       expect(component.project).toEqual(project);
     });
-
   }));
 
   it('should get project when update', waitForAsync(() => {
@@ -141,14 +148,13 @@ describe('ProjectPreviewComponent', () => {
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-    component.selectedValue = 'NON'
+    component.selectedValue = 'NON';
     component.onConfirm();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProject).toHaveBeenCalled();
     });
   }));
-
 
   it('should update project with transactions', waitForAsync(() => {
     spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
@@ -157,12 +163,11 @@ describe('ProjectPreviewComponent', () => {
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.launchUpdate();
     fixture.detectChanges();
-    component.selectedValue = 'YES'
+    component.selectedValue = 'YES';
     component.onConfirm();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProject).toHaveBeenCalled();
     });
   }));
-
 });

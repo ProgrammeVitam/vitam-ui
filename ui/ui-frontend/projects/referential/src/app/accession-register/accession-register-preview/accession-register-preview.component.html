@@ -6,25 +6,22 @@
   (onclose)="emitClose()"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="accessionRegisterDetail?.opi"
-  [toolTipTitleDuration]="300">
+  [toolTipTitleDuration]="300"
+>
 </vitamui-common-sidenav-header>
 
 <div class="scrollable">
-  <app-accession-register-detail
-    [accessionRegisterDetail]="accessionRegisterDetail">
-  </app-accession-register-detail>
+  <app-accession-register-detail [accessionRegisterDetail]="accessionRegisterDetail"> </app-accession-register-detail>
 
   <mat-tab-group [selectedIndex]="0">
-
     <mat-tab label="{{ 'ACCESSION_REGISTER.PREVIEW.OPERATION_LIST' | translate }}">
       <app-accession-register-operations-list
         [operationsIds]="accessionRegisterDetail.operationsIds"
-        [operations]="accessionRegisterDetail.events">
+        [operations]="accessionRegisterDetail.events"
+      >
       </app-accession-register-operations-list>
     </mat-tab>
 
-    <mat-tab label="{{ 'ACCESSION_REGISTER.PREVIEW.STATISTICS' | translate }}" [disabled]="true">
-    </mat-tab>
-
+    <mat-tab label="{{ 'ACCESSION_REGISTER.PREVIEW.STATISTICS' | translate }}" [disabled]="true"> </mat-tab>
   </mat-tab-group>
 </div>

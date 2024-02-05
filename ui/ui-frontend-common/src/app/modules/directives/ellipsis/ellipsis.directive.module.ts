@@ -39,10 +39,8 @@ import { NgModule } from '@angular/core';
 import { EllipsisDirective } from './ellipsis.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [EllipsisDirective],
-  exports: [EllipsisDirective]
+  exports: [EllipsisDirective],
 })
-export class EllipsisDirectiveModule { }
+export class EllipsisDirectiveModule {}

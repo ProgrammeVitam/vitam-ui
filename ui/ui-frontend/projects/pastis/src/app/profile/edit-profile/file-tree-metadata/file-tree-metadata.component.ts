@@ -43,8 +43,15 @@ import { SedaService } from '../../../core/services/seda.service';
 import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
 import { AttributeData } from '../../../models/edit-attribute-models';
 import {
-  CardinalityConstants, DataTypeConstants, DateFormatType, FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams, nodeNameToLabel,
-  TypeConstants, ValueOrDataConstants,
+  CardinalityConstants,
+  DataTypeConstants,
+  DateFormatType,
+  FileNode,
+  FileNodeInsertAttributeParams,
+  FileNodeInsertParams,
+  nodeNameToLabel,
+  TypeConstants,
+  ValueOrDataConstants,
 } from '../../../models/file-node';
 import { CardinalityValues, MetadataHeaders } from '../../../models/models';
 import { ProfileType } from '../../../models/profile-type.enum';
@@ -227,7 +234,7 @@ export class FileTreeMetadataComponent {
     public profileService: ProfileService,
     private fileTreeService: FileTreeService,
     private metadataLanguageService: PastisPopupMetadataLanguageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.config = {
       locale: 'fr',
@@ -264,7 +271,7 @@ export class FileTreeMetadataComponent {
       },
       (error) => {
         console.error(error);
-      }
+      },
     );
     this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe((node) => {
       this.clickedNode = node;
@@ -331,7 +338,7 @@ export class FileTreeMetadataComponent {
               this.selectedSedaNode,
               filteredData,
               tabChildrenToInclude,
-              tabChildrenToExclude
+              tabChildrenToExclude,
             );
             this.matDataSource = new MatTableDataSource<MetadataHeaders>(dataTable);
           }
@@ -605,7 +612,7 @@ export class FileTreeMetadataComponent {
       popData.okLabel = this.popupControlOkLabel;
       popData.cancelLabel = this.popupAnnuler;
 
-      const popUpAnswer = await this.fileService.openPopup(popData) as string[];
+      const popUpAnswer = (await this.fileService.openPopup(popData)) as string[];
       console.log('The answer for arrays control was ', popUpAnswer);
       if (popUpAnswer) {
         this.arrayControl = popUpAnswer;
@@ -907,7 +914,7 @@ export class FileTreeMetadataComponent {
       },
       (error) => {
         console.error(error);
-      }
+      },
     );
   }
 

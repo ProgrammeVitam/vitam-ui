@@ -29,8 +29,8 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private languageService: LanguageService,
     private userInfoApiService: BaseUserInfoApiService,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+  ) {}
 
   ngOnInit() {
     this.authService.getUserInfo$().subscribe((userInfo) => {
@@ -49,10 +49,8 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   }
 
   public use(lang: MinLangString): void {
-    this.userInfoApiService
-      .patchMyUserInfo({ language: this.languageService.getFullLangString(lang) })
-      .subscribe(() => {
-        this.translateService.use(lang);
-      });
+    this.userInfoApiService.patchMyUserInfo({ language: this.languageService.getFullLangString(lang) }).subscribe(() => {
+      this.translateService.use(lang);
+    });
   }
 }

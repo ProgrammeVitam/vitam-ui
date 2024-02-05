@@ -1,5 +1,10 @@
 <label>
-  <div class="slide-toggle" [ngClass]="{'slide-toggle-on': checked, 'slide-toggle-off': !checked}" [class.slide-toggle-on]="checked" [class.slide-toggle-disabled]="disabled">
+  <div
+    class="slide-toggle"
+    [ngClass]="{ 'slide-toggle-on': checked, 'slide-toggle-off': !checked }"
+    [class.slide-toggle-on]="checked"
+    [class.slide-toggle-disabled]="disabled"
+  >
     <input
       class="cdk-visually-hidden"
       [required]="required"
@@ -10,7 +15,7 @@
       type="checkbox"
       (click)="toggle()"
       (blur)="onTouched()"
-    >
+    />
     <div class="slide-toggle-inner d-flex">
       <div class="slide-toggle-label"></div>
       <div class="slide-toggle-thumb"></div>

@@ -40,17 +40,15 @@ import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'
 @Component({
   selector: 'vitamui-common-notification-snack-bar',
   templateUrl: './notification-snack-bar.component.html',
-  styleUrls: ['./notification-snack-bar.component.scss']
+  styleUrls: ['./notification-snack-bar.component.scss'],
 })
 export class NotificationSnackBarComponent {
-
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
-    private matSnackBarRef: MatSnackBarRef<NotificationSnackBarComponent>
+    private matSnackBarRef: MatSnackBarRef<NotificationSnackBarComponent>,
   ) {}
 
   close() {
     this.matSnackBarRef.dismiss();
   }
-
 }

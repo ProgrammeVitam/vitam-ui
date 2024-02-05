@@ -1,8 +1,6 @@
 <vitamui-common-sidenav-header
   [extended]="isPanelextended"
-  [title]="
-    (archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate : 29
-  "
+  [title]="(archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate: 29"
   [icon]="getArchiveUnitIcon(archiveUnit)"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
@@ -44,15 +42,11 @@
     </mat-tab>
 
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
-      <app-archive-unit-rules-details-tab
-        [archiveUnit]="archiveUnit"
-      ></app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"></app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}">
-      <app-collect-object-group-details-tab [archiveUnit]="archiveUnit"
-        >></app-collect-object-group-details-tab
-      >
+      <app-collect-object-group-details-tab [archiveUnit]="archiveUnit">></app-collect-object-group-details-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

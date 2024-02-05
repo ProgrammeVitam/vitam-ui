@@ -48,11 +48,9 @@ const EVENT_LIMIT = 100;
 @Component({
   selector: 'vitamui-common-multi-operation-history-tab',
   templateUrl: './multi-operation-history-tab.component.html',
-  styleUrls: ['./multi-operation-history-tab.component.scss']
+  styleUrls: ['./multi-operation-history-tab.component.scss'],
 })
-
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
-
   @Input() collectionsMap: Map<string, string>;
   @Input() identifiers: string[];
   @Input() filter: (event: any) => boolean;
@@ -63,13 +61,19 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
 
   private isDestroyed$ = new Subject();
 
-  constructor(private authService: AuthService, private logbookService: LogbookService, private route: ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private logbookService: LogbookService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes.hasOwnProperty('identifiers') || changes.hasOwnProperty('collectionsMap')) &&
+    if (
+      (changes.hasOwnProperty('identifiers') || changes.hasOwnProperty('collectionsMap')) &&
       this.identifiers &&
       this.collectionsMap &&
-      this.collectionsMap.size > 0) {
+      this.collectionsMap.size > 0
+    ) {
       this.initEvent();
     }
   }
@@ -84,25 +88,25 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
     this.route.paramMap
       .pipe(
         map((paramMap) =>
-          paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier)
+          paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
         switchMap((tenantIdentifier) => {
           const result = this.logbookService.listHistoryOperations(this.collectionsMap, tenantIdentifier);
           return result;
         }),
-        takeUntil(this.isDestroyed$)
+        takeUntil(this.isDestroyed$),
       )
       .subscribe(
         (results) => {
-          this.events = results.filter((event) => {
-            return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
-          })
+          this.events = results
+            .filter((event) => {
+              return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
+            })
             .slice(0, EVENT_LIMIT);
           this.loading = false;
         },
-        () => (this.loading = false)
+        () => (this.loading = false),
       );
-
   }
 
   filterByIdentifier(event: any): boolean {

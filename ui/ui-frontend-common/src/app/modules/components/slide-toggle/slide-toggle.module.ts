@@ -42,10 +42,7 @@ import { SlideToggleComponent } from './slide-toggle.component';
 
 @NgModule({
   declarations: [SlideToggleComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-  ],
-  exports: [SlideToggleComponent]
+  imports: [CommonModule, TranslateModule],
+  exports: [SlideToggleComponent],
 })
-export class SlideToggleModule { }
+export class SlideToggleModule {}

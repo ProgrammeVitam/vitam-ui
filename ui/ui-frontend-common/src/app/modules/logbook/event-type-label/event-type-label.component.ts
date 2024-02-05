@@ -39,15 +39,12 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-common-event-type-label',
   templateUrl: './event-type-label.component.html',
-  styleUrls: ['./event-type-label.component.scss']
+  styleUrls: ['./event-type-label.component.scss'],
 })
 export class EventTypeLabelComponent implements OnInit {
-
   @Input() key: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

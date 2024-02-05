@@ -25,7 +25,6 @@
  * accept its terms.
  */
 
-
 // TODO: rename in ObjectGroup
 import { ObjectQualifierType } from './object-qualifier.enums';
 
@@ -41,7 +40,7 @@ export interface ApiUnitObject {
   '#originating_agencies': Array<string>;
   '#storage': StorageDto;
   '#nbobjects': StorageDto;
-  'FileInfo': FileInfoDto;
+  FileInfo: FileInfoDto;
   '#qualifiers': Array<QualifierDto>;
   '#approximate_creation_date': string;
   '#approximate_update_date': string;

@@ -46,7 +46,10 @@ import { BASE_URL } from './injection-tokens';
 export class ExternalParametersService {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) private baseUrl: string,
+  ) {
     this.apiUrl = this.baseUrl + '/externalparameters';
   }
 
@@ -66,7 +69,7 @@ export class ExternalParametersService {
           }
         }
         return userMap;
-      })
+      }),
     );
   }
 }

@@ -2,11 +2,11 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content display-all">{{control?.value}}</span>
-          <div class="editable-field-control">
-            <textarea [formControl]="control" [maxlength]="maxlength" rows="3" #input></textarea>
-          </div>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content display-all">{{ control?.value }}</span>
+        <div class="editable-field-control">
+          <textarea [formControl]="control" [maxlength]="maxlength" rows="3" #input></textarea>
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -26,14 +26,15 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div>{{control?.value}}</div>
+  <label>{{ label }}</label>
+  <div>{{ control?.value }}</div>
 </div>

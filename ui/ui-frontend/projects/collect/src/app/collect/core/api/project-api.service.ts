@@ -80,13 +80,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   // Manage Object Groups
 
-  getDownloadObjectFromUnitUrl(
-    unitId: string,
-    objectId: string,
-    tenantId: number,
-    qualifier?: string,
-    version?: number
-  ): string {
+  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, tenantId: number, qualifier?: string, version?: number): string {
     let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}`;
     if (qualifier && version) {
       url += `&qualifier=${qualifier}&version=${version}`;
@@ -115,7 +109,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.http.put<SearchCriteriaHistory>(
       `${this.apiUrl}/archive-units/searchcriteriahistory/${searchCriteriaHistory.id}`,
-      searchCriteriaHistory
+      searchCriteriaHistory,
     );
   }
 
@@ -126,7 +120,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   public getTransactionsByProjectId(
     pageRequest: PageRequest,
     projectId?: string,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
   ): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
     return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });

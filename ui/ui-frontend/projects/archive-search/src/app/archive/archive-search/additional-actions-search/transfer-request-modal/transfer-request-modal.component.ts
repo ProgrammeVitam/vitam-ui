@@ -60,7 +60,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-    }
+    },
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +106,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 

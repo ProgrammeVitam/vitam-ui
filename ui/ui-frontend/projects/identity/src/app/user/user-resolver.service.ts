@@ -44,25 +44,25 @@ import { UserService } from './user.service';
 
 @Injectable()
 export class UserResolver implements Resolve<User> {
-
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.paramMap.get('id');
 
-    return this.userService.get(id)
-      .pipe(
-        take(1),
-        map((user: User) => {
-          if (user) {
-            return user;
-          } else {
-            this.router.navigate(['/']);
+    return this.userService.get(id).pipe(
+      take(1),
+      map((user: User) => {
+        if (user) {
+          return user;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

@@ -76,7 +76,10 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private accessContractService: AccessContractService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private accessContractService: AccessContractService,
+  ) {
     this.form = this.formBuilder.group({
       writingRestrictedDesc: [true],
       writingPermission: [false],
@@ -107,8 +110,8 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -124,7 +127,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

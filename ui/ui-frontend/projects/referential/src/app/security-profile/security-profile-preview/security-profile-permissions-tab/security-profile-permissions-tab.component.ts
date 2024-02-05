@@ -98,7 +98,7 @@ export class SecurityProfilePermissionsTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     // tslint:disable-next-line:no-shadowed-variable
-    private SecurityProfileService: SecurityProfileService
+    private SecurityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
       fullAccess: [null],
@@ -148,8 +148,8 @@ export class SecurityProfilePermissionsTabComponent {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.SecurityProfileService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.SecurityProfileService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -167,7 +167,7 @@ export class SecurityProfilePermissionsTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

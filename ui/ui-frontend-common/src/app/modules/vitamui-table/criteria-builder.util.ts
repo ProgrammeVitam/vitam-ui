@@ -42,15 +42,17 @@ export function buildCriteriaFromSearch(search: string, keys: string[]): SearchQ
     return [];
   }
 
-  return [{
-    queryOperator: 'OR',
-    criteria: keys.map((key) => ({ key, value: '*' + search + '*', operator: Operators.equalsIgnoreCase }))
-  }];
+  return [
+    {
+      queryOperator: 'OR',
+      criteria: keys.map((key) => ({ key, value: '*' + search + '*', operator: Operators.equalsIgnoreCase })),
+    },
+  ];
 }
 
 export function buildCriteriaFromFilters(
   filterMap: { [key: string]: any[] },
-  converter: { [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }
+  converter: { [key: string]: (values: any[]) => Array<Criterion | SearchQuery> },
 ): Array<Criterion | SearchQuery> {
   let criterionList: Array<Criterion | SearchQuery> = [];
 

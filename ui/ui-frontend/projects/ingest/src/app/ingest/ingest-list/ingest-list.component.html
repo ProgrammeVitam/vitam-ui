@@ -4,8 +4,7 @@
       <div class="row col-1"><i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon"></i></div>
       <div class="col-5" i18n="ingest identifier column header@@ingestListIdentifierHeader">
         <span>{{ 'INGEST_LIST.ID' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()">
+        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2" i18n="ingest createdDate column header@@ingestListCreatedDateHeader">
@@ -31,14 +30,15 @@
       <div class="col-2" i18n="Ingest name@@IngestStatus">{{ 'INGEST_LIST.STATUS' | translate }}</div>
     </div>
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let ingest of dataSource; let index = index"
-           (click)="ingestClick.emit(ingest)">
+      <div class="vitamui-table-rows" *ngFor="let ingest of dataSource; let index = index" (click)="ingestClick.emit(ingest)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="row col-1">
-              <div>
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-{{getIngestStatusColor(ingest)}}"
-                  [style.fontSize.px]="30"></i>
-              </div>
+            <div>
+              <i
+                class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-{{ getIngestStatusColor(ingest) }}"
+                [style.fontSize.px]="30"
+              ></i>
+            </div>
           </div>
           <div class="col-5">{{ ingest?.obIdIn }}</div>
           <div class="col-2">
@@ -57,27 +57,27 @@
             <ng-container [ngSwitch]="getIngestStatus(ingest)">
               <div *ngSwitchCase="IngestStatus.OK">
                 <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br/>
+                <br />
                 <span class="text-green">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.IN_PROGRESS">
                 <span class="status">{{ 'INGEST_LIST.RESULT.STARTED' | translate }}</span>
-                <br/>
+                <br />
                 <span class="text-grey">....</span>
               </div>
               <div *ngSwitchCase="IngestStatus.WARNING">
                 <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br/>
+                <br />
                 <span class="text-orange">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.FATAL">
                 <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span>
-                <br/>
+                <br />
                 <span class="text-red">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.KO">
                 <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br/>
+                <br />
                 <span class="text-red">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
               </div>
             </ng-container>

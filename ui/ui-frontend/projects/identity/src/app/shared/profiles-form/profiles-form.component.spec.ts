@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Component, Directive, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -56,7 +55,7 @@ const expectedProfiles = [
     applicationName: 'CUSTOMERS_APP',
     tenantIdentifier: 1,
     tenantName: 'tenant 1',
-    tenant: { id: '11', name: 'tenant 1', identifier: 1 }
+    tenant: { id: '11', name: 'tenant 1', identifier: 1 },
   },
   {
     id: '2',
@@ -65,7 +64,7 @@ const expectedProfiles = [
     applicationName: 'CUSTOMERS_APP',
     tenantIdentifier: 2,
     tenantName: 'tenant 2',
-    tenant: { id: '22', name: 'tenant 2', identifier: 2 }
+    tenant: { id: '22', name: 'tenant 2', identifier: 2 },
   },
   {
     id: '3',
@@ -74,7 +73,7 @@ const expectedProfiles = [
     applicationName: 'USERS_APP',
     tenantIdentifier: 1,
     tenantName: 'tenant 1',
-    tenant: { id: '11', name: 'tenant 1', identifier: 1 }
+    tenant: { id: '11', name: 'tenant 1', identifier: 1 },
   },
   {
     id: '4',
@@ -83,7 +82,7 @@ const expectedProfiles = [
     applicationName: 'GROUPS_APP',
     tenantIdentifier: 3,
     tenantName: 'tenant 3',
-    tenant: { id: '33', name: 'tenant 3', identifier: 3 }
+    tenant: { id: '33', name: 'tenant 3', identifier: 3 },
   },
   {
     id: '5',
@@ -92,7 +91,7 @@ const expectedProfiles = [
     applicationName: 'PROFILES_APP',
     tenantIdentifier: 4,
     tenantName: 'tenant 4',
-    tenant: { id: '44', name: 'tenant 4', identifier: 4 }
+    tenant: { id: '44', name: 'tenant 4', identifier: 4 },
   },
   {
     id: '6',
@@ -101,41 +100,45 @@ const expectedProfiles = [
     applicationName: 'CUSTOMERS_APP',
     tenantIdentifier: 1,
     tenantName: 'tenant 1',
-    tenant: { id: '11', name: 'tenant 1', identifier: 1 }
+    tenant: { id: '11', name: 'tenant 1', identifier: 1 },
   },
 ];
 
 const expectedApp = {
-    APPLICATION_CONFIGURATION: [
-      {
-        id: 'CUSTOMERS_APP',
-        identifier: 'CUSTOMERS_APP',
-        name: 'Organisations',
-        url: ''
-      }, {
-        id: 'ARCHIVE_APP',
-        identifier: 'ARCHIVE_APP',
-        name: 'Archives',
-        url: ''
-      }, {
-        id: 'USERS_APP',
-        identifier: 'USERS_APP',
-        name: 'Utilisateurs',
-        url: ''
-      }, {
-        id: 'GROUPS_APP',
-        identifier: 'GROUPS_APP',
-        name: 'Groupes de profils',
-        url: ''
-      }, {
-        id: 'PROFILES_APP',
-        identifier: 'PROFILES_APP',
-        name: 'Profils APP Utilisateurs',
-        url: ''
-      },
-    ], CATEGORY_CONFIGURATION: {}
+  APPLICATION_CONFIGURATION: [
+    {
+      id: 'CUSTOMERS_APP',
+      identifier: 'CUSTOMERS_APP',
+      name: 'Organisations',
+      url: '',
+    },
+    {
+      id: 'ARCHIVE_APP',
+      identifier: 'ARCHIVE_APP',
+      name: 'Archives',
+      url: '',
+    },
+    {
+      id: 'USERS_APP',
+      identifier: 'USERS_APP',
+      name: 'Utilisateurs',
+      url: '',
+    },
+    {
+      id: 'GROUPS_APP',
+      identifier: 'GROUPS_APP',
+      name: 'Groupes de profils',
+      url: '',
+    },
+    {
+      id: 'PROFILES_APP',
+      identifier: 'PROFILES_APP',
+      name: 'Profils APP Utilisateurs',
+      url: '',
+    },
+  ],
+  CATEGORY_CONFIGURATION: {},
 };
-
 
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
@@ -145,9 +148,7 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-  template: `
-    <app-profiles-form [(ngModel)]="profiles"></app-profiles-form>
-  `
+  template: ` <app-profiles-form [(ngModel)]="profiles"></app-profiles-form> `,
 })
 class TesthostComponent {
   profiles: string[];
@@ -170,16 +171,14 @@ describe('ProfilesFormComponent', () => {
         VitamUIAutocompleteModule,
         VitamUICommonTestModule,
       ],
-      declarations: [ ProfilesFormComponent, TesthostComponent, MatTooltipStubDirective ],
+      declarations: [ProfilesFormComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
         { provide: ProfileService, useValue: { list: () => of(expectedProfiles) } },
         { provide: ApplicationApiService, useValue: { getAllByParams: () => of(expectedApp) } },
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -193,7 +192,6 @@ describe('ProfilesFormComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have 3 select inputs', () => {
       const elInputs = fixture.nativeElement.querySelectorAll('vitamui-common-vitamui-autocomplete');
       expect(elInputs.length).toBe(3);
@@ -229,13 +227,10 @@ describe('ProfilesFormComponent', () => {
       elDelButton.click();
       expect(testhost.component.remove).toHaveBeenCalledWith(0);
     });
-
   });
 
   describe('Component', () => {
-
     it('should fill the application tree', () => {
-
       expect(testhost.component.applications).toEqual([
         {
           key: 'GROUPS_APP',
@@ -244,11 +239,9 @@ describe('ProfilesFormComponent', () => {
             {
               key: '3',
               label: 'tenant 3',
-              children: [
-                { key: expectedProfiles[3].id, label: expectedProfiles[3].name, info: expectedProfiles[3].description },
-              ]
+              children: [{ key: expectedProfiles[3].id, label: expectedProfiles[3].name, info: expectedProfiles[3].description }],
             },
-          ]
+          ],
         },
         {
           key: 'CUSTOMERS_APP',
@@ -260,16 +253,14 @@ describe('ProfilesFormComponent', () => {
               children: [
                 { key: expectedProfiles[0].id, label: expectedProfiles[0].name, info: expectedProfiles[0].description },
                 { key: expectedProfiles[5].id, label: expectedProfiles[5].name, info: expectedProfiles[5].description },
-              ]
+              ],
             },
             {
               key: '2',
               label: 'tenant 2',
-              children: [
-                { key: expectedProfiles[1].id, label: expectedProfiles[1].name, info: expectedProfiles[1].description },
-              ]
+              children: [{ key: expectedProfiles[1].id, label: expectedProfiles[1].name, info: expectedProfiles[1].description }],
             },
-          ]
+          ],
         },
         {
           key: 'PROFILES_APP',
@@ -278,11 +269,9 @@ describe('ProfilesFormComponent', () => {
             {
               key: '4',
               label: 'tenant 4',
-              children: [
-                { key: expectedProfiles[4].id, label: expectedProfiles[4].name, info: expectedProfiles[4].description },
-              ]
+              children: [{ key: expectedProfiles[4].id, label: expectedProfiles[4].name, info: expectedProfiles[4].description }],
             },
-          ]
+          ],
         },
         {
           key: 'USERS_APP',
@@ -291,11 +280,9 @@ describe('ProfilesFormComponent', () => {
             {
               key: '1',
               label: 'tenant 1',
-              children: [
-                { key: expectedProfiles[2].id, label: expectedProfiles[2].name, info: expectedProfiles[2].description },
-              ]
+              children: [{ key: expectedProfiles[2].id, label: expectedProfiles[2].name, info: expectedProfiles[2].description }],
             },
-          ]
+          ],
         },
       ]);
     });
@@ -363,7 +350,5 @@ describe('ProfilesFormComponent', () => {
         expect(testhost.component.filteredTenants[0].key).toBe('1');
       });
     }));
-
   });
-
 });

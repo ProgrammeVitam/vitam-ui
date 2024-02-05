@@ -34,27 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
-import {AppGuard, AuthGuard} from 'ui-frontend-common';
-import {OntologyComponent} from './ontology.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { AppGuard, AuthGuard } from 'ui-frontend-common';
+import { OntologyComponent } from './ontology.component';
 
 const routes: Route[] = [
   {
     path: '',
     component: OntologyComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: {appId: 'ONTOLOGY_APP'}
-  }
+    data: { appId: 'ONTOLOGY_APP' },
+  },
 ];
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class OntologyRoutingModule {
-}
+export class OntologyRoutingModule {}

@@ -4,22 +4,22 @@
 $input-height: 70px;
 
 .customer-bg {
-    z-index: -2;
-    position: fixed;
-    bottom: -70px;
-    right: -20px;
-    width: 518px;
+  z-index: -2;
+  position: fixed;
+  bottom: -70px;
+  right: -20px;
+  width: 518px;
 }
 
 .vitamui-header {
-    background: none;
+  background: none;
 
-    h2 {
-        font-size: 48px;
-        text-align: center;
-    }
+  h2 {
+    font-size: 48px;
+    text-align: center;
+  }
 
-    .vitamui-container {
-        padding-bottom: 0px;
-    }
+  .vitamui-container {
+    padding-bottom: 0px;
+  }
 }

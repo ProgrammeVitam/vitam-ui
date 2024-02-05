@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FileFormat, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FileFormat, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   ExternalParameters,
@@ -49,13 +49,13 @@ import {
   IngestContract,
   Option,
   SignaturePolicy,
-  SignedDocumentPolicyEnum
+  SignedDocumentPolicyEnum,
 } from 'ui-frontend-common';
-import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
-import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
-import {FileFormatService} from '../../file-format/file-format.service';
-import {IngestContractService} from '../ingest-contract.service';
-import {IngestContractCreateValidators} from './ingest-contract-create.validators';
+import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
+import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
+import { FileFormatService } from '../../file-format/file-format.service';
+import { IngestContractService } from '../ingest-contract.service';
+import { IngestContractCreateValidators } from './ingest-contract-create.validators';
 
 @Component({
   selector: 'app-ingest-contract-create',
@@ -63,7 +63,6 @@ import {IngestContractCreateValidators} from './ingest-contract-create.validator
   styleUrls: ['./ingest-contract-create.component.scss'],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
-
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
   readonly FilingPlanMode = FilingPlanMode;
 
@@ -94,9 +93,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
-  ) {
-  }
+    private snackBar: MatSnackBar,
+  ) {}
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
@@ -109,11 +107,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   isDisabledButton = false;
 
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
-    {key: 'Dissemination', label: 'Diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignette', info: ''},
-    {key: 'TextContent', label: 'Contenu brut', info: ''},
-    {key: 'PhysicalMaster', label: 'Original papier', info: ''},
+    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
+    { key: 'Dissemination', label: 'Diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu brut', info: '' },
+    { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
 
   ngOnInit() {
@@ -169,7 +167,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -211,8 +209,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.linkParentIdControl.setValue({included: [], excluded: []});
-    this.checkParentIdControl.setValue({included: [], excluded: []});
+    this.linkParentIdControl.setValue({ included: [], excluded: [] });
+    this.checkParentIdControl.setValue({ included: [], excluded: [] });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -243,7 +241,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 
@@ -311,5 +309,4 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
 }

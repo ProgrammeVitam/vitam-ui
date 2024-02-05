@@ -44,14 +44,14 @@ import { Account } from '../models/account/account.interface';
 import { AccountApiService } from './account-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccountService {
   constructor(
     private accountApi: AccountApiService,
     private securityApi: SecurityApiService,
-    private snackBarService: VitamUISnackBarService) {
-  }
+    private snackBarService: VitamUISnackBarService,
+  ) {}
 
   public getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();
@@ -63,13 +63,13 @@ export class AccountService {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.UPDATED_ACCOUNT',
-            icon: 'vitamui-icon-user'
+            icon: 'vitamui-icon-user',
           });
         },
         (error) => {
-          this.snackBarService.open({message: error.error.message});
-        }
-      )
+          this.snackBarService.open({ message: error.error.message });
+        },
+      ),
     );
   }
 }

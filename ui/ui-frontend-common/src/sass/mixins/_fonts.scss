@@ -14,9 +14,9 @@
     limitations under the License.
  */
 
- @mixin text-colors {
+@mixin text-colors {
   &.primary {
-      color: var(--vitamui-primary);
+    color: var(--vitamui-primary);
   }
 
   &.primary-300 {
@@ -24,23 +24,23 @@
   }
 
   &.secondary {
-      color: var(--vitamui-secondary);
+    color: var(--vitamui-secondary);
   }
 
   &.tertiary {
-      color: var(--vitamui-tertiary);
+    color: var(--vitamui-tertiary);
   }
 
   &.success {
-      color: $green;
+    color: $green;
   }
 
   &.warning {
-      color: $orange;
+    color: $orange;
   }
 
   &.danger {
-      color: $red;
+    color: $red;
   }
 
   &.light {
@@ -50,56 +50,46 @@
 
 /** TODO : CHECK IF THIS CODE IS USED OR DEPRECATED **/
 @mixin login-title {
-  
   font-size: 28px;
   font-weight: 300;
   color: $charcoal-grey;
 }
 
 @mixin login-text-1 {
-  
   font-size: 20px;
   font-weight: 300;
   color: $charcoal-grey;
 }
 
 @mixin button-primary {
-  
   font-size: 15px;
   font-weight: 500;
   color: $white;
 }
 
 @mixin login-text-2 {
-  
   font-size: 15px;
   color: $greyish-two;
 }
 
 @mixin login-helper {
-  
   font-size: 15px;
   color: $cool-grey;
 }
 
 @mixin vitamui-link {
-  
   font-size: 15px;
   color: var(--vitamui-primary);
 }
 
 @mixin vitamui-input-placeholder {
-  
   font-size: 14px;
   text-align: left;
   color: $greyish-two;
 }
 
 @mixin login-error {
-  
   font-size: 14px;
   letter-spacing: -0.4px;
   color: $red;
 }
-
-

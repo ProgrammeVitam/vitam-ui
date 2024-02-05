@@ -43,7 +43,7 @@ import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } fr
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
 
-const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: number, hasMore: boolean } = {
+const expectedCustomersPage: { values: Customer[]; pageNum: number; pageSize: number; hasMore: boolean } = {
   values: [
     {
       id: '5acc6bd8b75bfb2e46aeec3da96bdc5206a641e2babc48ec12473c206c4bb97d',
@@ -57,9 +57,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
       language: 'FRENCH',
       passwordRevocationDelay: 365,
       otp: OtpState.OPTIONAL,
-      emailDomains: [
-        'vitamui.com',
-      ],
+      emailDomains: ['vitamui.com'],
       defaultEmailDomain: 'vitamui.com',
       owners: [
         {
@@ -73,10 +71,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
           readonly: false,
-
         },
         {
           id: '2',
@@ -89,9 +86,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
       ],
       internalCode: '1',
@@ -99,11 +96,11 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
       themeColors: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72,
+      gdprAlert: false,
+      gdprAlertDelay: 72,
       portalMessages: {},
       portalTitles: {},
     },
@@ -119,9 +116,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
       language: 'ENGLISH',
       passwordRevocationDelay: 365,
       otp: OtpState.OPTIONAL,
-      emailDomains: [
-        'edf.com',
-      ],
+      emailDomains: ['edf.com'],
       defaultEmailDomain: 'edf.com',
       owners: [
         {
@@ -135,9 +130,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
         {
           id: '5',
@@ -150,9 +145,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
       ],
       internalCode: '1',
@@ -160,21 +155,21 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
       themeColors: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72,
+      gdprAlert: false,
+      gdprAlertDelay: 72,
       portalMessages: {},
-      portalTitles: {}
+      portalTitles: {},
     },
   ],
   pageNum: 0,
   pageSize: 20,
-  hasMore: false
+  hasMore: false,
 };
 
-const customersPage: { values: Customer[], pageNum: number, pageSize: number, hasMore: boolean } = {
+const customersPage: { values: Customer[]; pageNum: number; pageSize: number; hasMore: boolean } = {
   values: [
     {
       id: '5acc6bd8b75bfb2e46aeec3da96bdc5206a641e2babc48ec12473c206c4bb97d',
@@ -188,9 +183,7 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
       language: 'FRENCH',
       passwordRevocationDelay: 365,
       otp: OtpState.OPTIONAL,
-      emailDomains: [
-        'vitamui.com',
-      ],
+      emailDomains: ['vitamui.com'],
       defaultEmailDomain: 'vitamui.com',
       owners: [
         {
@@ -204,9 +197,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
         {
           id: '2',
@@ -219,9 +212,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
       ],
       internalCode: '1',
@@ -229,13 +222,13 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
       themeColors: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72,
+      gdprAlert: false,
+      gdprAlertDelay: 72,
       portalMessages: {},
-      portalTitles: {}
+      portalTitles: {},
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -249,9 +242,7 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
       language: 'ENGLISH',
       passwordRevocationDelay: 365,
       otp: OtpState.OPTIONAL,
-      emailDomains: [
-        'edf.com',
-      ],
+      emailDomains: ['edf.com'],
       defaultEmailDomain: 'edf.com',
       owners: [
         {
@@ -265,9 +256,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
         {
           id: '5',
@@ -280,9 +271,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
             city: 'Paris',
-            country: 'France'
+            country: 'France',
           },
-          readonly: false
+          readonly: false,
         },
       ],
       internalCode: '1',
@@ -290,18 +281,18 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
       themeColors: {},
-      gdprAlert : false,
-      gdprAlertDelay : 72,
+      gdprAlert: false,
+      gdprAlertDelay: 72,
       portalMessages: {},
-      portalTitles: {}
+      portalTitles: {},
     },
   ],
   pageNum: 0,
   pageSize: 20,
-  hasMore: false
+  hasMore: false,
 };
 
 describe('CustomerListService', () => {
@@ -313,8 +304,8 @@ describe('CustomerListService', () => {
       imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -334,10 +325,10 @@ describe('CustomerListService', () => {
   });
 
   it('should call /fake-api/customers?page=42&size=15&orderBy=code&direction=DESC', () => {
-    customerListService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT))
+    customerListService
+      .search(new PageRequest(42, 15, 'name', Direction.DESCENDANT))
       .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
-    const req = httpTestingController.expectOne(
-      '/fake-api/customers?page=42&size=15&orderBy=name&direction=DESC&embedded=OWNER,TENANT');
+    const req = httpTestingController.expectOne('/fake-api/customers?page=42&size=15&orderBy=name&direction=DESC&embedded=OWNER,TENANT');
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);
   });
@@ -345,21 +336,21 @@ describe('CustomerListService', () => {
   it('should call /fake-api/customers?page=0&size=15&orderBy=companyName&direction=DESC', () => {
     customersPage.hasMore = true;
     customersPage.pageSize = 15;
-    customerListService.search(new PageRequest(0, 15, 'companyName', Direction.DESCENDANT))
+    customerListService
+      .search(new PageRequest(0, 15, 'companyName', Direction.DESCENDANT))
       .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
     let req = httpTestingController.expectOne(
-      '/fake-api/customers?page=0&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT');
+      '/fake-api/customers?page=0&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT',
+    );
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);
 
     customersPage.pageNum = 1;
     customersPage.hasMore = false;
-    customerListService.loadMore().subscribe(
-      (response) => expect(response).toEqual(expectedCustomersPage.values.concat(expectedCustomersPage.values)),
-      fail
-    );
-    req = httpTestingController.expectOne(
-      '/fake-api/customers?page=1&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT');
+    customerListService
+      .loadMore()
+      .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values.concat(expectedCustomersPage.values)), fail);
+    req = httpTestingController.expectOne('/fake-api/customers?page=1&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT');
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);
   });
@@ -372,10 +363,7 @@ describe('CustomerListService', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);
 
-    customerListService.loadMore().subscribe(
-      (response) => expect(response).toEqual(expectedCustomersPage.values),
-      fail
-    );
+    customerListService.loadMore().subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
     httpTestingController.expectNone('/fake-api/customers?page=1&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT');
   });
 
@@ -385,13 +373,10 @@ describe('CustomerListService', () => {
 
   it('should return true', () => {
     customersPage.hasMore = true;
-    customerListService.search().subscribe(
-      (response) => {
-        expect(response).toEqual(expectedCustomersPage.values);
-        expect(customerListService.canLoadMore).toBeTruthy();
-      },
-      fail
-    );
+    customerListService.search().subscribe((response) => {
+      expect(response).toEqual(expectedCustomersPage.values);
+      expect(customerListService.canLoadMore).toBeTruthy();
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/customers?page=0&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT');
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);

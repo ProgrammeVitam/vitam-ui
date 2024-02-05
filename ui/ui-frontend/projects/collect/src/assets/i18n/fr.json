@@ -1,6 +1,5 @@
 {
   "COLLECT": {
-
     "UPDATE_UNITS_METADATA": {
       "ACTION_UPDATE": "Mettre à jour les metadonnées",
       "ACTION_TITLE": "Mise à jour des métadonnées des archives",
@@ -128,83 +127,7 @@
         "KO": "Erreur technique"
       }
     }
-
-
-
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Versement",

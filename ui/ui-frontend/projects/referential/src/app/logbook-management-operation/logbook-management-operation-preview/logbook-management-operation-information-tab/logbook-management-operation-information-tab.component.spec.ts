@@ -47,26 +47,24 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
   let logbookInformationComponent: TestLogbookInformationComponent;
   let fixture: ComponentFixture<TestLogbookInformationComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      expectedOperation = {
-        globalState: 'PAUSE',
-        nextStep: 'nextStep',
-        operationId: 'aecaaereragfogjqbaai6malzquerteaaaq',
-        previousStep: 'previousStep',
-        processDate: new Date(),
-        processType: 'TRACEABILITY',
-        stepByStep: true,
-        stepStatus: 'KO',
-      };
-      TestBed.configureTestingModule({
-        declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
-        imports: [TranslateModule.forRoot()],
-        providers: [{ provide: LogbookService, useValue: {} }],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    expectedOperation = {
+      globalState: 'PAUSE',
+      nextStep: 'nextStep',
+      operationId: 'aecaaereragfogjqbaai6malzquerteaaaq',
+      previousStep: 'previousStep',
+      processDate: new Date(),
+      processType: 'TRACEABILITY',
+      stepByStep: true,
+      stepStatus: 'KO',
+    };
+    TestBed.configureTestingModule({
+      declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: LogbookService, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestLogbookInformationComponent);

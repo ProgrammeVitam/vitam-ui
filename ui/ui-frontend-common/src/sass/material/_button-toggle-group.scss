@@ -1,94 +1,91 @@
-
-
 @import '../variables/colors';
 
 .vitamui-button-toggle-group.mat-button-toggle-group {
-    box-shadow: none;
-    border-radius: 5px;
-    background-color: $white;
-    border: solid 1px var(--vitamui-primary);
+  box-shadow: none;
+  border-radius: 5px;
+  background-color: $white;
+  border: solid 1px var(--vitamui-primary);
 
-    .mat-button-toggle:not(.mat-button-toggle-disabled) {
-        border-color: var(--vitamui-primary);
+  .mat-button-toggle:not(.mat-button-toggle-disabled) {
+    border-color: var(--vitamui-primary);
 
-        &:hover {
-            background-color: var(--vitamui-primary-50);
-            color: var(--vitamui-primary-50-font);
-        }
+    &:hover {
+      background-color: var(--vitamui-primary-50);
+      color: var(--vitamui-primary-50-font);
     }
+  }
 
-    .mat-button-toggle-checked,
-    .mat-button-toggle-disabled.mat-button-toggle-checked {
-        &:not(.mat-button-toggle-disabled) {
-            background-color: var(--vitamui-primary);
-            color: var(--vitamui-primary-font);
-        }
+  .mat-button-toggle-checked,
+  .mat-button-toggle-disabled.mat-button-toggle-checked {
+    &:not(.mat-button-toggle-disabled) {
+      background-color: var(--vitamui-primary);
+      color: var(--vitamui-primary-font);
     }
+  }
 
-    &.disabled {
-        border-color: var(--vitamui-grey);
-    }
+  &.disabled {
+    border-color: var(--vitamui-grey);
+  }
 
-
-    .mat-button-toggle-disabled {
-        background-color: var(--vitamui-grey-300);
-        color: var(--vitamui-grey);
-        border-color: var(--vitamui-grey);
-    }
+  .mat-button-toggle-disabled {
+    background-color: var(--vitamui-grey-300);
+    color: var(--vitamui-grey);
+    border-color: var(--vitamui-grey);
+  }
 }
 
 .mat-button-toggle-label-content {
-    font-size: 14px;
-    line-height: 22px !important;
-    padding: 6px 30px !important;
+  font-size: 14px;
+  line-height: 22px !important;
+  padding: 6px 30px !important;
 }
 .mat-button-toggle-button {
-    padding: 1px 0 0 0;
+  padding: 1px 0 0 0;
 }
 .vitamui-button-toggle-group-big {
-    &.mat-button-toggle-group-appearance-standard,
-    &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
-        border: none;
+  &.mat-button-toggle-group-appearance-standard,
+  &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
+    border: none;
 
-        .mat-button-toggle {
-            border: 1px solid #E4E4E4;
-            border-radius: 10px;
-            white-space: normal;
-            min-height: 80px;
-            align-items: center;
-            display: flex;
+    .mat-button-toggle {
+      border: 1px solid #e4e4e4;
+      border-radius: 10px;
+      white-space: normal;
+      min-height: 80px;
+      align-items: center;
+      display: flex;
 
-            .mat-button-toggle-label-content {
-                padding: 15px 20px;
-                font-size: 14px;
-                font-weight: bold;
-                line-height: 1;
-                text-align: left;
+      .mat-button-toggle-label-content {
+        padding: 15px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1;
+        text-align: left;
 
-                small {
-                    font-size: 13px;
-                    font-weight: normal;
-                }
-            }
+        small {
+          font-size: 13px;
+          font-weight: normal;
         }
-
-        .mat-button-toggle + .mat-button-toggle {
-            border-left: 1px solid #E4E4E4;
-            margin-left: 12px;
-
-            &.mat-button-toggle-checked {
-                border-color: var(--vitamui-primary);
-            }
-        }
-
-        .mat-button-toggle-checked {
-            background-color: var(--vitamui-primary);
-            border-color: var(--vitamui-primary);
-            color: var(--vitamui-primary-font);
-
-            .mat-button-toggle-focus-overlay {
-                border-bottom: none;
-            }
-        }
+      }
     }
+
+    .mat-button-toggle + .mat-button-toggle {
+      border-left: 1px solid #e4e4e4;
+      margin-left: 12px;
+
+      &.mat-button-toggle-checked {
+        border-color: var(--vitamui-primary);
+      }
+    }
+
+    .mat-button-toggle-checked {
+      background-color: var(--vitamui-primary);
+      border-color: var(--vitamui-primary);
+      color: var(--vitamui-primary-font);
+
+      .mat-button-toggle-focus-overlay {
+        border-bottom: none;
+      }
+    }
+  }
 }

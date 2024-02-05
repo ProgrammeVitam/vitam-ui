@@ -49,30 +49,30 @@ import { VitamUIFieldErrorStubComponent } from '../../../../../../testing/src';
 import { EditableTextareaComponent } from './editable-textarea.component';
 
 @Component({
-    template: `
-      <vitamui-common-editable-textarea
-        [(ngModel)]="value"
-        [label]="label"
-        [maxlength]="maxlength"
-        [validator]="validator"
-        [asyncValidator]="asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required">Expected required error message</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
-      </vitamui-common-editable-textarea>
-    `
-  })
-  class TesthostComponent {
-    value: string;
-    label = 'Test label';
-    maxlength = 42;
-    @ViewChild(EditableTextareaComponent) component: EditableTextareaComponent;
+  template: `
+    <vitamui-common-editable-textarea
+      [(ngModel)]="value"
+      [label]="label"
+      [maxlength]="maxlength"
+      [validator]="validator"
+      [asyncValidator]="asyncValidator"
+    >
+      <vitamui-common-field-error errorKey="required">Expected required error message</vitamui-common-field-error>
+      <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
+    </vitamui-common-editable-textarea>
+  `,
+})
+class TesthostComponent {
+  value: string;
+  label = 'Test label';
+  maxlength = 42;
+  @ViewChild(EditableTextareaComponent) component: EditableTextareaComponent;
 
-    validator = Validators.required;
-    asyncValidator = (control: AbstractControl) => {
-      return of(control.value !== 'invalid value' ? null : { async: true });
-    }
-  }
+  validator = Validators.required;
+  asyncValidator = (control: AbstractControl) => {
+    return of(control.value !== 'invalid value' ? null : { async: true });
+  };
+}
 
 describe('EditableTextareaComponent', () => {
   let testhost: TesthostComponent;
@@ -81,20 +81,9 @@ describe('EditableTextareaComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OverlayModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableTextareaComponent,
-        VitamUIFieldErrorStubComponent,
-      ]
-    })
-    .compileComponents();
+      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule],
+      declarations: [TesthostComponent, EditableTextareaComponent, VitamUIFieldErrorStubComponent],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -112,7 +101,6 @@ describe('EditableTextareaComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -204,11 +192,9 @@ describe('EditableTextareaComponent', () => {
       expect(elErrors.length).toBe(2);
       expect(elErrors[1].textContent).toContain('Expected async error message');
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = 'test value';
       fixture.detectChanges();
@@ -287,6 +273,5 @@ describe('EditableTextareaComponent', () => {
         expect(testhost.component.control.value).toEqual('origin value');
       });
     }));
-
   });
 });

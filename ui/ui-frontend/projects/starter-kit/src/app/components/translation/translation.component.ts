@@ -7,10 +7,9 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 @Component({
   selector: 'starter-kit-translation',
   templateUrl: './translation.component.html',
-  styleUrls: ['./translation.component.scss']
+  styleUrls: ['./translation.component.scss'],
 })
 export class TranslationComponent implements OnInit {
-
   public nbApplesTextMap: { [k: string]: string } = {
     '=': 'TRANSLATION.TRANSLATE_NUMBER.ZERO', // In case of no value
     '=0': 'TRANSLATION.TRANSLATE_NUMBER.ZERO',
@@ -25,7 +24,7 @@ export class TranslationComponent implements OnInit {
   public myInstantText: string;
   public myGetTexts: string[];
 
-  constructor(private translateService: TranslateService) { }
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit(): void {
     // Will not work because it is too early in ngOnInit
@@ -39,5 +38,4 @@ export class TranslationComponent implements OnInit {
   getMyInstantTrad(): string {
     return this.translateService.instant('TRANSLATION.TRANSLATE_INSTANT');
   }
-
 }

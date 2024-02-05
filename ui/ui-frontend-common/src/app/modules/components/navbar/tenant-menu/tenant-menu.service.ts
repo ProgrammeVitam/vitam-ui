@@ -44,17 +44,19 @@ import { AuthService } from '../../../auth.service';
 import { Tenant } from '../../../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /** @deprecated: use tenant-selection.service */
 export class TenantMenuService {
-
   // tslint:disable-next-line:variable-name
   private _tenants: Tenant[] = [];
   activeTenantIdentifier: number;
   private selectedTenantSubject = new Subject<number>();
 
-  constructor(private authService: AuthService, private userApiService: UserApiService) { }
+  constructor(
+    private authService: AuthService,
+    private userApiService: UserApiService,
+  ) {}
 
   set appId(appId: ApplicationId) {
     if (this.authService.user && this.authService.user.hasOwnProperty('tenantsByApp')) {
@@ -84,5 +86,4 @@ export class TenantMenuService {
   public getSelectedTenant(): Observable<number> {
     return this.selectedTenantSubject.asObservable();
   }
-
 }

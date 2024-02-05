@@ -1,90 +1,118 @@
-
 <div class="header">
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold">{{'GROUP.INFORMATIONS.MODAL.TITLE' | translate}}</div>
-          <vitamui-common-slide-toggle formControlName="enabled">
-            <span *ngIf="!form?.get('enabled').value">{{'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
-            <span *ngIf="form?.get('enabled').value">{{'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
+        <div class="text large bold">{{ 'GROUP.INFORMATIONS.MODAL.TITLE' | translate }}</div>
+        <vitamui-common-slide-toggle formControlName="enabled">
+          <span *ngIf="!form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+          <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
         </vitamui-common-slide-toggle>
-          <div class="mt-3">
-            <vitamui-common-input class="col-5 p-0" formControlName="name" minlength="2" maxlength="100"
-              required [placeholder]="'GROUP.INFORMATIONS.NAME' | translate">
-              <ng-container *ngIf="form.get('name')?.touched">
-                <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate}}</vitamui-common-input-error>
+        <div class="mt-3">
+          <vitamui-common-input
+            class="col-5 p-0"
+            formControlName="name"
+            minlength="2"
+            maxlength="100"
+            required
+            [placeholder]="'GROUP.INFORMATIONS.NAME' | translate"
+          >
+            <ng-container *ngIf="form.get('name')?.touched">
+              <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
+                'COMMON.ERROR.REQUIRED' | translate
+              }}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{
+                'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate
+              }}</vitamui-common-input-error>
+            </ng-container>
+          </vitamui-common-input>
+        </div>
+
+        <div>
+          <vitamui-common-input
+            class="col-10 p-0"
+            formControlName="description"
+            minlength="4"
+            maxlength="100"
+            required
+            [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"
+          >
+            <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{
+              'COMMON.ERROR.REQUIRED' | translate
+            }}</vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
+
+        <div class="d-flex">
+          <div class="mr-4 p-2">
+            <div class="text normal light">{{ 'GROUP.INFORMATIONS.LEVEL' | translate }}</div>
+            <div class="text medium bold">{{ authService.user.level }}</div>
+          </div>
+
+          <div class="col-3 p-0">
+            <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
+              <ng-container *ngIf="form.get('level')?.touched">
+                <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{
+                  'COMMON.ERROR.REQUIRED' | translate
+                }}</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')"
+                  >{{ 'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
+                </vitamui-common-input-error>
               </ng-container>
-            </vitamui-common-input>
-          </div>
-
-          <div>
-            <vitamui-common-input class="col-10 p-0" formControlName="description" minlength="4" maxlength="100" required
-              [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate">
-              <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-            </vitamui-common-input>
-          </div>
-
-          <div class="d-flex">
-            <div class="mr-4 p-2">
-              <div class="text normal light">{{'GROUP.INFORMATIONS.LEVEL' | translate}}</div>
-              <div class="text medium bold">{{authService.user.level}}</div>
-            </div>
-
-            <div class="col-3 p-0">
-              <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-                <ng-container *ngIf="form.get('level')?.touched">
-                  <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">{{'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
-                  </vitamui-common-input-error>
-                </ng-container>
-              </vitamui-common-level-input>
-            </div>
-          </div>
-        
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{'COMMON.NEXT' | translate}}</button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+            </vitamui-common-level-input>
           </div>
         </div>
-      </cdk-step>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+      </div>
+    </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" [ngClass]="{'mb-0': form.get('level').value}">{{'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate}} “{{ form.get('name').value }}”</div>
-        <div class="text medium bold mb-4" *ngIf="form.get('level').value">{{'GROUP.INFORMATIONS.LEVEL' | translate}} : {{ form.get('level').value }}</div>
-        
+        <div class="text large bold" [ngClass]="{ 'mb-0': form.get('level').value }">
+          {{ 'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate }} “{{ form.get('name').value }}”
+        </div>
+        <div class="text medium bold mb-4" *ngIf="form.get('level').value">
+          {{ 'GROUP.INFORMATIONS.LEVEL' | translate }} : {{ form.get('level').value }}
+        </div>
+
         <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{'COMMON.NEXT' | translate}}</button>
-          <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-           <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
+          <ng-container
+            ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
+          >
         </button>
       </div>
     </cdk-step>
     <cdk-step>
       <div class="content">
-        <div class="text large bold" >{{'GROUP.INFORMATIONS.MODAL.UNITS_INFORMATION' | translate}} </div>
-        
+        <div class="text large bold">{{ 'GROUP.INFORMATIONS.MODAL.UNITS_INFORMATION' | translate }}</div>
+
         <app-units-form [customer]="authService.user.customerId" formControlName="units"></app-units-form>
 
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="formValid()">{{'COMMON.SUBMIT' | translate}}</button>
-          <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+          <button type="submit" class="btn primary" [disabled]="formValid()">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-           <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
+          <ng-container
+            ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
+          >
         </button>
       </div>
     </cdk-step>

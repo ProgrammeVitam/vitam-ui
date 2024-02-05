@@ -47,20 +47,14 @@ describe('NotificationSnackBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-      ],
-      declarations: [
-        NotificationSnackBarComponent,
-      ],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+      declarations: [NotificationSnackBarComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: {} },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

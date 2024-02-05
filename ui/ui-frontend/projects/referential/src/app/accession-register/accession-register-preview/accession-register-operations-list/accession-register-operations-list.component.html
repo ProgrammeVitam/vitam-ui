@@ -1,25 +1,30 @@
 <div class="result-layout">
   <div class="col">
-    {{ operationsProcessed.length + " " + ((operationsProcessed.length > 1 ? 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.COUNTER_PLURAL'
-    : 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.COUNTER') | translate) }}
+    {{
+      operationsProcessed.length +
+        ' ' +
+        ((operationsProcessed.length > 1
+          ? 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.COUNTER_PLURAL'
+          : 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.COUNTER'
+        ) | translate)
+    }}
   </div>
 </div>
 
 <div class="vitamui-table">
-
   <div class="vitamui-table-head">
     <div class="col-3">
       {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.FILTER_BY_OPERATIONS' | translate }}
-      <button class="vitamui-filter-button ml-1"
-              [vitamuiCommonTableFilter]="statusFilterTemplate"
-              [class.active]="availableOperationsType.length > 0">
+      <button
+        class="vitamui-filter-button ml-1"
+        [vitamuiCommonTableFilter]="statusFilterTemplate"
+        [class.active]="availableOperationsType.length > 0"
+      >
         <em class="material-icons vitamui-row-icon">filter_list</em>
       </button>
       <ng-template #statusFilterTemplate>
-        <vitamui-common-table-filter [(filter)]="selectedFilters"
-                                     (filterChange)="changeFilter($event)">
-          <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType"
-                                              value="{{ operationType.name }}">
+        <vitamui-common-table-filter [(filter)]="selectedFilters" (filterChange)="changeFilter($event)">
+          <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType" value="{{ operationType.name }}">
             <div class="table-filter-icon">{{ operationType.translation }}</div>
           </vitamui-common-table-filter-option>
         </vitamui-common-table-filter>
@@ -80,14 +85,11 @@
         (orderChange)="sortTable()"
       ></vitamui-common-order-by-button>
     </div>
-    <div class="col-1">
-
-    </div>
+    <div class="col-1"></div>
   </div>
 
   <div class="vitamui-table-body vitamui-table-rows">
-    <app-accession-register-operation class="vitamui-row row" *ngFor="let operation of operationsProcessed"
-                                      [operation]="operation">
+    <app-accession-register-operation class="vitamui-row row" *ngFor="let operation of operationsProcessed" [operation]="operation">
     </app-accession-register-operation>
   </div>
 </div>

@@ -3,14 +3,8 @@ import { NgModule } from '@angular/core';
 import { UserPhotoComponent } from './user-photo.component';
 
 @NgModule({
-  declarations: [
-    UserPhotoComponent
-  ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    UserPhotoComponent
-  ]
+  declarations: [UserPhotoComponent],
+  imports: [CommonModule],
+  exports: [UserPhotoComponent],
 })
-export class UserPhotoModule { }
+export class UserPhotoModule {}

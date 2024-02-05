@@ -44,7 +44,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import {
-  CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, SearchCriteriaEltements, SearchCriteriaHistory
+  CriteriaDataType,
+  CriteriaOperator,
+  InjectorModule,
+  LoggerModule,
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
 } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { VitamInternalFields } from '../../models/utils';

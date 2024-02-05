@@ -46,13 +46,7 @@ describe('UserService', () => {
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        UserService,
-        StartupService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
-      ]
+      providers: [UserService, StartupService, { provide: VitamUISnackBarService, useValue: snackBarSpy }],
     });
-
   });
-
 });

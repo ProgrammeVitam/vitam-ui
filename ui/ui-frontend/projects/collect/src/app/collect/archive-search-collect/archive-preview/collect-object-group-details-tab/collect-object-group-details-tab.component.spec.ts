@@ -36,8 +36,19 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  ApiUnitObject, BASE_URL, DescriptionLevel, ENVIRONMENT, FileInfoDto, FormatIdentificationDto, InjectorModule, LoggerModule,
-  ObjectQualifierType, Unit, UnitType, VersionWithQualifierDto, WINDOW_LOCATION
+  ApiUnitObject,
+  BASE_URL,
+  DescriptionLevel,
+  ENVIRONMENT,
+  FileInfoDto,
+  FormatIdentificationDto,
+  InjectorModule,
+  LoggerModule,
+  ObjectQualifierType,
+  Unit,
+  UnitType,
+  VersionWithQualifierDto,
+  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
@@ -153,7 +164,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       'objectId',
       1,
       ObjectQualifierType.BINARYMASTER,
-      1
+      1,
     );
     expect(preventDefaultSpy).toHaveBeenCalled();
   });

@@ -44,13 +44,10 @@ import { PastisConfiguration } from '../classes/pastis-configuration';
 
 const HTTP_STATUS_OK = 200;
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfileUnit> {
-
   // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, pastisConfiguration: PastisConfiguration) {
     // console.log('passage dans service archival API');
@@ -73,7 +70,7 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
     return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.identifier, archivalUnitProfile, { headers });
   }
 
-  patch(partialAgency: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 
@@ -82,12 +79,13 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
   }
 
   check(agency: ArchivalProfileUnit, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', agency, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', agency, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
+    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
   }
-
 }

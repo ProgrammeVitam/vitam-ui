@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {SecurityProfileEditPermissionComponent} from './security-profile-edit-permission.component';
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { SecurityProfileEditPermissionComponent } from './security-profile-edit-permission.component';
 
 @NgModule({
   imports: [
@@ -59,14 +59,9 @@ import {SecurityProfileEditPermissionComponent} from './security-profile-edit-pe
     MatSnackBarModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    VitamUICommonModule
+    VitamUICommonModule,
   ],
-  declarations: [
-    SecurityProfileEditPermissionComponent
-  ],
-  exports: [
-    SecurityProfileEditPermissionComponent
-  ],
+  declarations: [SecurityProfileEditPermissionComponent],
+  exports: [SecurityProfileEditPermissionComponent],
 })
-export class SecurityProfileEditPermissionModule {
-}
+export class SecurityProfileEditPermissionModule {}

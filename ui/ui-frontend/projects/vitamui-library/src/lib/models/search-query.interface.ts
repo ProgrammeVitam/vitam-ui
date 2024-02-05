@@ -1,4 +1,4 @@
-import {SearchCriteria} from './search-criteria.interface';
+import { SearchCriteria } from './search-criteria.interface';
 
 export interface SearchQuery {
   criteria: SearchCriteria;

@@ -41,10 +41,7 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { IconDemoComponent } from './icon-demo.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-  ],
-  declarations: [IconDemoComponent]
+  imports: [CommonModule, VitamUICommonModule],
+  declarations: [IconDemoComponent],
 })
-export class IconDemoModule { }
+export class IconDemoModule {}

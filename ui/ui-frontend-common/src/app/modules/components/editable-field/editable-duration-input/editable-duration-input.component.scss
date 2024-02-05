@@ -1,26 +1,28 @@
 .vitamui-duration-input {
-    margin-top: 8px;
- }
- 
- .unit {
-     width: 25px;
-     height: 25px;
-     background-color: var(--vitamui-grey-200);
-     display: flex;
-     align-items: center;
-     justify-content: center;
- 
-     & > div{
-         margin-top: 11px;
-         margin-left: 5px;
-     }
-   }
- 
- input {
-     border: none;
- }
- 
- .days, .hours, .minutes {
-     width: 40px;
-     margin-left: 30px;
- }
+  margin-top: 8px;
+}
+
+.unit {
+  width: 25px;
+  height: 25px;
+  background-color: var(--vitamui-grey-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    margin-top: 11px;
+    margin-left: 5px;
+  }
+}
+
+input {
+  border: none;
+}
+
+.days,
+.hours,
+.minutes {
+  width: 40px;
+  margin-left: 30px;
+}

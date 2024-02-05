@@ -56,7 +56,7 @@ const selectedTransaction: Transaction = {
   archiveProfile: 'archivalProfile',
   comment: 'comment',
   legalStatus: 'A legal status',
-  acquisitionInformation: 'Protocol'
+  acquisitionInformation: 'Protocol',
 };
 
 describe('UpdateUaMetadataComponent', () => {

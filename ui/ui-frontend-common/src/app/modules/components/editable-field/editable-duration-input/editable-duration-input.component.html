@@ -1,40 +1,45 @@
 <ng-container *ngIf="!disabled">
-    <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-        <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
-            <div class="editable-field-content">
-                <label>{{label}}</label>
-                <span class="editable-field-text-content">{{ control?.value | humanizedDuration}}</span>
-                <div class="editable-field-control vitamui-duration-input" [formGroup]="delaySlaForm">
-                    <input type="number" class="days" formControlName="days" min="0"/><div class="unit">J</div>
-                    <input type="number" class="hours" formControlName="hours" min="0" max="23"/><div class="unit">H</div>
-                    <input type="number" class="minutes" formControlName="minutes" min="0" max="59"/><div class="unit">M</div>
-                </div>
-            </div>
-            <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
-            <div *ngIf="showSpinner">
-                <mat-spinner diameter="24" color="accent"></mat-spinner>
-            </div>
+  <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+    <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
+      <div class="editable-field-content">
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ control?.value | humanizedDuration }}</span>
+        <div class="editable-field-control vitamui-duration-input" [formGroup]="delaySlaForm">
+          <input type="number" class="days" formControlName="days" min="0" />
+          <div class="unit">J</div>
+          <input type="number" class="hours" formControlName="hours" min="0" max="23" />
+          <div class="unit">H</div>
+          <input type="number" class="minutes" formControlName="minutes" min="0" max="59" />
+          <div class="unit">M</div>
         </div>
+      </div>
+      <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
+      <div *ngIf="showSpinner">
+        <mat-spinner diameter="24" color="accent"></mat-spinner>
+      </div>
     </div>
+  </div>
 
-    <div class="vitamui-input-errors">
-        <ng-content select="vitamui-common-field-error"></ng-content>
+  <div class="vitamui-input-errors">
+    <ng-content select="vitamui-common-field-error"></ng-content>
+  </div>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOpen]="editMode"
+    [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayPositions]="positions"
+  >
+    <div class="editable-field-actions">
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
+      <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
-
-    <ng-template
-        cdkConnectedOverlay
-        [cdkConnectedOverlayOpen]="editMode"
-        [cdkConnectedOverlayOrigin]="origin"
-        [cdkConnectedOverlayPositions]="positions">
-        <div class="editable-field-actions">
-            <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
-            <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
-        </div>
-    </ng-template>
-
+  </ng-template>
 </ng-container>
 
 <div *ngIf="disabled" class="read-only-field">
-    <label>{{ label }}</label>
-    <div>{{ control?.value | humanizedDuration}}</div>
+  <label>{{ label }}</label>
+  <div>{{ control?.value | humanizedDuration }}</div>
 </div>

@@ -37,7 +37,6 @@
 import { buildCriteriaFromFilters, Criterion, Operators, SearchQuery } from 'ui-frontend-common';
 
 const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }> = {
-
   status: (statusList: string[]): Criterion[] => {
     if (statusList.length === 0) {
       return [];
@@ -66,7 +65,7 @@ const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array
     }
 
     return [{ key: 'level', value: levelList, operator: Operators.in }];
-  }
+  },
 };
 
 export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }): Array<Criterion | SearchQuery> {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Group, Profile } from 'ui-frontend-common';
@@ -44,19 +44,21 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 @Component({
   selector: 'app-profiles-tab',
   templateUrl: './profiles-tab.component.html',
-  styleUrls: ['./profiles-tab.component.scss']
+  styleUrls: ['./profiles-tab.component.scss'],
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
-
   @Input() group: Group;
 
   @Input() readOnly: boolean;
 
   profilesDisplay: any[];
   updatedGroup: Subscription;
-  public groupProfiles: Profile [];
+  public groupProfiles: Profile[];
 
-  constructor(private dialog: MatDialog, private groupService: GroupService) { }
+  constructor(
+    private dialog: MatDialog,
+    private groupService: GroupService,
+  ) {}
 
   ngOnInit() {
     this.initializeProfilesList(this.group?.profiles);
@@ -66,7 +68,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
     });
   }
 
-  initializeProfilesList(groupProfiles: Profile []): void {
+  initializeProfilesList(groupProfiles: Profile[]): void {
     this.profilesDisplay = [];
     if (groupProfiles) {
       groupProfiles.forEach((profile) =>
@@ -75,8 +77,8 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
           appId: profile.applicationName,
           tenantName: profile.tenantName,
           profileName: profile.name,
-          description: profile.description
-        })
+          description: profile.description,
+        }),
       );
 
       this.profilesDisplay.sort((first, second) => {
@@ -99,12 +101,11 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
   }
 
   ngOnDestroy() {
     this.updatedGroup.unsubscribe();
   }
-
 }

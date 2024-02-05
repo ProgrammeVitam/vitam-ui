@@ -35,16 +35,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Application, AuthService} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Application, AuthService } from 'ui-frontend-common';
 
 @Component({
   selector: 'vitamui-common-application-select-content-updated',
   templateUrl: './application-select-content.component.html',
-  styleUrls: ['./application-select-content.component.scss']
+  styleUrls: ['./application-select-content.component.scss'],
 })
 export class UpdatedApplicationSelectContentComponent {
-
   @Input() isModalMenu: boolean;
 
   @Input()
@@ -80,8 +79,7 @@ export class UpdatedApplicationSelectContentComponent {
   opauditApplications: Application[];
   techAdminApplications: Application[];
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 
   checkTenantNumberByApp(apps: Application[]) {
     apps.forEach((application) => {

@@ -41,15 +41,13 @@ import { Direction } from './direction.enum';
 export const DEFAULT_PAGE_SIZE = 20;
 
 export class PageRequest {
-
   constructor(
     public page: number,
     public size: number,
     public orderBy: string,
     public direction: Direction,
-    public criteria?: string
-  ) {
-  }
+    public criteria?: string,
+  ) {}
 
   get httpParams() {
     let params = new HttpParams()

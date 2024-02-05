@@ -52,7 +52,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
   constructor(
     private logbookManagementOperationApiService: LogbookManagementOperationApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, logbookManagementOperationApiService, 'ALL');
   }
@@ -81,7 +81,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
       catchError(() => {
         return of({ $hits: null, $results: [] });
       }),
-      map((response) => this.buildOperationsResults(response))
+      map((response) => this.buildOperationsResults(response)),
     );
   }
 
@@ -92,7 +92,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
         catchError(() => {
           return of({ $hits: null, $results: [] });
         }),
-        map((response) => this.buildOperationsResults(response))
+        map((response) => this.buildOperationsResults(response)),
       )
       .pipe(
         tap((response) => {
@@ -102,8 +102,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
         }),
         tap(
           () => this.snackBarService.open({ message: 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.MESSAGE' }),
-          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-        )
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+        ),
       );
   }
 
@@ -114,7 +114,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
         catchError(() => {
           return of({ $hits: null, $results: [] });
         }),
-        map((response) => this.buildOperationsResults(response))
+        map((response) => this.buildOperationsResults(response)),
       )
       .pipe(
         tap((response) => {
@@ -124,8 +124,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
         }),
         tap(
           () => this.snackBarService.open({ message: 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.MESSAGE' }),
-          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-        )
+          (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+        ),
       );
   }
 }

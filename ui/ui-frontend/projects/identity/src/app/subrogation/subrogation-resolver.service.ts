@@ -44,24 +44,25 @@ import { Resolve, Router } from '@angular/router';
 import { CustomerSelectService } from './customer-select.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationResolver implements Resolve<MenuOption[]> {
-
-  constructor(private customerSearchService: CustomerSelectService, private router: Router) { }
+  constructor(
+    private customerSearchService: CustomerSelectService,
+    private router: Router,
+  ) {}
 
   resolve(): Observable<MenuOption[]> {
-    return this.customerSearchService.getAll(true)
-      .pipe(
-        map((customers: MenuOption[]) => {
-          if (customers) {
-            return customers;
-          } else {
-            this.router.navigate(['/']);
+    return this.customerSearchService.getAll(true).pipe(
+      map((customers: MenuOption[]) => {
+        if (customers) {
+          return customers;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
 }

@@ -40,13 +40,12 @@ import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
 import { ProjectsApiService } from '../../../core/api/project-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchCriteriaSaverService extends SearchService<any> {
-
   constructor(
     private projectsApiService: ProjectsApiService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, projectsApiService, 'ALL');
   }

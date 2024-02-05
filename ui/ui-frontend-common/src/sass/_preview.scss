@@ -1,120 +1,119 @@
 .vitamui-preview {
-    display: block;
-    position: fixed;
-    top: 0;
-    right: 0;
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 584px;
+  background: $white;
+
+  .header {
+    padding: 31px 40px 0px 40px;
+    height: 200px;
+    background-color: var(--vitamui-primary);
+
+    .title {
+      display: flex;
+      align-items: center;
+      margin-top: 30px;
+      margin-bottom: 20px;
+
+      > i {
+        color: $white;
+        margin-right: 10px;
+      }
+    }
+
+    h2 {
+      color: $white;
+      font-size: 24px;
+      line-height: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 32px;
+      margin: 0;
+
+      small {
+        display: block;
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+
+    button.btn-circle {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      margin-left: 40px;
+      border: none;
+
+      i {
+        color: var(--vitamui-primary);
+        font-size: 28px;
+      }
+    }
+  }
+
+  .content {
+    font-size: 14px;
+    color: $charcoal-grey-two;
+    // font-weight: 500;
+    position: absolute;
     bottom: 0;
-    width: 584px;
-    background: $white;
+    right: 0;
+    left: 0;
+    top: 163px;
 
-    .header {
-        padding: 31px 40px 0px 40px;
-        height: 200px;
-        background-color: var(--vitamui-primary);
+    // label {
+    //     color: $greyish-two;
+    //     font-size: 13px;
+    //     font-weight: normal;
+    // }
+  }
 
-        .title {
-            display: flex;
-            align-items: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
+  .btn-popup {
+    background: none;
+    border: none;
+    padding: 0;
+    color: $white;
+  }
 
-            > i {
-                color: $white;
-                margin-right: 10px;
-            }
-        }
+  .btn-close {
+    background: none;
+    border: none;
+    padding: 0;
+    float: right;
+    opacity: 0.5;
+    color: $white;
 
-        h2 {
-            color: $white;
-            font-size: 24px;
-            line-height: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 32px;
-            margin: 0;
-
-            small {
-                display: block;
-                font-weight: 300;
-                font-size: 18px;
-                line-height: 24px;
-            }
-        }
-
-        button.btn-circle {
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            margin-left: 40px;
-            border: none;
-
-            i {
-                color: var(--vitamui-primary);
-                font-size: 28px;
-            }
-        }
+    i {
+      font-size: 38px;
+      line-height: 22px;
+      width: 30px;
     }
+  }
 
-    .content {
-        font-size: 14px;
-        color: $charcoal-grey-two;
-        // font-weight: 500;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        top: 163px;
+  vitamui-common-editable-input {
+    width: 100%;
+  }
 
-        // label {
-        //     color: $greyish-two;
-        //     font-size: 13px;
-        //     font-weight: normal;
-        // }
+  vitamui-common-slide-toggle {
+    margin-bottom: 20px;
+  }
+
+  .read-only-field {
+    display: inline-block;
+    min-height: 50px;
+    width: 100%;
+    padding: 7px 20px 7px 25px;
+    vertical-align: top;
+    margin-bottom: 20px;
+
+    label {
+      font-size: 12px;
+      color: var(--vitamui-primary);
+      font-weight: normal;
     }
-
-    .btn-popup {
-        background: none;
-        border: none;
-        padding: 0;
-        color: $white;
-    }
-
-    .btn-close {
-        background: none;
-        border: none;
-        padding: 0;
-        float: right;
-        opacity: 0.5;
-        color: $white;
-
-        i {
-            font-size: 38px;
-            line-height: 22px;
-            width: 30px;
-        }
-    }
-
-    vitamui-common-editable-input {
-        width: 100%;
-    }
-
-    vitamui-common-slide-toggle {
-        margin-bottom: 20px;
-    }
-
-    .read-only-field {
-        display: inline-block;
-        min-height: 50px;
-        width: 100%;
-        padding: 7px 20px 7px 25px;
-        vertical-align: top;
-        margin-bottom: 20px;
-
-        label {
-            
-            font-size: 12px;
-            color: var(--vitamui-primary);
-            font-weight: normal;
-        }
-    }
+  }
 }

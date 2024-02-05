@@ -70,7 +70,10 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private securityProfileService: SecurityProfileService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private securityProfileService: SecurityProfileService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

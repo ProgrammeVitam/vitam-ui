@@ -60,7 +60,11 @@ export class LogbookManagementOperationComponent implements OnInit {
   @ViewChild(LogbookManagementOperationListComponent, { static: true })
   logbookManagementOperationListComponent: LogbookManagementOperationListComponent;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+  ) {
     this.dateRangeFilterForm = this.formBuilder.group({
       startDateMin: null,
       startDateMax: null,

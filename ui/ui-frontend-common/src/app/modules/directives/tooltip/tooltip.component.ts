@@ -44,25 +44,21 @@ import { VitamUITooltipMessage, VITAMUI_TOOLTIP_MESSAGE } from '../../injection-
   selector: 'vitamui-common-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  animations: [
-    tooltipAnimation,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  animations: [tooltipAnimation],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TooltipComponent {
-
   tooltipClass: string;
 
   constructor(
     // using any instead of @Inject(VITAMUI_TOOLTIP_MESSAGE) public config:
     // { message: string, tooltipClass: Observable<string> } to prevent packaging problems
     @Inject(VITAMUI_TOOLTIP_MESSAGE) public config: VitamUITooltipMessage,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.config.tooltipClass.subscribe((tooltipClass) => {
       this.tooltipClass = tooltipClass;
       this.changeDetectorRef.detectChanges();
     });
   }
-
 }

@@ -1,18 +1,24 @@
 <!-- Pastis dialog title qnd subtitle-->
 <h2 class="pastis-dialog-config-title" matDialogTitle>
-  <div [ngClass]="{ 'barre-et-croix': dialogReceivedData.subTitleDialog.includes('Ajouter des métadonnées'),
-                      'barre-et-croix-delete' : dialogReceivedData.subTitleDialog.includes('Suppression d\'une métadonnée'),
-                      'barre-et-croix-attributes' : dialogReceivedData.subTitleDialog.includes('Edition des attributs'),
-                       'barre-et-croix-creationfr' : dialogReceivedData.subTitleDialog.includes('Création d\'un profil'),
-                       'barre-et-croix-creation' : dialogReceivedData.subTitleDialog.includes('Creating a profile'),
-                       'barre-et-croix-save' : dialogReceivedData.subTitleDialog.includes('Enregistrement')}">
+  <div
+    [ngClass]="{
+      'barre-et-croix': dialogReceivedData.subTitleDialog.includes('Ajouter des métadonnées'),
+      'barre-et-croix-delete': dialogReceivedData.subTitleDialog.includes('Suppression d\'une métadonnée'),
+      'barre-et-croix-attributes': dialogReceivedData.subTitleDialog.includes('Edition des attributs'),
+      'barre-et-croix-creationfr': dialogReceivedData.subTitleDialog.includes('Création d\'un profil'),
+      'barre-et-croix-creation': dialogReceivedData.subTitleDialog.includes('Creating a profile'),
+      'barre-et-croix-save': dialogReceivedData.subTitleDialog.includes('Enregistrement')
+    }"
+  >
     <i (click)="onNoClick()" class="vitamui-icon vitamui-icon-close"></i>
   </div>
-  <p class="pastis-dialog-subtitle"><b>{{dialogReceivedData.subTitleDialog}}</b></p>
-  <P class="pastis-dialog-title">{{dialogReceivedData.titleDialog}}</P>
+  <p class="pastis-dialog-subtitle">
+    <b>{{ dialogReceivedData.subTitleDialog }}</b>
+  </p>
+  <P class="pastis-dialog-title">{{ dialogReceivedData.titleDialog }}</P>
 </h2>
 <!-- Pastis dialog dynamic content-->
-<mat-dialog-content *ngIf="portal" style="overflow: hidden;">
+<mat-dialog-content *ngIf="portal" style="overflow: hidden">
   <p class="pastis-dialog-content">
     <ng-template #dialogContent [cdkPortalOutlet]="portal"></ng-template>
   </p>
@@ -20,12 +26,13 @@
 
 <!-- Pastis defaut dialog buttons-->
 <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-  <button (click)="onYesClick()"
-          [disabled]="btnYesShouldBeDisabled"
-          [mat-dialog-close]="dataBeforeClose"
-          class="pastis-btn-oui-dialog-confirm">{{dialogReceivedData.okLabel}}
+  <button
+    (click)="onYesClick()"
+    [disabled]="btnYesShouldBeDisabled"
+    [mat-dialog-close]="dataBeforeClose"
+    class="pastis-btn-oui-dialog-confirm"
+  >
+    {{ dialogReceivedData.okLabel }}
   </button>
-  <button (click)="onNoClick()"
-          class="pastis-btn-non-dialog-confirm">{{dialogReceivedData.cancelLabel}}
-  </button>
+  <button (click)="onNoClick()" class="pastis-btn-non-dialog-confirm">{{ dialogReceivedData.cancelLabel }}</button>
 </mat-dialog-actions>

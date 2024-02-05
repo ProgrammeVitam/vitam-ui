@@ -1,34 +1,56 @@
 <form [formGroup]="ownerForm">
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="code" maxlength="20" [label]="'CUSTOMER.OWNER.CODE' | translate"
-      [validator]="ownerForm?.get('code')?.validator"
-        [asyncValidator]="ownerForm?.get('code')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+      <vitamui-common-editable-input
+        formControlName="code"
+        maxlength="20"
+        [label]="'CUSTOMER.OWNER.CODE' | translate"
+        [validator]="ownerForm?.get('code')?.validator"
+        [asyncValidator]="ownerForm?.get('code')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="pattern">{{ 'COMMON.ERROR.WRONG_FORMAT' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="maxlength">{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerCodeMaxLength } }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode">{{'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="maxlength">{{
+          'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerCodeMaxLength }
+        }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode">{{
+          'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate
+        }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
-      <vitamui-common-editable-input formControlName="identifier" maxlength="12" [label]="'COMMON.ID' |translate" [validator]="ownerForm?.get('identifier')?.validator"
-        [asyncValidator]="ownerForm?.get('identifier')?.asyncValidator">
+      <vitamui-common-editable-input
+        formControlName="identifier"
+        maxlength="12"
+        [label]="'COMMON.ID' | translate"
+        [validator]="ownerForm?.get('identifier')?.validator"
+        [asyncValidator]="ownerForm?.get('identifier')?.asyncValidator"
+      >
       </vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="name" maxlength="100" [label]="'CUSTOMER.OWNER.NAME' | translate" [validator]="ownerForm?.get('name')?.validator"
-        [asyncValidator]="ownerForm?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        [label]="'CUSTOMER.OWNER.NAME' | translate"
+        [validator]="ownerForm?.get('name')?.validator"
+        [asyncValidator]="ownerForm?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="companyName" maxlength="250" [label]="'CUSTOMER.OWNER.SOCIAL_REASON' | translate"
+      <vitamui-common-editable-input
+        formControlName="companyName"
+        maxlength="250"
+        [label]="'CUSTOMER.OWNER.SOCIAL_REASON' | translate"
         [validator]="ownerForm?.get('companyName')?.validator"
-        [asyncValidator]="ownerForm?.get('companyName')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+        [asyncValidator]="ownerForm?.get('companyName')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -36,8 +58,11 @@
   <ng-container formGroupName="address">
     <div class="row">
       <div class="col-12 form-control">
-        <vitamui-common-editable-input formControlName="street" maxlength="{{maxStreetLength}}"
-        [label]="'COMMON.ADRESS.STREET' | translate">
+        <vitamui-common-editable-input
+          formControlName="street"
+          maxlength="{{ maxStreetLength }}"
+          [label]="'COMMON.ADRESS.STREET' | translate"
+        >
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -77,50 +102,65 @@
   <div class="row">
     <div class="col-6">
       <div class="read-only-field disabled-input">
-        <label>{{'CUSTOMER.OWNER.SAFE_CODE' | translate}}</label>
-        <div>{{tenant?.identifier}}</div>
+        <label>{{ 'CUSTOMER.OWNER.SAFE_CODE' | translate }}</label>
+        <div>{{ tenant?.identifier }}</div>
       </div>
     </div>
 
     <div class="col-6">
-      <vitamui-common-editable-input formControlName="name" maxlength="100" [label]="'CUSTOMER.OWNER.SAFE_NAME' | translate" [validator]="tenantForm?.get('name')?.validator"
-        [asyncValidator]="tenantForm?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-field-error>
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        [label]="'CUSTOMER.OWNER.SAFE_NAME' | translate"
+        [validator]="tenantForm?.get('name')?.validator"
+        [asyncValidator]="tenantForm?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueName">
-          {{'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
+          {{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}</vitamui-common-field-error
+        >
       </vitamui-common-editable-input>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <vitamui-common-editable-input formControlName="accessContractHoldingIdentifier"
+      <vitamui-common-editable-input
+        formControlName="accessContractHoldingIdentifier"
         [label]="'CUSTOMER.OWNER.ACCESS_CONTRACT' | translate"
         [validator]="tenantForm?.get('accessContractHoldingIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('accessContractHoldingIdentifier')?.asyncValidator">
+        [asyncValidator]="tenantForm?.get('accessContractHoldingIdentifier')?.asyncValidator"
+      >
       </vitamui-common-editable-input>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <vitamui-common-editable-input formControlName="ingestContractHoldingIdentifier"
+      <vitamui-common-editable-input
+        formControlName="ingestContractHoldingIdentifier"
         [label]="'CUSTOMER.OWNER.INGEST_CONTRACT' | translate"
         [validator]="tenantForm?.get('ingestContractHoldingIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('ingestContractHoldingIdentifier')?.asyncValidator">
+        [asyncValidator]="tenantForm?.get('ingestContractHoldingIdentifier')?.asyncValidator"
+      >
       </vitamui-common-editable-input>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <vitamui-common-editable-input formControlName="accessContractLogbookIdentifier" [label]="'CUSTOMER.OWNER.LOGBOOK_ACCESS_CONTRACT' | translate"
+      <vitamui-common-editable-input
+        formControlName="accessContractLogbookIdentifier"
+        [label]="'CUSTOMER.OWNER.LOGBOOK_ACCESS_CONTRACT' | translate"
         [validator]="tenantForm?.get('accessContractLogbookIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('accessContractLogbookIdentifier')?.asyncValidator">
+        [asyncValidator]="tenantForm?.get('accessContractLogbookIdentifier')?.asyncValidator"
+      >
       </vitamui-common-editable-input>
     </div>
     <div class="col-12">
-      <vitamui-common-editable-input formControlName="itemIngestContractIdentifier"
+      <vitamui-common-editable-input
+        formControlName="itemIngestContractIdentifier"
         [label]="'CUSTOMER.OWNER.SLIPS_INGEST_CONTRACT' | translate"
         [validator]="tenantForm?.get('itemIngestContractIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('itemIngestContractIdentifier')?.asyncValidator">
+        [asyncValidator]="tenantForm?.get('itemIngestContractIdentifier')?.asyncValidator"
+      >
       </vitamui-common-editable-input>
     </div>
   </div>

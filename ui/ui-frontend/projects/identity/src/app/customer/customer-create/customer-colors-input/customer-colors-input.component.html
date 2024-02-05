@@ -1,18 +1,23 @@
 <ng-container [formGroup]="formGroup">
   <div *ngFor="let color of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]">
-    <app-input-color 
+    <app-input-color
       [disabled]="disabled"
       [colorInput]="formGroup.get(color)"
       [checkWarning]="true"
-      [placeholder]="baseColors[color] | translate">
+      [placeholder]="baseColors[color] | translate"
+    >
     </app-input-color>
   </div>
 
   <ng-container *ngIf="!displayTertiary; else closeTertiary">
-    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate}}</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary = !displayTertiary">{{
+      'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate
+    }}</small>
   </ng-container>
   <ng-template #closeTertiary>
-    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate}}</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary = !displayTertiary">{{
+      'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate
+    }}</small>
   </ng-template>
 
   <app-input-color
@@ -20,24 +25,24 @@
     [disabled]="disabled"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
     [checkWarning]="true"
-    [placeholder]="'COLOR.TERTIARY' | translate">
+    [placeholder]="'COLOR.TERTIARY' | translate"
+  >
   </app-input-color>
 
   <app-input-color
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER)"
     [disabled]="disabled"
-    [placeholder]="'COLOR.HEADER_FOOTER' | translate">
+    [placeholder]="'COLOR.HEADER_FOOTER' | translate"
+  >
   </app-input-color>
 
-  <vitamui-common-select 
+  <vitamui-common-select
     class="mb-4"
-    [disabled]="disabled" 
+    [disabled]="disabled"
     [data]="backgroundColors"
-    [messages]="{'unselected': 'COLOR.BACKGROUND' | translate, 'selected': 'COLOR.BACKGROUND' | translate}"
+    [messages]="{ unselected: 'COLOR.BACKGROUND' | translate, selected: 'COLOR.BACKGROUND' | translate }"
     [selected]="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).value"
-    (selectedChange)="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).setValue($event)">
+    (selectedChange)="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).setValue($event)"
+  >
   </vitamui-common-select>
-
 </ng-container>
-
-

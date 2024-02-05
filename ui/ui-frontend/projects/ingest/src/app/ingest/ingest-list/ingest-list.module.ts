@@ -41,16 +41,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestListComponent } from './ingest-list.component';
 
-
 @NgModule({
   declarations: [IngestListComponent],
-    imports: [
-        CommonModule,
-        MatProgressSpinnerModule,
-        VitamUICommonModule
-    ],
-  exports: [
-    IngestListComponent
-  ]
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
+  exports: [IngestListComponent],
 })
-export class IngestListModule { }
+export class IngestListModule {}

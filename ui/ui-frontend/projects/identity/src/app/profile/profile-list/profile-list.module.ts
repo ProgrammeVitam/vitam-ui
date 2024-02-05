@@ -43,13 +43,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { ProfileListComponent } from './profile-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule
-  ],
+  imports: [CommonModule, SharedModule, MatProgressSpinnerModule, VitamUICommonModule],
   declarations: [ProfileListComponent],
-  exports: [ProfileListComponent]
+  exports: [ProfileListComponent],
 })
-export class ProfileListModule { }
+export class ProfileListModule {}

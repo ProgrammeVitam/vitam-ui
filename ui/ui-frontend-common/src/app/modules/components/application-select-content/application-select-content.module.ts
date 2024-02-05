@@ -43,13 +43,8 @@ import { VitamUIMenuTileModule } from '../vitamui-menu-tile/vitamui-menu-tile.mo
 import { ApplicationSelectContentComponent } from './application-select-content.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-    VitamUIMenuTileModule,
-  ],
+  imports: [CommonModule, HttpClientModule, RouterModule, VitamUIMenuTileModule],
   declarations: [ApplicationSelectContentComponent],
   exports: [ApplicationSelectContentComponent],
 })
-export class ApplicationSelectContentModule { }
+export class ApplicationSelectContentModule {}

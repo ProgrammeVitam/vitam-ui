@@ -36,27 +36,24 @@
  */
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { of ,  timer } from 'rxjs';
+import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { TenantService } from '../tenant.service';
 
 @Injectable()
 export class TenantFormValidators {
+  private debounceTime = 400;
 
-    private debounceTime = 400;
+  constructor(private tenantService: TenantService) {}
 
-    constructor(private tenantService: TenantService) {}
-
-    uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime)
-          .pipe(
-            switchMap(() => control.value !== nameToIgnore ? this.tenantService.exists(control.value) : of(false)),
-            take(1),
-            map((exists: boolean) => exists ? { uniqueName: true } : null)
-          );
-      };
-    }
-
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
+    return (control: AbstractControl) => {
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== nameToIgnore ? this.tenantService.exists(control.value) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? { uniqueName: true } : null)),
+      );
+    };
+  };
 }

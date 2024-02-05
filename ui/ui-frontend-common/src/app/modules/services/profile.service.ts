@@ -46,14 +46,12 @@ import { Criterion, Profile, SearchQuery } from '../models';
 import { Operators } from '../vitamui-table';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService {
+  constructor(private profileApi: ProfileApiService) {}
 
-  constructor(private profileApi: ProfileApiService) { }
-
-  list(level?: string, tenantIdentifier?: number, applicationNameExclude?: string []): Observable<Profile[]> {
-
+  list(level?: string, tenantIdentifier?: number, applicationNameExclude?: string[]): Observable<Profile[]> {
     let httpHeaders = new HttpHeaders();
     const criterionArray: Criterion[] = [];
     const enabledCriterion: Criterion = { key: 'enabled', value: true, operator: Operators.equals };
@@ -81,9 +79,6 @@ export class ProfileService {
   }
 
   getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
-    return this.profileApi.getLevels(query)
-      .pipe(
-        map((levels) => levels.filter((l) => !!l))
-      );
+    return this.profileApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
 }

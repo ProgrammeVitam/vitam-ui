@@ -38,7 +38,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,
@@ -64,9 +64,7 @@ describe('LeavesTreeComponent', () => {
 
   let archiveServiceStub: Partial<ArchiveCollectService>;
   let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
-  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', [
-    'getSearchCriterias',
-  ]);
+  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', ['getSearchCriterias']);
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
     size: 1,

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {LoggerService} from '../logger/logger.service';
-import {BytesPipe} from './bytes.pipe';
+import { LoggerService } from '../logger/logger.service';
+import { BytesPipe } from './bytes.pipe';
 
 describe('BytesPipe', () => {
   it('create an instance', () => {

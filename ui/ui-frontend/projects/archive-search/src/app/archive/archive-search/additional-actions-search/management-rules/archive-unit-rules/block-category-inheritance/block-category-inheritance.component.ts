@@ -51,7 +51,10 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
   ruleTypeDUA: RuleCategoryAction;
   isValidValue = false;
 
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {}
+  constructor(
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {}
 
@@ -70,14 +73,14 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
@@ -101,7 +104,7 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory
+      (action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory,
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);

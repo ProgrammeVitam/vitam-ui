@@ -42,10 +42,9 @@ import { WINDOW_LOCATION } from './injection-tokens';
 import { AuthUser, Tenant, User, UserInfo } from './models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   get userInfo(): UserInfo {
     return this._userInfo;
   }
@@ -75,10 +74,13 @@ export class AuthService {
   private _userInfo: UserInfo;
   private userInfo$ = new BehaviorSubject<UserInfo>(null);
 
-  constructor(@Inject(WINDOW_LOCATION) private location: any) { }
+  constructor(@Inject(WINDOW_LOCATION) private location: any) {}
 
   public getUser$(): Observable<AuthUser> {
-    return this.user$.pipe(filter((user: AuthUser) => !!user), take(1));
+    return this.user$.pipe(
+      filter((user: AuthUser) => !!user),
+      take(1),
+    );
   }
 
   logout() {
@@ -152,6 +154,9 @@ export class AuthService {
   }
 
   public getUserInfo$(): Observable<UserInfo> {
-    return this.userInfo$.pipe(filter((userInfo: UserInfo) => !!userInfo), take(1));
+    return this.userInfo$.pipe(
+      filter((userInfo: UserInfo) => !!userInfo),
+      take(1),
+    );
   }
 }

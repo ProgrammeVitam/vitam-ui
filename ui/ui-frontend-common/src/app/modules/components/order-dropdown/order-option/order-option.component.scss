@@ -1,42 +1,43 @@
 @import '../../../../../sass/variables/colors';
 
 :host {
-    display: flex;
-    align-items: center;
-    padding: 5px 26px;
+  display: flex;
+  align-items: center;
+  padding: 5px 26px;
 }
 
 .btn-orderby {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    color: #666666;
-    font-size: 14px;
-    font-weight: bold;
-    
-    white-space: nowrap;
-    width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #666666;
+  font-size: 14px;
+  font-weight: bold;
 
-    &.active > i {
-        color: var(--vitamui-primary);
-    }
+  white-space: nowrap;
+  width: 100%;
 
-    &.upside-down > i {
-        transform: rotate(180deg);
-    }
+  &.active > i {
+    color: var(--vitamui-primary);
+  }
 
-    > i {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        color: #d8d8d8;
-        transition: color 200ms ease-out, transform 200ms ease-out;
-    }
+  &.upside-down > i {
+    transform: rotate(180deg);
+  }
 
+  > i {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #d8d8d8;
+    transition:
+      color 200ms ease-out,
+      transform 200ms ease-out;
+  }
 }

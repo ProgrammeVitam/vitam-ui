@@ -1,7 +1,12 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"
-      [groups]="groups"></app-user-preview>
+    <app-user-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [user]="openedItem"
+      [customer]="customer"
+      [groups]="groups"
+    ></app-user-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -13,15 +18,14 @@
       <vitamui-common-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <div *ngIf="groups">
           <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-            <span>{{'USER.HOME.ACTION_BUTTON' | translate}}</span>
+            <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
           </button>
         </div>
       </vitamui-common-banner>
     </div>
 
     <div class="vitamui-content">
-      <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" [groups]="groups"
-        (userClick)="openPanel($event)">
+      <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" [groups]="groups" (userClick)="openPanel($event)">
       </app-user-list>
     </div>
   </mat-sidenav-content>

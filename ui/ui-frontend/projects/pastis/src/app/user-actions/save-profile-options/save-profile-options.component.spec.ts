@@ -17,17 +17,13 @@ describe('SaveProfileOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaveProfileOptionsComponent ],
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot()
-      ],
+      declarations: [SaveProfileOptionsComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: matDialogData }
-      ]
-    })
-    .compileComponents();
+        { provide: MAT_DIALOG_DATA, useValue: matDialogData },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

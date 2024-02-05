@@ -43,26 +43,20 @@ import { collapseAnimation, rotate90Animation } from '../../animations/vitamui-c
   templateUrl: './collapse.component.html',
   styleUrls: ['./collapse.component.scss'],
   exportAs: 'vitamuiCommonCollapse',
-  animations: [
-    collapseAnimation,
-    rotate90Animation,
-  ]
+  animations: [collapseAnimation, rotate90Animation],
 })
 export class CollapseComponent implements OnInit {
-
   @HostBinding('class.collapse-container') classCollapseContainer = true;
 
   @Input() collapseTitle: string;
 
   @Input() collapseState = 'expanded';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   toggle() {
     this.collapseState = this.collapseState === 'expanded' ? 'collapsed' : 'expanded';
   }
-
 }

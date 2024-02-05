@@ -66,7 +66,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-    }
+    },
   ) {}
   exportDIPform: FormGroup;
   exportDIPIncludeform: FormGroup;
@@ -131,7 +131,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 }

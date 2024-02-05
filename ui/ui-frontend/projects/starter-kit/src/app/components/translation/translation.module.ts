@@ -6,21 +6,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { TranslationComponent } from './translation.component';
 
-
-
 @NgModule({
-  declarations: [
-    TranslationComponent
-  ],
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    TranslateModule
-  ],
-  exports: [
-    TranslationComponent
-  ]
+  declarations: [TranslationComponent],
+  imports: [CommonModule, VitamUICommonModule, ReactiveFormsModule, MatInputModule, TranslateModule],
+  exports: [TranslationComponent],
 })
-export class TranslationModule { }
+export class TranslationModule {}

@@ -29,7 +29,7 @@
   },
   "PASTIS_POPUP_OPTION": {
     "OPEN_PROFIL": "Ouvrir un profil depuis mon poste",
-    "CREATE_NOTICE":  "Créer une notice de profil",
+    "CREATE_NOTICE": "Créer une notice de profil",
     "SEDAVIEW": "Visualiser la structure du SEDA 2.1"
   },
   "SHARED": {
@@ -83,7 +83,7 @@
         "TITLE_ENREGISTREMENT": "Où souhaitez-vous l’enregistrer ?",
         "FIRST_CHOICE_GESTION_NOTICE": "Création d'une nouvelle notice",
         "SECOND_CHOICE_GESTION_NOTICE": "Rattachement à une notice existante",
-        "TITLE_GESTION_NOTICE":"Gestion de la notice du profil",
+        "TITLE_GESTION_NOTICE": "Gestion de la notice du profil",
         "ENREGISTREMENT_OK_LABEL_NEXT": "SUIVANT",
         "ENREGISTREMENT_OK_LABEL_TERMINATE": "TERMINER"
       }
@@ -93,7 +93,7 @@
       "ENREGISTRER_ACTIF_INACTIF": "Souhaitez-vous l'enregistrer en état actif ou inactif ?",
       "INTITULE": "Intitulé",
       "IDENTIFIER": "Identifiant",
-      "DESCRIPTION" : "Description",
+      "DESCRIPTION": "Description",
       "CHOICE": {
         "PROFIL_ACTIF": "Profil actif",
         "PROFIL_INACTIF": "Profil inactif"
@@ -105,8 +105,8 @@
       "NEXT_LABEL": "suivant"
     },
     "POP_UP_CREATION": {
-      "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
-      "POPUP_CREATION_TITLE_DIALOG":"Choix du type de profil" ,
+      "POPUP_CREATION_CANCEL_LABEL": "ANNULER",
+      "POPUP_CREATION_TITLE_DIALOG": "Choix du type de profil",
       "POPUP_CREATION_SUBTITLE_DIALOG": "Création d'un profil",
       "POPUP_CREATION_OK_LABEL": "VALIDER",
       "CHOICE": {
@@ -121,9 +121,9 @@
       }
     },
     "POP_UP_CREATION_NOTICE_CHOICE": {
-      "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
-      "POPUP_CREATION_TITLE_DIALOG":  "Choix du type de notice",
-      "POPUP_CREATION_SUBTITLE_DIALOG":"Création d'une notice",
+      "POPUP_CREATION_CANCEL_LABEL": "ANNULER",
+      "POPUP_CREATION_TITLE_DIALOG": "Choix du type de notice",
+      "POPUP_CREATION_SUBTITLE_DIALOG": "Création d'une notice",
       "POPUP_CREATION_OK_LABEL": "VALIDER"
     },
     "EDIT_PROFILE": {
@@ -242,7 +242,7 @@
     "CREATE_PROFILE": {
       "INFORMATION": {
         "TITRE_PA": "PA : Profil d'archivage\n",
-        "TITRE_PUA":"\n PUA : Profil d'unité archivistique\n",
+        "TITRE_PUA": "\n PUA : Profil d'unité archivistique\n",
         "CONTENT_PA": " Le profil d’archivage impose une structuration à l’ensemble du bordereau de versement. Il permet de contrôler lors de l’entrée dans le SAE la conformité du bordereau.",
         "CONTENT_PUA": " Le profil d’unité archivistique est spécifique à une unité d’archives seulement."
       }

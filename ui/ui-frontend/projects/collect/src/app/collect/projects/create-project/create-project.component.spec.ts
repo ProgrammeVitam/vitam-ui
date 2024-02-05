@@ -37,20 +37,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  Project,
-  ProjectStatus,
-  WINDOW_LOCATION
-} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, Project, ProjectStatus, WINDOW_LOCATION } from 'ui-frontend-common';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { ProjectsService } from '../projects.service';
 import { CreateProjectComponent } from './create-project.component';
 
-@Pipe({name: 'fileSize'})
+@Pipe({ name: 'fileSize' })
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -82,13 +74,13 @@ describe('CreateProjectComponent', () => {
       declarations: [CreateProjectComponent, MockFileSizePipe],
       providers: [
         FormBuilder,
-        {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: ENVIRONMENT, useValue: environment},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MatDialog, useValue: matDialogSpy},
-        {provide: WINDOW_LOCATION, useValue: window.location},
-        {provide: ProjectsService, useValue: projectsServiceMock},
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: ProjectsService, useValue: projectsServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -147,8 +139,8 @@ describe('CreateProjectComponent', () => {
 
   it('should createProject with form', () => {
     // Given
-    component.selectedWorkflow = Workflow.FLOW
-    component.selectedFlowType = FlowType.FIX
+    component.selectedWorkflow = Workflow.FLOW;
+    component.selectedFlowType = FlowType.FIX;
     component.initForm();
     const project: Project = {
       id: 'id',
@@ -175,7 +167,6 @@ describe('CreateProjectComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have an input file', () => {
       const nativeElement = fixture.nativeElement;
       const elInput = nativeElement.querySelector('input[type=file]');

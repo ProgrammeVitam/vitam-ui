@@ -118,7 +118,10 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   };
   operationCategoriesFilterOptions: Array<{ value: string; label: string }> = [];
 
-  constructor(public logbookSearchService: LogbookSearchService, private logbookDownloadService: LogbookDownloadService) {
+  constructor(
+    public logbookSearchService: LogbookSearchService,
+    private logbookDownloadService: LogbookDownloadService,
+  ) {
     super(logbookSearchService);
   }
 
@@ -126,7 +129,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.pending = true;
     this.updatedData.subscribe(() => this.onDataSourceReloaded());
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange).pipe(
-      debounceTime(FILTER_DEBOUNCE_TIME_MS)
+      debounceTime(FILTER_DEBOUNCE_TIME_MS),
     );
 
     searchCriteriaChange.subscribe(() => {
@@ -135,7 +138,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.refreshOperationCategoriesOptions();
     this.refreshList();
     this.logbookOperationsSubscription = this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
-      this.updateLogbookOperations(logbookOperationsReloaded)
+      this.updateLogbookOperations(logbookOperationsReloaded),
     );
   }
 

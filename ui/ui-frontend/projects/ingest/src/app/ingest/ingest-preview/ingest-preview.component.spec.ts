@@ -24,28 +24,25 @@ describe('IngestPreviewComponent test:', () => {
   const logbookOperation: LogbookOperation = {
     id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
     agIdExt: {},
-    events: [{}]
-  }
+    events: [{}],
+  };
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
-      imports: [
-        HttpClientTestingModule,
-        MatMenuModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, MatMenuModule, TranslateModule.forRoot()],
       providers: [
         { provide: LogbookService, useValue: {} },
         {
-          provide: IngestService, useValue: {
+          provide: IngestService,
+          useValue: {
             getIngestOperation: () => of(logbookOperation),
             logbookOperationsReloaded: of([logbookOperation]),
-          }
+          },
         },
-        { provide: BASE_URL, useValue: '/fake-api' }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+        { provide: BASE_URL, useValue: '/fake-api' },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

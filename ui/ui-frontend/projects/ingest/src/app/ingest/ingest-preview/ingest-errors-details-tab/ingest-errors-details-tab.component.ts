@@ -1,26 +1,23 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EventDisplayHelperService} from '../event-display-helper.service';
-import {NestedTreeControl} from '@angular/cdk/tree';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {Event} from '../event';
-import {LogbookOperation} from "../../../models/logbook-event.interface";
-
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { EventDisplayHelperService } from '../event-display-helper.service';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { Event } from '../event';
+import { LogbookOperation } from '../../../models/logbook-event.interface';
 
 @Component({
   selector: 'app-ingest-errors-details-tab',
   templateUrl: './ingest-errors-details-tab.component.html',
-  styleUrls: ['./ingest-errors-details-tab.component.css']
+  styleUrls: ['./ingest-errors-details-tab.component.css'],
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
-
   @Input() ingest: LogbookOperation;
 
   ingestErrorsTreeControl: NestedTreeControl<Event>;
   ingestErrorsTreeDataSource: MatTreeNestedDataSource<Event>;
 
-
   constructor(private eventDisplayHelper: EventDisplayHelperService) {
-    this.ingestErrorsTreeControl = new NestedTreeControl<Event>(node => node.subEvents);
+    this.ingestErrorsTreeControl = new NestedTreeControl<Event>((node) => node.subEvents);
     this.ingestErrorsTreeDataSource = new MatTreeNestedDataSource<Event>();
   }
 
@@ -47,8 +44,6 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   }
 
   isStepOK(event: Event) {
-    return event.eventData.outcome === "OK";
+    return event.eventData.outcome === 'OK';
   }
-
-
 }

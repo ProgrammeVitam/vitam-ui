@@ -48,26 +48,24 @@ import {
   Injector,
   Optional,
   SkipSelf,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, MAT_SNACK_BAR_DATA, SimpleSnackBar } from '@angular/material/snack-bar';
 import { take, takeUntil } from 'rxjs/operators';
 
-export const MAT_SNACK_BAR_DEFAULT_OPTIONS =
-  new InjectionToken<MatSnackBarConfig>('mat-snack-bar-default-options', {
-    providedIn: 'root',
-    factory: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY,
-  });
+export const MAT_SNACK_BAR_DEFAULT_OPTIONS = new InjectionToken<MatSnackBarConfig>('mat-snack-bar-default-options', {
+  providedIn: 'root',
+  factory: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY,
+});
 
 export function MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY(): MatSnackBarConfig {
   return new MatSnackBarConfig();
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VitamUISnackBar {
-
   /**
    * Reference to the current snack bar in the view *at this level* (in the Angular injector tree).
    * If there is a parent snack-bar service, all operations should delegate to that parent
@@ -96,7 +94,8 @@ export class VitamUISnackBar {
     private _injector: Injector,
     private _breakpointObserver: BreakpointObserver,
     @Optional() @SkipSelf() private _parentSnackBar: VitamUISnackBar,
-    @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig) { }
+    @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig,
+  ) {}
 
   /**
    * Creates and dispatches a snack bar with a custom component for the content, removing any
@@ -105,8 +104,7 @@ export class VitamUISnackBar {
    * @param component Component to be instantiated.
    * @param config Extra configuration for the snack bar.
    */
-  openFromComponent<T>(component: ComponentType<T>, config?: MatSnackBarConfig):
-    MatSnackBarRef<T> {
+  openFromComponent<T>(component: ComponentType<T>, config?: MatSnackBarConfig): MatSnackBarRef<T> {
     return this._attach(component, config) as MatSnackBarRef<T>;
   }
 
@@ -117,8 +115,7 @@ export class VitamUISnackBar {
    * @param template Template to be instantiated.
    * @param config Extra configuration for the snack bar.
    */
-  openFromTemplate(template: TemplateRef<any>, config?: MatSnackBarConfig):
-    MatSnackBarRef<EmbeddedViewRef<any>> {
+  openFromTemplate(template: TemplateRef<any>, config?: MatSnackBarConfig): MatSnackBarRef<EmbeddedViewRef<any>> {
     return this._attach(template, config);
   }
 
@@ -128,8 +125,7 @@ export class VitamUISnackBar {
    * @param action The label for the snackbar action.
    * @param config Additional configuration options for the snackbar.
    */
-  open(message: string, action: string = '', config?: MatSnackBarConfig):
-    MatSnackBarRef<SimpleSnackBar> {
+  open(message: string, action: string = '', config?: MatSnackBarConfig): MatSnackBarRef<SimpleSnackBar> {
     const mergedConfig = { ...this._defaultConfig, ...config };
 
     mergedConfig.data = { message, action };
@@ -150,17 +146,14 @@ export class VitamUISnackBar {
   /**
    * Attaches the snack bar container component to the overlay.
    */
-  private _attachSnackBarContainer(overlayRef: OverlayRef,
-                                   config: MatSnackBarConfig): MatSnackBarContainer {
-
+  private _attachSnackBarContainer(overlayRef: OverlayRef, config: MatSnackBarConfig): MatSnackBarContainer {
     const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
     const injector = Injector.create({
       parent: userInjector || this._injector,
-      providers: [{provide: MatSnackBarConfig, useValue: config}]
+      providers: [{ provide: MatSnackBarConfig, useValue: config }],
     });
 
-    const containerPortal =
-      new ComponentPortal(MatSnackBarContainer, config.viewContainerRef, injector);
+    const containerPortal = new ComponentPortal(MatSnackBarContainer, config.viewContainerRef, injector);
     const containerRef: ComponentRef<MatSnackBarContainer> = overlayRef.attach(containerPortal);
     containerRef.instance.snackBarConfig = config;
 
@@ -170,9 +163,7 @@ export class VitamUISnackBar {
   /**
    * Places a new component or a template as the content of the snack bar container.
    */
-  private _attach<T>(content: ComponentType<T> | TemplateRef<T>, userConfig?: MatSnackBarConfig):
-    MatSnackBarRef<T | EmbeddedViewRef<any>> {
-
+  private _attach<T>(content: ComponentType<T> | TemplateRef<T>, userConfig?: MatSnackBarConfig): MatSnackBarRef<T | EmbeddedViewRef<any>> {
     const config = { ...new MatSnackBarConfig(), ...this._defaultConfig, ...userConfig };
     const overlayRef = this._createOverlay(config);
     const container = this._attachSnackBarContainer(overlayRef, config);
@@ -181,7 +172,7 @@ export class VitamUISnackBar {
     if (content instanceof TemplateRef) {
       const portal = new TemplatePortal(content, null, {
         $implicit: config.data,
-        snackBarRef
+        snackBarRef,
       } as any);
 
       snackBarRef.instance = container.attachTemplatePortal(portal);
@@ -193,15 +184,16 @@ export class VitamUISnackBar {
       snackBarRef.instance = contentRef.instance;
     }
 
-    this._breakpointObserver.observe(Breakpoints.Handset).pipe(
-      takeUntil(overlayRef.detachments().pipe(take(1)))
-    ).subscribe((state) => {
-      if (state.matches) {
-        overlayRef.overlayElement.classList.add('mat-snack-bar-handset');
-      } else {
-        overlayRef.overlayElement.classList.remove('mat-snack-bar-handset');
-      }
-    });
+    this._breakpointObserver
+      .observe(Breakpoints.Handset)
+      .pipe(takeUntil(overlayRef.detachments().pipe(take(1))))
+      .subscribe((state) => {
+        if (state.matches) {
+          overlayRef.overlayElement.classList.add('mat-snack-bar-handset');
+        } else {
+          overlayRef.overlayElement.classList.remove('mat-snack-bar-handset');
+        }
+      });
 
     this._animateSnackBar(snackBarRef, config);
     this._openedSnackBarRef = snackBarRef;
@@ -244,10 +236,10 @@ export class VitamUISnackBar {
 
     const positionStrategy = this._overlay.position().global();
     const isRtl = config.direction === 'rtl';
-    const isLeft = (
+    const isLeft =
       config.horizontalPosition === 'left' ||
       (config.horizontalPosition === 'start' && !isRtl) ||
-      (config.horizontalPosition === 'end' && isRtl));
+      (config.horizontalPosition === 'end' && isRtl);
     const isRight = !isLeft && config.horizontalPosition !== 'center';
     if (isLeft) {
       positionStrategy.left('0');
@@ -274,18 +266,15 @@ export class VitamUISnackBar {
    * @param config Config that was used to create the snack bar.
    * @param snackBarRef Reference to the snack bar.
    */
-  private _createInjector<T>(
-    config: MatSnackBarConfig,
-    snackBarRef: MatSnackBarRef<T>): Injector {
-
+  private _createInjector<T>(config: MatSnackBarConfig, snackBarRef: MatSnackBarRef<T>): Injector {
     const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
 
     return Injector.create({
       parent: userInjector || this._injector,
       providers: [
-        {provide: MatSnackBarRef, useValue: snackBarRef},
-        {provide: MAT_SNACK_BAR_DATA, useValue: config.data}
-      ]
+        { provide: MatSnackBarRef, useValue: snackBarRef },
+        { provide: MAT_SNACK_BAR_DATA, useValue: config.data },
+      ],
     });
   }
 }

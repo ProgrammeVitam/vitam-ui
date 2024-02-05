@@ -1,40 +1,39 @@
 /*
-* Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
-* and the signatories of the "VITAM - Accord du Contributeur" agreement.
-*
-* contact@programmevitam.fr
-*
-* This software is a computer program whose purpose is to implement
-* implement a digital archiving front-office system for the secure and
-* efficient high volumetry VITAM solution.
-*
-* This software is governed by the CeCILL-C license under French law and
-* abiding by the rules of distribution of free software.  You can  use,
-* modify and/ or redistribute the software under the terms of the CeCILL-C
-* license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info".
-*
-* As a counterpart to the access to the source code and  rights to copy,
-* modify and redistribute granted by the license, users are provided only
-* with a limited warranty  and the software's author,  the holder of the
-* economic rights,  and the successive licensors  have only  limited
-* liability.
-*
-* In this respect, the user's attention is drawn to the risks associated
-* with loading,  using,  modifying and/or developing or reproducing the
-* software by the user in light of its specific status of free software,
-* that may mean  that it is complicated to manipulate,  and  that  also
-* therefore means  that it is reserved for developers  and  experienced
-* professionals having in-depth computer knowledge. Users are therefore
-* encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or
-* data to be ensured and,  more generally, to use and operate it in the
-* same conditions as regards security.
-*
-* The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-C license and that you accept its terms.
-*/
-
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
 
 import { Component, Directive, Input } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
@@ -44,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { of ,  Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { Customer, OtpState, Owner, Tenant } from 'ui-frontend-common';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -74,14 +73,24 @@ let component: CustomerListComponent;
 let fixture: ComponentFixture<CustomerListComponent>;
 
 class Page {
-
-  get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
-  get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head div'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .align-items-center'); }
-  get ownerBtn() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary'); }
-  get loadMoreButton() { return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message'); }
-  get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
-
+  get table() {
+    return fixture.nativeElement.querySelector('.vitamui-table');
+  }
+  get columns() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-table-head div');
+  }
+  get rows() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .align-items-center');
+  }
+  get ownerBtn() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary');
+  }
+  get loadMoreButton() {
+    return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
+  }
+  get infiniteScroll() {
+    return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
+  }
 }
 
 let page: Page;
@@ -89,9 +98,9 @@ let customers: Customer[];
 let tenants: Tenant[];
 
 describe('CustomerListComponent', () => {
-
   beforeEach(waitForAsync(() => {
-    customers = [{
+    customers = [
+      {
         id: '11',
         identifier: '11',
         code: '011000',
@@ -104,20 +113,18 @@ describe('CustomerListComponent', () => {
         passwordRevocationDelay: 1,
         otp: OtpState.DEACTIVATED,
         idp: true,
-        emailDomains: [
-          'kouygues.com',
-        ],
+        emailDomains: ['kouygues.com'],
         defaultEmailDomain: 'kouygues.com',
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
           city: 'paris',
-          country: 'france'
+          country: 'france',
         },
         owners: [],
         themeColors: {},
-        gdprAlert : false,
-        gdprAlertDelay : 72,
+        gdprAlert: false,
+        gdprAlertDelay: 72,
         portalMessages: {},
         portalTitles: {},
       },
@@ -134,20 +141,18 @@ describe('CustomerListComponent', () => {
         passwordRevocationDelay: 1,
         otp: OtpState.OPTIONAL,
         idp: false,
-        emailDomains: [
-          'louygues.com',
-        ],
+        emailDomains: ['louygues.com'],
         defaultEmailDomain: 'louygues.com',
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
           city: 'paris',
-          country: 'france'
+          country: 'france',
         },
         owners: [],
         themeColors: {},
-        gdprAlert : false,
-        gdprAlertDelay : 72,
+        gdprAlert: false,
+        gdprAlertDelay: 72,
         portalMessages: {},
         portalTitles: {},
       },
@@ -164,20 +169,18 @@ describe('CustomerListComponent', () => {
         passwordRevocationDelay: 1,
         otp: OtpState.MANDATORY,
         idp: true,
-        emailDomains: [
-          'mouygues.com',
-        ],
+        emailDomains: ['mouygues.com'],
         defaultEmailDomain: 'mouygues.com',
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
           city: 'paris',
-          country: 'france'
+          country: 'france',
         },
         owners: [],
         themeColors: {},
-        gdprAlert : false,
-        gdprAlertDelay : 72,
+        gdprAlert: false,
+        gdprAlertDelay: 72,
         portalMessages: {},
         portalTitles: {},
       },
@@ -194,20 +197,18 @@ describe('CustomerListComponent', () => {
         passwordRevocationDelay: 1,
         otp: OtpState.OPTIONAL,
         idp: false,
-        emailDomains: [
-          'nrange.com',
-        ],
+        emailDomains: ['nrange.com'],
         defaultEmailDomain: 'nrange.com',
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
           city: 'paris',
-          country: 'france'
+          country: 'france',
         },
         owners: [],
         themeColors: {},
-        gdprAlert : false,
-        gdprAlertDelay : 72,
+        gdprAlert: false,
+        gdprAlertDelay: 72,
         portalMessages: {},
         portalTitles: {},
       },
@@ -224,20 +225,18 @@ describe('CustomerListComponent', () => {
         passwordRevocationDelay: 1,
         otp: OtpState.OPTIONAL,
         idp: false,
-        emailDomains: [
-          'bouygues.com',
-        ],
+        emailDomains: ['bouygues.com'],
         defaultEmailDomain: 'bouygues.com',
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
           city: 'paris',
-          country: 'france'
+          country: 'france',
         },
         owners: [],
         themeColors: {},
-        gdprAlert : false,
-        gdprAlertDelay : 72,
+        gdprAlert: false,
+        gdprAlertDelay: 72,
         portalMessages: {},
         portalTitles: {},
       },
@@ -259,27 +258,17 @@ describe('CustomerListComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        CustomerListComponent,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent
-      ],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
-        { provide: CustomerService, useValue: { updated: new Subject()} },
+        { provide: CustomerService, useValue: { updated: new Subject() } },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         CustomerDataService,
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
 
     const customerListService = TestBed.get(CustomerListService);
     spyOn(customerListService, 'search').and.callThrough();
@@ -289,7 +278,6 @@ describe('CustomerListComponent', () => {
     spyOn(customerDataService, 'addTenants').and.callThrough();
     spyOn(customerDataService, 'updateTenant').and.callThrough();
     spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
-
   }));
 
   beforeEach(() => {
@@ -370,14 +358,14 @@ describe('CustomerListComponent', () => {
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
       panelClass: 'vitamui-modal',
-      disableClose: true
+      disableClose: true,
     });
   });
 
   it('should add the new owner to the list', () => {
     const newOwner: Owner = {
       id: '42',
-      identifier : '42',
+      identifier: '42',
       code: '00042',
       customerId: customers[0].id,
       name: 'Toto',
@@ -386,9 +374,9 @@ describe('CustomerListComponent', () => {
         street: null,
         zipCode: null,
         city: null,
-        country: null
+        country: null,
       },
-      readonly : false
+      readonly: false,
     };
     const matDialogSpy = TestBed.get(MatDialog);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) });

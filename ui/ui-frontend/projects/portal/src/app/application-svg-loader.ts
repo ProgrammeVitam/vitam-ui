@@ -7,28 +7,33 @@ import { catchError } from 'rxjs/operators';
 const UNKNOW_APP_FILE_NAME = 'UNKNOWN_APP';
 
 export class ApplicationSvgLoader implements SvgLoader {
+  private unknownAppSvg: string;
 
-    private unknownAppSvg: string;
+  constructor(
+    private transferState: TransferState,
+    private http: HttpClient,
+    private conf: { prefix: string; suffix: string },
+  ) {
+    new SvgHttpLoader(this.http).getSvg(this.conf.prefix + UNKNOW_APP_FILE_NAME + this.conf.suffix).subscribe((svgData: string) => {
+      this.unknownAppSvg = svgData;
+    });
+  }
 
-    constructor(private transferState: TransferState, private http: HttpClient, private conf: {prefix: string, suffix: string}) {
-      new SvgHttpLoader(this.http).getSvg(this.conf.prefix + UNKNOW_APP_FILE_NAME + this.conf.suffix).subscribe((svgData: string) => {
-        this.unknownAppSvg = svgData;
+  public getSvg(url: string): Observable<string> {
+    url = this.conf.prefix + url + this.conf.suffix;
+    const key: StateKey<number> = makeStateKey<number>('transfer-svg:' + url);
+    const data = this.transferState.get(key, null);
+    if (data) {
+      return new Observable((observer: Subscriber<any>) => {
+        observer.next(data);
+        observer.complete();
       });
-    }
-
-    public getSvg(url: string): Observable<string> {
-      url = this.conf.prefix + url + this.conf.suffix;
-      const key: StateKey<number> = makeStateKey<number>('transfer-svg:' + url);
-      const data = this.transferState.get(key, null);
-      if (data) {
-        return new Observable((observer: Subscriber<any>) => {
-          observer.next(data);
-          observer.complete();
-        });
-      } else {
-        return new SvgHttpLoader(this.http).getSvg(url).pipe(catchError(() => {
+    } else {
+      return new SvgHttpLoader(this.http).getSvg(url).pipe(
+        catchError(() => {
           return of(this.unknownAppSvg);
-        }));
-      }
+        }),
+      );
     }
   }
+}

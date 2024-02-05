@@ -2,10 +2,11 @@
   <span class="title-text">{{ facetTitle }}</span>
   <div class="row row-data">
     <div class="col title-text" *ngFor="let facet of facetDetails">
-      <div class="layout-data"
-           [ngStyle]="{backgroundColor: facet.backgroundColor || 'white' }"
-           [ngClass]="{ clickable: facet.clickable }"
-           (click)="onFilter(facet)"
+      <div
+        class="layout-data"
+        [ngStyle]="{ backgroundColor: facet.backgroundColor || 'white' }"
+        [ngClass]="{ clickable: facet.clickable }"
+        (click)="onFilter(facet)"
       >
         <div class="mb-2">
           <span class="status-text" [ngStyle]="{ color: facet.color }">{{ facet.title }}</span>

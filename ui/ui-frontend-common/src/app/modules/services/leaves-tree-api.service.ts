@@ -1,8 +1,15 @@
 import { EMPTY, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import {
-  CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum, UnitType
+  CriteriaDataType,
+  CriteriaOperator,
+  FilingHoldingSchemeNode,
+  PagedResult,
+  ResultFacet,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  UnitType,
 } from '../models';
 import { Direction } from '../vitamui-table';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
@@ -12,7 +19,6 @@ export const DEFAULT_UNIT_PAGE_SIZE = 10;
 const ALLUNITSUPS = '#allunitups';
 
 export class LeavesTreeApiService {
-
   constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {}
 
   private transactionId: string;
@@ -73,9 +79,7 @@ export class LeavesTreeApiService {
         criteria: '#unitType',
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum.FIELDS,
-        values: [
-          { id: UnitType.INGEST, value: UnitType.INGEST },
-        ],
+        values: [{ id: UnitType.INGEST, value: UnitType.INGEST }],
         dataType: CriteriaDataType.STRING,
       },
     ];
@@ -87,11 +91,12 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pagedResult => {
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, false);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
@@ -114,11 +119,12 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pagedResult => {
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   searchUnderNode(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
@@ -141,11 +147,12 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pagedResult => {
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, false);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
@@ -168,11 +175,12 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pagedResult => {
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode, searchCriterias: SearchCriteriaDto): Observable<PagedResult> {
@@ -195,11 +203,12 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe(map(pagedResult => {
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult) => {
         this.finishSearch(parentNode, pagedResult, true);
         return pagedResult;
-      }));
+      }),
+    );
   }
 
   loadNodesDetailsFromFacetsIds(facets: ResultFacet[]): Observable<PagedResult> {
@@ -221,8 +230,7 @@ export class LeavesTreeApiService {
       computeFacets: false,
     };
     // Can be improve with a projection (only nodes fields are needed)
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe();
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
   }
 
   searchAttachementUnit(): Observable<PagedResult> {
@@ -241,8 +249,7 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria)
-      .pipe();
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
   }
 
   // ########## IMPLEMENTATION ####################################################################################################
@@ -255,5 +262,4 @@ export class LeavesTreeApiService {
   setTransactionId(transactionId: string) {
     this.transactionId = transactionId;
   }
-
 }

@@ -6,9 +6,8 @@
   </div>
 
   <div *ngIf="isShown" class="row container-fluid">
-    <div *ngFor="let event of events; let i=index">
+    <div *ngFor="let event of events; let i = index">
       <app-vitam-event-display [event]="event"></app-vitam-event-display>
     </div>
   </div>
-
 </div>

@@ -47,13 +47,9 @@ import { TableFilterComponent } from './table-filter.component';
 
 @Component({
   template: `
-    <vitamui-common-table-filter-search
-      [(filter)]="filter"
-      [options]="options"
-      (filterClose)="onClose()"
-    >
+    <vitamui-common-table-filter-search [(filter)]="filter" [options]="options" (filterClose)="onClose()">
     </vitamui-common-table-filter-search>
-  `
+  `,
 })
 export class TestHostComponent {
   filter: any;
@@ -64,7 +60,7 @@ export class TestHostComponent {
     { value: 3, label: '3 - Jacky' },
   ];
 
-  onClose() { }
+  onClose() {}
 }
 
 describe('TableFilterSearchComponent', () => {
@@ -73,18 +69,9 @@ describe('TableFilterSearchComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatPseudoCheckboxModule,
-        FormsModule,
-      ],
-      declarations: [
-        TestHostComponent,
-        TableFilterSearchComponent,
-        TableFilterComponent,
-        TableFilterOptionComponent,
-      ]
-    })
-      .compileComponents();
+      imports: [MatPseudoCheckboxModule, FormsModule],
+      declarations: [TestHostComponent, TableFilterSearchComponent, TableFilterComponent, TableFilterOptionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -157,5 +144,4 @@ describe('TableFilterSearchComponent', () => {
     expect(options[2].nativeElement.className).toContain('hidden');
     expect(options[3].nativeElement.className).toContain('hidden');
   });
-
 });

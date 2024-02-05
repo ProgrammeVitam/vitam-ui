@@ -49,15 +49,16 @@ import { TenantService } from '../../tenant.service';
 @Component({
   selector: 'app-owner-list',
   templateUrl: './owner-list.component.html',
-  styleUrls: ['./owner-list.component.scss']
+  styleUrls: ['./owner-list.component.scss'],
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
-
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
   }
-  get customer(): Customer { return this._customer; }
+  get customer(): Customer {
+    return this._customer;
+  }
   private _customer: Customer = null;
 
   @Output() ownerClick = new EventEmitter<Owner>();
@@ -74,12 +75,12 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     private ownerService: OwnerService,
     private tenantService: TenantService,
     private customerDataService: CustomerDataService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.filteredData(this.customerDataService.tenants);
 
-    this.customerDataService.tenantsUpdated$.subscribe((tenants) =>  {
+    this.customerDataService.tenantsUpdated$.subscribe((tenants) => {
       this.filteredData(tenants);
     });
 
@@ -104,13 +105,15 @@ export class OwnerListComponent implements OnDestroy, OnInit {
   openCreateOwnerDialog() {
     const dialogRef = this.dialog.open(OwnerCreateComponent, {
       data: {
-        customer: this.customer
+        customer: this.customer,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
-    dialogRef.afterClosed().pipe(filter((result) => !!result))
-      .subscribe((result: { owner?: Owner, tenant?: Tenant }) => {
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
         if (result.owner) {
           this.customer.owners = this.customer.owners.concat([result.owner]);
           this.filteredData(this.myTenants);
@@ -123,9 +126,9 @@ export class OwnerListComponent implements OnDestroy, OnInit {
 
   filteredData(tenants: Tenant[]) {
     if (tenants) {
-
-      this.myTenants = tenants.sort((a, b) => a.identifier - b.identifier)
-      .filter((tenant: Tenant) => tenant.customerId === this.customer.id);
+      this.myTenants = tenants
+        .sort((a, b) => a.identifier - b.identifier)
+        .filter((tenant: Tenant) => tenant.customerId === this.customer.id);
 
       const ownersIds: string[] = this.myTenants.map((tenant: Tenant) => tenant.ownerId);
 
@@ -150,12 +153,13 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(TenantCreateComponent, {
       disableClose: true,
       data: { owner },
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
-    dialogRef.afterClosed().pipe(filter((result) => !!result))
-    .subscribe((newTenant: Tenant) => {
-      this.customerDataService.addTenants([newTenant]);
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe((newTenant: Tenant) => {
+        this.customerDataService.addTenants([newTenant]);
+      });
   }
-
 }

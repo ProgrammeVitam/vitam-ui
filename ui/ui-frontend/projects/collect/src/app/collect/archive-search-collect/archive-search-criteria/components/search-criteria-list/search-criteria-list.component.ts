@@ -68,7 +68,7 @@ export class SearchCriteriaListComponent implements OnInit {
     private archiveSharedDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private snackBar: VitamUISnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {

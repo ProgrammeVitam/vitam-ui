@@ -1,44 +1,44 @@
 @import '../../../../sass/variables/colors';
 
 :host {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    .on-over {
-        border: 2px solid var(--vitamui-grey-600);
-    
-        .drop-area {
-            background: var(--vitamui-grey-900);
-            opacity: 0.9;
-            color: white;
-        }
-    }
-    
-    .pj {
-        transform: rotate(45deg);
-    }
+  .on-over {
+    border: 2px solid var(--vitamui-grey-600);
 
-    .pointer {
-        cursor: pointer;
+    .drop-area {
+      background: var(--vitamui-grey-900);
+      opacity: 0.9;
+      color: white;
     }
-    
-    .error-message {
-        color: $red;
-    }
+  }
 
-    .disabled {
-        pointer-events:none;
-        opacity: .4;
-    }
+  .pj {
+    transform: rotate(45deg);
+  }
 
-    .contents {
-        display: contents;
-    }
+  .pointer {
+    cursor: pointer;
+  }
 
-    .delete {
-        position: relative;
-        top: 3px;
-        right: -212px;
-        height: 0;
-    }
+  .error-message {
+    color: $red;
+  }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .contents {
+    display: contents;
+  }
+
+  .delete {
+    position: relative;
+    top: 3px;
+    right: -212px;
+    height: 0;
+  }
 }

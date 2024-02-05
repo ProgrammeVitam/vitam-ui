@@ -32,7 +32,7 @@ function unflatten(json) {
     let cur = resultholder;
     let prop = '';
     let match;
-    while (match = regex.exec(p)) {
+    while ((match = regex.exec(p))) {
       cur = cur[prop] || (cur[prop] = match[2] ? [] : {});
       prop = match[2] || match[1];
     }
