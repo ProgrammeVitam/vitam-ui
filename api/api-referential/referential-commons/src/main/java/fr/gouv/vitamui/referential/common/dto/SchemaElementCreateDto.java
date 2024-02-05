@@ -33,6 +33,7 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaOrigin;
 import fr.gouv.vitam.common.model.administration.schema.SchemaType;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
+import fr.gouv.vitamui.referential.common.model.DataType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -60,4 +61,5 @@ public class SchemaElementCreateDto {
     @JsonProperty("RootPaths") private List<String> rootPaths;
     @JsonProperty("Category") private SchemaCategory category;
     @JsonProperty("ApiPath") private String apiPath;
+    @JsonProperty("DataType") private DataType dataType;
 }

@@ -30,9 +30,11 @@ package fr.gouv.vitamui.referential.internal.server.schema;
 import com.fasterxml.jackson.databind.util.StdConverter;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitam.common.model.administration.schema.SchemaStringSizeType;
+import fr.gouv.vitam.common.model.administration.schema.SchemaType;
 import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
+import fr.gouv.vitamui.referential.common.model.DataType;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -41,7 +43,9 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
     @Override
     public SchemaElementDto convert(SchemaResponse schemaModel) {
         final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
-        final String stringSize = stringTypeSize != null ? stringTypeSize.value().toLowerCase(Locale.ROOT) : null;
+        final String stringSize = stringTypeSize != null ?
+            stringTypeSize.value().toLowerCase(Locale.ROOT) :
+            SchemaStringSizeType.MEDIUM.value();
 
         return (SchemaElementDto) new SchemaElementDto()
             .setPath(schemaModel.getPath())
@@ -57,7 +61,25 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
             .setCollection(mapCollections(schemaModel))
             .setSedaVersions(schemaModel.getSedaVersions())
             .setCategory(schemaModel.getCategory())
-            .setApiPath(schemaModel.getApiPath());
+            .setApiPath(schemaModel.getApiPath())
+            .setDataType(convertFromIndexationType(schemaModel.getType()));
+    }
+
+    private DataType convertFromIndexationType(SchemaType indexationType) {
+        switch (indexationType) {
+            case KEYWORD:
+            case ENUM:
+            case TEXT:
+                return DataType.STRING;
+            case DATE:
+                return DataType.DATETIME;
+            case OBJECT:
+            case LONG:
+            case DOUBLE:
+            case BOOLEAN:
+                return DataType.valueOf(indexationType.getType());
+        }
+        return null;
     }
 
     private Collection mapCollections(final SchemaResponse schemaResponse) {
