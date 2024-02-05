@@ -38,13 +38,13 @@
 import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { from, Observable,  of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 import { TenantFormValidators } from './tenant-form.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -52,7 +52,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('Tenant Form Validators', () => {
-
   it('should return null', fakeAsync(() => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
     tenantServiceSpy.exists.and.returnValue(of(false));
@@ -96,5 +95,4 @@ describe('Tenant Form Validators', () => {
     tick(400);
     expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
   }));
-
 });

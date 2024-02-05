@@ -85,7 +85,7 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
           this.dataSource = data;
         },
         () => {},
-        () => (this.pending = false)
+        () => (this.pending = false),
       );
 
     this.searchCriteriaSub = merge(this.searchChange, this.filterChange, this.orderChange)

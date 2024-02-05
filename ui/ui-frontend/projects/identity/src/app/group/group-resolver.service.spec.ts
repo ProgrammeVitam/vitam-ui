@@ -48,12 +48,12 @@ const expectedGroup: Group = {
   customerId: '4242442',
   name: 'Group Name',
   description: 'Group Description',
-  level : '',
+  level: '',
   usersCount: 0,
   profileIds: [],
   profiles: [],
   units: [],
-  readonly : false
+  readonly: false,
 };
 
 describe('GroupResolver', () => {
@@ -64,11 +64,7 @@ describe('GroupResolver', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      providers: [
-        GroupResolver,
-        { provide: GroupService, useValue: profileGroupServiceSpy },
-        { provide: Router, useValue: routerSpy },
-      ]
+      providers: [GroupResolver, { provide: GroupService, useValue: profileGroupServiceSpy }, { provide: Router, useValue: routerSpy }],
     });
 
     groupResolver = TestBed.inject(GroupResolver);
@@ -104,5 +100,4 @@ describe('GroupResolver', () => {
     expect(route.paramMap.get).toHaveBeenCalledWith('id');
     expect(profileGroupService.get).toHaveBeenCalledWith('42');
   });
-
 });

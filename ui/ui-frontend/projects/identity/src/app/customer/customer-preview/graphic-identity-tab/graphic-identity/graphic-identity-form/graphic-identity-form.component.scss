@@ -5,15 +5,15 @@
     margin-top: 0;
   }
 
-  ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
+  ::ng-deep .color-header-footer > * > .drag-and-drop-area {
     background-color: var(--vitamui-header-footer);
   }
 
-  ::ng-deep .color-background > * > .drag-and-drop-area { 
+  ::ng-deep .color-background > * > .drag-and-drop-area {
     background-color: var(--vitamui-background);
   }
 
-  ::ng-deep .image-area-big > * > .drag-and-drop-area > .image-area { 
+  ::ng-deep .image-area-big > * > .drag-and-drop-area > .image-area {
     height: 230px;
     width: 410px;
     max-width: 100%;
@@ -24,7 +24,7 @@
     }
   }
 
-  ::ng-deep .image-area-small > * > .drag-and-drop-area > .image-area { 
+  ::ng-deep .image-area-small > * > .drag-and-drop-area > .image-area {
     width: 200px;
   }
 
@@ -32,51 +32,51 @@
     margin-top: 40px;
     margin-bottom: 20px;
   }
-  
+
   .container-color {
-      min-width: 295px;
+    min-width: 295px;
   }
-  
+
   .cancel {
-      margin-left: 10px;
+    margin-left: 10px;
   }
 
   span {
-      font-weight: bold;
+    font-weight: bold;
   }
 
   vitamui-common-input {
-      width: 47%;
+    width: 47%;
   }
 
   vitamui-common-textarea + small {
-      text-align: end;
-      color: var(--vitamui-grey-900);
+    text-align: end;
+    color: var(--vitamui-grey-900);
   }
 
   .form-group {
     margin-top: 40px;
     margin-bottom: 20px;
   }
-  
+
   .container-color {
-      margin-right: 80px;
+    margin-right: 80px;
   }
-  
+
   .cancel {
-      margin-left: 10px;
+    margin-left: 10px;
   }
 
   span {
-      font-weight: bold;
+    font-weight: bold;
   }
 
   vitamui-common-input {
-      width: 47%;
+    width: 47%;
   }
 
   vitamui-common-textarea + small {
-      text-align: end;
-      color: var(--vitamui-grey-900);
+    text-align: end;
+    color: var(--vitamui-grey-900);
   }
 }

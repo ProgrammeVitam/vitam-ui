@@ -1,14 +1,11 @@
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {VitamUIRadioComponent} from './vitamui-radio.component';
+import { VitamUIRadioComponent } from './vitamui-radio.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [VitamUIRadioComponent],
   exports: [VitamUIRadioComponent],
 })
-export class VitamUIRadioModule {
-}
+export class VitamUIRadioModule {}

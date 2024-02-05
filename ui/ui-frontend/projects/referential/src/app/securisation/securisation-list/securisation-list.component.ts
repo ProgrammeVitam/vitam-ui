@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {merge, Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
-import {SecurisationService} from '../securisation.service';
+import { SecurisationService } from '../securisation.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -52,7 +52,7 @@ export class TraceabilityFilter {
 @Component({
   selector: 'app-securisation-list',
   templateUrl: './securisation-list.component.html',
-  styleUrls: ['./securisation-list.component.scss']
+  styleUrls: ['./securisation-list.component.scss'],
 })
 export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -86,22 +86,20 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
-  constructor(
-    public securisationService: SecurisationService
-  ) {
+  constructor(public securisationService: SecurisationService) {
     super(securisationService);
   }
 
   ngOnInit() {
-
-    this.securisationService.search(
-      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())))
+    this.securisationService
+      .search(
+        new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())),
+      )
       .subscribe((data: any[]) => {
         this.dataSource = data;
       });
 
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildSecurisationCriteriaFromSearch();
@@ -147,14 +145,14 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   }
 
   securisationStatus(securisation: any): string {
-    return (securisation.events !== undefined && securisation.events.length !== 0) ?
-      securisation.events[securisation.events.length - 1].outcome :
-      securisation.outcome;
+    return securisation.events !== undefined && securisation.events.length !== 0
+      ? securisation.events[securisation.events.length - 1].outcome
+      : securisation.outcome;
   }
 
   securisationMessage(securisation: any): string {
-    return (securisation.events !== undefined && securisation.events.length !== 0) ?
-      securisation.events[securisation.events.length - 1].outMessage :
-      securisation.outMessage;
+    return securisation.events !== undefined && securisation.events.length !== 0
+      ? securisation.events[securisation.events.length - 1].outMessage
+      : securisation.outMessage;
   }
 }

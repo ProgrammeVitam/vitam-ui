@@ -43,17 +43,16 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from
 export const EMAILS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EmailsInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-emails-input',
   templateUrl: './emails-input.component.html',
   styleUrls: ['./emails-input.component.scss'],
-  providers: [EMAILS_INPUT_ACCESSOR]
+  providers: [EMAILS_INPUT_ACCESSOR],
 })
 export class EmailsInputComponent implements ControlValueAccessor {
-
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
 
@@ -65,11 +64,7 @@ export class EmailsInputComponent implements ControlValueAccessor {
   onTouched: () => void;
 
   constructor() {
-    this.control = new FormControl(
-      '',
-      [Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/)],
-      null
-    );
+    this.control = new FormControl('', [Validators.pattern(/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/)], null);
   }
 
   writeValue(emails: string[]) {
@@ -85,9 +80,13 @@ export class EmailsInputComponent implements ControlValueAccessor {
   }
 
   add(): void {
-    if (this.control.invalid || this.control.pending) { return; }
+    if (this.control.invalid || this.control.pending) {
+      return;
+    }
     const email = this.control.value.trim();
-    if (this.emails.includes(email)) { return; }
+    if (this.emails.includes(email)) {
+      return;
+    }
     this.emails.push(email);
     this.onChange(this.emails);
     this.control.reset();
@@ -109,5 +108,4 @@ export class EmailsInputComponent implements ControlValueAccessor {
   get emailExists(): boolean {
     return this.emails.includes((this.control.value || '').trim());
   }
-
 }

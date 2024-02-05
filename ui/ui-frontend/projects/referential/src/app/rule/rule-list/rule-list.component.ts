@@ -116,7 +116,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     public ruleService: RuleService,
     private authService: AuthService,
     private matDialog: MatDialog,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {
     super(ruleService);
     this.genericUserRole = {

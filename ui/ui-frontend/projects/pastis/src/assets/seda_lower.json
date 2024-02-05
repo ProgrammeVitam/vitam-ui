@@ -3562,16 +3562,7 @@
                         "Type": "MeasurementWeightType",
                         "Choice": "no",
                         "Extensible": "no",
-                        "Enumeration": [
-                          "microgram",
-                          "MC",
-                          "milligram",
-                          "MGM",
-                          "gram",
-                          "GRM",
-                          "kilogram",
-                          "KGM"
-                        ],
+                        "Enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
                         "Definition": "Métadonnée de dimension physique : épaisseur.",
                         "Collection": "Objets",
                         "_children": [
@@ -4934,16 +4925,7 @@
                     "Type": "MeasurementWeightType",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "microgram",
-                      "MC",
-                      "milligram",
-                      "MGM",
-                      "gram",
-                      "GRM",
-                      "kilogram",
-                      "KGM"
-                    ],
+                    "Enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
                     "Definition": "Métadonnée de dimension physique : épaisseur.",
                     "Collection": "Objets",
                     "_children": [
@@ -5235,11 +5217,7 @@
                             "Type": "FinalActionStorageCodeType",
                             "Choice": "no",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "RestrictAccess",
-                              "Transfer",
-                              "Copy"
-                            ],
+                            "Enumeration": ["RestrictAccess", "Transfer", "Copy"],
                             "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                             "Collection": "Arborescence",
                             "children": []
@@ -5338,10 +5316,7 @@
                             "Type": "FinalActionAppraisalCodeType",
                             "Choice": "no",
                             "Extensible": "no",
-                            "Enumeration": [
-                              "Keep",
-                              "Destroy"
-                            ],
+                            "Enumeration": ["Keep", "Destroy"],
                             "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                             "Collection": "Arborescence",
                             "children": []
@@ -12182,11 +12157,7 @@
                 "Type": "LegalStatusType",
                 "Choice": "no",
                 "Extensible": "no",
-                "Enumeration": [
-                  "Public Archive",
-                  "Private Archive",
-                  "Public and Private Archive"
-                ],
+                "Enumeration": ["Public Archive", "Private Archive", "Public and Private Archive"],
                 "Definition": "Statut des archives échangées.",
                 "Collection": "Règles",
                 "children": []
@@ -12477,11 +12448,7 @@
                     "Type": "FinalActionStorageCodeType",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "RestrictAccess",
-                      "Transfer",
-                      "Copy"
-                    ],
+                    "Enumeration": ["RestrictAccess", "Transfer", "Copy"],
                     "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                     "Collection": "Règles",
                     "children": []
@@ -12580,10 +12547,7 @@
                     "Type": "FinalActionAppraisalCodeType",
                     "Choice": "no",
                     "Extensible": "no",
-                    "Enumeration": [
-                      "Keep",
-                      "Destroy"
-                    ],
+                    "Enumeration": ["Keep", "Destroy"],
                     "Definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                     "Collection": "Règles",
                     "children": []

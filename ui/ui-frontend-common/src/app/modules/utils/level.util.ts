@@ -54,7 +54,7 @@ export function isRootLevel(user: User): boolean {
 }
 
 export function isLevelAllowed(user: User, ressourceLevel: string) {
-    return user && (isRootLevel(user) || ressourceLevel.startsWith(user.level + '.'));
+  return user && (isRootLevel(user) || ressourceLevel.startsWith(user.level + '.'));
 }
 
 export function buildValidators(user: User): ValidatorFn[] {

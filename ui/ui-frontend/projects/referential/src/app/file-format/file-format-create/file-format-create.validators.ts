@@ -34,41 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {FileFormatService} from '../file-format.service';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { FileFormatService } from '../file-format.service';
 
 @Injectable()
 export class FileFormatCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private fileFormatService: FileFormatService) {
-  }
+  constructor(private fileFormatService: FileFormatService) {}
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  };
 
   uniquePuid = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('puid', 'puidExists', identifierToIgnore);
-  }
+  };
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
-
       const properties: any = {};
       properties[field] = control.value;
       const existField: any = {};
       existField[existTag] = true;
 
       return timer(this.debounceTime).pipe(
-        switchMap(() => control.value !== valueToIgnore ? this.fileFormatService.existsProperties(properties) : of(false)),
+        switchMap(() => (control.value !== valueToIgnore ? this.fileFormatService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => exists ? existField : null)
+        map((exists: boolean) => (exists ? existField : null)),
       );
     };
   }

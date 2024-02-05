@@ -6,16 +6,15 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'USER_PROFILE.HOME.TITLE' | translate}}
+        {{ 'USER_PROFILE.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openProfilAdminCreateDialog()">
-          <span>{{'USER_PROFILE.HOME.ACTION_BUTTON' | translate}}</span>
+          <span>{{ 'USER_PROFILE.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
-    </vitamui-common-banner>
-</div>
+      </vitamui-common-banner>
+    </div>
 
     <div class="vitamui-content">
       <app-profile-list [search]="search" (profileClick)="openPanel($event)"></app-profile-list>

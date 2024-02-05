@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export interface UserProfileGroupInformation {
-    groupId: string;
-    groupDescription: string;
-    usersCount: string;
-  }
+  groupId: string;
+  groupDescription: string;
+  usersCount: string;
+}

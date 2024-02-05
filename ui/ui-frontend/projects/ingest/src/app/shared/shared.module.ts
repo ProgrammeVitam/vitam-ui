@@ -40,12 +40,7 @@ import { NgModule } from '@angular/core';
 import { VitamUISnackBarModule } from './vitamui-snack-bar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule
-  ],
-  exports: [
-    VitamUISnackBarModule
-  ]
+  imports: [CommonModule, VitamUISnackBarModule],
+  exports: [VitamUISnackBarModule],
 })
-export class SharedModule { }
+export class SharedModule {}

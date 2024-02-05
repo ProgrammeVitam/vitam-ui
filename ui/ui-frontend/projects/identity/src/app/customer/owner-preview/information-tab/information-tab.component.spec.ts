@@ -61,10 +61,10 @@ const expectedOwner: Owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
   internalCode: '1',
-  readonly : false
+  readonly: false,
 };
 
 const expectedTenant: Tenant = {
@@ -75,16 +75,16 @@ const expectedTenant: Tenant = {
   identifier: 7,
   enabled: true,
   proof: true,
-  readonly : false,
+  readonly: false,
   accessContractHoldingIdentifier: 'AC-000001',
   accessContractLogbookIdentifier: 'AC-000002',
   ingestContractHoldingIdentifier: 'IC-000001',
-  itemIngestContractIdentifier: 'IC-000001'
+  itemIngestContractIdentifier: 'IC-000001',
 };
 
 const owner = {
   id: '5ad5f14c894e6a414edc7b62',
-  identifier : '5ad5f14c894e6a414edc7b62',
+  identifier: '5ad5f14c894e6a414edc7b62',
   customerId: '42',
   name: 'Emmanuel Deviller',
   code: '10234501',
@@ -93,20 +93,14 @@ const owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
   internalCode: '1',
-  readonly : false
+  readonly: false,
 };
 
 @Component({
-  template: `
-    <app-information-tab
-      [owner]="owner"
-      [tenant]="tenant"
-      [readOnly]="readonly"
-    ></app-information-tab>
-  `
+  template: ` <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="readonly"></app-information-tab> `,
 })
 class TestHostComponent {
   tenant: Tenant;
@@ -124,11 +118,11 @@ describe('Owner InformationTabComponent', () => {
     const ownerServiceSpy = {
       get: () => of(owner),
       patch: () => of(owner),
-      updated: new Subject()
+      updated: new Subject(),
     };
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null)
+      uniqueName: () => of(null),
     });
 
     TestBed.configureTestingModule({
@@ -138,12 +132,9 @@ describe('Owner InformationTabComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
-      declarations: [
-        TestHostComponent,
-        InformationTabComponent,
-      ],
+      declarations: [TestHostComponent, InformationTabComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -151,13 +142,11 @@ describe('Owner InformationTabComponent', () => {
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: TenantService, useValue: { patch: () => of(expectedTenant) } },
-        { provide: StartupService, useValue: { getConfigNumberValue: () => 100 }},
+        { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -199,9 +188,9 @@ describe('Owner InformationTabComponent', () => {
           street: null,
           zipCode: null,
           city: null,
-          country: null
+          country: null,
         },
-        internalCode: null
+        internalCode: null,
       });
       expect(testhost.component.ownerForm.get('id').valid).toBeFalsy('id');
       expect(testhost.component.ownerForm.get('customerId').valid).toBeFalsy('customerId');
@@ -245,7 +234,7 @@ describe('Owner InformationTabComponent', () => {
           city: expectedOwner.address.city,
           country: expectedOwner.address.country,
         },
-        internalCode: expectedOwner.internalCode
+        internalCode: expectedOwner.internalCode,
       });
       expect(testhost.component.ownerForm.valid).toBeTruthy();
     });
@@ -277,7 +266,7 @@ describe('Owner InformationTabComponent', () => {
         ingestContractHoldingIdentifier: null,
         itemIngestContractIdentifier: null,
         accessContractHoldingIdentifier: null,
-        accessContractLogbookIdentifier: null
+        accessContractLogbookIdentifier: null,
       });
       expect(testhost.component.tenantForm.get('id').valid).toBeFalsy('id');
       expect(testhost.component.tenantForm.get('customerId').valid).toBeFalsy('customerId');
@@ -298,10 +287,9 @@ describe('Owner InformationTabComponent', () => {
         ingestContractHoldingIdentifier: expectedTenant.ingestContractHoldingIdentifier,
         itemIngestContractIdentifier: expectedTenant.itemIngestContractIdentifier,
         accessContractHoldingIdentifier: expectedTenant.accessContractHoldingIdentifier,
-        accessContractLogbookIdentifier: expectedTenant.accessContractLogbookIdentifier
+        accessContractLogbookIdentifier: expectedTenant.accessContractLogbookIdentifier,
       });
       expect(testhost.component.tenantForm.valid).toBeTruthy();
     });
-
   });
 });

@@ -57,7 +57,7 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> imple
     public dialog: MatDialog,
     route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
   ) {
     super(route, globalEventService);
   }

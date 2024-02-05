@@ -2,10 +2,10 @@
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-        <span class="editable-field-text-content">{{control?.value}}</span>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ control?.value }}</span>
         <div class="editable-field-control">
-          <input [type]="type" [formControl]="control" [maxlength]="maxlength" #input>
+          <input [type]="type" [formControl]="control" [maxlength]="maxlength" #input />
         </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
@@ -26,18 +26,19 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div class="vitamui-chip-list">
-  <div *ngFor="let val of values" [ngClass]="{'vitamui-chip': true, 'activated': searchActivated}">
-    <div class="vitamui-chip-content" [title]="val">{{val|truncate: truncateLimit}}</div>
+  <div *ngFor="let val of values" [ngClass]="{ 'vitamui-chip': true, activated: searchActivated }">
+    <div class="vitamui-chip-content" [title]="val">{{ val | truncate: truncateLimit }}</div>
     <div class="vitamui-remove-chip" (click)="remove(val)">
-      <i class="material-icons" [ngClass]="{'white': searchActivated}">clear</i>
+      <i class="material-icons" [ngClass]="{ white: searchActivated }">clear</i>
     </div>
   </div>
 </div>

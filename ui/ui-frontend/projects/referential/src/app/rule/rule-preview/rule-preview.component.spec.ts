@@ -44,15 +44,16 @@ describe('RulePreviewComponent', () => {
   let component: RulePreviewComponent;
   let fixture: ComponentFixture<RulePreviewComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RulePreviewComponent],
-        providers: [{ provide: MatDialog, useValue: {} }, { provide: RuleService, useValue: {} }],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RulePreviewComponent],
+      providers: [
+        { provide: MatDialog, useValue: {} },
+        { provide: RuleService, useValue: {} },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RulePreviewComponent);

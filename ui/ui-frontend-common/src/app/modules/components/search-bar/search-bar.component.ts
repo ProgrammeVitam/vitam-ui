@@ -39,10 +39,9 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 @Component({
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss']
+  styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent implements OnInit {
-
   @Input() placeholder: string;
 
   @Input() name: string;
@@ -59,9 +58,9 @@ export class SearchBarComponent implements OnInit {
 
   searchValue: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   @HostListener('keydown.enter')
   onSearch() {
@@ -80,5 +79,4 @@ export class SearchBarComponent implements OnInit {
       setTimeout(() => this.searchInput.nativeElement.focus(), 0);
     }
   }
-
 }

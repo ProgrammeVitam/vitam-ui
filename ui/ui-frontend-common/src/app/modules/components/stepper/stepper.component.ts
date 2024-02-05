@@ -46,10 +46,6 @@ import { transitionAnimation } from '../../animations/vitamui-common-animations'
   // This custom stepper provides itself as CdkStepper so that it can be recognized
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
-  animations: [
-    transitionAnimation,
-  ]
+  animations: [transitionAnimation],
 })
-export class StepperComponent extends CdkStepper {
-
-}
+export class StepperComponent extends CdkStepper {}

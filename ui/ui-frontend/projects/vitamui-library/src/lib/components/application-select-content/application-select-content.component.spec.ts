@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {AuthService, WINDOW_LOCATION} from 'ui-frontend-common';
+import { Component, Input } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { AuthService, WINDOW_LOCATION } from 'ui-frontend-common';
 
-import {UpdatedApplicationSelectContentComponent} from './application-select-content.component';
+import { UpdatedApplicationSelectContentComponent } from './application-select-content.component';
 
 @Component({
   selector: 'lib-vitamui-common-menu-tile-updated',
-  template: ''
+  template: '',
 })
 class VitamUIMenuTileStubComponent {
   @Input() application: any;
@@ -55,16 +55,12 @@ describe('ApplicationSelectContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        UpdatedApplicationSelectContentComponent,
-        VitamUIMenuTileStubComponent,
-      ],
+      declarations: [UpdatedApplicationSelectContentComponent, VitamUIMenuTileStubComponent],
       providers: [
-        {provide: WINDOW_LOCATION, useValue: {}},
-        {provide: AuthService, useValue: {}},
-      ]
-    })
-      .compileComponents();
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: AuthService, useValue: {} },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

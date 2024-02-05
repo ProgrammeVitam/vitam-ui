@@ -42,7 +42,7 @@ export class ProfileInformationTabComponent implements OnInit {
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
     private loggingService: NotificationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -125,7 +125,7 @@ export class ProfileInformationTabComponent implements OnInit {
         this.submited = false;
         this.pending = !this.pending;
         this.loggingService.showSuccess('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR');
-      }
+      },
     );
   }
 

@@ -71,11 +71,15 @@
         <td class="clickable" (click)="ruleClick.emit(rule)">{{ getRuleMeasurement(rule?.ruleMeasurement) }}</td>
         <td>
           <div class="actions">
-            <button class="btn-circle primary" (click)="deleteRuleDialog(rule)" *vitamuiCommonHasRole="{
-              appId: 'RULES_APP',
-              tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-              role: 'ROLE_DELETE_RULES'
-            }">
+            <button
+              class="btn-circle primary"
+              (click)="deleteRuleDialog(rule)"
+              *vitamuiCommonHasRole="{
+                appId: 'RULES_APP',
+                tenantIdentifier: +this.genericUserRole.tenantIdentifier,
+                role: 'ROLE_DELETE_RULES'
+              }"
+            >
               <i class="vitamui-icon vitamui-icon-trash"></i>
             </button>
           </div>

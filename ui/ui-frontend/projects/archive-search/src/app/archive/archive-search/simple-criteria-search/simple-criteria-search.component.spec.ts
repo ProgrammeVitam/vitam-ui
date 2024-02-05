@@ -53,7 +53,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     getOntologiesFromJson: () => of([]),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true)
+    hasAccessContractPermissions: () => of(true),
   };
 
   const managementRulesSharedDataServiceMock = {

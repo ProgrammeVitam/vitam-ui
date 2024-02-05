@@ -1,8 +1,9 @@
 $anim-timing: 150ms ease-out;
 
-.mat-drawer, .mat-dialog-container {
+.mat-drawer,
+.mat-dialog-container {
   .vitamui-input {
-  @include dialog-elevation-dark;
+    @include dialog-elevation-dark;
   }
 }
 
@@ -78,24 +79,20 @@ $anim-timing: 150ms ease-out;
     }
 
     .mat-form-field-label span {
-
       line-height: 15px;
-
     }
 
     .mat-form-field-flex {
       background-color: unset;
     }
 
-    &.mat-form-field-disabled
-    {
-        background-color: var(--vitamui-grey-300);
-        border: none !important;
-        @include elevation-0;
+    &.mat-form-field-disabled {
+      background-color: var(--vitamui-grey-300);
+      border: none !important;
+      @include elevation-0;
     }
 
-    .mat-input-element
-    {
+    .mat-input-element {
       color: unset;
     }
   }

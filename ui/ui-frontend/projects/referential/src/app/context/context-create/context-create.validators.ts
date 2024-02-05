@@ -66,7 +66,7 @@ export class ContextCreateValidators {
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => (exists ? existField : null))
+        map((exists: boolean) => (exists ? existField : null)),
       );
     };
   }

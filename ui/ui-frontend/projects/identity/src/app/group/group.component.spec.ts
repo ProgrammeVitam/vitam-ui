@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
+import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -54,20 +54,21 @@ let component: GroupComponent;
 let fixture: ComponentFixture<GroupComponent>;
 
 class Page {
-
-  get groupList() { return fixture.nativeElement.querySelector('app-group-list'); }
-  get createGroup() { return fixture.nativeElement.querySelector('button'); }
-
+  get groupList() {
+    return fixture.nativeElement.querySelector('app-group-list');
+  }
+  get createGroup() {
+    return fixture.nativeElement.querySelector('button');
+  }
 }
 
 let page: Page;
 
 @Component({ selector: 'app-group-list', template: '' })
 class GroupListStubComponent {
-
   @Input('search') searchText: string;
 
-  search() { }
+  search() {}
 }
 
 @Component({ selector: 'app-group-preview', template: '' })
@@ -77,7 +78,6 @@ class GroupPreviewStubComponent {
 }
 
 describe('GroupComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -90,20 +90,15 @@ describe('GroupComponent', () => {
         VitamUICommonTestModule,
         InjectorModule,
         SearchBarModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
-      declarations: [
-        GroupComponent,
-        GroupListStubComponent,
-        GroupPreviewStubComponent,
-      ],
+      declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
-    })
-      .compileComponents();
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -131,5 +126,4 @@ describe('GroupComponent', () => {
     expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
   });
-
 });

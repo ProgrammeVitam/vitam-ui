@@ -46,17 +46,20 @@ import { SearchCriteriaDto } from '../models/search.criteria';
 
 @Injectable()
 export class ArchiveUnitValidatorService {
-  constructor(private archiveService: ArchiveService, private archiveSharedDataService: ArchiveSharedDataService) {}
+  constructor(
+    private archiveService: ArchiveService,
+    private archiveSharedDataService: ArchiveSharedDataService,
+  ) {}
   debounceTime = 400;
 
   alreadyExistParents(codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
         switchMap(() =>
-          control.value !== codeToIgnore ? of(this.isAlreadyExistingParentValue(control.value, archiveUnitAllunitup)) : of(false)
+          control.value !== codeToIgnore ? of(this.isAlreadyExistingParentValue(control.value, archiveUnitAllunitup)) : of(false),
         ),
         take(1),
-        map((exists: boolean) => (exists ? { alreadyExistParents: true } : null))
+        map((exists: boolean) => (exists ? { alreadyExistParents: true } : null)),
       );
     };
   }
@@ -79,7 +82,7 @@ export class ArchiveUnitValidatorService {
         v.values.forEach((criteriaValue) => {
           criteriaValue.id = control.value;
           criteriaValue.value = control.value;
-        })
+        }),
       );
       const result = timer(this.debounceTime).pipe(
         switchMap(() =>
@@ -96,10 +99,10 @@ export class ArchiveUnitValidatorService {
                     return true;
                   }
                 })
-            : of(false)
+            : of(false),
         ),
         take(1),
-        map((exists: boolean) => (exists ? auditExists : null))
+        map((exists: boolean) => (exists ? auditExists : null)),
       );
 
       return result;

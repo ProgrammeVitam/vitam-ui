@@ -38,10 +38,9 @@ import { Directive, EventEmitter, Input } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonCollapse]',
-  exportAs: 'vitamuiCommonCollapse'
+  exportAs: 'vitamuiCommonCollapse',
 })
 export class CollapseDirective {
-
   @Input() vitamuiCommonCollapse: any;
 
   expanded = new EventEmitter<any>();
@@ -65,5 +64,4 @@ export class CollapseDirective {
   collapse() {
     this.state = 'collapsed';
   }
-
 }

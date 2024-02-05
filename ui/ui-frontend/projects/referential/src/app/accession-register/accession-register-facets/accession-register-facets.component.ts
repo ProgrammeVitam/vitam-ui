@@ -6,7 +6,7 @@ import { AccessionRegistersService } from '../accession-register.service';
 @Component({
   selector: 'app-accession-register-facets',
   templateUrl: './accession-register-facets.component.html',
-  styleUrls: ['./accession-register-facets.component.scss']
+  styleUrls: ['./accession-register-facets.component.scss'],
 })
 export class AccessionRegisterFacetsComponent implements OnInit {
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();

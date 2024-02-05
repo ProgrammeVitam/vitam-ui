@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Component, Inject, OnInit, } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupService } from '../../../core/services/popup.service';
@@ -48,10 +48,9 @@ const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 @Component({
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
-  styleUrls: [ './pastis-dialog-confirm.component.scss' ]
+  styleUrls: ['./pastis-dialog-confirm.component.scss'],
 })
 export class PastisDialogConfirmComponent implements OnInit {
-
   portal: ComponentPortal<any>;
 
   dataBeforeClose: any;
@@ -64,10 +63,10 @@ export class PastisDialogConfirmComponent implements OnInit {
   constructor(
     public dialogConfirmRef: MatDialogRef<PastisDialogConfirmComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogReceivedData: PastisDialogData,
-    public sedaService: SedaService, private popUpService: PopupService,
-    private translateService: TranslateService) {
-  }
-
+    public sedaService: SedaService,
+    private popUpService: PopupService,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnInit() {
     // console.log('Data received on confirm dialog : %o', this.dialogReceivedData);
@@ -83,14 +82,13 @@ export class PastisDialogConfirmComponent implements OnInit {
       this.dialogReceivedData.cancelLabel = this.popupAnnuler;
     }
 
-    this.popUpService.popUpDataBeforeClose.subscribe(data => {
+    this.popUpService.popUpDataBeforeClose.subscribe((data) => {
       this.dataBeforeClose = data;
     });
-    this.popUpService.btnYesShoudBeDisabled.subscribe(shouldDisableButton => {
+    this.popUpService.btnYesShoudBeDisabled.subscribe((shouldDisableButton) => {
       this.btnYesShouldBeDisabled = shouldDisableButton;
     });
     this.popUpService.btnYesShoudBeDisabled.next(this.dialogReceivedData.disableBtnOuiOnInit);
-
   }
 
   onNoClick(): void {
@@ -113,9 +111,5 @@ export class PastisDialogConfirmComponent implements OnInit {
     return this.translateService.instant(PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
 
-  ngOnDestroy() {
-
-  }
-
-
+  ngOnDestroy() {}
 }

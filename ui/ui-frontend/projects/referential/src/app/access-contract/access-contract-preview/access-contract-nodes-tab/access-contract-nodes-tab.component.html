@@ -1,9 +1,7 @@
 <div class="row">
   <div class="col-12 form-control">
     <button class="btn secondary mb-20" (click)="openUpdateSelectedNodes()" [disabled]="!searchAccessContractId">
-      <div i18n="accessContract nodes tab edit@@AccessContractNodesTabEditButton">
-        Modifier
-      </div>
+      <div i18n="accessContract nodes tab edit@@AccessContractNodesTabEditButton">Modifier</div>
     </button>
   </div>
 </div>
@@ -12,13 +10,13 @@
   <div class="col-10">
     <span>Positions de consultation</span> :
     <ul>
-      <li *ngFor="let rootUnit of accessContract.rootUnits"> {{getTitle(rootUnit)}}</li>
+      <li *ngFor="let rootUnit of accessContract.rootUnits">{{ getTitle(rootUnit) }}</li>
     </ul>
   </div>
   <div class="col-10">
     <span>Positions exclues</span> :
     <ul>
-      <li *ngFor="let excludeRootUnit of accessContract.excludedRootUnits"> {{getTitle(excludeRootUnit)}}</li>
+      <li *ngFor="let excludeRootUnit of accessContract.excludedRootUnits">{{ getTitle(excludeRootUnit) }}</li>
     </ul>
   </div>
 </div>

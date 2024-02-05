@@ -1,45 +1,53 @@
 <div class="vitamui-subtable p-0">
-    <div class="vitamui-table-head">
-      <div class="col-3"></div>
-      <div class="col-2">{{'CUSTOMER.OWNER.CODE' | translate}}</div>
-      <div class="col-3">{{'CUSTOMER.OWNER.NAME' | translate}}</div>
-      <div class="col-2">{{'CUSTOMER.OWNER.SAFE_CODE' | translate}}</div>
-      <div class="col-4"></div>
+  <div class="vitamui-table-head">
+    <div class="col-3"></div>
+    <div class="col-2">{{ 'CUSTOMER.OWNER.CODE' | translate }}</div>
+    <div class="col-3">{{ 'CUSTOMER.OWNER.NAME' | translate }}</div>
+    <div class="col-2">{{ 'CUSTOMER.OWNER.SAFE_CODE' | translate }}</div>
+    <div class="col-4"></div>
+  </div>
+
+  <div class="vitamui-table-body">
+    <div class="vitamui-table-rows">
+      <div
+        class="vitamui-row d-flex align-items-center clickable"
+        *ngFor="let tenant of myTenants"
+        (click)="($event.stopPropagation); clickTenant(tenant, getOwner(tenant?.ownerId))"
+      >
+        <div class="col-3 d-flex justify-content-center align-items-end">
+          <div *ngIf="tenant.proof; then proofIcons; else notProofIcons"></div>
+        </div>
+        <div class="col-2" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.code }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.name }}</div>
+        <div class="col-2" vitamuiCommonEllipsis>{{ tenant?.identifier }}</div>
+      </div>
     </div>
 
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows">
-        <div class="vitamui-row d-flex align-items-center clickable" *ngFor="let tenant of myTenants" (click)="$event.stopPropagation; clickTenant(tenant, getOwner(tenant?.ownerId))">
-          <div class="col-3 d-flex justify-content-center align-items-end">
-            <div *ngIf="tenant.proof then proofIcons else notProofIcons"></div>
-          </div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.code }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.name }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ tenant?.identifier }}</div>
+    <div class="vitamui-table-rows">
+      <div
+        class="vitamui-row d-flex align-items-center clickable"
+        *ngFor="let owner of ownersWithoutTenant"
+        (click)="($event.stopPropagation); ownerClick.emit(owner)"
+      >
+        <div class="col-3 d-flex justify-content-center align-items-end">
+          <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>
         </div>
-      </div>
-
-      <div class="vitamui-table-rows">
-        <div class="vitamui-row d-flex align-items-center clickable" *ngFor="let owner of ownersWithoutTenant" (click)="$event.stopPropagation; ownerClick.emit(owner)">
-          <div class="col-3 d-flex justify-content-center align-items-end">
-            <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>
-          </div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ owner?.code }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ owner?.name }}</div>
-          <div class="col-3 sub-actions">
-            <div>
-              <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateTenantDialog(owner)">
-                <i class="vitamui-icon vitamui-icon-home-add" [style.fontSize.px]="25"></i>
-              </button>
-            </div>
+        <div class="col-2" vitamuiCommonEllipsis>{{ owner?.code }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ owner?.name }}</div>
+        <div class="col-3 sub-actions">
+          <div>
+            <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateTenantDialog(owner)">
+              <i class="vitamui-icon vitamui-icon-home-add" [style.fontSize.px]="25"></i>
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
     <div class="footer-action">
-        <div class="text normal link bold primary" (click)="$event.stopPropagation; openCreateOwnerDialog()">
-          {{'CUSTOMER.HOME.RESULTS_TABLE.ADD_OWNER' | translate}}
-        </div>
+      <div class="text normal link bold primary" (click)="($event.stopPropagation); openCreateOwnerDialog()">
+        {{ 'CUSTOMER.HOME.RESULTS_TABLE.ADD_OWNER' | translate }}
+      </div>
     </div>
   </div>
 </div>
@@ -52,6 +60,6 @@
 </ng-template>
 
 <ng-template #notProofIcons>
-  <i class="vitamui-icon vitamui-icon-safe mr-1 " [style.fontSize.px]="25"></i>
+  <i class="vitamui-icon vitamui-icon-safe mr-1" [style.fontSize.px]="25"></i>
   <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="15"></i>
 </ng-template>

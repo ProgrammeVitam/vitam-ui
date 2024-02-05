@@ -38,9 +38,18 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { AdminUserProfile, AuthService, Customer, DEFAULT_PAGE_SIZE, Direction, GlobalEventService,
+import {
+  AdminUserProfile,
+  AuthService,
+  Customer,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  GlobalEventService,
   Group,
-  PageRequest, SidenavPage, User } from 'ui-frontend-common';
+  PageRequest,
+  SidenavPage,
+  User,
+} from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';
@@ -50,10 +59,9 @@ import { UserService } from './user.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
-
   users: User[];
   connectedUserInfo: AdminUserProfile;
   customer: Customer;
@@ -75,19 +83,23 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   }
 
   ngOnInit() {
-    this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
+    this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
-    this.groupService.getAll(true).subscribe((data: Group[]) => {this.groups = data; });
+    this.groupService.getAll(true).subscribe((data: Group[]) => {
+      this.groups = data;
+    });
   }
 
   openCreateUserDialog() {
     const dialogRef = this.dialog.open(UserCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups }
+      data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshList(); }
+      if (result) {
+        this.refreshList();
+      }
     });
   }
 
@@ -96,8 +108,9 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.userListComponent) { return; }
+    if (!this.userListComponent) {
+      return;
+    }
     this.userListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
   }
-
 }

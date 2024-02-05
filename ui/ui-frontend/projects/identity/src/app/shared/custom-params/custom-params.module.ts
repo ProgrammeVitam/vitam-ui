@@ -42,16 +42,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { CustomParamsComponent } from './custom-params.component';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    TranslateModule,
-    VitamUICommonModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule, VitamUICommonModule],
   declarations: [CustomParamsComponent],
-  exports: [CustomParamsComponent]
+  exports: [CustomParamsComponent],
 })
-export class CustomParamsModule { }
+export class CustomParamsModule {}

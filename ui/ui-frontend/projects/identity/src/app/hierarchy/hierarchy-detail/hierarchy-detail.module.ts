@@ -48,17 +48,9 @@ import { HierarchyPopupComponent } from './hierarchy-popup.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatMenuModule,
-    MatTabsModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, MatTooltipModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [HierarchyPopupComponent, HierarchyDetailComponent, InformationTabComponent],
   exports: [HierarchyDetailComponent],
-  providers: [ProfileValidators]
+  providers: [ProfileValidators],
 })
-export class HierarchyDetailModule { }
+export class HierarchyDetailModule {}

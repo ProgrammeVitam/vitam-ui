@@ -103,7 +103,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     private ingestContractService: IngestContractService,
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
-    private ingestContractCreateValidators: IngestContractCreateValidators
+    private ingestContractCreateValidators: IngestContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -174,7 +174,7 @@ export class IngestContractInformationTabComponent implements OnInit {
           }
         }
         return this.ingestContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -192,7 +192,7 @@ export class IngestContractInformationTabComponent implements OnInit {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

@@ -17,8 +17,8 @@ export class FooterComponent implements OnInit {
   constructor(
     private startupService: StartupService,
     private authService: AuthService,
-    private themeService: ThemeService
-  ) { }
+    private themeService: ThemeService,
+  ) {}
 
   ngOnInit() {
     const versionRelease = this.startupService.getConfigStringValue('VERSION_RELEASE');

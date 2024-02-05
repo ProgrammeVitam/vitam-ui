@@ -76,7 +76,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private ruleService: RuleService,
-    private ruleCreateValidator: RuleCreateValidators
+    private ruleCreateValidator: RuleCreateValidators,
   ) {}
 
   ngOnInit() {
@@ -122,7 +122,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false });
         console.error(error);
-      }
+      },
     );
   }
 

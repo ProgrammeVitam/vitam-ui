@@ -34,38 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientModule} from '@angular/common/http';
-import {InjectionToken, NgModule, Optional, SkipSelf} from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { InjectionToken, NgModule, Optional, SkipSelf } from '@angular/core';
 
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  throwIfAlreadyLoaded,
-  VitamUICommonModule
-} from 'ui-frontend-common';
-import {environment} from '../../environments/environment';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'ui-frontend-common';
+import { environment } from '../../environments/environment';
 
 export declare const BASE_URL_IDENTITY: InjectionToken<string>;
 
 @NgModule({
-  imports: [
-    HttpClientModule,
-    VitamUICommonModule,
-    InjectorModule,
-    LoggerModule.forRoot()
-  ],
+  imports: [HttpClientModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
   exports: [VitamUICommonModule],
   providers: [
-    {provide: BASE_URL, useValue: './referential-api'},
-    {provide: ENVIRONMENT, useValue: environment}
-  ]
+    { provide: BASE_URL, useValue: './referential-api' },
+    { provide: ENVIRONMENT, useValue: environment },
+  ],
 })
 export class CoreModule {
-
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
-
 }

@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Id} from 'ui-frontend-common';
+import { Id } from 'ui-frontend-common';
 
 export interface Rule extends Id {
-    id: string;
-    tenant: number;
-    version: number;
-    ruleId: string;
-    ruleType: string;
-    ruleValue: string;
-    ruleDescription: string;
-    ruleDuration: string;
-    ruleMeasurement: string;
-    creationDate: string;
-    updateDate: string;
+  id: string;
+  tenant: number;
+  version: number;
+  ruleId: string;
+  ruleType: string;
+  ruleValue: string;
+  ruleDescription: string;
+  ruleDuration: string;
+  ruleMeasurement: string;
+  creationDate: string;
+  updateDate: string;
 }

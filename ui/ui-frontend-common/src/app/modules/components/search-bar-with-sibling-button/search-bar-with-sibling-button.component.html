@@ -9,13 +9,7 @@
       [placeholder]="placeholder"
       [disabled]="disabled"
     />
-    <button
-      *ngIf="searchValue"
-      type="button"
-      class="btn-reset"
-      (click)="reset()"
-      [disabled]="disabled"
-    >
+    <button *ngIf="searchValue" type="button" class="btn-reset" (click)="reset()" [disabled]="disabled">
       <i class="material-icons">clear</i>
     </button>
   </div>

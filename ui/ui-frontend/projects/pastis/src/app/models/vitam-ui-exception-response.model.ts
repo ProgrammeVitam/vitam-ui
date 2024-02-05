@@ -26,10 +26,10 @@
  */
 
 export interface VitamUIExceptionResponse {
-  timestamp: string,
-  status: number,
-  error: string,
-  exception: string,
-  message: string,
-  args: Array<string>
+  timestamp: string;
+  status: number;
+  error: string;
+  exception: string;
+  message: string;
+  args: Array<string>;
 }

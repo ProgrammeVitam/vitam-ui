@@ -64,7 +64,7 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     private adminDslService: AdminDslService,
     private snackBarService: VitamUISnackBarService,
     private accessContractService: AccessContractService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(route);
 
@@ -106,7 +106,7 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
         },
         (error: any) => {
           console.log(error);
-        }
+        },
       );
     } catch (syntaxError) {
       this.snackBarService.open({ message: this.dslQueryFormatErrorMessage, translate: false });

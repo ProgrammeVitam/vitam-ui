@@ -1,5 +1,4 @@
-<div *ngIf="pending then loadingSpinner"></div>
-
+<div *ngIf="pending; then loadingSpinner"></div>
 
 <ng-template #loadingSpinner>
   <div class="steackhouse">
@@ -8,147 +7,179 @@
 </ng-template>
 
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
-
   <mat-sidenav #panel [fixedInViewport]="true" mode="side" position="end">
     <profile-preview (previewClose)="closePanel()" *ngIf="openedItem" [inputProfile]="openedItem"></profile-preview>
   </mat-sidenav>
 
   <mat-sidenav-content vitamuiCommonInfiniteScroll>
-
     <div class="vitamui-heading">
-      <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone"
-                               [data]="breadcrumbDataTop"
-                               class="breadcrumbTop">
+      <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone" [data]="breadcrumbDataTop" class="breadcrumbTop">
       </pastis-title-breadcrumb>
 
-      <vitamui-common-banner (search)="onSearchSubmit($event)"
-                             [searchbarPlaceholder]="'PROFILE.LIST_PROFILE.SEARCH_PLACEHOLDER' | translate">
+      <vitamui-common-banner
+        (search)="onSearchSubmit($event)"
+        [searchbarPlaceholder]="'PROFILE.LIST_PROFILE.SEARCH_PLACEHOLDER' | translate"
+      >
         <button (click)="createProfile()" *ngIf="true" class="btn primary ml-5">
-          <i class="vitamui-icon vitamui-icon-plus mr-3 "></i>
-          <span
-            style="align-items: center; margin:auto;">{{'PROFILE.LIST_PROFILE.CREER_NOUVEAU_PROFIL' | translate}}</span>
+          <i class="vitamui-icon vitamui-icon-plus mr-3"></i>
+          <span style="align-items: center; margin: auto">{{ 'PROFILE.LIST_PROFILE.CREER_NOUVEAU_PROFIL' | translate }}</span>
         </button>
         <button *ngIf="isStandalone" (click)="fileInput.click()" class="btn secondary ml-3">
-          <i class="vitamui-icon vitamui-icon-deposit mr-3 "></i>
-          <span style="align-items: center; margin:auto;">{{'PROFILE.LIST_PROFILE.IMPORTER_PROFIL' | translate}}</span>
+          <i class="vitamui-icon vitamui-icon-deposit mr-3"></i>
+          <span style="align-items: center; margin: auto">{{ 'PROFILE.LIST_PROFILE.IMPORTER_PROFIL' | translate }}</span>
 
-          <input #fileInput (change)="uploadProfile($event.target.files)" [uploader]="uploader" accept=".json, .rng"
-                 class="buttons"
-                 ng2FileSelect style="display:none;" type="file"/>
+          <input
+            #fileInput
+            (change)="uploadProfile($event.target.files)"
+            [uploader]="uploader"
+            accept=".json, .rng"
+            class="buttons"
+            ng2FileSelect
+            style="display: none"
+            type="file"
+          />
         </button>
-        <pastis-popup-option *ngIf="!isStandalone" [sedaUrl]="sedaUrl"
-                             [newProfileUrl]="newProfileUrl"></pastis-popup-option>
+        <pastis-popup-option *ngIf="!isStandalone" [sedaUrl]="sedaUrl" [newProfileUrl]="newProfileUrl"></pastis-popup-option>
       </vitamui-common-banner>
-
     </div>
-
 
     <!--The profile types cards container-->
     <div class="vitamui-content">
-      <p class="text bold">{{'PROFILE.LIST_PROFILE.LISTE_DES_PROFILS' | translate}}</p>
+      <p class="text bold">{{ 'PROFILE.LIST_PROFILE.LISTE_DES_PROFILS' | translate }}</p>
       <div
         (click)="changeType('ALL')"
-        [ngClass]="{'pa-pua-card':filterType == 'PA' || filterType == 'PUA' ,'total-profile-card':filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA') }">
+        [ngClass]="{
+          'pa-pua-card': filterType == 'PA' || filterType == 'PUA',
+          'total-profile-card': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+        }"
+      >
         <p
-          [ngClass]="{'pa-pua-label':filterType == 'PA' || filterType == 'PUA' ,'total-profile-label':filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')}">
-          {{'PROFILE.LIST_PROFILE.TOUS_LES_PROFILS' | translate}}</p>
+          [ngClass]="{
+            'pa-pua-label': filterType == 'PA' || filterType == 'PUA',
+            'total-profile-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+          }"
+        >
+          {{ 'PROFILE.LIST_PROFILE.TOUS_LES_PROFILS' | translate }}
+        </p>
         <p
-          [ngClass]="{'pa-pua-num-label':filterType == 'PA' || filterType == 'PUA' || !filterType ,'total-profilenum-label':filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')}">
-          {{totalProfileNum}}</p>
+          [ngClass]="{
+            'pa-pua-num-label': filterType == 'PA' || filterType == 'PUA' || !filterType,
+            'total-profilenum-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+          }"
+        >
+          {{ totalProfileNum }}
+        </p>
       </div>
 
-      <div (click)="changeType('PA')"
-           [ngClass]="{'pa-pua-card':filterType != 'PA','total-profile-card':filterType == 'PA'}">
-        <p [ngClass]="{'pa-pua-label':filterType != 'PA','total-profile-label':filterType == 'PA'}">PA</p>
-        <p [ngClass]="{'pa-pua-num-label':filterType != 'PA','total-profilenum-label':filterType == 'PA'}">{{numPA}}</p>
+      <div (click)="changeType('PA')" [ngClass]="{ 'pa-pua-card': filterType != 'PA', 'total-profile-card': filterType == 'PA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType != 'PA', 'total-profile-label': filterType == 'PA' }">PA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType != 'PA', 'total-profilenum-label': filterType == 'PA' }">{{ numPA }}</p>
       </div>
-      <div (click)="changeType('PUA')"
-           [ngClass]="{'pa-pua-card':filterType != 'PUA','total-profile-card':filterType == 'PUA'}">
-        <p [ngClass]="{'pa-pua-label':filterType != 'PUA','total-profile-label':filterType == 'PUA'}">PUA</p>
-        <p [ngClass]="{'pa-pua-num-label':filterType != 'PUA','total-profilenum-label':filterType == 'PUA'}">
-          {{numPUA}}</p>
+      <div (click)="changeType('PUA')" [ngClass]="{ 'pa-pua-card': filterType != 'PUA', 'total-profile-card': filterType == 'PUA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType != 'PUA', 'total-profile-label': filterType == 'PUA' }">PUA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType != 'PUA', 'total-profilenum-label': filterType == 'PUA' }">
+          {{ numPUA }}
+        </p>
       </div>
-      <div class=test id="test"></div>
+      <div class="test" id="test"></div>
 
-      <div *ngIf="profilesChargees" [loaderId]="'table-profiles'" blur="0" class="vitamui-table-body"
-           ngxUiLoaderBlurred style="margin-top: 30px;">
-
+      <div
+        *ngIf="profilesChargees"
+        [loaderId]="'table-profiles'"
+        blur="0"
+        class="vitamui-table-body"
+        ngxUiLoaderBlurred
+        style="margin-top: 30px"
+      >
         <div>
           <div class="vitamui-table">
             <div class="vitamui-table-head">
               <div class="col-2 d-flex align-items-center">
                 <div *ngIf="isStandalone">
-                  {{'PROFILE.LIST_PROFILE.TABLE.TYPE' | translate}}
+                  {{ 'PROFILE.LIST_PROFILE.TABLE.TYPE' | translate }}
                 </div>
                 <div *ngIf="!isStandalone">
-                  {{'PROFILE.LIST_PROFILE.TABLE.TYPE_ETAT' | translate}}
+                  {{ 'PROFILE.LIST_PROFILE.TABLE.TYPE_ETAT' | translate }}
                 </div>
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy"
-                                                orderByKey="type">
+                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="type">
                 </vitamui-common-order-by-button>
               </div>
               <div class="col-3 d-flex align-items-center">
-                {{'PROFILE.LIST_PROFILE.TABLE.IDENTIFIANT' | translate}}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy"
-                                                orderByKey="id">
+                {{ 'PROFILE.LIST_PROFILE.TABLE.IDENTIFIANT' | translate }}
+                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="id">
                 </vitamui-common-order-by-button>
               </div>
               <div class="col-3 d-flex align-items-center">
-                {{'PROFILE.LIST_PROFILE.TABLE.INTITULE' | translate}}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy"
-                                                orderByKey="baseName">
+                {{ 'PROFILE.LIST_PROFILE.TABLE.INTITULE' | translate }}
+                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="baseName">
                 </vitamui-common-order-by-button>
               </div>
               <div class="col-4 d-flex align-items-center">
-                {{'PROFILE.LIST_PROFILE.TABLE.DERNIERES_MODIFICATIONS' | translate}}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy"
-                                                orderByKey="lastModified">
+                {{ 'PROFILE.LIST_PROFILE.TABLE.DERNIERES_MODIFICATIONS' | translate }}
+                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="lastModified">
                 </vitamui-common-order-by-button>
               </div>
             </div>
           </div>
           <div class="vitamui-table-body">
-            <div *ngFor="let element of retrievedProfiles | filterByType:filterType | filterByStringName:search;"
-                 class="vitamui-table-rows">
+            <div
+              *ngFor="let element of retrievedProfiles | filterByType: filterType | filterByStringName: search"
+              class="vitamui-table-rows"
+            >
               <div class="vitamui-row d-flex align-items-center">
                 <div (click)="showProfile(element)" class="col-2 clickable">
-                  {{element.type}}
+                  {{ element.type }}
                   <div *ngIf="!isStandalone">
-                    <i *ngIf="element.status == 'ACTIVE'"
-                       class="status-badge-green ml-3"></i>
+                    <i *ngIf="element.status == 'ACTIVE'" class="status-badge-green ml-3"></i>
                     <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
                   </div>
                 </div>
-                <div (click)="showProfile(element)" class="col-3 clickable"
-                     style="word-wrap: break-word;">{{element.identifier}}</div>
-                <div (click)="showProfile(element)" class="col-3 clickable"
-                     style="word-wrap: break-word;">{{element.name}}</div>
-                <div (click)="showProfile(element)"
-                     class="col-2 mr-3 clickable">{{element.lastUpdate | date: 'medium':'UTC+4'}}</div>
-                <div class="col-2  actions">
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word">{{ element.identifier }}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word">{{ element.name }}</div>
+                <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{ element.lastUpdate | date: 'medium' : 'UTC+4' }}</div>
+                <div class="col-2 actions">
                   <div>
-                    <button (click)="editProfile(element)" class="btn btn-circle primary mr-3"
-                            [disabled]="((!element.controlSchema || element.controlSchema === '{}') && element.type === 'PUA') || (!element.path && element.type === 'PA') || element.status === 'INACTIVE'">
-                      <i [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-edit"
-                         matTooltip="{{'PROFILE.LIST_PROFILE.MODIFIER_PROFIL_TOOLTIP' |
-                      translate}}"
-                         matTooltipPosition="above" matTooltipClass="modifierToolTip"></i>
+                    <button
+                      (click)="editProfile(element)"
+                      class="btn btn-circle primary mr-3"
+                      [disabled]="
+                        ((!element.controlSchema || element.controlSchema === '{}') && element.type === 'PUA') ||
+                        (!element.path && element.type === 'PA') ||
+                        element.status === 'INACTIVE'
+                      "
+                    >
+                      <i
+                        [style.fontSize.px]="25"
+                        class="vitamui-icon vitamui-icon-edit"
+                        matTooltip="{{ 'PROFILE.LIST_PROFILE.MODIFIER_PROFIL_TOOLTIP' | translate }}"
+                        matTooltipPosition="above"
+                        matTooltipClass="modifierToolTip"
+                      ></i>
                     </button>
 
-                    <button (click)="changeExpand(element)" class="btn btn-circle outlin outline-primary mr-3"
-                            [disabled]="!element.isEditable" *ngIf="!isStandalone">
-                      <i [style.fontSize.px]="25"
-                         class="vitamui-icon vitamui-icon-more-horiz"></i>
+                    <button
+                      (click)="changeExpand(element)"
+                      class="btn btn-circle outlin outline-primary mr-3"
+                      [disabled]="!element.isEditable"
+                      *ngIf="!isStandalone"
+                    >
+                      <i [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-more-horiz"></i>
                     </button>
                     <div *ngIf="expanded && element.isEditable" class="pastis-vitamui-option-container">
                       <button mat-menu-item (click)="fileInput.click()">
                         <i class="vitamui-icon vitamui-icon-download"></i>
                         &nbsp;&nbsp;&nbsp;
-                        <span class="text normal">{{'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate}}</span>
-                        <input #fileInput (change)="updateProfileNotice(element, $event.target.files)"
-                               [uploader]="uploader" accept=".json, .rng" class="buttons"
-                               ng2FileSelect style="display:none;" type="file"/>
+                        <span class="text normal">{{ 'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate }}</span>
+                        <input
+                          #fileInput
+                          (change)="updateProfileNotice(element, $event.target.files)"
+                          [uploader]="uploader"
+                          accept=".json, .rng"
+                          class="buttons"
+                          ng2FileSelect
+                          style="display: none"
+                          type="file"
+                        />
                       </button>
                     </div>
                   </div>
@@ -159,9 +190,7 @@
         </div>
 
         <ngx-ui-loader [loaderId]="'table-profiles'"></ngx-ui-loader>
-
       </div>
     </div>
-
   </mat-sidenav-content>
 </mat-sidenav-container>

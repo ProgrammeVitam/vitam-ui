@@ -1,37 +1,44 @@
 <div class="d-flex align-items-center mb-3">
   <div>
     <div class="mb-9">
-        <vitamui-common-input (keydown.enter)="add()" class="col-12 p-0" [formControl]="unitControl" [placeholder]="'GROUP.UNITS_FORM.INPUT_PLACEHOLDER' | translate">
-            <ng-container *ngIf="unitControl?.touched">
-              <vitamui-common-input-error *ngIf="!!unitControl?.errors?.unitExists">
-                            {{'GROUP.UNITS_FORM.UNIT_ALREADY_EXIST' | translate }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!unitControl?.errors?.unitAlreadyAdd">
-                    {{'GROUP.UNITS_FORM.UNIT_ALREADY_ADDED' | translate  }}
-              </vitamui-common-input-error>
-            </ng-container>
-        </vitamui-common-input>
+      <vitamui-common-input
+        (keydown.enter)="add()"
+        class="col-12 p-0"
+        [formControl]="unitControl"
+        [placeholder]="'GROUP.UNITS_FORM.INPUT_PLACEHOLDER' | translate"
+      >
+        <ng-container *ngIf="unitControl?.touched">
+          <vitamui-common-input-error *ngIf="!!unitControl?.errors?.unitExists">
+            {{ 'GROUP.UNITS_FORM.UNIT_ALREADY_EXIST' | translate }}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!unitControl?.errors?.unitAlreadyAdd">
+            {{ 'GROUP.UNITS_FORM.UNIT_ALREADY_ADDED' | translate }}
+          </vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
     </div>
   </div>
 
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center">
-      <button type="button" class="btn primary" (click)="add()" [disabled]="!unitControl?.value?.trim() || unitControl.invalid">{{'COMMON.ADD' | translate}}</button>
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!unitControl?.value?.trim() || unitControl.invalid">
+        {{ 'COMMON.ADD' | translate }}
+      </button>
     </div>
   </div>
 </div>
 
-  <div class="vitamui-table mt-2">
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let unit of units">
-        <div class="vitamui-row d-flex align-items-center">
-          <div class="col-11" vitamuiCommonEllipsis>{{unit}}</div>
-          <div class="d-flex justify-content-end" class="col-1">
-            <button class="btn link" (click)="remove(unit)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
+<div class="vitamui-table mt-2">
+  <div class="vitamui-table-body">
+    <div class="vitamui-table-rows" *ngFor="let unit of units">
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-11" vitamuiCommonEllipsis>{{ unit }}</div>
+        <div class="d-flex justify-content-end" class="col-1">
+          <button class="btn link" (click)="remove(unit)">
+            <i class="material-icons">clear</i>
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>

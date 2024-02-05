@@ -2,111 +2,112 @@
 @import '../../../../sass/mixins/elevation';
 
 :host {
-    display: inline-block;
-    white-space: nowrap;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 
-    > span {
-        color: var(--vitamui-grey-900);
-        font-size: 16px;
-        font-weight: normal;
-    }
+  > span {
+    color: var(--vitamui-grey-900);
+    font-size: 16px;
+    font-weight: normal;
+  }
 }
 
 .mat-drawer,
 .mat-dialog-container {
-    .slide-toggle {
-        .slide-toggle-thumb {
-            @include dialog-elevation-dark;
-        }
+  .slide-toggle {
+    .slide-toggle-thumb {
+      @include dialog-elevation-dark;
     }
+  }
 }
 
 .slide-toggle {
-    width: 36px;
-    height: 12px;
-    margin-right: 18px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    background-color: var(--vitamui-grey);
-    transition: background-color 100ms ease-in-out, box-shadow 200ms ease-out;
+  width: 36px;
+  height: 12px;
+  margin-right: 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  background-color: var(--vitamui-grey);
+  transition:
+    background-color 100ms ease-in-out,
+    box-shadow 200ms ease-out;
 
-
-    // ON ENABLED
-    &.slide-toggle-on {
-        background-color: var(--vitamui-secondary);
-
-        .slide-toggle-thumb {
-            background-color: var(--vitamui-primary);
-        }
-
-        &:hover:not(.slide-toggle-disabled) {
-            background-color: var(--vitamui-secondary-700);
-
-            .slide-toggle-thumb {
-                background-color: var(--vitamui-primary-700);
-            }
-        }
-    }
-
-    // OFF ENABLED
-    &.slide-toggle-off {
-        background-color: var(--vitamui-grey-300);
-
-        .slide-toggle-thumb {
-            background-color: var(--vitamui-grey);
-        }
-
-        &:hover:not(.slide-toggle-disabled) {
-            background-color: var(--vitamui-grey-400);
-            
-            .slide-toggle-thumb {
-                background-color: var(--vitamui-grey-700);
-            }
-        }
-    }
-
-    .slide-toggle-label {
-        width: 14px;
-        line-height: 22px;
-        transition: margin-left 100ms ease-in-out;
-
-        &:first-child {
-            padding-left: 0px;
-        }
-
-        &:last-child {
-            padding-right: 0px;
-        }
-    }
+  // ON ENABLED
+  &.slide-toggle-on {
+    background-color: var(--vitamui-secondary);
 
     .slide-toggle-thumb {
-        width: 24px;
-        height: 24px;
-        border-radius: 12px;
-        border: 2px solid white;
-        @include input-elevation-dark;
-        cursor: pointer;
+      background-color: var(--vitamui-primary);
     }
 
-    &:not(.slide-toggle-on) {
-        .slide-toggle-label:first-child {
-            margin-left: -16px;
-        }
+    &:hover:not(.slide-toggle-disabled) {
+      background-color: var(--vitamui-secondary-700);
+
+      .slide-toggle-thumb {
+        background-color: var(--vitamui-primary-700);
+      }
+    }
+  }
+
+  // OFF ENABLED
+  &.slide-toggle-off {
+    background-color: var(--vitamui-grey-300);
+
+    .slide-toggle-thumb {
+      background-color: var(--vitamui-grey);
     }
 
-    &.slide-toggle-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
+    &:hover:not(.slide-toggle-disabled) {
+      background-color: var(--vitamui-grey-400);
 
-        .slide-toggle-thumb {
-            cursor: not-allowed;
-        }
+      .slide-toggle-thumb {
+        background-color: var(--vitamui-grey-700);
+      }
     }
+  }
+
+  .slide-toggle-label {
+    width: 14px;
+    line-height: 22px;
+    transition: margin-left 100ms ease-in-out;
+
+    &:first-child {
+      padding-left: 0px;
+    }
+
+    &:last-child {
+      padding-right: 0px;
+    }
+  }
+
+  .slide-toggle-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    border: 2px solid white;
+    @include input-elevation-dark;
+    cursor: pointer;
+  }
+
+  &:not(.slide-toggle-on) {
+    .slide-toggle-label:first-child {
+      margin-left: -16px;
+    }
+  }
+
+  &.slide-toggle-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .slide-toggle-thumb {
+      cursor: not-allowed;
+    }
+  }
 }

@@ -48,19 +48,18 @@ import { ProfileValidators } from '../../profile.validators';
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss']
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-
   form: FormGroup;
   permissionForm: FormGroup;
   groupsCount: boolean;
   userLevel: string;
   previousValue: {
-    name: string,
-    level: string,
-    description: string,
-    enabled: boolean,
+    name: string;
+    level: string;
+    description: string;
+    enabled: boolean;
     roles: any[];
   };
 
@@ -80,11 +79,11 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   ) {
     this.form = this.formBuilder.group({
       name: [null, Validators.required],
-      identifier: [{value: null, disabled : true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       description: [null, Validators.required],
       enabled: false,
       level: [null, buildValidators(this.authService.user)],
-      roles : []
+      roles: [],
     });
 
     this.updateFormSub = this.form.valueChanges
@@ -92,10 +91,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => this.completeRoles(formData)),
-        map((formData) => extend({ id: this.profile.id , customerId: this.profile.customerId,
-                                   tenantIdentifier: this.profile.tenantIdentifier},
-                                 formData)),
-        switchMap((formData) => this.rngProfileService.patch(formData).pipe(catchError(() => of(null))))
+        map((formData) =>
+          extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData),
+        ),
+        switchMap((formData) => this.rngProfileService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((profile) => {
         this.resetForm(this.form, profile, this.readOnly);
@@ -107,18 +106,15 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private completeRoles(data: { [key: string]: any }): { [key: string]: any } {
-    const updatedData  = this.completeUpdateRoles(data);
-    return  this.completeCreateRoles(updatedData);
+    const updatedData = this.completeUpdateRoles(data);
+    return this.completeCreateRoles(updatedData);
   }
 
   private completeUpdateRoles(data: { [key: string]: any }): { [key: string]: any } {
     // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
     // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
     if (data.roles) {
-      const userUpdateRolesNames = [
-        Role.ROLE_MFA_USERS.toString(),
-        Role.ROLE_UPDATE_STANDARD_USERS.toString(),
-      ];
+      const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
 
       const hasUpdateRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
       const roleUpdateUsersIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
@@ -148,9 +144,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   private completeCreateRoles(data: { [key: string]: any }): { [key: string]: any } {
     if (data.roles) {
-      const useCreateRolesNames = [
-        Role.ROLE_CREATE_USERS.toString(),
-      ];
+      const useCreateRolesNames = [Role.ROLE_CREATE_USERS.toString()];
 
       const hasUserCreateRole = data.roles.some((r: any) => useCreateRolesNames.includes(r.name));
       const userCreateInfoRoleIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
@@ -173,8 +167,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('profile') || changes.hasOwnProperty('readOnly')) {
       if (this.profile) {
-       this.resetForm(this.form, this.profile, this.readOnly);
-       this.previousValue = this.form.value;
+        this.resetForm(this.form, this.profile, this.readOnly);
+        this.previousValue = this.form.value;
       }
     }
   }
@@ -187,8 +181,11 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private initFormValidators(form: FormGroup, profile: Profile) {
-    form.get('name').setAsyncValidators(this.profileValidators
-      .nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
+    form
+      .get('name')
+      .setAsyncValidators(
+        this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name),
+      );
   }
 
   private initCustomFormActivationState(form: FormGroup, profile: Profile, readOnly: boolean) {
@@ -197,8 +194,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     form.get('identifier').disable({ emitEvent: false });
 
     if (profile.groupsCount && profile.groupsCount > 0) {
-      this.form.get('enabled').disable({emitEvent : false});
-      this.form.get('level').disable({emitEvent : false});
+      this.form.get('enabled').disable({ emitEvent: false });
+      this.form.get('level').disable({ emitEvent: false });
     }
   }
 

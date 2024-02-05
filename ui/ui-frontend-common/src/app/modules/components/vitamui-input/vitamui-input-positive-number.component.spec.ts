@@ -44,9 +44,7 @@ import { input } from '../../../../../testing/src/helpers';
 import { VitamUIInputPositiveNumberComponent } from './vitamui-input-positive-number.component';
 
 @Component({
-  template: `
-    <vitamui-common-input-positive-number [(ngModel)]="value" #input="ngModel"></vitamui-common-input-positive-number>
-  `
+  template: ` <vitamui-common-input-positive-number [(ngModel)]="value" #input="ngModel"></vitamui-common-input-positive-number> `,
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputPositiveNumberComponent) VitamUIInputPositiveNumberComponent: VitamUIInputPositiveNumberComponent;
@@ -59,13 +57,11 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('VitamUIInputPositiveNumberComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUIInputPositiveNumberComponent, TesthostComponent]
-    })
-    .compileComponents();
+      declarations: [VitamUIInputPositiveNumberComponent, TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -111,5 +107,4 @@ describe('VitamUIInputPositiveNumberComponent', () => {
     testhost.VitamUIInputPositiveNumberComponent.onBlur();
     expect(testhost.VitamUIInputPositiveNumberComponent.focused).toBe(false);
   });
-
 });

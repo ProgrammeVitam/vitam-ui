@@ -49,14 +49,13 @@ describe('CustomerMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ MatDialogModule, VitamUICommonTestModule ],
-      declarations: [ CustomerMenuComponent ],
+      imports: [MatDialogModule, VitamUICommonTestModule],
+      declarations: [CustomerMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
         { provide: CustomerSelectionService, useValue: { getSelectedCustomerId$: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

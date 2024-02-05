@@ -24,16 +24,15 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
-import {FilingHoldingSchemeNode} from './node.interface';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FilingHoldingSchemeNode } from './node.interface';
 
 @Component({
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
-  styleUrls: ['./vitamui-tree-node.component.scss']
+  styleUrls: ['./vitamui-tree-node.component.scss'],
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
-
   @Input() node: FilingHoldingSchemeNode;
   @Input() expanded: boolean;
   @Input() disabled: boolean;
@@ -60,5 +59,4 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
       this.node.checked = !this.node.checked;
     }
   }
-
 }

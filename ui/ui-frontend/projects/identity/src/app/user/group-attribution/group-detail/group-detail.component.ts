@@ -41,22 +41,21 @@ import { GroupService } from '../../../group/group.service';
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
-  styleUrls: ['./group-detail.component.scss']
+  styleUrls: ['./group-detail.component.scss'],
 })
-export class GroupDetailComponent  implements OnInit {
-
+export class GroupDetailComponent implements OnInit {
   @Input() group: Group;
   public displayedGroup: Group;
 
-  public groupProfiles: Profile [];
+  public groupProfiles: Profile[];
 
-  constructor(private groupService: GroupService) { }
+  constructor(private groupService: GroupService) {}
   ngOnInit(): void {
     this.getGroupProfiles(this.group);
   }
 
   getGroupProfiles(group: Group) {
-    if(group){
+    if (group) {
       this.groupService.get(group.id).subscribe((groupRetrieved) => {
         this.groupProfiles = groupRetrieved.profiles;
       });

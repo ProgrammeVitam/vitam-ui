@@ -43,28 +43,28 @@ import { Profile } from 'ui-frontend-common';
 import { ProfileService } from './profile.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProfileResolver implements Resolve<Profile>  {
-
-  constructor(private rngProfileService: ProfileService, private router: Router) { }
+export class ProfileResolver implements Resolve<Profile> {
+  constructor(
+    private rngProfileService: ProfileService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Profile> {
     const id = route.paramMap.get('id');
 
-    return this.rngProfileService.get(id)
-      .pipe(
-        take(1),
-        map((profile: Profile) => {
-          if (profile) {
-            return profile;
-          } else {
-            this.router.navigate(['/']);
+    return this.rngProfileService.get(id).pipe(
+      take(1),
+      map((profile: Profile) => {
+        if (profile) {
+          return profile;
+        } else {
+          this.router.navigate(['/']);
 
-            return null;
-          }
-        })
-      );
+          return null;
+        }
+      }),
+    );
   }
-
 }

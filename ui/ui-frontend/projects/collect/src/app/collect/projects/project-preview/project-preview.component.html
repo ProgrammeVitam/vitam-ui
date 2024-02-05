@@ -1,6 +1,12 @@
-<div *ngIf="(selectedProject | async); let selectedProject; else loadingSpinner">
-  <vitamui-common-sidenav-header [extended]="isPanelextended" [title]="selectedProject.messageIdentifier"
-    [icon]="'vitamui-icon-file'" [hasToolTipOnTitle]="true" [toolTipTitleDuration]="300" (onclose)="emitClose()">
+<div *ngIf="selectedProject | async; let selectedProject; else: loadingSpinner">
+  <vitamui-common-sidenav-header
+    [extended]="isPanelextended"
+    [title]="selectedProject.messageIdentifier"
+    [icon]="'vitamui-icon-file'"
+    [hasToolTipOnTitle]="true"
+    [toolTipTitleDuration]="300"
+    (onclose)="emitClose()"
+  >
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
       <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
@@ -8,18 +14,21 @@
       <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
       </button>
-      <button mat-menu-item
+      <button
+        mat-menu-item
         matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
-        matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300" (click)="updateMetadataDesc()"
-        [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)">
+        matTooltipClass="vitamui-tooltip"
+        [matTooltipShowDelay]="300"
+        (click)="updateMetadataDesc()"
+        [disabled]="updateStarted || !hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole"
+      >
         {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
       </button>
     </vitamui-common-menu-button>
   </vitamui-common-sidenav-header>
 
   <div class="vitamui-sidepanel-body">
-    <mat-tab-group [selectedIndex]="selectedTabIndex"
-      [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+    <mat-tab-group [selectedIndex]="selectedTabIndex" [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
       <!-- DESCRIPTION TAB -->
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate }}">
         <div class="row">

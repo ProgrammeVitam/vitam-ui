@@ -43,12 +43,8 @@ import { TenantApiService } from './tenant-api.service';
 describe('TenantApiService', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        {provide: BASE_URL, useValue: ''},
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '' }],
     }).compileComponents();
   }));
 

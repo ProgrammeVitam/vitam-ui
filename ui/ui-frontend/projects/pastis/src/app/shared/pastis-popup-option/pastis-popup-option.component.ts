@@ -17,8 +17,7 @@ import { CreateNoticeChoiceComponent } from '../../profile/create-notice-choice/
 import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
 import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
 import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
-import { ProfileType } from "../../models/profile-type.enum";
-
+import { ProfileType } from '../../models/profile-type.enum';
 
 function constantToTranslate(edit: boolean) {
   if (edit) {
@@ -43,10 +42,9 @@ function constantToTranslate(edit: boolean) {
 @Component({
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
-  styleUrls: ['./pastis-popup-option.component.scss']
+  styleUrls: ['./pastis-popup-option.component.scss'],
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
-
   popupSaveCancelLabel: string;
   popupSaveTitleDialog: string;
   popupSaveSubTitleDialog: string;
@@ -83,16 +81,16 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
 
   expanded = false;
 
-
-  constructor(private router: Router,
-              private profileService: ProfileService,
-              public dialog: MatDialog,
-              private noticeService: NoticeService,
-              private translateService: TranslateService,
-              private loaderService: NgxUiLoaderService,
-              private notificationService: NotificationService,
-              private route: ActivatedRoute) {
-  }
+  constructor(
+    private router: Router,
+    private profileService: ProfileService,
+    public dialog: MatDialog,
+    private noticeService: NoticeService,
+    private translateService: TranslateService,
+    private loaderService: NgxUiLoaderService,
+    private notificationService: NotificationService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     constantToTranslate.call(this, this.editProfile);
@@ -100,10 +98,9 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   translatedOnChange(): void {
-    this.translateService.onLangChange
-      .subscribe((_: LangChangeEvent) => {
-        constantToTranslate.call(this);
-      });
+    this.translateService.onLangChange.subscribe((_: LangChangeEvent) => {
+      constantToTranslate.call(this);
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -111,7 +108,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   goToSedaView() {
-    const url = document.URL + '/sedaview'
+    const url = document.URL + '/sedaview';
     window.open(url, '_blank');
   }
 
@@ -143,11 +140,10 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     createNoticeChoiceData.okLabel = this.popupCreationOkLabel;
     createNoticeChoiceData.cancelLabel = this.popupCreationCancelLabel;
     const dialogRef = this.dialog.open(CreateNoticeChoiceComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: createNoticeChoiceData
-      }
-    );
+      width: '800px',
+      panelClass: 'pastis-popup-modal-box',
+      data: createNoticeChoiceData,
+    });
     const subscription1 = dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         // console.log(result.action + ' PA ou PUA ?');
@@ -159,11 +155,10 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
           createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           createNoticeData.profileMode = result.action;
           const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
-              width: '800px',
-              panelClass: 'pastis-popup-modal-box',
-              data: createNoticeData
-            }
-          );
+            width: '800px',
+            panelClass: 'pastis-popup-modal-box',
+            data: createNoticeData,
+          });
           const subscription2 = createNoticeDialogRef.afterClosed().subscribe((result) => {
             let retour;
             if (result.success) {
@@ -183,7 +178,6 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
                   this.notificationService.showSuccess('La création de notice a bien été effectué');
                   this.profileService.refreshListProfiles();
                 });
-
               }
             }
           });
@@ -198,5 +192,4 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
 }

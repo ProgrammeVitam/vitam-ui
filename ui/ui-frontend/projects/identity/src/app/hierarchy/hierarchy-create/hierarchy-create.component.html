@@ -4,40 +4,45 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="content">
-    <div class="text large bold">{{'HIERARCHY.INFORMATIONS.MODAL.TITLE' | translate}}</div>
+    <div class="text large bold">{{ 'HIERARCHY.INFORMATIONS.MODAL.TITLE' | translate }}</div>
 
     <div class="d-flex justify-content-between">
       <div class="mt-2">
         <vitamui-common-slide-toggle formControlName="enabled">
-          <span *ngIf="!form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
-          <span *ngIf="form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
+          <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+          <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
         </vitamui-common-slide-toggle>
       </div>
 
       <div class="d-flex">
         <div class="mr-4 mt-2">
-          <div class="text normal light">{{'HIERARCHY.INFORMATIONS.LEVEL' | translate}}</div>
-          <div class="text medium bold">{{authService.user.level}}</div>
+          <div class="text normal light">{{ 'HIERARCHY.INFORMATIONS.LEVEL' | translate }}</div>
+          <div class="text medium bold">{{ authService.user.level }}</div>
         </div>
 
         <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')">
-            {{'COMMON.ERROR.REQUIRED' | translate}}
+            {{ 'COMMON.ERROR.REQUIRED' | translate }}
           </vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">
-            {{'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
+            {{ 'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
           </vitamui-common-input-error>
         </vitamui-common-level-input>
       </div>
     </div>
 
-    <div class="text medium bold mb-3">{{'HIERARCHY.INFORMATIONS.MODAL.DUPLICATE_PROFILE' | translate}}</div>
-    
-    <app-profiles-form formControlName="profileIds" showLevel="true" [tenantIdentifier]="data.tenantId" [applicationNameExclude]="['USERS_APP','ARCHIVE_APP']"></app-profiles-form>
+    <div class="text medium bold mb-3">{{ 'HIERARCHY.INFORMATIONS.MODAL.DUPLICATE_PROFILE' | translate }}</div>
+
+    <app-profiles-form
+      formControlName="profileIds"
+      showLevel="true"
+      [tenantIdentifier]="data.tenantId"
+      [applicationNameExclude]="['USERS_APP', 'ARCHIVE_APP']"
+    ></app-profiles-form>
 
     <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="formValid()">{{'COMMON.SUBMIT' | translate}}</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+      <button type="submit" class="btn primary" [disabled]="formValid()">{{ 'COMMON.SUBMIT' | translate }}</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
   </div>
 </form>

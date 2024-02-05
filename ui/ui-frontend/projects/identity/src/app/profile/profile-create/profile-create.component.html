@@ -1,53 +1,90 @@
 <div class="header">
-    <vitamui-common-progress-bar [index]= "0" [count]="1"></vitamui-common-progress-bar>
+  <vitamui-common-progress-bar [index]="0" [count]="1"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
-    <div class="content vitamui-form">
-        <div class="text large bold">{{'USER_PROFILE.INFORMATIONS.MODAL.TITLE' | translate}}</div>
+  <div class="content vitamui-form">
+    <div class="text large bold">{{ 'USER_PROFILE.INFORMATIONS.MODAL.TITLE' | translate }}</div>
 
-        <div class="mb-2">
-            <vitamui-common-slide-toggle formControlName="enabled">
-                <span *ngIf="!adminProfileForm?.get('enabled').value">{{'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
-                <span *ngIf="adminProfileForm?.get('enabled').value">{{'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
-            </vitamui-common-slide-toggle>
-        </div>
-
-        <vitamui-common-input class="col-9 px-0" formControlName="name" minlength="2" maxlength="100" required [placeholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate">
-            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists">{{'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate}}</vitamui-common-input-error>
-        </vitamui-common-input>
-
-        <vitamui-common-input class="col-9 px-0" formControlName="description" minlength="2" maxlength="250" required [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate">
-            <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-        </vitamui-common-input>
-
-        <div class="d-flex">
-            <div class="mr-4 p-2">
-                <div class="text normal light">{{'USER_PROFILE.INFORMATIONS.LEVEL' | translate}}</div>
-                <div class="text medium bold">{{authService.user.level}}</div>
-            </div>
-            <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')">{{'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}</vitamui-common-input-error>
-            </vitamui-common-level-input>
-        </div>
-
-        <vitamui-common-role-toggle class="d-flex flex-column" formControlName="roles">
-            <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS">{{'USER_PROFILE.INFORMATIONS.USERS_CREATION' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS">{{'USER_PROFILE.INFORMATIONS.MODIF_INFORMATIONS' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_ANONYMIZATION_USERS">{{'USER_PROFILE.INFORMATIONS.ANONYMOUS' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_GENERIC_USERS">{{'USER_PROFILE.INFORMATIONS.USERS_MANAGEMENT' | translate}}</vitamui-common-role>
-        </vitamui-common-role-toggle>
-
-        <div class="d-flex mt-4">
-            <button type="submit" class="btn primary mr-4" [disabled]="firstStepInvalid()">
-                {{'COMMON.SUBMIT' | translate}}
-            </button>
-            <button type="button" class="btn link cancel" (click)="onCancel()">
-                {{'COMMON.UNDO' | translate}}
-            </button>
-        </div>
+    <div class="mb-2">
+      <vitamui-common-slide-toggle formControlName="enabled">
+        <span *ngIf="!adminProfileForm?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+        <span *ngIf="adminProfileForm?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+      </vitamui-common-slide-toggle>
     </div>
+
+    <vitamui-common-input
+      class="col-9 px-0"
+      formControlName="name"
+      minlength="2"
+      maxlength="100"
+      required
+      [placeholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate"
+    >
+      <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required">{{
+        'COMMON.ERROR.REQUIRED' | translate
+      }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists">{{
+        'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate
+      }}</vitamui-common-input-error>
+    </vitamui-common-input>
+
+    <vitamui-common-input
+      class="col-9 px-0"
+      formControlName="description"
+      minlength="2"
+      maxlength="250"
+      required
+      [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"
+    >
+      <vitamui-common-input-error
+        *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+      >
+    </vitamui-common-input>
+
+    <div class="d-flex">
+      <div class="mr-4 p-2">
+        <div class="text normal light">{{ 'USER_PROFILE.INFORMATIONS.LEVEL' | translate }}</div>
+        <div class="text medium bold">{{ authService.user.level }}</div>
+      </div>
+      <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
+        <vitamui-common-input-error
+          *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')"
+          >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
+        >
+        <vitamui-common-input-error
+          *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')"
+          >{{ 'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}</vitamui-common-input-error
+        >
+      </vitamui-common-level-input>
+    </div>
+
+    <vitamui-common-role-toggle class="d-flex flex-column" formControlName="roles">
+      <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{
+        'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate
+      }}</vitamui-common-role>
+      <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS">{{
+        'USER_PROFILE.INFORMATIONS.USERS_CREATION' | translate
+      }}</vitamui-common-role>
+      <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS">{{
+        'USER_PROFILE.INFORMATIONS.MODIF_INFORMATIONS' | translate
+      }}</vitamui-common-role>
+      <vitamui-common-role [name]="roleEnum.ROLE_ANONYMIZATION_USERS">{{
+        'USER_PROFILE.INFORMATIONS.ANONYMOUS' | translate
+      }}</vitamui-common-role>
+      <vitamui-common-role [name]="roleEnum.ROLE_GENERIC_USERS">{{
+        'USER_PROFILE.INFORMATIONS.USERS_MANAGEMENT' | translate
+      }}</vitamui-common-role>
+    </vitamui-common-role-toggle>
+
+    <div class="d-flex mt-4">
+      <button type="submit" class="btn primary mr-4" [disabled]="firstStepInvalid()">
+        {{ 'COMMON.SUBMIT' | translate }}
+      </button>
+      <button type="button" class="btn link cancel" (click)="onCancel()">
+        {{ 'COMMON.UNDO' | translate }}
+      </button>
+    </div>
+  </div>
 </form>

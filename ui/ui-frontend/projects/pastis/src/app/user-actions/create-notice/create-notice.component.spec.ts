@@ -25,11 +25,7 @@ describe('CreateNoticeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateNoticeComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         ProfileService,
@@ -39,9 +35,8 @@ describe('CreateNoticeComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: matDialogData },
         { provide: WINDOW_LOCATION, useValue: window.location },
-      ]
-    })
-      .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

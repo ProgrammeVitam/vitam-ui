@@ -47,7 +47,7 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
 @Component({
   selector: 'app-access-contract-preview',
   templateUrl: './access-contract-preview.component.html',
-  styleUrls: ['./access-contract-preview.component.scss']
+  styleUrls: ['./access-contract-preview.component.scss'],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
@@ -83,7 +83,10 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     this.tabLinks[2] = this.writeTab;
   }
 
-  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {}
+  constructor(
+    private matDialog: MatDialog,
+    private accessContractService: AccessContractService,
+  ) {}
 
   filterEvents(event: any): boolean {
     return (

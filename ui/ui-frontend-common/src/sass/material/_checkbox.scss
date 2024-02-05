@@ -1,43 +1,41 @@
 .mat-checkbox {
+  .mat-checkbox-frame {
+    border-radius: 3px;
+    border: 1px solid var(--vitamui-grey-400);
+    background: white;
+  }
 
-    .mat-checkbox-frame {
-        border-radius: 3px;
-        border: 1px solid var(--vitamui-grey-400);
-        background: white;
-    }
+  &.mat-checkbox-checked .mat-checkbox-background,
+  .mat-checkbox-background {
+    background: transparent;
+    margin: 2px;
+  }
 
-    &.mat-checkbox-checked .mat-checkbox-background,
-    .mat-checkbox-background {
-        background: transparent;
-        margin: 2px;
-    }
+  .mat-checkbox-checkmark-path {
+    stroke: var(--vitamui-grey-300) !important;
+    stroke-width: 5px;
+  }
 
-    .mat-checkbox-checkmark-path {
-        stroke: var(--vitamui-grey-300) !important;
-        stroke-width: 5px;
-    }
-
-    span{
-        font-size:14px;
-        color:var(--vitamui-grey-900);
-    }
-
+  span {
+    font-size: 14px;
+    color: var(--vitamui-grey-900);
+  }
 }
 
 .mat-pseudo-checkbox.vitamui-checkbox {
-    border: 1px solid;
-    color: var(--vitamui-grey-700);
-    box-sizing: content-box;
+  border: 1px solid;
+  color: var(--vitamui-grey-700);
+  box-sizing: content-box;
 
-    &.mat-pseudo-checkbox-checked,
-    &.mat-pseudo-checkbox-indeterminate {
-        background: var(--vitamui-primary);
-        border-color: var(--vitamui-primary);
-    }
+  &.mat-pseudo-checkbox-checked,
+  &.mat-pseudo-checkbox-indeterminate {
+    background: var(--vitamui-primary);
+    border-color: var(--vitamui-primary);
+  }
 
-    &:after {
-        color: $white;
-        top: 4px;
-        left: 3px;
-    }
+  &:after {
+    color: $white;
+    top: 4px;
+    left: 3px;
+  }
 }

@@ -25,7 +25,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
   constructor(
     private formBuilder: FormBuilder,
     private accessionRegistersService: AccessionRegistersService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngAfterViewChecked(): void {
@@ -53,7 +53,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
               transferReply: 'all',
             });
           }
-        })
+        }),
       )
       .subscribe();
   }

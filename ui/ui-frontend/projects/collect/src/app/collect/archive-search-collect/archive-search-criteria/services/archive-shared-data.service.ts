@@ -107,8 +107,7 @@ export class ArchiveSharedDataService {
 
   entireNodesObservable = this.entireNodes.asObservable();
 
-  constructor() {
-  }
+  constructor() {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);

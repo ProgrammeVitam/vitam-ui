@@ -58,12 +58,7 @@ import { OwnerListComponent } from './owner-list/owner-list.component';
     MatTooltipModule,
     VitamUICommonModule,
   ],
-  declarations: [
-    CustomerListComponent,
-    OwnerListComponent,
-  ],
-  exports: [
-    CustomerListComponent,
-  ]
+  declarations: [CustomerListComponent, OwnerListComponent],
+  exports: [CustomerListComponent],
 })
-export class CustomerListModule { }
+export class CustomerListModule {}

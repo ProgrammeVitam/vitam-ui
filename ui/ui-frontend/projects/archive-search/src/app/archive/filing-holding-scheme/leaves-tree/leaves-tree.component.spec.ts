@@ -65,7 +65,7 @@ describe('LeavesTreeComponent', () => {
     searchArchiveUnitsByCriteria: () => of(pagedResult),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true)
+    hasAccessContractPermissions: () => of(true),
   };
   const archiveFacetsServicStube = {
     extractNodesFacetsResults: () => of(),
@@ -102,7 +102,7 @@ describe('LeavesTreeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeavesTreeComponent);
-    component = fixture.componentInstance;    
+    component = fixture.componentInstance;
     component.loadingNodeUnit = true;
     nestedDataSource = new MatTreeNestedDataSource();
     nestedDataSource.data = [

@@ -1,31 +1,40 @@
 <div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
-        <div class="d-flex justify-content-end">
-        <button class="btn link cancel" (click)="emitClose()">
-            <i class="vitamui-icon vitamui-icon-close"></i>
-        </button>
-        </div>
-
-        <div class="title">
-            <div matTooltipClass="vitamui-tooltip">
-                <h4 class="m-0 text-primary">{{fileFormat?.name}} <small>({{fileFormat?.puid}})</small></h4>
-            </div>
-        </div>
+  <div class="vitamui-sidepanel-header">
+    <div class="d-flex justify-content-end">
+      <button class="btn link cancel" (click)="emitClose()">
+        <i class="vitamui-icon vitamui-icon-close"></i>
+      </button>
     </div>
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group" #tabs>
 
-            <mat-tab label="Informations" i18n-label="Information tab@@fileFormatPreviewTabInformation">
-                <!--app-file-format-information-tab [fileFormat]="fileFormat"
+    <div class="title">
+      <div matTooltipClass="vitamui-tooltip">
+        <h4 class="m-0 text-primary">
+          {{ fileFormat?.name }} <small>({{ fileFormat?.puid }})</small>
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group" #tabs>
+      <mat-tab label="Informations" i18n-label="Information tab@@fileFormatPreviewTabInformation">
+        <!--app-file-format-information-tab [fileFormat]="fileFormat"
                     [readOnly]="isPopup || fileFormat?.readonly"></app-file-format-information-tab-->
-              <app-file-format-information-tab [fileFormat]="fileFormat" (updated)="updatedChange($event, 0)" #infoTab></app-file-format-information-tab>
-            </mat-tab>
+        <app-file-format-information-tab
+          [fileFormat]="fileFormat"
+          (updated)="updatedChange($event, 0)"
+          #infoTab
+        ></app-file-format-information-tab>
+      </mat-tab>
 
-            <mat-tab label="Historique" i18n-label="History tab@@fileFormatPreviewTabHistory">
-                <vitamui-common-operation-history-tab [id]="fileFormat?.puid"
-                                                      [identifier]="fileFormat?.puid" collectionName="fileformat" [filter]="filterEvents">
-                </vitamui-common-operation-history-tab>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
+      <mat-tab label="Historique" i18n-label="History tab@@fileFormatPreviewTabHistory">
+        <vitamui-common-operation-history-tab
+          [id]="fileFormat?.puid"
+          [identifier]="fileFormat?.puid"
+          collectionName="fileformat"
+          [filter]="filterEvents"
+        >
+        </vitamui-common-operation-history-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

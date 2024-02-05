@@ -50,9 +50,8 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private startupService: StartupService,
     private authService: AuthService,
-    private userInfoService: UserInfoService
-  ) {
-  }
+    private userInfoService: UserInfoService,
+  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();
@@ -66,8 +65,8 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   }
 
   private resetTab(customer: Customer): void {
-    const title = this.startupService.getConfigStringValue('PORTAL_MESSAGE')
-    const message = this.startupService.getConfigStringValue('PORTAL_TITLE')
+    const title = this.startupService.getConfigStringValue('PORTAL_MESSAGE');
+    const message = this.startupService.getConfigStringValue('PORTAL_TITLE');
 
     if (customer) {
       if (customer.language) {
@@ -81,8 +80,8 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.portalTitle = (this.portalTitles && this.portalTitles[this.language]) ? (this.portalTitles[this.language]) : title;
-    this.portalMessage = (this.portalMessages && this.portalMessages[this.language]) ? this.portalMessages[this.language] : message;
+    this.portalTitle = this.portalTitles && this.portalTitles[this.language] ? this.portalTitles[this.language] : title;
+    this.portalMessage = this.portalMessages && this.portalMessages[this.language] ? this.portalMessages[this.language] : message;
   }
 
   openUpdateHomepageMessage() {

@@ -74,7 +74,10 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
   isToShowRulesList: boolean;
   isToShowBlockedRulesList: boolean;
 
-  constructor(private translateService: TranslateService, private logger: Logger) {}
+  constructor(
+    private translateService: TranslateService,
+    private logger: Logger,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeParameters();
@@ -120,7 +123,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           ? this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CONFLICT')
           : this.translateService.instant(
               'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.' +
-                String(propertiesDUA.find((property) => property.PropertyName === 'FinalAction').PropertyValue).toUpperCase()
+                String(propertiesDUA.find((property) => property.PropertyName === 'FinalAction').PropertyValue).toUpperCase(),
             );
       }
     }
@@ -358,7 +361,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
       case 'ClassificationRule':
         if (property) {
           return this.translateService.instant(
-            'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.CLASSIFICATION_RULE_PROPERTIES.' + property.toUpperCase()
+            'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.CLASSIFICATION_RULE_PROPERTIES.' + property.toUpperCase(),
           );
         }
         break;

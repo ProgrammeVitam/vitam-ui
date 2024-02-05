@@ -36,5 +36,5 @@
  */
 export enum Direction {
   ASCENDANT = 'ASC',
-  DESCENDANT = 'DESC'
+  DESCENDANT = 'DESC',
 }

@@ -65,7 +65,10 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
   confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
 
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {}
+  constructor(
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
@@ -78,7 +81,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
               rule.actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
               rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
               rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE) &&
-            (rule.ruleType === RuleTypeEnum.APPRAISALRULE || rule.ruleType === RuleTypeEnum.STORAGERULE)
+            (rule.ruleType === RuleTypeEnum.APPRAISALRULE || rule.ruleType === RuleTypeEnum.STORAGERULE),
         ).length !== 0;
     });
   }
@@ -96,11 +99,11 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction.finalAction = this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
@@ -117,7 +120,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory,
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
@@ -130,7 +133,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory,
     ).stepValid = false;
     this.isValidValue = false;
     this.showText = false;
@@ -146,14 +149,14 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UPDATE_PROPERTY)
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UPDATE_PROPERTY),
           );
         });
 
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES),
           );
           this.managementRules.forEach((managementRule) => delete managementRule.ruleCategoryAction.finalAction);
         });

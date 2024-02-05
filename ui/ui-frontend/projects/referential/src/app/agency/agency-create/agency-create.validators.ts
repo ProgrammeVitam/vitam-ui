@@ -34,41 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {AgencyService} from '../agency.service';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { AgencyService } from '../agency.service';
 
 @Injectable()
 export class AgencyCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private agencyService: AgencyService) {
-  }
+  constructor(private agencyService: AgencyService) {}
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  };
 
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  }
+  };
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
-
       const properties: any = {};
       properties[field] = control.value;
       const existField: any = {};
       existField[existTag] = true;
 
       return timer(this.debounceTime).pipe(
-        switchMap(() => control.value !== valueToIgnore ? this.agencyService.existsProperties(properties) : of(false)),
+        switchMap(() => (control.value !== valueToIgnore ? this.agencyService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => exists ? existField : null)
+        map((exists: boolean) => (exists ? existField : null)),
       );
     };
   }

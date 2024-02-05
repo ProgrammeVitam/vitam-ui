@@ -116,4 +116,3 @@ export * from './vitamui-common.module';
 export * from './vitamui-global-error-handler';
 export * from './vitamui-roles.enum';
 export * from './vitamui-table/index';
-

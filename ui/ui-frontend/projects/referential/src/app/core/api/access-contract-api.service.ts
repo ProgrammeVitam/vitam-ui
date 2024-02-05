@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessContractApiService extends BaseHttpClient<AccessContract> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/accesscontract');
   }
@@ -64,22 +63,23 @@ export class AccessContractApiService extends BaseHttpClient<AccessContract> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
   /* TODO: Create Access Contract */
   create(accessContract: AccessContract, headers?: HttpHeaders): Observable<AccessContract> {
-    return super.getHttp().post<any>(super.getApiUrl(), accessContract, {headers});
+    return super.getHttp().post<any>(super.getApiUrl(), accessContract, { headers });
   }
 
   check(accessContract: AccessContract, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', accessContract, {observe: 'response', headers})
-      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK ? true : false));
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', accessContract, { observe: 'response', headers })
+      .pipe(map((response: HttpResponse<void>) => (response.status === HTTP_STATUS_OK ? true : false)));
   }
 
-  patch(partialAccessContract: { id: string, [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAccessContract, headers);
   }
-
 }

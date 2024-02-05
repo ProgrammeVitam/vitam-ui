@@ -40,18 +40,17 @@ import { Logger, StartupService } from 'ui-frontend-common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'Portal App';
 
   constructor(
     private startupService: StartupService,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   ngOnInit() {
-
     // If there is no startup data received (maybe an error!)
     // navigate to error route
     this.startupService.printConfiguration();
@@ -59,6 +58,5 @@ export class AppComponent implements OnInit {
       this.logger.log(this, 'startup data does not exists');
       // navigate(['error'], { replaceUrl: true });
     }
-
   }
 }

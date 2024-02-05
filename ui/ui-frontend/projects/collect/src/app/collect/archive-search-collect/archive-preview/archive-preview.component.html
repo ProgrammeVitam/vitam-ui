@@ -22,7 +22,7 @@
       matTooltipClass="vitamui-tooltip"
       [matTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || (!accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole)"
+      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
@@ -40,9 +40,7 @@
     </mat-tab>
 
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}" [disabled]="!isPanelextended">
-      <app-archive-unit-rules-details-tab
-        [archiveUnit]="archiveUnit"
-      ></app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"></app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}" [disabled]="true"> </mat-tab>

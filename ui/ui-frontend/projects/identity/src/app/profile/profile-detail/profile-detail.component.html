@@ -2,7 +2,8 @@
   [title]="profile?.name"
   [icon]="'vitamui-icon-gestion-de-profil'"
   [badge]="profile?.enabled ? 'green' : 'grey'"
-  (onclose)="emitClose()">
+  (onclose)="emitClose()"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
@@ -10,10 +11,14 @@
     <mat-tab [label]="'USER_PROFILE.TAB.INFORMATIONS' | translate">
       <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()"></app-information-tab>
     </mat-tab>
-    
+
     <mat-tab [label]="'USER_PROFILE.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier"
-        collectionName="profiles" [filter]="filterEvents"></vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab
+        [id]="profile?.id"
+        [identifier]="profile?.identifier"
+        collectionName="profiles"
+        [filter]="filterEvents"
+      ></vitamui-common-operation-history-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

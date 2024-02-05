@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -58,34 +57,36 @@ class MatTooltipStubDirective {
 @Component({
   selector: 'app-editable-textarea',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => EditableTextAreaStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => EditableTextAreaStubComponent),
+      multi: true,
+    },
+  ],
 })
 class EditableTextAreaStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
   @Input() asyncValidator: AsyncValidator;
   value: string;
-  writeValue(value: string) { this.value = value; }
+  writeValue(value: string) {
+    this.value = value;
+  }
   registerOnChange() {}
   registerOnTouched() {}
 }
 
 @Component({
-  template: `
-    <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab>
-  `
+  template: ` <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab> `,
 })
 class TestHostComponent {
   profile: Profile = {
     id: '1',
     name: 'ProfileName',
     description: 'Profile description...',
-    level : '',
+    level: '',
     customerId: 'customerId',
-    groupsCount : 1,
+    groupsCount: 1,
     enabled: true,
     usersCount: 42,
     tenantName: 'tenant name',
@@ -93,17 +94,17 @@ class TestHostComponent {
     applicationName: 'CUSTOMERS_APP',
     roles: [
       {
-        name: 'ROLE_MFA_USERS'
+        name: 'ROLE_MFA_USERS',
       },
       {
-        name: 'ROLE_UPDATE_STANDARD_USERS'
+        name: 'ROLE_UPDATE_STANDARD_USERS',
       },
       {
-        name: 'ROLE_GENERIC_USERS'
+        name: 'ROLE_GENERIC_USERS',
       },
     ],
-    readonly : false,
-    externalParamId: null
+    readonly: false,
+    externalParamId: null,
   };
   readOnly = false;
 
@@ -117,27 +118,18 @@ describe('Hierarchy InformationTabComponent', () => {
   beforeEach(waitForAsync(() => {
     const hierarchyServiceMock = { update: of({}), updated: new Subject() };
     const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
-    const authServiceMock = { user : { level: ''}};
+    const authServiceMock = { user: { level: '' } };
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        InformationTabComponent,
-        TestHostComponent,
-        EditableTextAreaStubComponent,
-        MatTooltipStubDirective,
-      ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent, MatTooltipStubDirective],
       providers: [
         { provide: HierarchyService, useValue: hierarchyServiceMock },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: {} },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -151,7 +143,6 @@ describe('Hierarchy InformationTabComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have all the fields', () => {
       let element = fixture.nativeElement.querySelector('vitamui-common-editable-input[formControlName=name]');
       expect(element).toBeTruthy('name input');
@@ -167,12 +158,9 @@ describe('Hierarchy InformationTabComponent', () => {
       expect(element).toBeTruthy('enabled toggle');
       expect(element.textContent).toContain('HIERARCHY.INFORMATIONS.ACTIVE_SWITCH');
     });
-
   });
 
   describe('Component', () => {
-
     // TODO
   });
-
 });

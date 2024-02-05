@@ -44,22 +44,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { UnitsFormComponent } from './units-form.component';
 
-
-
 @NgModule({
-  imports: [
-    CommonModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatTooltipModule,
-    VitamUICommonModule,
-  ],
-  declarations: [
-    UnitsFormComponent,
-  ],
-  exports: [
-    UnitsFormComponent,
-  ]
+  imports: [CommonModule, CommonModule, ReactiveFormsModule, MatSelectModule, MatTooltipModule, VitamUICommonModule],
+  declarations: [UnitsFormComponent],
+  exports: [UnitsFormComponent],
 })
-export class UnitsFormModule { }
+export class UnitsFormModule {}

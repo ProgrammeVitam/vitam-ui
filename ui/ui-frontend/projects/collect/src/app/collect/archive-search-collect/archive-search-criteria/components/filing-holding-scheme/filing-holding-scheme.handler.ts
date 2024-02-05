@@ -74,30 +74,33 @@ export class FilingHoldingSchemeHandler {
     return nodesChecked;
   }
 
-  public static unflatAndFilterTreeNodes(nodes: FilingHoldingSchemeNode[],
-    attachmenUnitsFromCollect: Unit[]): FilingHoldingSchemeNode[] {
-
+  public static unflatAndFilterTreeNodes(nodes: FilingHoldingSchemeNode[], attachmenUnitsFromCollect: Unit[]): FilingHoldingSchemeNode[] {
     if (!nodes) {
       return [];
     }
-    const leaves: FilingHoldingSchemeNode[] = []
+    const leaves: FilingHoldingSchemeNode[] = [];
 
     for (const node of nodes) {
-      
       if (node.count < 1) {
         continue;
       }
       if (!node.children || node.children.length < 1) {
-        if (!attachmenUnitsFromCollect.some(
-        unitFromCollect => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id)) {
-        continue;
-      }
+        if (
+          !attachmenUnitsFromCollect.some(
+            (unitFromCollect) => unitFromCollect[VitamInternalFields.MANAGEMENT].UpdateOperation.SystemId == node.id,
+          )
+        ) {
+          continue;
+        }
         leaves.push(copyNodeWithoutChildren(node));
         continue;
       }
 
       // Add the parent children
-      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(node.children, attachmenUnitsFromCollect);
+      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.unflatAndFilterTreeNodes(
+        node.children,
+        attachmenUnitsFromCollect,
+      );
       const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
       if (addedCount < node.count) {
         const nodeCopy = copyNodeWithoutChildren(node);
@@ -113,34 +116,35 @@ export class FilingHoldingSchemeHandler {
     return leaves;
   }
 
-  public static addChildren(parentNode: FilingHoldingSchemeNode,
-    units: Unit[],): FilingHoldingSchemeNode[] {
+  public static addChildren(parentNode: FilingHoldingSchemeNode, units: Unit[]): FilingHoldingSchemeNode[] {
     const addedNodes: FilingHoldingSchemeNode[] = [];
     units.forEach((unit) => {
       const child = FilingHoldingSchemeHandler.foundChild(parentNode, unit[VitamInternalFields.ID]);
       if (!child) {
         const node = FilingHoldingSchemeHandler.convertUAToNode(unit);
         parentNode.children.push(node);
-        addedNodes.push(node)
+        addedNodes.push(node);
       }
     });
     return addedNodes;
   }
 
   public static unitHasDirectParent(unit: Unit, parentId: string): boolean {
-    return unit[VitamInternalFields.UNIT_UPS].findIndex(unitupId => unitupId === parentId) !== -1;
+    return unit[VitamInternalFields.UNIT_UPS].findIndex((unitupId) => unitupId === parentId) !== -1;
   }
 
   public static foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
     if (!parentNode.children) {
       parentNode.children = [];
     }
-    return parentNode.children.find(nodeChild => nodeChild.id === childId);
+    return parentNode.children.find((nodeChild) => nodeChild.id === childId);
   }
 
-  public static addChildrenAndCheckPaternity(parentNode: FilingHoldingSchemeNode,
+  public static addChildrenAndCheckPaternity(
+    parentNode: FilingHoldingSchemeNode,
     units: Unit[],
-    initCount: boolean = false): MatchingNodesNumbers {
+    initCount: boolean = false,
+  ): MatchingNodesNumbers {
     const matchingNodes = new MatchingNodesNumbers();
     units.forEach((unit) => {
       if (!FilingHoldingSchemeHandler.unitHasDirectParent(unit, parentNode.id)) {
@@ -165,9 +169,7 @@ export class FilingHoldingSchemeHandler {
     return matchingNodes;
   }
 
-  public static addChildrenRecursively(parentNodes: FilingHoldingSchemeNode[],
-    units: Unit[],
-    initCount: boolean = false): number {
+  public static addChildrenRecursively(parentNodes: FilingHoldingSchemeNode[], units: Unit[], initCount: boolean = false): number {
     if (!parentNodes || parentNodes.length === 0) {
       return 0;
     }
@@ -185,7 +187,7 @@ export class FilingHoldingSchemeHandler {
           let child = FilingHoldingSchemeHandler.foundChild(parentNode, unit[VitamInternalFields.ID]);
           if (!child) {
             // adding child only if it didn't exist
-            child = FilingHoldingSchemeHandler.convertUAToNode(unit)
+            child = FilingHoldingSchemeHandler.convertUAToNode(unit);
             parentNode.children.push(child);
             nodeAdded += 1;
             if (initCount) {
@@ -206,9 +208,8 @@ export class FilingHoldingSchemeHandler {
   }
 
   public static getGraphIds(nodes: FilingHoldingSchemeNode[]): string[] {
-    if (!nodes || nodes.length < 1)
-      return []
-    const knownIds: string[] = []
+    if (!nodes || nodes.length < 1) return [];
+    const knownIds: string[] = [];
     for (const node of nodes) {
       knownIds.push(node.id);
       knownIds.push(...FilingHoldingSchemeHandler.getGraphIds(node.children));
@@ -216,11 +217,9 @@ export class FilingHoldingSchemeHandler {
     return knownIds;
   }
 
-  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[],
-    facets: ResultFacet[]): ResultFacet[] {
+  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): ResultFacet[] {
     const knownIds = FilingHoldingSchemeHandler.getGraphIds(nodes);
-    return facets.filter(facet => !knownIds.includes(facet.node));
-
+    return facets.filter((facet) => !knownIds.includes(facet.node));
   }
 
   public static convertUAToNode(unit: Unit): FilingHoldingSchemeNode {
@@ -234,7 +233,7 @@ export class FilingHoldingSchemeHandler {
       checked: false,
       isLoadingChildren: false,
       canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
-      count: 0
+      count: 0,
     };
   }
 }

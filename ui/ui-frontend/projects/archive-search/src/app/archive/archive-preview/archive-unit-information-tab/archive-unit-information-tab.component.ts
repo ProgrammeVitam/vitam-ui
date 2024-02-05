@@ -97,7 +97,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private dialog: MatDialog,
     private startupService: StartupService,
     private translateService: TranslateService,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   descriptionLevels: Option[] = [
@@ -273,11 +273,11 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
               startDate: this.getStartDate(this.previousValue.startDate),
               endDate: this.getStartDate(this.previousValue.endDate),
             },
-            formData
-          )
+            formData,
+          ),
         ),
         switchMap((formData) => of(formData)),
-        catchError((error) => of(error))
+        catchError((error) => of(error)),
       )
       .subscribe((formData: any) => this.logger.info('value au = ', formData));
   }
@@ -444,7 +444,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       },
       (error: any) => {
         this.logger.error('Error message :', error);
-      }
+      },
     );
   }
 
@@ -484,10 +484,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     return unit?.Description
       ? unit?.Description
       : unit.Description_
-      ? unit.Description_?.fr
         ? unit.Description_?.fr
-        : unit.Description_?.en
-      : unit.Description_?.en;
+          ? unit.Description_?.fr
+          : unit.Description_?.en
+        : unit.Description_?.en;
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {

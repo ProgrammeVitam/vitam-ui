@@ -11,8 +11,12 @@
       <th>
         <div class="vitamui-table-header">
           <span i18n="Agency id column header@@agencyListIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+          <vitamui-common-order-by-button
+            orderByKey="Identifier"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
         </div>
       </th>
       <th>
@@ -32,11 +36,15 @@
         <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.description }}</td>
         <td>
           <div class="actions">
-            <button class="btn-circle primary" (click)="deleteAgencyDialog(agency)" *vitamuiCommonHasRole="{
-              appId: 'AGENCIES_APP',
-              tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-              role: 'ROLE_DELETE_AGENCIES'
-            }">
+            <button
+              class="btn-circle primary"
+              (click)="deleteAgencyDialog(agency)"
+              *vitamuiCommonHasRole="{
+                appId: 'AGENCIES_APP',
+                tenantIdentifier: +this.genericUserRole.tenantIdentifier,
+                role: 'ROLE_DELETE_AGENCIES'
+              }"
+            >
               <i class="vitamui-icon vitamui-icon-trash"></i>
             </button>
           </div>
@@ -48,8 +56,12 @@
 
 <div class="vitamui-table-footer">
   <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && agencyService.canLoadMore" (click)="loadMore()" class="btn"
-    i18n="Show more results@@tableMoreResultButton">
+  <button
+    *ngIf="!pending && infiniteScrollDisabled && agencyService.canLoadMore"
+    (click)="loadMore()"
+    class="btn"
+    i18n="Show more results@@tableMoreResultButton"
+  >
     Afficher plus de résultats...
   </button>
   <span *ngIf="!pending && !agencyService.canLoadMore">Fin des résultats</span>

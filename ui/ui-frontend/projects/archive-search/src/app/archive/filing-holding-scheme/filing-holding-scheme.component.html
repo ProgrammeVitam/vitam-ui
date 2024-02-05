@@ -9,7 +9,8 @@
     (closePanel)="emitClose()"
     (addToSearchCriteria)="addToSearchCriteria($event)"
     (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
-    (switchView)="switchViewAllNodes()">
+    (switchView)="switchViewAllNodes()"
+  >
   </app-classification-tree>
 </div>
 
@@ -21,6 +22,7 @@
     [searchRequestResultFacets]="requestResultFacets"
     [loadingNodeUnit]="loadingArchiveUnit.LEAVE"
     (addToSearchCriteria)="addToSearchCriteria($event)"
-    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')">
+    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
+  >
   </app-leaves-tree>
 </div>

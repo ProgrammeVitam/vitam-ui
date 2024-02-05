@@ -48,18 +48,16 @@ describe('VitamuiTreeNodeComponent', () => {
     vitamId: 'vitamId',
     parents: [],
     checked: true,
-    hidden: true
+    hidden: true,
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-      ],
+      imports: [],
       declarations: [VitamuiTreeNodeComponent, MockTruncatePipe],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VitamuiTreeNodeComponent);
     component = fixture.componentInstance;
@@ -101,7 +99,6 @@ describe('VitamuiTreeNodeComponent', () => {
   });
 
   it('should emit labelClick event and node should be checked when property labelIsLinkedToCheckbox is set to true and label is clicked', () => {
-
     // Link label and checkbox
     component.labelIsLinkedToCheckbox = true;
     component.node.checked = false;
@@ -116,14 +113,4 @@ describe('VitamuiTreeNodeComponent', () => {
     expect(component.node.checked).toBeTruthy();
     expect(component.labelClick.emit).toHaveBeenCalled();
   });
-
 });
-
-
-
-
-
-
-
-
-

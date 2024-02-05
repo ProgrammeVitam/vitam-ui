@@ -162,10 +162,10 @@
                   operationStatus(operation) === 'OK'
                     ? 'text-green'
                     : operationStatus(operation) === 'KO'
-                    ? 'text-red'
-                    : operationStatus(operation) === 'WARNING'
-                    ? 'text-orange'
-                    : 'text-red-fatal'
+                      ? 'text-red'
+                      : operationStatus(operation) === 'WARNING'
+                        ? 'text-orange'
+                        : 'text-red-fatal'
                 "
                 >{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</span
               >

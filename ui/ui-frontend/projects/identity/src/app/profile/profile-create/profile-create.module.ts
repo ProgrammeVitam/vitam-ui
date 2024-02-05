@@ -65,10 +65,7 @@ import { ProfileCreateComponent } from './profile-create.component';
     VitamUICommonModule,
     RoleToggleModule,
   ],
-  declarations: [
-    ProfileCreateComponent,
-  ],
+  declarations: [ProfileCreateComponent],
   entryComponents: [ProfileCreateComponent],
-
 })
-export class ProfileCreateModule { }
+export class ProfileCreateModule {}

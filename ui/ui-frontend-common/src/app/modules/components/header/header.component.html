@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="header">
   <div class="header-logo">
-    <a class="d-flex" href="{{portalUrl}}" >
-      <img alt="header logo" [src]="headerLogoUrl">
+    <a class="d-flex" href="{{ portalUrl }}">
+      <img alt="header logo" [src]="headerLogoUrl" />
     </a>
   </div>
 
@@ -20,7 +20,8 @@
         [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
         [items]="appTenants"
         [selectedItem]="selectedTenant"
-        (itemSelected)="updateTenant($event)">
+        (itemSelected)="updateTenant($event)"
+      >
       </vitamui-common-item-select>
 
       <!-- customer selection -->
@@ -30,15 +31,16 @@
         [selectedLabel]="'SELECT_CUSTOMER.SELECTED' | translate"
         [items]="customers"
         [selectedItem]="selectedCustomer"
-        (itemSelected)="updateCustomer($event)">
+        (itemSelected)="updateCustomer($event)"
+      >
       </vitamui-common-item-select>
     </div>
 
     <div class="d-flex align-items-center pl-3 mr-4 account" [matMenuTriggerFor]="accountMenu">
       <vitamui-common-user-photo class="mr-2" [photo]="currentUser?.photo"></vitamui-common-user-photo>
       <div class="mx-2">
-        <div class="text caption bold">{{'HEADER.PROFILE' | translate}}</div>
-        <div class="text normal bold">{{currentUser?.firstname}} {{currentUser.lastname}}</div>
+        <div class="text caption bold">{{ 'HEADER.PROFILE' | translate }}</div>
+        <div class="text normal bold">{{ currentUser?.firstname }} {{ currentUser.lastname }}</div>
       </div>
 
       <div class="ml-3">
@@ -48,9 +50,11 @@
       <div class="account-menu">
         <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
           <ng-container>
-            <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{'HEADER.MY_ACCOUNT' | translate}}</button>
-            <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!currentUser?.superUser">{{'HEADER.NAVIGATE_AS' | translate}}</button>
-            <button mat-menu-item (click)="logout()">{{'HEADER.LOGOUT' | translate}}</button>
+            <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{ 'HEADER.MY_ACCOUNT' | translate }}</button>
+            <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!currentUser?.superUser">
+              {{ 'HEADER.NAVIGATE_AS' | translate }}
+            </button>
+            <button mat-menu-item (click)="logout()">{{ 'HEADER.LOGOUT' | translate }}</button>
           </ng-container>
         </mat-menu>
       </div>
@@ -58,7 +62,11 @@
 
     <div>
       <button mat-mini-fab class="apps-button" (click)="openMenu()" aria-label="applications button">
-        <i class="vitamui-icon vitamui-icon-apps-colored"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span></i>
+        <i class="vitamui-icon vitamui-icon-apps-colored"
+          ><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span
+          ><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span
+          ><span class="path9"></span
+        ></i>
       </button>
     </div>
   </div>

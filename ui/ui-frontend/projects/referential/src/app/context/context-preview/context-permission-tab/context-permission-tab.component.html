@@ -11,7 +11,8 @@
       </li>
       <li *ngIf="permission.accessContracts?.length > 0">
         <span class="label">Contrat(s) d'entrée</span>
-        {{ getAccessContractNames(permission.accessContracts) }}</li>
+        {{ getAccessContractNames(permission.accessContracts) }}
+      </li>
       <li *ngIf="permission.ingestContracts?.length > 0">
         <span class="label">Contrat(s) d'accès : </span>
         {{ getIngestContractNames(permission.ingestContracts) }}

@@ -39,12 +39,10 @@ import { Event } from 'ui-frontend-common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'lastEvent'
+  name: 'lastEvent',
 })
 export class LastEventPipe implements PipeTransform {
-
   transform(event: Event): Event {
-    return (event && event.events && event.events.length > 0) ? event.events[event.events.length - 1] : null;
+    return event && event.events && event.events.length > 0 ? event.events[event.events.length - 1] : null;
   }
-
 }

@@ -34,34 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 
-import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
-import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
-import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
-import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
-import {FileFormatListComponent} from './file-format-list/file-format-list.component';
+import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
+import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
+import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
+import { FileFormatListComponent } from './file-format-list/file-format-list.component';
 
 @Component({
   selector: 'app-file-format',
   templateUrl: './file-format.component.html',
-  styleUrls: ['./file-format.component.scss']
+  styleUrls: ['./file-format.component.scss'],
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit {
-
   search = '';
 
-  @ViewChild(FileFormatListComponent, {static: true}) fileFormatListComponentListComponent: FileFormatListComponent;
+  @ViewChild(FileFormatListComponent, { static: true }) fileFormatListComponentListComponent: FileFormatListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(
+    public dialog: MatDialog,
+    route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+  ) {
     super(route, globalEventService);
   }
 
   openCreateFileFormatDialog() {
-    const dialogRef = this.dialog.open(FileFormatCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
+    const dialogRef = this.dialog.open(FileFormatCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -80,20 +83,18 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
     this.search = search || '';
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   showFileFormat(item: FileFormat) {
     this.openPanel(item);
   }
 
   openFileFormatImportDialog() {
-    const dialogRef = this.dialog.open(
-      VitamUIImportDialogComponent, {
-        panelClass: 'vitamui-modal',
-        data: Referential.FILE_FORMAT,
-        disableClose: true
-      });
+    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+      panelClass: 'vitamui-modal',
+      data: Referential.FILE_FORMAT,
+      disableClose: true,
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
         this.refreshList();

@@ -43,20 +43,19 @@ import { EditableFieldComponent } from '../editable-field.component';
 export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-editable-input',
   templateUrl: './editable-input.component.html',
   styleUrls: ['./editable-input.component.scss'],
-  providers: [EDITABLE_INPUT_VALUE_ACCESSOR]
+  providers: [EDITABLE_INPUT_VALUE_ACCESSOR],
 })
 export class EditableInputComponent extends EditableFieldComponent {
-
   @Input() maxlength: number;
   @Input() type = 'text';
-  @Input() writeDisabled : boolean;
+  @Input() writeDisabled: boolean;
   @ViewChild('input') private input: ElementRef;
 
   constructor(elementRef: ElementRef) {
@@ -67,5 +66,4 @@ export class EditableInputComponent extends EditableFieldComponent {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }
-
 }

@@ -40,14 +40,8 @@ import { NgModule } from '@angular/core';
 import { VitamUIFieldErrorComponent } from './vitamui-field-error.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    VitamUIFieldErrorComponent,
-  ],
-  exports: [
-    VitamUIFieldErrorComponent,
-  ]
+  imports: [CommonModule],
+  declarations: [VitamUIFieldErrorComponent],
+  exports: [VitamUIFieldErrorComponent],
 })
-export class VitamUIFieldErrorModule { }
+export class VitamUIFieldErrorModule {}

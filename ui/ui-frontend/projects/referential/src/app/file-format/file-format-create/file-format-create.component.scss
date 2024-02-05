@@ -1,5 +1,5 @@
 .form-group {
-    padding-bottom: 30px;
+  padding-bottom: 30px;
 }
 
 .field-tooltip {
@@ -19,33 +19,33 @@
 }
 
 label {
-    color: var(--vitamui-grey-900);
-    font-size: 15px;
-    line-height: normal;
-    margin-bottom: 10px;
-    display: block;
+  color: var(--vitamui-grey-900);
+  font-size: 15px;
+  line-height: normal;
+  margin-bottom: 10px;
+  display: block;
 
-    .required-marker {
-        color: var(--vitamui-primary);
-    }
+  .required-marker {
+    color: var(--vitamui-primary);
+  }
 
-    small {
-        color: #a5a5a5;
-        font-size: inherit;
-    }
+  small {
+    color: #a5a5a5;
+    font-size: inherit;
+  }
 }
 
 .underline {
-    text-decoration: underline;
-    cursor: pointer;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .input-file {
-    display: none;
+  display: none;
 }
 
 .inline-label {
-    padding-top: 5px;
+  padding-top: 5px;
 }
 
 // STEP 1
@@ -59,111 +59,110 @@ label {
 
 // STEP 2
 .label-password-revocation-delay {
-    width: 255px;
-    margin-right: 40px;
+  width: 255px;
+  margin-right: 40px;
 }
 
 .field-password-revocation-delay {
-    width: 180px;
+  width: 180px;
 }
 
 .field-domains {
-    max-width: 460px;
+  max-width: 460px;
 }
 
 button.primary {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 button.back {
-    margin-top: 60px;
+  margin-top: 60px;
 }
 
 button > small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .hint {
-    color: #a5a5a5;
-    font-size: 15px;
+  color: #a5a5a5;
+  font-size: 15px;
 }
 
 .drag-and-drop-area {
-    margin-left: 10%;
-    width: 300px;
-    height: 120px;
-    border: 2px dashed var(--vitamui-secondary);
-    border-radius: 6px;
-    box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
-    background: white;
-    margin-bottom: 60px;
+  margin-left: 10%;
+  width: 300px;
+  height: 120px;
+  border: 2px dashed var(--vitamui-secondary);
+  border-radius: 6px;
+  box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
+  background: white;
+  margin-bottom: 60px;
 
-    p {
-        padding-top: 20px;
-    }
+  p {
+    padding-top: 20px;
+  }
 }
 
 .on-over {
-    border: 2px solid var(--vitamui-secondary);
+  border: 2px solid var(--vitamui-secondary);
 
-    p {
-        color: white;
-    }
+  p {
+    color: white;
+  }
 
-    .drop-area {
-        background: var(--vitamui-grey-900);
-        opacity: 0.9;
-        color: white;
-    }
+  .drop-area {
+    background: var(--vitamui-grey-900);
+    opacity: 0.9;
+    color: white;
+  }
 }
 
 .image-container {
-    position: absolute;
-    width: 300px;
-    height: 120px;
-    vertical-align: middle;
+  position: absolute;
+  width: 300px;
+  height: 120px;
+  vertical-align: middle;
 }
 
 .logo-image {
-    max-height: 100%;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .drop-area {
-    position: absolute;
-    width: 296px;
-    height: 116px;
+  position: absolute;
+  width: 296px;
+  height: 116px;
 }
 
 .upload-text {
-    padding-top: 5%;
-    font-size: 15px;
-    line-height: 18px;
-    color: #a5a5a5;
+  padding-top: 5%;
+  font-size: 15px;
+  line-height: 18px;
+  color: #a5a5a5;
 
-    .upload {
-        color: var(--vitamui-secondary);
-    }
-
+  .upload {
+    color: var(--vitamui-secondary);
+  }
 }
 
 .logo-drop {
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--vitamui-grey-900);
-    text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--vitamui-grey-900);
+  text-align: center;
 
-    small {
-        color: #a5a5a5;
-    }
+  small {
+    color: #a5a5a5;
+  }
 }

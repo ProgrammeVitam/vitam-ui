@@ -14,19 +14,19 @@
         <h5 class="m-0 text-primary">{{ event?.id | truncate: 30 }}</h5>
       </div>
     </div>
-    <button mat-button class="btn btn-primary button-maring"
-            *ngIf="showDownloadButton"
-            (click)="downloadReports()"
-            [disabled]="disableDownloadButton">
+    <button
+      mat-button
+      class="btn btn-primary button-maring"
+      *ngIf="showDownloadButton"
+      (click)="downloadReports()"
+      [disabled]="disableDownloadButton"
+    >
       {{ downloadButtonTitle }}
     </button>
-    <button mat-button class="btn btn-primary button-maring"
-            *ngIf="hasATRDownloadable()"
-            (click)="downloadATR()">
+    <button mat-button class="btn btn-primary button-maring" *ngIf="hasATRDownloadable()" (click)="downloadATR()">
       {{ 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_ATR' | translate }}
     </button>
   </div>
-
 
   <div class="vitamui-sidepanel-body">
     <mat-tab-group class="preview-tab-group">
@@ -40,8 +40,7 @@
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents
-              externes</label>
+            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents externes</label>
             <div class="word-break">{{ event?.agIdExt }}</div>
           </div>
           <div class="read-only-field">

@@ -65,19 +65,9 @@ import { EditablePatternsComponent } from './editable-patterns/editable-patterns
     LevelInputModule,
     PatternModule,
     VitamUICommonModule,
-    CustomParamsModule
+    CustomParamsModule,
   ],
-  declarations: [
-    EditableDomainInputComponent,
-    EditablePatternsComponent,
-    EditableKeystoreComponent,
-    EditableCustomParamsComponent,
-  ],
-  exports: [
-    EditableDomainInputComponent,
-    EditablePatternsComponent,
-    EditableKeystoreComponent,
-    EditableCustomParamsComponent,
-  ]
+  declarations: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
+  exports: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
 })
-export class EditableFieldModule { }
+export class EditableFieldModule {}

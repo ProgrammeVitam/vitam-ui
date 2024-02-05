@@ -83,7 +83,7 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<UpdateUnitsaMetadataComponent>,
     private dialogRefToClose: MatDialogRef<UpdateUnitsaMetadataComponent>,
     private translateService: TranslateService,
-    private archiveCollectService: ArchiveCollectService
+    private archiveCollectService: ArchiveCollectService,
   ) {}
 
   ngOnDestroy(): void {
@@ -130,7 +130,7 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
           this.isLoadingData = false;
           this.dialogRef.close(true);
           this.logger.error('Error message :', error);
-        }
+        },
       );
   }
 

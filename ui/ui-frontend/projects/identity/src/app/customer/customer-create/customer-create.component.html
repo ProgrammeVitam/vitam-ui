@@ -10,10 +10,17 @@
 
         <vitamui-common-input class="col-6 pl-0" formControlName="code" required [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate">
           <ng-container *ngIf="form.get('code')?.touched">
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern">{{ 'COMMON.ERROR.WRONG_FORMAT' | translate }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength">{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength } }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode">{{'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate}}
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required">{{
+              'COMMON.ERROR.REQUIRED' | translate
+            }}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern">{{
+              'COMMON.ERROR.WRONG_FORMAT' | translate
+            }}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength">{{
+              'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength }
+            }}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
+              >{{ 'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate }}
             </vitamui-common-input-error>
           </ng-container>
         </vitamui-common-input>
@@ -23,8 +30,11 @@
             class="col-6 pl-0"
             formControlName="name"
             maxlength="100"
-required          [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
-            <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required">{{'COMMON.ERROR.REQUIRED' | translate}}
+            required
+            [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate"
+          >
+            <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
             </vitamui-common-input-error>
           </vitamui-common-input>
           <vitamui-common-input
@@ -44,7 +54,7 @@ required          [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
           <vitamui-common-input
             class="col-12 pl-0"
             formControlName="street"
-            maxlength="{{maxStreetLength}}"
+            maxlength="{{ maxStreetLength }}"
             required
             [placeholder]="'COMMON.ADRESS.STREET' | translate"
           >
@@ -97,8 +107,12 @@ required          [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
           </div>
         </ng-container>
 
-        <vitamui-common-input class="col-12 pl-0" formControlName="internalCode" maxlength="20"
-        [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate">
+        <vitamui-common-input
+          class="col-12 pl-0"
+          formControlName="internalCode"
+          maxlength="20"
+          [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate"
+        >
         </vitamui-common-input>
 
         <div class="d-flex">
@@ -259,26 +273,32 @@ required          [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
     </cdk-step>
 
     <cdk-step>
-     <div class="content">
+      <div class="content">
         <div class="text large bold">{{ 'CUSTOMER.OWNER.CREATE.TITLE' | translate }} "{{ customerInfo.name }}"</div>
-      <div>
-        <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
+        <div>
+          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
           <p class="hint">
             {{ 'CUSTOMER.OWNER.CREATE.PROOF_ELEMENTS' | translate }}
           </p>
         </div>
 
-      <div class="actions">
-        <button type="button" class="btn primary"
-        cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">{{'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate}}</button>
-        <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        <div class="actions">
+          <button
+            type="button"
+            class="btn primary"
+            cdkStepperNext
+            [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid"
+          >
+            {{ 'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate }}
+          </button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
       </div>
-      <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
-  </cdk-step>
+    </cdk-step>
 
-  <cdk-step>
-    <div class="content">
+    <cdk-step>
+      <div class="content">
         <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ getOwnerName() }}"</div>
         <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
           <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
@@ -294,7 +314,7 @@ required          [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
         </div>
         <ng-container *ngTemplateOutlet="back"></ng-container>
       </div>
-  </cdk-step>
+    </cdk-step>
 
     <ng-template #cancel>
       <button type="button" class="btn cancel link ml-3" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

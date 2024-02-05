@@ -2,10 +2,15 @@
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
     <ng-container *ngSwitchCase="'fileUploaded'">
       <span class="p-e-10">
-      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> 
-      {{ data?.messageKey | translate}}
+        <i class="vitamui-icon vitamui-icon-archive-ingest"></i>
+        {{ data?.messageKey | translate }}
       </span>
-      <button *ngIf="data?.buttonAction !== undefined && data?.buttonMessageKey !== undefined" type="button" class="btn white" (click)="data?.buttonAction()">
+      <button
+        *ngIf="data?.buttonAction !== undefined && data?.buttonMessageKey !== undefined"
+        type="button"
+        class="btn white"
+        (click)="data?.buttonAction()"
+      >
         {{ data?.buttonMessageKey | translate }}
       </button>
     </ng-container>

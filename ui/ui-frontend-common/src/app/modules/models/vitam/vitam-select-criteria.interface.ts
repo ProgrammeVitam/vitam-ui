@@ -34,37 +34,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-interface VitamQueryKeyValue { [key: string]: any; }
-interface VitamQueryKeyValues { [key: string]: any[]; }
+interface VitamQueryKeyValue {
+  [key: string]: any;
+}
+interface VitamQueryKeyValues {
+  [key: string]: any[];
+}
 
-interface VitamQueryOperatorAnd { $and: VitamSelectOperator | VitamSelectOperator[]; }
-interface VitamQueryOperatorOr { $or: VitamSelectOperator | VitamSelectOperator[]; }
-interface VitamQueryOperatorNot { $not: VitamSelectOperator | VitamSelectOperator[]; }
+interface VitamQueryOperatorAnd {
+  $and: VitamSelectOperator | VitamSelectOperator[];
+}
+interface VitamQueryOperatorOr {
+  $or: VitamSelectOperator | VitamSelectOperator[];
+}
+interface VitamQueryOperatorNot {
+  $not: VitamSelectOperator | VitamSelectOperator[];
+}
 
-interface VitamQueryOperatorEqual { $eq: VitamQueryKeyValue; }
-interface VitamQueryOperatorNotEqual { $ne: VitamQueryKeyValue; }
-interface VitamQueryOperatorLowerThan { $lt: VitamQueryKeyValue; }
-interface VitamQueryOperatorLowerThanEqual { $lte: VitamQueryKeyValue; }
-interface VitamQueryOperatorGreaterThan { $gt: VitamQueryKeyValue; }
-interface VitamQueryOperatorGreaterThanEqual { $gte: VitamQueryKeyValue; }
+interface VitamQueryOperatorEqual {
+  $eq: VitamQueryKeyValue;
+}
+interface VitamQueryOperatorNotEqual {
+  $ne: VitamQueryKeyValue;
+}
+interface VitamQueryOperatorLowerThan {
+  $lt: VitamQueryKeyValue;
+}
+interface VitamQueryOperatorLowerThanEqual {
+  $lte: VitamQueryKeyValue;
+}
+interface VitamQueryOperatorGreaterThan {
+  $gt: VitamQueryKeyValue;
+}
+interface VitamQueryOperatorGreaterThanEqual {
+  $gte: VitamQueryKeyValue;
+}
 interface VitamQueryOperatorRange {
   $range: {
-    [key: string]: { $lt?: Date, $lte?: Date, $gt?: Date, $gte?: Date }
+    [key: string]: { $lt?: Date; $lte?: Date; $gt?: Date; $gte?: Date };
   };
 }
-interface VitamQueryOperatorIn { $in: VitamQueryKeyValues; }
-interface VitamQueryOperatorNotIn { $nin: VitamQueryKeyValues; }
+interface VitamQueryOperatorIn {
+  $in: VitamQueryKeyValues;
+}
+interface VitamQueryOperatorNotIn {
+  $nin: VitamQueryKeyValues;
+}
 
 export type VitamSelectOperator =
-  VitamQueryOperatorAnd |
-  VitamQueryOperatorOr |
-  VitamQueryOperatorNot |
-  VitamQueryOperatorEqual |
-  VitamQueryOperatorNotEqual |
-  VitamQueryOperatorLowerThan |
-  VitamQueryOperatorLowerThanEqual |
-  VitamQueryOperatorGreaterThan |
-  VitamQueryOperatorGreaterThanEqual |
-  VitamQueryOperatorRange |
-  VitamQueryOperatorIn |
-  VitamQueryOperatorNotIn;
+  | VitamQueryOperatorAnd
+  | VitamQueryOperatorOr
+  | VitamQueryOperatorNot
+  | VitamQueryOperatorEqual
+  | VitamQueryOperatorNotEqual
+  | VitamQueryOperatorLowerThan
+  | VitamQueryOperatorLowerThanEqual
+  | VitamQueryOperatorGreaterThan
+  | VitamQueryOperatorGreaterThanEqual
+  | VitamQueryOperatorRange
+  | VitamQueryOperatorIn
+  | VitamQueryOperatorNotIn;

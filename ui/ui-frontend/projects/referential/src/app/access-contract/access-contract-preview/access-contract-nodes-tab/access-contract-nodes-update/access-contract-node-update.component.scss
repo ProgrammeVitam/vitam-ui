@@ -1,98 +1,96 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 .content {
-    padding: 30px 60px 60px 60px;
+  padding: 30px 60px 60px 60px;
 }
 
 .form-group {
-    margin-top: 40px;
-    margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .drag-and-drop-area {
-    margin-left: 10%;
-    width: 300px;
-    height: 120px;
-    border: 2px dashed var(--vitamui-secondary);
-    border-radius: 6px;
-    box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
-    background: $white;
-    margin-bottom: 60px;
+  margin-left: 10%;
+  width: 300px;
+  height: 120px;
+  border: 2px dashed var(--vitamui-secondary);
+  border-radius: 6px;
+  box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
+  background: $white;
+  margin-bottom: 60px;
 
-    p {
-        padding-top: 20px;
-    }
+  p {
+    padding-top: 20px;
+  }
 }
 
 .on-over {
-    border: 2px solid var(--vitamui-secondary);
+  border: 2px solid var(--vitamui-secondary);
 
-    p {
-        color: $white;
-    }
+  p {
+    color: $white;
+  }
 
-    .drop-area {
-        background: var(--vitamui-grey-900);
-        opacity: 0.9;
-        color: $white;
-    }
+  .drop-area {
+    background: var(--vitamui-grey-900);
+    opacity: 0.9;
+    color: $white;
+  }
 }
 
 .upload-text {
-    padding-top: 5%;
-    font-size: 15px;
-    line-height: 18px;
-    color: #a5a5a5;
+  padding-top: 5%;
+  font-size: 15px;
+  line-height: 18px;
+  color: #a5a5a5;
 
-    .upload {
-        color: var(--vitamui-secondary);
-    }
-
+  .upload {
+    color: var(--vitamui-secondary);
+  }
 }
 
 .underline {
-    text-decoration: underline;
-    cursor: pointer;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .input-file {
-    display: none;
+  display: none;
 }
 
 .logo-drop {
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--vitamui-grey-900);
-    text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--vitamui-grey-900);
+  text-align: center;
 }
 
 .image-container {
-    position: absolute;
-    width: 300px;
-    height: 120px;
-    vertical-align: middle;
+  position: absolute;
+  width: 300px;
+  height: 120px;
+  vertical-align: middle;
 }
 
 .logo-image {
-    max-height: 100%;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .drop-area {
-    position: absolute;
-    width: 296px;
-    height: 116px;
-
+  position: absolute;
+  width: 296px;
+  height: 116px;
 }
 
 .cancel {
-    margin-left: 10px;
+  margin-left: 10px;
 }

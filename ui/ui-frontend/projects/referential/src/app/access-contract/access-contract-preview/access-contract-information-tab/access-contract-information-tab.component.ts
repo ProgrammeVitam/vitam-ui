@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Option} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {AccessContractCreateValidators} from '../../access-contract-create/access-contract-create.validators';
-import {AccessContractService} from '../../access-contract.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Option } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
+import { AccessContractService } from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
-  styleUrls: ['./access-contract-information-tab.component.scss']
+  styleUrls: ['./access-contract-information-tab.component.scss'],
 })
 export class AccessContractInformationTabComponent {
   @Input()
@@ -75,17 +75,17 @@ export class AccessContractInformationTabComponent {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators
+    private accessContractCreateValidators: AccessContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -94,7 +94,7 @@ export class AccessContractInformationTabComponent {
       description: [null],
       accessLog: ['ACTIVE'],
       ruleCategoryToFilter: [new Array<string>()],
-      creationDate: [null]
+      creationDate: [null],
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
@@ -129,12 +129,12 @@ export class AccessContractInformationTabComponent {
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    {key: 'StorageRule', label: "Durée d'utilité courante", info: ''},
-    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
-    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
-    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
-    {key: 'AccessRule', label: 'Délai de communicabilité', info: ''},
-    {key: 'AppraisalRule', label: "Durée d'utilité administrative", info: ''}
+    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
+    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
+    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
+    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
+    { key: 'AccessRule', label: 'Délai de communicabilité', info: '' },
+    { key: 'AppraisalRule', label: "Durée d'utilité administrative", info: '' },
   ];
   previousValue = (): AccessContract => {
     return this._accessContract;
@@ -168,7 +168,7 @@ export class AccessContractInformationTabComponent {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         if (formData.status) {
           if (formData.status === 'ACTIVE') {
@@ -179,7 +179,7 @@ export class AccessContractInformationTabComponent {
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -198,13 +198,13 @@ export class AccessContractInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 
   resetForm(accessContract: AccessContract) {
     this.statusControl.setValue(accessContract.status === 'ACTIVE');
     this.accessLogControl.setValue(accessContract.accessLog === 'ACTIVE');
-    this.form.reset(accessContract, {emitEvent: false});
+    this.form.reset(accessContract, { emitEvent: false });
   }
 }

@@ -38,13 +38,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import {BaseHttpClient, BASE_URL, Group, PageRequest, PaginatedResponse, SearchQuery} from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Group, PageRequest, PaginatedResponse, SearchQuery } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GroupApiService extends BaseHttpClient<Group> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/groups');
   }
@@ -65,7 +64,7 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.getOneWithEmbedded(id, embedded, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -73,12 +72,12 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.create(group, headers);
   }
 
-  patch(groupPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
+  patch(groupPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
     return super.patch(groupPartial, headers);
   }
 
   getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
+    let params = new HttpParams();
     if (query) {
       params = params.set('criteria', JSON.stringify(query));
     }

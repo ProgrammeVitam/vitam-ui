@@ -41,12 +41,8 @@ import { TooltipModule } from './../../directives/tooltip/tooltip.module';
 import { VitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TooltipModule,
-    RouterModule
-  ],
+  imports: [CommonModule, TooltipModule, RouterModule],
   declarations: [VitamUIMenuTileComponent],
   exports: [VitamUIMenuTileComponent],
 })
-export class VitamUIMenuTileModule { }
+export class VitamUIMenuTileModule {}

@@ -194,7 +194,7 @@ const routes: Routes = [
     path: 'logbook-management-operation',
     loadChildren: () =>
       import('./logbook-management-operation/logbook-management-operation.module').then(
-        (module) => module.LogbookManagementOperationModule
+        (module) => module.LogbookManagementOperationModule,
       ),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },

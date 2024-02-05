@@ -40,10 +40,9 @@ import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'vitamui-common-role',
   templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss']
+  styleUrls: ['./role.component.scss'],
 })
 export class RoleComponent implements OnInit {
-
   @Input() checked: boolean;
   @Input() name: string;
   @Input() disabled: boolean;
@@ -53,13 +52,11 @@ export class RoleComponent implements OnInit {
   // tslint:disable-next-line:variable-name
   readonly _checkedChange = new Subject<boolean>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   get checkedChange(): Observable<boolean> {
     return this._checkedChange.asObservable();
   }
-
 }

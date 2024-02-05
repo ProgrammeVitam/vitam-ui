@@ -73,21 +73,10 @@ import { TenantService } from './tenant.service';
     OwnerCreateModule,
     TenantCreateModule,
     MatSidenavModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
   ],
-  declarations: [
-    CustomerComponent,
-    CustomerPopupComponent
-  ],
-  exports: [ ],
-  providers: [
-    CustomerResolver,
-    CustomerService,
-    CustomerDataService,
-    OwnerResolver,
-    OwnerService,
-    TenantResolver,
-    TenantService,
-  ]
+  declarations: [CustomerComponent, CustomerPopupComponent],
+  exports: [],
+  providers: [CustomerResolver, CustomerService, CustomerDataService, OwnerResolver, OwnerService, TenantResolver, TenantService],
 })
-export class CustomerModule { }
+export class CustomerModule {}

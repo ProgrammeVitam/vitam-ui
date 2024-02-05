@@ -40,7 +40,7 @@ export function newNode(
   currentId: string,
   currentChildren: FilingHoldingSchemeNode[] = [],
   currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
-  currentCount?: number
+  currentCount?: number,
 ): FilingHoldingSchemeNode {
   return {
     id: currentId,

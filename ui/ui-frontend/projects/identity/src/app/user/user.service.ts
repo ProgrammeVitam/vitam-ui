@@ -62,7 +62,7 @@ export class UserService extends SearchService<User> {
     private userApi: UserApiService,
     private snackBarService: VitamUISnackBarService,
     private rngProfileService: ProfileService,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, userApi, '');
   }
@@ -82,8 +82,8 @@ export class UserService extends SearchService<User> {
             },
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+      ),
     );
   }
 
@@ -115,8 +115,8 @@ export class UserService extends SearchService<User> {
             },
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+      ),
     );
   }
 
@@ -131,8 +131,8 @@ export class UserService extends SearchService<User> {
             translateParams: { param1: user.firstname, param2: user.lastname },
           });
         },
-        (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-      )
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
+      ),
     );
   }
 

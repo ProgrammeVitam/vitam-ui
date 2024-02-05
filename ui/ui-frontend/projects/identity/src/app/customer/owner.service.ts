@@ -43,32 +43,33 @@ import { OwnerApiService } from './owner-api.service';
 
 @Injectable()
 export class OwnerService {
-
   updated = new Subject<Owner>();
 
-  constructor(private ownerApi: OwnerApiService, private snackBarService: VitamUISnackBarService) { }
+  constructor(
+    private ownerApi: OwnerApiService,
+    private snackBarService: VitamUISnackBarService,
+  ) {}
 
   get(id: string): Observable<Owner> {
     return this.ownerApi.getOne(id);
   }
 
   create(owner: Owner): Observable<Owner> {
-    return this.ownerApi.create(owner)
-      .pipe(
-        tap(
-          (newOwner: Owner) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.OWNER_CREATE',
-              translateParams:{
-                param1: newOwner.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+    return this.ownerApi.create(owner).pipe(
+      tap(
+        (newOwner: Owner) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.OWNER_CREATE',
+            translateParams: {
+              param1: newOwner.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 
   exists(code: string): Observable<any> {
@@ -76,28 +77,27 @@ export class OwnerService {
     const criterionCode: Criterion = { key: 'code', value: code, operator: Operators.equals };
     criterionArray.push(criterionCode);
     const query: SearchQuery = { criteria: criterionArray };
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.ownerApi.checkExistsByParam(params);
   }
 
-  patch(partialOwner: { id: string, [key: string]: any }): Observable<Owner> {
-    return this.ownerApi.patch(partialOwner)
-      .pipe(
-        tap((updatedOwner: Owner) => this.updated.next(updatedOwner)),
-        tap(
-          (updatedOwner: Owner) => {
-            this.snackBarService.open({
-              message: 'SHARED.SNACKBAR.OWNER_UPDATE',
-              translateParams:{
-                param1: updatedOwner.name,
-              }
-            });
-          },
-          (error) => {
-            this.snackBarService.open({ message: error.error.message, translate: false });
-          }
-        )
-      );
+  patch(partialOwner: { id: string; [key: string]: any }): Observable<Owner> {
+    return this.ownerApi.patch(partialOwner).pipe(
+      tap((updatedOwner: Owner) => this.updated.next(updatedOwner)),
+      tap(
+        (updatedOwner: Owner) => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.OWNER_UPDATE',
+            translateParams: {
+              param1: updatedOwner.name,
+            },
+          });
+        },
+        (error) => {
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
   }
 }

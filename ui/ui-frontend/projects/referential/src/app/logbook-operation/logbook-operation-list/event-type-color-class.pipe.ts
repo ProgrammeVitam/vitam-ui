@@ -41,14 +41,13 @@ const colorClassMap: { [key: string]: string } = {
   OK: 'success',
   WARNING: 'warning',
   KO: 'error',
-  FATAL: 'error'
+  FATAL: 'error',
 };
 
 @Pipe({
-  name: 'eventTypeColorClass'
+  name: 'eventTypeColorClass',
 })
 export class EventTypeColorClassPipe implements PipeTransform {
-
   transform(event: Event): string {
     if (!event.events || event.events.length <= 0) {
       return '';
@@ -62,5 +61,4 @@ export class EventTypeColorClassPipe implements PipeTransform {
 
     return colorClassMap[lastEvent.outcome] || '';
   }
-
 }

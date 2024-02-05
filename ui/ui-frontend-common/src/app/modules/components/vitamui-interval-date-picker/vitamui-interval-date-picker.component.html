@@ -40,7 +40,7 @@
       <div class="col-2" *ngIf="showDateMax">
         <div class="date-filter">
           <span *ngIf="!dateRangeFilterForm.get('dateMax').value; else showMax" (click)="pickerEnd.open()">
-            {{'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate}}
+            {{ 'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate }}
           </span>
           <ng-template #showMax>
             <span (click)="pickerEnd.open()">

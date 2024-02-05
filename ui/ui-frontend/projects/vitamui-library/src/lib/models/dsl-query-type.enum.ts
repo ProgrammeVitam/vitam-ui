@@ -35,6 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum DslQueryType {
-    ARCHIVE_UNIT = 'ARCHIVE_UNIT',
-    TECHNICAL_OBJECT_GROUP = 'TECHNICAL_OBJECT_GROUP'
+  ARCHIVE_UNIT = 'ARCHIVE_UNIT',
+  TECHNICAL_OBJECT_GROUP = 'TECHNICAL_OBJECT_GROUP',
 }

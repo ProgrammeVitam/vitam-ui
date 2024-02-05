@@ -106,7 +106,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
     private formBuilder: FormBuilder,
     private userCreateValidators: UserCreateValidators,
     private countryService: CountryService,
-    private startupService: StartupService
+    private startupService: StartupService,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
@@ -154,7 +154,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         map(() => diff(this.form.getRawValue(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.user.id }, formData)),
-        switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((user: User) => this.resetForm(this.form, user, this.customer, this.adminUserProfile, this.readOnly));
 
@@ -164,7 +164,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         map(() => diff(this.userInfoForm.getRawValue(), this.previousUserInfoValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.userInfo.id }, formData)),
-        switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null)))),
       )
       .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(this.form, userInfo));
 

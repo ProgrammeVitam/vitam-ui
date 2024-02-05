@@ -38,22 +38,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { CollapseContainerDirective } from './collapse-container.directive';
-import { CollapseTriggerForDirective} from './collapse-trigger-for.directive';
+import { CollapseTriggerForDirective } from './collapse-trigger-for.directive';
 import { CollapseDirective } from './collapse.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    CollapseDirective,
-    CollapseTriggerForDirective,
-    CollapseContainerDirective,
-  ],
-  exports: [
-    CollapseDirective,
-    CollapseTriggerForDirective,
-    CollapseContainerDirective,
-  ]
+  imports: [CommonModule],
+  declarations: [CollapseDirective, CollapseTriggerForDirective, CollapseContainerDirective],
+  exports: [CollapseDirective, CollapseTriggerForDirective, CollapseContainerDirective],
 })
-export class CollapseDirectiveModule { }
+export class CollapseDirectiveModule {}

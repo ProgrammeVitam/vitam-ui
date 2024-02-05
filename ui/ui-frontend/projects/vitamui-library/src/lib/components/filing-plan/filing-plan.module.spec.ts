@@ -1,4 +1,4 @@
-import {FilingPlanModule} from './filing-plan.module';
+import { FilingPlanModule } from './filing-plan.module';
 
 describe('FilingPlanModule', () => {
   let filingPlanModule: FilingPlanModule;

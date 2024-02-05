@@ -38,7 +38,10 @@ export class ProjectsService extends SearchService<Project> {
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
 
-  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
+  constructor(
+    http: HttpClient,
+    private projectsApiService: ProjectsApiService,
+  ) {
     super(http, projectsApiService, 'ALL');
   }
 
@@ -54,7 +57,7 @@ export class ProjectsService extends SearchService<Project> {
     return this.projectsApiService.getById(projectId);
   }
 
-  public deleteProjectId(projectId: string) : Observable<void> {
+  public deleteProjectId(projectId: string): Observable<void> {
     return this.projectsApiService.deletebyId(projectId);
   }
 }

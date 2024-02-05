@@ -46,7 +46,11 @@ export class HasRoleDirective implements OnInit, OnDestroy {
 
   private viewEmbedded = false;
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private securityService: SecurityService) {}
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private viewContainer: ViewContainerRef,
+    private securityService: SecurityService,
+  ) {}
 
   ngOnInit(): void {}
 

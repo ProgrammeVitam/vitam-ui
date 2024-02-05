@@ -41,13 +41,7 @@ import { HasRoleDirective } from './has-role.directive';
 
 @NgModule({
   imports: [],
-  declarations: [
-    HasRoleDirective,
-    HasAnyRoleDirective,
-  ],
-  exports: [
-    HasRoleDirective,
-    HasAnyRoleDirective,
-  ]
+  declarations: [HasRoleDirective, HasAnyRoleDirective],
+  exports: [HasRoleDirective, HasAnyRoleDirective],
 })
-export class SecurityModule { }
+export class SecurityModule {}

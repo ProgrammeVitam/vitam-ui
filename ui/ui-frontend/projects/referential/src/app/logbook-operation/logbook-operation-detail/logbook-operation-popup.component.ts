@@ -46,15 +46,13 @@ import { ActivatedRoute } from '@angular/router';
       [tenantIdentifier]="tenantIdentifier"
       [isPopup]="true"
     ></app-logbook-operation-detail>
-  `
+  `,
 })
 export class LogbookOperationPopupComponent implements OnInit {
-
   eventId: string;
   tenantIdentifier: number;
 
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.eventId = this.route.snapshot.paramMap.get('id');
@@ -64,5 +62,4 @@ export class LogbookOperationPopupComponent implements OnInit {
   closePopup() {
     window.close();
   }
-
 }

@@ -1630,6 +1630,17 @@
                             </configuration>
                         </execution>
                         <execution>
+                            <id>npm run prettier:ci</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>run prettier:ci</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
                             <id>npm run build</id>
                             <goals>
                                 <goal>npm</goal>

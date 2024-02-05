@@ -1,20 +1,20 @@
 :host::ng-deep {
-    .mat-select-trigger {
-        border-bottom: 1px solid var(--vitamui-primary);
-    }
+  .mat-select-trigger {
+    border-bottom: 1px solid var(--vitamui-primary);
+  }
 }
 
 input {
-    width: 100%;
+  width: 100%;
 }
 
 mat-form-field {
-    width: 40%!important;
+  width: 40% !important;
 }
 
 .layer {
-    margin: 0 0.5rem;
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--vitamui-grey-800);
+  margin: 0 0.5rem;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--vitamui-grey-800);
 }

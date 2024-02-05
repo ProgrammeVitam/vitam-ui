@@ -11,12 +11,12 @@
   float: right;
 }
 
-.btn-container{
+.btn-container {
   margin-top: 15px;
   margin-left: -40px;
 }
 
-.text-enregistrement{
+.text-enregistrement {
   position: static;
   height: 22px;
   left: 0;
@@ -33,7 +33,7 @@
   letter-spacing: 0.1px;
 
   /* Secondary/Secondary-900 */
-  color: #050C15;
+  color: #050c15;
 
   /* Inside Auto Layout */
   flex: none;
@@ -42,8 +42,8 @@
   margin: 10px 0;
 }
 
-.pastis-form{
-  margin-left:30px;
+.pastis-form {
+  margin-left: 30px;
 }
 
 .pastis-dialog-config-title {
@@ -92,7 +92,6 @@
   line-height: 24px;
   color: var(--vitamui-grey-600);
 }
-
 
 .pastis-dialog-confirm-buttons {
   position: relative;

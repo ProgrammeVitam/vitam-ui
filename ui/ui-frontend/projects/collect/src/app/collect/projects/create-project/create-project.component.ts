@@ -31,7 +31,15 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, Logger, Project, Transaction, ProjectStatus, TransactionStatus } from 'ui-frontend-common';
+import {
+  ExternalParameters,
+  ExternalParametersService,
+  Logger,
+  Project,
+  Transaction,
+  ProjectStatus,
+  TransactionStatus,
+} from 'ui-frontend-common';
 import { FilingPlanMode } from 'vitamui-library';
 
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
@@ -105,7 +113,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private externalParameterService: ExternalParametersService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   get linkParentIdControl() {
@@ -237,32 +245,33 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       .then((response) => {
         this.createdProject = response;
         transaction.projectId = this.createdProject.id;
-        this.transactionsService.create(transaction)
-        .toPromise()
-        .then((response) => {
-          this.createdTransaction = response;
-          return this.uploadService.uploadZip(this.tenantIdentifier, this.createdTransaction.id);
-        })
-        .then((uploadOperation) => {
-          uploadOperation.subscribe(
-            () => {},
-            (error: any) => {
-              this.logger.error(error);
-            },
-            () => {
-              this.uploadZipCompleted = true;
-              this.closeModal = true;
-              this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
-                panelClass: 'vitamui-snack-bar',
-                duration: 10000,
-              });
-            }
-          );
-        })
-        .catch((error) => {
-          this.logger.error(error);
-        });
-      })
+        this.transactionsService
+          .create(transaction)
+          .toPromise()
+          .then((response) => {
+            this.createdTransaction = response;
+            return this.uploadService.uploadZip(this.tenantIdentifier, this.createdTransaction.id);
+          })
+          .then((uploadOperation) => {
+            uploadOperation.subscribe(
+              () => {},
+              (error: any) => {
+                this.logger.error(error);
+              },
+              () => {
+                this.uploadZipCompleted = true;
+                this.closeModal = true;
+                this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
+                  panelClass: 'vitamui-snack-bar',
+                  duration: 10000,
+                });
+              },
+            );
+          })
+          .catch((error) => {
+            this.logger.error(error);
+          });
+      });
   }
 
   /*** Step 3 : Description du versement ***/
@@ -294,13 +303,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       name: this.projectForm.controls.messageIdentifier.value,
     };
     this.mapProjectInternalFields(projectToUpdate);
-    this.projectsService.updateProject(projectToUpdate).subscribe(
-      () => {
-              this.mapProjectInternalFieldsToTransaction(transactionToUpdate);
-              this.transactionsService.updateTransaction(transactionToUpdate).subscribe();
-              this.move();
-            }
-    );
+    this.projectsService.updateProject(projectToUpdate).subscribe(() => {
+      this.mapProjectInternalFieldsToTransaction(transactionToUpdate);
+      this.transactionsService.updateTransaction(transactionToUpdate).subscribe();
+      this.move();
+    });
   }
 
   mapProjectInternalFields(project: Project) {

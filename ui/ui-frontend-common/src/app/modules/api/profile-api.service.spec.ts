@@ -41,14 +41,12 @@ import { BASE_URL } from '../injection-tokens';
 import { ProfileApiService } from './profile-api.service';
 
 describe('ProfileApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-    ],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+    }),
+  );
 
   it('should be created', () => {
     const service: ProfileApiService = TestBed.inject(ProfileApiService);

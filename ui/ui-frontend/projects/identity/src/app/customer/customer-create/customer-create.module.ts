@@ -68,13 +68,10 @@ import { CustomerAlertingComponent } from './customer-alerting/customer-alerting
     OwnerFormModule,
     VitamUICommonModule,
     CustomerPreviewModule,
-    MatDialogModule
+    MatDialogModule,
   ],
-  declarations: [
-    CustomerCreateComponent,
-    CustomerAlertingComponent
-  ],
+  declarations: [CustomerCreateComponent, CustomerAlertingComponent],
   entryComponents: [CustomerCreateComponent, CustomerAlertingComponent],
-  providers: [CustomerCreateValidators]
+  providers: [CustomerCreateValidators],
 })
-export class CustomerCreateModule { }
+export class CustomerCreateModule {}
