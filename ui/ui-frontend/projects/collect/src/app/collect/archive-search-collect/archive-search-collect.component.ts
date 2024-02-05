@@ -267,13 +267,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         })
       )
       .subscribe((transaction) => {
-        const { status } = transaction;
-
         this.fetchUserAccessContractFromExternalParameters();
-
-        this.isNotOpen$.next(status !== TransactionStatus.OPEN || true);
-        this.isNotReady$.next(status !== TransactionStatus.READY || true);
-
+        if (!!transaction) {
+          this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
+          this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+        } else {
+          this.isNotOpen$.next(true);
+          this.isNotReady$.next(true);
+        }
         this.submit();
       });
     this.projectName = this.route.snapshot.queryParamMap.get('projectName');
