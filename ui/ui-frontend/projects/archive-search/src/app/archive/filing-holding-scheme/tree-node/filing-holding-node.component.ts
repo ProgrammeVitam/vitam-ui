@@ -40,10 +40,9 @@ import { FilingHoldingSchemeNode } from '../../models/node.interface';
 @Component({
   selector: 'app-filing-holding-node',
   templateUrl: './filing-holding-node.component.html',
-  styleUrls: ['./filing-holding-node.component.scss']
+  styleUrls: ['./filing-holding-node.component.scss'],
 })
 export class FilingHoldingNodeComponent implements OnInit {
-
   @Input() node: FilingHoldingSchemeNode;
   @Input() expanded: boolean;
   @Input() disabled: boolean;
@@ -51,10 +50,7 @@ export class FilingHoldingNodeComponent implements OnInit {
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() labelClick = new EventEmitter<void>();
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

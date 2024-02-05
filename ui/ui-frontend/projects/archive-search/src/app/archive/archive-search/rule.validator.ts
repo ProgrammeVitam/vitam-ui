@@ -68,7 +68,7 @@ export class RuleValidator {
         return timer(this.debounceTime).pipe(
           switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
           take(1),
-          map((exists: boolean) => (exists ? null : existField))
+          map((exists: boolean) => (exists ? null : existField)),
         );
       } else {
         return of(false);

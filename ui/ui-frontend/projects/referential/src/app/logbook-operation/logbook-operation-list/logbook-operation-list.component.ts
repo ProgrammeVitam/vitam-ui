@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
 import {
   Component,
@@ -47,15 +47,15 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
-import {merge, Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {EventFilter} from '../event-filter.interface';
-import {LOGBOOK_OPERATION_CATEGORIES} from '../logbook-operation-constants';
-import {LogbookSearchService} from '../logbook-search.service';
-import {LogbookDownloadService} from "../logbook-download.service";
+import { merge, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { EventFilter } from '../event-filter.interface';
+import { LOGBOOK_OPERATION_CATEGORIES } from '../logbook-operation-constants';
+import { LogbookSearchService } from '../logbook-search.service';
+import { LogbookDownloadService } from '../logbook-download.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -65,20 +65,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./logbook-operation-list.component.scss'],
   animations: [
     trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
+      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
 
     trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
+      state('collapsed', style({ transform: 'rotate(180deg)' })),
+      state('expanded', style({ transform: 'none' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
-  ]
+  ],
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges {
-
   @Input() tenantIdentifier: number;
 
   // tslint:disable-next-line:no-input-rename
@@ -100,8 +99,8 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   // tslint:disable-next-line:variable-name
   private _searchFilters: Readonly<EventFilter>;
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<LogbookOperationListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<LogbookOperationListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   @Output() eventClick = new EventEmitter<Event>();
 
@@ -116,24 +115,29 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   filterMap: { [key: string]: any[] } = {
     operationCategories: null,
   };
-  operationCategoriesFilterOptions: Array<{ value: string, label: string }> = [];
+  operationCategoriesFilterOptions: Array<{ value: string; label: string }> = [];
 
-  constructor(public logbookSearchService: LogbookSearchService,
-              private logbookDownloadService: LogbookDownloadService,) {
+  constructor(
+    public logbookSearchService: LogbookSearchService,
+    private logbookDownloadService: LogbookDownloadService,
+  ) {
     super(logbookSearchService);
   }
 
   ngOnInit() {
     this.pending = true;
-    this.updatedData.subscribe(() => this.onDataSourceReloaded())
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    this.updatedData.subscribe(() => this.onDataSourceReloaded());
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange).pipe(
+      debounceTime(FILTER_DEBOUNCE_TIME_MS),
+    );
     searchCriteriaChange.subscribe(() => {
       this.refreshList();
     });
     this.refreshOperationCategoriesOptions();
     this.refreshList();
-    this.logbookDownloadService.logbookOperationsReloaded.subscribe(logbookOperationsReloaded => this.updateLogbookOperations(logbookOperationsReloaded))
+    this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperationsReloaded) =>
+      this.updateLogbookOperations(logbookOperationsReloaded),
+    );
   }
 
   private onDataSourceReloaded() {
@@ -144,10 +148,10 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
-    logbookOperationsReloaded.forEach(logbookOperation => {
-      const index = this.dataSource.findIndex(o => o.id === logbookOperation.id);
+    logbookOperationsReloaded.forEach((logbookOperation) => {
+      const index = this.dataSource.findIndex((o) => o.id === logbookOperation.id);
       this.dataSource[index] = logbookOperation;
-    })
+    });
   }
 
   buildCriteriaFromSearch() {
@@ -181,7 +185,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   refreshOperationCategoriesOptions() {
     this.operationCategoriesFilterOptions = LOGBOOK_OPERATION_CATEGORIES.map((operationCategory) => ({
       value: operationCategory.key,
-      label: operationCategory.label
+      label: operationCategory.label,
     }));
   }
 

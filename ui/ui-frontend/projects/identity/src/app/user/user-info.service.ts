@@ -40,31 +40,27 @@ import { Observable, Subject } from 'rxjs';
 import { EMPTY } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from 'ui-frontend-common';
-import {
-  BaseUserInfoApiService, SearchService
-} from 'ui-frontend-common';
+import { BaseUserInfoApiService, SearchService } from 'ui-frontend-common';
 
 import { UserInfo } from 'ui-frontend-common';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
-
   userInfoUpdated = new Subject<UserInfo>();
 
   constructor(
     private userInfoServiceApi: BaseUserInfoApiService,
     private snackBar: VitamUISnackBar,
 
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, { getAllPaginated: () => EMPTY }, '');
   }
 
-  create(userInfo: UserInfo) : Observable<UserInfo>{
+  create(userInfo: UserInfo): Observable<UserInfo> {
     return this.userInfoServiceApi.create(userInfo);
   }
-
 
   get(id: string): Observable<UserInfo> {
     return this.userInfoServiceApi.getOne(id);
@@ -74,7 +70,7 @@ export class UserInfoService extends SearchService<UserInfo> {
     return this.userInfoServiceApi.getMyUserInfo();
   }
 
-  patch(partialUser: { id: string, [key: string]: any }, user: User): Observable<UserInfo> {
+  patch(partialUser: { id: string; [key: string]: any }, user: User): Observable<UserInfo> {
     return this.userInfoServiceApi.patch(partialUser).pipe(
       tap((response) => this.userInfoUpdated.next(response)),
       tap(
@@ -88,12 +84,10 @@ export class UserInfoService extends SearchService<UserInfo> {
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
-
-
 }

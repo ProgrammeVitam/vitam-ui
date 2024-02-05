@@ -74,7 +74,7 @@
       "SUBROGATION_DENIED": "Your subrogation request has been refused",
       "SUBROGATION_UNAVAILABLE": "Subrogation for this user is temporarily impossible",
       "ACCOUNT_UPDATE": "Information has been updated",
-      "OIDC_UPDATE":"For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place"
+      "OIDC_UPDATE": "For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place"
     }
   },
   "CUSTOMER": {

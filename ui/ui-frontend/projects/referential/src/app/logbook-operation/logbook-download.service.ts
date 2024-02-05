@@ -34,16 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
-import {
-  Event,
-  LogbookApiService,
-  LogbookOperationReportState,
-  SearchService,
-  VitamUISnackBar
-} from 'ui-frontend-common';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Event, LogbookApiService, LogbookOperationReportState, SearchService, VitamUISnackBar } from 'ui-frontend-common';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';
@@ -55,7 +49,6 @@ const DOWNLOAD_TYPE_OBJECT = 'object';
   providedIn: 'root',
 })
 export class LogbookDownloadService extends SearchService<Event> {
-
   logbookOperationsReloaded = new Subject<Event[]>();
 
   private evTypeAllowed = [
@@ -74,7 +67,11 @@ export class LogbookDownloadService extends SearchService<Event> {
   ];
   private evTypeProcAllowed = ['AUDIT', 'EXPORT_DIP', 'ARCHIVE_TRANSFER', 'TRANSFER_REPLY', 'INGEST', 'MASS_UPDATE'];
 
-  constructor(private logbookApiService: LogbookApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private logbookApiService: LogbookApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient,
+  ) {
     super(http, logbookApiService);
   }
 

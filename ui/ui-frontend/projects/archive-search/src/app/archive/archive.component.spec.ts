@@ -50,14 +50,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  SearchBarModule,
-  SecurityService,
-  WINDOW_LOCATION
-} from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, SearchBarModule, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';

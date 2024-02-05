@@ -3,10 +3,9 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'vitamui-common-menu-button',
   templateUrl: './vitamui-menu-button.component.html',
-  styleUrls: ['./vitamui-menu-button.component.scss']
+  styleUrls: ['./vitamui-menu-button.component.scss'],
 })
 export class VitamuiMenuButtonComponent {
-
   /** Set the menu overlay display (by defaut at start) */
   @Input() overlayPos: 'start' | 'end' = 'start';
 
@@ -26,5 +25,5 @@ export class VitamuiMenuButtonComponent {
   @Input()
   public disabled = false;
 
-  constructor() { }
+  constructor() {}
 }

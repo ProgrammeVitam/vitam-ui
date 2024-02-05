@@ -52,5 +52,4 @@ export interface Profile extends Id {
   tenantName?: string;
   usersCount?: number;
   photo?: string;
-
 }

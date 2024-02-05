@@ -42,15 +42,14 @@ import { NotificationSnackBarComponent } from '../notification-snack-bar/notific
 import { NotificationType } from '../notification-type.enum';
 
 @Component({
-  templateUrl: './subrogation-snack-bar.component.html'
+  templateUrl: './subrogation-snack-bar.component.html',
 })
 export class SubrogationSnackBarComponent {
-
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
     private matSnackBarRef: MatSnackBarRef<SubrogationSnackBarComponent>,
     private subrogationApiService: SubrogationApiService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
   ) {}
 
   close() {
@@ -62,7 +61,7 @@ export class SubrogationSnackBarComponent {
       this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
         panelClass: 'vitamui-snack-bar',
         data: { type: NotificationType.SUBRO_ACCEPT },
-        duration: 10000
+        duration: 10000,
       });
       this.close();
     });

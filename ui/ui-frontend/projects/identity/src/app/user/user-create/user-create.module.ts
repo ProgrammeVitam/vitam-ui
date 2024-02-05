@@ -61,10 +61,8 @@ import { UserCreateValidators } from './user-create.validators';
     GroupAttributionModule,
     VitamUICommonModule,
   ],
-  declarations: [
-    UserCreateComponent,
-  ],
+  declarations: [UserCreateComponent],
   entryComponents: [UserCreateComponent],
-  providers: [UserCreateValidators]
+  providers: [UserCreateValidators],
 })
-export class UserCreateModule { }
+export class UserCreateModule {}

@@ -42,19 +42,16 @@ import { CssComponent } from '../component-demo/css/css.component';
 @Component({
   selector: 'demo-app-guard-demo',
   templateUrl: './app-guard-demo.component.html',
-  styleUrls: ['./app-guard-demo.component.scss']
+  styleUrls: ['./app-guard-demo.component.scss'],
 })
 export class AppGuardDemoComponent implements OnInit {
-
   routeCodeExample = [
     { path: 'account', component: CssComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
     { path: 'subrogation', component: CssComponent, canActivate: [AppGuard], data: { appId: 'SUBROGATIONS_APP' } },
     { path: 'customers', component: CssComponent, canActivate: [AppGuard], data: { appId: 'CUSTOMERS_APP' } },
   ];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

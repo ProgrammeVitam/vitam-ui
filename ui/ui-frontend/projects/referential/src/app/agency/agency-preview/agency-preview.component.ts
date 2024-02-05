@@ -34,31 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {Agency, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {AgencyService} from '../agency.service';
-import {AgencyInformationTabComponent} from './agency-information-tab/agency-information-tab.component';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { Agency, ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { AgencyService } from '../agency.service';
+import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
 @Component({
   selector: 'app-agency-preview',
   templateUrl: './agency-preview.component.html',
-  styleUrls: ['./agency-preview.component.scss']
+  styleUrls: ['./agency-preview.component.scss'],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
-
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() agency: Agency;
 
   isPopup: boolean;
 
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
   tabLinks: Array<AgencyInformationTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: AgencyInformationTabComponent;
+  @ViewChild('infoTab', { static: false }) infoTab: AgencyInformationTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
@@ -69,8 +68,10 @@ export class AgencyPreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private agencyService: AgencyService) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private agencyService: AgencyService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -87,11 +88,9 @@ export class AgencyPreviewComponent implements AfterViewInit {
       const submitAccessContractUpdate: Observable<Agency> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.agencyService.get(this.agency.identifier).subscribe(
-          response => {
-            this.agency = response;
-          }
-        );
+        this.agencyService.get(this.agency.identifier).subscribe((response) => {
+          this.agency = response;
+        });
       });
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.agency);
@@ -108,15 +107,15 @@ export class AgencyPreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
     );
   }
 
@@ -126,5 +125,4 @@ export class AgencyPreviewComponent implements AfterViewInit {
     }
     this.previewClose.emit();
   }
-
 }

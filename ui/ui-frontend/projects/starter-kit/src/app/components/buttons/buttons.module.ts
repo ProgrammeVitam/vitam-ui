@@ -6,17 +6,8 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { ButtonsComponent } from './buttons.component';
 
 @NgModule({
-  declarations: [
-    ButtonsComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    MatButtonToggleModule,
-  ],
-  exports: [
-    ButtonsComponent
-  ]
+  declarations: [ButtonsComponent],
+  imports: [CommonModule, ReactiveFormsModule, VitamUICommonModule, MatButtonToggleModule],
+  exports: [ButtonsComponent],
 })
-export class ButtonsModule { }
+export class ButtonsModule {}

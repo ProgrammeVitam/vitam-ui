@@ -58,23 +58,17 @@ describe('UploadComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot()
-      ],
+      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       declarations: [UploadComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        { provide: UploadService, useValue: uploadServiceSpy }
+        { provide: UploadService, useValue: uploadServiceSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -88,14 +82,12 @@ describe('UploadComponent', () => {
   });
 
   describe('initContextIdentifier', () => {
-
     beforeEach(() => {
       spyOn(console, 'error');
     });
   });
 
   describe('checkFileExtension', () => {
-
     it('should return true when extension zip is correct', () => {
       expect(component.checkFileExtension('correct.zip')).toBeTruthy();
     });

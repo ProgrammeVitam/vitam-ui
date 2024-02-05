@@ -1,33 +1,30 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-  </mat-sidenav>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"> </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
-        </vitamui-common-navbar>
-        <h2>
-          <img src="assets/mini-logo-vitam.png"> Recherche par <strong>Requêtes DSL</strong>
-        </h2>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
+        <h2><img src="assets/mini-logo-vitam.png" /> Recherche par <strong>Requêtes DSL</strong></h2>
       </div>
     </div>
-
 
     <form [formGroup]="form" (ngSubmit)="search()">
       <div class="row">
         <mat-form-field class="vitamui-mat-select">
-          <mat-select formControlName="dslQueryType" placeholder="Catégorie de recherche" required="required"
+          <mat-select
+            formControlName="dslQueryType"
+            placeholder="Catégorie de recherche"
+            required="required"
             i18n-placeholder="dsl query category placeholder@@dslQueryTypeFormApplicationPlaceholder"
-            panelclass="vitamui-mat-select" class="full_size">
+            panelclass="vitamui-mat-select"
+            class="full_size"
+          >
             <mat-option [value]="dslQueryTypeEnum.ARCHIVE_UNIT">
-              <span i18n="archive unit dsl query category label@@archiveUnitDslQueryCategoryLabel">
-                Unité d'archive
-              </span>
+              <span i18n="archive unit dsl query category label@@archiveUnitDslQueryCategoryLabel"> Unité d'archive </span>
             </mat-option>
             <mat-option [value]="dslQueryTypeEnum.TECHNICAL_OBJECT_GROUP">
-              <span
-                i18n="technical object group unit dsl query category label@@technicalObjectGroupnit dsl query category label">
+              <span i18n="technical object group unit dsl query category label@@technicalObjectGroupnit dsl query category label">
                 Groupe d'objet technique
               </span>
             </mat-option>
@@ -38,32 +35,45 @@
         </mat-form-field>
         <div class="form_size form_padding">
           <!-- Must we validate Min / max length ? -->
-          <vitamui-common-input formControlName="id" minlength="36" maxlength="36" placeholder="Identifiant"
-            i18n-placeholder="Name@@profileGroupCreateNamePlaceholder" [required]="isUnitIdRequired()"
-            class="full_size">
+          <vitamui-common-input
+            formControlName="id"
+            minlength="36"
+            maxlength="36"
+            placeholder="Identifiant"
+            i18n-placeholder="Name@@profileGroupCreateNamePlaceholder"
+            [required]="isUnitIdRequired()"
+            class="full_size"
+          >
             <ng-container *ngIf="form.get('id')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('id')?.errors?.required"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis
+              <vitamui-common-input-error
+                *ngIf="!!form.get('id')?.errors?.required"
+                i18n="Required field error hint@@formErrorRequiredField"
+                >Champ requis
               </vitamui-common-input-error>
               <vitamui-common-input-error
                 *ngIf="!!form.get('id')?.errors?.minlength || !!form.get('id')?.errors?.maxlength"
-                i18n="Required field error hint@@formErrorUnitIdLenght">
+                i18n="Required field error hint@@formErrorUnitIdLenght"
+              >
                 L'identfiant d'une unité doit contenir {{ form.get('id').errors.minlength.requiredLength }}
                 caractères
               </vitamui-common-input-error>
               <!-- FIXME: Must we validate existance ? -->
-              <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit"
-                i18n="Name exists error hint@@formErrorUnknownUnit">Unité inconnue
+              <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit" i18n="Name exists error hint@@formErrorUnknownUnit"
+                >Unité inconnue
               </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
         </div>
         <mat-form-field class="vitamui-mat-select form_padding">
-          <mat-select formControlName="accessContract" placeholder="Sélectionnez un contrat d'accès" required="required"
-            i18n-placeholder="Application@@accessContractFormApplicationPlaceholder" panelclass="vitamui-mat-select"
-            class="full_size">
-            <mat-option *ngFor='let accessContract of accessContracts' [value]="accessContract.key">
-              {{accessContract.label}}</mat-option>
+          <mat-select
+            formControlName="accessContract"
+            placeholder="Sélectionnez un contrat d'accès"
+            required="required"
+            i18n-placeholder="Application@@accessContractFormApplicationPlaceholder"
+            panelclass="vitamui-mat-select"
+            class="full_size"
+          >
+            <mat-option *ngFor="let accessContract of accessContracts" [value]="accessContract.key"> {{ accessContract.label }}</mat-option>
           </mat-select>
           <div class="select-arrow">
             <i class="material-icons">keyboard_arrow_down</i>
@@ -76,28 +86,39 @@
           <label for="dsl">Requête DSL (Format JSON)</label>
           <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
           <div class="actions">
-            <button type="submit" [disabled]="form.pending || form.invalid" class="btn secondary"
+            <button
+              type="submit"
               [disabled]="form.pending || form.invalid"
-              i18n="Launch adminDsl button@@AdminDslLaunchButton">Recherche</button>
+              class="btn secondary"
+              [disabled]="form.pending || form.invalid"
+              i18n="Launch adminDsl button@@AdminDslLaunchButton"
+            >
+              Recherche
+            </button>
 
-            <button type="button" class="btn" (click)="checkDsl()"
-              i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
+            <button type="button" class="btn" (click)="checkDsl()" i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
           </div>
         </div>
         <div class="form_textarea">
           <label for="response">Résultat de la requête DSL</label>
-          <textarea class="textarea textarea__resultat" readonly="readonly" id="response" #responseText
-            formControlName="response"></textarea>
+          <textarea
+            class="textarea textarea__resultat"
+            readonly="readonly"
+            id="response"
+            #responseText
+            formControlName="response"
+          ></textarea>
           <div class="actions right">
-            <button type="button" class="btn" (click)="copyToClipbord(responseText)"
-              i18n="Copy adminDsl button@@AdminDslCopyButton">Copier</button>
+            <button type="button" class="btn" (click)="copyToClipbord(responseText)" i18n="Copy adminDsl button@@AdminDslCopyButton">
+              Copier
+            </button>
 
-            <button type="button" class="btn" (click)="clear()"
-              i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">Effacer</button>
+            <button type="button" class="btn" (click)="clear()" i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">
+              Effacer
+            </button>
           </div>
         </div>
       </div>
     </form>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

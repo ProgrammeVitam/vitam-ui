@@ -42,25 +42,22 @@ import { BASE_URL } from '../injection-tokens';
 import { UserInfo } from '../models/user/user-info.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/userinfos');
   }
-
 
   getOne(id: string, headers?: HttpHeaders): Observable<UserInfo> {
     return super.getOne(id, headers);
   }
 
-
   create(userInfo: UserInfo, headers?: HttpHeaders): Observable<UserInfo> {
     return super.create(userInfo, headers);
   }
 
-  patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
+  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
     return super.patch(data, headers);
   }
 
@@ -68,10 +65,7 @@ export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
     return this.http.patch<Account>(this.apiUrl + '/me', userPartial, { headers });
   }
 
-
-
   getMyUserInfo(): Observable<UserInfo> {
     return super.getHttp().get<any>(super.getApiUrl() + '/me');
   }
-
 }

@@ -91,7 +91,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: WINDOW_LOCATION, useValue: window.location },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

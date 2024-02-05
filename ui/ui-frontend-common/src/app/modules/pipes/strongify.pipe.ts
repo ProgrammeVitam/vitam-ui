@@ -37,12 +37,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'strongify'
+  name: 'strongify',
 })
 export class StrongifyPipe implements PipeTransform {
-
   transform(value: any, search: string): any {
-    if (!search) { return value; }
+    if (!search) {
+      return value;
+    }
     const regex = new RegExp('(' + search + ')', 'i');
     value = value.replace(regex, (match: any) => {
       return '<strong>' + match + '</strong>';
@@ -50,5 +51,4 @@ export class StrongifyPipe implements PipeTransform {
 
     return value;
   }
-
 }

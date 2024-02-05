@@ -52,18 +52,20 @@ import { ProfilesEditComponent } from './profiles-edit.component';
 @Component({
   selector: 'app-profiles-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => ProfilesFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProfilesFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class ProfilesFormStubComponent {
   @Input() level: any;
 
   writeValue() {}
-  registerOnChange() { }
-  registerOnTouched() { }
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 describe('ProfilesEditComponent', () => {
@@ -74,14 +76,8 @@ describe('ProfilesEditComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ ProfilesEditComponent, ProfilesFormStubComponent ],
+      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -89,9 +85,8 @@ describe('ProfilesEditComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -105,7 +100,6 @@ describe('ProfilesEditComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should have a title', () => {
       const elTitle = fixture.nativeElement.querySelector('.text, .large');
       expect(elTitle).toBeTruthy();
@@ -137,11 +131,9 @@ describe('ProfilesEditComponent', () => {
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);
     });
-
   });
 
   describe('Component', () => {
-
     it('should call groupService.patch', () => {
       const groupService = TestBed.inject(GroupService);
       spyOn(groupService, 'patch').and.callThrough();
@@ -174,6 +166,5 @@ describe('ProfilesEditComponent', () => {
       component.onCancel();
       expect(matDialogRefSpy.close).toHaveBeenCalledTimes(1);
     });
-
   });
 });

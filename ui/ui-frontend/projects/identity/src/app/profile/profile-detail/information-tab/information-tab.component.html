@@ -1,20 +1,25 @@
-<form [formGroup]="form" >
-  <vitamui-common-slide-toggle formControlName="enabled"
-    [matTooltip]="'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
-    <span *ngIf="!form?.get('enabled').value">{{'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
-  <span *ngIf="form?.get('enabled').value">{{'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
+<form [formGroup]="form">
+  <vitamui-common-slide-toggle
+    formControlName="enabled"
+    [matTooltip]="'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
+    matTooltipClass="vitamui-tooltip"
+    [matTooltipDisabled]="profile?.groupsCount == 0"
+  >
+    <span *ngIf="!form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+    <span *ngIf="form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
   </vitamui-common-slide-toggle>
 
   <div class="row">
-      <div class="col-12">
-        <vitamui-common-editable-input
-          formControlName="identifier"
-          maxlength="12"
-          [label]="'COMMON.ID' |translate"
-          [validator]="form?.get('identifier')?.validator"
-          [asyncValidator]="form?.get('identifier')?.asyncValidator">
-        </vitamui-common-editable-input>
-      </div>
+    <div class="col-12">
+      <vitamui-common-editable-input
+        formControlName="identifier"
+        maxlength="12"
+        [label]="'COMMON.ID' | translate"
+        [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator"
+      >
+      </vitamui-common-editable-input>
+    </div>
   </div>
 
   <div class="row">
@@ -24,31 +29,42 @@
         maxlength="100"
         [label]="'USER_PROFILE.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator"
-        [asyncValidator]="form?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists">{{'USER_PROFILE.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
+        [asyncValidator]="form?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{
+          'USER_PROFILE.INFORMATIONS.EXISTING_NAME' | translate
+        }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
-      <div class="col-6">
-          <div class="read-only-field disabled-input">
-              <label>{{'USER_PROFILE.INFORMATIONS.LEVEL' | translate}}</label>
-              <div>{{userLevel}}</div>
-          </div>
-        </div>
-        <div class="col-6" [matTooltip]="'USER_PROFILE.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
-          <vitamui-common-editable-level-input
-            formControlName="level"
-            maxlength="250"
-            [prefix]="userLevel"
-            [label]="'USER_PROFILE.INFORMATIONS.SUBLEVEL' | translate"
-            [validator]="form?.get('level')?.validator">
-            <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-            <vitamui-common-field-error errorKey="nameExists">{{'USER_PROFILE.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
-          </vitamui-common-editable-level-input>
-        </div>
+    <div class="col-6">
+      <div class="read-only-field disabled-input">
+        <label>{{ 'USER_PROFILE.INFORMATIONS.LEVEL' | translate }}</label>
+        <div>{{ userLevel }}</div>
+      </div>
+    </div>
+    <div
+      class="col-6"
+      [matTooltip]="'USER_PROFILE.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
+      matTooltipClass="vitamui-tooltip"
+      [matTooltipDisabled]="profile?.groupsCount == 0"
+    >
+      <vitamui-common-editable-level-input
+        formControlName="level"
+        maxlength="250"
+        [prefix]="userLevel"
+        [label]="'USER_PROFILE.INFORMATIONS.SUBLEVEL' | translate"
+        [validator]="form?.get('level')?.validator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{
+          'USER_PROFILE.INFORMATIONS.WRONG_FORMAT' | translate
+        }}</vitamui-common-field-error>
+      </vitamui-common-editable-level-input>
+    </div>
   </div>
 
   <div class="row">
@@ -57,19 +73,30 @@
         formControlName="description"
         maxlength="380"
         [label]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"
-        [validator]="form?.get('description')?.validator">
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        [validator]="form?.get('description')?.validator"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
 
     <div class="col-6 my-4">
-        <vitamui-common-role-toggle formControlName="roles">
-            <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS">{{'USER_PROFILE.INFORMATIONS.USERS_CREATION' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS">{{'USER_PROFILE.INFORMATIONS.MODIF_INFORMATIONS' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_ANONYMIZATION_USERS">{{'USER_PROFILE.INFORMATIONS.ANONYMOUS' | translate}}</vitamui-common-role>
-            <vitamui-common-role [name]="roleEnum.ROLE_GENERIC_USERS"> {{'USER_PROFILE.INFORMATIONS.USERS_MANAGEMENT' | translate}}</vitamui-common-role>
-        </vitamui-common-role-toggle>
+      <vitamui-common-role-toggle formControlName="roles">
+        <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{
+          'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate
+        }}</vitamui-common-role>
+        <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS">{{
+          'USER_PROFILE.INFORMATIONS.USERS_CREATION' | translate
+        }}</vitamui-common-role>
+        <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS">{{
+          'USER_PROFILE.INFORMATIONS.MODIF_INFORMATIONS' | translate
+        }}</vitamui-common-role>
+        <vitamui-common-role [name]="roleEnum.ROLE_ANONYMIZATION_USERS">{{
+          'USER_PROFILE.INFORMATIONS.ANONYMOUS' | translate
+        }}</vitamui-common-role>
+        <vitamui-common-role [name]="roleEnum.ROLE_GENERIC_USERS">
+          {{ 'USER_PROFILE.INFORMATIONS.USERS_MANAGEMENT' | translate }}</vitamui-common-role
+        >
+      </vitamui-common-role-toggle>
     </div>
   </div>
 </form>

@@ -42,14 +42,10 @@ import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 import { VitamUISnackBar } from './vitamui-snack-bar.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule,
-    PipesModule
-  ],
+  imports: [CommonModule, TranslateModule, PipesModule],
   declarations: [VitamUISnackBarComponent],
   exports: [VitamUISnackBarComponent],
   entryComponents: [VitamUISnackBarComponent],
-  providers: [VitamUISnackBar]
+  providers: [VitamUISnackBar],
 })
-export class VitamUISnackBarModule { }
+export class VitamUISnackBarModule {}

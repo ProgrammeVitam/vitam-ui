@@ -1,8 +1,8 @@
 <div class="vitamui-dialog-subtable">
   <div class="vitamui-dialog-subtable-header d-flex">
-    <div class="col-4">{{'USER.GROUP.DESCRIPTION' | translate}}</div>
-    <div class="col-3">{{'USER.GROUP.LEVEL' | translate}}</div>
-    <div class="col-5">{{'USER.GROUP.PROFILE' | translate}}</div>
+    <div class="col-4">{{ 'USER.GROUP.DESCRIPTION' | translate }}</div>
+    <div class="col-3">{{ 'USER.GROUP.LEVEL' | translate }}</div>
+    <div class="col-5">{{ 'USER.GROUP.PROFILE' | translate }}</div>
   </div>
 
   <div class="vitamui-dialog-subtable-body">
@@ -11,14 +11,19 @@
         <div class="col-4" vitamuiCommonEllipsis>{{ group?.description }}</div>
         <div class="col-3" vitamuiCommonEllipsis>{{ group?.level }}</div>
         <div class="col-5">
-          <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2 vitamui-profile-list" *ngFor="let profile of group?.profiles">
+          <div
+            class="d-flex justify-content-between align-items-center py-1 px-2 mb-2 vitamui-profile-list"
+            *ngFor="let profile of group?.profiles"
+          >
             <div>
               <div class="profile-value">{{ profile?.name | titlecase }}</div>
             </div>
             <div>
-              <i class="vitamui-icon vitamui-icon-info primary clickable"
-              [matTooltip]="profile?.description ? profile.description : 'MISC.NO_DESC' | translate"
-              matTooltipClass="vitamui-tooltip"></i>
+              <i
+                class="vitamui-icon vitamui-icon-info primary clickable"
+                [matTooltip]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
+                matTooltipClass="vitamui-tooltip"
+              ></i>
             </div>
           </div>
         </div>

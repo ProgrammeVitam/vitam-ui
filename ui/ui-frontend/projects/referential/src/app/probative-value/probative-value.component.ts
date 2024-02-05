@@ -67,7 +67,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     private router: Router,
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(route, globalEventService);
 

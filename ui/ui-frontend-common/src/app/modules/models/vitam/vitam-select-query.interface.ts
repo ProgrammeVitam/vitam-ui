@@ -40,8 +40,8 @@ export interface VitamSelectQuery {
   $query: VitamSelectOperator;
   $projection?: {};
   $filter?: {
-    $limit?: number,
-    $offset?: number,
-    $orderby?: { [key: string]: 1 | -1 }
+    $limit?: number;
+    $offset?: number;
+    $orderby?: { [key: string]: 1 | -1 };
   };
 }

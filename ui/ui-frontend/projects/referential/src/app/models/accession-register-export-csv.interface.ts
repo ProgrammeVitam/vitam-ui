@@ -26,10 +26,9 @@
  *  * accept its terms.
  *
  */
-import {Direction} from 'ui-frontend-common';
+import { Direction } from 'ui-frontend-common';
 
 export interface AccessionRegisterSearchDto {
-
   orderBy?: string;
   direction?: Direction;
 
@@ -45,7 +44,6 @@ export interface AccessionRegisterSearchDto {
 
   elimination?: string;
   transferReply?: string;
-
 }
 
 export interface EndDateInterval {

@@ -59,7 +59,7 @@ import {
   SearchCriteria,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue
+  SearchCriteriaValue,
 } from '../models/search.criteria';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { ArchiveSearchComponent } from './archive-search.component';
@@ -227,7 +227,7 @@ describe('ArchiveSearchComponent', () => {
           SearchCriteriaTypeEnum.FIELDS,
           searchCriteria.valueTranslated,
           CriteriaDataType.STRING,
-          false
+          false,
         );
 
         // Then: the new criteria should be added to the criteria list

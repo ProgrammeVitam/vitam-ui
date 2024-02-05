@@ -49,7 +49,7 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { SharedModule } from '../../shared/shared.module';
-import {CustomerColorsInputModule} from '../customer-create/customer-colors-input/customer-colors-input.module';
+import { CustomerColorsInputModule } from '../customer-create/customer-colors-input/customer-colors-input.module';
 import { CustomerPreviewComponent } from './customer-preview.component';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-tab/graphic-identity-update/graphic-identity-update.component';
@@ -83,7 +83,7 @@ import { CustomParamsModule } from '../../shared/custom-params/custom-params.mod
     MatTooltipModule,
     MatProgressSpinnerModule,
     VitamUICommonModule,
-    CustomParamsModule
+    CustomParamsModule,
   ],
   declarations: [
     CustomerPreviewComponent,
@@ -98,10 +98,10 @@ import { CustomParamsModule } from '../../shared/custom-params/custom-params.mod
     HomepageMessageTabComponent,
     HomepageMessageUpdateComponent,
     HomepageMessageComponent,
-    HomepageMessageTranslationComponent
+    HomepageMessageTranslationComponent,
   ],
-  exports: [ CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
+  exports: [CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
   entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
-  providers: [IdentityProviderService]
+  providers: [IdentityProviderService],
 })
-export class CustomerPreviewModule { }
+export class CustomerPreviewModule {}

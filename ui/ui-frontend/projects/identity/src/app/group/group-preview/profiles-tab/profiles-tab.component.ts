@@ -44,30 +44,34 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 @Component({
   selector: 'app-profiles-tab',
   templateUrl: './profiles-tab.component.html',
-  styleUrls: ['./profiles-tab.component.scss']
+  styleUrls: ['./profiles-tab.component.scss'],
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
-
   @Input()
   set group(group: Group) {
     this._group = group;
   }
-  get group(): Group { return this._group; }
+  get group(): Group {
+    return this._group;
+  }
   private _group: Group;
 
   @Input() readOnly: boolean;
 
-  profilesDisplay: any [];
+  profilesDisplay: any[];
   updatedGroup: Subscription;
 
-  constructor(private dialog: MatDialog, private groupService: GroupService, private applicationService: ApplicationService) { }
+  constructor(
+    private dialog: MatDialog,
+    private groupService: GroupService,
+    private applicationService: ApplicationService,
+  ) {}
 
   ngOnInit() {
     this.initializeProfilesList(this.group);
     this.updatedGroup = this.groupService.updated.subscribe((updatedGroup: Group) => {
       this.group = updatedGroup;
       this.initializeProfilesList(this.group);
-
     });
   }
 
@@ -79,8 +83,8 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
         appName: this.findApplicationName(profile.applicationName),
         tenantName: profile.tenantName,
         profileName: profile.name,
-        description: profile.description
-      })
+        description: profile.description,
+      }),
     );
 
     this.profilesDisplay.sort((first, second) => {
@@ -93,7 +97,6 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
 
       return 0;
     });
-
   }
 
   openEditProfilesDialog() {
@@ -103,7 +106,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
   }
 
@@ -121,5 +124,4 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.updatedGroup.unsubscribe();
   }
-
 }

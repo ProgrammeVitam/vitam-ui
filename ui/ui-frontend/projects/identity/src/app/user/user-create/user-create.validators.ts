@@ -43,20 +43,17 @@ import { UserService } from '../user.service';
 
 @Injectable()
 export class UserCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   uniqueEmail = (emailToCheck?: string): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime)
-        .pipe(
-          switchMap(() => control.value !== emailToCheck ? this.userService.exists(control.value) : of(false)),
-          take(1),
-          map((exists: boolean) => exists ? { uniqueEmail: true } : null)
-        );
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== emailToCheck ? this.userService.exists(control.value) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? { uniqueEmail: true } : null)),
+      );
     };
-  }
-
+  };
 }

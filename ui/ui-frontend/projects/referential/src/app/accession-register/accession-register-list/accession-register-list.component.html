@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12 title-text mb-2">
       <div class="result-layout">
-        <div>{{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: {nb: dataSource?.length} }}</div>
+        <div>{{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: dataSource?.length } }}</div>
       </div>
     </div>
   </div>
@@ -77,11 +77,7 @@
       </div>
 
       <div class="vitamui-table-body">
-        <div
-          class="vitamui-table-rows"
-          *ngFor="let accessionRegisterDetail of dataSource"
-          (click)="onSelectRow(accessionRegisterDetail)"
-        >
+        <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource" (click)="onSelectRow(accessionRegisterDetail)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-1">{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</div>
             <div class="col-3">{{ accessionRegisterDetail.opi }}</div>
@@ -95,8 +91,7 @@
               </p>
             </div>
             <div class="col-1">
-              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip"
-                 [matTooltipShowDelay]="300">
+              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                 {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
               </p>
             </div>

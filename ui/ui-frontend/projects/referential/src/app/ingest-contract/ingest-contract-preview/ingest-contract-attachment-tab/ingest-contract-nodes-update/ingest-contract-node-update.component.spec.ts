@@ -53,35 +53,33 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
   let component: IngestContractNodeUpdateComponent;
   let fixture: ComponentFixture<IngestContractNodeUpdateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          HttpClientTestingModule,
-          VitamUICommonTestModule,
-          FilingPlanModule,
-          MatSnackBarModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-        ],
-        declarations: [IngestContractNodeUpdateComponent],
-        providers: [
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
-          },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: VitamUISnackBar, useValue: snackBarSpy },
-          { provide: ENVIRONMENT, useValue: environment },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        FilingPlanModule,
+        MatSnackBarModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+      ],
+      declarations: [IngestContractNodeUpdateComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
+        },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractNodeUpdateComponent);

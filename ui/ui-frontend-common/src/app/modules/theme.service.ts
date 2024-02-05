@@ -135,7 +135,7 @@ export class ThemeService {
 
       // init default background
       const defaultBackground = this.backgroundChoice.find(
-        (color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND]
+        (color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND],
       );
       if (defaultBackground) {
         defaultBackground.isDefault = true;

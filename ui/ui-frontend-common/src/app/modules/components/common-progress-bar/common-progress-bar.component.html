@@ -1,7 +1,6 @@
 <div>
   <div class="d-flex">
-    <div class="text normal bold primary align-left">{{'PROGRESS_BAR.STEP' | translate}} {{index+1}} / {{count}}</div>
+    <div class="text normal bold primary align-left">{{ 'PROGRESS_BAR.STEP' | translate }} {{ index + 1 }} / {{ count }}</div>
   </div>
-  <mat-progress-bar mode="determinate" [value]="progressValue">
-  </mat-progress-bar>
+  <mat-progress-bar mode="determinate" [value]="progressValue"> </mat-progress-bar>
 </div>

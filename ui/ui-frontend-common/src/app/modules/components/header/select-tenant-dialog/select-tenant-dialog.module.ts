@@ -6,17 +6,8 @@ import { ItemSelectModule } from '../item-select/item-select.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog.component';
 
 @NgModule({
-  declarations: [
-    SelectTenantDialogComponent
-  ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    TranslateModule,
-    ItemSelectModule
-  ],
-  exports: [
-    SelectTenantDialogComponent
-  ]
+  declarations: [SelectTenantDialogComponent],
+  imports: [CommonModule, MatButtonModule, TranslateModule, ItemSelectModule],
+  exports: [SelectTenantDialogComponent],
 })
-export class SelectTenantDialogModule { }
+export class SelectTenantDialogModule {}

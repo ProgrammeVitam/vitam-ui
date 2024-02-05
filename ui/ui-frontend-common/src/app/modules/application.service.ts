@@ -56,14 +56,20 @@ export class ApplicationService {
   /**
    * Applications list of the authenticated user.
    */
-  set applications(apps: Application[]) { this._applications = apps; }
+  set applications(apps: Application[]) {
+    this._applications = apps;
+  }
 
-  get applications(): Application[] { return this._applications; }
+  get applications(): Application[] {
+    return this._applications;
+  }
 
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
-  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
+  get applicationsAnalytics(): ApplicationAnalytics[] {
+    return this._applicationsAnalytics;
+  }
 
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
@@ -83,9 +89,13 @@ export class ApplicationService {
   /*
    * Categories of the application.
    */
-  set categories(categories: Category[]) { this._categories = categories; }
+  set categories(categories: Category[]) {
+    this._categories = categories;
+  }
 
-  get categories(): Category[] { return this._categories; }
+  get categories(): Category[] {
+    return this._categories;
+  }
 
   // tslint:disable-next-line:variable-name
   _categories: Category[];
@@ -96,7 +106,7 @@ export class ApplicationService {
     private applicationApi: ApplicationApiService,
     private authService: AuthService,
     private tenantService: TenantSelectionService,
-    private globalEventService: GlobalEventService
+    private globalEventService: GlobalEventService,
   ) {}
 
   /**
@@ -111,7 +121,7 @@ export class ApplicationService {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
         this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
         return applicationInfo;
-      })
+      }),
     );
   }
 
@@ -159,13 +169,12 @@ export class ApplicationService {
         if (app && (index !== -1 || !app.hasTenantList)) {
           apps.push(app);
         }
-
       });
 
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
       const lastUsedApps = this.getLastUsedApps(this.categories, apps);
       if (lastUsedApps) {
-          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
+        resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
       }
       const convertedMap = this.convertToCategoryMap(resultMap);
       return this.sortMapByCategory(convertedMap);
@@ -205,10 +214,10 @@ export class ApplicationService {
 
   getApplicationTenants(appId): Tenant[] {
     if (this.authService.user) {
-        const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === appId);
-        const appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
-        appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
-        return appTenants;
+      const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === appId);
+      const appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
+      appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
+      return appTenants;
     }
   }
 
@@ -243,7 +252,7 @@ export class ApplicationService {
   private convertToCategoryMap(stringMap: Map<string, Application[]>): Map<Category, Application[]> {
     const categMap = new Map<Category, Application[]>();
     stringMap.forEach((val, key) => {
-      const categ = this.categories.find(value => value.identifier === key);
+      const categ = this.categories.find((value) => value.identifier === key);
       categMap.set(categ, val);
     });
     return categMap;
@@ -260,7 +269,7 @@ export class ApplicationService {
     return resultMap;
   }
 
-  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category; apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -325,7 +334,7 @@ export class ApplicationService {
       catchError(() => of([])),
       map((result: boolean) => {
         return result;
-      })
+      }),
     );
   }
 }

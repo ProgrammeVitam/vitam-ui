@@ -2,47 +2,47 @@
 @import '../../../../sass/mixins/elevation';
 
 .modal-body {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .mat-drawer,
 .mat-dialog-container {
-    .customer-box {
-      @include dialog-elevation-dark;
+  .customer-box {
+    @include dialog-elevation-dark;
   }
 }
 
 .customer-box {
-    @include input-elevation-dark;
-    display: flex;
-    height: 90px;
-    align-items: center;
-    word-break: break-word;
-    font-size: 16px;
-    font-weight: 500;
-    background: $white;
-    border-radius: 10px;
-    padding-top: 23px;
-    padding-bottom: 23px;
-    padding-right: 12px;
-    padding-left: 30px;
-    margin-bottom: 24px;
-    color: #474747;
-    transition: box-shadow 240ms ease-out;
+  @include input-elevation-dark;
+  display: flex;
+  height: 90px;
+  align-items: center;
+  word-break: break-word;
+  font-size: 16px;
+  font-weight: 500;
+  background: $white;
+  border-radius: 10px;
+  padding-top: 23px;
+  padding-bottom: 23px;
+  padding-right: 12px;
+  padding-left: 30px;
+  margin-bottom: 24px;
+  color: #474747;
+  transition: box-shadow 240ms ease-out;
 
-    i {
-        color: var(--vitamui-primary);
-        font-size: 42px;
-        margin-right: 15px;
-    }
+  i {
+    color: var(--vitamui-primary);
+    font-size: 42px;
+    margin-right: 15px;
+  }
 }
 
 .modal-customer-box {
-    height: 60px;
-    font-size: 14px;
-    padding-left: 20px;
+  height: 60px;
+  font-size: 14px;
+  padding-left: 20px;
 
-    i {
-        font-size: 30px;
-    }
+  i {
+    font-size: 30px;
+  }
 }

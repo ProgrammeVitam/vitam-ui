@@ -41,21 +41,18 @@ import { Profile } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-profile-popup',
-  template: '<app-profile-detail (profileClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-profile-detail>'
+  template: '<app-profile-detail (profileClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-profile-detail>',
 })
 export class ProfilePopupComponent implements OnInit {
-
   profile: Profile;
 
   constructor(private route: ActivatedRoute) {
     this.profile = this.route.snapshot.data.profile;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

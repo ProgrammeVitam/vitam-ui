@@ -38,16 +38,14 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Subscription } from 'rxjs';
 import { AuthService, Group, isLevelAllowed, StartupService } from 'ui-frontend-common';
 
-
 import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-preview',
   templateUrl: './group-preview.component.html',
-  styleUrls: ['./group-preview.component.scss']
+  styleUrls: ['./group-preview.component.scss'],
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy {
-
   @Input() isPopup: boolean;
 
   @Input()
@@ -55,7 +53,9 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
     this._group = group;
     this.groupService.get(group.id).subscribe((groupRetrieved) => this.groupService.updated.next(groupRetrieved));
   }
-  get group(): Group { return this._group; }
+  get group(): Group {
+    return this._group;
+  }
   private _group: Group;
 
   @Output() previewClose = new EventEmitter();
@@ -63,8 +63,9 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   private groupUpdateSub: Subscription;
 
   constructor(
-    private groupService: GroupService, private authService: AuthService,
-    private startupService: StartupService
+    private groupService: GroupService,
+    private authService: AuthService,
+    private startupService: StartupService,
   ) {}
 
   ngOnInit(): void {
@@ -76,8 +77,11 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/group/' + this._group.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/group/' + this._group.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
     this.emitClose();
   }
 
@@ -96,9 +100,8 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') || event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP'))
     );
   }
 }

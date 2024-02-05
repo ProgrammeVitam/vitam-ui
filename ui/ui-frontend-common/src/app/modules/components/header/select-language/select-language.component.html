@@ -1,17 +1,13 @@
-<div *ngIf="displayMode === 'select' then select else button"></div>
+<div *ngIf="displayMode === 'select'; then select; else button"></div>
 
 <ng-template #button>
   <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
-    <img [src]="'../../../assets/country/' + currentLang + '.svg'">
+    <img [src]="'../../../assets/country/' + currentLang + '.svg'" />
   </button>
 
-  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before" >
-    <span mat-menu-item (click)="use(minLangString.FR)">
-      FR<img src="../../../assets/country/fr.svg">
-    </span>
-    <span mat-menu-item (click)="use(minLangString.EN)">
-      EN<img src="../../../assets/country/en.svg">
-    </span>
+  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+    <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="../../../assets/country/fr.svg" /> </span>
+    <span mat-menu-item (click)="use(minLangString.EN)"> EN<img src="../../../assets/country/en.svg" /> </span>
   </mat-menu>
 </ng-template>
 
@@ -20,9 +16,17 @@
     <vitamui-common-item-select
       [label]="'SELECT_LANGUAGE.LANGUAGE' | translate"
       [selectedLabel]="'SELECT_LANGUAGE.LANGUAGE' | translate"
-      [items]="[{label: 'SELECT_LANGUAGE.FRENCH' | translate, value:'fr'}, {label: 'SELECT_LANGUAGE.ENGLISH' | translate, value:'en'}]"
-      [selectedItem]="currentLang === 'fr' ? {label: 'SELECT_LANGUAGE.FRENCH' | translate, value:'fr'} : {label: 'SELECT_LANGUAGE.ENGLISH' | translate, value:'en'}"
-      (itemSelected)="use($event.value)">
+      [items]="[
+        { label: 'SELECT_LANGUAGE.FRENCH' | translate, value: 'fr' },
+        { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' }
+      ]"
+      [selectedItem]="
+        currentLang === 'fr'
+          ? { label: 'SELECT_LANGUAGE.FRENCH' | translate, value: 'fr' }
+          : { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' }
+      "
+      (itemSelected)="use($event.value)"
+    >
     </vitamui-common-item-select>
   </div>
 </ng-template>

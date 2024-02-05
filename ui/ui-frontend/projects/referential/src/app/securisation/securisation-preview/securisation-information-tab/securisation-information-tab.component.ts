@@ -34,28 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnInit} from '@angular/core';
-import {Event} from 'projects/vitamui-library/src/public-api';
-import {SecurisationService} from '../../securisation.service';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { SecurisationService } from '../../securisation.service';
 
 @Component({
   selector: 'app-securisation-information-tab',
   templateUrl: './securisation-information-tab.component.html',
-  styleUrls: ['./securisation-information-tab.component.scss']
+  styleUrls: ['./securisation-information-tab.component.scss'],
 })
 export class SecurisationInformationTabComponent implements OnInit {
-
   @Input()
   securisation: Event;
-  timestamp: { signerCertIssuer: string, genTime: Date };
+  timestamp: { signerCertIssuer: string; genTime: Date };
 
-  constructor(private securisationService: SecurisationService) {
-  }
+  constructor(private securisationService: SecurisationService) {}
 
   ngOnInit() {
     if (this.securisation.parsedData) {
-      this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe(response => {
+      this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe((response) => {
         this.timestamp = response;
       });
     }

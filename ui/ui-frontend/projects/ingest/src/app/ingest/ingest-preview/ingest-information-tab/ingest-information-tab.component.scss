@@ -1,4 +1,4 @@
-@import "~ui-frontend-common/sass/variables/colors";
+@import '~ui-frontend-common/sass/variables/colors';
 
 label {
   font-size: 12px;
@@ -7,7 +7,7 @@ label {
   font-family: Mulish;
   box-sizing: inherit;
   visibility: visible;
- }
+}
 
 label + div {
   font-size: 16px;
@@ -19,6 +19,6 @@ label + div {
   font-family: Mulish;
   visibility: visible;
 }
-.status{
- font-weight: bold;
+.status {
+  font-weight: bold;
 }

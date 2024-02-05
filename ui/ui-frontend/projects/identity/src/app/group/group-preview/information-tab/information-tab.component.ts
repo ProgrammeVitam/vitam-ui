@@ -53,18 +53,17 @@ const DEBOUNCE_TIME = 200;
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
-  styleUrls: ['./information-tab.component.scss']
+  styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
-
   form: FormGroup;
   groupsCount: number;
   previousValue: {
-    id: string,
+    id: string;
     enabled: boolean;
-    name: string,
-    level: string,
-    description: string,
+    name: string;
+    level: string;
+    description: string;
   };
 
   private updateSub: Subscription;
@@ -78,15 +77,15 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
     private groupService: GroupService,
     private groupValidators: GroupValidators,
     public authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
-      identifier: [{value: null, disabled : true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       enabled: [false],
       name: [null, Validators.required],
       description: [null, Validators.required],
-      level: [null, buildValidators(this.authService.user)]
+      level: [null, buildValidators(this.authService.user)],
     });
 
     this.updateSub = merge(this.form.valueChanges, this.form.statusChanges)
@@ -95,17 +94,16 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.group.id }, formData)),
-        switchMap((formData) => this.groupService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.groupService.patch(formData).pipe(catchError(() => of(null)))),
       )
-      .subscribe(() => this.previousValue = this.form.value);
-
+      .subscribe(() => (this.previousValue = this.form.value));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('group') || changes.hasOwnProperty('readOnly')) {
       if (this.group) {
-       this.resetForm(this.form, this.group, this.readOnly);
-       this.previousValue = this.form.value;
+        this.resetForm(this.form, this.group, this.readOnly);
+        this.previousValue = this.form.value;
       }
     }
   }
@@ -129,13 +127,13 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
     }
 
     form.enable({ emitEvent: false });
-    form.get('identifier').disable({emitEvent: false});
+    form.get('identifier').disable({ emitEvent: false });
 
     if (group.usersCount) {
-      this.form.get('enabled').disable({emitEvent : false});
+      this.form.get('enabled').disable({ emitEvent: false });
     }
     if (group.profileIds && group.profileIds.length) {
-      this.form.get('level').disable({emitEvent : false});
+      this.form.get('level').disable({ emitEvent: false });
     }
   }
 
@@ -150,12 +148,11 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal'
+      panelClass: 'vitamui-modal',
     });
   }
 
   getUnits(group: Group): string[] {
     return group?.units?.sort((a: any, b: any) => a.localeCompare(b));
   }
-
 }

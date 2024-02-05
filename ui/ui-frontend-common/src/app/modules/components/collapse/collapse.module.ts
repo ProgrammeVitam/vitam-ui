@@ -40,10 +40,8 @@ import { NgModule } from '@angular/core';
 import { CollapseComponent } from './collapse.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [CollapseComponent],
-  exports: [CollapseComponent]
+  exports: [CollapseComponent],
 })
-export class CollapseModule { }
+export class CollapseModule {}

@@ -58,19 +58,21 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
 
   private sub: Subscription;
 
-  constructor(private accountService: AccountService,
-              private userInfoApiService: BaseUserInfoApiService,
-              public route: ActivatedRoute) {
+  constructor(
+    private accountService: AccountService,
+    private userInfoApiService: BaseUserInfoApiService,
+    public route: ActivatedRoute,
+  ) {
     super(route);
   }
 
   ngOnInit() {
     this.sub = this.accountService.getMyAccount().subscribe((account) => {
-        this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
-          const accountWithUserInfos = account;
-          accountWithUserInfos.userInfo = userInfo;
-          this.account = accountWithUserInfos;
-        });
+      this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
+        const accountWithUserInfos = account;
+        accountWithUserInfos.userInfo = userInfo;
+        this.account = accountWithUserInfos;
+      });
     });
     this.dataBreadcrumb = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
   }

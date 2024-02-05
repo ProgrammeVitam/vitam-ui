@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -36,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,7 +49,7 @@ import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 
-@Component({ template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner" ></app-owner-form>` })
+@Component({ template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>` })
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
@@ -65,27 +63,18 @@ describe('OwnerFormComponent', () => {
   beforeEach(waitForAsync(() => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
-      uniqueCode: () => timer(10).pipe(map(() => null))
+      uniqueCode: () => timer(10).pipe(map(() => null)),
     });
 
     TestBed.configureTestingModule({
-      imports: [
-        MatSelectModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        FormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [ OwnerFormComponent, TesthostComponent ],
+      imports: [MatSelectModule, ReactiveFormsModule, NoopAnimationsModule, FormsModule, VitamUICommonTestModule],
+      declarations: [OwnerFormComponent, TesthostComponent],
       providers: [
         { provide: OwnerService, useValue: ownerServiceSpy },
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-
-
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -114,10 +103,10 @@ describe('OwnerFormComponent', () => {
         street: 'Street name',
         zipCode: '2134',
         city: 'Paris',
-        country: 'FR'
+        country: 'FR',
       },
       internalCode: null,
-      readonly : false
+      readonly: false,
     };
 
     testhost.ownerFormComponent.form.get('code').setValue(owner.code);
@@ -143,9 +132,9 @@ describe('OwnerFormComponent', () => {
         street: 'Street name',
         zipCode: '2134',
         city: 'Paris',
-        country: 'FR'
+        country: 'FR',
       },
-      readonly : false
+      readonly: false,
     };
 
     testhost.ownerFormComponent.form.get('code').setValue(owner.code);
@@ -176,10 +165,10 @@ describe('OwnerFormComponent', () => {
         street: 'Street name',
         zipCode: '2134',
         city: 'Paris',
-        country: 'FR'
+        country: 'FR',
       },
       internalCode: null,
-      readonly : false
+      readonly: false,
     };
 
     testhost.ownerFormComponent.form.get('code').setValue(owner.code);

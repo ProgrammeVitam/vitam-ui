@@ -34,17 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/security-profile';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -56,7 +46,7 @@ import {
   Direction,
   InfiniteScrollTable,
   PageRequest,
-  Role
+  Role,
 } from 'ui-frontend-common';
 import { SecurityProfileService } from '../security-profile.service';
 
@@ -65,7 +55,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 @Component({
   selector: 'app-security-profile-list',
   templateUrl: './security-profile-list.component.html',
-  styleUrls: ['./security-profile-list.component.scss']
+  styleUrls: ['./security-profile-list.component.scss'],
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -80,8 +70,8 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
 
   @Output() contextClick = new EventEmitter<SecurityProfile>();
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<SecurityProfileListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<SecurityProfileListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
@@ -91,11 +81,11 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string, label: string }> = [];
-  levelFilterOptions: Array<{ value: string, label: string }> = [];
+  groupFilterOptions: Array<{ value: string; label: string }> = [];
+  levelFilterOptions: Array<{ value: string; label: string }> = [];
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
@@ -115,24 +105,24 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
 
   constructor(
     public securityProfileService: SecurityProfileService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     super(securityProfileService);
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
   ngOnInit() {
-    this.securityProfileService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
+    this.securityProfileService
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: SecurityProfile[]) => {
         this.dataSource = data;
       });
 
-    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildSecurityProfileCriteriaFromSearch();
@@ -163,11 +153,8 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   }
 
   deleteSecurityProfileDialog(profile: SecurityProfile) {
-    this.securityProfileService.delete(profile).subscribe(
-      () => {
-        this.searchSecurityProfileOrdered();
-      }
-    );
+    this.securityProfileService.delete(profile).subscribe(() => {
+      this.searchSecurityProfileOrdered();
+    });
   }
-
 }

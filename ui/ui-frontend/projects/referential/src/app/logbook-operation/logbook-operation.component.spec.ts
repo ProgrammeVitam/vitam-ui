@@ -51,25 +51,23 @@ describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-      TestBed.configureTestingModule({
-        imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule],
-        declarations: [LogbookOperationComponent, SearchBarComponent],
-        providers: [
-          { provide: MatDialog, useValue: matDialogSpy },
-          { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
-          { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
-          { provide: Router, useValue: { navigate: () => {} } },
-          GlobalEventService,
-          { provide: ENVIRONMENT, useValue: environment }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    TestBed.configureTestingModule({
+      imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule],
+      declarations: [LogbookOperationComponent, SearchBarComponent],
+      providers: [
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
+        { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
+        { provide: Router, useValue: { navigate: () => {} } },
+        GlobalEventService,
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationComponent);

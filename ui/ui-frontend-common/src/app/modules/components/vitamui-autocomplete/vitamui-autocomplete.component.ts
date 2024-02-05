@@ -45,20 +45,19 @@ import { Option } from './option.interface';
 export const VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIAutocompleteComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-vitamui-autocomplete',
   templateUrl: './vitamui-autocomplete.component.html',
   styleUrls: ['./vitamui-autocomplete.component.scss'],
-  providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR]
+  providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR],
 })
 export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnInit {
-
   @Input()
   set options(options: Option[]) {
-    this._options = options.sort((a, b) => a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1);
+    this._options = options.sort((a, b) => (a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1));
     this.optionsChanges.next(this._options);
 
     if (this._options.length === 1) {
@@ -69,7 +68,9 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
     }
     this.updatePlaceholderPosition();
   }
-  get options(): Option[] { return this._options; }
+  get options(): Option[] {
+    return this._options;
+  }
   // tslint:disable-next-line:variable-name
   private _options: Option[] = [];
 
@@ -85,21 +86,20 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
 
   private focused = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    const valueChanges = this.control.valueChanges
-      .pipe(
-        startWith<string | Option>(''),
-        map((value) => {
-          if (value) {
-            return typeof value === 'string' ? value : value.label;
-          }
+    const valueChanges = this.control.valueChanges.pipe(
+      startWith<string | Option>(''),
+      map((value) => {
+        if (value) {
+          return typeof value === 'string' ? value : value.label;
+        }
 
-          return '';
-        }),
-        map((name) => name ? this.filter(name) : this.options.slice()),
-      );
+        return '';
+      }),
+      map((name) => (name ? this.filter(name) : this.options.slice())),
+    );
     this.filteredOptions = merge(valueChanges, this.optionsChanges);
     this.control.valueChanges.subscribe((value) => this.onChange(value));
     this.control.valueChanges.subscribe(() => this.updatePlaceholderPosition());
@@ -161,5 +161,4 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
     this.focused = true;
     this.updatePlaceholderPosition();
   }
-
 }

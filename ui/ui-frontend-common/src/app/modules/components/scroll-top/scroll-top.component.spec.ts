@@ -9,9 +9,8 @@ describe('ScrollTopComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ScrollTopComponent],
-      imports: [MatIconModule]
-    })
-      .compileComponents();
+      imports: [MatIconModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -47,13 +47,16 @@ const LOGIN_REDIRECT_DELAY_MS = 5000;
 @Component({
   selector: 'vitamui-common-login-redirect',
   templateUrl: './login-redirect.component.html',
-  styleUrls: ['./login-redirect.component.scss']
+  styleUrls: ['./login-redirect.component.scss'],
 })
 export class LoginRedirectComponent implements OnInit {
-
   redirectUrl: string;
 
-  constructor(public startupService: StartupService, private route: ActivatedRoute, @Inject(WINDOW_LOCATION) private location: Location) { }
+  constructor(
+    public startupService: StartupService,
+    private route: ActivatedRoute,
+    @Inject(WINDOW_LOCATION) private location: Location,
+  ) {}
 
   ngOnInit() {
     this.redirectUrl = this.route.snapshot.queryParamMap.get('url');
@@ -61,5 +64,4 @@ export class LoginRedirectComponent implements OnInit {
       this.location.href = this.redirectUrl;
     });
   }
-
 }

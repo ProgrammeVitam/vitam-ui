@@ -44,10 +44,9 @@ import { TooltipComponent } from './tooltip.component';
 import { TooltipService } from './tooltip.service';
 
 @Directive({
-  selector: '[vitamuiCommonTooltip]'
+  selector: '[vitamuiCommonTooltip]',
 })
 export class TooltipDirective implements OnDestroy {
-
   @Input() vitamuiCommonTooltip: string;
 
   // Delay in MS
@@ -56,20 +55,24 @@ export class TooltipDirective implements OnDestroy {
   tooltipRef: TooltipRef;
   timerSub: Subscription;
 
-  constructor(private tooltipService: TooltipService, private elementRef: ElementRef, private positionBuilder: OverlayPositionBuilder) { }
+  constructor(
+    private tooltipService: TooltipService,
+    private elementRef: ElementRef,
+    private positionBuilder: OverlayPositionBuilder,
+  ) {}
 
   @HostListener('mouseenter')
   showTooltip() {
     this.timerSub = timer(this.vitamuiCommonTooltipShowDelay).subscribe(() => {
       const positionStrategy = this.positionBuilder
-      .flexibleConnectedTo(this.elementRef)
-      .withTransformOriginOn('.vitamui-tooltip')
-      .withPositions([
-        { originX: 'center', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
-        { originX: 'center', originY: 'top', overlayX: 'start', overlayY: 'bottom' },
-        { originX: 'center', originY: 'bottom', overlayX: 'end', overlayY: 'top' },
-        { originX: 'center', originY: 'top', overlayX: 'end', overlayY: 'bottom' },
-      ]);
+        .flexibleConnectedTo(this.elementRef)
+        .withTransformOriginOn('.vitamui-tooltip')
+        .withPositions([
+          { originX: 'center', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
+          { originX: 'center', originY: 'top', overlayX: 'start', overlayY: 'bottom' },
+          { originX: 'center', originY: 'bottom', overlayX: 'end', overlayY: 'top' },
+          { originX: 'center', originY: 'top', overlayX: 'end', overlayY: 'bottom' },
+        ]);
       const tooltipClass$ = positionStrategy.positionChanges.pipe(
         map((position) => {
           const tooltipClasses = [];
@@ -87,13 +90,13 @@ export class TooltipDirective implements OnDestroy {
 
           return tooltipClasses;
         }),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       );
       this.tooltipRef = this.tooltipService.open(this.elementRef, TooltipComponent, {
         hasBackdrop: false,
         message: this.vitamuiCommonTooltip,
         positionStrategy,
-        tooltipClass: tooltipClass$
+        tooltipClass: tooltipClass$,
       });
     });
   }
@@ -116,5 +119,4 @@ export class TooltipDirective implements OnDestroy {
       this.timerSub = null;
     }
   }
-
 }

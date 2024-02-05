@@ -39,15 +39,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FooterComponent } from './footer.component';
 
 @NgModule({
-  declarations: [
-    FooterComponent
-  ],
-  exports: [
-    FooterComponent
-  ],
-  imports: [
-    TranslateModule,
-  ]
+  declarations: [FooterComponent],
+  exports: [FooterComponent],
+  imports: [TranslateModule],
 })
-export class FooterModule {
-}
+export class FooterModule {}

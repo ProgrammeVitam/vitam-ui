@@ -39,16 +39,15 @@ import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
 const DEFAULT_SCROLL_THRESHOLD = 0.8;
 
 @Directive({
-  selector: '[vitamuiCommonInfiniteScroll]'
+  selector: '[vitamuiCommonInfiniteScroll]',
 })
 export class InfiniteScrollDirective implements OnInit {
-
   @Input() vitamuiCommonInfiniteScrollThreshold = DEFAULT_SCROLL_THRESHOLD;
   @Input() vitamuiCommonInfiniteScrollDisable = false;
 
   @Output() vitamuiScroll = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     const sideNavElement = document.getElementsByClassName('mat-sidenav-content');

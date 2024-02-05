@@ -14,7 +14,10 @@ const MAX_RESULTS_FACET_TEXT = '-';
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
 })
 export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
+  constructor(
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   appraisalRuleFacets: AppraisalRuleFacets;

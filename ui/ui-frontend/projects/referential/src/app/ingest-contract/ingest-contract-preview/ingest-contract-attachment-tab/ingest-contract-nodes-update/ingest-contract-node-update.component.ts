@@ -44,7 +44,7 @@ import { IngestContractService } from '../../../ingest-contract.service';
 @Component({
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
-  styleUrls: [ './ingest-contract-node-update.component.scss' ],
+  styleUrls: ['./ingest-contract-node-update.component.scss'],
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
   ingestContract: IngestContract;
@@ -66,15 +66,15 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { ingestContract: IngestContract; accessContractId: string; tenantIdentifier: number },
     private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService
+    private ingestContractService: IngestContractService,
   ) {
     this.accessContractId = this.data.accessContractId;
     this.ingestContract = this.data.ingestContract;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.selectNodesForm = this.formBuilder.group({
-      linkParentId: [ { value: null, disabled: true }, Validators.required ],
-      checkParentLink: [ 'AUTHORIZED', Validators.required ],
-      checkParentId: [ { value: null, disabled: true }, Validators.required ],
+      linkParentId: [{ value: null, disabled: true }, Validators.required],
+      checkParentLink: ['AUTHORIZED', Validators.required],
+      checkParentId: [{ value: null, disabled: true }, Validators.required],
     });
   }
 
@@ -91,13 +91,11 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       this.selectNodesForm.controls.checkParentId.setValue(value.included);
     });
 
-    this.linkParentIdControl.setValue(this.ingestContract.linkParentId
-      ? { included: [ this.ingestContract.linkParentId ], excluded: [] }
-      : { included: [], excluded: [] }
+    this.linkParentIdControl.setValue(
+      this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] },
     );
-    this.checkParentIdControl.setValue(this.ingestContract.checkParentId
-      ? { included: this.ingestContract.checkParentId, excluded: [] }
-      : { included: [], excluded: [] }
+    this.checkParentIdControl.setValue(
+      this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] },
     );
   }
 
@@ -121,7 +119,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       (error: any) => {
         this.dialogRef.close(false);
         console.error(error);
-      }
+      },
     );
   }
 

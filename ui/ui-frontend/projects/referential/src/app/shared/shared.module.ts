@@ -34,22 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+import { VitamUIImportDialogModule } from './vitamui-import-dialog/vitamui-import-dialog.module';
+import { VitamUISnackBarModule } from './vitamui-snack-bar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ],
-  exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ]
+  imports: [CommonModule, VitamUISnackBarModule, VitamUIImportDialogModule],
+  exports: [VitamUISnackBarModule, VitamUIImportDialogModule],
 })
-export class SharedModule {
-}
+export class SharedModule {}

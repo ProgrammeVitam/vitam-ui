@@ -34,36 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {AuditService} from '../audit.service';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { AuditService } from '../audit.service';
 
 @Injectable()
 export class AuditCreateValidators {
-    private debounceTime = 400;
+  private debounceTime = 400;
 
-    constructor(private auditService: AuditService) {
-    }
+  constructor(private auditService: AuditService) {}
 
-    checkEvidenceAuditId = (): AsyncValidatorFn => {
-        return this.auditExists('invalidEvidenceAuditId');
-    }
+  checkEvidenceAuditId = (): AsyncValidatorFn => {
+    return this.auditExists('invalidEvidenceAuditId');
+  };
 
-    private auditExists(existTag: string) {
-        return (control: AbstractControl) => {
-            const auditExists: any = {};
-            auditExists[existTag] = true;
+  private auditExists(existTag: string) {
+    return (control: AbstractControl) => {
+      const auditExists: any = {};
+      auditExists[existTag] = true;
 
-            const result = timer(this.debounceTime).pipe(
-                switchMap(() => control.value !== null ? this.auditService.checkEvidenceAuditExistence(control.value) : of(false)),
-                take(1),
-                map((exists: boolean) => exists ? auditExists : null)
-            );
+      const result = timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== null ? this.auditService.checkEvidenceAuditExistence(control.value) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? auditExists : null)),
+      );
 
-            return result;
-        };
-    }
+      return result;
+    };
+  }
 }

@@ -74,10 +74,6 @@ import { ProfileService } from './profile.service';
     ProfileRoutingModule,
   ],
   declarations: [ProfileComponent],
-  providers: [
-    ProfileResolver,
-    ProfileService,
-    VitamUISnackBar,
-  ]
+  providers: [ProfileResolver, ProfileService, VitamUISnackBar],
 })
-export class ProfileModule { }
+export class ProfileModule {}

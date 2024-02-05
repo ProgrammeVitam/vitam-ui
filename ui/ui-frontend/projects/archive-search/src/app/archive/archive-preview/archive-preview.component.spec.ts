@@ -63,45 +63,43 @@ describe('ArchivePreviewComponent', () => {
     }
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
-      };
+  beforeEach(waitForAsync(() => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+    };
 
-      const archiveServiceMock = {
-        getBaseUrl: () => '/fake-api',
-        buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
-        receiveDownloadProgressSubject: () => of(true),
-      };
+    const archiveServiceMock = {
+      getBaseUrl: () => '/fake-api',
+      buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
+      receiveDownloadProgressSubject: () => of(true),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [
-          MatMenuModule,
-          MatTreeModule,
-          MatProgressSpinnerModule,
-          MatSidenavModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          RouterTestingModule,
-          MatIconModule,
-          BrowserAnimationsModule,
-          TranslateModule.forRoot(),
-        ],
-        declarations: [ArchivePreviewComponent, MockTruncatePipe],
-        providers: [
-          { provide: ArchiveService, useValue: archiveServiceMock },
-          { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: ActivatedRoute, useValue: activatedRouteMock },
-          { provide: ENVIRONMENT, useValue: environment },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-          { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [
+        MatMenuModule,
+        MatTreeModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [ArchivePreviewComponent, MockTruncatePipe],
+      providers: [
+        { provide: ArchiveService, useValue: archiveServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);

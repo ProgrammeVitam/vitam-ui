@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum OtpState {
-    OPTIONAL = 'OPTIONAL',
-    DEACTIVATED = 'DISABLED',
-    MANDATORY = 'MANDATORY'
+  OPTIONAL = 'OPTIONAL',
+  DEACTIVATED = 'DISABLED',
+  MANDATORY = 'MANDATORY',
 }

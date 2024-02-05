@@ -34,40 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
-import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
-import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
-import {AgencyCreateComponent} from './agency-create/agency-create.component';
-import {AgencyListComponent} from './agency-list/agency-list.component';
-import {AgencyService} from './agency.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
+import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
+import { AgencyCreateComponent } from './agency-create/agency-create.component';
+import { AgencyListComponent } from './agency-list/agency-list.component';
+import { AgencyService } from './agency.service';
 
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
-  styleUrls: ['./agency.component.scss']
+  styleUrls: ['./agency.component.scss'],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
-
   search = '';
 
-  @ViewChild(AgencyListComponent, {static: true}) agencyListComponent: AgencyListComponent;
+  @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private agencyService: AgencyService) {
+    private agencyService: AgencyService,
+  ) {
     super(route, globalEventService);
   }
 
   openCreateAgencyDialog() {
-    const dialogRef = this.dialog.open(AgencyCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
+    const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -79,12 +79,11 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   openAgencyImportDialog() {
-    const dialogRef = this.dialog.open(
-      VitamUIImportDialogComponent, {
-        panelClass: 'vitamui-modal',
-        data: Referential.AGENCY,
-        disableClose: true
-      });
+    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+      panelClass: 'vitamui-modal',
+      data: Referential.AGENCY,
+      disableClose: true,
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
         this.refreshList();
@@ -103,8 +102,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   showAgency(item: Agency) {
     this.openPanel(item);
@@ -115,7 +113,6 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
-
 }

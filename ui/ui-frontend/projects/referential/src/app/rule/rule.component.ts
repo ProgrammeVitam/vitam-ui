@@ -48,7 +48,7 @@ import { NULL_TYPE, RULE_TYPES } from './rules.constants';
 @Component({
   selector: 'app-rules',
   templateUrl: './rule.component.html',
-  styleUrls: ['./rule.component.scss']
+  styleUrls: ['./rule.component.scss'],
 })
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
@@ -66,7 +66,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -80,7 +80,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
 
     this.typeFilterForm = this.formBuilder.group({
-      ruleTypes: null
+      ruleTypes: null,
     });
 
     this.typeFilterForm.controls.ruleTypes.valueChanges.subscribe((value) => {
@@ -92,7 +92,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   openCreateRuleDialog() {
     const dialogRef = this.dialog.open(RuleCreateComponent, {
       panelClass: 'vitamui-modal',
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
     dialogRef.afterClosed().subscribe((result) => {
@@ -132,7 +132,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
       panelClass: 'vitamui-modal',
       data: Referential.RULE,
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {

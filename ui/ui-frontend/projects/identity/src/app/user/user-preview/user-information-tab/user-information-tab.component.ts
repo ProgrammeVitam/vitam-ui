@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -39,7 +38,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { AdminUserProfile, CountryOption, CountryService,  Customer, diff, OtpState, User } from 'ui-frontend-common';
+import { AdminUserProfile, CountryOption, CountryService, Customer, diff, OtpState, User } from 'ui-frontend-common';
 import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
 import { extend, isEmpty } from 'underscore';
 import { UserInfoService } from './../../user-info.service';
@@ -55,7 +54,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
   styleUrls: ['./user-information-tab.component.scss'],
 })
 export class UserInfoTabComponent implements OnChanges {
-
   @Input() user: User;
   @Input() userInfo: UserInfo;
   @Input() customer: Customer;
@@ -71,35 +69,34 @@ export class UserInfoTabComponent implements OnChanges {
   public lastConnectionDate: Date;
   public customerEmailDomains: string[];
   public previousValue: {
-    firstname: string,
-    lastname: string,
-    email: string,
-    mobile: string,
-    phone: string,
-    level: string,
-    otp: boolean,
-    type: string,
-    status: string,
-    customerId: string,
-    groupId: string,
-    identifier: string,
-    subrogeable: boolean,
+    firstname: string;
+    lastname: string;
+    email: string;
+    mobile: string;
+    phone: string;
+    level: string;
+    otp: boolean;
+    type: string;
+    status: string;
+    customerId: string;
+    groupId: string;
+    identifier: string;
+    subrogeable: boolean;
     address: {
-      street: string,
-      zipCode: string,
-      city: string,
-      country: string,
-    },
-    siteCode: string,
-    centerCode: string,
-    internalCode: string,
-    autoProvisioningEnabled: boolean
+      street: string;
+      zipCode: string;
+      city: string;
+      country: string;
+    };
+    siteCode: string;
+    centerCode: string;
+    internalCode: string;
+    autoProvisioningEnabled: boolean;
   };
   public previousUserInfoValue: {
-    language: string,
+    language: string;
   };
   public countries: CountryOption[];
-
 
   constructor(
     private userService: UserService,
@@ -132,7 +129,7 @@ export class UserInfoTabComponent implements OnChanges {
       siteCode: [null],
       centerCode: [null],
       internalCode: [null],
-      autoProvisioningEnabled: null
+      autoProvisioningEnabled: null,
     });
 
     this.userInfoForm = this.formBuilder.group({
@@ -152,26 +149,23 @@ export class UserInfoTabComponent implements OnChanges {
         map(() => diff(this.form.getRawValue(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.user.id }, formData)),
-        switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((user: User) => this.resetForm(this.form, user, this.customer, this.adminUserProfile, this.readOnly));
 
-      merge(this.userInfoForm.valueChanges, this.userInfoForm.statusChanges)
+    merge(this.userInfoForm.valueChanges, this.userInfoForm.statusChanges)
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.userInfoForm.getRawValue(), this.previousUserInfoValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.userInfo.id }, formData)),
-        switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null))))
+        switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null)))),
       )
       .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(this.form, userInfo));
 
-
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-        this.countries = values;
-      });
-
-
+      this.countries = values;
+    });
   }
 
   private updateOtpState(form: FormGroup, adminUserProfile: AdminUserProfile, customer: Customer): void {
@@ -191,14 +185,18 @@ export class UserInfoTabComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('user') || changes.hasOwnProperty('readOnly')
-      || changes.hasOwnProperty('customer') || changes.hasOwnProperty('adminUserProfile')) {
+    if (
+      changes.hasOwnProperty('user') ||
+      changes.hasOwnProperty('readOnly') ||
+      changes.hasOwnProperty('customer') ||
+      changes.hasOwnProperty('adminUserProfile')
+    ) {
       if (this.user && this.customer && this.adminUserProfile) {
         this.resetForm(this.form, this.user, this.customer, this.adminUserProfile, this.readOnly);
       }
     }
-    if(changes.hasOwnProperty('userInfo') && this.userInfo){
-      this.resetUserInfoForm(this.userInfoForm, this.userInfo)
+    if (changes.hasOwnProperty('userInfo') && this.userInfo) {
+      this.resetUserInfoForm(this.userInfoForm, this.userInfo);
     }
   }
 
@@ -247,5 +245,4 @@ export class UserInfoTabComponent implements OnChanges {
 
     this.updateOtpState(form, adminUserProfile, customer);
   }
-
 }

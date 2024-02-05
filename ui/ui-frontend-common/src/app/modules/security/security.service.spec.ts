@@ -44,34 +44,25 @@ import { SecurityService } from './security.service';
 describe('SecurityService', () => {
   beforeEach(() => {
     const authStubService = {
-      userLoaded:  of({
-        profileGroup : {
+      userLoaded: of({
+        profileGroup: {
           profiles: [
             {
               applicationName: 'FAKE_APP',
               tenantIdentifier: 1,
-              roles: [
-                { name: 'ROLE_GET'},
-                { name: 'ROLE_DELETE'},
-              ]
+              roles: [{ name: 'ROLE_GET' }, { name: 'ROLE_DELETE' }],
             },
             {
               applicationName: 'FAKE_APP',
               tenantIdentifier: 2,
-              roles: [
-                { name: 'ROLE_GET'},
-                { name: 'ROLE_TEST'},
-              ]
+              roles: [{ name: 'ROLE_GET' }, { name: 'ROLE_TEST' }],
             },
-          ]
-        }
-      })
+          ],
+        },
+      }),
     };
     TestBed.configureTestingModule({
-      providers: [
-        SecurityService,
-        { provide: AuthService, useValue: authStubService },
-      ]
+      providers: [SecurityService, { provide: AuthService, useValue: authStubService }],
     });
   });
 
@@ -79,7 +70,7 @@ describe('SecurityService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('shouldn\'t have any role', inject([SecurityService, AuthService], (securityService: SecurityService) => {
+  it("shouldn't have any role", inject([SecurityService, AuthService], (securityService: SecurityService) => {
     securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_GET_2').subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
@@ -130,7 +121,7 @@ describe('SecurityService', () => {
     });
   }));
 
-  it('shouldn\'t have role', inject([SecurityService], (securityService: SecurityService) => {
+  it("shouldn't have role", inject([SecurityService], (securityService: SecurityService) => {
     securityService.hasRole('FAKE_APP', 1, 'ROLE_GET_2').subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
@@ -144,5 +135,4 @@ describe('SecurityService', () => {
       expect(allowed).toBeFalsy();
     });
   }));
-
 });

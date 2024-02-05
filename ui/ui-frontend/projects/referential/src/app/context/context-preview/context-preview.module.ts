@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatOptionModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {RouterModule} from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
 
-import {ConfirmActionModule, VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {ContextEditPermissionModule} from '../context-create/context-edit-permission/context-edit-permission.module';
-import {ContextInformationTabComponent} from './context-information-tab/context-information-tab.component';
-import {ContextPermissionTabComponent} from './context-permission-tab/context-permission-tab.component';
-import {ContextPreviewComponent} from './context-preview.component';
+import { ConfirmActionModule, VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
+import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
+import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
+import { ContextPreviewComponent } from './context-preview.component';
 
 @NgModule({
   imports: [
@@ -73,16 +73,9 @@ import {ContextPreviewComponent} from './context-preview.component';
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
-    MatDividerModule
+    MatDividerModule,
   ],
-  declarations: [
-    ContextPreviewComponent,
-    ContextInformationTabComponent,
-    ContextPermissionTabComponent
-  ],
-  exports: [
-    ContextPreviewComponent
-  ]
+  declarations: [ContextPreviewComponent, ContextInformationTabComponent, ContextPermissionTabComponent],
+  exports: [ContextPreviewComponent],
 })
-export class ContextPreviewModule {
-}
+export class ContextPreviewModule {}

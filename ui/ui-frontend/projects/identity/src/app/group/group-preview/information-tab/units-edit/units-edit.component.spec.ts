@@ -55,16 +55,18 @@ import { UnitsEditComponent } from './units-edit.component';
 @Component({
   selector: 'app-units-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => UnitsFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => UnitsFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class UnitsFormStubComponent {
   writeValue() {}
-  registerOnChange() { }
-  registerOnTouched() { }
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 describe('UnitsEditComponent', () => {
@@ -75,14 +77,8 @@ describe('UnitsEditComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ UnitsEditComponent, UnitsFormStubComponent ],
+      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      declarations: [UnitsEditComponent, UnitsFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -90,9 +86,8 @@ describe('UnitsEditComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -106,7 +101,6 @@ describe('UnitsEditComponent', () => {
   });
 
   describe('Component', () => {
-
     it('should call groupService.patch when form is dirty', () => {
       const groupService = TestBed.inject(GroupService);
       spyOn(groupService, 'patch').and.callThrough();

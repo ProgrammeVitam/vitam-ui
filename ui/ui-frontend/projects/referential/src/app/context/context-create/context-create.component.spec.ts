@@ -35,43 +35,42 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-classes-per-file directive-selector */
-import {Component, forwardRef, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, OtpState} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {ContextService} from '../context.service';
-import {ContextCreateComponent} from './context-create.component';
-import {ContextCreateValidators} from './context-create.validators';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ContextService } from '../context.service';
+import { ContextCreateComponent } from './context-create.component';
+import { ContextCreateValidators } from './context-create.validators';
 
 @Component({
   selector: 'app-owner-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => OwnerFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => OwnerFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() contextInfo: any;
 
-  writeValue() {
-  }
+  writeValue() {}
 
-  registerOnChange() {
-  }
+  registerOnChange() {}
 
-  registerOnTouched() {
-  }
+  registerOnTouched() {}
 }
 
 const expectedContext = {
@@ -91,24 +90,25 @@ const expectedContext = {
   language: 'en',
   emailDomains: ['test.com', 'toto.co.uk'],
   defaultEmailDomain: 'test.com',
-  owners: [{
-    code: '666666',
-    name: 'Alice Vans',
-    companyName: 'Vans',
-    address: {
-      street: 'street2',
-      zipCode: '43121',
-      city: 'Paris',
-      country: 'FR',
-    }
-  }]
+  owners: [
+    {
+      code: '666666',
+      name: 'Alice Vans',
+      companyName: 'Vans',
+      address: {
+        street: 'street2',
+        zipCode: '43121',
+        city: 'Paris',
+        country: 'FR',
+      },
+    },
+  ],
 };
 
 let component: ContextCreateComponent;
 let fixture: ComponentFixture<ContextCreateComponent>;
 
 class Page {
-
   get submit() {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
@@ -116,21 +116,19 @@ class Page {
   control(name: string) {
     return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
-
 }
 
 let page: Page;
 
 // TODO gafou : boom tomorrow
 xdescribe('ContextCreateComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const contextServiceSpy = jasmine.createSpyObj('ContextService', {create: of({})});
-    const contextCreateValidatorsSpy = jasmine.createSpyObj(
-      'ContextCreateValidators',
-      {uniqueCode: () => of(null), uniqueDomain: of(null)}
-    );
+    const contextServiceSpy = jasmine.createSpyObj('ContextService', { create: of({}) });
+    const contextCreateValidatorsSpy = jasmine.createSpyObj('ContextCreateValidators', {
+      uniqueCode: () => of(null),
+      uniqueDomain: of(null),
+    });
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -142,20 +140,16 @@ xdescribe('ContextCreateComponent', () => {
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
       ],
-      declarations: [
-        ContextCreateComponent,
-        OwnerFormStubComponent,
-      ],
+      declarations: [ContextCreateComponent, OwnerFormStubComponent],
       providers: [
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: ContextService, useValue: contextServiceSpy},
-        {provide: ContextCreateValidators, useValue: contextCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: ContextService, useValue: contextServiceSpy },
+        { provide: ContextCreateValidators, useValue: contextCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -205,7 +199,6 @@ xdescribe('ContextCreateComponent', () => {
     });
 
     describe('Validators', () => {
-
       describe('code', () => {
         it('should check the code format', () => {
           expect(setControlValue('code', '').invalid).toBeTruthy();
@@ -246,7 +239,6 @@ xdescribe('ContextCreateComponent', () => {
 
           expect(setControlValue('defaultEmailDomain', '').invalid).toBeTruthy();
           expect(setControlValue('defaultEmailDomain', 't').valid).toBeTruthy();
-
         });
       });
 
@@ -281,5 +273,4 @@ xdescribe('ContextCreateComponent', () => {
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
-
 });

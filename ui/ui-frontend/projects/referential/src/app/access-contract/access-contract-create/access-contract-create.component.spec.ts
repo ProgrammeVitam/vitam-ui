@@ -35,25 +35,25 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-classes-per-file directive-selector */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, ExternalParametersService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {AgencyService} from '../../agency/agency.service';
-import {AccessContractService} from '../access-contract.service';
-import {AccessContractCreateComponent} from './access-contract-create.component';
-import {AccessContractCreateValidators} from './access-contract-create.validators';
+import { AgencyService } from '../../agency/agency.service';
+import { AccessContractService } from '../access-contract.service';
+import { AccessContractCreateComponent } from './access-contract-create.component';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -69,14 +69,13 @@ const expectedAccessContract = {
   ruleCategoryToFilter: [''],
   originatingAgencies: [''],
   rootUnits: [''],
-  excludedRootUnits: ['']
+  excludedRootUnits: [''],
 };
 
 let component: AccessContractCreateComponent;
 let fixture: ComponentFixture<AccessContractCreateComponent>;
 
 class Page {
-
   get submit() {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
@@ -84,28 +83,25 @@ class Page {
   control(name: string) {
     return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
-
 }
 
 let page: Page;
 
 describe('AccessContractCreateComponent', () => {
-
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', {getAll: of([])});
-    const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', {create: of({}), getAll: of([])});
-    const accessContractCreateValidatorsSpy = jasmine.createSpyObj(
-      'AccessContractCreateValidators', 
-      {
-        uniqueName: () => of(null), uniqueNameWhileEdit: of(null),
-        uniqueIdentifier: () => of(null), identifierToIgnore: ''
-      }
-    );
+    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getAll: of([]) });
+    const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', { create: of({}), getAll: of([]) });
+    const accessContractCreateValidatorsSpy = jasmine.createSpyObj('AccessContractCreateValidators', {
+      uniqueName: () => of(null),
+      uniqueNameWhileEdit: of(null),
+      uniqueIdentifier: () => of(null),
+      identifierToIgnore: '',
+    });
 
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+      getUserExternalParameters: () => of(parameters),
     };
 
     TestBed.configureTestingModule({
@@ -120,21 +116,18 @@ describe('AccessContractCreateComponent', () => {
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
       ],
-      declarations: [
-        AccessContractCreateComponent
-      ],
+      declarations: [AccessContractCreateComponent],
       providers: [
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: AgencyService, useValue: agencyServiceSpy},
-        {provide: AccessContractService, useValue: accessContractServiceSpy},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        {provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}}
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: AgencyService, useValue: agencyServiceSpy },
+        { provide: AccessContractService, useValue: accessContractServiceSpy },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -190,7 +183,6 @@ describe('AccessContractCreateComponent', () => {
     });
 
     describe('Validators', () => {
-
       describe('fields', () => {
         it('should be required', () => {
           expect(setControlValue('name', '').invalid).toBeTruthy();
@@ -232,5 +224,4 @@ describe('AccessContractCreateComponent', () => {
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
-
 });

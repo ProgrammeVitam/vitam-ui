@@ -52,14 +52,13 @@ describe('SubrogationBannerComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule, VitamUICommonTestModule],
-      declarations: [ SubrogationBannerComponent ],
+      declarations: [SubrogationBannerComponent],
       providers: [
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: SubrogationService, useValue: { getCurrent: () => of(null), stop: () => of(null) } },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

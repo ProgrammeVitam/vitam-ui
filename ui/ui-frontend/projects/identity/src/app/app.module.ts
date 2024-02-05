@@ -42,7 +42,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
@@ -55,16 +55,14 @@ import { CoreModule } from './core/core.module';
 registerLocaleData(localeFr, 'fr');
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient,  [
-  {prefix: './assets/shared-i18n/', suffix: '.json'},
-  {prefix: './assets/i18n/', suffix: '.json'}
-]);
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/shared-i18n/', suffix: '.json' },
+    { prefix: './assets/i18n/', suffix: '.json' },
+  ]);
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     CoreModule,
     BrowserAnimationsModule,
@@ -73,22 +71,17 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     AppRoutingModule,
     QuicklinkModule,
     TranslateModule.forRoot({
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler},
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: WINDOW_LOCATION, useValue: window.location },
-    DatePipe,
-  ],
+  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

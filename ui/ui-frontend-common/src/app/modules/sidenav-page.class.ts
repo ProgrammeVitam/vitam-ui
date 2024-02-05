@@ -46,27 +46,27 @@ import { GlobalEventService } from './global-event.service';
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
-
   openedItem: T;
 
   @ViewChild('panel') panel: MatSidenav;
 
   private destroy = new Subject<void>();
 
-  constructor(route: ActivatedRoute, public globalEventService: GlobalEventService) {
+  constructor(
+    route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+  ) {
     super(route);
-    merge(
-      this.globalEventService.pageEvent,
-      this.globalEventService.customerEvent,
-      this.globalEventService.tenantEvent
-    ).pipe(takeUntil(this.destroy)).subscribe(() => {
-      this.closePanel();
-    });
+    merge(this.globalEventService.pageEvent, this.globalEventService.customerEvent, this.globalEventService.tenantEvent)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(() => {
+        this.closePanel();
+      });
   }
 
   ngAfterViewInit() {
     if (!this.panel) {
-      this.logger.error(this, 'Missing <mat-sidenav> element in component\'s template. Please a <mat-sidenav> with a #panel attribute');
+      this.logger.error(this, "Missing <mat-sidenav> element in component's template. Please a <mat-sidenav> with a #panel attribute");
     }
   }
 
@@ -86,5 +86,4 @@ export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, O
       this.panel.close();
     }
   }
-
 }

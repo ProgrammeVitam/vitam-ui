@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:no-magic-numbers */
-import {ɵisObservable as isObservable, ɵisPromise as isPromise} from '@angular/core';
-import {fakeAsync, tick} from '@angular/core/testing';
-import {FormControl} from '@angular/forms';
-import {from, Observable, of} from 'rxjs';
-import {SecurityProfileCreateValidators} from './security-profile-create.validators';
+import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { from, Observable, of } from 'rxjs';
+import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
@@ -51,7 +51,6 @@ function toObservable(r: any): Observable<any> {
 }
 
 describe('SecurityProfile Create Validators', () => {
-
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', ['existsProperties']);
@@ -61,7 +60,7 @@ describe('SecurityProfile Create Validators', () => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
@@ -69,10 +68,10 @@ describe('SecurityProfile Create Validators', () => {
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({nameExists: true});
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should not call the service', fakeAsync(() => {
@@ -91,11 +90,10 @@ describe('SecurityProfile Create Validators', () => {
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({nameExists: true});
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
     }));
   });
-
 });

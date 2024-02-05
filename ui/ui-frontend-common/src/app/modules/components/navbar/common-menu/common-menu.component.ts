@@ -38,36 +38,35 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Application } from '../../../models/application/application.interface';
-import {Category} from '../../../models/application/category.interface';
+import { Category } from '../../../models/application/category.interface';
 import { MenuOption } from '../customer-menu/menu-option.interface';
 import { MenuType } from '../menu-type.enum';
 
 interface ModalData {
   menuType: MenuType;
   items: MenuOption[];
-  applicationConfig: {applications: Application[], categories: { [categoryId: string]: Category} };
+  applicationConfig: { applications: Application[]; categories: { [categoryId: string]: Category } };
 }
 
 @Component({
   selector: 'vitamui-common-common-menu',
   templateUrl: './common-menu.component.html',
-  styleUrls: ['./common-menu.component.scss']
+  styleUrls: ['./common-menu.component.scss'],
 })
 export class CommonMenuComponent implements OnInit {
-
   title: string;
   menuType: MenuType;
   items: MenuOption[];
-  applicationConfig?: {applications: Application[], categories: { [categoryId: string]: Category} };
+  applicationConfig?: { applications: Application[]; categories: { [categoryId: string]: Category } };
 
   constructor(
     public dialogRef: MatDialogRef<CommonMenuComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ModalData) { }
+    @Inject(MAT_DIALOG_DATA) public data: ModalData,
+  ) {}
 
   ngOnInit() {
     this.menuType = this.data.menuType;
-    this.title = this.menuType === MenuType.tenant ? 'Coffres' :
-      this.menuType === MenuType.customer ? 'Organisations' : 'Applications';
+    this.title = this.menuType === MenuType.tenant ? 'Coffres' : this.menuType === MenuType.customer ? 'Organisations' : 'Applications';
     this.items = this.data.items;
     this.applicationConfig = this.data.applicationConfig;
   }
@@ -83,5 +82,4 @@ export class CommonMenuComponent implements OnInit {
   closeTenantMenu() {
     this.dialogRef.close();
   }
-
 }

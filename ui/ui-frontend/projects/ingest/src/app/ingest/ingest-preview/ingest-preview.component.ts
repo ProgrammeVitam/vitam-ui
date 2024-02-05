@@ -34,21 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {first} from 'rxjs/operators';
-import {LogbookService} from 'ui-frontend-common';
-import {
-  IngestStatus,
-  ingestStatus,
-  ingestStatusVisualColor,
-  LogbookOperation
-} from '../../models/logbook-event.interface';
-import {IngestService} from '../ingest.service';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { LogbookService } from 'ui-frontend-common';
+import { IngestStatus, ingestStatus, ingestStatusVisualColor, LogbookOperation } from '../../models/logbook-event.interface';
+import { IngestService } from '../ingest.service';
 
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
-  styleUrls: ['./ingest-preview.component.scss']
+  styleUrls: ['./ingest-preview.component.scss'],
 })
 export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   IngestStatus = IngestStatus;
@@ -58,19 +53,21 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   @Output() previewClose = new EventEmitter();
   @Output() ingestHasChanged = new EventEmitter<LogbookOperation>();
 
-  constructor(private logbookService: LogbookService,
-              private ingestService: IngestService,) {
-  }
+  constructor(
+    private logbookService: LogbookService,
+    private ingestService: IngestService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.ingestFromParent) {
-      this.reloadLogbookOperation()
+      this.reloadLogbookOperation();
     }
   }
 
   ngOnInit() {
-    this.ingestService.logbookOperationsReloaded.subscribe(logbookOperations =>
-      this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+    this.ingestService.logbookOperationsReloaded.subscribe((logbookOperations) =>
+      this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations),
+    );
   }
 
   ngOnDestroy() {
@@ -78,25 +75,26 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {
-    const logbookOperationUpdated = logbookOperations.find(e => e.id === this.ingestFromParent.id);
+    const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.ingestFromParent.id);
     if (logbookOperationUpdated) {
-      this.reloadLogbookOperation()
+      this.reloadLogbookOperation();
     }
   }
 
   reloadLogbookOperation() {
-    this.ingestService.getIngestOperation(this.ingestFromParent.id)
+    this.ingestService
+      .getIngestOperation(this.ingestFromParent.id)
       .pipe(first())
-      .subscribe(receivedLogbookOperation => {
+      .subscribe((receivedLogbookOperation) => {
         if (this.ingestFromParent.id === receivedLogbookOperation.id) {
-          this.updateIngest(receivedLogbookOperation)
+          this.updateIngest(receivedLogbookOperation);
         }
-      })
+      });
   }
 
   private updateIngest(logbookOperation: LogbookOperation) {
     this.ingest = logbookOperation;
-    this.ingestHasChanged.emit(this.ingest)
+    this.ingestHasChanged.emit(this.ingest);
   }
 
   emitClose() {
@@ -104,9 +102,8 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST'))
     );
   }
 

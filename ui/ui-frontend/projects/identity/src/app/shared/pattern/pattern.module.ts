@@ -43,13 +43,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PatternComponent } from './pattern.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, TranslateModule],
   declarations: [PatternComponent],
-  exports: [PatternComponent]
+  exports: [PatternComponent],
 })
-export class PatternModule { }
+export class PatternModule {}

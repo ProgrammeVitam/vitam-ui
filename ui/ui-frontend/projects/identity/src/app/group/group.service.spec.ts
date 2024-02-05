@@ -52,11 +52,7 @@ describe('GroupService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        GroupService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      providers: [GroupService, { provide: VitamUISnackBar, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -69,39 +65,29 @@ describe('GroupService', () => {
 
   it('should call /fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL', () => {
     groupService.search().subscribe((response) => expect(response).toEqual([]), fail);
-    const req = httpTestingController.expectOne(
-        '/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL'
-    );
+    const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
     req.flush(result);
   });
 
   it('should call /fake-api/groups?page=42&size=15&orderBy=name&direction=DESC&embedded=ALL', () => {
-    groupService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT))
-      .subscribe((response) => expect(response).toEqual([]), fail);
-    const req = httpTestingController.expectOne(
-      '/fake-api/groups?page=42&size=15&orderBy=name&direction=DESC&embedded=ALL');
+    groupService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([]), fail);
+    const req = httpTestingController.expectOne('/fake-api/groups?page=42&size=15&orderBy=name&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
     req.flush(result);
   });
 
   it('should call /fake-api/groups?page=0&size=15&orderBy=&direction=DESC&embedded=ALL', () => {
-    groupService.search(new PageRequest(0, 15, '', Direction.DESCENDANT))
-      .subscribe((response) => expect(response).toEqual([null]), fail);
-    let req = httpTestingController.expectOne(
-      '/fake-api/groups?page=0&size=15&orderBy=&direction=DESC&embedded=ALL');
+    groupService.search(new PageRequest(0, 15, '', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([null]), fail);
+    let req = httpTestingController.expectOne('/fake-api/groups?page=0&size=15&orderBy=&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
     let result: any = { pageNum: 0, hasMore: true, pageSize: 15, values: [null] };
     req.flush(result);
 
-    groupService.loadMore().subscribe(
-      (response) => expect(response).toEqual([null, null]),
-      fail
-    );
-    req = httpTestingController.expectOne(
-      '/fake-api/groups?page=1&size=15&orderBy=&direction=DESC&embedded=ALL');
+    groupService.loadMore().subscribe((response) => expect(response).toEqual([null, null]), fail);
+    req = httpTestingController.expectOne('/fake-api/groups?page=1&size=15&orderBy=&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
     result = { pageNum: 1, pageSize: 15, hasMore: false, values: [null] };
     req.flush(result);
@@ -114,10 +100,7 @@ describe('GroupService', () => {
     const result: any = { hasMore: false, pageSize: 20, pageNum: 0, values: [null] };
     req.flush(result);
 
-    groupService.loadMore().subscribe(
-      (response) => expect(response).toEqual([null]),
-      fail
-    );
+    groupService.loadMore().subscribe((response) => expect(response).toEqual([null]), fail);
     httpTestingController.expectNone('/fake-api/groups?page=1&size=20&orderBy=name&direction=ASC&embedded=ALL');
   });
 
@@ -126,13 +109,10 @@ describe('GroupService', () => {
   });
 
   it('should return true', () => {
-    groupService.search().subscribe(
-      (response) => {
-        expect(response).toEqual([null]);
-        expect(groupService.canLoadMore).toBeTruthy();
-      },
-      fail
-    );
+    groupService.search().subscribe((response) => {
+      expect(response).toEqual([null]);
+      expect(groupService.canLoadMore).toBeTruthy();
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
     const result: any = { hasMore: true, values: [null] };
@@ -142,29 +122,26 @@ describe('GroupService', () => {
   it('should call /fake-api/groups and display a success message', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedGroup: Group = {
-        id: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level : '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly : false,
+      id: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
     };
-    groupService.create(expectedGroup).subscribe(
-      (response: Group) => {
-        expect(response).toEqual(expectedGroup);
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'groupCreate', name: expectedGroup.name },
-          duration: 10000
-        });
-      },
-      fail
-    );
+    groupService.create(expectedGroup).subscribe((response: Group) => {
+      expect(response).toEqual(expectedGroup);
+      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
+      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'groupCreate', name: expectedGroup.name },
+        duration: 10000,
+      });
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/groups');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedGroup);
@@ -173,41 +150,38 @@ describe('GroupService', () => {
   it('should display an error message', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedProfileGroup: Group = {
-        id: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level : '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly : false,
+      id: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
     };
-    groupService.create(expectedProfileGroup).subscribe(
-      fail,
-      () => {
-        expect(snackBar.open).toHaveBeenCalledTimes(1);
-        expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
-      }
-    );
+    groupService.create(expectedProfileGroup).subscribe(fail, () => {
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+      expect(snackBar.open).toHaveBeenCalledWith('Expected message', null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
+    });
     const req = httpTestingController.expectOne('/fake-api/groups');
     expect(req.request.method).toEqual('POST');
-    req.flush({ message: 'Expected message' }, {status: 400, statusText: 'Bad request'});
+    req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 
   it('should call /fake-api/groups/42?embedded=ALL', () => {
     const expectedProfileGroup: Group = {
-        id: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level : '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly : false,
+      id: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
     };
     groupService.get('42').subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
     const req = httpTestingController.expectOne('/fake-api/groups/42?embedded=ALL');
@@ -216,15 +190,14 @@ describe('GroupService', () => {
   });
 
   it('should return true if the profiles group exists', () => {
-    groupService.exists('4242', 'profileGroupName').subscribe(
-      (found) => {
-        expect(found).toBeTruthy();
-      },
-      fail
-    );
+    groupService.exists('4242', 'profileGroupName').subscribe((found) => {
+      expect(found).toBeTruthy();
+    }, fail);
 
-    const criterionArray: any[] = [ { key: 'customerId', value: '4242', operator: Operators.equals },
-                                    { key: 'name', value: 'profileGroupName', operator: Operators.equals }];
+    const criterionArray: any[] = [
+      { key: 'customerId', value: '4242', operator: Operators.equals },
+      { key: 'name', value: 'profileGroupName', operator: Operators.equals },
+    ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
@@ -232,14 +205,13 @@ describe('GroupService', () => {
   });
 
   it('should return false if the profiles group does not exist', () => {
-    groupService.exists('4242', 'profileGroupName').subscribe(
-      (found) => {
-        expect(found).toBeFalsy();
-      },
-      fail
-    );
-    const criterionArray: any[] = [ { key: 'customerId', value: '4242', operator: Operators.equals },
-                                    { key: 'name', value: 'profileGroupName', operator: Operators.equals }];
+    groupService.exists('4242', 'profileGroupName').subscribe((found) => {
+      expect(found).toBeFalsy();
+    }, fail);
+    const criterionArray: any[] = [
+      { key: 'customerId', value: '4242', operator: Operators.equals },
+      { key: 'name', value: 'profileGroupName', operator: Operators.equals },
+    ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
@@ -247,16 +219,13 @@ describe('GroupService', () => {
   });
 
   it('should return true if the group exists', () => {
-    groupService.unitExists('customerId', 'unit1').subscribe(
-      (found) => {
-        expect(found).toBeTruthy();
-      },
-      fail
-    );
+    groupService.unitExists('customerId', 'unit1').subscribe((found) => {
+      expect(found).toBeTruthy();
+    }, fail);
 
     const criterionArray: any[] = [
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
-      { key: 'customerId', value: 'customerId', operator: Operators.equals }
+      { key: 'customerId', value: 'customerId', operator: Operators.equals },
     ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
@@ -265,16 +234,13 @@ describe('GroupService', () => {
   });
 
   it('should return false if the group does not exist', () => {
-    groupService.unitExists('customerId', 'unit1').subscribe(
-      (found) => {
-        expect(found).toBeFalsy();
-      },
-      fail
-    );
+    groupService.unitExists('customerId', 'unit1').subscribe((found) => {
+      expect(found).toBeFalsy();
+    }, fail);
     const criterionArray: any[] = [
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
-      { key: 'customerId', value: 'customerId', operator: Operators.equals }
-  ];
+      { key: 'customerId', value: 'customerId', operator: Operators.equals },
+    ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
@@ -284,30 +250,27 @@ describe('GroupService', () => {
   it('should call PATCH /fake-api/groups/42', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedProfileGroup: Group = {
-        id: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level : '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly : false
+      id: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
     };
     groupService.updated.subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
-    groupService.patch({ id: '42', name: expectedProfileGroup.name }).subscribe(
-      (profileGroup) => {
-        expect(profileGroup).toEqual(expectedProfileGroup);
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'groupUpdate', name: expectedProfileGroup.name },
-          duration: 10000
-        });
-      },
-      fail
-    );
+    groupService.patch({ id: '42', name: expectedProfileGroup.name }).subscribe((profileGroup) => {
+      expect(profileGroup).toEqual(expectedProfileGroup);
+      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
+      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'groupUpdate', name: expectedProfileGroup.name },
+        duration: 10000,
+      });
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/groups/42');
     expect(req.request.method).toEqual('PATCH');
     expect(req.request.body).toEqual({ id: '42', name: expectedProfileGroup.name });
@@ -317,27 +280,23 @@ describe('GroupService', () => {
   it('should display an error message', () => {
     const snackBar = TestBed.get(VitamUISnackBar);
     const expectedGroup: Group = {
-        id: '1',
-        customerId: '4242442',
-        name: 'Group Name',
-        description: 'Group Description',
-        level : '',
-        usersCount: 0,
-        profileIds: [],
-        profiles: [],
-        units: [],
-        readonly : false
+      id: '1',
+      customerId: '4242442',
+      name: 'Group Name',
+      description: 'Group Description',
+      level: '',
+      usersCount: 0,
+      profileIds: [],
+      profiles: [],
+      units: [],
+      readonly: false,
     };
-    groupService.patch({ id: '42', name: expectedGroup.name }).subscribe(
-      fail,
-      () => {
-        expect(snackBar.open.calls.count()).toBe(1);
-        expect(snackBar.open.calls.first().args[0]).toBe('Expected message');
-      }
-    );
+    groupService.patch({ id: '42', name: expectedGroup.name }).subscribe(fail, () => {
+      expect(snackBar.open.calls.count()).toBe(1);
+      expect(snackBar.open.calls.first().args[0]).toBe('Expected message');
+    });
     const req = httpTestingController.expectOne('/fake-api/groups/42');
     expect(req.request.method).toEqual('PATCH');
-    req.flush({ message: 'Expected message' }, {status: 400, statusText: 'Bad request'});
+    req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
-
 });

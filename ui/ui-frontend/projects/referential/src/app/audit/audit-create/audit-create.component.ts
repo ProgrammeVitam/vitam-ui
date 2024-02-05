@@ -70,7 +70,7 @@ export class AuditCreateComponent implements OnInit {
 
   allServices = new FormControl(true);
   allNodes = new FormControl(true);
-  selectedNodes = new FormControl({included: [], excluded: []});
+  selectedNodes = new FormControl({ included: [], excluded: [] });
 
   accessContractId: string = null;
   accessionRegisterSummaries: AccessionRegisterSummary[];
@@ -93,7 +93,7 @@ export class AuditCreateComponent implements OnInit {
     protected accessContractService: AccessContractService,
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -111,7 +111,7 @@ export class AuditCreateComponent implements OnInit {
           {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-          }
+          },
         );
       }
     });
@@ -230,7 +230,7 @@ export class AuditCreateComponent implements OnInit {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      }
+      },
     );
   }
 

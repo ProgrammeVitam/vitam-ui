@@ -39,13 +39,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'vitamui-common-account-application-tab',
   templateUrl: './account-application-tab.component.html',
-  styleUrls: ['./account-application-tab.component.scss']
+  styleUrls: ['./account-application-tab.component.scss'],
 })
 export class AccountApplicationTabComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

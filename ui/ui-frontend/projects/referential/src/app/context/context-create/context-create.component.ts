@@ -82,7 +82,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private contextService: ContextService,
     private contextCreateValidators: ContextCreateValidators,
-    private securityProfileService: SecurityProfileService
+    private securityProfileService: SecurityProfileService,
   ) {}
 
   ngOnInit() {
@@ -152,7 +152,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      }
+      },
     );
   }
 

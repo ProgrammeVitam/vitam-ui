@@ -17,8 +17,8 @@
       "FRENCH": "French",
       "GERMAN": "German"
     },
-    "COMMON_YES" : "Yes",
-    "COMMON_NO" : "No",
+    "COMMON_YES": "Yes",
+    "COMMON_NO": "No",
     "UNDO_MODAL": {
       "TITLE": "Close the window",
       "UNDO_MESSAGE": "Modified data won't be saved. Are you sure you want to close the window ?"

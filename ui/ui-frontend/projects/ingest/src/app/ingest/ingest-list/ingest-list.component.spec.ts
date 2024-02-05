@@ -12,17 +12,16 @@ describe('IngestListComponent', () => {
 
   const ingestServiceMock = {
     search: () => of([]),
-    getAllPaginated: () => of([])
+    getAllPaginated: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IngestListComponent ],
-      imports : [TranslateModule.forRoot()],
+      declarations: [IngestListComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -48,7 +48,7 @@ describe('CustomerApiService Identity', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    })
+    }),
   );
 
   it('should be created', () => {

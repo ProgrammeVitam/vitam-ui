@@ -1,14 +1,11 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
   <div class="form-group">
     <div class="col-10 form-control">
-      <vitamui-common-input 
-        formControlName="name" 
-        placeholder="Nom" 
-        i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+      <vitamui-common-input formControlName="name" placeholder="Nom" i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
       </vitamui-common-input>
       <ng-container *ngIf="form.get('name')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
+        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
+          >{{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </ng-container>
     </div>
@@ -16,8 +13,7 @@
 
   <div class="form-group">
     <div class="col-10 form-control">
-      <vitamui-common-input formControlName="description" placeholder="Description"
-                            i18n-placeholder="description@@agencyPreviewLabelName">
+      <vitamui-common-input formControlName="description" placeholder="Description" i18n-placeholder="description@@agencyPreviewLabelName">
       </vitamui-common-input>
     </div>
   </div>

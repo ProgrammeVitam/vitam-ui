@@ -47,13 +47,9 @@ import { HierarchyService } from '../hierarchy.service';
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  animations: [
-    collapseAnimation,
-    rotateAnimation,
-  ]
+  animations: [collapseAnimation, rotateAnimation],
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
   subLevelIsRequired: boolean;
@@ -66,16 +62,15 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private formBuilder: FormBuilder,
     private hierarchyService: HierarchyService,
-    private confirmDialogService: ConfirmDialogService
-  ) {
-  }
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      enabled : [true],
-      level : ['', buildValidators(this.authService.user)],
+      enabled: [true],
+      level: ['', buildValidators(this.authService.user)],
       profileIds: [null, Validators.required],
-      customerId: [this.authService.user.customerId]
+      customerId: [this.authService.user.customerId],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -94,10 +89,12 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     const form = this.form.getRawValue();
     form.profileIds.forEach((profileId: string) => {
-        this.duplicateProfil(profileId, form.level, form.enabled);
+      this.duplicateProfil(profileId, form.level, form.enabled);
     });
   }
 
@@ -112,11 +109,11 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
         () => this.dialogRef.close(true),
         (error) => {
           console.error(error);
-        });
+        },
+      );
     });
   }
   formValid(): boolean {
     return this.form.pending || this.form.invalid;
   }
-
 }

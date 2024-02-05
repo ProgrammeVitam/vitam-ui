@@ -1,41 +1,43 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-access-contract-preview *ngIf="openedItem" (previewClose)="closePanel()" [accessContract]="openedItem" [tenantIdentifier]="tenantId">
+    <app-access-contract-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [accessContract]="openedItem"
+      [tenantIdentifier]="tenantId"
+    >
     </app-access-contract-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
-
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"></vitamui-common-navbar>
 
         <h2 i18n="Search an access contract, owner or tenant@@accessContractSearchHeader">
-          <img src="assets/mini-logo-vitam.png"> Paramétrer mes <strong>Contrats d'accès</strong>
+          <img src="assets/mini-logo-vitam.png" /> Paramétrer mes <strong>Contrats d'accès</strong>
         </h2>
 
         <div class="controls">
-
-          <vitamui-common-search-bar name="access-contract-search" (search)="onSearchSubmit($event)"
-            placeholder="Nom, Identifiant, ..." i18n-placeholder="@@accessContractSearchPlaceholder"></vitamui-common-search-bar>
+          <vitamui-common-search-bar
+            name="access-contract-search"
+            (search)="onSearchSubmit($event)"
+            placeholder="Nom, Identifiant, ..."
+            i18n-placeholder="@@accessContractSearchPlaceholder"
+          ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateAccesscontractDialog()">
-              <i class="vitamui-icon vitamui-icon-contrat btn-create"></i> <span
-                i18n="Create an access contract button label@@accessContractListCreateButton">Créer un contrat
-                d'accès</span>
+              <i class="vitamui-icon vitamui-icon-contrat btn-create"></i>
+              <span i18n="Create an access contract button label@@accessContractListCreateButton">Créer un contrat d'accès</span>
             </button>
           </div>
-
         </div>
       </div>
     </div>
 
     <div class="vitamui-body vitamui-container">
-      <app-access-contract-list (accessContractClick)="showAccessContract($event)" [search]="search">
-      </app-access-contract-list>
+      <app-access-contract-list (accessContractClick)="showAccessContract($event)" [search]="search"> </app-access-contract-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

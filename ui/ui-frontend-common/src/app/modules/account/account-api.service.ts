@@ -42,18 +42,19 @@ import { BASE_URL } from '../injection-tokens';
 import { Account } from '../models/account/account.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccountApiService {
-
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+  ) {
     this.apiUrl = baseUrl + '/accounts';
   }
 
   public patchMe(userPartial: { [key: string]: any }, headers?: HttpHeaders): Observable<Account> {
     return this.http.patch<Account>(this.apiUrl + '/me', userPartial, { headers });
   }
-
 }

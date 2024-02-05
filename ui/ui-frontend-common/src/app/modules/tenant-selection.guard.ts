@@ -45,22 +45,19 @@ import { TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
 import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TenantSelectionGuard implements CanActivate, CanActivateChild {
-
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
     private router: Router,
     private tenantService: TenantSelectionService,
-    @Inject(WINDOW_LOCATION) private location: any) {
-  }
+    @Inject(WINDOW_LOCATION) private location: any,
+  ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot
-  ): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params.tenantIdentifier) {
       return true;
     } else if (this.tenantService.getSelectedTenant()) {
@@ -74,7 +71,7 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
         const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-        this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat([tenants[0].identifier.toString()]));
+        this.router.navigate(route.pathFromRoot.map((r) => r.url.toString()).concat([tenants[0].identifier.toString()]));
         return true;
       } else {
         return true;
@@ -91,5 +88,4 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
   canActivateChild(route: ActivatedRouteSnapshot): boolean {
     return this.canActivate(route);
   }
-
 }

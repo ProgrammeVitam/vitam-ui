@@ -56,7 +56,7 @@ import { EditableSelectComponent } from './editable-select.component';
       <vitamui-common-editable-option value="value2" content="Content 2"></vitamui-common-editable-option>
       <vitamui-common-editable-option value="value3" content="Content 3"></vitamui-common-editable-option>
     </vitamui-common-editable-select>
-  `
+  `,
 })
 class TesthostComponent {
   value: string;
@@ -84,17 +84,10 @@ describe('EditableSelectComponent', () => {
         HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableSelectComponent,
-        EditableOptionComponent,
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+      declarations: [TesthostComponent, EditableSelectComponent, EditableOptionComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -112,7 +105,6 @@ describe('EditableSelectComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -183,11 +175,9 @@ describe('EditableSelectComponent', () => {
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = 'value1';
       fixture.detectChanges();
@@ -266,6 +256,5 @@ describe('EditableSelectComponent', () => {
         expect(testhost.component.control.value).toEqual('value1');
       });
     }));
-
   });
 });

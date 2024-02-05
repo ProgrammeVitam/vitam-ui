@@ -85,7 +85,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     private confirmDialogService: ConfirmDialogService,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
-    private translatePipe: TranslatePipe
+    private translatePipe: TranslatePipe,
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -138,7 +138,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 
@@ -204,7 +204,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 

@@ -2,12 +2,12 @@
   <vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
     <div class="d-flex align-items-center d-flex">
       <vitamui-common-user-photo class="mr-1" [photo]="account?.photo"></vitamui-common-user-photo>
-      <span class="pl-2">{{'ACCOUNT.TITLE' | translate}}</span>
+      <span class="pl-2">{{ 'ACCOUNT.TITLE' | translate }}</span>
     </div>
   </vitamui-common-title-breadcrumb>
 
   <div class="d-flex">
-    <button class="btn primary btn-header">{{'ACCOUNT.REFRESH_PASSWORD' | translate}}</button>
+    <button class="btn primary btn-header">{{ 'ACCOUNT.REFRESH_PASSWORD' | translate }}</button>
     <div *ngIf="displayAppTab">
       <button class="btn primary btn-header">Demander une modification</button>
       <button class="btn primary">Contacter l'administrateur</button>
@@ -18,7 +18,7 @@
 <div class="vitamui-content">
   <mat-tab-group>
     <mat-tab [label]="'ACCOUNT.TAB.INFORMATIONS' | translate">
-      <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>
+      <vitamui-common-account-information-tab [account]="account"></vitamui-common-account-information-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

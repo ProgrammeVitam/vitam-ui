@@ -45,17 +45,16 @@ import {
   CustomerSelectionService,
   GlobalEventService,
   MenuOption,
-  SubrogationModalService
+  SubrogationModalService,
 } from 'ui-frontend-common';
 import { CustomerSelectService } from '../customer-select.service';
 
 @Component({
   selector: 'app-subrogate-user',
   templateUrl: './subrogate-user.component.html',
-  styleUrls: ['./subrogate-user.component.scss']
+  styleUrls: ['./subrogate-user.component.scss'],
 })
 export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
-
   public customer: Customer;
   public customers: MenuOption[];
   public search: string;
@@ -69,33 +68,38 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
     private route: ActivatedRoute,
     private subrogationModalService: SubrogationModalService,
     private customerSelectService: CustomerSelectService,
-    private customerSelectionService: CustomerSelectionService
+    private customerSelectionService: CustomerSelectionService,
   ) {
     super(route);
   }
 
   ngOnInit() {
-    this.customerSelectService.getAll(true).pipe(switchMap((options) => {
-      this.customers = options;
-      this.customerSelectionService.setCustomers(options);
-      return this.route.paramMap;
-     })).subscribe((paramMap) => {
-       const routeCustomerId = paramMap.get('customerId');
-       const currentCustomerId = this.customerSelectionService.getSelectedCustomerId();
+    this.customerSelectService
+      .getAll(true)
+      .pipe(
+        switchMap((options) => {
+          this.customers = options;
+          this.customerSelectionService.setCustomers(options);
+          return this.route.paramMap;
+        }),
+      )
+      .subscribe((paramMap) => {
+        const routeCustomerId = paramMap.get('customerId');
+        const currentCustomerId = this.customerSelectionService.getSelectedCustomerId();
 
-       if (!currentCustomerId || currentCustomerId !== routeCustomerId) {
-         this.customerSelectionService.setCustomerId(routeCustomerId);
-         this.updateCustomer(routeCustomerId);
-       } else {
-        this.updateCustomer(currentCustomerId);
-       }
+        if (!currentCustomerId || currentCustomerId !== routeCustomerId) {
+          this.customerSelectionService.setCustomerId(routeCustomerId);
+          this.updateCustomer(routeCustomerId);
+        } else {
+          this.updateCustomer(currentCustomerId);
+        }
 
-       this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$)).subscribe((customerId: string) => {
-         if (!this.customer || this.customer.identifier !== customerId) {
-           this.changeCustomer(customerId);
-         }
-       });
-     });
+        this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$)).subscribe((customerId: string) => {
+          if (!this.customer || this.customer.identifier !== customerId) {
+            this.changeCustomer(customerId);
+          }
+        });
+      });
   }
 
   ngOnDestroy() {
@@ -118,8 +122,7 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
   private updateCustomer(customerId: string): void {
     const customers = this.customerSelectService.getCustomers();
     if (customers) {
-      this.customer = customers.find(value => value.id === customerId);
+      this.customer = customers.find((value) => value.id === customerId);
     }
   }
-
 }

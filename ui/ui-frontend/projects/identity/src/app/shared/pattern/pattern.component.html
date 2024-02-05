@@ -1,8 +1,12 @@
 <div class="d-flex mt-2" [class.pattern-mini]="vitamuiMiniMode">
-  <mat-form-field class="vitamui-mat-select d-flex align-items-center" [class.vitamui-mat-select-mini]="vitamuiMiniMode" [style.width.%]="50">
+  <mat-form-field
+    class="vitamui-mat-select d-flex align-items-center"
+    [class.vitamui-mat-select-mini]="vitamuiMiniMode"
+    [style.width.%]="50"
+  >
     <mat-select [formControl]="control" required [placeholder]="'SHARED.PATTERN' | translate" panelClass="vitamui-mat-select" #select>
       <mat-option *ngFor="let option of availableOptions" [value]="option.value" [disabled]="option.disabled">
-        {{ option.value }} <span *ngIf="option?.disabled">{{'SHARED.PATTERN_ALREADY_USED' | translate}}</span>
+        {{ option.value }} <span *ngIf="option?.disabled">{{ 'SHARED.PATTERN_ALREADY_USED' | translate }}</span>
       </mat-option>
     </mat-select>
 
@@ -12,14 +16,14 @@
     </div>
   </mat-form-field>
 
-  <button  class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
+  <button class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
     <i class="vitamui-icon vitamui-icon-add"></i>
   </button>
 </div>
 
 <div class="mt-3 vitamui-chip-list">
   <div *ngFor="let pattern of patterns" class="vitamui-chip">
-    <div class="vitamui-chip-content">{{pattern}}</div>
+    <div class="vitamui-chip-content">{{ pattern }}</div>
     <div class="vitamui-remove-chip" (click)="remove(pattern)">
       <i class="material-icons">clear</i>
     </div>

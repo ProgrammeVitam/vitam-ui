@@ -6,17 +6,15 @@ import { InjectorModule, LoggerModule, BASE_URL, ENVIRONMENT } from 'ui-frontend
 import { environment } from '../../../environments/environment.prod';
 
 describe('IngestApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      InjectorModule,
-      LoggerModule.forRoot()
-    ],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-      { provide: ENVIRONMENT, useValue: environment }
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }),
+  );
   it('should be created', () => {
     const service: IngestApiService = TestBed.inject(IngestApiService);
     expect(service).toBeTruthy();

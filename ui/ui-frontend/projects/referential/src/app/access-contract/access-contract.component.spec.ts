@@ -34,30 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {RouterTestingModule} from '@angular/router/testing';
-import {ApplicationService, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApplicationService, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {of} from 'rxjs';
-import {AccessContractComponent} from './access-contract.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+import { AccessContractComponent } from './access-contract.component';
 
-@Component({selector: 'app-access-contract-preview', template: ''})
+@Component({ selector: 'app-access-contract-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({selector: 'app-access-contract-list', template: ''})
+@Component({ selector: 'app-access-contract-list', template: '' })
 // tslint:disable-next-line:component-class-suffix
-class AccessContractListStub {
-}
-
+class AccessContractListStub {}
 
 describe('AccessContractComponent', () => {
   let component: AccessContractComponent;
@@ -65,16 +63,12 @@ describe('AccessContractComponent', () => {
 
   const applicationServiceMock = {
     applications: new Array<any>(),
-    isApplicationExternalIdentifierEnabled: () => of(true)
+    isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AccessContractComponent,
-        AccessContractListStub,
-        AccessContractPreviewStub
-      ],
+      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -82,14 +76,11 @@ describe('AccessContractComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
       ],
-      providers: [
-        {provide: ApplicationService, useValue: applicationServiceMock },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [{ provide: ApplicationService, useValue: applicationServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

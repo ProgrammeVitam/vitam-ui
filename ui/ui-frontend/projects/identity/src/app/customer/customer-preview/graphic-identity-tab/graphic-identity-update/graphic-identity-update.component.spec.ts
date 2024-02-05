@@ -65,31 +65,31 @@ const expectedCustomer: Customer = {
     street: '85 rue des bois',
     zipCode: '75013',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
   language: 'FRENCH',
-  emailDomains: [
-    'domain.com',
-  ],
+  emailDomains: ['domain.com'],
   defaultEmailDomain: 'domain.com',
-  owners: [{
-    id: 'znvuzhvyvg',
-    identifier: '41',
-    code: '254791',
-    name: 'owner name',
-    companyName: 'company name',
-    address: {
-      street: '85 rue des bois',
-      zipCode: '75013',
-      city: 'Paris',
-      country: 'France'
+  owners: [
+    {
+      id: 'znvuzhvyvg',
+      identifier: '41',
+      code: '254791',
+      name: 'owner name',
+      companyName: 'company name',
+      address: {
+        street: '85 rue des bois',
+        zipCode: '75013',
+        city: 'Paris',
+        country: 'France',
+      },
+      customerId: 'idCustomer',
+      readonly: false,
     },
-    customerId: 'idCustomer',
-    readonly: false
-  }],
+  ],
   themeColors: {},
-  gdprAlert : false,
-  gdprAlertDelay : 72,
+  gdprAlert: false,
+  gdprAlertDelay: 72,
   portalMessages: {},
   portalTitles: {},
 };
@@ -97,18 +97,20 @@ const expectedCustomer: Customer = {
 @Component({
   selector: 'app-customer-colors-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-    @Input() placeholder: string;
-    @Input() spinnerDiameter = 25;
-    writeValue() {}
-    registerOnChange() {}
-    registerOnTouched() {}
+  @Input() placeholder: string;
+  @Input() spinnerDiameter = 25;
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 describe('GraphicIdentityUpdateComponent', () => {
@@ -119,23 +121,16 @@ describe('GraphicIdentityUpdateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
-    })
-      .compileComponents();
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

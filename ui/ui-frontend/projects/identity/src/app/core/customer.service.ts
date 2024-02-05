@@ -58,7 +58,7 @@ export class CustomerService {
     private customerApi: CustomerApiService,
     private snackBar: VitamUISnackBar,
     private sanitizer: DomSanitizer,
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ) {}
 
   get(id: string): Observable<Customer> {
@@ -100,8 +100,8 @@ export class CustomerService {
             data: { type: 'customerCreateError' },
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -121,8 +121,8 @@ export class CustomerService {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -144,7 +144,7 @@ export class CustomerService {
           return null;
         }
         return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
-      })
+      }),
     );
   }
 

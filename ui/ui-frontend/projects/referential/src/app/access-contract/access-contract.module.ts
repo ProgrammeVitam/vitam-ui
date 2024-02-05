@@ -34,26 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
+import { RouterModule } from '@angular/router';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import {RouterModule} from '@angular/router';
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-
-import {SharedModule} from '../shared/shared.module';
-import {AccessContractCreateModule} from './access-contract-create';
-import {AccessContractListComponent} from './access-contract-list/access-contract-list.component';
-import {AccessContractPreviewModule} from './access-contract-preview/access-contract-preview.module';
-import {AccessContractRoutingModule} from './access-contract-routing.module';
-import {AccessContractComponent} from './access-contract.component';
+import { SharedModule } from '../shared/shared.module';
+import { AccessContractCreateModule } from './access-contract-create';
+import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
+import { AccessContractPreviewModule } from './access-contract-preview/access-contract-preview.module';
+import { AccessContractRoutingModule } from './access-contract-routing.module';
+import { AccessContractComponent } from './access-contract.component';
 
 @NgModule({
   imports: [
@@ -72,13 +71,8 @@ import {AccessContractComponent} from './access-contract.component';
     AccessContractRoutingModule,
     AccessContractCreateModule,
     AccessContractPreviewModule,
-    TableFilterModule
+    TableFilterModule,
   ],
-  declarations: [
-    AccessContractComponent,
-    AccessContractListComponent
-  ]
-
+  declarations: [AccessContractComponent, AccessContractListComponent],
 })
-export class AccessContractModule {
-}
+export class AccessContractModule {}

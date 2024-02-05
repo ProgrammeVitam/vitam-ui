@@ -48,10 +48,9 @@ import { TenantService } from '../tenant.service';
 @Component({
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
-  styleUrls: ['./owner-create.component.scss']
+  styleUrls: ['./owner-create.component.scss'],
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
-
   public ownerForm: FormGroup;
   public tenantForm: FormGroup;
   public stepIndex = 0;
@@ -65,22 +64,18 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
     private ownerService: OwnerService,
     private tenantService: TenantService,
     private tenantFormValidators: TenantFormValidators,
-    private confirmDialogService: ConfirmDialogService
-  ) { }
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
   ngOnInit() {
     this.ownerForm = this.formBuilder.group({
-      owner: [null, Validators.required]
+      owner: [null, Validators.required],
     });
     this.tenantForm = this.formBuilder.group({
-      name: [
-        null,
-        [Validators.required],
-        this.tenantFormValidators.uniqueName(),
-      ],
+      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
       ownerId: [null],
       customerId: [this.data.customer.id],
-      enabled: [true, Validators.required]
+      enabled: [true, Validators.required],
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -98,17 +93,22 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   }
 
   onOwnerSubmit() {
-    if (this.ownerForm.pending || this.ownerForm.invalid) { return; }
+    if (this.ownerForm.pending || this.ownerForm.invalid) {
+      return;
+    }
     this.ownerService.create(this.ownerForm.value.owner).subscribe(
       (newOwner: Owner) => this.dialogRef.close({ owner: newOwner }),
       (error) => {
         // TODO
         console.error(error);
-      });
+      },
+    );
   }
 
   onTenantSubmit() {
-    if (this.ownerForm.pending || this.ownerForm.invalid || this.tenantForm.pending || this.tenantForm.invalid) { return; }
+    if (this.ownerForm.pending || this.ownerForm.invalid || this.tenantForm.pending || this.tenantForm.invalid) {
+      return;
+    }
     this.ownerService.create(this.ownerForm.value.owner).subscribe(
       (newOwner) => {
         this.tenantForm.get('ownerId').setValue(newOwner.id);
@@ -119,13 +119,13 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
           (error) => {
             console.error(error);
             this.dialogRef.close();
-          }
+          },
         );
       },
       (error) => {
         // TODO
         console.error(error);
-      });
+      },
+    );
   }
-
 }

@@ -48,20 +48,16 @@ describe('ErrorDialogComponent', () => {
   let fixture: ComponentFixture<ErrorDialogComponent>;
 
   beforeEach(waitForAsync(() => {
-    const startupServiceStub = { getPortalUrl: () => { }, getLogo: () => { }, getAppLogoURL: () => { } , getCustomerLogoURL: () => { }  };
+    const startupServiceStub = { getPortalUrl: () => {}, getLogo: () => {}, getAppLogoURL: () => {}, getCustomerLogoURL: () => {} };
 
     TestBed.configureTestingModule({
-      imports: [
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule
-      ],
-      declarations: [ ErrorDialogComponent ],
+      imports: [LoggerModule.forRoot(), VitamUICommonTestModule],
+      declarations: [ErrorDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: StartupService, useValue: startupServiceStub },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

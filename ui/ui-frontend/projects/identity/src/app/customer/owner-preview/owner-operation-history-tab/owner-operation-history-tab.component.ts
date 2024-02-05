@@ -34,17 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AuthService, Event, LogbookService } from 'ui-frontend-common';
 
 const EVENT_LIMIT = 100;
 @Component({
   selector: 'app-owner-operation-history-tab',
   templateUrl: './owner-operation-history-tab.component.html',
-  styleUrls: ['./owner-operation-history-tab.component.scss']
+  styleUrls: ['./owner-operation-history-tab.component.scss'],
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
-
   @Input() id: string;
   @Input() identifier: string;
   @Input() externalParamId: string;
@@ -53,11 +52,14 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
   events: Event[] = [];
   loading = false;
 
-  constructor(private authService: AuthService, private logbookService: LogbookService) { }
+  constructor(
+    private authService: AuthService,
+    private logbookService: LogbookService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('id') || changes.hasOwnProperty('externalParamId')) {
-      if (this.id && this.externalParamId ) {
+      if (this.id && this.externalParamId) {
         this.initEvent();
       }
     }
@@ -72,10 +74,9 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
     this.logbookService.listHistoryForOwner(this.id, this.identifier, this.externalParamId, tenantIdentifier).subscribe(
       (results) => {
         this.loading = false;
-        this.events = results.filter((event) => this.filter ? this.filter(event) : true).slice(0, EVENT_LIMIT);
+        this.events = results.filter((event) => (this.filter ? this.filter(event) : true)).slice(0, EVENT_LIMIT);
       },
-      () => this.loading = false
+      () => (this.loading = false),
     );
   }
-
 }

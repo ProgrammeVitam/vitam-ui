@@ -46,11 +46,9 @@ import { SearchService } from './search.service';
 
 @Injectable()
 class TestSearchService extends SearchService<any> {
-
   constructor(http: HttpClient) {
     super(http, { getAllPaginated: () => EMPTY }, 'EMBEDDED');
   }
-
 }
 
 describe('SearchService', () => {
@@ -59,36 +57,27 @@ describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestSearchService]
+      providers: [TestSearchService],
     });
 
     testService = TestBed.inject(TestSearchService);
   });
 
   describe('search', () => {
-
     // TODO
-
   });
 
   describe('loadMore', () => {
-
     // TODO
-
   });
 
   describe('canLoadMore', () => {
-
     it('should return false', () => {
       expect(testService.canLoadMore).toBeFalsy();
     });
 
     it('should return true', () => {
-
       // TODO
-
     });
-
   });
-
 });

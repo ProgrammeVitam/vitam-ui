@@ -74,13 +74,10 @@ import { TenantService } from './tenant.service';
     OwnerCreateModule,
     TenantCreateModule,
     MatSidenavModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
   ],
-  declarations: [
-    CustomerComponent,
-    CustomerPopupComponent
-  ],
-  exports: [ ],
+  declarations: [CustomerComponent, CustomerPopupComponent],
+  exports: [],
   providers: [
     CustomerResolver,
     CustomerService,
@@ -90,6 +87,6 @@ import { TenantService } from './tenant.service';
     TenantResolver,
     TenantService,
     VitamUISnackBar,
-  ]
+  ],
 })
-export class CustomerModule { }
+export class CustomerModule {}

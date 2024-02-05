@@ -1,11 +1,21 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { opacityAnimation , slideAnimation} from '../../../animations';
+import { opacityAnimation, slideAnimation } from '../../../animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
@@ -27,13 +37,9 @@ interface NgxTranslateApp {
   selector: 'vitamui-common-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  animations: [
-    opacityAnimation,
-    slideAnimation,
-  ]
+  animations: [opacityAnimation, slideAnimation],
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
-
   public state = '';
   public appMap: Map<Category, Application[]>;
   public filteredApplications: Application[];
@@ -52,20 +58,20 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-      if (event.key === 'ArrowRight') {
-        if (this.tabSelectedIndex < this.selectedList.length - 1) {
-          this.tabSelectedIndex++;
-        }
-      } else if (event.key === 'ArrowLeft') {
-        if (this.tabSelectedIndex > 0) {
-          this.tabSelectedIndex--;
-        }
-      } else if (event.key === 'ArrowDown') {
-        if (this.firstResult && !this.firstResultFocused) {
-          this.firstResult.focus();
-          this.firstResultFocused = true;
-        }
+    if (event.key === 'ArrowRight') {
+      if (this.tabSelectedIndex < this.selectedList.length - 1) {
+        this.tabSelectedIndex++;
       }
+    } else if (event.key === 'ArrowLeft') {
+      if (this.tabSelectedIndex > 0) {
+        this.tabSelectedIndex--;
+      }
+    } else if (event.key === 'ArrowDown') {
+      if (this.firstResult && !this.firstResultFocused) {
+        this.firstResult.focus();
+        this.firstResultFocused = true;
+      }
+    }
   }
 
   constructor(
@@ -75,35 +81,46 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private tenantService: TenantSelectionService,
     private translateService: TranslateService,
     private router: Router,
-    private startupService: StartupService
-  ) { }
+    private startupService: StartupService,
+  ) {}
 
   ngOnInit() {
-    this.dialogRef.overlay.backdropClick().pipe(takeUntil(this.destroyer$)).subscribe(() => this.onClose());
+    this.dialogRef.overlay
+      .backdropClick()
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe(() => this.onClose());
     this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
-      return {value: tenant, label: tenant.name};
+      return { value: tenant, label: tenant.name };
     });
 
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
-    this.tenantService.getSelectedTenant$().pipe(take(1)).subscribe((tenant: Tenant) => {
-      if (tenant) {
-        this.selectedTenant = { value: tenant, label: tenant.name };
-        this.updateApps(this.selectedTenant);
-      } else {
-        this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
-          this.updateApps(this.tenants.find(option => option.value.identifier === identifier));
-        });
-      }
-
-    });
+    this.tenantService
+      .getSelectedTenant$()
+      .pipe(take(1))
+      .subscribe((tenant: Tenant) => {
+        if (tenant) {
+          this.selectedTenant = { value: tenant, label: tenant.name };
+          this.updateApps(this.selectedTenant);
+        } else {
+          this.tenantService
+            .getLastTenantIdentifier$()
+            .pipe(takeUntil(this.destroyer$))
+            .subscribe((identifier: number) => {
+              this.updateApps(this.tenants.find((option) => option.value.identifier === identifier));
+            });
+        }
+      });
 
     // Get the list of translated apps from en / fr json files for research
-    this.translateService.get(APPLICATION_TRANSLATE_PATH).pipe(take(1)).subscribe((translatedApps: any) => {
-      for (const [key, value] of Object.entries(translatedApps)) {
-        this.ngxAppArray.push({identifier: key, name: (value as any).NAME});
-      }
-    });
+    this.translateService
+      .get(APPLICATION_TRANSLATE_PATH)
+      .pipe(take(1))
+      .subscribe((translatedApps: any) => {
+        for (const [key, value] of Object.entries(translatedApps)) {
+          this.ngxAppArray.push({ identifier: key, name: (value as any).NAME });
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -122,8 +139,16 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Search value in the translated apps array
       const filteredNgxTranslateApps = this.ngxAppArray.filter((app: NgxTranslateApp) => {
-        return app.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-          .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
+        return app.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .includes(
+            value
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase(),
+          );
       });
 
       // Avoid maping array by identifier inside filter
@@ -184,9 +209,12 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public openApplication(application: Application): void {
     this.applicationService.openApplication(
-      application, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.value.identifier);
+      application,
+      this.router,
+      this.startupService.getConfigStringValue('UI_URL'),
+      this.selectedTenant.value.identifier,
+    );
 
     this.onClose();
   }
-
 }

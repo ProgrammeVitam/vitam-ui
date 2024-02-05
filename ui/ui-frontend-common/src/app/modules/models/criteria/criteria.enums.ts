@@ -42,15 +42,15 @@ export enum CriteriaOperator {
   MISSING = 'MISSING',
   GTE = 'GTE',
   LTE = 'LTE',
-  IN = 'IN'
+  IN = 'IN',
 }
 
 export enum CriteriaDataType {
   STRING = 'STRING',
-  DATE = 'DATE'
+  DATE = 'DATE',
 }
 
 export enum ActionOnCriteria {
   REMOVE = 'REMOVE',
-  ADD = 'ADD'
+  ADD = 'ADD',
 }

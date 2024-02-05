@@ -169,50 +169,48 @@ class Page {
 let page: Page;
 
 describe('CustomerCreateComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
-      const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-        uniqueCode: () => of(null),
-        uniqueDomain: of(null),
-      });
-      const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-      const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-      const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
-      const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-        uniqueName: () => of(null),
-      });
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          MatFormFieldModule,
-          MatSelectModule,
-          MatButtonToggleModule,
-          MatProgressBarModule,
-          NoopAnimationsModule,
-          MatProgressSpinnerModule,
-          VitamUICommonTestModule,
-          LoggerModule.forRoot(),
-        ],
-        declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
-        providers: [
-          { provide: MatDialogRef, useValue: matDialogRefSpy },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: CustomerService, useValue: customerServiceSpy },
-          { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-          { provide: OwnerService, useValue: ownerServiceSpy },
-          { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
-          { provide: TenantService, useValue: tenantServiceSpy },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-          { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
-          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-          { provide: MatDialog, useValue: {} },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
+    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
+      uniqueCode: () => of(null),
+      uniqueDomain: of(null),
+    });
+    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
+    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
+    const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
+    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
+      uniqueName: () => of(null),
+    });
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatProgressBarModule,
+        NoopAnimationsModule,
+        MatProgressSpinnerModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
+      ],
+      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: CustomerService, useValue: customerServiceSpy },
+        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
+        { provide: OwnerService, useValue: ownerServiceSpy },
+        { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
+        { provide: TenantService, useValue: tenantServiceSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        { provide: MatDialog, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerCreateComponent);

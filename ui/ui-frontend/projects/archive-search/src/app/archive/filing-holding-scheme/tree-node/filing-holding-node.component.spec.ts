@@ -16,13 +16,11 @@ describe('FilingHoldingNodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-      ],
+      imports: [],
       declarations: [FilingHoldingNodeComponent, MockTruncatePipe],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,7 +34,7 @@ describe('FilingHoldingNodeComponent', () => {
       vitamId: 'vitamId',
       parents: [],
       checked: true,
-      hidden: true
+      hidden: true,
     };
     fixture.detectChanges();
   });
@@ -45,12 +43,3 @@ describe('FilingHoldingNodeComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-
-
-
-
-
-
-
-

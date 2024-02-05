@@ -1,63 +1,72 @@
-<div
-    class="container p-0"
-    [@opacityAnimation]="state"
-    >
-    <div class="row header">
-        <vitamui-common-search-bar #searchBar
-            class="col-5 mr-2"
-            name="element-search"
-            (searchChanged)="onSearch($event)"
-            (clear)="resetSearch()"
-            placeholder="{{'MENU.GRAB_APPLICATION' | translate}}"
-        ></vitamui-common-search-bar>
+<div class="container p-0" [@opacityAnimation]="state">
+  <div class="row header">
+    <vitamui-common-search-bar
+      #searchBar
+      class="col-5 mr-2"
+      name="element-search"
+      (searchChanged)="onSearch($event)"
+      (clear)="resetSearch()"
+      placeholder="{{ 'MENU.GRAB_APPLICATION' | translate }}"
+    ></vitamui-common-search-bar>
 
-        <vitamui-common-item-select
-            class="col-3 p-0 ml-5"
-            [label]="'SELECT_TENANT.SELECT' | translate"
-            [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
-            [items]="tenants"
-            [selectedItem]="selectedTenant"
-            (itemSelected)="updateApps($event)"
-        ></vitamui-common-item-select>
+    <vitamui-common-item-select
+      class="col-3 p-0 ml-5"
+      [label]="'SELECT_TENANT.SELECT' | translate"
+      [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
+      [items]="tenants"
+      [selectedItem]="selectedTenant"
+      (itemSelected)="updateApps($event)"
+    ></vitamui-common-item-select>
 
-        <div class="apps-container col-3 ml-auto" (click)="onClose()">
-            <span class="pr-2">{{'MENU.MY_APPLICATIONS' | translate}}</span>
-            <button mat-icon-button class="apps-button">
-                <i class="vitamui-icon vitamui-icon-apps-colored"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span></i>
-            </button>
-        </div>
+    <div class="apps-container col-3 ml-auto" (click)="onClose()">
+      <span class="pr-2">{{ 'MENU.MY_APPLICATIONS' | translate }}</span>
+      <button mat-icon-button class="apps-button">
+        <i class="vitamui-icon vitamui-icon-apps-colored"
+          ><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span
+          ><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span
+          ><span class="path9"></span
+        ></i>
+      </button>
     </div>
+  </div>
 
-    <div class="pt-4">
-        <ng-container *ngIf="filteredApplications; else displayMats">
-            <span class="px-3">{{'MENU.RESULT' | translate}}&nbsp;: </span>
-            <hr class="mb-0">
-            <mat-selection-list id="searchResults"
-                (selectionChange)="onClose($event)"
-                class="py-3 overflow">
-                <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
-                    <vitamui-common-menu-application-tile [application]="app"
-                    [applicationUrl]="getApplicationUrl(app)"
-                    [hlCriteria]="criteria"
-                    (openApplication)="openApplication(app)"
-                    ></vitamui-common-menu-application-tile>
-                </mat-list-option>
-            </mat-selection-list>
-        </ng-container>
-        <ng-template #displayMats>
-                <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
-                    <mat-tab *ngFor="let element of appMap | keyvalue" [label]="'MENU.' + element.key.identifier | translate:{default:element.key.title}">
-                        <mat-selection-list (selectionChange)="onClose($event)" class="py-3">
-                            <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
-                                <vitamui-common-menu-application-tile
-                                [application]="app"
-                                [applicationUrl]="getApplicationUrl(app)"
-                                (openApplication)="openApplication(app)"
-                                ></vitamui-common-menu-application-tile>
-                            </mat-list-option>
-                        </mat-selection-list>
-                    </mat-tab>
-                </mat-tab-group>
-        </ng-template>
-    </div>
+  <div class="pt-4">
+    <ng-container *ngIf="filteredApplications; else displayMats">
+      <span class="px-3">{{ 'MENU.RESULT' | translate }}&nbsp;: </span>
+      <hr class="mb-0" />
+      <mat-selection-list id="searchResults" (selectionChange)="onClose($event)" class="py-3 overflow">
+        <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
+          <vitamui-common-menu-application-tile
+            [application]="app"
+            [applicationUrl]="getApplicationUrl(app)"
+            [hlCriteria]="criteria"
+            (openApplication)="openApplication(app)"
+          ></vitamui-common-menu-application-tile>
+        </mat-list-option>
+      </mat-selection-list>
+    </ng-container>
+    <ng-template #displayMats>
+      <mat-tab-group
+        animationDuration="300ms"
+        mat-align-tabs="start"
+        [selectedIndex]="tabSelectedIndex"
+        (selectedTabChange)="changeTabFocus($event)"
+      >
+        <mat-tab
+          *ngFor="let element of appMap | keyvalue"
+          [label]="'MENU.' + element.key.identifier | translate: { default: element.key.title }"
+        >
+          <mat-selection-list (selectionChange)="onClose($event)" class="py-3">
+            <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
+              <vitamui-common-menu-application-tile
+                [application]="app"
+                [applicationUrl]="getApplicationUrl(app)"
+                (openApplication)="openApplication(app)"
+              ></vitamui-common-menu-application-tile>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-template>
+  </div>
 </div>

@@ -43,19 +43,21 @@ import { HierarchyService } from './hierarchy.service';
 
 @Injectable()
 export class ProfileValidators {
+  private debounceTime = 400;
 
-    private debounceTime = 400;
+  constructor(private rngProfileService: HierarchyService) {}
 
-    constructor(private rngProfileService: HierarchyService) {}
-
-    nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
-      return (control: AbstractControl) => {
-        return timer(this.debounceTime).pipe(
-          switchMap(() => control.value !== nameToIgnore ? this.rngProfileService.exists(tenantIdentifier, level, applicationName, control.value) : of(false)),
-          take(1),
-          map((exists: boolean) => exists ? { nameExists: true } : null)
-        );
-      };
-    }
-
+  nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
+    return (control: AbstractControl) => {
+      return timer(this.debounceTime).pipe(
+        switchMap(() =>
+          control.value !== nameToIgnore
+            ? this.rngProfileService.exists(tenantIdentifier, level, applicationName, control.value)
+            : of(false),
+        ),
+        take(1),
+        map((exists: boolean) => (exists ? { nameExists: true } : null)),
+      );
+    };
+  };
 }

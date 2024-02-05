@@ -44,10 +44,9 @@ import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.servi
 @Component({
   selector: 'vitamui-common-customer-select-content',
   templateUrl: './customer-select-content.component.html',
-  styleUrls: ['./customer-select-content.component.scss']
+  styleUrls: ['./customer-select-content.component.scss'],
 })
 export class CustomerSelectContentComponent implements OnInit, OnDestroy {
-
   @Input() customers: MenuOption[];
   @Input() isModalMenu: boolean;
 
@@ -57,7 +56,8 @@ export class CustomerSelectContentComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private customerMenuService: CustomerMenuService,
-    private customerSelectionService: CustomerSelectionService) { }
+    private customerSelectionService: CustomerSelectionService,
+  ) {}
 
   ngOnInit(): void {
     if (this.customers) {
@@ -79,5 +79,4 @@ export class CustomerSelectContentComponent implements OnInit, OnDestroy {
       }
     }
   }
-
 }

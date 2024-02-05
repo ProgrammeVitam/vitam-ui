@@ -11,25 +11,24 @@ import { LoggerModule } from './logger/logger.module';
 const expectedUser = { id: 10 };
 
 describe('AnalyticsResolver', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      RouterModule,
-      LoggerModule.forRoot(),
-    ],
-    providers: [
-      { provide: Router, useValue: {} },
-      { provide: WINDOW_LOCATION, useValue: {} },
-      { provide: BASE_URL, useValue: '/fake-api' },
-      {
-        provide: UserApiService, useValue: {
-          create: () => {
-            return of(expectedUser);
-          }
-        }
-      }
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: Router, useValue: {} },
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        {
+          provide: UserApiService,
+          useValue: {
+            create: () => {
+              return of(expectedUser);
+            },
+          },
+        },
+      ],
+    }),
+  );
 
   it('should be created', () => {
     const service: AnalyticsResolver = TestBed.inject(AnalyticsResolver);

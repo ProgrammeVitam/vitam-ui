@@ -45,8 +45,10 @@ import { PageRequest, PaginatedResponse } from './vitamui-table';
 const HTTP_STATUS_OK = 200;
 
 export abstract class BaseHttpClient<T extends { id: string }> {
-
-  constructor(protected http: HttpClient, protected readonly apiUrl: string) {}
+  constructor(
+    protected http: HttpClient,
+    protected readonly apiUrl: string,
+  ) {}
 
   protected getHttp() {
     return this.http;
@@ -78,14 +80,15 @@ export abstract class BaseHttpClient<T extends { id: string }> {
     return this.http.get<T>(this.apiUrl + '/' + id, { params, headers });
   }
 
-  protected checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
-    const paramsToHttpParams = (tempHttpParams: HttpParams, param: { key: string, value: string }) => {
+  protected checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+    const paramsToHttpParams = (tempHttpParams: HttpParams, param: { key: string; value: string }) => {
       return tempHttpParams.set(param.key, param.value);
     };
     const httpParams = params.reduce(paramsToHttpParams, new HttpParams());
 
-    return this.http.head<void>(this.apiUrl + '/check', { params: httpParams, observe: 'response', headers })
-      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK ? true : false));
+    return this.http
+      .head<void>(this.apiUrl + '/check', { params: httpParams, observe: 'response', headers })
+      .pipe(map((response: HttpResponse<void>) => (response.status === HTTP_STATUS_OK ? true : false)));
   }
 
   protected create(data: T, headers?: HttpHeaders): Observable<T> {
@@ -96,14 +99,13 @@ export abstract class BaseHttpClient<T extends { id: string }> {
     return this.http.put<T>(this.apiUrl + '/' + data.id, data, { headers });
   }
 
-  protected patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<T> {
+  protected patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<T> {
     return this.http.patch<T>(this.apiUrl + '/' + data.id, data, { headers });
   }
 
   public logbook(id: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.get<{ $results: ApiEvent[] }>(this.apiUrl + '/' + id + '/logbook', {headers}).pipe(
-      map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
-    );
+    return this.http
+      .get<{ $results: ApiEvent[] }>(this.apiUrl + '/' + id + '/logbook', { headers })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
-
 }

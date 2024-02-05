@@ -49,7 +49,7 @@ import { ArchiveService } from './archive.service';
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss']
+  styleUrls: ['./archive.component.scss'],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   show = true;
@@ -73,7 +73,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveService: ArchiveService
+    private archiveService: ArchiveService,
   ) {
     super(route, globalEventService);
   }
@@ -119,9 +119,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
             map((message) => {
               this.snackBar.open(message, null, {
                 panelClass: 'vitamui-snack-bar',
-                duration: 10000
+                duration: 10000,
               });
-            })
+            }),
           )
           .subscribe();
       }
@@ -139,9 +139,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
         this.snackBar.open(message + ': ' + this.accessContract, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
-      }
+      },
     );
   }
 

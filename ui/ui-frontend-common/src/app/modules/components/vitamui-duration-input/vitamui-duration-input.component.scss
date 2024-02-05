@@ -1,51 +1,52 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
-.mat-drawer, .mat-dialog-container {
-    .vitamui-duration-input {
+.mat-drawer,
+.mat-dialog-container {
+  .vitamui-duration-input {
     @include dialog-elevation-dark;
-    }
+  }
 }
 
 .vitamui-duration-input {
-    @include input-elevation-dark;
-    display:flex;
-    justify-content: center; /* align horizontal */
-    align-items: center;
-    border-radius: 4px;
-    background-color: $white;
-    border: none;
+  @include input-elevation-dark;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center;
+  border-radius: 4px;
+  background-color: $white;
+  border: none;
 }
 
 .unite {
-    width: 23px;
-    height: 49px;
-    background-color: #e5f6f3;
+  width: 23px;
+  height: 49px;
+  background-color: #e5f6f3;
 
-    & > div{
-        margin-top: 11px;
-        margin-left: 5px;
-    }
+  & > div {
+    margin-top: 11px;
+    margin-left: 5px;
   }
+}
 
 input {
-    border:none;
+  border: none;
 }
 
 .days {
-    width: 40px;
-    margin-left: 30px;
-    outline: none;
+  width: 40px;
+  margin-left: 30px;
+  outline: none;
 }
 
 .hours {
-    width: 40px;
-    margin-left: 30px;
-    outline: none;
+  width: 40px;
+  margin-left: 30px;
+  outline: none;
 }
 
 .minutes {
-    width: 40px;
-    margin-left: 30px;
-    outline: none;
+  width: 40px;
+  margin-left: 30px;
+  outline: none;
 }

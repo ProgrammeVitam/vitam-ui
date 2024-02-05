@@ -3,11 +3,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../auth.service';
-import {
-  FullLangString,
-  LanguageService,
-  MinLangString,
-} from '../../../language.service';
+import { FullLangString, LanguageService, MinLangString } from '../../../language.service';
 import { BaseUserInfoApiService } from './../../../api/base-user-info-api.service';
 
 @Component({
@@ -33,19 +29,15 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private authService: AuthService,
     private languageService: LanguageService,
-    private userInfoApiService: BaseUserInfoApiService
+    private userInfoApiService: BaseUserInfoApiService,
   ) {}
 
   ngOnInit() {
     if (this.authService.user && this.authService.user.userInfoId) {
-      this.userInfoApiService
-        .getMyUserInfo()
-        .subscribe((result) => {
-          this.translateService.use(
-            this.translateConverter(result.language as FullLangString)
-          );
-          this.currentLang = this.translateService.currentLang;
-        });
+      this.userInfoApiService.getMyUserInfo().subscribe((result) => {
+        this.translateService.use(this.translateConverter(result.language as FullLangString));
+        this.currentLang = this.translateService.currentLang;
+      });
     } else {
       this.currentLang = this.translateService.defaultLang;
     }
@@ -61,13 +53,10 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   }
 
   public use(lang: MinLangString): void {
-    this.userInfoApiService
-      .patchMyUserInfo({ language: this.languageService.getFullLangString(lang) })
-      .subscribe(() => {
-        this.translateService.use(lang);
-      });
+    this.userInfoApiService.patchMyUserInfo({ language: this.languageService.getFullLangString(lang) }).subscribe(() => {
+      this.translateService.use(lang);
+    });
   }
-
 
   private translateConverter(lang: FullLangString): string {
     return this.languageService.getShortLangString(lang);

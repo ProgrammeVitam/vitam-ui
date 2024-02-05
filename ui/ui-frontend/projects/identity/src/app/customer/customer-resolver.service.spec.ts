@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-
 import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -46,7 +45,7 @@ import { CustomerResolver } from './customer-resolver.service';
 
 const expectedCustomer: Customer = {
   id: '11',
-  identifier : '11',
+  identifier: '11',
   code: '011000',
   name: 'Kouygues Telecom',
   companyName: 'Kouygues Telecom',
@@ -57,22 +56,20 @@ const expectedCustomer: Customer = {
   passwordRevocationDelay: 1,
   otp: OtpState.OPTIONAL,
   idp: false,
-  emailDomains: [
-    'kouygues.com',
-  ],
+  emailDomains: ['kouygues.com'],
   defaultEmailDomain: 'kouygues.com',
   address: {
     street: '13 rue faubourg',
     zipCode: '75009',
     city: 'paris',
-    country: 'france'
+    country: 'france',
   },
   owners: [],
   themeColors: {},
-  gdprAlert : false,
-  gdprAlertDelay : 72,
+  gdprAlert: false,
+  gdprAlertDelay: 72,
   portalMessages: {},
-  portalTitles: {}
+  portalTitles: {},
 };
 
 describe('CustomerResolver', () => {
@@ -83,11 +80,7 @@ describe('CustomerResolver', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      providers: [
-        CustomerResolver,
-        { provide: CustomerService, useValue: customerServiceSpy },
-        { provide: Router, useValue: routerSpy },
-      ]
+      providers: [CustomerResolver, { provide: CustomerService, useValue: customerServiceSpy }, { provide: Router, useValue: routerSpy }],
     });
 
     customerResolver = TestBed.inject(CustomerResolver);
@@ -123,5 +116,4 @@ describe('CustomerResolver', () => {
     expect(route.paramMap.get).toHaveBeenCalledWith('id');
     expect(customerService.get).toHaveBeenCalledWith('42');
   });
-
 });

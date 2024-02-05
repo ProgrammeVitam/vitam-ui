@@ -34,24 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {AuditListComponent} from './audit-list.component';
-
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { AuditListComponent } from './audit-list.component';
 
 @NgModule({
   declarations: [AuditListComponent],
-  imports: [
-    CommonModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule
-  ],
-  exports: [
-    AuditListComponent
-  ]
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
+  exports: [AuditListComponent],
 })
-export class AuditListModule {
-}
+export class AuditListModule {}

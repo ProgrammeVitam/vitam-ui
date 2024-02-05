@@ -49,16 +49,12 @@ describe('CancelledSnackBarComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CancelledSnackBarComponent],
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: MatSnackBarRef, useValue: { close: () => { } } },
-      ]
-    })
-      .compileComponents();
+        { provide: MatSnackBarRef, useValue: { close: () => {} } },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

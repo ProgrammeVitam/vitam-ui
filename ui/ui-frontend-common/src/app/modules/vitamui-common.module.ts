@@ -37,8 +37,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from "@angular/forms";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
@@ -63,7 +63,7 @@ import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
 import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
-import { SearchBarWithSiblingButtonModule } from "./components/search-bar-with-sibling-button/search-bar-with-sibling-button.module";
+import { SearchBarWithSiblingButtonModule } from './components/search-bar-with-sibling-button/search-bar-with-sibling-button.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
@@ -83,7 +83,7 @@ import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interva
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
-import { VitamuiMultiInputsModule } from "./components/vitamui-multi-inputs/vitamui-multi-inputs.module";
+import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
@@ -105,7 +105,6 @@ import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
-
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/23629
@@ -115,11 +114,7 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
-  declarations: [
-    BlankComponent,
-    ErrorDialogComponent,
-    VitamuiIntervalDatePickerComponent
-  ],
+  declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -237,7 +232,7 @@ export function startupServiceFactory(startupService: StartupService) {
     LogbookOperationFacetModule,
     VitamuiFacetModule,
     VitamuiIntervalDatePickerComponent,
-    VitamuiMultiInputsModule
+    VitamuiMultiInputsModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

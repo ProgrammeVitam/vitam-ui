@@ -1,60 +1,60 @@
 .header {
-    padding: 30px 60px 0 60px;
+  padding: 30px 60px 0 60px;
 }
 
 .content {
-    padding: 0px 60px 60px 60px;
+  padding: 0px 60px 60px 60px;
 }
 
 h2 {
-    font-size: 26px;
-    line-height: 46px;
-    margin-top: 23px;
-    margin-bottom: 37px;
+  font-size: 26px;
+  line-height: 46px;
+  margin-top: 23px;
+  margin-bottom: 37px;
 }
 
 .form-group {
-    padding-bottom: 30px;
+  padding-bottom: 30px;
 
-    label {
-        display: block;
-        margin-bottom: 7px;
+  label {
+    display: block;
+    margin-bottom: 7px;
 
-        .required-marker {
-            color: var(--vitamui-primary);
-        }
+    .required-marker {
+      color: var(--vitamui-primary);
     }
+  }
 }
 
 .actions {
-    display: flex;
+  display: flex;
 
-    button:not(:first-child) {
-        margin-left: 20px;
-    }
+  button:not(:first-child) {
+    margin-left: 20px;
+  }
 }
 
 .field-keystore-password {
-    width: 400px;
+  width: 400px;
 }
 
 .form-group-flex {
-    display: flex;
-    align-items: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
 
 .field-type {
-    margin-left: 30px;
+  margin-left: 30px;
 }
 
 :host ::ng-deep app-pattern .vitamui-mat-select {
-    max-width: 300px;
+  max-width: 300px;
 }
 
-.oidc-row{
-    max-width: 680px;
+.oidc-row {
+  max-width: 680px;
 }
 
-.custom-label{
-    color: var(--vitamui-primary)
+.custom-label {
+  color: var(--vitamui-primary);
 }

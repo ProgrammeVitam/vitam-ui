@@ -1,14 +1,12 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
-
   .label-color {
     display: flex;
     flex-direction: column;
   }
 
-
-  label+* {
+  label + * {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

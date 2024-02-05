@@ -58,24 +58,21 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-    template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`
+  template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
 })
 class TestHostComponent {
-    group = expectedGroup;
-    readOnly = false;
+  group = expectedGroup;
+  readOnly = false;
 
   @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
 }
-
 
 describe('Profile Group InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
   const groupServiceSpy = jasmine.createSpyObj('GroupService', { patch: of({}) });
-  const groupValidatorsSpy = jasmine.createSpyObj(
-    'GroupValidators', { nameExists: () => of(null) }
-  );
-  const authServiceMock = { user : { level: ''}};
+  const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+  const authServiceMock = { user: { level: '' } };
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
@@ -87,33 +84,25 @@ describe('Profile Group InformationTabComponent', () => {
       customerId: '4242442',
       name: 'Group Name',
       description: 'Group Description',
-      level : '',
+      level: '',
       usersCount: 0,
       profileIds: [],
       profiles: [],
       units: [],
-      readonly : false
+      readonly: false,
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        InformationTabComponent,
-        TestHostComponent,
-        MatTooltipStubDirective,
-      ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: GroupService, useValue: groupServiceSpy },
         { provide: GroupValidators, useValue: groupValidatorsSpy },
-        { provide: AuthService, useValue: authServiceMock},
+        { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -140,7 +129,7 @@ describe('Profile Group InformationTabComponent', () => {
         name: null,
         level: null,
         enabled: false,
-        description: null
+        description: null,
       });
       expect(testhost.component.form.get('id').valid).toBeFalsy('id');
       expect(testhost.component.form.get('name').valid).toBeFalsy('name');
@@ -151,10 +140,10 @@ describe('Profile Group InformationTabComponent', () => {
       testhost.component.form.setValue({
         id: expectedGroup.id,
         identifier: expectedGroup.identifier,
-        enabled : expectedGroup.enabled,
+        enabled: expectedGroup.enabled,
         name: expectedGroup.name,
         level: '',
-        description: expectedGroup.description
+        description: expectedGroup.description,
       });
       expect(testhost.component.form.valid).toBeTruthy();
     });
@@ -168,5 +157,4 @@ describe('Profile Group InformationTabComponent', () => {
       expect(testhost.component.form.disabled).toBe(false);
     });
   });
-
 });

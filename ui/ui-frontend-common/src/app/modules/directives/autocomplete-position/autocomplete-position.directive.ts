@@ -38,7 +38,7 @@ import { Directive, Input, OnDestroy } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Directive({
-  selector: '[vitamuiAutocompletePosition]'
+  selector: '[vitamuiAutocompletePosition]',
 })
 export class AutocompletePositionDirective implements OnDestroy {
   private matAutocompleteTrigger: MatAutocompleteTrigger;

@@ -45,7 +45,7 @@ import { OwnerService } from './owner.service';
 
 const expectedOwner: Owner = {
   id: '5ad5f14c894e6a414edc7b63',
-  identifier : '5ad5f14c894e6a414edc7b63',
+  identifier: '5ad5f14c894e6a414edc7b63',
   customerId: '42',
   name: 'Julien Cornille',
   code: '10234665',
@@ -54,9 +54,9 @@ const expectedOwner: Owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
-  readonly : false
+  readonly: false,
 };
 
 describe('OwnerResolver', () => {
@@ -67,11 +67,7 @@ describe('OwnerResolver', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      providers: [
-        OwnerResolver,
-        { provide: OwnerService, useValue: ownerServiceSpy },
-        { provide: Router, useValue: routerSpy },
-      ],
+      providers: [OwnerResolver, { provide: OwnerService, useValue: ownerServiceSpy }, { provide: Router, useValue: routerSpy }],
     });
 
     ownerResolver = TestBed.inject(OwnerResolver);

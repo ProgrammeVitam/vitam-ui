@@ -43,7 +43,6 @@ import { of } from 'rxjs';
 import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
 
-
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
   let fixture: ComponentFixture<AccessContractNodesTabComponent>;
@@ -70,34 +69,30 @@ describe('AccessContractNodesTabComponent', () => {
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
     rootUnits: [''],
-    excludedRootUnits: ['']
+    excludedRootUnits: [''],
   };
 
   beforeEach(waitForAsync(() => {
-
     const parameters: Map<string, string> = new Map<string, string>();
     parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
     const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+      getUserExternalParameters: () => of(parameters),
     };
 
     const unitValueMock = {
-      getByDsl: () => of({})
+      getByDsl: () => of({}),
     };
 
     TestBed.configureTestingModule({
       declarations: [AccessContractNodesTabComponent],
-      imports: [
-        MatSnackBarModule
-      ],
+      imports: [MatSnackBarModule],
       providers: [
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        {provide: SearchUnitApiService, useValue: unitValueMock},
-        {provide: MatDialog, useValue: {}}
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: SearchUnitApiService, useValue: unitValueMock },
+        { provide: MatDialog, useValue: {} },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

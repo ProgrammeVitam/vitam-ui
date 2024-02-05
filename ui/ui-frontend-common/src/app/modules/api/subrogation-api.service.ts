@@ -44,12 +44,14 @@ import { BASE_URL } from '../injection-tokens';
 import { Group, Subrogation } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubrogationApiService extends BaseHttpClient<Subrogation> {
-
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string,
-              private authService: AuthService) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) baseUrl: string,
+    private authService: AuthService,
+  ) {
     super(http, baseUrl + '/subrogations');
   }
 

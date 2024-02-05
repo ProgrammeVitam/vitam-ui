@@ -46,17 +46,16 @@ import { OptionTree } from './option-tree.interface';
 export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => ProfilesFormComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'app-profiles-form',
   templateUrl: './profiles-form.component.html',
   styleUrls: ['./profiles-form.component.scss'],
-  providers: [PROFILES_FORM_VALUE_ACCESSOR]
+  providers: [PROFILES_FORM_VALUE_ACCESSOR],
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
-
   profiles: Profile[] = [];
   profileIds: string[] = [];
   applicationsDetails: Application[] = [];
@@ -68,7 +67,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
 
   @Input() tenantIdentifier: number;
 
-  @Input() applicationNameExclude: string [];
+  @Input() applicationNameExclude: string[];
   @Input()
   set level(level: string) {
     this._level = level;
@@ -92,25 +91,25 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   @ViewChild('profileInput', { static: true }) profileInput: VitamUIAutocompleteComponent;
   @ViewChild('addButton', { static: true }) addButton: ElementRef;
 
-  constructor(private rngProfileService: ProfileService, private appApiService: ApplicationApiService) {
-
-  }
+  constructor(
+    private rngProfileService: ProfileService,
+    private appApiService: ApplicationApiService,
+  ) {}
 
   ngOnInit(): void {
     this.getProfiles();
-    this.appSelect.valueChanges
-      .subscribe(() => {
-        this.filterTenants();
-        if (this.filteredTenants.length === 1) {
-          this.tenantSelect.setValue(this.filteredTenants[0].key);
-        } else {
-          this.tenantSelect.setValue(null);
-          if (!this.tenantIdentifier) {
-            setTimeout(() => this.tenantInput.focus(), 0);
-          }
+    this.appSelect.valueChanges.subscribe(() => {
+      this.filterTenants();
+      if (this.filteredTenants.length === 1) {
+        this.tenantSelect.setValue(this.filteredTenants[0].key);
+      } else {
+        this.tenantSelect.setValue(null);
+        if (!this.tenantIdentifier) {
+          setTimeout(() => this.tenantInput.focus(), 0);
         }
-        this.toggleSelects();
-      });
+      }
+      this.toggleSelects();
+    });
     this.tenantSelect.valueChanges.subscribe(() => {
       this.filterProfiles();
       if (this.filteredProfiles.length === 1) {
@@ -129,15 +128,18 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
 
   getProfiles() {
     const params = new HttpParams().set('filterApp', 'false');
-    this.appApiService.getAllByParams(params).pipe(
-      tap((applications) => this.applicationsDetails = applications.APPLICATION_CONFIGURATION),
-      switchMap(( ) => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude))
-    ).subscribe((profiles) => {
-      this.profiles = profiles;
-      this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
-      this.updateApplicationTree();
-      this.loading = false;
-    });
+    this.appApiService
+      .getAllByParams(params)
+      .pipe(
+        tap((applications) => (this.applicationsDetails = applications.APPLICATION_CONFIGURATION)),
+        switchMap(() => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude)),
+      )
+      .subscribe((profiles) => {
+        this.profiles = profiles;
+        this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
+        this.updateApplicationTree();
+        this.loading = false;
+      });
   }
 
   onChange = (_: any) => {};
@@ -157,8 +159,12 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   }
 
   add() {
-    if (!this.profileSelect.value) { return; }
-    if (this.profileIds.includes(this.profileSelect.value)) { return; }
+    if (!this.profileSelect.value) {
+      return;
+    }
+    if (this.profileIds.includes(this.profileSelect.value)) {
+      return;
+    }
     this.profileIds.push(this.profileSelect.value);
     this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
     this.updateApplicationTree();
@@ -180,7 +186,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     if (profileToDisplay) {
       return this.applicationsDetails.find((app) => app.identifier === profileToDisplay.applicationName);
     } else {
-      return { name: 'Non défini'};
+      return { name: 'Non défini' };
     }
   }
 
@@ -194,8 +200,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     this.profiles
       .filter((profile) => profile.applicationName)
       .filter((profile) => {
-        const foundProfile = selectedProfiles.find((p) => p.applicationName === profile.applicationName
-        && p.tenantIdentifier === profile.tenantIdentifier);
+        const foundProfile = selectedProfiles.find(
+          (p) => p.applicationName === profile.applicationName && p.tenantIdentifier === profile.tenantIdentifier,
+        );
 
         return !foundProfile;
       })
@@ -230,7 +237,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     } else {
       this.tenantSelect.disable({ emitEvent: false });
     }
-    if (this.filteredProfiles.length > 0 ) {
+    if (this.filteredProfiles.length > 0) {
       this.profileSelect.enable({ emitEvent: false });
     } else {
       this.profileSelect.disable({ emitEvent: false });
@@ -240,7 +247,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   private buildApplicationOption(profile: Profile): OptionTree {
     const application = this.applicationsDetails.find((app) => app.identifier === profile.applicationName);
     let appLabel = '';
-    if (application) { appLabel = this.applicationsDetails.find((app) => app.identifier === application.identifier).name; }
+    if (application) {
+      appLabel = this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
+    }
 
     return {
       key: profile.applicationName,
@@ -249,9 +258,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
         {
           key: profile.tenantIdentifier.toString(),
           label: profile.tenantName,
-          children: [{ key: profile.id, label: this.getProfileLabel(profile), info: profile.description }]
+          children: [{ key: profile.id, label: this.getProfileLabel(profile), info: profile.description }],
         },
-      ]
+      ],
     };
   }
 
@@ -265,11 +274,10 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   }
 
   private buildTenantOption(profile: Profile): OptionTree {
-
     return {
       key: profile.tenantIdentifier.toString(),
       label: profile.tenantName,
-      children: [{ key: profile.id, label: this.getProfileLabel(profile), info: profile.description }]
+      children: [{ key: profile.id, label: this.getProfileLabel(profile), info: profile.description }],
     };
   }
 
@@ -286,7 +294,6 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   resetTree() {
     this.appSelect.setValue(null);
   }
-
 }
 
 function byApplicationName(profiles: Profile[], applications: Application[]): (idA: string, idB: string) => number {

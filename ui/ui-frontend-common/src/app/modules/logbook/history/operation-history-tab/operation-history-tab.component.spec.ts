@@ -50,15 +50,14 @@ describe('OperationHistoryTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ OperationHistoryTabComponent ],
+      declarations: [OperationHistoryTabComponent],
       providers: [
-        { provide: AuthService, useValue: {}},
-        { provide: LogbookService, useValue: {}},
+        { provide: AuthService, useValue: {} },
+        { provide: LogbookService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

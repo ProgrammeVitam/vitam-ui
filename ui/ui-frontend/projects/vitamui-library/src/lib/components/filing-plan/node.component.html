@@ -6,12 +6,15 @@
   (click)="nodeToggle.emit()"
   type="button"
 >
-  <i class="material-icons mat-icon-rtl-mirror">{{expanded ? 'expand_more' : 'chevron_right'}}</i>
+  <i class="material-icons mat-icon-rtl-mirror">{{ expanded ? 'expand_more' : 'chevron_right' }}</i>
 </button>
 
-<mat-checkbox id="enable{{node?.id}}"
-              [(ngModel)]="node.checked"
-              [(indeterminate)]="node.disabledChild"
-              [disabled]="node.disabled"
-              (ngModelChange)="labelClick.emit()">{{node?.label}}</mat-checkbox>
-<label for="enable{{node?.id}}" class="node-label" (click)="labelClick.emit()"></label>
+<mat-checkbox
+  id="enable{{ node?.id }}"
+  [(ngModel)]="node.checked"
+  [(indeterminate)]="node.disabledChild"
+  [disabled]="node.disabled"
+  (ngModelChange)="labelClick.emit()"
+  >{{ node?.label }}</mat-checkbox
+>
+<label for="enable{{ node?.id }}" class="node-label" (click)="labelClick.emit()"></label>

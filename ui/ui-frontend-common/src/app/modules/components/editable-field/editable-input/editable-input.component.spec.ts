@@ -59,7 +59,7 @@ import { EditableInputComponent } from './editable-input.component';
       <vitamui-common-field-error errorKey="required">Expected required error message</vitamui-common-field-error>
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-input>
-  `
+  `,
 })
 class TesthostComponent {
   value: string;
@@ -70,7 +70,7 @@ class TesthostComponent {
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {
     return of(control.value !== 'invalid value' ? null : { async: true });
-  }
+  };
 }
 
 describe('EditableInputComponent', () => {
@@ -80,20 +80,9 @@ describe('EditableInputComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OverlayModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        TesthostComponent,
-        EditableInputComponent,
-        VitamUIFieldErrorComponent,
-      ]
-    })
-    .compileComponents();
+      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule],
+      declarations: [TesthostComponent, EditableInputComponent, VitamUIFieldErrorComponent],
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
@@ -111,7 +100,6 @@ describe('EditableInputComponent', () => {
   });
 
   describe('DOM', () => {
-
     it('should call enterEditMode() on click', () => {
       spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
@@ -203,11 +191,9 @@ describe('EditableInputComponent', () => {
       expect(elErrors.length).toBe(2);
       expect(elErrors[1].textContent).toContain('Expected async error message');
     });
-
   });
 
   describe('Class', () => {
-
     it('should set the control value', waitForAsync(() => {
       testhost.value = 'test value';
       fixture.detectChanges();
@@ -286,6 +272,5 @@ describe('EditableInputComponent', () => {
         expect(testhost.component.control.value).toEqual('origin value');
       });
     }));
-
   });
 });

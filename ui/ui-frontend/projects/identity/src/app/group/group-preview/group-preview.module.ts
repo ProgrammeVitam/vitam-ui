@@ -65,7 +65,7 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     MatProgressBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    UnitsFormModule
+    UnitsFormModule,
   ],
   declarations: [
     GroupPopupComponent,
@@ -77,6 +77,6 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
   ],
   exports: [GroupPreviewComponent],
   providers: [GroupValidators],
-  entryComponents: [ProfilesEditComponent]
+  entryComponents: [ProfilesEditComponent],
 })
-export class GroupPreviewModule { }
+export class GroupPreviewModule {}

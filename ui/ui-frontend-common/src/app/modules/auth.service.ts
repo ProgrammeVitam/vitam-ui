@@ -42,10 +42,9 @@ import { WINDOW_LOCATION } from './injection-tokens';
 import { AuthUser, Tenant } from './models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   set user(user: AuthUser) {
     this._user = user;
     this.userLoaded.next(user);
@@ -132,5 +131,4 @@ export class AuthService {
     }
     return tenant;
   }
-
 }

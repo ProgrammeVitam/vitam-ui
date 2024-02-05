@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientModule} from '@angular/common/http';
-import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {of} from 'rxjs';
-import {AuthService, ExternalParametersService, InjectorModule, LogbookService, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {LogbookDownloadService} from '../logbook-download.service';
-import {EventTypeBadgeClassPipe} from '../logbook-operation-list/event-type-badge-class.pipe';
-import {LastEventPipe} from '../logbook-operation-list/last-event.pipe';
-import {LogbookOperationDetailComponent} from './logbook-operation-detail.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { AuthService, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { LogbookDownloadService } from '../logbook-download.service';
+import { EventTypeBadgeClassPipe } from '../logbook-operation-list/event-type-badge-class.pipe';
+import { LastEventPipe } from '../logbook-operation-list/last-event.pipe';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -60,37 +60,35 @@ describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
   let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const parameters: Map<string, string> = new Map<string, string>();
-      const externalParametersServiceMock = {
-        getUserExternalParameters: () => of(parameters),
-      };
+  beforeEach(waitForAsync(() => {
+    const parameters: Map<string, string> = new Map<string, string>();
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
-        imports: [
-          MatSnackBarModule,
-          InjectorModule,
-          RouterTestingModule,
-          VitamUICommonTestModule,
-          BrowserAnimationsModule,
-          LoggerModule.forRoot(),
-          RouterTestingModule,
-          NoopAnimationsModule,
-          HttpClientModule,
-        ],
-        providers: [
-          {provide: LogbookService, useValue: {}},
-          {provide: LogbookDownloadService, useValue: {logbookOperationsReloaded: of([{id: "event-01"}])}},
-          {provide: AuthService, useValue: {}},
-          {provide: ActivatedRoute, useValue: {}},
-          {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
+      imports: [
+        MatSnackBarModule,
+        InjectorModule,
+        RouterTestingModule,
+        VitamUICommonTestModule,
+        BrowserAnimationsModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        NoopAnimationsModule,
+        HttpClientModule,
+      ],
+      providers: [
+        { provide: LogbookService, useValue: {} },
+        { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
+        { provide: AuthService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationDetailComponent);

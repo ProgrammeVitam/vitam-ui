@@ -77,7 +77,7 @@ export class UploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
-    public logger: Logger
+    public logger: Logger,
   ) {
     this.sipForm = this.formBuilder.group({
       hasSip: null,
@@ -147,7 +147,7 @@ export class UploadComponent implements OnInit {
       (error: any) => {
         console.error(error);
         this.message = error.message;
-      }
+      },
     );
   }
 

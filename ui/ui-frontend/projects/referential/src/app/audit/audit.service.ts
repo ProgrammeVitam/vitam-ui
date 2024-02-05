@@ -54,7 +54,7 @@ export class AuditService extends SearchService<Event> {
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
     private snackBar: VitamUISnackBar,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, operationApiService, 'ALL');
   }
@@ -84,8 +84,8 @@ export class AuditService extends SearchService<Event> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -133,14 +133,14 @@ export class AuditService extends SearchService<Event> {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      }
+      },
     );
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {
     return this.accessionRegisterSummaryApiService.getAllByParams(
       new HttpParams(),
-      new HttpHeaders({ 'X-Access-Contract-Id': accessContractId })
+      new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }),
     );
   }
 

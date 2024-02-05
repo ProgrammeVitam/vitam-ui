@@ -1,127 +1,127 @@
 .vitamui-snack-bar.mat-snack-bar-container {
-    font-size: 16px;
-    color: white;
-    background: var(--vitamui-primary);
-    max-width: none;
-    width: 100vw;
-    margin: 0;
-    border-radius: 0;
-    padding: 22px 120px;
+  font-size: 16px;
+  color: white;
+  background: var(--vitamui-primary);
+  max-width: none;
+  width: 100vw;
+  margin: 0;
+  border-radius: 0;
+  padding: 22px 120px;
 }
 
 .vitamui-snack-bar-container {
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 
-    > i {
-        color: white;
-        font-size: 36px;
-    }
+  > i {
+    color: white;
+    font-size: 36px;
+  }
 }
 
 .vitamui-snack-bar-content {
+  color: white;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+
+  > i.vitamui-icon,
+  > i.material-icons {
     color: white;
-    vertical-align: middle;
-    display: flex;
-    align-items: center;
+    margin-right: 20px;
+    font-size: 23px;
+  }
 
-    > i.vitamui-icon, > i.material-icons {
-        color: white;
-        margin-right: 20px;
-        font-size: 23px;
-    }
-
-    a {
-        color: white;
-        font-weight: bold;
-    }
+  a {
+    color: white;
+    font-weight: bold;
+  }
 }
 
 .download-link {
-    background: none;
-    border: none;
-    color: white;
-    text-decoration: underline;
-    outline: none;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 16px;
+  background: none;
+  border: none;
+  color: white;
+  text-decoration: underline;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
 }
 
 // SUBROGATION SNACKBAR CSS
 .subrogation-banner {
-    background: var(--vitamui-primary);
-    color: var(--vitamui-primary-font);
-    border-radius: 0;
-    max-width: none;
-    width: 100%;
-    height: 80px;
-    padding: 20px 40px;
+  background: var(--vitamui-primary);
+  color: var(--vitamui-primary-font);
+  border-radius: 0;
+  max-width: none;
+  width: 100%;
+  height: 80px;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  > div:first-of-type {
     display: flex;
     align-items: center;
-    position: fixed;
-    bottom: 0;
-    left:0;
-    right:0;
-    z-index: 1000;
-
-    > div:first-of-type {
-        display: flex;
-        align-items: center;
-        width: 95%;
-
-        > i {
-            font-size: 30px;
-        }
-    }
-
-    > div:last-of-type{
-        width: 5%;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .btn {
-        &.link {
-            color: var(--vitamui-primary-font)!important;
-            text-decoration: underline;
-        }
-    
-        &.outline {
-            border: 1px solid var(--vitamui-primary-font)!important;
-            color: var(--vitamui-primary-font)!important;
-        }
-    }
-}
-
-
-.hidden-banner-div {
-    border-radius: 3px 3px 0 0;
-    background: var(--vitamui-primary);
-    color: var(--vitamui-primary-font);
-    position: fixed;
-    height: 35px;
-    width: 35px;
-    right: 15px;
-    bottom: 0;
-    z-index: 1000;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 95%;
 
     > i {
-        font-size: 30px;
+      font-size: 30px;
     }
+  }
+
+  > div:last-of-type {
+    width: 5%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    &.link {
+      color: var(--vitamui-primary-font) !important;
+      text-decoration: underline;
+    }
+
+    &.outline {
+      border: 1px solid var(--vitamui-primary-font) !important;
+      color: var(--vitamui-primary-font) !important;
+    }
+  }
+}
+
+.hidden-banner-div {
+  border-radius: 3px 3px 0 0;
+  background: var(--vitamui-primary);
+  color: var(--vitamui-primary-font);
+  position: fixed;
+  height: 35px;
+  width: 35px;
+  right: 15px;
+  bottom: 0;
+  z-index: 1000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > i {
+    font-size: 30px;
+  }
 }

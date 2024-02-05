@@ -1,16 +1,19 @@
 <div class="row dialog">
-    <h4 class="col-12 p-0 m-0">{{ 'SELECT_TENANT.DIALOG_TITLE' | translate }} {{platformName}}</h4>
-    <h5 class="col-12 p-0">{{ 'SELECT_TENANT.DIALOG_SUBTITLE' | translate }}</h5>
-    <p class="col-12 p-0 mt-5">{{ 'SELECT_TENANT.DIALOG_INSTRUCTIONS' | translate }} <span class="asterix">*</span></p>
+  <h4 class="col-12 p-0 m-0">{{ 'SELECT_TENANT.DIALOG_TITLE' | translate }} {{ platformName }}</h4>
+  <h5 class="col-12 p-0">{{ 'SELECT_TENANT.DIALOG_SUBTITLE' | translate }}</h5>
+  <p class="col-12 p-0 mt-5">{{ 'SELECT_TENANT.DIALOG_INSTRUCTIONS' | translate }} <span class="asterix">*</span></p>
 
-    <vitamui-common-item-select
-        class="col-12 p-0 mb-5"
-        [label]="'SELECT_TENANT.SELECT' | translate"
-        [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
-        (itemSelected)="selectedTenant = $event"
-        [items]="tenants">
-    </vitamui-common-item-select>
+  <vitamui-common-item-select
+    class="col-12 p-0 mb-5"
+    [label]="'SELECT_TENANT.SELECT' | translate"
+    [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
+    (itemSelected)="selectedTenant = $event"
+    [items]="tenants"
+  >
+  </vitamui-common-item-select>
 
-    <button class="col-12 p-0 mt-4 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT_TENANT.DIALOG_BUTTON_LABEL' | translate }}  {{platformName}}</button>
-    <p class="text normal mx-auto mt-4"><span class="asterix">*</span> {{ 'SELECT_TENANT.DIALOG_MESSAGE' | translate }}</p>
+  <button class="col-12 p-0 mt-4 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">
+    {{ 'SELECT_TENANT.DIALOG_BUTTON_LABEL' | translate }} {{ platformName }}
+  </button>
+  <p class="text normal mx-auto mt-4"><span class="asterix">*</span> {{ 'SELECT_TENANT.DIALOG_MESSAGE' | translate }}</p>
 </div>

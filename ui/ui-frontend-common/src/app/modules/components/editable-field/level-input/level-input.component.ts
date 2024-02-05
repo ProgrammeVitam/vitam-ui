@@ -44,34 +44,45 @@ import { extractSubLevel } from '../../../utils';
 export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => LevelInputComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
   selector: 'vitamui-common-level-input',
   templateUrl: './level-input.component.html',
   styleUrls: ['./level-input.component.scss'],
-  providers: [LEVEL_INPUT_VALUE_ACCESSOR]
+  providers: [LEVEL_INPUT_VALUE_ACCESSOR],
 })
 export class LevelInputComponent implements OnInit, ControlValueAccessor {
-
   @Input() prefix: string;
 
   @Input()
-  get isEditableComponent(): boolean { return this._isEditableComponent; }
-  set isEditableComponent(value: boolean) { this._isEditableComponent = coerceBooleanProperty(value); }
+  get isEditableComponent(): boolean {
+    return this._isEditableComponent;
+  }
+  set isEditableComponent(value: boolean) {
+    this._isEditableComponent = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _isEditableComponent = false;
 
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
 
@@ -82,8 +93,8 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   @HostListener('click')
   onClick() {
@@ -122,7 +133,7 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
 
   onValueChange(_: string) {
     this.labelFloat = !!this.subLevel;
-    const level = this.prefix ? this.prefix + '.' +  this.subLevel :  this.subLevel ;
+    const level = this.prefix ? this.prefix + '.' + this.subLevel : this.subLevel;
     this.onChange(level.toLocaleUpperCase());
   }
 }

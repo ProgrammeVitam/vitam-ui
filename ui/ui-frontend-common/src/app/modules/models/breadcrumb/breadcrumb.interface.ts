@@ -1,4 +1,4 @@
 export interface BreadCrumbData {
-    label?: string;
-    identifier?: string;
+  label?: string;
+  identifier?: string;
 }

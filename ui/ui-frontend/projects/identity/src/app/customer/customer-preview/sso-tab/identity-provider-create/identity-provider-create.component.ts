@@ -67,21 +67,19 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; domains: Array<{ value: string; disabled: boolean }> },
     private formBuilder: FormBuilder,
     private identityProviderService: IdentityProviderService,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
   ) {
     this.samlSpecificControls = this.initializeSamlControls();
     this.oidcSpecificControls = this.initializeOIDCControls();
     this.commonControls = this.initializeCommonControls();
-    this.form= this.formBuilder.group({
+    this.form = this.formBuilder.group({
       ...this.commonControls.controls,
-      ...this.samlSpecificControls.controls
-    })
+      ...this.samlSpecificControls.controls,
+    });
   }
 
   ngOnInit() {
-    this.keyPressSubscription = this.confirmDialogService
-      .listenToEscapeKeyPress(this.dialogRef)
-      .subscribe(() => this.onCancel());
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.form.get('protocoleType').setValue(ProtocoleType.SAML);
   }
@@ -91,7 +89,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       case ProtocoleType.CERTIFICAT:
         this.stepCount = 1;
         this.form = this.formBuilder.group({
-          ...this.commonControls.controls
+          ...this.commonControls.controls,
         });
 
         break;
@@ -173,7 +171,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
         if (response && response.error && response.error.error && response.error.error === 'INVALID_KEYSTORE_PASSWORD') {
           this.form.get('keystorePassword').setErrors({ badPassword: true });
         }
-      }
+      },
     );
   }
 

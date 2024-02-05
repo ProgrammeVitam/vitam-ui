@@ -51,7 +51,11 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 export class IngestContractService extends SearchService<IngestContract> {
   updated = new Subject<IngestContract>();
 
-  constructor(private ingestContractApi: IngestContractApiService, private snackBar: MatSnackBar, http: HttpClient) {
+  constructor(
+    private ingestContractApi: IngestContractApiService,
+    private snackBar: MatSnackBar,
+    http: HttpClient,
+  ) {
     super(http, ingestContractApi, 'ALL');
   }
 
@@ -105,8 +109,8 @@ export class IngestContractService extends SearchService<IngestContract> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -125,8 +129,8 @@ export class IngestContractService extends SearchService<IngestContract> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 }

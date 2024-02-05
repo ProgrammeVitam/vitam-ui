@@ -70,7 +70,7 @@ export class StartupService {
     private applicationApi: ApplicationApiService,
     private themeService: ThemeService,
     private applicationService: ApplicationService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
   load(): Promise<any> {
@@ -87,7 +87,9 @@ export class StartupService {
       })
       .then(() => this.refreshUser().toPromise())
       .then(() =>
-        this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal]).toPromise()
+        this.applicationApi
+          .getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal])
+          .toPromise(),
       )
       .then((data) => {
         this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
@@ -128,7 +130,7 @@ export class StartupService {
       tap((data) => {
         this.authService.user = data;
         this.userRefresh.next(data);
-      })
+      }),
     );
   }
 

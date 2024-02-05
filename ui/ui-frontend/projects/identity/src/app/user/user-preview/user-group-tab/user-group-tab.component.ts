@@ -51,12 +51,13 @@ import { UserService } from '../../user.service';
   styleUrls: ['./user-group-tab.component.scss'],
 })
 export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input()
   set user(user: User) {
-      this._user = user;
+    this._user = user;
   }
-  get user(): User { return this._user; }
+  get user(): User {
+    return this._user;
+  }
   private _user: User;
 
   @Input()
@@ -67,18 +68,24 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
       this.showUpdateButton = true;
     }
   }
-  get readOnly(): boolean { return this._readOnly; }
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
   private _readOnly: boolean;
 
   @Input()
   set userInfo(userInfo: AdminUserProfile) {
     this._userInfo = userInfo;
   }
-  get userInfo() { return this._userInfo; }
+  get userInfo() {
+    return this._userInfo;
+  }
   private _userInfo: AdminUserProfile;
 
   @Input()
-  get groups(): Group[] { return this._groups; }
+  get groups(): Group[] {
+    return this._groups;
+  }
   set groups(groupList: Group[]) {
     this._groups = groupList;
   }
@@ -104,33 +111,43 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy.next();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
     this.getUserProfileDetail();
   }
 
   getUserProfileDetail() {
-      this.activeGroups = this.groups.map((group) => Object({ id: group.id, name: group.name,
-                                                       description: group.description,
-                                                       level: group.level,
-                                                       selected: false, profiles: group.profiles }));
-      if (!isRootLevel(this.authService.user)) {
+    this.activeGroups = this.groups.map((group) =>
+      Object({
+        id: group.id,
+        name: group.name,
+        description: group.description,
+        level: group.level,
+        selected: false,
+        profiles: group.profiles,
+      }),
+    );
+    if (!isRootLevel(this.authService.user)) {
       this.activeGroups = this.activeGroups.filter((g) => g.id !== this.authService.user.groupId);
-      }
-      if (this.user.groupId) {
-        this.userGroup = this.groups.find((group) => group.id === this.user.groupId);
-      }
+    }
+    if (this.user.groupId) {
+      this.userGroup = this.groups.find((group) => group.id === this.user.groupId);
+    }
   }
 
-  getAttributableGroups(): GroupSelection [] {
+  getAttributableGroups(): GroupSelection[] {
     if (this.userInfo.type === 'LIST') {
       this.activeGroups = [];
       this.userInfo.profilGroup.forEach((displayGroup) => {
         const profilGroup = this.groups.find((group) => group.id === displayGroup.id);
-        const simplifiedGroup = Object({ id: displayGroup.id, name: displayGroup.name,
-                                         description: displayGroup.description, selected: false, profiles: profilGroup?.profiles});
+        const simplifiedGroup = Object({
+          id: displayGroup.id,
+          name: displayGroup.name,
+          description: displayGroup.description,
+          selected: false,
+          profiles: profilGroup?.profiles,
+        });
         this.activeGroups.push(simplifiedGroup);
       });
     }
@@ -143,19 +160,21 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     const dialogRef = this.groupAttrDialog.open(GroupAttributionComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: [this.user, this.userGroup, this.activeGroups]
+      data: [this.user, this.userGroup, this.activeGroups],
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshTab(); }
+      if (result) {
+        this.refreshTab();
+      }
     });
   }
 
   refreshTab() {
     this.userService.get(this.user.id).subscribe(
-      (response) => this.user = response,
+      (response) => (this.user = response),
       (error) => {
         console.error(error);
-      });
+      },
+    );
   }
-
 }

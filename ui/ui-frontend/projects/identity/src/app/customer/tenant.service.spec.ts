@@ -55,7 +55,7 @@ const expectedTenant: Tenant = {
   accessContractHoldingIdentifier: 'AC-000001',
   accessContractLogbookIdentifier: 'AC-000002',
   ingestContractHoldingIdentifier: 'IC-000001',
-  itemIngestContractIdentifier: 'IC-000001'
+  itemIngestContractIdentifier: 'IC-000001',
 };
 
 const expectedOwner: Owner = {
@@ -70,8 +70,8 @@ const expectedOwner: Owner = {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',
     city: 'Paris',
-    country: 'France'
-  }
+    country: 'France',
+  },
 };
 
 const expectedTenants = [
@@ -87,7 +87,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
   {
     id: '1',
@@ -101,7 +101,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
   {
     id: '2',
@@ -115,7 +115,7 @@ const expectedTenants = [
     accessContractHoldingIdentifier: 'AC-000001',
     accessContractLogbookIdentifier: 'AC-000002',
     ingestContractHoldingIdentifier: 'IC-000001',
-    itemIngestContractIdentifier: 'IC-000001'
+    itemIngestContractIdentifier: 'IC-000001',
   },
 ];
 
@@ -128,11 +128,7 @@ describe('TenantService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        TenantService,
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      providers: [TenantService, { provide: VitamUISnackBar, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -162,18 +158,15 @@ describe('TenantService', () => {
 
   it('should call /fake-api/tenants and display a success message', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
-      (response: Tenant) => {
-        expect(response).toEqual(expectedTenant);
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'tenantCreate', tenantName: expectedTenant.name, ownerName: expectedOwner.name },
-          duration: 10000
-        });
-      },
-      fail
-    );
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe((response: Tenant) => {
+      expect(response).toEqual(expectedTenant);
+      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
+      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'tenantCreate', tenantName: expectedTenant.name, ownerName: expectedOwner.name },
+        duration: 10000,
+      });
+    }, fail);
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedTenant);
@@ -181,35 +174,28 @@ describe('TenantService', () => {
 
   it('should display an error message', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
-      fail,
-      () => {
-        expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
-        expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          data: { type: 'tenantCreateError' },
-          duration: 10000
-        });
-      }
-    );
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe(fail, () => {
+      expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
+      expect(snackBar.openFromComponent).toHaveBeenCalledWith(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'tenantCreateError' },
+        duration: 10000,
+      });
+    });
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 
   it('should return true if the tenant exists', () => {
-    tenantService.exists('tenantName').subscribe(
-      (found) => {
-        expect(found).toBeTruthy();
-      },
-      fail
-    );
+    tenantService.exists('tenantName').subscribe((found) => {
+      expect(found).toBeTruthy();
+    }, fail);
 
-    const criterionArray: any[] = [ { key: 'name', value: 'tenantName', operator: Operators.equals }];
+    const criterionArray: any[] = [{ key: 'name', value: 'tenantName', operator: Operators.equals }];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/tenants/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
   });
-
 });

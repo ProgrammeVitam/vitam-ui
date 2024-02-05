@@ -47,7 +47,7 @@ import { AccessContractService } from '../../access-contract.service';
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
-  styleUrls: ['./access-contract-information-tab.component.scss']
+  styleUrls: ['./access-contract-information-tab.component.scss'],
 })
 export class AccessContractInformationTabComponent {
   @Input()
@@ -85,7 +85,7 @@ export class AccessContractInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators
+    private accessContractCreateValidators: AccessContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
@@ -94,7 +94,7 @@ export class AccessContractInformationTabComponent {
       description: [null],
       accessLog: ['ACTIVE'],
       ruleCategoryToFilter: [new Array<string>()],
-      creationDate: [null]
+      creationDate: [null],
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
@@ -134,7 +134,7 @@ export class AccessContractInformationTabComponent {
     { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
     { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
     { key: 'AccessRule', label: "Durée d'utilité administrative", info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
+    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
   previousValue = (): AccessContract => {
     return this._accessContract;
@@ -179,7 +179,7 @@ export class AccessContractInformationTabComponent {
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 
@@ -198,7 +198,7 @@ export class AccessContractInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 

@@ -142,7 +142,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
 
     if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategory) !== -1) {
       this.ruleCategoryDuaActions = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
       )?.ruleCategoryAction;
       if (
         actionType === RuleActionsEnum.ADD_RULES &&
@@ -171,7 +171,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
       }
 
       this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
       ).ruleCategoryAction = this.ruleCategoryDuaActions;
     }
 

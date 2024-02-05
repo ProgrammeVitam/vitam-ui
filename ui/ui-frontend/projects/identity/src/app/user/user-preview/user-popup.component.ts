@@ -43,23 +43,23 @@ import { CustomerService } from '../../core/customer.service';
 
 @Component({
   selector: 'app-profile-group-popup',
-  template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>'
+  template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
 })
 export class UserPopupComponent implements OnInit {
-
   user: User;
   customer: Customer;
 
-  constructor(private route: ActivatedRoute, private customerService: CustomerService) {
-    this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
+  constructor(
+    private route: ActivatedRoute,
+    private customerService: CustomerService,
+  ) {
+    this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
     this.user = this.route.snapshot.data.user;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closePopup() {
     window.close();
   }
-
 }

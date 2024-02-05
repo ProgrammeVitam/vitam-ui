@@ -40,7 +40,7 @@ import { InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
-import {  MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ArchiveApiService } from '../../core/api/archive-api.service';
 import { ActivatedRoute } from '@angular/router';
@@ -54,14 +54,13 @@ describe('FilingHoldingSchemeComponent', () => {
   let component: FilingHoldingSchemeComponent;
   let fixture: ComponentFixture<FilingHoldingSchemeComponent>;
 
-
   const archiveServiceStub = {
-    loadFilingHoldingSchemeTree: () => of([])
+    loadFilingHoldingSchemeTree: () => of([]),
   };
 
   const archiveServiceMock = {
     archive: () => of('test archive'),
-    search: () => of([])
+    search: () => of([]),
   };
 
   beforeEach(async(() => {
@@ -73,20 +72,20 @@ describe('FilingHoldingSchemeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      declarations: [
-        FilingHoldingSchemeComponent
-      ],
+      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) } },
-        { provide: environment, useValue: environment }
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+        },
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -101,7 +100,6 @@ describe('FilingHoldingSchemeComponent', () => {
   describe('Checkbox-Clic', () => {
     let nodes: FilingHoldingSchemeNode[] = [];
 
-
     beforeEach(() => {
       // Given
       const rootNode: FilingHoldingSchemeNode = {
@@ -112,7 +110,7 @@ describe('FilingHoldingSchemeComponent', () => {
         children: [],
         vitamId: 'rootId',
         checked: false,
-        hidden: false
+        hidden: false,
       };
 
       const rootChildren: FilingHoldingSchemeNode[] = [
@@ -124,8 +122,9 @@ describe('FilingHoldingSchemeComponent', () => {
           vitamId: 'rootChild-1',
           parents: [rootNode],
           checked: false,
-          hidden: false
-        }, {
+          hidden: false,
+        },
+        {
           id: 'rootChild-2',
           title: 'RootChild 2',
           type: 'RecordGrp',
@@ -133,30 +132,33 @@ describe('FilingHoldingSchemeComponent', () => {
           vitamId: 'rootChild-2',
           parents: [rootNode],
           checked: false,
-          hidden: false
-        }
+          hidden: false,
+        },
       ];
 
       rootNode.children = rootChildren;
-      rootChildren[0].children = [{
-        id: 'leaf-1',
-        title: 'Leaf 1',
-        type: 'RecordGrp',
-        children: [],
-        vitamId: 'leaf-1',
-        parents: [rootChildren[0]],
-        checked: false,
-        hidden: false
-      }, {
-        id: 'leaf-2',
-        title: 'Leaf 2',
-        type: 'RecordGrp',
-        children: [],
-        vitamId: 'leaf-2',
-        parents: [rootChildren[0]],
-        checked: false,
-        hidden: false
-      }];
+      rootChildren[0].children = [
+        {
+          id: 'leaf-1',
+          title: 'Leaf 1',
+          type: 'RecordGrp',
+          children: [],
+          vitamId: 'leaf-1',
+          parents: [rootChildren[0]],
+          checked: false,
+          hidden: false,
+        },
+        {
+          id: 'leaf-2',
+          title: 'Leaf 2',
+          type: 'RecordGrp',
+          children: [],
+          vitamId: 'leaf-2',
+          parents: [rootChildren[0]],
+          checked: false,
+          hidden: false,
+        },
+      ];
 
       nodes = [rootNode];
       component.nestedDataSourceFull.data = nodes;
@@ -174,16 +176,14 @@ describe('FilingHoldingSchemeComponent', () => {
         expect(component.nodeData.id).toEqual('rootId');
         expect(component.nodeData.checked).toBeTruthy('Root node should be checked');
       });
-
     });
     describe('showAllTreeNodes', () => {
       it('should check all nodes when select root node', () => {
         component.showAllTreeNodes();
-        component.nestedDataSourceFull.data.forEach(node => {
+        component.nestedDataSourceFull.data.forEach((node) => {
           expect(node.hidden).toBeFalsy();
         });
       });
     });
   });
-
 });

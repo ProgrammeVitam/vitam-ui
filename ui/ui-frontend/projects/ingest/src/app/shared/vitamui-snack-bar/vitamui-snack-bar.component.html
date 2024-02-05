@@ -1,9 +1,9 @@
 <div class="vitamui-snack-bar-container">
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
     <ng-container *ngSwitchCase="'fileUploaded'">
-      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> {{'INGEST_UPLOAD.ALERTE_MESSAGE' | translate}}
-      <br/>
-      <span style="padding-left: 5px;">{{'INGEST_UPLOAD.SECOND_ALERTE_MESSAGE' | translate}}</span>
+      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> {{ 'INGEST_UPLOAD.ALERTE_MESSAGE' | translate }}
+      <br />
+      <span style="padding-left: 5px">{{ 'INGEST_UPLOAD.SECOND_ALERTE_MESSAGE' | translate }}</span>
     </ng-container>
   </span>
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>

@@ -45,12 +45,16 @@ import { Rule } from '../models/rule/rule.interface';
 import { SearchService } from '../vitamui-table';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RuleService extends SearchService<Rule> {
   updated = new Subject<Rule>();
 
-  constructor(private ruleApiService: RuleApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private ruleApiService: RuleApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient,
+  ) {
     super(http, ruleApiService, 'ALL');
   }
 
@@ -86,17 +90,17 @@ export class RuleService extends SearchService<Rule> {
             duration: 10000,
             data: {
               type: message,
-              name: rule.ruleId
-            }
+              name: rule.ruleId,
+            },
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -111,17 +115,17 @@ export class RuleService extends SearchService<Rule> {
             duration: 10000,
             data: {
               type: message,
-              name: data.id
-            }
+              name: data.id,
+            },
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -136,17 +140,17 @@ export class RuleService extends SearchService<Rule> {
             duration: 10000,
             data: {
               type: message,
-              name: rule.ruleId
-            }
+              name: rule.ruleId,
+            },
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
+            duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -154,7 +158,7 @@ export class RuleService extends SearchService<Rule> {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       duration: 10000,
-      data: { type: 'ruleExportAll' }
+      data: { type: 'ruleExportAll' },
     });
 
     this.ruleApiService.export().subscribe(
@@ -173,9 +177,9 @@ export class RuleService extends SearchService<Rule> {
       (error) => {
         this.snackBar.open(error.error.message, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
-      }
+      },
     );
   }
 }

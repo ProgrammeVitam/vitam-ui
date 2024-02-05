@@ -86,7 +86,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    private ruleValidator: RuleValidator
+    private ruleValidator: RuleValidator,
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
       appraisalRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
@@ -101,7 +101,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => this.appraisalRuleCriteriaForm.value),
         map(() => diff(this.appraisalRuleCriteriaForm.value, this.previousAppraisalCriteriaValue)),
-        filter((formData) => this.isEmpty(formData))
+        filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
         this.resetAppraisalRuleCriteriaForm();
@@ -120,7 +120,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           'EQ',
           false,
           'STRING',
-          SearchCriteriaTypeEnum.APPRAISAL_RULE
+          SearchCriteriaTypeEnum.APPRAISAL_RULE,
         );
         this.resetAppraisalRuleCriteriaForm();
       }
@@ -137,7 +137,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
+      },
     );
   }
 
@@ -155,7 +155,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -175,7 +175,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'MISSING',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -195,7 +195,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -215,7 +215,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EXISTS',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
@@ -235,7 +235,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
@@ -255,7 +255,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
@@ -275,7 +275,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
@@ -295,7 +295,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
             'EQ',
             true,
             'STRING',
-            SearchCriteriaTypeEnum.APPRAISAL_RULE
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
@@ -325,7 +325,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         'LTE',
         false,
         'INTERVAL',
-        SearchCriteriaTypeEnum.APPRAISAL_RULE
+        SearchCriteriaTypeEnum.APPRAISAL_RULE,
       );
       this.appraisalRuleCriteriaForm.controls.appraisalRuleStartDate.setValue(null);
     }
@@ -345,7 +345,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         'EQ',
         false,
         'STRING',
-        SearchCriteriaTypeEnum.APPRAISAL_RULE
+        SearchCriteriaTypeEnum.APPRAISAL_RULE,
       );
       this.appraisalRuleCriteriaForm.controls.appraisalRuleIdentifier.setValue(null);
     }
@@ -365,7 +365,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         'BETWEEN',
         false,
         'INTERVAL',
-        SearchCriteriaTypeEnum.APPRAISAL_RULE
+        SearchCriteriaTypeEnum.APPRAISAL_RULE,
       );
       this.appraisalRuleCriteriaForm.controls.appraisalRuleStartDate.setValue(null);
       this.appraisalRuleCriteriaForm.controls.appraisalRuleEndDate.setValue(null);
@@ -384,7 +384,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           'EQ',
           false,
           'STRING',
-          SearchCriteriaTypeEnum.APPRAISAL_RULE
+          SearchCriteriaTypeEnum.APPRAISAL_RULE,
         );
         this.resetAppraisalRuleCriteriaForm();
         return true;
@@ -397,7 +397,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           'EQ',
           false,
           'STRING',
-          SearchCriteriaTypeEnum.APPRAISAL_RULE
+          SearchCriteriaTypeEnum.APPRAISAL_RULE,
         );
         return true;
       } else if (formData.appraisalRuleEliminationIdentifier) {
@@ -409,7 +409,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           'EQ',
           false,
           'STRING',
-          SearchCriteriaTypeEnum.FIELDS
+          SearchCriteriaTypeEnum.FIELDS,
         );
         return true;
       }
@@ -471,7 +471,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       'EXISTS',
       true,
       'STRING',
-      SearchCriteriaTypeEnum.APPRAISAL_RULE
+      SearchCriteriaTypeEnum.APPRAISAL_RULE,
     );
     this.addCriteria(
       RULE_ORIGIN + RULE_TYPE_SUFFIX,
@@ -481,7 +481,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       'EXISTS',
       true,
       'STRING',
-      SearchCriteriaTypeEnum.APPRAISAL_RULE
+      SearchCriteriaTypeEnum.APPRAISAL_RULE,
     );
     this.appraisalAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
     this.appraisalAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
@@ -499,7 +499,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     operator: string,
     valueTranslated: boolean,
     dataType: string,
-    category?: SearchCriteriaTypeEnum
+    category?: SearchCriteriaTypeEnum,
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({

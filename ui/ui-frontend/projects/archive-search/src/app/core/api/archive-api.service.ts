@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {ExportDIPCriteriaList} from '../../archive/models/dip-request-detail.interface';
-import {ReclassificationCriteriaDto} from '../../archive/models/reclassification-request.interface';
-import {RuleSearchCriteriaDto} from '../../archive/models/ruleAction.interface';
-import {SearchCriteriaHistory} from '../../archive/models/search-criteria-history.interface';
-import {SearchResponse} from '../../archive/models/search-response.interface';
-import {SearchCriteriaDto} from '../../archive/models/search.criteria';
-import {Unit} from '../../archive/models/unit.interface';
-import {UnitDescriptiveMetadataDto} from '../../archive/models/unitDescriptiveMetadata.interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
+import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
+import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
+import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
+import { SearchResponse } from '../../archive/models/search-response.interface';
+import { SearchCriteriaDto } from '../../archive/models/search.criteria';
+import { Unit } from '../../archive/models/unit.interface';
+import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveApiService extends BaseHttpClient<any> {
   baseUrl: string;
@@ -70,21 +70,21 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', {headers});
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
   }
 
   get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<any>(this.apiUrl + '/units/' + unitId, {headers});
+    return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, {headers});
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
-      headers
+      headers,
     });
   }
 
@@ -93,7 +93,7 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, {headers, responseType: 'text'});
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -113,57 +113,57 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`, {headers, responseType: 'text'});
+    return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
   }
 
   exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/export-dip`, exportDIPCriteriaList, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/analysis`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/action`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/units/rules`, ruleSearchCriteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/computed-inherited-rules`, criteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   reclassification(criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/reclassification`, criteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
-    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, {headers});
+    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
   }
 
   updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
     return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, {
       headers,
-      responseType: 'text' as 'json'
+      responseType: 'text' as 'json',
     });
   }
 }

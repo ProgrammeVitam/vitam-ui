@@ -50,7 +50,7 @@ import { StepperModule } from './stepper.module';
       <cdk-step></cdk-step>
       <cdk-step></cdk-step>
     </vitamui-common-stepper>
-  `
+  `,
 })
 class TesthostComponent {
   @ViewChild(StepperComponent) stepper: StepperComponent;
@@ -60,16 +60,11 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('StepperComponent', () => {
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StepperModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [TesthostComponent]
-    })
-    .compileComponents();
+      imports: [StepperModule, NoopAnimationsModule],
+      declarations: [TesthostComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -81,5 +76,4 @@ describe('StepperComponent', () => {
   it('should create', () => {
     expect(testhost).toBeTruthy();
   });
-
 });

@@ -36,8 +36,21 @@
  */
 import { forkJoin, Observable, Subject } from 'rxjs';
 import {
-  ApplicationId, AuthService, AuthUser, buildCriteriaFromSearch, Criterion, DEFAULT_PAGE_SIZE, Direction,
-  Group, InfiniteScrollTable, Operators, PageRequest, Profile, SearchQuery, SubrogationModalService, SubrogationUser
+  ApplicationId,
+  AuthService,
+  AuthUser,
+  buildCriteriaFromSearch,
+  Criterion,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  Group,
+  InfiniteScrollTable,
+  Operators,
+  PageRequest,
+  Profile,
+  SearchQuery,
+  SubrogationModalService,
+  SubrogationUser,
 } from 'ui-frontend-common';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -53,10 +66,9 @@ const MAXIMUM_CRITICALITY = 2;
 @Component({
   selector: 'app-subrogate-user-list',
   templateUrl: './subrogate-user-list.component.html',
-  styleUrls: ['./subrogate-user-list.component.scss']
+  styleUrls: ['./subrogate-user-list.component.scss'],
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
-
   @Input() emailDomains: string[];
 
   @Input('search')
@@ -67,22 +79,14 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
   private _searchText: string;
 
-  private groups: Array<{id: string, group: any}> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   overridePendingChange: true;
   loaded = false;
   customerId: string;
   currenteUser: AuthUser;
 
   private readonly searchChange = new Subject<string>();
-  private readonly searchKeys = [
-    'firstname',
-    'lastname',
-    'email',
-    'mobile',
-    'phone',
-    'identifier'
-  ];
-
+  private readonly searchKeys = ['firstname', 'lastname', 'email', 'mobile', 'phone', 'identifier'];
 
   constructor(
     public subrogationService: SubrogationService,
@@ -95,14 +99,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   }
 
   ngOnInit() {
-
     this.currenteUser = this.authService.user;
     this.refreshDataList();
     this.activatedRoute.params.subscribe(() => this.refreshDataList());
 
     this.updatedData.subscribe(() => {
-
-      const groupIds = new Set (this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
+      const groupIds = new Set(this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
 
       const observables = new Array<Observable<Group>>();
       groupIds.forEach((groupId) => {
@@ -119,17 +121,18 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
           });
 
           const subrogations = results[1];
-          this.dataSource.filter((subrogationUser: SubrogationUser) => !subrogationUser.criticality)
-          .forEach(((subrogationUser: SubrogationUser) => {
-            const subrogateUserGroup = this.getGroup(subrogationUser);
-            const subroUser = subrogations.find((s) => s.surrogate === subrogationUser.email);
-            if (subroUser && subroUser.superUser) {
-              subrogationUser.superUserEmail = subroUser.superUser;
-            }
-            if (subrogateUserGroup) {
-              subrogationUser.criticality = this.computeCriticality(subrogateUserGroup.profiles);
-            }
-          }));
+          this.dataSource
+            .filter((subrogationUser: SubrogationUser) => !subrogationUser.criticality)
+            .forEach((subrogationUser: SubrogationUser) => {
+              const subrogateUserGroup = this.getGroup(subrogationUser);
+              const subroUser = subrogations.find((s) => s.surrogate === subrogationUser.email);
+              if (subroUser && subroUser.superUser) {
+                subrogationUser.superUserEmail = subroUser.superUser;
+              }
+              if (subrogateUserGroup) {
+                subrogationUser.criticality = this.computeCriticality(subrogateUserGroup.profiles);
+              }
+            });
 
           this.loaded = true;
           this.pending = false;
@@ -162,7 +165,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     criterionArray.push({
       key: 'customerId',
       value: this._getCustomerId(),
-      operator: Operators.equals
+      operator: Operators.equals,
     });
     return criterionArray;
   }
@@ -170,10 +173,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   private _onSearchChange(): void {
     this.searchChange.subscribe(() => {
       const query: SearchQuery = {
-        criteria: [
-          ...this._getCriterionArrayToCustomer(),
-          ...buildCriteriaFromSearch(this._searchText, this.searchKeys)
-        ]
+        criteria: [...this._getCriterionArrayToCustomer(), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
       };
 
       this._search(query);
@@ -194,12 +194,13 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
       if (profile.applicationName === ApplicationId.CUSTOMERS_APP) {
         criticality = MAXIMUM_CRITICALITY;
         break;
-      } else if (criticality < MAXIMUM_CRITICALITY && (
-        profile.applicationName === ApplicationId.USERS_APP
-        || profile.applicationName === ApplicationId.PROFILES_APP
-        || profile.applicationName === ApplicationId.SUBROGATIONS_APP
-        || profile.applicationName === ApplicationId.GROUPS_APP
-      )) {
+      } else if (
+        criticality < MAXIMUM_CRITICALITY &&
+        (profile.applicationName === ApplicationId.USERS_APP ||
+          profile.applicationName === ApplicationId.PROFILES_APP ||
+          profile.applicationName === ApplicationId.SUBROGATIONS_APP ||
+          profile.applicationName === ApplicationId.GROUPS_APP)
+      ) {
         criticality = AVERAGE_CRITICALITY;
       }
     }
@@ -210,5 +211,4 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   ngOnDestroy(): void {
     this.updatedData.unsubscribe();
   }
-
 }

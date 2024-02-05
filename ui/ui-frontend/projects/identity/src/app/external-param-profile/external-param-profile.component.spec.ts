@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed} from '@angular/core/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule,LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {ExternalParamProfileComponent} from './external-param-profile.component';
-import {ExternalParamProfileService} from './external-param-profile.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ExternalParamProfileComponent } from './external-param-profile.component';
+import { ExternalParamProfileService } from './external-param-profile.service';
 
-
-describe('ExternalParamProfileComponent',() => {
+describe('ExternalParamProfileComponent', () => {
   let component: ExternalParamProfileComponent;
   let fixture: ComponentFixture<ExternalParamProfileComponent>;
 
@@ -62,23 +61,20 @@ describe('ExternalParamProfileComponent',() => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
-        MatMenuModule
+        MatMenuModule,
       ],
-      providers: [
-        {provide: ExternalParamProfileService,useValue: {}}
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [{ provide: ExternalParamProfileService, useValue: {} }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(ExternalParamProfileComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(ExternalParamProfileComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

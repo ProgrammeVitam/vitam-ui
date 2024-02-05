@@ -90,7 +90,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private ontologyService: OntologyService,
-    private ontologyCreateValidator: OntologyCreateValidators
+    private ontologyCreateValidator: OntologyCreateValidators,
   ) {}
 
   ngOnInit() {
@@ -132,7 +132,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      }
+      },
     );
   }
 

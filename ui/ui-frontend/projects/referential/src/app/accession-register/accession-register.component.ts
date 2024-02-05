@@ -51,7 +51,10 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
   advancedSearchPanelOpenState$: Observable<boolean>;
   isAdvancedFormChanged$: Observable<boolean>;
 
-  constructor(private accessionRegistersService: AccessionRegistersService, route: ActivatedRoute) {
+  constructor(
+    private accessionRegistersService: AccessionRegistersService,
+    route: ActivatedRoute,
+  ) {
     super(route, accessionRegistersService);
   }
 

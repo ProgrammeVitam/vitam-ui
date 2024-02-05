@@ -46,10 +46,9 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss']
+  styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
-
   public customers: Customer[];
   public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
   public owner: Owner;
@@ -57,26 +56,33 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService, public customerService: CustomerService) {
+  constructor(
+    private dialog: MatDialog,
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
+    public customerService: CustomerService,
+  ) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
-    this.customerService.getGdprReadOnlySettingStatus().subscribe(settingStatus => {
+    this.customerService.getGdprReadOnlySettingStatus().subscribe((settingStatus) => {
       this.gdprReadOnlySettingStatus = settingStatus;
     });
-   }
+  }
 
   openCreateCustomerDialog() {
-    const dialogRef = this.dialog.open(CustomerCreateComponent,
-       {
-        data: {
-           gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus
-        },
-        panelClass: 'vitamui-modal',
-        disableClose: true });
+    const dialogRef = this.dialog.open(CustomerCreateComponent, {
+      data: {
+        gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus,
+      },
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+    });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshList(); }
+      if (result) {
+        this.refreshList();
+      }
     });
   }
 
@@ -97,7 +103,9 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
   }
 
   private refreshList() {
-    if (!this.customerListComponent) { return; }
+    if (!this.customerListComponent) {
+      return;
+    }
     this.customerListComponent.searchCustomersOrderedByCode();
   }
 }

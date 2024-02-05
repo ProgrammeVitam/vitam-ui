@@ -8,9 +8,8 @@ describe('ReclassificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReclassificationComponent ]
-    })
-    .compileComponents();
+      declarations: [ReclassificationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -61,7 +61,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
     private externalParamProfileApi: ExternalParamProfileApiService,
     private accessContractApiService: AccessContractApiService,
     private snackBar: VitamUISnackBar,
-    http: HttpClient
+    http: HttpClient,
   ) {
     super(http, externalParamProfileApi);
   }
@@ -93,8 +93,8 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -114,8 +114,8 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-        }
-      )
+        },
+      ),
     );
   }
 

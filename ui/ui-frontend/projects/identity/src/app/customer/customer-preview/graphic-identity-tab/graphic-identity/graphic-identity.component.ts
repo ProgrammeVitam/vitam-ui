@@ -78,7 +78,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<GraphicIdentityComponent>,
     private formBuilder: FormBuilder,
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ) {}
 
   ngOnDestroy(): void {

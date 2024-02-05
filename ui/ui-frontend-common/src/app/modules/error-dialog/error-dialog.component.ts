@@ -43,25 +43,24 @@ import { StartupService } from './../startup.service';
 @Component({
   selector: 'vitamui-common-error-dialog',
   templateUrl: './error-dialog.component.html',
-  styleUrls: ['./error-dialog.component.scss']
+  styleUrls: ['./error-dialog.component.scss'],
 })
 export class ErrorDialogComponent implements OnInit {
-
   trustedAppLogoUrl: SafeUrl;
 
-  constructor(private matDialogRef: MatDialogRef<ErrorDialogComponent>,
-              startupService: StartupService,
-              private domSanitizer: DomSanitizer) {
-
-    this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
-    this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
+  constructor(
+    private matDialogRef: MatDialogRef<ErrorDialogComponent>,
+    startupService: StartupService,
+    private domSanitizer: DomSanitizer,
+  ) {
+    this.trustedAppLogoUrl = startupService.getAppLogoURL()
+      ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL())
+      : null;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   goBack() {
     this.matDialogRef.close();
   }
-
 }

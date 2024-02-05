@@ -46,10 +46,9 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 @Component({
   selector: 'vitamui-common-customer-select',
   templateUrl: './vitamui-customer-select.component.html',
-  styleUrls: ['./vitamui-customer-select.component.scss']
+  styleUrls: ['./vitamui-customer-select.component.scss'],
 })
 export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
-
   public customers: MenuOption[];
 
   private destroyer$ = new Subject();
@@ -57,15 +56,16 @@ export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private globalEventService: GlobalEventService) { }
+    private globalEventService: GlobalEventService,
+  ) {}
 
   ngOnInit() {
-    this.route.data.pipe(takeUntil(this.destroyer$))
-      .subscribe((data) => {
-        this.customers = data.customers;
+    this.route.data.pipe(takeUntil(this.destroyer$)).subscribe((data) => {
+      this.customers = data.customers;
     });
 
-    this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$))
+    this.globalEventService.customerEvent
+      .pipe(takeUntil(this.destroyer$))
       .subscribe((customerId: string) => this.selectCustomer(customerId));
   }
 
@@ -77,5 +77,4 @@ export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
   selectCustomer(customerId: string): void {
     this.router.navigate(['./' + customerId], { relativeTo: this.route });
   }
-
 }

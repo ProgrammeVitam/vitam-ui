@@ -35,24 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
-import {Logger, StartupService} from 'ui-frontend-common';
-import {ManagementRulesSharedDataService} from '../../core/management-rules-shared-data.service';
-import {ArchiveService} from '../archive.service';
-import {RuleTypeEnum} from '../models/rule-type-enum';
-import {
-  ActionsRules,
-  RuleActions,
-  RuleActionsEnum,
-  RuleCategoryAction,
-  RuleSearchCriteriaDto
-} from '../models/ruleAction.interface';
-import {SearchCriteriaDto, SearchCriteriaEltDto} from '../models/search.criteria';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Logger, StartupService } from 'ui-frontend-common';
+import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { ArchiveService } from '../archive.service';
+import { RuleTypeEnum } from '../models/rule-type-enum';
+import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto } from '../models/ruleAction.interface';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 
@@ -85,24 +79,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   actionSelected: string;
 
   rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
-    {id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true},
+    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true },
     {
       id: 'AppraisalRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'),
-      isDisabled: false
+      isDisabled: false,
     },
-    {id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true},
-    {id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: true},
+    { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
+    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: true },
     {
       id: 'DisseminationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'),
-      isDisabled: true
+      isDisabled: true,
     },
-    {id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true},
+    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true },
     {
       id: 'ClassificationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'),
-      isDisabled: true
+      isDisabled: true,
     },
   ];
 
@@ -127,9 +121,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   messageNotDelete: string;
   messageNotToDeleteProperty: string;
 
-  @ViewChild('confirmRuleActionsDialog', {static: true}) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
+  @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
-  @ViewChild('confirmLeaveRuleActionsDialog', {static: true}) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
+  @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmLeaveRuleActionsDialogSuscription: Subscription;
 
   constructor(
@@ -140,7 +134,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private router: Router,
     private startupService: StartupService,
     private translateService: TranslateService,
-    private logger: Logger
+    private logger: Logger,
   ) {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.isUpdateValidActions =
@@ -148,35 +142,35 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
         ).length !== 0;
       this.isUpdateValidActionsWithProperty =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length === 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
       this.isAddValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
         ).length !== 0;
       this.isAddPropertyValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
       this.isDeleteValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
         ).length !== 0;
 
       this.isDeleteValidActionsWithProperty =
@@ -184,7 +178,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length === 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            rule.actionType === RuleActionsEnum.ADD_RULES,
         ).length !== 0;
     });
   }
@@ -285,7 +279,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         actionType: rule,
         id: idToAdd + 2,
         ruleId: '',
-        stepValid: false
+        stepValid: false,
       });
     } else {
       this.ruleActions.push({
@@ -293,7 +287,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         actionType: rule,
         id: idToAdd + 1,
         ruleId: '',
-        stepValid: false
+        stepValid: false,
       });
     }
     if (this.actionsSelected.filter((action) => action === rule).length === 0) {
@@ -305,7 +299,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   returnToArchiveSearchPage() {
     const dialogToOpen = this.confirmLeaveRuleActionsDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
 
     this.showConfirmLeaveRuleActionsDialogSuscription = dialogRef
       .afterClosed()
@@ -318,7 +312,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   submitUpdates() {
     const dialogToOpen = this.confirmRuleActionsDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, {panelClass: 'vitamui-dialog'});
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};
@@ -326,7 +320,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
@@ -346,7 +340,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
       ) {
         this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.AppraisalRule = {
@@ -359,7 +353,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
       ) {
         this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
         )?.ruleCategoryAction;
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.AppraisalRule = {
@@ -397,7 +391,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           },
           (error: any) => {
             this.logger.error('Error message :', error);
-          }
+          },
         );
       });
   }
