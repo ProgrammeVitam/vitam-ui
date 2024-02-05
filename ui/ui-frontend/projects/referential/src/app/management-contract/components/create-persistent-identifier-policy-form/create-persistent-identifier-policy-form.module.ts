@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -24,32 +24,31 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
-
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRadioModule } from '@angular/material/radio';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
-import { ManagementContractCreateComponent } from './management-contract-create.component';
+import { CreatePersistentIdentifierPolicyFormComponent } from './create-persistent-identifier-policy-form.component';
 
 @NgModule({
-  declarations: [ManagementContractCreateComponent],
-  entryComponents: [ManagementContractCreateComponent],
+  declarations: [CreatePersistentIdentifierPolicyFormComponent],
+  entryComponents: [CreatePersistentIdentifierPolicyFormComponent],
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
@@ -57,13 +56,11 @@ import { ManagementContractCreateComponent } from './management-contract-create.
     MatSelectModule,
     MatSnackBarModule,
     MatTooltipModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
     MatCheckboxModule,
     MatRadioModule,
-    FormsModule,
-    PersistentIdentifierPoliciesFormModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
+  exports: [CreatePersistentIdentifierPolicyFormComponent],
 })
-export class ManagementContractCreateModule {}
+export class PersistentIdentifierPoliciesFormModule {}

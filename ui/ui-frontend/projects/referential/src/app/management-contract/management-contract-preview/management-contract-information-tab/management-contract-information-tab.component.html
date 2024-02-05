@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="row">
     <div class="col">
-      <vitamui-common-slide-toggle [formControl]="statusControl"
+      <vitamui-common-slide-toggle formControlName="status"
         >{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.CONTRACT_ACTIVE_STATUS' | translate }}
       </vitamui-common-slide-toggle>
     </div>

@@ -49,7 +49,7 @@ import { RouterModule } from '@angular/router';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
-import { PersistentIdentifierFormModule } from './management-contract-identification-tab/components/forms/permanent-identifier-form/persistent-identifier-form.module';
+import { PersistentIdentifierFormModule } from '../components/update-persistent-identifier-policy-form/update-persistent-identifier-policy-form.module';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';

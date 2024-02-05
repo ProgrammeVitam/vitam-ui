@@ -28,6 +28,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,6 +50,7 @@ describe('ManagementContractPreviewComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
+        MatDialogModule,
       ],
       declarations: [ManagementContractPreviewComponent],
       providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
@@ -121,10 +123,10 @@ describe('ManagementContractPreviewComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 3 angular mat tab', () => {
+    it('should have 4 angular mat tab', () => {
       const nativeElement = fixture.nativeElement;
       const elementMatTab = nativeElement.querySelectorAll('mat-tab');
-      expect(elementMatTab.length).toBe(3);
+      expect(elementMatTab.length).toBe(4);
     });
   });
 });

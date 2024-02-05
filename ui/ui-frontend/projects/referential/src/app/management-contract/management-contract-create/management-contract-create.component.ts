@@ -26,22 +26,28 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   Logger,
   ManagementContract,
-  Option,
+  PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
-  StorageStrategy,
 } from 'ui-frontend-common';
 import * as uuid from 'uuid';
+import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
+import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
+
+interface PersistentIdentifierPolicyTypeOption {
+  label: string;
+  value: PersistentIdentifierPolicyTypeEnum | string;
+}
 
 @Component({
   selector: 'app-management-contract-create',
@@ -56,6 +62,8 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
+    private managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService,
+    private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
     private logger: Logger,
   ) {}
 
@@ -72,30 +80,29 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
   keyPressSubscription: Subscription;
   apiSubscriptions: Subscription;
-  statusControlValueChangesSubscribe: Subscription;
 
-  persistentIdentifierPolicyTypes = Object.values(PersistentIdentifierPolicyTypeEnum);
-
-  gotOpened = false;
-  deleteDisabled = true;
-
-  statusControl = new FormControl(true);
-  technicalObjectActivated = false;
-
-  usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
-    { key: 'Dissemination', label: 'Copie de diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignette', info: '' },
-    { key: 'TextContent', label: 'Contenu brut', info: '' },
-    { key: 'PhysicalMaster', label: 'Original papier', info: '' },
+  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
+    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
+    ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
+      label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
+      value: pipt,
+    })),
   ];
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       // Step 1
-      identifier: [null, Validators.required, this.managementContractCreateValidators.uniqueIdentifier()],
-      status: ['INACTIVE'],
-      name: [null, [Validators.required], this.managementContractCreateValidators.uniqueName()],
+      identifier: [
+        null,
+        [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
+        this.managementContractCreateValidators.uniqueIdentifier(),
+      ],
+      status: [true],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+        this.managementContractCreateValidators.uniqueName(),
+      ],
       description: [null],
       // Step 2
       storage: this.formBuilder.group({
@@ -103,30 +110,36 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         objectGroupStrategy: ['default', Validators.required],
         objectStrategy: ['default', Validators.required],
       }),
-      // step 3
-      persistentIdentifierPolicy: this.formBuilder.group({
-        persistentIdentifierPolicyType: [null, Validators.required],
-        persistentIdentifierUnit: [false],
-        persistentIdentifierObject: [false],
-        persistentIdentifierAuthority: ['', [Validators.required, Validators.pattern('^([0-9]{5}|[0-9]{9})$')]],
-        persistentIdentifierUsages: this.formBuilder.array([this.createUsageFormGroup()]),
-      }),
-    });
-
-    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value: boolean) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      // Step 3
+      persistentIdentifierPolicies: this.getDefaultPersistentIdentifierPolicies(),
+      policyTypeOption: '', // For option behavior
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    this.form.get('policyTypeOption').valueChanges.subscribe((value) => {
+      let persistentIdentifierPolicies: FormArray = this.formBuilder.array([]);
+
+      if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
+        persistentIdentifierPolicies = this.getDefaultPersistentIdentifierPolicies();
+        persistentIdentifierPolicies.patchValue([{ policyTypeOption: this.policyTypeOptions[1].value }]);
+      }
+      this.form.removeControl('persistentIdentifierPolicies');
+      this.form.setControl('persistentIdentifierPolicies', persistentIdentifierPolicies);
+    });
   }
 
-  persistentIdentifierUsagesControls() {
-    return (this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray).controls;
+  getDefaultPersistentIdentifierPolicies(): FormArray {
+    return this.managementContractToFormGroupConverterService
+      .getDefaultManagementContractForm()
+      .get('persistentIdentifierPolicies') as FormArray;
+  }
+
+  getPersistentIdentifierPolicies(): FormArray {
+    return this.form.get('persistentIdentifierPolicies') as FormArray;
   }
 
   ngOnDestroy() {
     this.keyPressSubscription?.unsubscribe();
-    this.statusControlValueChangesSubscribe?.unsubscribe();
     this.apiSubscriptions?.unsubscribe();
   }
 
@@ -139,130 +152,83 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (!this.thirdStepValid() || this.isDisabledButton) {
-      return;
-    }
+    if (this.isDisabledButton) return;
     this.isDisabledButton = true;
-    const managementContractFrom = this.form.value;
-    const persistentIdentifierPolicy = this.form.get('persistentIdentifierPolicy');
-    const persistentIdentifierObject = persistentIdentifierPolicy.get('persistentIdentifierObject');
-
-    if (!persistentIdentifierObject.value) {
-      managementContractFrom.persistentIdentifierPolicy.persistentIdentifierUsages = [];
-    }
-    delete managementContractFrom.persistentIdentifierPolicy.persistentIdentifierObject;
-    managementContractFrom.persistentIdentifierPolicyList = [managementContractFrom.persistentIdentifierPolicy];
-
-    const managementContract = managementContractFrom as ManagementContract;
-    managementContract.status === 'ACTIVE'
-      ? (managementContract.activationDate = new Date().toISOString())
-      : (managementContract.deactivationDate = new Date().toISOString());
-    if (this.form.get('identifier').value === null) {
-      managementContract.identifier = uuid.v4();
-    }
-    if (!managementContract.storage) {
-      const storage: StorageStrategy = {
-        unitStrategy: null,
-        objectGroupStrategy: null,
-        objectStrategy: null,
-      };
-      managementContract.storage = storage;
-    }
-
-    this.apiSubscriptions = this.managementContractService.create(managementContract).subscribe(
+    this.apiSubscriptions = this.managementContractService.create(this.generateManagementContract()).subscribe(
       () => {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
+        this.isDisabledButton = false;
         this.dialogRef.close({ success: false, action: 'none' });
         this.logger.error(error);
       },
     );
   }
 
+  isInvalid(fieldNames: string[], abstractControl: AbstractControl): boolean {
+    const fieldIsInvalid = (fieldName: string) => !abstractControl.get(fieldName).valid;
+
+    return fieldNames.some(fieldIsInvalid);
+  }
+
   firstStepInvalid(): boolean {
-    if (this.isSlaveMode) {
-      return (
-        this.form.get('identifier').invalid ||
-        this.form.get('identifier').pending ||
-        this.form.get('name').invalid ||
-        this.form.get('name').pending ||
-        this.form.get('description').invalid ||
-        this.form.get('description').pending ||
-        this.form.get('status').invalid ||
-        this.form.get('status').pending
-      );
-    } else {
-      return (
-        this.form.get('name').invalid ||
-        this.form.get('name').pending ||
-        this.form.get('description').invalid ||
-        this.form.get('description').pending ||
-        this.form.get('status').invalid ||
-        this.form.get('status').pending
-      );
-    }
+    const baseFieldNames = ['name', 'description', 'status'];
+    const fieldNames = this.isSlaveMode ? [...baseFieldNames, 'identifier'] : baseFieldNames;
+
+    return this.isInvalid(fieldNames, this.form);
   }
 
   secondStepInvalid(): boolean {
-    return (
-      this.form.controls.storage.get('unitStrategy').invalid ||
-      this.form.controls.storage.get('unitStrategy').pending ||
-      this.form.controls.storage.get('objectGroupStrategy').invalid ||
-      this.form.controls.storage.get('objectGroupStrategy').pending ||
-      this.form.controls.storage.get('objectStrategy').invalid ||
-      this.form.controls.storage.get('objectStrategy').pending
-    );
+    const fieldNames = ['unitStrategy', 'objectGroupStrategy', 'objectStrategy'];
+
+    return this.isInvalid(fieldNames, this.form.controls.storage);
   }
 
-  thirdStepValid(): boolean {
-    const persistentIdentifierPolicy = this.form.get('persistentIdentifierPolicy');
+  hasValidPersistentIdentifierPolicies(): boolean {
+    const managementContract: ManagementContract = this.formGroupToManagementContractConverterService.convert(this.form);
+    const consistentPersistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList.filter(
+      (persistentIdentifierPolicy: PersistentIdentifierPolicy) =>
+        Object.values(PersistentIdentifierPolicyTypeEnum).includes(persistentIdentifierPolicy.persistentIdentifierPolicyType),
+    );
 
-    if (!persistentIdentifierPolicy) {
-      return false;
+    if (consistentPersistentIdentifierPolicies.length === 0) {
+      return true;
     }
 
-    const persistentIdentifierPolicyType = persistentIdentifierPolicy.get('persistentIdentifierPolicyType');
-    const persistentIdentifierUnit = persistentIdentifierPolicy.get('persistentIdentifierUnit');
-    const persistentIdentifierObject = persistentIdentifierPolicy.get('persistentIdentifierObject');
-    const persistentIdentifierAuthority = persistentIdentifierPolicy.get('persistentIdentifierAuthority');
-    const persistentIdentifierUsages = persistentIdentifierPolicy.get('persistentIdentifierUsages') as FormArray;
+    return this.form.valid;
+  }
 
-    // Vérifier si tous les champs requis sont remplis
-    if (
-      !persistentIdentifierPolicyType ||
-      !persistentIdentifierUnit ||
-      !persistentIdentifierAuthority ||
-      (!persistentIdentifierUsages && persistentIdentifierObject.value)
-    ) {
-      return false;
+  private generateManagementContract(): ManagementContract {
+    const managementContract: ManagementContract = this.formGroupToManagementContractConverterService.convert(this.form);
+    const consistentPersistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList.filter(
+      (persistentIdentifierPolicy: PersistentIdentifierPolicy) =>
+        Object.values(PersistentIdentifierPolicyTypeEnum).includes(persistentIdentifierPolicy.persistentIdentifierPolicyType),
+    );
+    if (consistentPersistentIdentifierPolicies.length === 0) {
+      delete managementContract.persistentIdentifierPolicyList;
     }
 
-    // Vérifier si le formulaire est valide
-    return (
-      persistentIdentifierPolicyType.valid &&
-      persistentIdentifierUnit.valid &&
-      persistentIdentifierAuthority.valid &&
-      (!persistentIdentifierObject.value || persistentIdentifierUsages.valid)
-    );
-  }
+    const timestamp = new Date().toISOString();
+    if (managementContract.status === 'ACTIVE') {
+      managementContract.activationDate = timestamp;
+    } else {
+      managementContract.deactivationDate = timestamp;
+    }
 
-  openClose() {
-    this.gotOpened = !this.gotOpened;
-  }
+    if (!managementContract.identifier) {
+      managementContract.identifier = uuid.v4();
+    }
 
-  addUsage() {
-    const usages = this.form.get('persistentIdentifierPolicy.persistentIdentifierUsages') as FormArray;
-    usages.push(this.createUsageFormGroup());
-    this.deleteDisabled = false;
-  }
+    if (!managementContract.storage) {
+      managementContract.storage = {
+        unitStrategy: null,
+        objectGroupStrategy: null,
+        objectStrategy: null,
+      };
+    }
 
-  createUsageFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      usageName: [null, Validators.required],
-      initialVersion: ['true', Validators.required],
-      intermediaryVersion: ['ALL', Validators.required],
-    });
+    return managementContract;
   }
 }

@@ -77,7 +77,7 @@ describe('ManagementContractInformationTabComponent', () => {
     getAllForTenant: () => of([]),
     exists: () => of(true),
     existsProperties: () => of(true),
-    patch: () => of({}),
+    patch: (payload: any) => of(payload),
     create: () => of({}),
   };
 
@@ -121,7 +121,7 @@ describe('ManagementContractInformationTabComponent', () => {
       name: 'Contrat de gestion avec stockage',
       identifier: 'MCDefaultStorageAll',
       description: 'Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
-      status: 'ACTIVE',
+      status: true,
     };
     component._inputManagementContract = managementContract;
     component.form.setValue(managementContractForm);
@@ -141,14 +141,14 @@ describe('ManagementContractInformationTabComponent', () => {
     component._inputManagementContract = managementContract;
 
     // When
-    const managementContrat = component.previousValue();
+    const managementContratForm = component.previousValue();
 
     // Then
-    expect(managementContrat).not.toBeNull();
-    expect(managementContrat.status).toEqual('ACTIVE');
-    expect(managementContrat.name).toEqual('Contrat de gestion avec stockage');
-    expect(managementContrat.version).toEqual(2);
-    expect(managementContrat.storage.objectGroupStrategy).toEqual('default');
+    expect(managementContratForm).not.toBeNull();
+    expect(managementContratForm.status).toEqual(true);
+    expect(managementContratForm.name).toEqual('Contrat de gestion avec stockage');
+    expect(managementContratForm.version).toEqual(2);
+    expect(managementContratForm.storage.objectGroupStrategy).toEqual('default');
   });
 
   it('should call get and patch of ManagementContractService', () => {
@@ -157,7 +157,7 @@ describe('ManagementContractInformationTabComponent', () => {
       name: 'new Name Contrat de gestion avec stockage',
       identifier: 'MCDefaultStorageAll',
       description: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
-      status: 'ACTIVE',
+      status: true,
     };
     component._inputManagementContract = managementContract;
     component.form.setValue(managementContractForm);
@@ -204,7 +204,7 @@ describe('ManagementContractInformationTabComponent', () => {
       name: 'new Name Contrat de gestion avec stockage',
       identifier: 'MCDefaultStorageAll',
       description: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
-      status: 'ACTIVE',
+      status: true,
     };
     component._inputManagementContract = managementContract;
     component.form.setValue(managementContractForm);
@@ -214,5 +214,57 @@ describe('ManagementContractInformationTabComponent', () => {
 
     // Then
     expect(response).toBeFalsy();
+  });
+
+  it('should not patch activation/deactivation date when status is not changed', () => {
+    spyOn(managementContractServiceMock, 'patch').and.callThrough();
+
+    // Given
+    component.inputManagementContract = managementContract;
+
+    // When
+    component.form.setValue({
+      identifier: 'MCDefaultStorageAll',
+      name: 'Management contract name updated',
+      description: 'Management contract description updated',
+      status: true,
+    });
+    component.onSubmit();
+
+    // Then
+    expect(managementContractServiceMock.patch).toHaveBeenCalledWith({
+      id: 'contractId',
+      identifier: 'MCDefaultStorageAll',
+      name: 'Management contract name updated',
+      description: 'Management contract description updated',
+      // status not changed and should not be present.
+    });
+  });
+
+  it('should patch activation/deactivation date when status changed', () => {
+    spyOn(managementContractServiceMock, 'patch').and.callThrough();
+
+    // Given
+    component.inputManagementContract = managementContract;
+
+    // When
+    component.form.setValue({
+      identifier: 'MCDefaultStorageAll',
+      name: 'Management contract name updated',
+      description: 'Management contract description updated',
+      status: false,
+    });
+    component.onSubmit();
+
+    // Then
+    expect(managementContractServiceMock.patch).toHaveBeenCalledWith({
+      id: 'contractId',
+      identifier: 'MCDefaultStorageAll',
+      name: 'Management contract name updated',
+      description: 'Management contract description updated',
+      status: 'INACTIVE',
+      activationDate: null,
+      deactivationDate: jasmine.any(String),
+    });
   });
 });

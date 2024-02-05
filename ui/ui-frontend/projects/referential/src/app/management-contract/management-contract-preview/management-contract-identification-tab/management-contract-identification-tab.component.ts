@@ -25,18 +25,24 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage } from 'ui-frontend-common';
+import { ManagementContract, PersistentIdentifierPolicyTypeEnum } from 'ui-frontend-common';
+import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
+import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';
-import { ContractFormConverterService } from './contract-form-converter.service';
+
+interface PersistentIdentifierPolicyTypeOption {
+  label: string;
+  value: PersistentIdentifierPolicyTypeEnum | string;
+}
 
 @Component({
   selector: 'app-management-contract-identification-tab',
   templateUrl: './management-contract-identification-tab.component.html',
   styleUrls: ['./management-contract-identification-tab.component.scss'],
-  providers: [ContractFormConverterService],
+  providers: [ManagementContractToFormGroupConverterService],
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges {
   @Input() managementContract: ManagementContract;
@@ -45,60 +51,29 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   contractForm: FormGroup;
   sending = false;
 
+  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
+    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
+    ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
+      label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
+      value: pipt,
+    })),
+  ];
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private formBuilder: FormBuilder,
-    private contractFormConverterService: ContractFormConverterService,
+    private managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService,
+    private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
     private managementContractService: ManagementContractService,
+    private formBuilder: FormBuilder,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.managementContract) {
-      this.resetForm(changes.managementContract.currentValue);
+      const managementConctract: ManagementContract = changes.managementContract.currentValue;
+
+      this.resetForm(managementConctract);
     }
-  }
-
-  private buildForm(managementContract: ManagementContract): void {
-    this.contractForm = this.formBuilder.group({
-      persistentIdentifiers: this.formBuilder.array(
-        managementContract.persistentIdentifierPolicyList.map((policy) => this.buildPolicyGroup(policy)),
-      ),
-    });
-  }
-
-  private buildPolicyGroup(policy: PersistentIdentifierPolicy): FormGroup {
-    return this.formBuilder.group({
-      policyTypeOption: [policy.persistentIdentifierPolicyType],
-      authority: [policy.persistentIdentifierAuthority, [Validators.required, Validators.pattern('^([0-9]{5}|[0-9]{9})$')]],
-      shouldConcernArchiveUnits: [policy.persistentIdentifierUnit],
-      shouldConcernObjects: [Boolean(policy.persistentIdentifierUsages.length)],
-      objectUsagePolicies: this.formBuilder.array(
-        policy.persistentIdentifierUsages.map((objectUsagePolicy) => this.buildObjectUsageGroup(objectUsagePolicy)),
-      ),
-    });
-  }
-
-  private buildObjectUsageGroup(objectUsagePolicy: PersistentIdentifierUsage): FormGroup {
-    return this.formBuilder.group(
-      {
-        objectUsage: [objectUsagePolicy.usageName, Validators.required],
-        initialVersion: [objectUsagePolicy.initialVersion, Validators.required],
-        intermediaryVersion: [objectUsagePolicy.intermediaryVersion, Validators.required],
-      },
-      { validators: [this.objectUsagePolicyValidator] },
-    );
-  }
-
-  objectUsagePolicyValidator(control: AbstractControl): ValidationErrors | null {
-    const initialVersion = control.get('initialVersion');
-    const intermediaryVersion = control.get('intermediaryVersion');
-
-    if (initialVersion.value === false && intermediaryVersion.value === 'NONE') {
-      return { invalidObjectUsagePolicy: true };
-    }
-
-    return null;
   }
 
   submit(): void {
@@ -122,8 +97,32 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   }
 
   resetForm(managementContract: ManagementContract): void {
-    this.buildForm(managementContract);
+    this.contractForm = this.managementContractToFormGroupConverterService.convert(managementContract);
+
+    const persistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList || [];
+    const [persistentIdentifierPolicy] = persistentIdentifierPolicies;
+    const policyTypeOptionValue = persistentIdentifierPolicy?.persistentIdentifierPolicyType || '';
+    this.contractForm.addControl('policyTypeOption', this.formBuilder.control(policyTypeOptionValue, [Validators.required]));
+
     this.updated.emit(false);
+
+    this.contractForm.get('policyTypeOption').valueChanges.subscribe((value) => {
+      let persistentIdentifierPolicyFormArray: FormArray = this.formBuilder.array([]);
+
+      if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
+        persistentIdentifierPolicyFormArray = this.managementContractToFormGroupConverterService
+          .convert(managementContract)
+          .get('persistentIdentifierPolicies') as FormArray;
+        if (persistentIdentifierPolicyFormArray.controls.length === 0) {
+          persistentIdentifierPolicyFormArray = this.managementContractToFormGroupConverterService
+            .getDefaultManagementContractForm()
+            .get('persistentIdentifierPolicies') as FormArray;
+        }
+        persistentIdentifierPolicyFormArray.patchValue([{ policyTypeOption: this.policyTypeOptions[1].value }]);
+      }
+      this.contractForm.removeControl('persistentIdentifierPolicies');
+      this.contractForm.setControl('persistentIdentifierPolicies', persistentIdentifierPolicyFormArray);
+    });
 
     this.subscriptions.add(
       this.contractForm.valueChanges.subscribe(() => {
@@ -133,7 +132,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   }
 
   getUpdatedManagementContract(): ManagementContract {
-    const updates = this.contractFormConverterService.convertToManagementContract(this.contractForm);
+    const updates = this.formGroupToManagementContractConverterService.convert(this.contractForm);
 
     return {
       ...this.managementContract,
@@ -141,8 +140,8 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
     };
   }
 
-  getPersistentIdentifiers(): FormArray {
-    return this.contractForm.get('persistentIdentifiers') as FormArray;
+  getPersistentIdentifierPolicies(): FormArray {
+    return this.contractForm.get('persistentIdentifierPolicies') as FormArray;
   }
 
   isSubmitButtonDisabled(): boolean {
