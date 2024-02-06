@@ -1,0 +1,113 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 10000,
+    "size": 1
+  },
+  "$results": [
+    {
+      "FileInfo": {
+        "LastModified": "2017-04-04T08:07:27.825"
+      },
+      "#id": "aebaaaaaaeehf3vdbncaiamnryv7fryaaaaq",
+      "#nbobjects": 1,
+      "#qualifiers": [
+        {
+          "qualifier": "BinaryMaster",
+          "#nbc": 1,
+          "versions": [
+            {
+              "DataObjectVersion": "BinaryMaster_1",
+              "DataObjectGroupId": "aebaaaaaaeehf3vdbncaiamnryv7fryaaaaq",
+              "FormatIdentification": {
+                "FormatLitteral": "Plain Text File",
+                "MimeType": "text/plain",
+                "FormatId": "x-fmt/111"
+              },
+              "FileInfo": {
+                "LastModified": "2017-04-04T08:07:27.825"
+              },
+              "Size": 6,
+              "Uri": "Content/ID35.txt",
+              "MessageDigest": "664ac614a819df2a97d2a5df57dcad91d6ec38b0fffc793e80c56b4553a14ac7a5f0bce3bb71af419b0bb8f151ad3d512867454eeb818e01818a31989c13319b",
+              "Algorithm": "SHA-512",
+              "DataObjectUse": "BinaryMaster",
+              "DataObjectNumber": 44,
+              "PersistentIdentifier": [
+                {
+                  "PersistentIdentifierType": "ark",
+                  "PersistentIdentifierOrigin": "OriginatingAgency",
+                  "PersistentIdentifierReference": "Agency-00021",
+                  "PersistentIdentifierContent": "ark:/23567/001a9d7db5eadabac_binary_master"
+                },
+                {
+                  "PersistentIdentifierType": "ark",
+                  "PersistentIdentifierOrigin": "OriginatingAgency",
+                  "PersistentIdentifierReference": "Agency-00221",
+                  "PersistentIdentifierContent": "ark:/225867/001a9d7db5eghxac_binary_master"
+                }
+              ],
+              "#id": "aebqaaaaagehf3vdbncaiamnryv7fryaaaba",
+              "#opi": "aeeaaaaaagehf3vdbp6aaamnryv6i5qaaaaq",
+              "#storage": {
+                "strategyId": "default"
+              }
+            }
+          ]
+        }
+      ],
+      "#type": "",
+      "#tenant": 1,
+      "#unitups": [
+        "aeaqaaaaaeehf3vdbncaiamnryv7g4qaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaeehf3vdbncaiamnryv7g4qaaabq",
+        "aeaqaaaaaeehf3vdbncaiamnryv7gqyaaabq"
+      ],
+      "#operations": [
+        "aeeaaaaaagehf3vdbp6aaamnryv6i5qaaaaq"
+      ],
+      "#opi": "aeeaaaaaagehf3vdbp6aaamnryv6i5qaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 1,
+      "#approximate_creation_date": "2024-02-09T14:01:03.834",
+      "#approximate_update_date": "2024-02-09T14:01:03.834"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [
+      {
+        "$subobject": {
+          "#qualifiers.versions": {
+            "$and": [
+              {
+                "$eq": {
+                  "#qualifiers.versions.PersistentIdentifier.PersistentIdentifierContent": "ark:/23567/001a9d7db5eadabac_binary_master"
+                }
+              }
+            ]
+          }
+        },
+        "$depth": 1000
+      }
+    ],
+    "$filter": {
+      "$limit": 10000
+    },
+    "$projection": {
+      "$fields": {}
+    },
+    "$facets": []
+  }
+}

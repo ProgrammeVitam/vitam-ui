@@ -469,4 +469,15 @@ public class ArchiveSearchInternalService {
         }
     }
 
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(String identifier, VitamContext vitamContext) throws VitamClientException {
+        LOGGER.debug("Persistent identifier : {}", identifier);
+        RequestResponse<JsonNode> response = persistentIdentifierService.findObjectsByPersistentIdentifier(identifier, vitamContext);
+        try {
+            return objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Response not in good format {}", e);
+            throw new VitamClientException("Unable to find the GOT", e);
+        }
+    }
+
 }

@@ -67,6 +67,10 @@ public class PurgedPersistentIdentifierDto {
 
     private String objectGroupId;
 
+    private String archivalAgencyIdentifier;
+
+    private String lastPersistentDate;
+
     private List<PersistentIdentifierDto> persistentIdentifier;
 
 }

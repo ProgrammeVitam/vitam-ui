@@ -29,6 +29,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ApiUnitObject, Unit } from 'ui-frontend-common';
 import { PersistentIdentifierApiService } from '../core/api/persistent-identifier-api.service';
 import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifier-response-dto.interface';
 
@@ -38,8 +39,13 @@ import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifi
 export class PersistentIdentifierService {
   constructor(private persistentIdentifierApiService: PersistentIdentifierApiService) {}
 
-  findUnitsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto> {
+  findUnitsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto<Unit>> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.persistentIdentifierApiService.findUnitsByPersistentIdentifier(id, headers);
+  }
+
+  findObjectsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto<ApiUnitObject>> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.persistentIdentifierApiService.findObjectsByPersistentIdentifier(id, headers);
   }
 }

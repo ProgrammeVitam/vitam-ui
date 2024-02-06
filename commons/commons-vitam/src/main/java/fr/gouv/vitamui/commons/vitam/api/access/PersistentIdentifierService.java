@@ -46,6 +46,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
 
+import javax.ws.rs.core.Response;
+
 @RequiredArgsConstructor
 public class PersistentIdentifierService {
 
@@ -57,5 +59,11 @@ public class PersistentIdentifierService {
     public RequestResponse<JsonNode> findUnitsByPersistentIdentifier(final String identifier, final VitamContext vitamContext)
         throws VitamClientException {
         return accessExternalClient.selectUnitsByUnitPersistentIdentifier(vitamContext, new SelectMultiQuery().getFinalSelectById(), identifier);
+    }
+
+    public RequestResponse<JsonNode> findObjectsByPersistentIdentifier(final String identifier, final VitamContext vitamContext)
+        throws VitamClientException {
+        return accessExternalClient.getObjectByObjectPersistentIdentifier(vitamContext,
+                new SelectMultiQuery().getFinalSelectById(), identifier);
     }
 }

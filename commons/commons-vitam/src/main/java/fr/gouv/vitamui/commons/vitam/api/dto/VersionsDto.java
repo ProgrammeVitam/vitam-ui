@@ -41,12 +41,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitam.common.model.objectgroup.FileInfoModel;
 import fr.gouv.vitam.common.model.objectgroup.FormatIdentificationModel;
 import fr.gouv.vitam.common.model.objectgroup.MetadataModel;
+import fr.gouv.vitam.common.model.objectgroup.PersistentIdentifierModel;
 import fr.gouv.vitam.common.model.objectgroup.PhysicalDimensionsModel;
 import fr.gouv.vitam.common.model.objectgroup.StorageJson;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -107,4 +109,13 @@ public class VersionsDto {
 
     @JsonProperty("DataObjectProfile")
     private String dataObjectProfile;
+
+    @JsonProperty("DataObjectUse")
+    private String dataObjectUse;
+
+    @JsonProperty("DataObjectNumber")
+    private Integer dataObjectNumber;
+
+    @JsonProperty("PersistentIdentifier")
+    private List<PersistentIdentifierModel> persistentIdentifier;
 }

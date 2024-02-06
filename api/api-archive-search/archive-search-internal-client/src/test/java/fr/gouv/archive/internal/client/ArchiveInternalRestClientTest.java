@@ -50,8 +50,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
@@ -78,7 +78,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void sampleArchiveTest() {
         Assertions.assertNotNull(archivesSearchExternalRestClient);
-        Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archivesSearchExternalRestClient.getPathUrl());
+        assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archivesSearchExternalRestClient.getPathUrl());
     }
 
 
@@ -95,7 +95,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         ArchiveUnitsDto response =
             archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
-        Assertions.assertEquals(response, responseEntity);
+        assertEquals(response, responseEntity);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         VitamUISearchResponseDto response =
             archivesSearchExternalRestClient.getFilingHoldingScheme(defaultContext);
-        Assertions.assertEquals(response, responseEntity);
+        assertEquals(response, responseEntity);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
             archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, defaultContext);
 
 
-        Assertions.assertEquals(response, resource);
+        assertEquals(response, resource);
     }
 
     @Test
@@ -139,7 +139,23 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         // When
         PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
-        Assertions.assertEquals(persistentIdentifierResponse, result);
+        assertEquals(persistentIdentifierResponse, result);
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
+    }
+
+    @Test
+    public void findObjectsByPersistentIdentifier_ok() throws URISyntaxException {
+        // Given
+        final String arkId = "ark:/225867/001a9d7db5eghxac_binary_master";
+        final PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
+        final URI uri = new URI(archivesSearchExternalRestClient.getBaseUrl() + archivesSearchExternalRestClient.getPathUrl()
+            + RestApi.OBJECTS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac_binary_master");
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
+            .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
+        // When
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalRestClient.findObjectsByPersistentIdentifier(arkId, defaultContext);
+        // Then
+        assertEquals(persistentIdentifierResponse, result);
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
     }
 

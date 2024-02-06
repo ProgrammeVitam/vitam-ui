@@ -274,8 +274,18 @@ public class ArchivesSearchExternalController {
     public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
         final @RequestParam(value = "id") String arkId
     ) {
-        LOGGER.debug("[EXTERNAL] : Get by persistent identifier {}", arkId);
+        LOGGER.debug("[EXTERNAL] : Get units by persistent identifier {}", arkId);
         final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalService.findUnitsByPersistentIdentifier(arkId);
+        LOGGER.debug("[EXTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
+    }
+
+    @GetMapping(RestApi.OBJECTS_PERSISTENT_IDENTIFIER)
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(
+        final @RequestParam(value = "id") String arkId
+    ) {
+        LOGGER.debug("[EXTERNAL] : Get objects by persistent identifier {}", arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchExternalService.findObjectsByPersistentIdentifier(arkId);
         LOGGER.debug("[EXTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
         return persistentIdentifierResponse;
     }

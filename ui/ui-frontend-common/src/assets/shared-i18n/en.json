@@ -4491,12 +4491,20 @@
     "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
   },
   "PERSISTENT_IDENTIFIER_SEARCH": {
-    "SEARCH_PLACEHOLDER": "Search for an archive unit by permanent identifier",
+    "SEARCH_PLACEHOLDER": "Search for an archive unit or technical object by permanent identifier",
     "MODAL": {
       "TITLE": "",
       "SEARCH_BY_ID": "Search by permanent identifier",
-      "TRANSFERRED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been transferred to another EDRMS, on {{date}}",
-      "DELETED_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been eliminated from the system, on {{date}}"
+      "UNIT_TRANSFER_REPLY_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been transferred to another EDRMS, on {{date}}",
+      "UNIT_ELIMINATION_ACTION_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been eliminated from the system, on {{date}}",
+      "UNIT_UNKNOWN_MESSAGE": "The archival unit relative to the permanent identifier {{ark}} has been purged from the system with an unknown operation, on {{date}}",
+      "OBJECT_TRANSFER_REPLY_MESSAGE": "The technical object relative to the permanent identifier {{ark}} has been transferred to another EDRMS, on {{date}}",
+      "OBJECT_ELIMINATION_ACTION_MESSAGE": "The technical object relative to the permanent identifier {{ark}} has been eliminated from the system, on {{date}}",
+      "OBJECT_DELETE_GOT_VERSIONS_MESSAGE": "The technical object relative to the permanent identifier {{ark}} has been deleted from the system, on {{date}}",
+      "OBJECT_UNKNOWN_MESSAGE": "The technical object relative to the permanent identifier {{ark}} has been purged from the system with an unknown operation, on {{date}}",
+      "FOUND_OBJECT_MESSAGE": "The permanent identifier {{ark}} matches a technical object \"{{usageVersion}}\"\n\nDo you want to look up the description of the corresponding archival unit or download the document directly?",
+      "LOOKUP_ARCHIVAL_UNIT": "Look up the archival unit",
+      "DOWNLOAD_OBJECT": "Download the document"
     }
   },
   "SEDA": {

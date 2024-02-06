@@ -292,4 +292,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, context);
     }
 
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(String arkId, ExternalHttpContext context) {
+        return archiveSearchExternalRestClient.findObjectsByPersistentIdentifier(arkId, context);
+    }
+
 }

@@ -375,4 +375,17 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return persistentIdentifierResponse;
     }
 
+    @ApiOperation(value = "Find the object associated to this ARK ID")
+    @GetMapping(RestApi.OBJECTS_PERSISTENT_IDENTIFIER)
+    @ResponseStatus(HttpStatus.OK)
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(
+        final @RequestParam("id") String arkId
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, arkId);
+        LOGGER.debug("Find the GOT with persistent identifier {}", arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archivesSearchService.findObjectsByPersistentIdentifier(arkId, buildUiHttpContext());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
+    }
+
 }

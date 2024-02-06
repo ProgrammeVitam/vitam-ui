@@ -26,10 +26,10 @@
  *
  */
 
-import { Unit } from 'ui-frontend-common';
+import { ApiUnitObject, Unit } from 'ui-frontend-common';
 
-export interface PersistentIdentifierResponseDto {
-  $results?: Unit[];
+export interface PersistentIdentifierResponseDto<T extends Unit | ApiUnitObject> {
+  $results?: T[];
   $history?: PurgedPersistentIdentifierDto[];
 }
 
@@ -37,9 +37,9 @@ export interface PurgedPersistentIdentifierDto {
   id: string;
   tenant: number;
   version: number;
-  type: string;
+  type: 'Object' | 'Unit';
   operationId: string;
-  operationType: PurgedPersistentOperationType;
+  operationType: UnitPurgedPersistentOperationType | ObjectPurgedPersistentOperationType;
   operationLastPersistentDate: string;
   objectGroupId: string;
   persistentIdentifier: PersistentIdentifierDto[];
@@ -52,8 +52,13 @@ export interface PersistentIdentifierDto {
   persistentIdentifierContent: string;
 }
 
-export enum PurgedPersistentOperationType {
+export enum UnitPurgedPersistentOperationType {
   TRANSFER_REPLY = 'TRANSFER_REPLY',
-  DELETE_GOT_VERSIONS = 'DELETE_GOT_VERSIONS',
   ELIMINATION_ACTION = 'ELIMINATION_ACTION',
+}
+
+export enum ObjectPurgedPersistentOperationType {
+  TRANSFER_REPLY = 'TRANSFER_REPLY',
+  ELIMINATION_ACTION = 'ELIMINATION_ACTION',
+  DELETE_GOT_VERSIONS = 'DELETE_GOT_VERSIONS',
 }
