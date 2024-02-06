@@ -37,7 +37,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -60,7 +60,9 @@ import {
   Unit,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ArchiveUnit } from './models/archive-unit';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
+import { JsonPatchDto, MultiJsonPatchDto } from './models/json-patch';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
@@ -404,6 +406,18 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   getInternalOntologiesList(): Observable<Ontology[]> {
     return this.archiveApiService.getInternalOntologiesList();
+  }
+
+  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[]): Observable<{ operationId: String }> {
+    return this.archiveApiService.asyncPartialUpdateArchiveUnits(archiveUnits);
+  }
+
+  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto): Observable<{ operationId: String }> {
+    return this.archiveApiService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto);
+  }
+
+  asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto): Observable<{ operationId: String }> {
+    return this.archiveApiService.asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto);
   }
 }
 

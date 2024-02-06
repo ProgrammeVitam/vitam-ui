@@ -39,9 +39,11 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.service.AccessContractConverter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("fr.gouv.vitamui.archives.search.common.dto.converter")
 public class ConverterConfig {
 
     @Bean
@@ -60,4 +62,5 @@ public class ConverterConfig {
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter) {
         return new Converters(accessContractConverter, searchCriteriaHistoryConverter);
     }
+
 }

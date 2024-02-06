@@ -33,6 +33,7 @@ import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClientFactory;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClientFactory;
 import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
+import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -42,6 +43,7 @@ import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -156,4 +158,9 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 
+    @Bean
+    public ArchiveUnitClient getArchiveUnitClient(
+        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
+        return archiveInternalRestClientFactory.getArchiveUnitClient();
+    }
 }

@@ -26,6 +26,7 @@
 
 package fr.gouv.archive.internal.client;
 
+import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -50,6 +51,10 @@ public class ArchiveInternalRestClientFactory extends BaseRestClientFactory {
 
     public SearchCriteriaHistoryInternalRestClient getSearchCriteriaHistoryInternalRestClient() {
         return new SearchCriteriaHistoryInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
+    public ArchiveUnitClient getArchiveUnitClient() {
+        return new ArchiveUnitClientImpl(getRestTemplate(), getBaseUrl());
     }
 
 }
