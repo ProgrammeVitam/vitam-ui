@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+<<<<<<<< HEAD:ui/ui-frontend-common/src/app/modules/components/data/data.component.ts
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -46,3 +47,9 @@ export class DataComponent {
   @Input() value: string | string[];
   readonly isArray = Array.isArray;
 }
+========
+export * from './event-type-label/event-type-label.component';
+export * from './history/history.module';
+export * from './logbook.service';
+export * from './history/history-events/history-events.component';
+>>>>>>>> ce2fcd23f (WIP: transform ui-frontend-common as library):ui/ui-frontend/projects/ui-frontend-common/src/app/modules/logbook/index.ts

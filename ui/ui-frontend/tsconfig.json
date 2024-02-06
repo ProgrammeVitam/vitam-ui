@@ -38,6 +38,12 @@
       "vitamui-collect": [
         "./projects/collect/src/app/"
       ],
+      "ui-frontend-common": [
+        "dist/ui-frontend-common"
+      ],
+      "ui-frontend-common/*": [
+        "dist/ui-frontend-common/*"
+      ],
       "vitamui-library": [
         "dist/vitamui-library"
       ],

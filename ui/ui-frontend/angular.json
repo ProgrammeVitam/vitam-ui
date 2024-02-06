@@ -31,7 +31,7 @@
             ],
             "styles": ["projects/identity/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -96,7 +96,7 @@
             "scripts": [],
             "styles": ["projects/identity/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "assets": ["projects/identity/src/assets", "projects/identity/src/favicon.ico"]
           }
@@ -139,7 +139,7 @@
             ],
             "styles": ["projects/portal/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -195,7 +195,7 @@
             "scripts": [],
             "styles": ["projects/portal/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "assets": ["projects/portal/src/assets", "projects/portal/src/favicon.ico"]
           }
@@ -418,6 +418,41 @@
         }
       }
     },
+    "ui-frontend-common": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "root": "projects/ui-frontend-common",
+      "sourceRoot": "projects/ui-frontend-common/src",
+      "prefix": "vitamui-common",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ui-frontend-common/tsconfig.lib.json",
+            "project": "projects/ui-frontend-common/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ui-frontend-common/src/test.ts",
+            "tsConfig": "projects/ui-frontend-common/tsconfig.spec.json",
+            "karmaConfig": "projects/ui-frontend-common/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["projects/ui-frontend-common/tsconfig.lib.json", "projects/ui-frontend-common/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
     "vitamui-library": {
       "projectType": "library",
       "schematics": {
@@ -483,7 +518,7 @@
             ],
             "styles": ["projects/starter-kit/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -539,7 +574,7 @@
             "scripts": [],
             "styles": ["projects/starter-kit/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "assets": ["projects/starter-kit/src/assets", "projects/starter-kit/src/favicon.ico"]
           }
@@ -581,7 +616,7 @@
             ],
             "styles": ["projects/ingest/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -646,7 +681,7 @@
             "assets": ["projects/ingest/src/favicon.ico", "projects/ingest/src/assets"],
             "styles": ["projects/ingest/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           }
@@ -688,7 +723,7 @@
             ],
             "styles": ["projects/archive-search/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -753,7 +788,7 @@
             "scripts": [],
             "styles": ["projects/archive-search/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "assets": ["projects/archive-search/src/assets", "projects/archive-search/src/favicon.ico"]
           }
@@ -795,7 +830,7 @@
             ],
             "styles": ["projects/collect/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
@@ -860,7 +895,7 @@
             "scripts": [],
             "styles": ["projects/collect/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "assets": ["projects/collect/src/assets", "projects/collect/src/favicon.ico"]
           }
@@ -903,7 +938,7 @@
             ],
             "styles": ["projects/pastis/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/ui-frontend-common/src/sass"]
             },
             "scripts": []
           },
