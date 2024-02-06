@@ -150,7 +150,6 @@
         <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
-        <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
         <vitam.version>7.1.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
@@ -690,29 +689,6 @@
                 <artifactId>spring-security-test</artifactId>
                 <version>${spring.security.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.thymeleaf</groupId>
-                <artifactId>thymeleaf-spring5</artifactId>
-                <version>${thymeleaf-spring5.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-webflux</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-spring-webmvc</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-expression</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- Apereo CAS Server Core Api Ticket -->
