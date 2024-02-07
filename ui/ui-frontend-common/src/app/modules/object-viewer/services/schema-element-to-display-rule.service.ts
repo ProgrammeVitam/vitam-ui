@@ -227,101 +227,67 @@ export class SchemaElementToDisplayRuleService {
   public mapSchemaElementToComponent(schemaElement: SchemaElement): ComponentName {
     const defaultComponent: ComponentName = 'textfield-short-mono';
 
-    if (!schemaElement) {
-      return defaultComponent;
-    }
+    if (!schemaElement) return defaultComponent;
 
-    if (schemaElement.Type === 'OBJECT') {
-      const computedDepth = schemaElement.Path.split('.').length - 1;
+    switch (schemaElement.DataType) {
+      case 'OBJECT':
+        const computedDepth = schemaElement.Path.split('.').length - 1;
 
-      if (computedDepth === 0) {
-        return 'balise-n1';
-      }
-      if (computedDepth === 1) {
-        return 'balise-n2';
-      }
-      if (computedDepth === 2) {
-        return 'balise-n3';
-      }
-      if (computedDepth === 3) {
-        return 'balise-n4';
-      }
-
-      return defaultComponent;
-    }
-
-    if (schemaElement.Type === 'TEXT' || schemaElement.Type === 'KEYWORD') {
-      const isUnique = schemaElement.Cardinality.includes('ONE');
-      const isMultiple = !isUnique;
-      const isSpecial = schemaElement.Path.includes('_.');
-
-      if (isSpecial) {
-        if (isUnique && schemaElement.StringSize === 'SHORT') {
-          return 'attribut-short-mono';
-        }
-        if (isMultiple && schemaElement.StringSize === 'SHORT') {
-          return 'attribut-short-multi';
-        }
-        if (isUnique) {
-          return 'attribut-mono';
-        }
-        if (isMultiple) {
-          return 'attribut-multi';
-        }
+        if (computedDepth === 0) return 'balise-n1';
+        if (computedDepth === 1) return 'balise-n2';
+        if (computedDepth === 2) return 'balise-n3';
+        if (computedDepth === 3) return 'balise-n4';
 
         return defaultComponent;
-      }
+      case 'STRING':
+        const isUnique = schemaElement.Cardinality.includes('ONE');
+        const isMultiple = !isUnique;
+        const isSpecial = schemaElement.Path.includes('_.');
 
-      if (isUnique && schemaElement.StringSize === 'SHORT') {
-        return 'textfield-short-mono';
-      }
-      if (isUnique && schemaElement.StringSize === 'MEDIUM') {
-        return 'textfield-medium-mono';
-      }
-      if (isUnique && schemaElement.StringSize === 'LARGE') {
-        return 'textfield-large-mono';
-      }
-      if (isMultiple && schemaElement.StringSize === 'SHORT') {
-        return 'textfield-short-multi';
-      }
-      if (isMultiple && schemaElement.StringSize === 'MEDIUM') {
-        return 'textfield-medium-multi';
-      }
-      if (isMultiple && schemaElement.StringSize === 'LARGE') {
-        return 'textfield-large-multi';
-      }
+        if (isSpecial) {
+          if (isUnique && schemaElement.StringSize === 'SHORT') return 'attribut-short-mono';
+          if (isMultiple && schemaElement.StringSize === 'SHORT') return 'attribut-short-multi';
+          if (isUnique) return 'attribut-mono';
+          if (isMultiple) return 'attribut-multi';
 
-      return defaultComponent;
+          return defaultComponent;
+        }
+
+        if (isUnique && schemaElement.StringSize === 'SHORT') return 'textfield-short-mono';
+        if (isUnique && schemaElement.StringSize === 'MEDIUM') return 'textfield-medium-mono';
+        if (isUnique && schemaElement.StringSize === 'LARGE') return 'textfield-large-mono';
+        if (isMultiple && schemaElement.StringSize === 'SHORT') return 'textfield-short-multi';
+        if (isMultiple && schemaElement.StringSize === 'MEDIUM') return 'textfield-medium-multi';
+        if (isMultiple && schemaElement.StringSize === 'LARGE') return 'textfield-large-multi';
+
+        // Rules for enums not represented in schemas
+        // if (schemaElement.Type === 'TEXT') {
+        //   const isUnique = schemaElement.Cardinality.includes('ONE');
+        //   const isMultiple = !isUnique;
+
+        //   if (isUnique) {
+        //     return 'select-mono';
+        //   }
+        //   if (isMultiple) {
+        //     return 'select-multi';
+        //   }
+
+        //   return defaultComponent;
+        // }
+
+        return defaultComponent;
+      case 'DATETIME':
+        // if (schemaElement.DataType === 'DATETIME') {
+        //   return 'datepicker-date';
+        // }
+
+        return 'datepicker-datetime';
+      case 'LONG':
+      case 'DOUBLE':
+      case 'BOOLEAN':
+      default:
+        return defaultComponent;
     }
-
-    // Rules for enums not represented in schemas
-    // if (schemaElement.Type === 'TEXT') {
-    //   const isUnique = schemaElement.Cardinality.includes('ONE');
-    //   const isMultiple = !isUnique;
-
-    //   if (isUnique) {
-    //     return 'select-mono';
-    //   }
-    //   if (isMultiple) {
-    //     return 'select-multi';
-    //   }
-
-    //   return defaultComponent;
-    // }
-
-    if (schemaElement.Type === 'DATE') {
-      return 'datepicker-date';
-    }
-    // Rules for datetime not represented in schemas
-    // if (schemaElement.Type === 'DATE') {
-    //   return 'datepicker-datetime';
-    // }
-
-    if (schemaElement.Type === 'LONG') {
-      return defaultComponent;
-    }
-
-    return defaultComponent;
   }
 
   public mapSchemaElementToDisplayRule(schemaElement: SchemaElement): DisplayRule {

@@ -42,6 +42,7 @@ export interface SchemaElement extends WithPath {
   readonly FieldName: string;
   readonly ApiField: string;
   readonly Type: 'TEXT' | 'KEYWORD' | 'DATE' | 'OBJECT' | 'BOOLEAN' | 'LONG';
+  readonly DataType?: 'STRING' | 'DATETIME' | 'OBJECT' | 'LONG' | 'DOUBLE' | 'BOOLEAN';
   readonly Origin: string;
   readonly SedaField?: string;
   readonly ShortName?: string;
