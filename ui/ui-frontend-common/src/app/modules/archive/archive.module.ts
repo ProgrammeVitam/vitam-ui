@@ -36,18 +36,47 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { ObjectEditorModule } from '../object-editor/object-editor.module';
 import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
+import { ArchiveUnitEditorComponent } from './components/archive-unit-editor/archive-unit-editor.component';
+import { ArchiveUnitEditorService } from './components/archive-unit-editor/archive-unit-editor.service';
+import { EditorBannerComponent } from './components/archive-unit-editor/components/editor-banner/editor-banner.component';
 import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
 
 @NgModule({
-  imports: [CommonModule, ObjectViewerModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
-  declarations: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
-  exports: [PhysicalArchiveViewerComponent, ArchiveUnitCountComponent, ArchiveUnitViewerComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    PipesModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    ObjectViewerModule,
+    ObjectEditorModule,
+  ],
+  providers: [ArchiveUnitEditorService],
+  declarations: [
+    PhysicalArchiveViewerComponent,
+    ArchiveUnitCountComponent,
+    ArchiveUnitViewerComponent,
+    ArchiveUnitEditorComponent,
+    EditorBannerComponent,
+  ],
+  exports: [
+    PhysicalArchiveViewerComponent,
+    ArchiveUnitCountComponent,
+    ArchiveUnitViewerComponent,
+    ArchiveUnitEditorComponent,
+    EditorBannerComponent,
+  ],
 })
 export class ArchiveModule {}

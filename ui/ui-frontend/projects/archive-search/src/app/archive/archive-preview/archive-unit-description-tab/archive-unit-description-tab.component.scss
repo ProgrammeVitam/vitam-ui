@@ -1,0 +1,25 @@
+button {
+  &.save {
+    background-color: white;
+    color: var(--vitamui-primary);
+  }
+
+  &.cancel {
+    background-color: transparent;
+    color: white;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+.editor-banner {
+  margin-left: -40px;
+  margin-right: -40px;
+  position: sticky;
+  z-index: 10;
+  top: -20px;
+}
+
+.margin-btn {
+  margin-right: 1rem;
+}

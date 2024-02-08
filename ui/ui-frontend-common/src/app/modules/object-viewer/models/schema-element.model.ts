@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Collection } from '../../models';
 import { Cardinality, SedaVersion } from '../types';
 import { WithPath } from './with-path.model';
 
@@ -54,7 +55,7 @@ export interface SchemaElement extends WithPath {
   readonly StringSize?: 'SHORT' | 'MEDIUM' | 'LARGE';
   readonly Cardinality: Cardinality;
   readonly SedaVersions: SedaVersion[];
-  readonly Collection: string;
+  readonly Collection: Collection;
   readonly ApiPath: string;
   readonly Category: 'DESCRIPTION' | 'MANAGEMENT' | 'OTHER';
 }

@@ -60,10 +60,10 @@ import {
   SecurityService,
   Unit,
 } from 'ui-frontend-common';
+import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive/models/archive-unit';
+import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive/models/json-patch';
 import { ArchiveApiService } from '../core/api/archive-api.service';
-import { ArchiveUnit } from './models/archive-unit';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
-import { JsonPatchDto, MultiJsonPatchDto } from './models/json-patch';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';

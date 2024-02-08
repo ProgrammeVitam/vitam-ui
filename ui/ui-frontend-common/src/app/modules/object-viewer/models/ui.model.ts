@@ -45,4 +45,5 @@ export interface Ui extends WithPath {
   readonly open?: boolean;
   readonly display?: boolean;
   label?: string;
+  disabled?: boolean;
 }

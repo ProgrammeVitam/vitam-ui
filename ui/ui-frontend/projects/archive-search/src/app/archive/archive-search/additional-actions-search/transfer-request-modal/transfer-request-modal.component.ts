@@ -36,7 +36,7 @@ import {
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
   StartupService,
-  UsageVersionEnum
+  UsageVersionEnum,
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
@@ -153,7 +153,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  hasBinaryMasterSelected(){
+  hasBinaryMasterSelected() {
     const usagesArray = this.formGroups[1].getRawValue().usages;
     for (const usage of usagesArray) {
       if (usage.usage === 'BinaryMaster') {
@@ -175,8 +175,8 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
 
     const step1Values = this.formGroups[0].getRawValue();
     const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[]
-      = step2Values.includeObjects === UsageVersionEnum.SELECTION  ? step2Values.usages : [];
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] =
+      step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
     const transferRequestDto: TransferRequestDto = {
       transferRequestParameters: step1Values,
       searchCriteria: this.data.searchCriteria,

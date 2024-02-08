@@ -44,7 +44,7 @@
     </mat-tab>
 
     <mat-tab label="{{ 'TAB.DESCRIPTION' | translate }}">
-      <vitamui-common-archive-unit-viewer [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
+      <app-archive-unit-description-tab [archiveUnit]="archiveUnit" [(editMode)]="updateStarted"></app-archive-unit-description-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">

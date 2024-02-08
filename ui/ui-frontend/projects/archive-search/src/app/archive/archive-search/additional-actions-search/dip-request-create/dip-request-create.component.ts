@@ -47,7 +47,7 @@ import {
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
   StartupService,
-  UsageVersionEnum
+  UsageVersionEnum,
 } from 'ui-frontend-common';
 import * as uuid from 'uuid';
 import { ArchiveService } from '../../../archive.service';
@@ -173,8 +173,8 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
 
     const step1Values = this.formGroups[0].getRawValue();
     const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[]
-      = step2Values.includeObjects === UsageVersionEnum.SELECTION  ? step2Values.usages : [];
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] =
+      step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
     const exportDIPRequestDto: ExportDIPRequestDto = {
       dipRequestParameters: step1Values,
       exportDIPSearchCriteria: this.data.exportDIPSearchCriteria,

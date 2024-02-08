@@ -37,7 +37,9 @@
 import { Injectable } from '@angular/core';
 import { ComponentType } from '../types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DateDisplayService {
   private dateFormat = {
     wanted: { datepicker: 'dd/MM/yyyy', datetime: 'dd/MM/yyyy hh:mm:ss' },

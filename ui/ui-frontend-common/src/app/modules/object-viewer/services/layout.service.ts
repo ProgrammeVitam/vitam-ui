@@ -3,7 +3,9 @@ import { Logger } from '../../logger/logger';
 import { DisplayObject, Layout } from '../models';
 import { LayoutSize } from '../types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LayoutService {
   MAX_COMLUMS = 2;
   DEFAULT_COLUMNS = this.MAX_COMLUMS;

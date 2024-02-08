@@ -35,7 +35,7 @@ export interface ExportDIPRequestDto {
   exportDIPSearchCriteria: SearchCriteriaEltDto[];
   dataObjectVersionsPatterns: { [key in ObjectQualifierTypeType]: QualifierVersion[] };
   lifeCycleLogs: boolean;
-  withoutObjects:boolean;
+  withoutObjects: boolean;
   sedaVersion: DIPSedaVersion;
 }
 

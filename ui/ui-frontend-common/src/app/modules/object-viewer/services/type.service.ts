@@ -37,7 +37,9 @@
 import { Injectable } from '@angular/core';
 import { DisplayObjectType } from '../types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TypeService {
   public isPrimitive(value: any): boolean {
     const type = typeof value;

@@ -101,19 +101,14 @@ export class DisplayRuleHelperService {
       throw new Error("Les règles n'ont pas le même chemin et ne peuvent pas être fusionnées.");
     }
 
-    const mergedUI: Ui = {
-      ...sourceRule.ui,
-      component: targetRule.ui.component,
-      layout: targetRule.ui.layout,
-      favoriteKeys: targetRule.ui.favoriteKeys,
-      open: targetRule.ui.open,
-      display: targetRule.ui.display,
-      label: targetRule.ui.label,
-    };
+    const ui: Ui = Array.from(new Set(Object.keys(sourceRule.ui).concat(Object.keys(targetRule.ui)))).reduce(
+      (acc, key: string) => {
+        return { ...acc, [key]: targetRule.ui[key] || sourceRule.ui[key] };
+      },
+      { Path: undefined, component: undefined },
+    );
 
-    const mergedRule: DisplayRule = { ...sourceRule, ui: mergedUI };
-
-    return mergedRule;
+    return { ...sourceRule, ui };
   }
 
   public convertDataPathToSchemaPath(dataPath: string): string {

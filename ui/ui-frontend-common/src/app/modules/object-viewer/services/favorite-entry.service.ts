@@ -1,5 +1,9 @@
+import { Injectable } from '@angular/core';
 import { DisplayObject } from '../models';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class FavoriteEntryService {
   public favoriteEntry(displayObject: DisplayObject): [key: string, value: unknown] | null {
     const favoriteEntry: [key: string, value: any] = displayObject.favoriteKeys.reduce(

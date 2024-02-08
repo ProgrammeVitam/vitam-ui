@@ -50,9 +50,9 @@ import {
   SearchResponse,
   Unit,
 } from 'ui-frontend-common';
-import { ArchiveUnit } from '../../archive/models/archive-unit';
+import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive/models/archive-unit';
+import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive/models/json-patch';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
-import { JsonPatchDto, MultiJsonPatchDto } from '../../archive/models/json-patch';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
 import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';

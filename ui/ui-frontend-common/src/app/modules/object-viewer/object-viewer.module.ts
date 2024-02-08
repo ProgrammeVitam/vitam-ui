@@ -47,28 +47,18 @@ import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
 import { DisplayObjectService } from './models';
 import { ObjectViewerComponent } from './object-viewer.component';
-import { DataStructureService } from './services/data-structure.service';
-import { DateDisplayService } from './services/date-display.service';
 import { DisplayObjectHelperService } from './services/display-object-helper.service';
 import { DisplayRuleHelperService } from './services/display-rule-helper.service';
-import { FavoriteEntryService } from './services/favorite-entry.service';
-import { LayoutService } from './services/layout.service';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
-import { TypeService } from './services/type.service';
 
 @NgModule({
   imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule, AccordionModule, DataModule],
   declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
   providers: [
-    DateDisplayService,
-    DataStructureService,
-    TypeService,
     DisplayObjectHelperService,
     DisplayRuleHelperService,
     SchemaElementToDisplayRuleService,
-    LayoutService,
-    FavoriteEntryService,
     { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
   ],
   exports: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],

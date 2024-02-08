@@ -1,0 +1,8 @@
+<form *ngIf="editObject" [formGroup]="editObject.control" (keydown.enter)="$event.preventDefault()">
+  <vitamui-common-group-editor *ngIf="editObject.type === DisplayObjectType.GROUP" [editObject]="editObject"></vitamui-common-group-editor>
+  <vitamui-common-list-editor *ngIf="editObject.type === DisplayObjectType.LIST" [editObject]="editObject"></vitamui-common-list-editor>
+  <vitamui-common-primitive-editor
+    *ngIf="editObject.type === DisplayObjectType.PRIMITIVE"
+    [editObject]="editObject"
+  ></vitamui-common-primitive-editor>
+</form>

@@ -1,0 +1,22 @@
+<vitamui-common-accordion *ngIf="editObject?.key; else content" [opened]="editObject.open">
+  <span class="title">{{ editObject.displayRule.ui.label | translate | empty }}</span>
+  <div *ngIf="favoriteEntry" class="title-extra v-col align-items-center favorite-entry">
+    {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
+  </div>
+  <div class="content">
+    <div *ngTemplateOutlet="content"></div>
+  </div>
+</vitamui-common-accordion>
+
+<ng-template #content>
+  <div *ngFor="let column of rows" class="v-row">
+    <div *ngFor="let child of column" class="v-col">
+      <ng-container [ngSwitch]="child.type">
+        <vitamui-common-group-editor *ngSwitchCase="DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
+        <vitamui-common-list-editor *ngSwitchCase="DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
+        <vitamui-common-primitive-editor *ngSwitchCase="DisplayObjectType.PRIMITIVE" [editObject]="child"></vitamui-common-primitive-editor>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="editObject && (editObject.value === null || editObject.value === undefined)">{{ editObject.value | empty }}</div>
+</ng-template>
