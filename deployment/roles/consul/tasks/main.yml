@@ -100,6 +100,16 @@
         nameserver 127.0.0.1
     when: ansible_os_family == "Debian"
 
+  - name: Add consul nameserver to resolv.conf
+    blockinfile:
+      backup: yes
+      dest: /etc/resolv.conf
+      insertbefore: BOF # necessary or this entry won't be asked
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        nameserver 127.0.0.1
+    when: inventory_hostname not in single_vm_hostnames
+
   - name: Start the resolvconf service
     systemd:
       name: resolvconf
