@@ -34,6 +34,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -91,14 +92,14 @@ public class ArchiveSearchExternalRestClient
         return RestApi.ARCHIVE_SEARCH_PATH;
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(ExternalHttpContext context, SearchCriteriaDto query) {
+    public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(ExternalHttpContext context, SearchCriteriaDto query) {
         LOGGER.debug("Calling search archives units by criteria");
         MultiValueMap<String, String> headers = buildHeaders(context);
 
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<ArchiveUnitsDto> response =
+        final ResponseEntity<VitamUIArchiveUnitResponseDto> response =
             restTemplate.exchange(getUrl() + RestApi.SEARCH_PATH, HttpMethod.POST,
-                request, ArchiveUnitsDto.class);
+                request, VitamUIArchiveUnitResponseDto.class);
         checkResponse(response);
         return response.getBody();
     }

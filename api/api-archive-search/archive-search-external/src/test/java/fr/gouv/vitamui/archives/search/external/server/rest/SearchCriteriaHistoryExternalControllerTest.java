@@ -74,7 +74,7 @@ public class SearchCriteriaHistoryExternalControllerTest extends
         LOGGER.debug("get search criterias");
         Mockito.when(service.getSearchCriteriaHistory()).thenReturn(Arrays.asList(new SearchCriteriaHistoryDto()));
 
-        ResultActions result = super.performGet(CommonConstants.PATH_ME);
+        ResultActions result = super.performGet("");
         result.andExpect(MockMvcResultMatchers.handler().methodCall(mockedController.getSearchCriteriaHistory()));
     }
 
