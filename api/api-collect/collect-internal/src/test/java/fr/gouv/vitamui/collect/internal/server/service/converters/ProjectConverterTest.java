@@ -67,6 +67,7 @@ class ProjectConverterTest {
             .lastModifyOn("lastModifyOn_lastUpdate")
             .status("status")
             .name("name")
+            .automaticIngest(true)
             .build();
     }
 
@@ -102,6 +103,7 @@ class ProjectConverterTest {
         externalDto.setCreationDate("createdOn_creationDate");
         externalDto.setLastUpdate("lastModifyOn_lastUpdate");
         externalDto.setName("name");
+        externalDto.setAutomaticIngest(true);
         return externalDto;
     }
 
