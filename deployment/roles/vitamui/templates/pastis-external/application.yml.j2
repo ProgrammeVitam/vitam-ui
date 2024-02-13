@@ -108,6 +108,24 @@ pastis-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
+  referential-internal-client:
+    server-host: {{ vitamui.referential_internal.host }}
+    server-port: {{ vitamui.referential_internal.port_service }}
+
+{% if vitamui.referential_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas false %}
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      {% endif %}
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
 
 
 server-identity:

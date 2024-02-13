@@ -26,8 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.client;
 
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -69,7 +67,7 @@ public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSo
         LOGGER.debug("getSearchCriteriaHistory external client");
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
 
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
 
         final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
         checkResponse(response);

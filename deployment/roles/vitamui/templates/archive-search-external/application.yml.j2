@@ -102,12 +102,12 @@ archive-search-external:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
-      {% else %}
+      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password:  {{ password_truststore }}
       hostname-verification: false
-      {% endif %}
+{% endif %}
 
 {% if opentracing.enable is sameas true %}
 opentracing:

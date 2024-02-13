@@ -80,10 +80,9 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
-    return this.archiveCollectService.launchDownloadObjectFromUnit(
+    return this.archiveCollectService.downloadObjectFromUnit(
       this.archiveUnit['#id'],
       this.archiveUnit['#object'],
-      this.archiveUnit['#tenant'],
       versionWithQualifier.qualifier,
       versionWithQualifier.version,
     );

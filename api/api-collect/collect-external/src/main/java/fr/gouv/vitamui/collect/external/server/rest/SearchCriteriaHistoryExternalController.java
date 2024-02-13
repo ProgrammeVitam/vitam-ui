@@ -76,7 +76,7 @@ public class SearchCriteriaHistoryExternalController {
         this.searchCriteriaHistoryExternalService = searchCriteriaHistoryExternalService;
     }
 
-    @GetMapping(CommonConstants.PATH_ME)
+    @GetMapping
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistory() {
         LOGGER.debug("getSearchCriteriaHistory archive external");
         return searchCriteriaHistoryExternalService.getSearchCriteriaHistory();
