@@ -31,16 +31,28 @@ package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import static java.util.Comparator.comparing;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Getter
 @Setter
@@ -59,9 +71,94 @@ public class ProjectObjectGroupExternalService extends
         this.collectInternalWebClient = collectInternalWebClient;
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String objectId, String usage, Integer version) {
+        // Logic moved here from ui-collect, similar from the one in archive-search
+        String fileName = null;
+        ResultsDto got = findObjectById(objectId).getBody();
+        if (nonNull(got)) {
+            QualifiersDto qualifier;
+            if (isEmpty(usage)) {
+                // find the best qualifier for download
+                qualifier = getLastObjectQualifier(got);
+            } else {
+                String finalUsage = usage;
+                qualifier = got.getQualifiers().stream()
+                    .filter(q -> finalUsage.equals(q.getQualifier()))
+                    .findFirst()
+                    .orElse(null);
+            }
+            if (nonNull(qualifier)) {
+                usage = qualifier.getQualifier();
+                VersionsDto versionsDto;
+                if (isNull(version)) {
+                    // find the latest version for the qualifier
+                    versionsDto = getLastVersion(qualifier);
+                } else {
+                    Integer finalVersion = version;
+                    versionsDto = qualifier.getVersions().stream()
+                        .filter(v -> finalVersion.equals(extractVersion(v)))
+                        .findFirst()
+                        .orElse(null);
+                }
+                if (nonNull(versionsDto)) {
+                    version = extractVersion(versionsDto);
+                    fileName = getFilename(versionsDto);
+                }
+            }
+        }
+
         return collectInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
+            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext(), fileName);
+    }
+
+    private QualifiersDto getLastObjectQualifier(ResultsDto got) {
+        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
+            QualifiersDto qualifierFound = got.getQualifiers().stream()
+                .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (nonNull(qualifierFound)) {
+                return qualifierFound;
+            }
+        }
+        return null;
+    }
+
+    private VersionsDto getLastVersion(QualifiersDto qualifier) {
+        return qualifier.getVersions().stream()
+            .max(comparing(ProjectObjectGroupExternalService::extractVersion))
+            .orElse(null);
+    }
+
+    @NotNull
+    private static Integer extractVersion(VersionsDto versionsDto) {
+        return Integer.parseInt(versionsDto.getDataObjectVersion().split("_")[1]);
+    }
+
+    private String getFilename(VersionsDto version) {
+        if (isNull(version) || StringUtils.isEmpty(version.getId())) {
+            return null;
+        }
+        return version.getId() + getExtension(version);
+    }
+
+    private String getExtension(VersionsDto version) {
+        String uriExtension = EMPTY;
+        if (isNotBlank(version.getUri()) && version.getUri().contains(".")) {
+            uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
+        }
+        String filenameExtension = EMPTY;
+        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")) {
+            filenameExtension = version.getFileInfoModel().getFilename()
+                .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
+        }
+        if (isNotBlank(filenameExtension)) {
+            return "." + filenameExtension;
+        } else if (isNotBlank(uriExtension)) {
+            return "." + uriExtension;
+        }
+        return EMPTY;
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id) {

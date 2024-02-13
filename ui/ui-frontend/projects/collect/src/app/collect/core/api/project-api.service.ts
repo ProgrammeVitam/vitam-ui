@@ -34,7 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, SearchCriteriaHistory, Transaction } from 'ui-frontend-common';
@@ -80,12 +80,15 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   // Manage Object Groups
 
-  getDownloadObjectFromUnitUrl(unitId: string, objectId: string, tenantId: number, qualifier?: string, version?: number): string {
-    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}&tenantId=${tenantId}`;
+  downloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number): Observable<HttpResponse<Blob>> {
+    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}`;
     if (qualifier && version) {
-      url += `&qualifier=${qualifier}&version=${version}`;
+      url += `&usage=${qualifier}&version=${version}`;
     }
-    return url;
+    return this.http.get(url, {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 
   public deletebyId(projectId: string) {

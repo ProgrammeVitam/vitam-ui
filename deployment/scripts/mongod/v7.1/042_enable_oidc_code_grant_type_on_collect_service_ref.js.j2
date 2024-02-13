@@ -1,0 +1,40 @@
+{% if gateway.enabled | default(False) is sameas true %}
+
+db = db.getSiblingDB("cas");
+
+print("START 042_enable_oidc_code_grant_type_on_collect_service_ref.js.j2");
+
+// Find existing service
+var service = db.services.findOne({ clientId: "{{ vitamui.collect.clientId | default('collect') }}" });
+var serviceId = service ? service._id : -1;
+
+// If not found, get next available id
+if (serviceId === -1) {
+    var serviceWithMaxId = db.services.aggregate([
+        { $sort: { _id: -1 } },
+        { $limit: 1 }
+    ]).toArray();
+    serviceId = (serviceWithMaxId.length > 0 ? serviceWithMaxId[0]._id : 0) + 1;
+}
+
+db.services.deleteOne({ "_id": NumberInt(serviceId) });
+
+db.services.insertOne({
+  _id: NumberInt(serviceId),
+  _class: "org.apereo.cas.services.OidcRegisteredService",
+  clientId: "{{ vitamui.collect.clientId | default('collect') }}",
+  serviceId: "{{ vitamui.collect.serviceId | default('^' + vitamui.collect.base_url | default(url_prefix+'/collect') + '/.*') }}",
+  name: "{{ vitamui.collect.name | default('Collect Application') }}",
+  bypassApprovalPrompt: true,
+  supportedGrantTypes: ["authorization_code"],
+  supportedResponseTypes: ["code", "token"],
+  attributeReleasePolicy: {
+    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+    allowedAttributes: ["authtoken"],
+  },
+  jsonFormat: true,
+});
+
+print("END 042_enable_oidc_code_grant_type_on_collect_service_ref.js.j2");
+
+{% endif %}

@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -90,7 +91,7 @@ public class TransactionArchiveUnitExternalController {
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
+    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
 

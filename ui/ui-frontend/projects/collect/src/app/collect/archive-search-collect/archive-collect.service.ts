@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { saveAs } from 'file-saver';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
@@ -170,8 +171,20 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     });
   }
 
-  launchDownloadObjectFromUnit(unitId: string, objectId: string, tenantIdentifier: number, qualifier?: string, version?: number) {
-    this.downloadFile(this.projectsApiService.getDownloadObjectFromUnitUrl(unitId, objectId, tenantIdentifier, qualifier, version));
+  downloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number) {
+    return this.projectsApiService.downloadObjectFromUnit(unitId, objectId, qualifier, version).subscribe((resp: HttpResponse<Blob>) => {
+      let fileName = null;
+      // extract filename from content-disposition header
+      const contentDispositionHeader = resp.headers.get('content-disposition');
+      if (contentDispositionHeader !== null) {
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = filenameRegex.exec(contentDispositionHeader);
+        if (matches != null && matches[1]) {
+          fileName = matches[1].replace(/['"]/g, '');
+        }
+      }
+      saveAs(resp.body, fileName);
+    });
   }
 
   downloadFile(url: string) {

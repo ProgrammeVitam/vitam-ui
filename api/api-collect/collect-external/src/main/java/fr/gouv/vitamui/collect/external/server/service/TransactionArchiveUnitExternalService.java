@@ -30,6 +30,7 @@
 package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
@@ -63,9 +64,10 @@ public class TransactionArchiveUnitExternalService extends
         this.collectTransactionInternalRestClient = collectTransactionInternalRestClient;
     }
 
-    public ArchiveUnitsDto searchCollectTransactionArchiveUnits(String transactionId, SearchCriteriaDto searchQuery) {
-        return collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(),
+    public VitamUIArchiveUnitResponseDto searchCollectTransactionArchiveUnits(String transactionId, SearchCriteriaDto searchQuery) {
+        ArchiveUnitsDto result = collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(),
             transactionId, searchQuery);
+        return result == null ? null : result.getArchives();
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(String transactionId, final SearchCriteriaDto query) {

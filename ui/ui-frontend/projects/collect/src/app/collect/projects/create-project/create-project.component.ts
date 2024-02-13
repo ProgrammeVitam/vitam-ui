@@ -45,7 +45,7 @@ import {
   TransactionStatus,
 } from 'ui-frontend-common';
 
-import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
+import { FilingPlanMode, oneIncludedNodeRequired } from 'projects/vitamui-library/src/public-api';
 import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
