@@ -121,7 +121,16 @@ spring:
               /pastis-api/userinfos/**,
               /pastis-api/users/analytics,
               /pastis-api/logbooks/operations/**,
-              /pastis-api/accesscontracts/**
+              /pastis-api/accesscontracts/**,
+
+              /collect-api/ui/applications/**,
+              /collect-api/externalparameters/**,
+              /collect-api/security,
+              /collect-api/tenants/**,
+              /collect-api/userinfos/**,
+              /collect-api/users/analytics,
+              /collect-api/logbooks/operations/**,
+              /collect-api/accesscontracts/**
 
           filters:
             # Portal IAM API
@@ -148,6 +157,7 @@ spring:
             # Archive Search IAM API
             - RewritePath=/archive-search-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/archive-search-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/archive-search-api/accesscontracts(?<segment>.*),/v1/accesscontracts$\{segment},
             - RewritePath=/archive-search-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
@@ -159,6 +169,14 @@ spring:
             - RewritePath=/pastis-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/pastis-api/users(?<segment>.*),/iam/v1/users$\{segment},
             - RewritePath=/pastis-api/(?<segment>.*),/v1/$\{segment}
+
+            # Collect IAM API
+            - RewritePath=/collect-api/ui/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/collect-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
+            - RewritePath=/collect-api/security(?<segment>.*),/iam/v1/security$\{segment},
+            - RewritePath=/collect-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
+            - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
 
         - id: referential-external-service
           uri: {{ 'https' if vitamui.referential_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}
@@ -184,7 +202,16 @@ spring:
 
               /archive-search-api/security-profile/**,
               /archive-search-api/ontology/**,
-              /archive-search-api/schemas
+              /archive-search-api/schemas,
+
+              /pastis-api/archival-profile$,
+              /pastis-api/archival-profile/**,
+              /pastis-api/profile$,
+              /pastis-api/profile/**,
+
+              /collect-api/ontology/**,
+              /collect-api/search/**,
+              /collect-api/schemas
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
@@ -197,6 +224,15 @@ spring:
             # Archive Search Referential API
             - RewritePath=/archive-search-api/schemas,/schemas
             - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
+
+            # Pastis to Referential API
+            - RewritePath=/pastis-api/archival-profile(?<segment>.*),/referential/v1/archival-profile$\{segment}
+            - RewritePath=/pastis-api/profile(?<segment>.*),/referential/v1/profile$\{segment}
+
+            # Collect Referential API
+            - RewritePath=/collect-api/schemas,/schemas
+            - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
+            - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
 
         - id: archive-search-external-service
           uri: {{ 'https' if vitamui.archive_search_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.archive_search_external.host }}:{{ vitamui.archive_search_external.port_service }}
@@ -221,6 +257,27 @@ spring:
           filters:
             # Pastis API
             - RewritePath=/pastis-api/,/
+
+        - id: collect-external-service
+          uri: {{ 'https' if vitamui.collect_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.collect_external.host }}:{{ vitamui.collect_external.port_service }}
+          predicates:
+            - >
+              Path=
+              /collect-api/projects$,
+              /collect-api/projects/**,
+              /collect-api/transactions$,
+              /collect-api/transactions/**
+
+          filters:
+            # Collect API
+            - RewritePath=/collect-api/projects/archive-units/searchcriteriahistory(?<segment>.*),/archive-units/searchcriteriahistory$\{segment},
+            - RewritePath=/collect-api/projects/object-groups/(?<segment>.*),/collect-api/v1/projects/objectgroups/$\{segment},
+            - RewritePath=/collect-api/projects(?<segment>.*),/collect-api/v1/projects$\{segment},
+            - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/search,/collect-api/v1/transactions/$\{segment}/archive-units,
+            - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/export-csv-search,/collect-api/v1/transactions/$\{segment}/export-csv-search,
+            - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/update-units-metadata,/collect-api/v1/transactions/$\{segment}/update-units-metadata,
+            - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
+            - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
     discovery:
       enabled: false

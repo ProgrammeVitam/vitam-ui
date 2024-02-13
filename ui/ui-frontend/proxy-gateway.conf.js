@@ -180,7 +180,7 @@ const PROXY_CONFIG = [
     },
   },
   {
-    // archive-search to Referential External Backend
+    // pastis to Referential External Backend
     context: [
       '/pastis-api/archival-profile',
       '/pastis-api/profile',
@@ -242,6 +242,86 @@ const PROXY_CONFIG = [
     logLevel: 'debug',
     pathRewrite: {
       '^/pastis-api/': '/',
+    },
+  },
+  {
+    // collect to IAM External Backend
+    context: [
+      '/collect-api/ui',
+      '/collect-api/externalparameters',
+      '/collect-api/security',
+      '/collect-api/tenants',
+      '/collect-api/userinfos/me',
+      '/collect-api/users/analytics',
+      '/collect-api/logbooks/operations',
+      '/collect-api/accesscontracts',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8083,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-collect.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/collect-api/security': '/iam/v1/security',
+      '^/collect-api/userinfos': '/iam/v1/userinfos',
+      '^/collect-api/ui/applications': '/iam/v1/applications',
+      '^/collect-api/users': '/iam/v1/users',
+      '^/collect-api/externalparameters': '/iam/v1/externalparameters/me',
+      '^/collect-api': '/v1',
+    },
+  },
+  {
+    // collect to Referential External Backend
+    context: [
+      '/collect-api/ontology',
+      '/collect-api/search/filingplan',
+      '/collect-api/schemas',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8087,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-archive-search.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/collect-api/ontology': '/referential/v1/ontology',
+      '^/collect-api/search/filingplan': '/units/filingplan',
+      '^/collect-api/schemas': '/schemas',
+    },
+  },
+  {
+    context: [
+      '/collect-api/projects',
+      '/collect-api/transactions',
+    ],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8090,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-collect.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/collect-api/projects/archive-units/searchcriteriahistory': '/archive-units/searchcriteriahistory',
+      '^/collect-api/projects': '/collect-api/v1/projects',
+      '^/collect-api/projects/object-groups': '/collect-api/v1/projects/object-groups',
+      '^/collect-api/transactions/archive-units/([^/]+)/search': '/collect-api/v1/transactions/$1/archive-units',
+      '^/collect-api/transactions/archive-units/([^/]+)/export-csv-search': '/collect-api/v1/transactions/$1/archive-units/export-csv-search',
+      '^/collect-api/transactions/archive-units/([^/]+)/update-units-metadata': '/collect-api/v1/transactions/$1/archive-units/update-units-metadata',
+      '^/collect-api/transactions/archive-units': '/collect-api/v1/transactions',
+      '^/collect-api/transactions': '/collect-api/v1/transactions',
     },
   },
 ];

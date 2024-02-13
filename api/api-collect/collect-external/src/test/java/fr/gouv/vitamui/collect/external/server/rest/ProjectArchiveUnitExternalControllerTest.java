@@ -31,6 +31,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -117,7 +118,7 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
         nodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
         nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
+        VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
         Mockito
             .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
@@ -132,11 +133,11 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
         PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
-        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
+        VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
         Mockito
             .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
             .thenReturn(expectedResponse);
-        ArchiveUnitsDto
+        VitamUIArchiveUnitResponseDto
             responseDto = transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query);
         Assertions.assertEquals(responseDto, expectedResponse);
     }

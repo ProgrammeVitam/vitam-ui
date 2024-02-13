@@ -43,6 +43,8 @@ import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHI
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
+import static fr.gouv.vitamui.commons.rest.util.RestUtils.CONTENT_DISPOSITION;
+import static java.util.Objects.nonNull;
 
 public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
@@ -68,6 +70,21 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
      */
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
         final InternalHttpContext context) {
+        return downloadObjectFromUnit(id, usage, version, context, null);
+    }
+
+    /**
+     * Download object from unit
+     *
+     * @param id unit id
+     * @param usage usage
+     * @param version version
+     * @param context internl context
+     * @param fileName the file's name
+     * @return a mono<Response<Resourse>
+     */
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
+        final InternalHttpContext context, final String fileName) {
         LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(
@@ -84,6 +101,12 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
             .bodyToFlux(DataBuffer.class);
 
 
+        if (nonNull(fileName)) {
+            return Mono.just(ResponseEntity
+                .ok().header(CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .cacheControl(CacheControl.noCache())
+                .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
+        }
         return Mono.just(ResponseEntity
             .ok().cacheControl(CacheControl.noCache())
             .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));

@@ -59,7 +59,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
   const archiveCollectServiceSpy = createSpyObj<ArchiveCollectService>('ArchiveService', [
-    'launchDownloadObjectFromUnit',
+    'downloadObjectFromUnit',
     'getObjectGroupDetailsById',
   ]);
 
@@ -160,10 +160,9 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     } as Event;
     const preventDefaultSpy = spyOn(event, 'stopPropagation');
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
-    expect(archiveCollectServiceSpy.launchDownloadObjectFromUnit).toHaveBeenCalledWith(
+    expect(archiveCollectServiceSpy.downloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
       'objectId',
-      1,
       ObjectQualifierType.BINARYMASTER,
       1,
     );

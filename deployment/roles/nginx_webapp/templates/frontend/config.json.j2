@@ -27,6 +27,8 @@
   "UI_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
   {% elif vitamui_struct.vitamui_component == 'ui-pastis' %}
   "UI_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-collect' %}
+  "UI_URL": "{{ vitamui.collect.base_url | default(url_prefix+'/collect') }}",
   {% endif %}
   "ARCHIVES_SEARCH_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
   "PASTIS_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",

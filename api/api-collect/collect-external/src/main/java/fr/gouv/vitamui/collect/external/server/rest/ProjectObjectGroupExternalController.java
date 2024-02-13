@@ -63,8 +63,6 @@ public class ProjectObjectGroupExternalController {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupExternalController.class);
     private final ProjectObjectGroupExternalService projectObjectGroupExternalService;
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
-    private static final String MANDATORY_USAGE = "Usage is a mandatory parameter: ";
-    private static final String MANDATORY_VERSION = "Version is a mandatory parameter: ";
 
     @Autowired
     public ProjectObjectGroupExternalController(
@@ -75,14 +73,16 @@ public class ProjectObjectGroupExternalController {
     @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT +
         CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
+        final @RequestParam("objectId") String objectId,
+        final @RequestParam(value = "usage", required = false) String usage,
+        final @RequestParam(value = "version", required = false) Integer version)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
-        ParameterChecker.checkParameter(MANDATORY_USAGE, usage);
-        ParameterChecker.checkParameter(MANDATORY_VERSION, version);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("Download the Archive Unit Object with id {} ", id);
-        return projectObjectGroupExternalService.downloadObjectFromUnit(id, usage, version);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, objectId);
+        SanityChecker.checkSecureParameter(objectId);
+        LOGGER.debug("Download the Archive Unit Object with id {} ", objectId);
+        return projectObjectGroupExternalService.downloadObjectFromUnit(id, objectId, usage, version);
     }
 
     @GetMapping( CommonConstants.PATH_ID)
