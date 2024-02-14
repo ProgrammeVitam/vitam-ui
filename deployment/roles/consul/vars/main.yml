@@ -5,5 +5,5 @@ consul_folder_log: "{{ vitam_defaults.folder.root_path }}/log/consul"
 consul_folder_data: "{{ vitam_defaults.folder.root_path }}/data/consul"
 
 consul_service: "{{ consul.service_name | default('vitam-consul') }}"
-consul_version: "{{ consul.version | default('1.12.9-1') }}"
+consul_version: "{{ consul.version | default('1.17.3-1') }}"
 consul_package: "consul{{ '=' if ansible_os_family == 'Debian' else '-' }}{{ consul_version }}"
