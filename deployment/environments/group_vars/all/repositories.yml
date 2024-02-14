@@ -4,19 +4,10 @@
 
 ###
 # repositories.yml
-vitam_repositories:
-  - key: vitamui
-    value: https://download.programmevitam.fr/vitamui_nightly/rpm/
-    proxy: ""
-  - key: vitam-product
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-product/
-    proxy: ""
-  - key: vitam-external
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-external/
-    proxy: ""
-  - key: vitam-core
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-core/
-    proxy: ""
-  - key: vitam-extras
-    value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-extras/
-    proxy: ""
+# vitam_repositories:
+#   - key: repo1 # Mandatory: Only on CentOS/AlmaLinux
+#     value: http://path_to_repo1 # Mandatory: Path to the repository
+#     gpgcheck: 1 # Optionnal: Default to 0 (equivalent as [trusted=yes] on Debian)
+#     gpgkey: path_to_custom_key # Optionnal: Only if gpgcheck is enabled; Default to official Vitam GPG Key
+#     subtree: "./" # Optionnal: Only on Debian; Default to ./
+#     proxy: http://proxy_url # Optionnal: Only on CentOS/AlmaLinux; Default to _none_
