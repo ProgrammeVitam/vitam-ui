@@ -7,7 +7,7 @@
 NAME                := logstash
 VERSION             := 0.0.0
 LOGSTASH_VERSION    := 7.6.0
-DEPENDENCIES        := systemd,openjdk-11-jdk
+DEPENDENCIES        := systemd
 
 
 # Src configuration:

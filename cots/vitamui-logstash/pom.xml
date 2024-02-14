@@ -51,7 +51,7 @@
                                             If you want to changes default dependencies (only systemd), define them as a
                                              comma separated list of packages
                                          -->
-                                        <argument>DEPENDENCIES=systemd,openjdk-11-jdk</argument>
+                                        <argument>DEPENDENCIES=systemd</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
