@@ -116,6 +116,7 @@ class ProjectInternalServiceTest {
         assertEquals(projectDto.getAcquisitionInformation(), resultedProject.getAcquisitionInformation());
         assertEquals(projectDto.getUnitUp(), resultedProject.getUnitUp());
         assertEquals(projectDto.getTenant(), resultedProject.getTenant());
+        assertEquals(projectDto.getAutomaticIngest(), resultedProject.getAutomaticIngest());
         // TODO : This is a bug in BackEnd : should get the correct status OPEN and not a random one sended in request!
         //        assertEquals("OPEN", resultedProject.getStatus());
     }
@@ -163,12 +164,11 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertNotNull(resultedTransaction);
-        assertEquals(resultedTransaction.getName(), resultedTransaction.getName());
-        assertEquals(resultedTransaction.getArchivalAgreement(), resultedTransaction.getArchivalAgreement());
-        assertEquals(resultedTransaction.getLegalStatus(), resultedTransaction.getLegalStatus());
-        assertEquals(resultedTransaction.getAcquisitionInformation(), resultedTransaction.getAcquisitionInformation());
-        assertEquals(resultedTransaction.getUnitUp(), resultedTransaction.getUnitUp());
-        assertEquals(resultedTransaction.getProjectId(), resultedTransaction.getProjectId());
+        assertEquals(transactionDto.getName(), resultedTransaction.getName());
+        assertEquals(transactionDto.getArchivalAgreement(), resultedTransaction.getArchivalAgreement());
+        assertEquals(transactionDto.getLegalStatus(), resultedTransaction.getLegalStatus());
+        assertEquals(transactionDto.getAcquisitionInformation(), resultedTransaction.getAcquisitionInformation());
+        assertEquals(transactionDto.getProjectId(), resultedTransaction.getProjectId());
     }
 
     @Test
@@ -315,11 +315,11 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertNotNull(updatedProject);
-        assertEquals(updatedProject.getName(), updatedProject.getName());
-        assertEquals(updatedProject.getArchivalAgreement(), updatedProject.getArchivalAgreement());
-        assertEquals(updatedProject.getLegalStatus(), updatedProject.getLegalStatus());
-        assertEquals(updatedProject.getAcquisitionInformation(), updatedProject.getAcquisitionInformation());
-        assertEquals(updatedProject.getUnitUp(), updatedProject.getUnitUp());
+        assertEquals(projectDto.getName(), updatedProject.getName());
+        assertEquals(projectDto.getArchivalAgreement(), updatedProject.getArchivalAgreement());
+        assertEquals(projectDto.getLegalStatus(), updatedProject.getLegalStatus());
+        assertEquals(projectDto.getAcquisitionInformation(), updatedProject.getAcquisitionInformation());
+        assertEquals(projectDto.getUnitUp(), updatedProject.getUnitUp());
     }
 
     @Test
@@ -363,11 +363,11 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertNotNull(updatedProject);
-        assertEquals(updatedProject.getName(), updatedProject.getName());
-        assertEquals(updatedProject.getArchivalAgreement(), updatedProject.getArchivalAgreement());
-        assertEquals(updatedProject.getLegalStatus(), updatedProject.getLegalStatus());
-        assertEquals(updatedProject.getAcquisitionInformation(), updatedProject.getAcquisitionInformation());
-        assertEquals(updatedProject.getUnitUp(), updatedProject.getUnitUp());
+        assertEquals(projectDto.getName(), updatedProject.getName());
+        assertEquals(projectDto.getArchivalAgreement(), updatedProject.getArchivalAgreement());
+        assertEquals(projectDto.getLegalStatus(), updatedProject.getLegalStatus());
+        assertEquals(projectDto.getAcquisitionInformation(), updatedProject.getAcquisitionInformation());
+        assertEquals(projectDto.getUnitUp(), updatedProject.getUnitUp());
     }
 
     @Test
@@ -484,12 +484,12 @@ class ProjectInternalServiceTest {
 
         // THEN
         assertNotNull(lastTransaction);
-        assertEquals(lastTransaction.getName(), lastTransaction.getName());
-        assertEquals(lastTransaction.getArchivalAgreement(), lastTransaction.getArchivalAgreement());
-        assertEquals(lastTransaction.getLegalStatus(), lastTransaction.getLegalStatus());
-        assertEquals(lastTransaction.getAcquisitionInformation(), lastTransaction.getAcquisitionInformation());
-        assertEquals(lastTransaction.getUnitUp(), lastTransaction.getUnitUp());
-        assertEquals(lastTransaction.getProjectId(), lastTransaction.getProjectId());
+        final TransactionDto lastTransactionDto = transactionDtos.get(transactionDtos.size() - 1);
+        assertEquals(lastTransactionDto.getName(), lastTransaction.getName());
+        assertEquals(lastTransactionDto.getArchivalAgreement(), lastTransaction.getArchivalAgreement());
+        assertEquals(lastTransactionDto.getLegalStatus(), lastTransaction.getLegalStatus());
+        assertEquals(lastTransactionDto.getAcquisitionInformation(), lastTransaction.getAcquisitionInformation());
+        assertEquals(lastTransactionDto.getProjectId(), lastTransaction.getProjectId());
     }
 
     @Test

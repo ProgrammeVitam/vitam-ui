@@ -65,6 +65,7 @@ public class ProjectConverter {
             .lastModifyOn(projectDto.getLastUpdate())
             .status(projectDto.getStatus())
             .name(projectDto.getName())
+            .automaticIngest(projectDto.getAutomaticIngest())
             .build();
     }
 
@@ -104,6 +105,7 @@ public class ProjectConverter {
         externalDto.setCreationDate(collectProjectDto.getCreatedOn());
         externalDto.setLastUpdate(collectProjectDto.getLastModifyOn());
         externalDto.setName(collectProjectDto.getName());
+        externalDto.setAutomaticIngest(collectProjectDto.getAutomaticIngest());
         return externalDto;
     }
 
