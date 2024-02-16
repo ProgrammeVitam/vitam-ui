@@ -344,8 +344,18 @@ public class ArchiveSearchInternalController {
     public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
         final @RequestParam("id") String arkId
     ) throws VitamClientException {
-        LOGGER.debug("[INTERNAL] : Get by persistent identifier {}", arkId);
+        LOGGER.debug("[INTERNAL] : Get units by persistent identifier {}", arkId);
         final PersistentIdentifierResponseDto persistentIdentifierResponse = archiveInternalService.findUnitsByPersistentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
+        return persistentIdentifierResponse;
+    }
+
+    @GetMapping(RestApi.OBJECTS_PERSISTENT_IDENTIFIER)
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(
+        final @RequestParam("id") String arkId
+    ) throws VitamClientException {
+        LOGGER.debug("[INTERNAL] : Get objects by persistent identifier {}", arkId);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse = archiveInternalService.findObjectsByPersistentIdentifier(arkId, externalParametersService.buildVitamContextFromExternalParam());
         LOGGER.debug("[INTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
         return persistentIdentifierResponse;
     }

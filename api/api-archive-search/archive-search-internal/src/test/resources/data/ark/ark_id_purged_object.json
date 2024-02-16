@@ -1,0 +1,65 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 0,
+    "offset": 0,
+    "limit": 10000,
+    "size": 0
+  },
+  "$results": [],
+  "$facetResults": [],
+  "$history": [
+    {
+      "id": "aebqaaaaacehf3vdbepceamnqqxrocaaaaba",
+      "tenant": 1,
+      "version": 0,
+      "type": "Object",
+      "operationId": "aeeaaaaaacehf3vdbeqjkamnqqyusrqaaaaq",
+      "operationType": "ELIMINATION_ACTION",
+      "operationLastPersistentDate": "2024-02-07T15:30:42.056",
+      "objectGroupId": "aebaaaaaaaehf3vdbepceamnqqxrocaaaaaq",
+      "archivalAgencyIdentifier": null,
+      "lastPersistentDate": "2024-02-09T09:33:00.666",
+      "persistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00021",
+          "PersistentIdentifierContent": "ark:/23567/42421a9d7db5eadabac_binary_master"
+        },
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00221",
+          "PersistentIdentifierContent": "ark:/225867/42421a9d7db5eghxac_binary_master"
+        }
+      ]
+    },
+    {
+      "id": "aebqaaaaagehf3vdbncaiamnrywf2oyaaaba",
+      "tenant": 1,
+      "version": 0,
+      "type": "Object",
+      "operationId": "aeeaaaaaagehf3vdbobviamnrywttdqaaaaq",
+      "operationType": "ELIMINATION_ACTION",
+      "operationLastPersistentDate": "2024-02-09T14:02:27.114",
+      "objectGroupId": "aebaaaaaaeehf3vdbncaiamnrywf2oyaaaaq",
+      "archivalAgencyIdentifier": null,
+      "lastPersistentDate": "2024-02-09T14:02:32.975",
+      "persistentIdentifier": [
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00021",
+          "PersistentIdentifierContent": "ark:/23567/42421a9d7db5eadabac_binary_master"
+        },
+        {
+          "PersistentIdentifierType": "ark",
+          "PersistentIdentifierOrigin": "OriginatingAgency",
+          "PersistentIdentifierReference": "Agency-00221",
+          "PersistentIdentifierContent": "ark:/225867/42421a9d7db5eghxac_binary_master"
+        }
+      ]
+    }
+  ]
+}

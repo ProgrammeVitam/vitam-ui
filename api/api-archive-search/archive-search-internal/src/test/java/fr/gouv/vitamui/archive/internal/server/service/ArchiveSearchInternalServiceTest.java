@@ -61,8 +61,8 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -140,15 +141,15 @@ public class ArchiveSearchInternalServiceTest {
             objectMapper.treeToValue(jsonNode, VitamUISearchResponseDto.class);
 
         // Then
-        Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
-        Assertions.assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
+        assertThat(vitamUISearchResponseDto).isNotNull();
+        assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
     }
 
     private RequestResponse<JsonNode> responseFromFile(String filename) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
-        Assertions.assertThat(inputStream).isNotNull();
+        assertThat(inputStream).isNotNull();
         return RequestResponseOK.getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
@@ -164,8 +165,8 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
-        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
-        Assertions.assertThat(
+        assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
                 .has("Title")).isTrue();
     }
@@ -210,7 +211,7 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.reclassification(reclassificationCriteriaDto, defaultVitamContext);
         }).doesNotThrowAnyException();
 
-        Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+        assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
     }
 
     private ReclassificationCriteriaDto buildReclassificationCriteriaDto() {
@@ -245,7 +246,7 @@ public class ArchiveSearchInternalServiceTest {
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_1.json"));
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -262,7 +263,7 @@ public class ArchiveSearchInternalServiceTest {
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_2.json"));
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -279,7 +280,7 @@ public class ArchiveSearchInternalServiceTest {
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_3.json"));
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -296,7 +297,7 @@ public class ArchiveSearchInternalServiceTest {
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_4.json"));
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -313,7 +314,7 @@ public class ArchiveSearchInternalServiceTest {
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_5.json"));
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -332,7 +333,7 @@ public class ArchiveSearchInternalServiceTest {
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_6.json"));
 
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -351,7 +352,7 @@ public class ArchiveSearchInternalServiceTest {
 
         JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_7.json"));
 
-        Assertions.assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
+        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
     }
 
     @Test
@@ -365,8 +366,8 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
-        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
-        Assertions.assertThat(
+        assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
                 .has("Title")).isTrue();
 
@@ -383,17 +384,17 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
-        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
-        Assertions.assertThat(
+        assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
                 .has("#object")).isTrue();
-        Assertions.assertThat(
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
                 .has("#unitType")).isTrue();
-        Assertions.assertThat(
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
                 .has("#id")).isTrue();
-        Assertions.assertThat(
+        assertThat(
             givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
                 .has("DescriptionLevel")).isTrue();
     }
@@ -408,10 +409,10 @@ public class ArchiveSearchInternalServiceTest {
         PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(4);
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults().get(0).getId()).isEqualTo("aeaqaaaaaaecg2hnabhluammhk7supyaaabq");
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults().get(0).getPersistentIdentifier()).isNotEmpty();
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
+        assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(4);
+        assertThat(persistentIdentifierResponseDto.getResults().get(0).getId()).isEqualTo("aeaqaaaaaaecg2hnabhluammhk7supyaaabq");
+        assertThat(persistentIdentifierResponseDto.getResults().get(0).getPersistentIdentifier()).isNotEmpty();
+        assertThat(persistentIdentifierResponseDto.getResults().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
     }
 
     @Test
@@ -424,10 +425,10 @@ public class ArchiveSearchInternalServiceTest {
         PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults()).isEmpty();
-        Assertions.assertThat(persistentIdentifierResponseDto.getHistory().get(0).getId()).isEqualTo("aeaqaaaaaeechwidabqcqamm7fpntviaaaba");
-        Assertions.assertThat(persistentIdentifierResponseDto.getHistory().get(0).getPersistentIdentifier()).isNotEmpty();
-        Assertions.assertThat(persistentIdentifierResponseDto.getHistory().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
+        assertThat(persistentIdentifierResponseDto.getResults()).isEmpty();
+        assertThat(persistentIdentifierResponseDto.getHistory().get(0).getId()).isEqualTo("aeaqaaaaaeechwidabqcqamm7fpntviaaaba");
+        assertThat(persistentIdentifierResponseDto.getHistory().get(0).getPersistentIdentifier()).isNotEmpty();
+        assertThat(persistentIdentifierResponseDto.getHistory().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
     }
 
     @Test
@@ -440,7 +441,7 @@ public class ArchiveSearchInternalServiceTest {
         PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findUnitsByPersistentIdentifier(arkId, defaultVitamContext);
         // Then
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
-        Assertions.assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(0);
+        assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(0);
     }
 
     @Test
@@ -454,6 +455,63 @@ public class ArchiveSearchInternalServiceTest {
             .isInstanceOf(VitamClientException.class)
             .hasMessage("exception thrown by client");
         verify(persistentIdentifierService).findUnitsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+    }
+
+    @Test
+    void findObjectsByPersistentIdentifier_return_Objects() throws Exception {
+        // Given
+        final String arkId = "ark:/23567/001a9d7db5eadabac_binary_master";
+        when(persistentIdentifierService.findObjectsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenReturn(responseFromFile("data/ark/object_with_ark_id.json"));
+        // When
+        final PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext);
+        // Then
+        verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+        assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(1);
+        final ResultsDto resultsDto = persistentIdentifierResponseDto.getResults().get(0);
+        assertThat(resultsDto.getId()).isEqualTo("aebaaaaaaeehf3vdbncaiamnryv7fryaaaaq");
+        assertThat(resultsDto.getQualifiers().get(0).getVersions().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
+    }
+
+    @Test
+    void findObjectsByPersistentIdentifier_return_history() throws Exception {
+        // Given
+        final String arkId = "ark:/23567/42421a9d7db5eadabac_binary_master";
+        when(persistentIdentifierService.findObjectsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenReturn(responseFromFile("data/ark/ark_id_purged_object.json"));
+        // When
+        final PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext);
+        // Then
+        verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+        assertThat(persistentIdentifierResponseDto.getResults()).isEmpty();
+        assertThat(persistentIdentifierResponseDto.getHistory().get(0).getId()).isEqualTo("aebqaaaaacehf3vdbepceamnqqxrocaaaaba");
+        assertThat(persistentIdentifierResponseDto.getHistory().get(0).getPersistentIdentifier().get(0).getPersistentIdentifierContent()).isEqualTo(arkId);
+    }
+
+    @Test
+    void findObjectsByPersistentIdentifier_with_no_results_should_return_empty_list() throws Exception {
+        // Given
+        final String arkId = "ark:/22567/001a957db5eadaac_binary_master";
+        when(persistentIdentifierService.findObjectsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenReturn(responseFromFile("data/ark/bad_ark_id.json"));
+        // When Then
+        final PersistentIdentifierResponseDto persistentIdentifierResponseDto = archiveSearchInternalService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext);
+        // Then
+        verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+        assertThat(persistentIdentifierResponseDto.getResults().size()).isEqualTo(0);
+    }
+
+    @Test
+    void findObjectsByPersistentIdentifier_whith_client_error_should_throw() throws Exception {
+        // Given
+        final String arkId = "ark:/22567/001a957db5eadaac_binary_master";
+        when(persistentIdentifierService.findObjectsByPersistentIdentifier(eq(arkId), any(VitamContext.class)))
+            .thenThrow(new VitamClientException("exception thrown by client"));
+        // When Then
+        assertThatThrownBy(() -> archiveSearchInternalService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext))
+            .isInstanceOf(VitamClientException.class)
+            .hasMessage("exception thrown by client");
+        verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
     }
 
     private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto

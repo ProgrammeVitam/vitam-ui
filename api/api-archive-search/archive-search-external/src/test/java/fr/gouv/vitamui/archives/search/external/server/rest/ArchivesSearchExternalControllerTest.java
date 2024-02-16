@@ -46,10 +46,10 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,6 +71,10 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,7 +102,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
 
     @Test
     void testArchiveController() {
-        Assertions.assertNotNull(archivesSearchExternalService);
+        assertNotNull(archivesSearchExternalService);
     }
 
 
@@ -151,7 +155,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
             .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
             .thenReturn(expectedResponse);
         ArchiveUnitsDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
-        Assertions.assertEquals(responseDto, expectedResponse);
+        assertEquals(responseDto, expectedResponse);
     }
 
     @Test
@@ -184,8 +188,8 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         VitamUISearchResponseDto filingHoldingSchemeResults =
             archivesSearchExternalController.getFillingHoldingScheme();
         // Then
-        Assertions.assertNotNull(filingHoldingSchemeResults);
-        Assertions.assertEquals(filingHoldingSchemeResults, expectedResponse);
+        assertNotNull(filingHoldingSchemeResults);
+        assertEquals(filingHoldingSchemeResults, expectedResponse);
     }
 
 
@@ -207,8 +211,8 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         Resource responseCsv =
             archivesSearchExternalController.exportCsvArchiveUnitsByCriteria(query);
         // Then
-        Assertions.assertNotNull(responseCsv);
-        Assertions.assertEquals(responseCsv, resource);
+        assertNotNull(responseCsv);
+        assertEquals(responseCsv, resource);
     }
 
     @Test
@@ -240,7 +244,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
             .thenReturn(expectedResponse);
 
         String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
-        Assertions.assertEquals(response, expectedResponse);
+        assertEquals(response, expectedResponse);
     }
 
     @Test
@@ -257,7 +261,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         String response = archivesSearchExternalController.computedInheritedRules(searchCriteriaDto);
 
         // Then
-        Assertions.assertEquals(response, expectedResponse);
+        assertEquals(response, expectedResponse);
     }
 
 
@@ -275,7 +279,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         ResultsDto response = archivesSearchExternalController.selectUnitWithInheritedRules(searchCriteriaDto);
 
         // Then
-        Assertions.assertEquals(response, expectedResponse);
+        assertEquals(response, expectedResponse);
     }
 
     @Test
@@ -294,7 +298,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         String response = archivesSearchExternalController.transferAcknowledgment(atrFile, fileName);
 
         // Then
-        Assertions.assertEquals(response, expectedResponse);
+        assertEquals(response, expectedResponse);
     }
 
     @Test
@@ -310,6 +314,42 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         List<VitamUiOntologyDto> response = archivesSearchExternalController.getExternalOntologiesList();
 
         // Then
-        Assertions.assertEquals(response, expectedResponse);
+        assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testFindUnitsByPersistentIdentifier()
+        throws PreconditionFailedException {
+        // Given
+        final String arkId = "ark:/225867/001a9d7db5eghxac";
+        final PersistentIdentifierResponseDto expectedResponse = new PersistentIdentifierResponseDto();
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.findUnitsByPersistentIdentifier(arkId))
+            .thenReturn(expectedResponse);
+        final PersistentIdentifierResponseDto response = archivesSearchExternalController.findUnitsByPersistentIdentifier(arkId);
+
+        // Then
+        verify(archivesSearchExternalService, times(1)).findUnitsByPersistentIdentifier(arkId);
+        assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testFindObjectsByPersistentIdentifier()
+        throws PreconditionFailedException {
+        // Given
+        final String arkId = "ark:/225867/001a9d7db5eghxac_binary_master";
+        final PersistentIdentifierResponseDto expectedResponse = new PersistentIdentifierResponseDto();
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.findObjectsByPersistentIdentifier(arkId))
+            .thenReturn(expectedResponse);
+        final PersistentIdentifierResponseDto response = archivesSearchExternalController.findObjectsByPersistentIdentifier(arkId);
+
+        // Then
+        verify(archivesSearchExternalService, times(1)).findObjectsByPersistentIdentifier(arkId);
+        assertEquals(response, expectedResponse);
     }
 }

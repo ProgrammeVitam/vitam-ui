@@ -170,8 +170,8 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     );
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, qualifier?: string, version?: number) {
-    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, tenantIdentifier, qualifier, version));
+  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, qualifier?: string, version?: number): Promise<void> {
+    return this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, tenantIdentifier, qualifier, version));
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
@@ -251,15 +251,18 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     });
   }
 
-  downloadFile(url: string) {
-    window.addEventListener('focus', window_focus, false);
+  downloadFile(url: string): Promise<void> {
+    return new Promise((resolve) => {
+      window.addEventListener('focus', window_focus, false);
 
-    function window_focus() {
-      window.removeEventListener('focus', window_focus, false);
-      URL.revokeObjectURL(url);
-    }
+      function window_focus() {
+        window.removeEventListener('focus', window_focus, false);
+        URL.revokeObjectURL(url);
+        resolve();
+      }
 
-    location.href = url;
+      location.href = url;
+    });
   }
 
   buildArchiveUnitPath(archiveUnit: Unit) {

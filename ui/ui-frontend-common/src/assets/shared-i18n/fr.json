@@ -5339,12 +5339,20 @@
     }
   },
   "PERSISTENT_IDENTIFIER_SEARCH": {
-    "SEARCH_PLACEHOLDER": "Rechercher une unité archivistique par identifiant pérenne",
+    "SEARCH_PLACEHOLDER": "Rechercher une unité archivistique ou un objet technique par identifiant pérenne",
     "MODAL": {
       "TITLE": "",
       "SEARCH_BY_ID": "Recherche par identifiant pérenne",
-      "TRANSFERRED_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été transférée vers un autre SAE, le {{date}}",
-      "DELETED_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été éliminée du système, le {{date}}"
+      "UNIT_TRANSFER_REPLY_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été transférée vers un autre SAE, le {{date}}",
+      "UNIT_ELIMINATION_ACTION_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été éliminée du système, le {{date}}",
+      "UNIT_UNKNOWN_MESSAGE": "L'unité archivistique associée à l'identifiant pérenne {{ark}} a été purgée du système avec une opération inconnue, le {{date}}",
+      "OBJECT_TRANSFER_REPLY_MESSAGE": "L'objet technique associé à l'identifiant pérenne {{ark}} a été transféré vers un autre SAE, le {{date}}",
+      "OBJECT_ELIMINATION_ACTION_MESSAGE": "L'objet technique associé à l'identifiant pérenne {{ark}} a été éliminé du système, le {{date}}",
+      "OBJECT_DELETE_GOT_VERSIONS_MESSAGE": "L'objet technique associé à l'identifiant pérenne {{ark}} a été supprimé du système, le {{date}}",
+      "OBJECT_UNKNOWN_MESSAGE": "L'objet technique associé à l'identifiant pérenne {{ark}} a été purgé du système avec une opération inconnue, le {{date}}",
+      "FOUND_OBJECT_MESSAGE": "L'identifiant {{ark}} correspond à un objet technique \"{{usageVersion}}\"\n\nSouhaitez-vous consulter la description de l'unité archivistique associée ou télécharger directement le document ?",
+      "LOOKUP_ARCHIVAL_UNIT": "Consulter l'unité archivistique",
+      "DOWNLOAD_OBJECT": "Télécharger l'objet"
     }
   },
   "SEDA": {

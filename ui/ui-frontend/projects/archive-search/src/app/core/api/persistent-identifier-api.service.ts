@@ -29,7 +29,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'ui-frontend-common';
 import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
 
 @Injectable({
@@ -40,7 +40,11 @@ export class PersistentIdentifierApiService extends BaseHttpClient<any> {
     super(http, baseUrl + '/archive-search');
   }
 
-  findUnitsByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto> {
+  findUnitsByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto<Unit>> {
     return this.http.get<any>(`${this.apiUrl}/units-by-persistent-identifier?id=${id}`, { headers });
+  }
+
+  findObjectsByPersistentIdentifier(id: string, headers?: HttpHeaders): Observable<PersistentIdentifierResponseDto<ApiUnitObject>> {
+    return this.http.get<any>(`${this.apiUrl}/objects-by-persistent-identifier?id=${id}`, { headers });
   }
 }

@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
+  ObjectPurgedPersistentOperationType,
   PurgedPersistentIdentifierDto,
-  PurgedPersistentOperationType,
+  UnitPurgedPersistentOperationType,
 } from '../../../core/api/persistent-identifier-response-dto.interface';
 
 @Component({
@@ -19,14 +20,22 @@ export class PurgedPersistentIdentifierModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    switch (this.data.purgedPersistentIdentifier.operationType) {
-      case PurgedPersistentOperationType.TRANSFER_REPLY:
-        this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.TRANSFERRED_MESSAGE`;
-        break;
-      case PurgedPersistentOperationType.DELETE_GOT_VERSIONS:
-      case PurgedPersistentOperationType.ELIMINATION_ACTION:
-        this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.DELETED_MESSAGE`;
-        break;
+    const type = this.data.purgedPersistentIdentifier.type;
+    const operationType = this.data.purgedPersistentIdentifier.operationType;
+
+    const possibleValues = {
+      Object: [
+        ObjectPurgedPersistentOperationType.TRANSFER_REPLY,
+        ObjectPurgedPersistentOperationType.ELIMINATION_ACTION,
+        ObjectPurgedPersistentOperationType.DELETE_GOT_VERSIONS,
+      ],
+      Unit: [UnitPurgedPersistentOperationType.TRANSFER_REPLY, UnitPurgedPersistentOperationType.ELIMINATION_ACTION],
+    };
+
+    if ((possibleValues[type] as any)?.includes(operationType)) {
+      this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.${type.toUpperCase()}_${operationType}_MESSAGE`;
+    } else {
+      this.messageKey = `PERSISTENT_IDENTIFIER_SEARCH.MODAL.${type.toUpperCase()}_UNKNOWN_MESSAGE`;
     }
   }
 

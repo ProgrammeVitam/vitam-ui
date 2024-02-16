@@ -93,6 +93,33 @@ class PersistentIdentifierServiceTest {
         verify(accessExternalClient).selectUnitsByUnitPersistentIdentifier(eq(defaultVitamContext), eq(selectByIdQuery), eq(arkId));
     }
 
+    @Test
+    void findObjectsByPersistentIdentifier() throws Exception {
+        // Given
+        String arkId = "ark:/22567/001a957db5eadaac";
+        when(accessExternalClient.getObjectByObjectPersistentIdentifier(any(VitamContext.class), any(JsonNode.class), eq(arkId)))
+            .thenReturn(responseFromFile("data/ark/bad_ark_id.json"));
+        // When
+        RequestResponse<JsonNode> response = persistentIdentifierService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext);
+        // Then
+        assertThat(response.isOk()).isTrue();
+        assertThat(((RequestResponseOK<JsonNode>) response).getResults()).size().isEqualTo(0);
+        verify(accessExternalClient).getObjectByObjectPersistentIdentifier(eq(defaultVitamContext), eq(selectByIdQuery), eq(arkId));
+    }
+
+    @Test
+    void findObjectsByPersistentIdentifier_with_no_results_return() throws Exception {
+        // Given
+        String arkId = "ark:/22567/001a957db5eadaac";
+        when(accessExternalClient.getObjectByObjectPersistentIdentifier(any(VitamContext.class), any(JsonNode.class), eq(arkId)))
+            .thenThrow(new VitamClientException("exception thrown by client"));
+        // When Then
+        assertThatThrownBy(() -> persistentIdentifierService.findObjectsByPersistentIdentifier(arkId, defaultVitamContext))
+            .isInstanceOf(VitamClientException.class)
+            .hasMessage("exception thrown by client");
+        verify(accessExternalClient).getObjectByObjectPersistentIdentifier(eq(defaultVitamContext), eq(selectByIdQuery), eq(arkId));
+    }
+
     private RequestResponse<JsonNode> responseFromFile(String filename) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
