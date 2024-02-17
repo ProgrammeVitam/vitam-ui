@@ -30,11 +30,12 @@ server:
   tomcat:
     basedir: {{ vitamui_folder_conf }}/tomcat
     accesslog:
-        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
-        directory: "{{ vitamui_folder_log }}"
-        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
-        file-date-format: ".yyyy-MM-dd"
-        suffix: ".log"
+      enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+      max-days: {{ vitamui_struct.access_retention_days | default(access_retention_days) }}
+      directory: "{{ vitamui_folder_log }}"
+      prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
 
 management:
   server:
