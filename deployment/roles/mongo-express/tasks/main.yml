@@ -43,6 +43,14 @@
 
   when: force_vitamui_version is defined
 
+- name: Ensure mongo-express conf subdir exists
+  file:
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/mongo-express/"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    state: directory
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+
 - name: Push mongo-express script and config
   template:
     src: "env.sh.j2"
