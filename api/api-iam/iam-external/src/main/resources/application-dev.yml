@@ -84,3 +84,20 @@ server:
 
 cas:
   external-url: https://dev.vitamui.com:8080/cas
+
+
+
+list-enable-external-identifiers:
+  tenants:
+    0:
+      - INGEST_CONTRACT
+      - ACCESS_CONTRACT
+      - MANAGEMENT_CONTRACT
+      - ARCHIVE_UNIT_PROFILE
+    1:
+      - INGEST_CONTRACT
+      - ACCESS_CONTRACT
+      - MANAGEMENT_CONTRACT
+      - PROFILE
+      - SECURITY_PROFILE
+      - CONTEXT
