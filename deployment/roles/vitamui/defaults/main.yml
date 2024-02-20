@@ -10,7 +10,7 @@ at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
 secure: "{{ vitamui_default.services.secure | default('true') | lower }}"
 jvm_log: "{{ vitamui_default.services.jvm_log | default(false) | bool }}"
 accesslogs: "{{ vitamui_default.services.accesslogs | default('true') | lower }}"
-access_retention_days: "{{ vitamui_defaults.access_retention_days | default(30) }}"
+access_retention_days: "{{ vitamui_defaults.services.access_retention_days | default(30) }}"
 
 log:
   logback_max_file_size: "{{ vitamui_default.services.log.logback_max_file_size | default('10MB') }}"
