@@ -368,7 +368,3 @@ opentracing:
     udp_sender:
       host: changeme
       port: changeme
-
-java_prerequisites:
-  debian: "openjdk-11-jre-headless"
-  redhat: "java-11-openjdk-headless"
