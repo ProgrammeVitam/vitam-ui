@@ -1,6 +1,6 @@
 ---
 
-default_gc_opts: "-Xlog:gc*,gc+age=trace,safepoint:file={{ vitamui_folder_log }}/gc.log:utctime,pid,tags:filecount=16,filesize=32m"
+default_gc_opts: "-Xlog:gc*,gc+age=trace,safepoint:file={{ vitamui_folder_log }}/gc.log:utctime,pid,tags:filecount=8,filesize=32m"
 
 jvm_opts:
   memory: "{{ vitamui_defaults.services.jvm_opts.memory | default('-Xms128m -Xmx512m') }}"
