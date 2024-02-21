@@ -1,8 +1,10 @@
 ---
 
+default_gc_opts: "-Xlog:gc*,gc+age=trace,safepoint:file={{ vitamui_folder_log }}/gc.log:utctime,pid,tags:filecount=16,filesize=32m"
+
 jvm_opts:
-  memory: "{{ vitamui_defaults.services.jvm_opts.memory | default('-Xms512m -Xmx512m') }}"
-  gc: "{{ vitamui_defaults.services.jvm_opts.gc | default('') }}"
+  memory: "{{ vitamui_defaults.services.jvm_opts.memory | default('-Xms128m -Xmx512m') }}"
+  gc: "{{ vitamui_defaults.services.jvm_opts.gc | default(default_gc_opts) }}"
   java: "{{ vitamui_defaults.services.jvm_opts.java | default('') }}"
 
 start_timeout: "{{ vitamui_defaults.services.start_timeout | default(300) }}"
