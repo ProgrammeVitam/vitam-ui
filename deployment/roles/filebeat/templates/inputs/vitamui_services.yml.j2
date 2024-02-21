@@ -1,0 +1,35 @@
+#jinja2: lstrip_blocks: True
+
+{% for vitamui_service in vitamui_service_list %}
+
+#
+# VITAMUI SERVICE : "{{ vitamui_service  }}"
+#
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-access"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/accesslog-{{ vitamui_service }}.*.log"
+  fields:
+    kind: access
+    vitam_component: "{{ vitamui_service }}"
+    source: vitam
+
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-security"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}_security.*.log"
+  fields:
+    kind: security
+    vitam_component: "{{ vitamui_service }}"
+    source: vitam
+
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-error"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}.*.log"
+  fields:
+    kind: log
+    vitam_component: "{{ vitamui_service }}"
+    source: vitam
+
+{% endfor %}

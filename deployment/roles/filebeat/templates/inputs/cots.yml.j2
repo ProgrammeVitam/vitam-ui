@@ -1,0 +1,39 @@
+#jinja2: lstrip_blocks: True
+
+{% for cots_service in cots_service_list %}
+#
+# "{{cots_service }}"
+#
+- type: filestream
+  id: "{{ vitam_site_name }}-{{cots_service }}"
+  paths:
+{% if inventory_hostname in groups['hosts_mongos_offer'] or
+      inventory_hostname in groups['hosts_mongoc_offer'] or
+      inventory_hostname in groups['hosts_mongod_offer'] or
+      inventory_hostname in groups['hosts_mongos_data'] or
+      inventory_hostname in groups['hosts_mongoc_data'] or
+      inventory_hostname in groups['hosts_mongod_data']
+ %}
+{% set mongo_service =  cots_service | regex_replace('-data', '') |  regex_replace('-offer', '') |  regex_replace('mongodb', 'mongod') %}
+    - "{{ vitam_defaults.folder.root_path }}/log/{{ mongo_service }}/{{ mongo_service }}*.log"
+{% else %}
+    - "{{ vitam_defaults.folder.root_path }}/log/{{ cots_service }}/{{ cots_service }}*.log"
+{% endif %}
+  fields:
+    kind: log
+    vitam_component: "{{ cots_service }}"
+    source: vitam
+
+{% endfor %}
+
+#
+# Consul
+#
+- type: filestream
+  id: "{{ vitam_site_name }}-consul"
+  paths:
+    - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
+  fields:
+    kind: log
+    vitam_component: consul
+    source: vitam

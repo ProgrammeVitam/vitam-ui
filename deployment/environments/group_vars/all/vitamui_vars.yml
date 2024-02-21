@@ -369,3 +369,13 @@ opentracing:
     udp_sender:
       host: changeme
       port: changeme
+
+syslog:
+  name: filebeat # or rsyslog
+
+filebeat:
+    # apache_access_path:
+    # apache_error_path:
+    # nginx_access_path:
+    # nginx_error_path:
+    # compression_level:
