@@ -24,7 +24,7 @@
 - name: Add Reverse filebeat inputs
   template:
     src: inputs/reverse.yml.j2
-    dest: /etc/filebeat/inputs.d/reverse.yml
+    dest: /etc/filebeat/inputs.d/reverse_vitamui.yml
     mode: 0644
   when: inventory_hostname in groups['hosts_vitamui_reverseproxy']
   notify: "filebeat - restart service"
