@@ -7,17 +7,17 @@
 - type: filestream
   id: "{{ vitam_site_name }}-{{cots_service }}"
   paths:
-{% if inventory_hostname in groups['hosts_mongos_offer'] or
-      inventory_hostname in groups['hosts_mongoc_offer'] or
-      inventory_hostname in groups['hosts_mongod_offer'] or
-      inventory_hostname in groups['hosts_mongos_data'] or
-      inventory_hostname in groups['hosts_mongoc_data'] or
-      inventory_hostname in groups['hosts_mongod_data']
+{% if inventory_hostname in groups['hosts_vitamui_mongod'] or
+      inventory_hostname in groups['hosts_vitamui_mongos'] or
+      inventory_hostname in groups['hosts_vitamui_mongoc'] or
+      inventory_hostname in groups['mongoc'] or
+      inventory_hostname in groups['mongod'] or
+      inventory_hostname in groups['mongos']
  %}
-{% set mongo_service =  cots_service | regex_replace('-data', '') |  regex_replace('-offer', '') |  regex_replace('mongodb', 'mongod') %}
-    - "{{ vitam_defaults.folder.root_path }}/log/{{ mongo_service }}/{{ mongo_service }}*.log"
+{% set mongo_service =  cots_service %}
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ mongo_service }}/{{ mongo_service }}*.log"
 {% else %}
-    - "{{ vitam_defaults.folder.root_path }}/log/{{ cots_service }}/{{ cots_service }}*.log"
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ cots_service }}/{{ cots_service }}*.log"
 {% endif %}
   fields:
     kind: log

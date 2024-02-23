@@ -1,6 +1,12 @@
 ---
 
-- hosts: hosts
+- hosts: hosts_vitamui
+  any_errors_fatal: true
+  roles:
+    - filebeat
+  tags: filebeat
+
+- hosts: hosts_vitamui_reverseproxy
   any_errors_fatal: true
   roles:
     - filebeat

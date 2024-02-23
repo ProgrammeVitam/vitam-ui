@@ -12,16 +12,16 @@
   fields:
     kind: access
     vitam_component: "{{ vitamui_service }}"
-    source: vitam
+    source: vitamui
 
 - type: filestream
   id: "{{ vitam_site_name }}-{{ vitamui_service }}-security"
   paths:
-    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}_security.*.log"
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/management_accesslog-{{ vitamui_service }}.*.log"
   fields:
-    kind: security
+    kind: management
     vitam_component: "{{ vitamui_service }}"
-    source: vitam
+    source: vitamui
 
 - type: filestream
   id: "{{ vitam_site_name }}-{{ vitamui_service }}-error"
@@ -30,6 +30,6 @@
   fields:
     kind: log
     vitam_component: "{{ vitamui_service }}"
-    source: vitam
+    source: vitamui
 
 {% endfor %}

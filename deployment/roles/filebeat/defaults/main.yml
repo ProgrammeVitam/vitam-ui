@@ -18,7 +18,19 @@ apache_log_path: "{{ '/var/log/apache2' if ansible_distribution == 'Debian' else
 nginx_access_path: '/var/log/nginx'
 
 cots_list:
-  - mongoc-data
-  - mongos-data
-  - mongod-data
+  - mongod
+  - mongoc
+  - mongos
+  - consul
+
+items_to_exclude:
+  - hosts
+  - browse
+  - vitamui
+  - ui_search
+  - zone_admin
+  - zone_cas
+  - zone_data
+  - zone_ui
+  - zone_app
 
