@@ -32,6 +32,7 @@ import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
+import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,8 @@ public class ApiArchiveSearchInternalServerConfigTest {
     @MockBean(name = "agencyService")
     private AgencyService agencyService;
 
+    @MockBean(name = "persistentIdentifierService")
+    private PersistentIdentifierService persistentIdentifierService;
 
     @Autowired
     private ArchiveSearchInternalService archiveSearchInternalService;

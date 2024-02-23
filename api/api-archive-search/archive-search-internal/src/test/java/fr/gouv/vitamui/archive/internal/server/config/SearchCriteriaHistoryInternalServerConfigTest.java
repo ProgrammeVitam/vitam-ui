@@ -42,6 +42,7 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
+import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,6 +72,9 @@ public class SearchCriteriaHistoryInternalServerConfigTest {
 
     @MockBean(name = "accessExternalClientV2")
     private AccessExternalClientV2 accessExternalClientV2;
+
+    @MockBean(name = "persistentIdentifierService")
+    private PersistentIdentifierService persistentIdentifierService;
 
     @Autowired
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
