@@ -5,10 +5,14 @@
 
 
 # where to write logging data.
+# systemLog:
+#  destination: syslog
+#  syslogFacility: local0
+#  logAppend: true
 systemLog:
-  destination: syslog
-  syslogFacility: local0
+  destination: file
   logAppend: true
+  path: {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/mongod.log
 
 
 # Where and how to store data.
