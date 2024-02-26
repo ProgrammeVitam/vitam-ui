@@ -47,7 +47,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -62,13 +61,10 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -93,9 +89,10 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoInternalService.class);
 
     @Autowired
-    public UserInfoInternalService(final SequenceGeneratorService sequenceGeneratorService, final UserInfoRepository userInfoRepository,
-                                   final InternalSecurityService internalSecurityService, final UserInfoConverter userInfoConverter,
-                                   final IamLogbookService iamLogbookService, final LogbookService logbookService) {
+    public UserInfoInternalService(final SequenceGeneratorService sequenceGeneratorService,
+        final UserInfoRepository userInfoRepository,
+        final InternalSecurityService internalSecurityService, final UserInfoConverter userInfoConverter,
+        final IamLogbookService iamLogbookService, final LogbookService logbookService) {
         super(sequenceGeneratorService);
         this.userInfoRepository = userInfoRepository;
         this.internalSecurityService = internalSecurityService;
@@ -112,7 +109,8 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
             throw new ApplicationServerException("user must have user information id ", user.getId());
         }
         final Optional<UserInfo> userInfoOptional = userInfoRepository.findById(userInfoId);
-        final UserInfo userInfo = userInfoOptional.orElseThrow(() -> new ApplicationServerException("user info not found ", userInfoId));
+        final UserInfo userInfo =
+            userInfoOptional.orElseThrow(() -> new ApplicationServerException("user info not found ", userInfoId));
         return userInfoConverter.convertEntityToDto(userInfo);
     }
 
@@ -129,14 +127,16 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         for (final Map.Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
+                case "id":
                     break;
                 case "language":
-                    logbooks.add(new EventDiffDto(UserInfoConverter.LANGUAGE_KEY, userInfo.getLanguage(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(UserInfoConverter.LANGUAGE_KEY, userInfo.getLanguage(), entry.getValue()));
                     userInfo.setLanguage(CastUtils.toString(entry.getValue()));
                     break;
-                default :
-                    throw new IllegalArgumentException("Unable to patch group " + userInfo.getId() + ": key " + entry.getKey() + " is not allowed");
+                default:
+                    throw new IllegalArgumentException(
+                        "Unable to patch group " + userInfo.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateUserInfoEvent(userInfo, logbooks);
@@ -174,7 +174,8 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
 
         final Optional<UserInfo> userInfo = getRepository().findById(id);
         userInfo.orElseThrow(() -> new NotFoundException(String.format("No user information found with id : %s", id)));
-        return logbookService.findEventsByIdentifierAndCollectionNames(userInfo.get().getIdentifier(), MongoDbCollections.USER_INFOS, vitamContext).toJsonNode();
+        return logbookService.findEventsByIdentifierAndCollectionNames(userInfo.get().getIdentifier(),
+            MongoDbCollections.USER_INFOS, vitamContext).toJsonNode();
     }
 
     @Override
@@ -190,6 +191,6 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
         return getRepository().findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(message + ": no user info found for id " + id));
+            .orElseThrow(() -> new IllegalArgumentException(message + ": no user info found for id " + id));
     }
 }
