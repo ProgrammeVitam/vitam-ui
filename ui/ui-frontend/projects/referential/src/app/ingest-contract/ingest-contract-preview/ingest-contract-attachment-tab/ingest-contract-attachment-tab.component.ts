@@ -39,7 +39,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { AccessContract, ExternalParameters, ExternalParametersService, IngestContract, VitamUISnackBarService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService, IngestContract, VitamUISnackBarService } from 'ui-frontend-common';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({
@@ -52,6 +52,9 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   @Input() readOnly: boolean;
   @Input() set ingestContract(ingestContract: IngestContract) {
     this._ingestContract = ingestContract;
+    this.accessContractId = '';
+    this.linkParentIdTitle = '';
+    this.checkParentIdTitles = [];
     this.initSearchAccessContractIdAndTitles();
   }
 
@@ -59,19 +62,12 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     return this._ingestContract;
   }
 
-  submited = false;
   accessContractId: string;
-  accessContracts: AccessContract[];
-  titles: any = {};
   linkParentIdTitle: string;
   checkParentIdTitles: string[] = [];
 
   // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
-
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
-  };
 
   constructor(
     private unitService: SearchUnitApiService,
@@ -99,10 +95,9 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     headers = headers.append('X-Access-Contract-Id', this.accessContractId);
     this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
       if (response.httpCode === 200) {
-        this.titles = {};
         this.checkParentIdTitles = [];
         response.$results.forEach((result: any) => {
-          if (this.ingestContract.checkParentId.includes(result['#id'])) {
+          if (this.ingestContract.checkParentId?.includes(result['#id'])) {
             this.checkParentIdTitles.push(result.Title);
           }
           if (this.ingestContract.linkParentId === result['#id']) {
