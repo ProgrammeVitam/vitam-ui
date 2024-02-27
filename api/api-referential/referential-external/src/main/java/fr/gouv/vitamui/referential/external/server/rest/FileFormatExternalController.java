@@ -54,6 +54,12 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -65,13 +71,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.FILE_FORMATS_URL)
@@ -177,23 +176,19 @@ public class FileFormatExternalController {
         return fileFormatExternalService.export();
     }
 
-    /***
-     * Import file format from a xml file
-     * @param fileName the file name
-     * @param file the agency csv file to import
-     * @return the vitam response
-     */
-    @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
-    @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
-        if(file != null) {
-            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-            SanityChecker.isValidFileName(file.getOriginalFilename());
-        }
-        SanityChecker.isValidFileName(fileName);
-        SafeFileChecker.checkSafeFilePath(fileName);
-        LOGGER.debug("Import file format file {}", fileName);
-        return fileFormatExternalService.importFileFormats(fileName, file);
-    }
+  /***
+   * Import file format from a xml file
+   * @param file the file format xml to import
+   * @return the vitam response
+   */
+  @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
+  @PostMapping(CommonConstants.PATH_IMPORT)
+  public JsonNode importFileFormats(@RequestParam("file") MultipartFile file) {
+    ParameterChecker.checkParameter(
+        "The fileName is mandatory parameter : ", file.getOriginalFilename());
+    SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+    SanityChecker.isValidFileName(file.getOriginalFilename());
+    LOGGER.debug("Import file format file {}", file.getOriginalFilename());
+    return fileFormatExternalService.importFileFormats(file.getOriginalFilename(), file);
+  }
 }
