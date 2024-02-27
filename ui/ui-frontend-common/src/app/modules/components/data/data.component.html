@@ -1,0 +1,5 @@
+<label class="text caption bold primary">{{ label | empty }}</label>
+<div *ngIf="!isArray(value)" class="text medium">{{ value | empty }}</div>
+<ul *ngIf="isArray(value)">
+  <li *ngFor="let item of value" class="text medium">{{ item | empty }}</li>
+</ul>

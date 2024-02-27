@@ -1,0 +1,14 @@
+<div class="header text bold mat-elevation-z1" [ngClass]="{ opened: opened }" (click)="toggle()">
+  <i class="vitamui-icon icon" [ngClass]="{ 'vitamui-icon-chevron-down': opened, 'vitamui-icon-chevron-right': !opened }"></i>
+  <div class="v-row">
+    <div class="v-col">
+      <ng-content select=".title"></ng-content>
+    </div>
+    <div class="v-col">
+      <ng-content select=".title-extra"></ng-content>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="opened">
+  <ng-content select=".content"></ng-content>
+</ng-container>

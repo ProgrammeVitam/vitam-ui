@@ -2,9 +2,8 @@
   <vitamui-common-sidenav-header
     [extended]="isPanelextended"
     [title]="selectedProject.messageIdentifier"
-    [icon]="'vitamui-icon-file'"
-    [hasToolTipOnTitle]="true"
-    [toolTipTitleDuration]="300"
+    [subtitle]="'COLLECT.PROJECT_UNIT_PREVIEW.WORKFLOW.' + getProjectWorkflow(selectedProject) | translate"
+    [icon]="getProjectIcon(selectedProject)"
     (onclose)="emitClose()"
   >
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
@@ -20,14 +19,7 @@
       <button mat-menu-item (click)="searchArchiveUnitsByProject()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
       </button>
-      <button
-        mat-menu-item
-        matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
-        matTooltipClass="vitamui-tooltip"
-        [matTooltipShowDelay]="300"
-        (click)="updateMetadataDesc()"
-        [disabled]="updateStarted || !hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole"
-      >
+      <button mat-menu-item [disabled]="true">
         {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
       </button>
     </vitamui-common-menu-button>
@@ -287,19 +279,48 @@
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.ATTACHEMENT' | translate }}">
         <div class="row">
           <div class="col-12">
-            <div class="read-only-field" *ngIf="!updateStarted">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.UNIT_UPS_ID' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.unitUp; else elseBlock">
-                  {{ selectedProject.unitUp }}
-                </ng-container>
-                <ng-template #elseBlock>
-                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NO_EXSISTANT_ATTACHEMENT' | translate }}
-                </ng-template>
+            <ng-container *ngIf="!updateStarted">
+              <div *ngIf="selectedProject.unitUp" class="gap-10">
+                <div class="text normal bold primary uppercase">{{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.TITLE' | translate }}</div>
+                <vitamui-common-data
+                  [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_ID' | translate"
+                  [value]="selectedProject.unitUp"
+                ></vitamui-common-data>
               </div>
-            </div>
+              <div *ngIf="selectedProject.unitUps" class="gap-20">
+                <div class="text normal bold primary uppercase">
+                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.RULES.TITLE' | translate }}
+                </div>
+                <vitamui-common-accordion *ngFor="let unitUp of selectedProject.unitUps; index as i; first as isFirst" [opened]="isFirst">
+                  <div class="title">Paramètre {{ i + 1 }}</div>
+                  <div class="content">
+                    <vitamui-common-data [label]="unitUp.metadataKey" [value]="unitUp.metadataValue"></vitamui-common-data>
+                    <vitamui-common-data
+                      [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_ID' | translate"
+                      [value]="unitUp.unitUp"
+                    ></vitamui-common-data>
+                  </div>
+                </vitamui-common-accordion>
+              </div>
+              <ng-container *ngIf="!selectedProject.unitUp && !selectedProject.unitUps">
+                <div class="text medium">
+                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.NO_EXISTANT_ATTACHMENT' | translate }}
+                </div>
+              </ng-container>
+            </ng-container>
           </div>
         </div>
+      </mat-tab>
+
+      <!-- CONFIGURATION TAB -->
+      <mat-tab
+        *ngIf="getProjectWorkflow(selectedProject) === Workflow.FLOW"
+        label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONFIGURATION' | translate }}"
+      >
+        <vitamui-common-data
+          [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate"
+          [value]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.' + (selectedProject.automaticIngest ? 'ENABLED' : 'DISABLED') | translate"
+        ></vitamui-common-data>
       </mat-tab>
     </mat-tab-group>
   </form>
@@ -313,7 +334,7 @@
 
 <ng-template #confirmEditProject>
   <mat-dialog-content *ngIf="transactions$.getValue(); let transactions; else: loadingSpinner" class="row">
-    <div class="text-title bold">
+    <div class="text large bold">
       {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate }}
     </div>
 

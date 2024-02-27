@@ -78,6 +78,8 @@ export * from './language.service';
 export * from './country.service';
 export * from './utils/index';
 
+export * from './components/accordion/accordion.component';
+export * from './components/data/data.component';
 export * from './components/application/index';
 export * from './components/application-select-content/index';
 export * from './components/blank/blank.component';

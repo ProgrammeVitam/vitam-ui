@@ -93,12 +93,19 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
 
       this.logger.info(this, message);
 
+      this.populateLabels(displayObject);
+
       this.displayObject.next(displayObject);
     };
 
     this.data.subscribe(handleDisplayObjectComputing);
     this.template.subscribe(handleDisplayObjectComputing);
     this.mode.subscribe(handleDisplayObjectComputing);
+  }
+
+  private populateLabels(displayObject: DisplayObject) {
+    displayObject.children?.forEach((child) => this.populateLabels(child));
+    displayObject.displayRule.ui.label = displayObject.key;
   }
 
   setData(object: any): void {

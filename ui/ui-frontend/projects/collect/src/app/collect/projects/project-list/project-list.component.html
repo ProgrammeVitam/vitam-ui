@@ -67,12 +67,7 @@
           <div *ngFor="let project of dataSource" class="vitamui-table-rows">
             <div class="vitamui-row d-flex align-items-center clickable">
               <div class="col-1">
-                <i class="vitamui-icon vitamui-icon-flux-manuel-refus">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                  <span class="path3"></span>
-                  <span class="path4"></span>
-                </i>
+                <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
               </div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.messageIdentifier }}</div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.submissionAgencyIdentifier }}</div>

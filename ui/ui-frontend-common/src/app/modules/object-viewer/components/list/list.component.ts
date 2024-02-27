@@ -48,11 +48,10 @@ import { DisplayObjectType } from '../../types';
 export class ListComponent implements OnChanges {
   @Input() displayObject: DisplayObject;
 
-  favoriteEntry: [key: string, value: any];
-  favoritePath: string;
   isPrimitiveList: boolean;
 
   readonly DisplayObjectType = DisplayObjectType;
+  childrenValues: any[];
 
   constructor(
     private typeService: TypeService,
@@ -65,6 +64,7 @@ export class ListComponent implements OnChanges {
     if (displayObject) {
       this.favoriteEntryService.favoriteEntry(this.displayObject);
       this.isPrimitiveList = this.typeService.isPrimitiveList(this.displayObject.value);
+      this.childrenValues = this.displayObject.children.map((c) => c.value);
     }
   }
 

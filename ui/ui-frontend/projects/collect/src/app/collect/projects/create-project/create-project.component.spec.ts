@@ -41,6 +41,7 @@ import { of } from 'rxjs';
 import {
   BASE_URL,
   ENVIRONMENT,
+  FlowType,
   InjectorModule,
   LoggerModule,
   Project,
@@ -48,8 +49,8 @@ import {
   Transaction,
   TransactionStatus,
   WINDOW_LOCATION,
+  Workflow,
 } from 'ui-frontend-common';
-import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';

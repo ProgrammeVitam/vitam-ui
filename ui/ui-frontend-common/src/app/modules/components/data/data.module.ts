@@ -34,37 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { DisplayObject } from '../../models';
-import { DateDisplayService } from '../../services/date-display.service';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { PipesModule } from '../../pipes/pipes.module';
+import { DataComponent } from './data.component';
 
-@Component({
-  selector: 'vitamui-common-primitive',
-  templateUrl: './primitive.component.html',
-  styleUrls: ['./primitive.component.scss'],
+@NgModule({
+  imports: [CommonModule, PipesModule],
+  declarations: [DataComponent],
+  exports: [DataComponent],
 })
-export class PrimitiveComponent implements OnInit {
-  @Input() displayObject: DisplayObject;
-
-  value: string;
-
-  constructor(
-    private dateDisplayService: DateDisplayService,
-    private datePipe: DatePipe,
-  ) {}
-
-  ngOnInit(): void {
-    const uiComponent = this.displayObject.displayRule?.ui?.component;
-
-    switch (uiComponent) {
-      case 'datepicker':
-      case 'datetime':
-        const dateFormat = this.dateDisplayService.getFormat(uiComponent);
-        this.value = this.datePipe.transform(this.displayObject.value, dateFormat);
-        break;
-      default:
-        this.value = this.displayObject.value;
-    }
-  }
-}
+export class DataModule {}

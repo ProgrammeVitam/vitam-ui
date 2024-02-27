@@ -35,6 +35,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   ExternalParameters,
   ExternalParametersService,
+  FlowType,
   Logger,
   MetadataUnitUp,
   Ontology,
@@ -43,10 +44,10 @@ import {
   ProjectStatus,
   Transaction,
   TransactionStatus,
+  Workflow,
 } from 'ui-frontend-common';
 
 import { FilingPlanMode, oneIncludedNodeRequired } from 'projects/vitamui-library/src/public-api';
-import { FlowType, Workflow } from '../../core/models/create-project.interface';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
