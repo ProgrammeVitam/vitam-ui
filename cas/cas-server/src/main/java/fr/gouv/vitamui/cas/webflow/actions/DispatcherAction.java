@@ -317,6 +317,7 @@ public class DispatcherAction extends AbstractAction {
             .findFirst();
     }
 
+    //FIXME check if we need to create another method
     private List<UserDto> getUsers(String email) {
         try {
             return casExternalRestClient.getUsersByEmail(utils.buildContext(email),

@@ -52,7 +52,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -65,8 +64,6 @@ import java.util.stream.Collectors;
 
 /**
  * A REST client to perform CAS-specific operations.
- *
- *
  */
 public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
 
@@ -77,7 +74,8 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
     }
 
     @Deprecated
-    public UserDto login(final ExternalHttpContext context, final String username, final String password, final String surrogate, final String ip) {
+    public UserDto login(final ExternalHttpContext context, final String username, final String password,
+        final String surrogate, final String ip) {
         // FIXME : tests
         throw new NotImplementedException("");
     }
@@ -95,26 +93,31 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         loginRequest.setIp(ip);
         LOGGER.debug("loginRequest: {}", loginRequest);
         final HttpEntity<LoginRequestDto> request = new HttpEntity<>(loginRequest, buildHeaders(context));
-        final ResponseEntity<UserDto> response = restTemplate.exchange(getUrl() + RestApi.CAS_LOGIN_PATH, HttpMethod.POST, request, UserDto.class);
+        final ResponseEntity<UserDto> response =
+            restTemplate.exchange(getUrl() + RestApi.CAS_LOGIN_PATH, HttpMethod.POST, request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
 
-    public void changePassword(final ExternalHttpContext context, final String username, final String password) {
+    public void changePassword(final ExternalHttpContext context, final String username, final String customerId,
+        final String password) {
         LOGGER.debug("changePassword for username: {}", username);
         final MultiValueMap<String, String> headers = buildHeaders(context);
         headers.put("username", Collections.singletonList(username));
         headers.put("password", Collections.singletonList(password));
+        headers.put("customerId", Collections.singletonList(customerId));
         final HttpEntity request = new HttpEntity(headers);
-        final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH, HttpMethod.POST, request, Boolean.class);
+        final ResponseEntity<Boolean> response =
+            restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH, HttpMethod.POST, request, Boolean.class);
         checkResponse(response);
     }
+
 
     @Deprecated
     public UserDto getUserByEmail(final ExternalHttpContext context, final String email,
         final Optional<String> embedded) {
         List<UserDto> users = getUsersByEmail(context, email, embedded);
-        Assert.isTrue(users.size() == 1);
+        /* Assert.isTrue(users.size() == 1);*/
         return users.get(0);
     }
 
@@ -140,8 +143,9 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         }).collect(Collectors.toList());
     }
 
-    public UserDto getUser(final ExternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
-            final Optional<String> embedded) {
+    public UserDto getUser(final ExternalHttpContext context, final String email, final String idp,
+        final Optional<String> userIdentifier,
+        final Optional<String> embedded) {
         // FIXME : subrogation + tests
         throw new NotImplementedException("TODO");
     }
@@ -177,24 +181,29 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         uriBuilder.queryParam("id", id);
 
         final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<UserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, UserDto.class);
+        final ResponseEntity<UserDto> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUserEmail(final ExternalHttpContext context, final String superUserEmail) {
+    public List<SubrogationDto> getSubrogationsBySuperUserEmail(final ExternalHttpContext context,
+        final String superUserEmail) {
         LOGGER.debug("getMySubrogationAsSuperuser {}", superUserEmail);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-                getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request, getSubrogationDtoListClass());
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request,
+            getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUserId(final ExternalHttpContext context, final String superUserId) {
+    public List<SubrogationDto> getSubrogationsBySuperUserId(final ExternalHttpContext context,
+        final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId,
+        final ResponseEntity<List<SubrogationDto>> response =
+            restTemplate.exchange(getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId,
                 HttpMethod.GET, request, getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();

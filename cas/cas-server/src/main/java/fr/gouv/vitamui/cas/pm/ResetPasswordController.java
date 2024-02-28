@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -55,6 +57,7 @@ import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,8 +68,6 @@ import java.util.Locale;
 
 /**
  * Rest controller for CAS extra features.
- *
- *
  */
 @RestController
 @RequestMapping("/extras")
@@ -75,6 +76,7 @@ import java.util.Locale;
 public class ResetPasswordController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ResetPasswordController.class);
+    public static final String CUSTOMER_ID = "customerId";
 
     private final CasConfigurationProperties casProperties;
 
@@ -96,18 +98,24 @@ public class ResetPasswordController {
 
     private final ProvidersService providersService;
 
+
+    private final ObjectMapper objectMapper;
+
     @Value("${theme.vitamui-platform-name:VITAM-UI}")
     private String vitamuiPlatformName;
 
     @GetMapping("/resetPassword")
     public boolean resetPassword(@RequestParam(value = "username", defaultValue = "") final String username,
-                                 @RequestParam(value = "firstname", defaultValue = "") final String firstname,
-                                 @RequestParam(value = "lastname", defaultValue = "") final String lastname, @RequestParam(value = "ttl", defaultValue = "") final String ttl,
-                                 @RequestParam(value = "language", defaultValue = "en") final String language,
-                                 final HttpServletRequest request) {
+        @RequestParam(value = "firstname", defaultValue = "") final String firstname,
+        @RequestParam(value = "lastname", defaultValue = "") final String lastname,
+        @RequestParam(value = "customerId", defaultValue = "") final String customerId,
+        @RequestParam(value = "ttl", defaultValue = "") final String ttl,
+        @RequestParam(value = "language", defaultValue = "en") final String language,
+        final HttpServletRequest request) {
 
         if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
+            LOGGER.warn(
+                "CAS is unable to send password-reset emails given no settings are defined to account for email servers");
             return false;
         }
 
@@ -117,7 +125,10 @@ public class ResetPasswordController {
         }
 
         val usernameLower = username.toLowerCase().trim();
-        val query = PasswordManagementQuery.builder().username(usernameLower).build();
+        LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
+        customerIdMapElt.add(CUSTOMER_ID, customerId);
+        val query = PasswordManagementQuery.builder().record(customerIdMapElt).username(usernameLower).build();
+
         val email = passwordManagementService.findEmail(query);
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
@@ -130,12 +141,23 @@ public class ResetPasswordController {
         final Locale locale = new Locale(language);
         val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
         final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : duration.toMinutes();
-        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
+        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE,
+            expMinutes);
         try {
-            val url = passwordResetUrlBuilder.build(usernameLower).toString();
-            final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
 
-            LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
+            UserLoginModel userLoginModel = new UserLoginModel();
+            userLoginModel.setUserEmail(query.getUsername());
+            userLoginModel.setCustomerId(customerId);
+            String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+
+            val url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
+            final PmMessageToSend messageToSend =
+                PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url,
+                    vitamuiPlatformName, locale);
+
+            LOGGER.debug(
+                "Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)",
+                utils.sanitizePasswordResetUrl(url),
                 email, messageToSend.getSubject(), expMinutes);
 
             return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
@@ -146,6 +168,7 @@ public class ResetPasswordController {
     }
 
     protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {
-        return utils.htmlEmail(msg, casProperties.getAuthn().getPm().getReset().getMail().getFrom(), subject, to, null, null);
+        return utils.htmlEmail(msg, casProperties.getAuthn().getPm().getReset().getMail().getFrom(), subject, to, null,
+            null);
     }
 }
