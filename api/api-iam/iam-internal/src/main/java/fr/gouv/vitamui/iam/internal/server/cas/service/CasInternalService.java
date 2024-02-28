@@ -94,6 +94,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
@@ -117,6 +118,7 @@ import java.util.stream.Collectors;
 public class CasInternalService {
 
     private static final String USER_NOT_FOUND_MESSAGE = "User not found: ";
+    private static final String USER_CONFLICT = "Could not select the right user: ";
 
     private static final String ID = "_id";
 
@@ -239,12 +241,16 @@ public class CasInternalService {
         }
 
         final String encodedPassword = passwordEncoder.encode(rawPassword);
-        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword, (passwordConfiguration !=null && passwordConfiguration.getMaxOldPassword() != null)  ? passwordConfiguration.getMaxOldPassword() : UserInternalService.MAX_OLD_PASSWORDS);
+        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword,
+            (passwordConfiguration != null && passwordConfiguration.getMaxOldPassword() != null) ?
+                passwordConfiguration.getMaxOldPassword() :
+                UserInternalService.MAX_OLD_PASSWORDS);
 
         final String existingPassword = user.getPassword();
 
         user.setPassword(encodedPassword);
-        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
+        final OffsetDateTime nowPlusPasswordRevocationDelay =
+            OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
         user.setPasswordExpirationDate(nowPlusPasswordRevocationDelay);
 
         userRepository.save(user);
@@ -257,10 +263,13 @@ public class CasInternalService {
     }
 
     @Transactional
-    public void updateNbFailedAttempsPlusLastConnectionAndStatus(final User user, final int nbFailedAttempts, final UserStatusEnum oldStatus) {
+    public void updateNbFailedAttempsPlusLastConnectionAndStatus(final User user, final int nbFailedAttempts,
+        final UserStatusEnum oldStatus) {
         final UserStatusEnum newStatus = user.getStatus();
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
-        final Update update = Update.update(NB_FAILED_ATTEMPTS, nbFailedAttempts).set(LAST_CONNECTION, OffsetDateTime.now()).set(STATUS, newStatus);
+        final Update update =
+            Update.update(NB_FAILED_ATTEMPTS, nbFailedAttempts).set(LAST_CONNECTION, OffsetDateTime.now())
+                .set(STATUS, newStatus);
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
 
         if (newStatus == UserStatusEnum.BLOCKED) {
@@ -275,14 +284,19 @@ public class CasInternalService {
 
     @Deprecated
     private User checkUserInformations(final String email) {
-        final User user = userRepository.findByEmailIgnoreCase(email);
-        if (user == null) {
+        final List<User> users = userRepository.findAllByEmail(email);
+        if (CollectionUtils.isEmpty(users)) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
-            throw new InvalidAuthenticationException("User unavailable: " + email);
+        } else if (users.size() > 1) {
+            throw new IllegalArgumentException(USER_CONFLICT + email);
+        } else {
+            User user = users.get(0);
+            if (UserTypeEnum.NOMINATIVE != user.getType()) {
+                throw new InvalidAuthenticationException("User unavailable: " + email);
+            }
+            checkStatus(user.getStatus(), user.getEmail());
+            return user;
         }
-        checkStatus(user.getStatus(), user.getEmail());
-        return user;
     }
 
     public User findUserByEmailAndCustomerId(final String email, String customerId) {
@@ -388,6 +402,7 @@ public class CasInternalService {
 
     /**
      * Method to perform auto provisioning
+     *
      * @param email
      * @param idp
      * @param userIdentifier
@@ -430,12 +445,16 @@ public class CasInternalService {
         return providedUser;
     }
 
-    private ProvidedUserDto getProvidedUser(String email, String idp, String userIdentifier, String groupId, String customerId) {
+    private ProvidedUserDto getProvidedUser(String email, String idp, String userIdentifier, String groupId,
+        String customerId) {
         ProvidedUserDto userProvidedInfo;
-        userProvidedInfo = provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
+        userProvidedInfo =
+            provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
 
         if (Objects.isNull(userProvidedInfo)) {
-            throw new NotFoundException(String.format("The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s", email, userIdentifier, groupId, idp, customerId));
+            throw new NotFoundException(String.format(
+                "The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s",
+                email, userIdentifier, groupId, idp, customerId));
         }
 
         return userProvidedInfo;
@@ -489,8 +508,10 @@ public class CasInternalService {
         }
     }
 
-    private void updateUserOptionalInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
-        if (userInfo.getInternalCode() != null && !StringUtils.equals(userInfo.getInternalCode(), userDto.getInternalCode())) {
+    private void updateUserOptionalInformation(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
+        if (userInfo.getInternalCode() != null &&
+            !StringUtils.equals(userInfo.getInternalCode(), userDto.getInternalCode())) {
             userUpdate.put("internalCode", userInfo.getInternalCode());
         }
         if (userInfo.getSiteCode() != null && !StringUtils.equals(userInfo.getSiteCode(), userDto.getSiteCode())) {
@@ -499,7 +520,8 @@ public class CasInternalService {
         updateUserAddress(userDto, userInfo, userUpdate);
     }
 
-    private void updateUserMandatoryInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserMandatoryInformation(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         if (!StringUtils.equals(userDto.getFirstname(), userInfo.getFirstname())) {
             userUpdate.put("firstname", userInfo.getFirstname());
         }
@@ -509,7 +531,8 @@ public class CasInternalService {
         updateUserGroup(userDto, userInfo, userUpdate);
     }
 
-    private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
         final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
         Assert.notEmpty(groups, String.format("No group found for the given unit : %s", userInfo.getUnit()));
@@ -518,24 +541,25 @@ public class CasInternalService {
         }
     }
 
-    private void updateUserAddress(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserAddress(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         if (userInfo.getAddress() != null) {
             final Map<String, Object> updatedAddress = new HashMap<>();
             if (userInfo.getAddress().getStreet() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
+                || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
                 updatedAddress.put("street", userInfo.getAddress().getStreet());
             }
             if (userInfo.getAddress().getZipCode() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
+                || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
                 updatedAddress.put("zipCode", userInfo.getAddress().getZipCode());
             }
             if (userInfo.getAddress().getCity() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
                 updatedAddress.put("city", userInfo.getAddress().getCity());
             }
 
             if (userInfo.getAddress().getCountry() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
                 updatedAddress.put("country", userInfo.getAddress().getCountry());
             }
 

@@ -1,21 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -26,11 +10,24 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link UserEmailInternalService}.
- *
- *
  */
 public final class UserEmailInternalServiceTest {
 
@@ -38,6 +35,7 @@ public final class UserEmailInternalServiceTest {
     private static final String LASTNAME = "Leleu";
 
     private static final String FIRSTNAME = "Jérome";
+    private static final String CUSTOMER_ID = "CustomerId";
 
     private static final String EMAIL = "jerome.leleu@vitamui.com";
 
@@ -55,7 +53,8 @@ public final class UserEmailInternalServiceTest {
 
     private UserInfoInternalService userInfoInternalService;
 
-    private final String casResetPasswordUrl = "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day";
+    private final String casResetPasswordUrl =
+        "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day";
 
     @Before
     public void setUp() {
@@ -84,7 +83,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        verify(restTemplate).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME,
+            "fr", CUSTOMER_ID);
     }
 
     @Test
@@ -92,7 +92,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(null);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
+            LASTNAME, "fr");
     }
 
     @Test
@@ -102,7 +103,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
+            LASTNAME, "fr");
     }
 
     @Test
@@ -112,7 +114,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        Mockito.verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        Mockito.verify(restTemplate, times(0))
+            .getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
     }
 
     @Test
@@ -122,7 +125,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
+            LASTNAME, "fr");
     }
 
     @Test
@@ -132,7 +136,8 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
+            LASTNAME, "fr");
     }
 
     private UserDto buildUser() {
@@ -140,6 +145,7 @@ public final class UserEmailInternalServiceTest {
         user.setStatus(UserStatusEnum.ENABLED);
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setEmail(EMAIL);
+        user.setCustomerId(CUSTOMER_ID);
         user.setFirstname(FIRSTNAME);
         user.setLastname(LASTNAME);
         user.setUserInfoId("userInfoId");
