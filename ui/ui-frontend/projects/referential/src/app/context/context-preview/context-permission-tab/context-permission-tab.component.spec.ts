@@ -35,6 +35,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 import { BASE_URL, Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
@@ -158,7 +159,7 @@ describe('ContextPermissionTabComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ContextService, useValue: {} },
+        { provide: ContextService, useValue: { updated: EMPTY } },
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],

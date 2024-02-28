@@ -536,7 +536,9 @@
         "TENANT_TOGGLE_TOOLTIP_FALSE": "No check is performed on tenants and contracts defined in the application context when an external application connects to the service",
         "TENANT_TOGGLE_TOOLTIP_TRUE": "A check is performed on the tenants and contracts defined in the application context when an external application connects to the service",
         "NAME_ALREADY_EXISTS": "Name already in use",
-        "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use"
+        "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+        "INCORRECT_NAME": "This name contains one or many unauthorized characters",
+        "INCORRECT_IDENTIFIER": "This identifier contains one or many unauthorized characters"
       },
       "PERMISSION": {
         "TITLE": "Permissions",

@@ -536,7 +536,9 @@
         "TENANT_TOGGLE_TOOLTIP_FALSE": "Aucun contrôle n'est effectué sur les tenants et contrats définis dans le contexte applicatif quand une application externe se connecte au service",
         "TENANT_TOGGLE_TOOLTIP_TRUE": "Un contrôle est effectué sur les tenants et contrats définis dans le contexte applicatif quand une application externe se connecte au service",
         "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
-        "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé"
+        "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
+        "INCORRECT_NAME": "Ce nom contient un ou des caractères non autorisés",
+        "INCORRECT_IDENTIFIER": "Cet identifiant contient un ou des caractères non autorisés"
       },
       "PERMISSION": {
         "TITLE": "Permissions",

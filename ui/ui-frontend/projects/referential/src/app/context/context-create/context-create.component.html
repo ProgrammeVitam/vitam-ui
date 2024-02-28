@@ -31,6 +31,9 @@
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.NAME_ALREADY_EXISTS' | translate }}
               </vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.incorrectName">
+                {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.INCORRECT_NAME' | translate }}
+              </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
         </div>
@@ -49,6 +52,9 @@
               </vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate }}
+              </vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.incorrectIdentifier">
+                {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.INCORRECT_IDENTIFIER' | translate }}
               </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>

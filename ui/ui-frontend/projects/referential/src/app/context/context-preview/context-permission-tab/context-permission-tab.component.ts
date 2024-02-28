@@ -165,6 +165,10 @@ export class ContextPermissionTabComponent implements OnInit {
 
       this.dataLoaded = true;
     });
+
+    this.contextService.updated.subscribe((updatedContext: Context) => {
+      this.context = updatedContext;
+    });
   }
 
   sameArray(a: string[], b: string[]): boolean {
