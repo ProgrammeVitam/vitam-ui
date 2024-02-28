@@ -21,9 +21,10 @@ vitamui_defaults:
     secure: true
     jvm_log: false
     accesslogs: true
+    access_retention_days: 365
     log:
       logback_max_file_size: "10MB"
-      logback_max_history: 30
+      logback_max_history: 365
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"

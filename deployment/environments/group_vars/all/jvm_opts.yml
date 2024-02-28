@@ -4,113 +4,113 @@
 # vitamui_defaults:
 #   services:
 #     jvm_opts:
-#       memory: "-Xms512m -Xmx512m"
-#       gc: ""
+#       memory: "-Xms128m -Xmx512m"
+#       gc: "-Xlog:gc*,gc+age=trace,safepoint:file={{ vitamui_folder_log }}/gc.log:utctime,pid,tags:filecount=8,filesize=32m"
 #       java: ""
 
 vitamui:
   identity:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   identity_admin:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   referential:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   portal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   referential_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   referential_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   iam_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   iam_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   cas_server:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: "-Dhttp.nonProxyHosts=*.programmevitam.fr|localhost|127.0.0.1|*.service.consul -Dhttp.proxyHost=x.x.x.x -Dhttp.proxyPort=xxxx -Dhttps.proxyHost=x.x.x.x -Dhttps.proxyPort=xxxx"
   security_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   ingest:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   ingest_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   ingest_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   archive_search:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   archive_search_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   archive_search_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   collect:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   collect_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   collect_internal:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   pastis_external:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   pastis:
     jvm_opts:
-      # memory: "-Xms512m -Xmx512m"
+      # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
