@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.pm.PmMessageToSend;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -63,20 +65,22 @@ import org.apereo.cas.web.support.WebUtils;
 import org.apereo.inspektr.audit.annotation.Audit;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.net.URL;
+import java.util.List;
 
 /**
  * Send reset password emails with i18n messages.
- *
- *
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
+    public static final String CUSTOMER_ID = "customerId";
 
     private final HierarchicalMessageSource messageSource;
 
@@ -88,24 +92,28 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private final String vitamuiPlatformName;
 
+    private final ObjectMapper objectMapper;
+
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
-                                                   final CommunicationsManager communicationsManager,
-                                                   final PasswordManagementService passwordManagementService,
-                                                   final TicketRegistry ticketRegistry,
-                                                   final TicketFactory ticketFactory,
-                                                   final PrincipalResolver principalResolver,
-                                                   final PasswordResetUrlBuilder passwordResetUrlBuilder,
-                                                   final HierarchicalMessageSource messageSource,
-                                                   final ProvidersService providersService,
-                                                   final IdentityProviderHelper identityProviderHelper,
-                                                   final Utils utils,
-                                                   final String vitamuiPlatformName) {
-        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, principalResolver, passwordResetUrlBuilder);
+        final CommunicationsManager communicationsManager,
+        final PasswordManagementService passwordManagementService,
+        final TicketRegistry ticketRegistry,
+        final TicketFactory ticketFactory,
+        final PrincipalResolver principalResolver,
+        final PasswordResetUrlBuilder passwordResetUrlBuilder,
+        final HierarchicalMessageSource messageSource,
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper,
+        final Utils utils,
+        final String vitamuiPlatformName) {
+        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory,
+            principalResolver, passwordResetUrlBuilder);
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.utils = utils;
         this.vitamuiPlatformName = vitamuiPlatformName;
+        this.objectMapper = new ObjectMapper();
     }
 
     @Audit(action = AuditableActions.REQUEST_CHANGE_PASSWORD,
@@ -134,11 +142,25 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
 
         val service = WebUtils.getService(requestContext);
-        val url = buildPasswordResetUrl(query.getUsername(), service);
+        List<Object> customerIdValues = query.getRecord().get(CUSTOMER_ID);
+        String customerId = customerIdValues.stream()
+            .filter(value -> value instanceof String)
+            .map(value -> (String) value)
+            .findFirst()
+            .orElse(null);
+
+        UserLoginModel userLoginModel = new UserLoginModel();
+        userLoginModel.setUserEmail(query.getUsername());
+        userLoginModel.setCustomerId(customerId);
+        String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+
+        val url = buildPasswordResetUrl(userLoginModelToToken, service);
+
         if (url != null) {
             val pm = casProperties.getAuthn().getPm();
             val duration = Beans.newDuration(pm.getReset().getExpiration());
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", url, duration);
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", url,
+                duration);
             // CUSTO: only send email (and not SMS)
             val sendEmail = sendPasswordResetEmailToAccount(query.getUsername(), email, url, requestContext);
             if (sendEmail.isSuccess()) {
@@ -148,7 +170,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
         LOGGER.error("Failed to notify account [{}]", email);
-        return getErrorEvent("contact.failed", "Failed to send the password reset link via email address or phone", requestContext);
+        return getErrorEvent("contact.failed", "Failed to send the password reset link via email address or phone",
+            requestContext);
     }
 
     @Override
@@ -156,8 +179,14 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         // CUSTO: try to get the username from the credentials also (after a password expiration)
         String username = request.getParameter(REQUEST_PARAMETER_USERNAME);
+        final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
+        final String customerId = (String) flowScope.get("loginCustomerId");
+        LinkedMultiValueMap<String, Object> records = new LinkedMultiValueMap<>();
+        if (!StringUtils.isBlank(customerId)) {
+            records.put(CUSTOMER_ID, List.of(customerId));
+        }
         if (StringUtils.isBlank(username)) {
-            final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
+
             final Object credential = flowScope.get("credential");
             if (credential instanceof UsernamePasswordCredential) {
                 final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
@@ -170,7 +199,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         if (StringUtils.isBlank(username)) {
             LOGGER.warn("No username parameter is provided");
         }
-        return builder.username(username).build();
+
+        return builder.username(username).record(records).build();
     }
 
     @Override
@@ -183,7 +213,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
             String.valueOf(duration.toMinutes()), url.toString(), vitamuiPlatformName, LocaleContextHolder.getLocale());
-        return EmailCommunicationResult.builder().success(utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
-                    messageToSend.getSubject(), to, null, null)).build();
+        return EmailCommunicationResult.builder().success(
+            utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+                messageToSend.getSubject(), to, null, null)).build();
     }
+
 }

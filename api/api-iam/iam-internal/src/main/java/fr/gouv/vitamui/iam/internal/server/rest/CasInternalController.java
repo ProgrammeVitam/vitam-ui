@@ -81,8 +81,6 @@ import java.util.Optional;
 
 /**
  * The controller for CAS operations.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
@@ -107,7 +105,8 @@ public class CasInternalController {
     private final UserInternalService internalUserService;
 
     @Autowired
-    public CasInternalController(final CasInternalService casService, final PasswordEncoder passwordEncoder, final UserInternalService internalUserService) {
+    public CasInternalController(final CasInternalService casService, final PasswordEncoder passwordEncoder,
+        final UserInternalService internalUserService) {
         this.casService = casService;
         this.passwordEncoder = passwordEncoder;
         this.internalUserService = internalUserService;
@@ -132,8 +131,7 @@ public class CasInternalController {
         final boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), password);
         if (!passwordMatch) {
             nbFailedAttemps++;
-        }
-        else if (nbFailedAttemps < maximumFailuresForLoginAttempts) {
+        } else if (nbFailedAttemps < maximumFailuresForLoginAttempts) {
             nbFailedAttemps = 0;
         }
         user.setNbFailedAttempts(nbFailedAttemps);
@@ -141,24 +139,22 @@ public class CasInternalController {
 
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             user.setStatus(UserStatusEnum.BLOCKED);
-        }
-        else if (user.getStatus() == UserStatusEnum.BLOCKED) {
+        } else if (user.getStatus() == UserStatusEnum.BLOCKED) {
             user.setStatus(UserStatusEnum.ENABLED);
         }
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, nbFailedAttemps, oldStatus);
 
-        LOGGER.debug("username: {} -> passwordMatch: {} / nbFailedAttemps: {}", username, passwordMatch, nbFailedAttemps);
+        LOGGER.debug("username: {} -> passwordMatch: {} / nbFailedAttemps: {}", username, passwordMatch,
+            nbFailedAttemps);
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             final String message = "Too many login attempts for username: " + username;
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new TooManyRequestsException(message);
-        }
-        else if (passwordMatch) {
+        } else if (passwordMatch) {
             final UserDto userDto = internalUserService.internalConvertFromEntityToDto(user);
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), null);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
-        }
-        else {
+        } else {
             final String message = "Bad credentials for username: " + username;
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new UnAuthorizedException(message);
@@ -171,8 +167,7 @@ public class CasInternalController {
         if (surrogate != null) {
             try {
                 return internalUserService.findUserByEmailAndCustomerId(surrogate, surrogateCustomerId).getIdentifier();
-            }
-            catch (final NotFoundException e) {
+            } catch (final NotFoundException e) {
                 return "User not found: " + surrogate + " and customerId " + surrogateCustomerId;
             }
         }
@@ -181,9 +176,12 @@ public class CasInternalController {
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password) {
-        LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
-        casService.updatePassword(username, password);
+    public String changePassword(@RequestHeader(defaultValue = "") final String username,
+        @RequestHeader(defaultValue = "") final String password,
+        @RequestHeader(defaultValue = "") final String customerId) {
+        LOGGER.debug("changePassword for username: {} / password_exists? {}, customerId {} ", username,
+            StringUtils.isNotBlank(password), customerId);
+        casService.updatePassword(username, password, customerId);
         return "true";
     }
 
@@ -196,7 +194,7 @@ public class CasInternalController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
-        params = {"loginEmail", "loginCustomerId", "idp"})
+        params = {"loginEmail", "loginCustomerId"})
     public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
         @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
         @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
@@ -234,8 +232,7 @@ public class CasInternalController {
             final String customerId = user.getCustomerId();
             LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
             return casService.getSubrogationsBySuperUser(email, customerId);
-        }
-        else {
+        } else {
             return new ArrayList<>();
         }
     }

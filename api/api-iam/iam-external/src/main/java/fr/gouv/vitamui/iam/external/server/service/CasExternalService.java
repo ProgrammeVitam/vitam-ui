@@ -54,8 +54,6 @@ import java.util.Optional;
 
 /**
  * Specific CAS service.
- *
- *
  */
 @Getter
 @Setter
@@ -68,21 +66,21 @@ public class CasExternalService extends AbstractInternalClientService {
 
     @Autowired
     public CasExternalService(final CasInternalRestClient casInternalRestClient,
-            final ExternalSecurityService securityService) {
+        final ExternalSecurityService securityService) {
         super(securityService);
         this.casInternalRestClient = casInternalRestClient;
         this.securityService = securityService;
     }
 
-    public void changePassword(final String username, final String password) {
-        getClient().changePassword(getInternalHttpContext(), username, password);
+    public void changePassword(final String username, final String password, final String customerId) {
+        getClient().changePassword(getInternalHttpContext(), username, password, customerId);
     }
 
     public UserDto login(final LoginRequestDto dto) {
         return getClient().login(getInternalHttpContext(), dto);
     }
 
-    public  List<? extends UserDto> getUsersByEmail(final String email, final Optional<String> embedded) {
+    public List<? extends UserDto> getUsersByEmail(final String email, final Optional<String> embedded) {
         return getClient().getUsersByEmail(getInternalHttpContext(), email, embedded);
     }
 

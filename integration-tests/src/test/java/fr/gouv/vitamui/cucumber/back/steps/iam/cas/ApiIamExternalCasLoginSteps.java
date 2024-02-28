@@ -78,8 +78,10 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
 
     private void createUserAndSetPassword() {
         createBasicUser();
-        getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_CHANGE_PASSWORD }).changePassword(
-                getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(), adminPassword);
+        getCasRestClient(false, new Integer[] {casTenantIdentifier},
+            new String[] {ServicesData.ROLE_CAS_CHANGE_PASSWORD}).changePassword(
+            getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(),
+            testContext.authUserDto.getCustomerId(), adminPassword);
     }
 
     @Then("^le serveur retourne une erreur bad credentials")

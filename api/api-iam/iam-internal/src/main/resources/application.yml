@@ -39,6 +39,6 @@ api.token.ttl: 480
 generic.users.subrogation.ttl: 180
 subrogation.ttl: 30
 
-cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
 
 user.connection.tracing.enabled: false
