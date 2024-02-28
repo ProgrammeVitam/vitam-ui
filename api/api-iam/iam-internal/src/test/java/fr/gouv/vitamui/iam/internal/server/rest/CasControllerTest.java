@@ -54,8 +54,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CasInternalController}.
- *
- *
  */
 
 public final class CasControllerTest extends AbstractServerIdentityBuilder {
@@ -129,8 +127,11 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         iamLogbookService = mock(IamLogbookService.class);
         passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
-        internalSubrogationService = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService,
-                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
+        internalSubrogationService =
+            new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
+                userInternalService,
+                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository,
+                subrogationConverter, iamLogbookService);
 
         casService = spy(CasInternalService.class);
         casService.setInternalUserService(internalUserService);
@@ -160,7 +161,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setLastname("zz");
         user.setCustomerId(CUSTOMER_ID);
         user.setPasswordExpirationDate(OffsetDateTime.now());
-        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        when(userRepository.findByEmailAndCustomerId(EMAIL, CUSTOMER_ID)).thenReturn(user);
 
         final Customer customer = new Customer();
         customer.setPasswordRevocationDelay(156);
@@ -243,8 +244,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         request.setPassword(PASSWORD);
         try {
             controller.login(request);
-        }
-        finally {
+        } finally {
             verify(iamLogbookService).loginEvent(user, null, null, "Too many login attempts for username: " + EMAIL);
         }
     }
@@ -273,8 +273,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         try {
             controller.login(request);
             fail("should fail");
-        }
-        catch (final UnAuthorizedException e) {
+        } catch (final UnAuthorizedException e) {
             verify(iamLogbookService).loginEvent(user, null, null, "Bad credentials for username: " + EMAIL);
             assertEquals("Bad credentials for username: " + EMAIL, e.getMessage());
         }
@@ -284,9 +283,9 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     @Test
     public void testChangePasswordOk() {
         user.setType(UserTypeEnum.NOMINATIVE);
-        controller.changePassword(EMAIL, PASSWORD);
+        controller.changePassword(EMAIL, PASSWORD, CUSTOMER_ID);
 
-        verify(casService).updatePassword(EMAIL, PASSWORD);
+        verify(casService).updatePassword(EMAIL, PASSWORD, CUSTOMER_ID);
     }
 
     @Test

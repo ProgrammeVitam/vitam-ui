@@ -72,8 +72,6 @@ import java.util.Optional;
 
 /**
  * The controller for CAS operations.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
@@ -99,18 +97,21 @@ public class CasExternalController {
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
-        ParameterChecker.checkParameter("The user and password are mandatory : ", username, password);
+    public String changePassword(@RequestHeader() final String username, @RequestHeader() final String password,
+        @RequestHeader() final String customerId) throws PreconditionFailedException {
+        LOGGER.debug("changePassword for username: {} / password_exists? {} customerId ", username,
+            StringUtils.isNotBlank(password), StringUtils.isNotBlank(customerId));
+        ParameterChecker.checkParameter("The user, customer id and password are mandatory : ", username, customerId,
+            password);
         SanityChecker.checkSecureParameter(username);
-        casService.changePassword(username, password);
+        casService.changePassword(username, password, customerId);
         return "true";
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<? extends UserDto> getUsersByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
+    public List<? extends UserDto> getUsersByEmail(@RequestParam final String email,
+        @RequestParam final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
         ParameterChecker.checkParameter("The email is mandatory : ", email);
         return casService.getUsersByEmail(email, embedded);
@@ -129,8 +130,7 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserById(@RequestParam final String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
+    public UserDto getUserById(@RequestParam final String id) throws PreconditionFailedException {
         LOGGER.debug("getUserById: {}", id);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);

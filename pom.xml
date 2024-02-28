@@ -73,7 +73,7 @@
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
         <bouncycastle.version>1.68</bouncycastle.version>
-        <cas.version>6.6.4</cas.version>
+        <cas.version>6.6.12</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>

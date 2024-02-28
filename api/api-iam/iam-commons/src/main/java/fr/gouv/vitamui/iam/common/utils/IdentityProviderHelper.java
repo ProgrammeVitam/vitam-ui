@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.common.utils;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,12 +47,11 @@ import java.util.stream.Collectors;
 
 /**
  * Helper to work with identity providers.
- *
- *
  */
 public class IdentityProviderHelper {
 
-    public Optional<IdentityProviderDto> findByTechnicalName(final List<IdentityProviderDto> providers, final String name) {
+    public Optional<IdentityProviderDto> findByTechnicalName(final List<IdentityProviderDto> providers,
+        final String name) {
         for (final IdentityProviderDto provider : providers) {
             if (StringUtils.equals(provider.getTechnicalName(), name)) {
                 return Optional.of(provider);
@@ -74,16 +74,30 @@ public class IdentityProviderHelper {
             .collect(Collectors.toList());
     }
 
+    public Optional<IdentityProviderDto> findByUserIdentifierAndCustomerId(final List<IdentityProviderDto> providers,
+        final String userIdentifier, final String customerId) {
+
+        if (CollectionUtils.isEmpty(providers))
+            return Optional.empty();
+
+        return providers.stream()
+            .filter(provider -> provider.getCustomerId().equals(customerId))
+            .filter(provider -> provider.getPatterns().stream()
+                .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches()))
+            .findFirst();
+    }
+
     @Deprecated
-    public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers, final String identifier) {
-        for (final IdentityProviderDto provider : providers) {
-            for (final String pattern : provider.getPatterns()) {
-                if (Pattern.compile(pattern).matcher(identifier).matches()) {
-                    return Optional.of(provider);
-                }
-            }
-        }
-        return Optional.empty();
+    public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers,
+        final String userIdentifier) {
+
+        if (CollectionUtils.isEmpty(providers))
+            return Optional.empty();
+
+        return providers.stream()
+            .filter(provider -> provider.getPatterns().stream()
+                .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches()))
+            .findFirst();
     }
 
     public boolean identifierMatchProviderPattern(final List<IdentityProviderDto> providers, final String identifier) {

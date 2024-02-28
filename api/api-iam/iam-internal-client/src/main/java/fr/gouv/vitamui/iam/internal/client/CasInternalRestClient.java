@@ -75,19 +75,21 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         LOGGER.debug("loginRequest: {}", loginRequest);
         final HttpEntity<LoginRequestDto> request = new HttpEntity<>(loginRequest, buildHeaders(context));
         final ResponseEntity<UserDto> response = restTemplate.exchange(getUrl() + RestApi.CAS_LOGIN_PATH,
-                HttpMethod.POST, request, UserDto.class);
+            HttpMethod.POST, request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
 
-    public void changePassword(final InternalHttpContext context, final String username, final String password) {
-        LOGGER.debug("changePassword for username: {}", username);
+    public void changePassword(final InternalHttpContext context, final String username, final String password,
+        final String customerId) {
+        LOGGER.debug("changePassword for username: {} customerId {} ", username, customerId);
         final MultiValueMap<String, String> headers = buildHeaders(context);
         headers.put("username", Collections.singletonList(username));
         headers.put("password", Collections.singletonList(password));
+        headers.put("customerId", Collections.singletonList(customerId));
         final HttpEntity request = new HttpEntity(headers);
         final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH,
-                HttpMethod.POST, request, Boolean.class);
+            HttpMethod.POST, request, Boolean.class);
         checkResponse(response);
     }
 
@@ -116,7 +118,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         uriBuilder.queryParam("loginCustomerId", loginCustomerId);
         uriBuilder.queryParam("idp", idp);
         userIdentifier.ifPresent(s -> uriBuilder.queryParam("userIdentifier", s));
-        if(optEmbedded != null) {
+        if (optEmbedded != null) {
             uriBuilder.queryParam("embedded", optEmbedded);
         }
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
@@ -133,7 +135,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
 
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<UserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
-                request, UserDto.class);
+            request, UserDto.class);
         checkResponse(response);
         return response.getBody();
     }
@@ -151,12 +153,12 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUserId(final InternalHttpContext context,
-                                                             final String superUserId) {
+        final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-                getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId, HttpMethod.GET, request,
-                getSubrogationDtoListClass());
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId, HttpMethod.GET, request,
+            getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
