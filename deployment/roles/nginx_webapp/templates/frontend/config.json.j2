@@ -1,6 +1,9 @@
 #jinja2: lstrip_blocks: True
 {
   "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  {% if authorization_header_name is defined and authorization_header_name | length %}
+  "AUTHORIZATION_HEADER_NAME": "{{ authorization_header_name }}",
+  {% endif %}
   "REFERENTIAL_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
   "VERSION_RELEASE": "{{ frontend_application_version }}",
   "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",

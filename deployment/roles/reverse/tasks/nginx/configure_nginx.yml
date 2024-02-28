@@ -37,13 +37,13 @@
     - dhparam.pem.j2
   notify: reload nginx
 
-- name: 'Tasks > reverse > configure_nginx.yml | Copy common configuration (file proxy_params)'
-  copy:
-    src: "nginx/proxy_params"
-    dest: "{{ nginx_conf_dir }}"
+- name: 'Tasks > reverse > configure_nginx.yml | Copy common configuration (file proxy_params.j2)'
+  template:
+    src: "nginx/proxy_params.j2"
+    dest: "{{ nginx_conf_dir }}/proxy_params"
     owner: "{{ reverse_user }}"
     group: "{{ reverse_group }}"
-    mode: '0640'
+    mode: 0644
   notify: reload nginx
 
 - name: 'Tasks > reverse > configure_nginx.yml | Enable the service'
