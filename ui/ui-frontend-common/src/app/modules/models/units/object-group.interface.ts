@@ -70,6 +70,14 @@ export interface VersionDto {
   OtherMetadata: Map<string, any>;
   '#opi': string;
   DataObjectProfile: string;
+  PersistentIdentifier: Array<PersistentIdentifierInfo>;
+}
+
+export interface PersistentIdentifierInfo {
+  PersistentIdentifierType: string;
+  PersistentIdentifierOrigin: string;
+  PersistentIdentifierReference: string;
+  PersistentIdentifierContent: string;
 }
 
 /** Not returned by API. */

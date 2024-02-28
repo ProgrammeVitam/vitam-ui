@@ -5256,7 +5256,9 @@
         "STOCKAGE_STRATEGY_ID": "Identifiant de la stratégie de stockage",
         "COPY": "Copier",
         "PHYSICAL_ID": "Identifiant de l'objet physique",
-        "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES"
+        "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES",
+        "PERSISTENT_IDENTIFIER": "Identifiants pérennes",
+        "PERSISTENT_IDENTIFIER_CONTENT": "Identifiant"
       },
       "TABS": {
         "INFORMATIONS": "Informations",

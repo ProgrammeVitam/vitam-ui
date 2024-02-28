@@ -103,6 +103,21 @@
       <div class="row-separator"></div>
     </div>
 
+    <div *ngIf="versionWithQualifier.PersistentIdentifier" class="object-details-group">
+      <div class="row title uppercase">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PERSISTENT_IDENTIFIER' | translate }}</div>
+
+      <div class="row" *ngFor="let persistentIdentifierInfo of versionWithQualifier.PersistentIdentifier">
+        <div class="col">
+          <div class="read-only-field">
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PERSISTENT_IDENTIFIER_CONTENT' | translate }}</label>
+            <div>{{ persistentIdentifierInfo.PersistentIdentifierContent }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-separator"></div>
+    </div>
+
     <div *ngIf="versionWithQualifier.FormatIdentification" class="object-details-group FORMAT">
       <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.FORMAT' | translate }}</div>
 
