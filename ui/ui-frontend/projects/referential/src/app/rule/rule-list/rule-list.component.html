@@ -17,7 +17,7 @@
           <i class="material-icons">filter_list</i>
         </button>
       </div>
-      <div class="col-2 d-flex align-items-center justify-content-between">
+      <div class="col-4 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.NAME' | translate }}</span>
         <vitamui-common-order-by-button
           orderByKey="RuleValue"
@@ -26,7 +26,7 @@
           (orderChange)="emitOrderChange()"
         ></vitamui-common-order-by-button>
       </div>
-      <div class="col-2 d-flex align-items-center justify-content-between">
+      <div class="col-1 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.PERIOD' | translate }}</span>
         <vitamui-common-order-by-button
           orderByKey="RuleDuration"
@@ -35,7 +35,7 @@
           (orderChange)="emitOrderChange()"
         ></vitamui-common-order-by-button>
       </div>
-      <div class="col-2 d-flex align-items-center justify-content-between">
+      <div class="col-1 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.UNIT_MEASURE' | translate }}</span>
         <vitamui-common-order-by-button
           orderByKey="RuleMeasurement"
@@ -52,10 +52,10 @@
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-1"><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></div>
           <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleId }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ getRuleType(rule?.ruleType) }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleValue }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleDuration }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ getRuleMeasurement(rule?.ruleMeasurement) }}</div>
+          <div class="col-2 word-break">{{ getRuleType(rule?.ruleType) }}</div>
+          <div class="col-4 word-break">{{ rule?.ruleValue }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ rule?.ruleDuration }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ getRuleMeasurement(rule?.ruleMeasurement) }}</div>
           <div class="col-1 actions">
             <div>
               <button
