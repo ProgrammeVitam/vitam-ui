@@ -3,13 +3,12 @@
 [{{ item.key }}]
 name={{ item.key }}
 baseurl={{ item.value }}
-gpgcheck=0
-repo_gpgcheck=0
-enabled=1
-{% if item.proxy is defined %}
-proxy={{item.proxy or '_none_' }}
+{% if item.gpgcheck | default(false) %}
+gpgkey={{ item.gpgkey | default('file://' + vitam_gpgkey_file) }}
+gpgcheck=1
 {% else %}
-proxy=_none_
+gpgcheck=0
 {% endif %}
+proxy={{ item.proxy | default('_none_') }}
 
 {% endfor %}
