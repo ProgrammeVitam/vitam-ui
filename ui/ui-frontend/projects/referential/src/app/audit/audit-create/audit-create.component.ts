@@ -122,9 +122,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
     this.selectedNodes.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => this.changeQueryOnNodesSelection(value));
 
-    this.form.controls.evidenceAudit.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.form.controls.objectId.setValue(value));
+    this.form.controls.evidenceAudit.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
+      if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
+        this.form.controls.objectId.setValue(value);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -179,6 +181,8 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     } else {
       this.allProducerServices.setValue(true);
       this.form.get('evidenceAudit').clearValidators();
+      this.form.get('evidenceAudit').setValue(null);
+      this.form.get('evidenceAudit').markAsUntouched();
     }
 
     this.allNodes.setValue(true);
@@ -212,11 +216,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Add or remove the required validator on the filed 'objectId'
+   * Add or remove the required validator on the field 'objectId'
    */
   private updateObjectIdValidators() {
     if (
-      this.allProducerServices.value &&
+      !this.allProducerServices.value &&
       this.accessionRegisterSummaries &&
       (this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING ||
         this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
