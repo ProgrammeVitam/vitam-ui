@@ -67,8 +67,6 @@ import java.util.Optional;
  * - or to an external IdP (authentication delegation)
  * - or to the bad configuration page if the user is not linked to any identity provider
  * - or to the disabled account page if the user is disabled.
- *
- *
  */
 @RequiredArgsConstructor
 public class DispatcherAction extends AbstractAction {

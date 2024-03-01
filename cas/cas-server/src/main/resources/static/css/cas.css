@@ -1,5 +1,275 @@
-@import url(indigo-pink.css);
-@import url(material-icons.css);
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 200;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 300;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 500;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 600;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 800;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 900;
+  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 200;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 300;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 500;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 600;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 800;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 900;
+  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* latin-ext */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* latin */
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 /*     Generated by Zeplin
     Copyright (C) 2018 - present Zeplin
 
@@ -15,471 +285,177 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  */
-/*     Generated by Zeplin
-    Copyright (C) 2018 - present Zeplin
+.Grey-600 {
+  color: #757575; }
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- */
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 200;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 300;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 400;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 500;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 600;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 700;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 800;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 900;
-  src: url("fontStyles/mulishFont200.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 200;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 300;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 400;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 500;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 600;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 700;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 800;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 900;
-  src: url("fontStyles/mulishFont700.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 200;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 200;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-/* latin-ext */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url("fontStyles/mulishLatinExt.woff2?7pptag") format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-
-/* latin */
-@font-face {
-  font-family: 'Mulish';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url("fontStyles/mulishLatin.woff2?7pptag") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-
-.mat-menu-panel.nav-menu {
-  border-radius: 10px;
-  margin-top: 4px; }
-  .mat-menu-panel.nav-menu .mat-menu-item {
-    font-size: 16px;
-    height: 60px;
-    line-height: 60px; }
-
-.search.mat-autocomplete-panel {
-  border-radius: 43.5px;
-  margin-top: 10px; }
-  .search.mat-autocomplete-panel .mat-option {
-    padding: 0px 36px; }
-
-.flex-align-center {
-  display: flex;
-  align-items: center; }
-
-.flex-justify-content-center {
-  display: flex;
-  justify-content: center; }
-
-.flex-justify-end-margin {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem; }
-
-.line-height-medium {
-  line-height: 1.5; }
-
-.login-padding {
-  padding: 48px 80px; }
-
-.login-marging {
-  margin: 30px auto; }
-
-.marging-top-form {
-  margin-top: 1rem; }
-
-.margin-bottom-form {
-  margin-bottom: 1rem; }
-
-.text-red {
+.Red-500 {
   color: #C10000; }
 
-.centered {
-  position: fixed;
-  top: 44%;
-  left: 50%;
-  transform: translate(-50%, -50%); }
+h1, h2, h3, h4, h5 {
+  color: #212121;
+  margin: 10px 0; }
+  h1.light, h2.light, h3.light, h4.light, h5.light {
+    color: #757575; }
 
-.login-box {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  width: 820px;
-  border-radius: 20px;
-  background-color: #ffffff;
-  box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
-  border: 1px solid #BDBDBD; }
-  .login-box h1 {
-    font-size: 28px;
-    font-weight: 300;
-    color: #485053; }
-  .login-box header p {
-    margin-bottom: 0px; }
-  .login-box p {
-    font-size: 20px;
-    font-weight: 300;
-    color: #485053;
-    line-height: 30px; }
-    .login-box p small {
-      font-size: 15px;
-      color: #a6a6a6;
-      font-weight: 400; }
-  .login-box strong {
-    font-weight: 500; }
-  .login-box a {
-    font-size: 15px;
-    color: var(--vitamui-primary);
-    text-decoration: none; }
-  .login-box input[type=text],
-  .login-box input[type=email],
-  .login-box input[type=password] {
-    outline: none;
-    border-radius: 5px;
-    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
-    transition: border-color 200ms ease-out;
-    height: 50px;
-    padding: 0 30px;
-    border: 1px solid transparent; }
-    .login-box input[type=text]:focus,
-    .login-box input[type=email]:focus,
-    .login-box input[type=password]:focus {
-      border-color: #a6a6a6; }
-    .login-box input[type=text].ng-valid.ng-touched,
-    .login-box input[type=email].ng-valid.ng-touched,
-    .login-box input[type=password].ng-valid.ng-touched {
-      border-color: #27740A; }
-    .login-box input[type=text].ng-invalid.ng-touched,
-    .login-box input[type=email].ng-invalid.ng-touched,
-    .login-box input[type=password].ng-invalid.ng-touched {
-      border-color: #C10000; }
-    .login-box input[type=text][disabled],
-    .login-box input[type=email][disabled],
-    .login-box input[type=password][disabled] {
-      opacity: 0.4; }
-  .login-box .form-error {
-    font-size: 14px;
-    letter-spacing: -0.4px;
-    color: #C10000; }
-    .login-box .form-error i {
-      font-size: 36px;
-      vertical-align: middle;
-      margin-right: 10px; }
-  .login-box button.vitamui-primary {
-    font-size: 15px;
-    font-weight: 500;
-    color: #ffffff;
-    border: none;
-    height: 50px;
-    border-radius: 25px;
-    background-color: var(--vitamui-primary);
-    box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
-    padding: 0 30px;
-    transition: opacity 200ms ease-in-out;
-    border: 1px solid var(--vitamui-primary); }
-    .login-box button.vitamui-primary:focus:not([disabled]), .login-box button.vitamui-primary:hover:not([disabled]) {
-      cursor: pointer;
-      opacity: 85%;
-      outline: none; }
-    .login-box button.vitamui-primary[disabled] {
-      opacity: 0.4; }
-  .login-box .helper {
-    font-size: 15px;
-    color: #aab0b3;
-    text-align: right;
-    transition: opacity 200ms ease-in-out;
-    margin: 0; }
-    .login-box .helper.hidden {
-      opacity: 0; }
-  .login-box button.back {
-    display: flex;
-    align-items: center;
-    background: transparent;
-    color: var(--vitamui-primary);
-    font-size: 14px;
-    font-weight: normal;
-    border: none;
-    padding: 0;
-    cursor: pointer; }
-    .login-box button.back i {
-      display: block;
-      font-size: 18px;
-      color: white;
-      background-color: var(--vitamui-primary);
-      width: 30px;
-      height: 30px;
-      border-radius: 15px;
-      line-height: 30px;
-      margin-right: 10px; }
-  .login-box .error {
-    margin-top: 20px;
-    display: flex;
-    align-items: center; }
-  .login-box .error-field {
-    color: red;
-    margin-left: 20px; }
+h1, .Headline-1 {
+  font-size: 96px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 112px; }
 
-@media only screen and (max-width: 801px) {
-  /* Styles pour cette Media Queries */
-  h3 {
-    font-size: 35px !important; }
-  .login-box {
-    width: 95vw;
-    padding: 15px 20px; }
-    .login-box input[type=text], .login-box input[type=email], .login-box input[type=password] {
-      padding: 0 10px; } }
+h2, .Headline-2 {
+  font-size: 60px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 900;
+  line-height: 72px; }
+
+h3, .Headline-3 {
+  font-size: 42px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 56px; }
+
+h4, .Headline-4 {
+  font-size: 30px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 36px; }
+
+h5, .Headline-5 {
+  font-size: 24px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 32px; }
+
+.Text-large {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 28px; }
+
+.Text-large {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 28px; }
+
+.Text-large-bold {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 28px; }
+
+.Text-medium {
+  font-size: 16px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 24px; }
+
+.Text-medium-bold {
+  font-size: 16px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 24px; }
+
+.Text-normal {
+  font-size: 14px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 22px; }
+
+.Text-normal-bold {
+  font-size: 14px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 22px; }
+
+.Caption {
+  font-size: 12px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 16px; }
+
+.Caption-bold {
+  font-size: 12px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 16px; }
+
+.Subcaption {
+  font-size: 9px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 13px; }
+
+.align-center {
+  align-items: center; }
+
+.justify-center {
+  justify-content: center; }
+
+.display-block {
+  display: block; }
+
+.row {
+  flex-direction: row; }
+
+.col {
+  flex-direction: column; }
+
+.margin-top-5 {
+  margin-top: 5px; }
+
+.margin-top-10 {
+  margin-top: 10px; }
+
+.margin-top-20 {
+  margin-top: 20px; }
+
+.margin-top-30 {
+  margin-top: 30px; }
+
+button.Text-button {
+  text-decoration: none;
+  align-items: center;
+  background: transparent;
+  color: var(--vitamui-primary);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  height: 36px;
+  justify-content: center;
+  align-items: center; }
+  button.Text-button i {
+    font-size: 26px;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px; }
+  button.Text-button span {
+    margin-right: 20px;
+    padding-bottom: 2px; }
+
+button.Button {
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  border: none;
+  height: 50px;
+  border-radius: 25px;
+  background-color: var(--vitamui-primary);
+  box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
+  padding: 0 30px;
+  transition: opacity 200ms ease-in-out;
+  border: 1px solid var(--vitamui-primary); }
+  button.Button:focus:not([disabled]), button.Button:hover:not([disabled]) {
+    cursor: pointer;
+    opacity: 85%;
+    outline: none; }
+  button.Button[disabled] {
+    opacity: 0.4; }
 
 .login {
   position: fixed;
@@ -489,321 +465,55 @@
   right: 0;
   bottom: 0;
   background-color: var(--vitamui-background); }
-  .login .success {
-    padding: 0;
-    height: 440px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    background: #ffffff url("../images/success.jpg") no-repeat left center; }
-    .login .success .content {
-      width: 60%;
-      padding: 0 15%;
-      text-align: center; }
-      .login .success .content i.check-icon {
-        color: var(--vitamui-primary);
-        font-size: 110px; }
-    .login .success h1 {
-      line-height: 36px; }
-    .login .success img.logo {
-      position: absolute;
-      width: 88px;
-      right: 30px;
-      bottom: 30px; }
-  .login .bg-success {
-    background-image: url("../images/success-bg.jpg"); }
-  .login .bg-portal {
-    background-image: url("./images/portal-bg.jpg"); }
 
-.password-init {
-  display: block !important; }
+.password-recovery .instructions {
+  width: 80%; }
 
-.w85 {
-  width: 84%; }
-
-.flex {
-  display: flex; }
-
-.password-recovery {
-  display: flex; }
-  .password-recovery form {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px; }
-    .password-recovery form .form-control {
-      flex-grow: 1; }
-      .password-recovery form .form-control input {
-        width: 100%; }
-  .password-recovery .instructions {
-    width: 80%; }
-  .password-recovery i.check-icon {
-    color: var(--vitamui-secondary);
-    font-size: 110px; }
-  .password-recovery .cancel-link {
-    font-size: 15px;
-    color: #aab0b3;
-    text-decoration: underline;
-    margin-left: 40px; }
-  .password-recovery button[type=submit] {
-    margin-left: 30px; }
-
-.helper.password-helper {
-  text-align: left;
-  margin-top: 5px; }
-  .helper.password-helper ul {
-    padding-left: 1em; }
-    .helper.password-helper ul li i {
-      opacity: 0;
-      transition: opacity 100ms ease-out;
-      vertical-align: middle; }
-    .helper.password-helper ul li.valid {
-      color: #27740A; }
-      .helper.password-helper ul li.valid i {
-        opacity: 1; }
-
-.step-email h1 {
-  margin-bottom: 40px; }
-
-.step-email h1 img {
-  vertical-align: middle; }
-
-.step-email .vitam-logo {
-  position: absolute;
-  top: 30px;
-  right: 30px; }
-
-.step-email form {
-  display: flex;
-  margin-bottom: 15px; }
-  .step-email form .form-control {
-    flex-grow: 1; }
-    .step-email form .form-control input {
-      width: 100%; }
-  .step-email form button[type=submit] {
-    margin-left: 20px; }
-
-.step-password h1 {
-  margin-bottom: 40px; }
-
-.step-password h1 img {
-  vertical-align: middle; }
-
-.step-password .vitam-logo {
-  position: absolute;
-  top: 30px;
-  right: 30px; }
-
-.step-password form {
-  display: flex; }
-  .step-password form .form-control {
-    flex-grow: 1; }
-    .step-password form .form-control input {
-      width: 100%;
-      margin-bottom: 30px; }
-  .step-password form button[type=submit] {
-    margin-left: 20px; }
-
-.step-password i.check-icon {
-  float: right;
-  color: var(--vitamui-primary);
+.password-recovery i.vitamui-icon {
+  color: var(--vitamui-secondary);
   font-size: 110px;
-  margin-left: 60px; }
+  width: 20%;
+  height: 100%; }
 
-.mfa-login .error {
-  width: 280px; }
+.step-email {
+  flex-direction: column; }
+  .step-email .vitam-logo {
+    position: absolute;
+    top: 30px;
+    right: 30px; }
+  .step-email form {
+    margin-bottom: 15px; }
+    .step-email form button[type=submit] {
+      margin-left: 20px; }
 
-.mfa-login .text1 {
-  font-size: 20px;
-  font-weight: 300; }
+.step-password {
+  flex-direction: column; }
 
-.mfa-login .text2 {
-  width: 456px;
-  font-size: 15px;
-  font-weight: normal;
-  color: #a6a6a6;
-  line-height: 1.33; }
-
-.mfa-login #loginForm {
-  clear: both; }
-
-.mfa-login #resendCodeForm {
-  clear: both; }
-
-.mfa-login .missingphone {
-  clear: both; }
-
-.mfa-login .textfield {
-  float: left; }
-  .mfa-login .textfield #token {
-    width: 200px;
-    height: 60px;
-    border-radius: 5px;
-    box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
-    background-color: #ffffff; }
-
-.mfa-login .information {
-  margin-bottom: 33px; }
-  .mfa-login .information .bckicon {
-    float: left;
-    margin-right: 10px;
-    margin-top: 7px; }
-    .mfa-login .information .bckicon .icon {
-      width: 30px;
-      height: 30px;
-      font-size: 18px;
-      color: var(--vitamui-primary);
-      background-color: #ffffff;
-      border-color: var(--vitamui-primary);
-      border-radius: 15px;
-      border-style: solid;
-      border-width: 1px;
-      padding: 0 10px; }
-
-.mfa-login .formfields {
-  width: 100%; }
-
-.mfa-login .buttonbckgrnd {
-  width: 80px;
-  height: 50px;
-  float: left;
-  margin-left: 30px;
-  margin-right: 20px; }
-  .mfa-login .buttonbckgrnd .submittoken {
-    width: 80px;
-    height: 50px;
-    border-radius: 50px;
-    background-color: var(--vitamui-primary);
-    box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
-    text-align: center;
-    padding: 15px 30px;
-    transition: opacity 200ms ease-in-out;
-    border: 1px solid var(--vitamui-primary);
-    font-size: 15px;
-    font-weight: 500;
-    color: #ffffff;
-    text-decoration: none; }
-    .mfa-login .buttonbckgrnd .submittoken:focus:not([disabled]), .mfa-login .buttonbckgrnd .submittoken:hover:not([disabled]) {
-      cursor: pointer;
-      opacity: 85%;
-      outline: none; }
-    .mfa-login .buttonbckgrnd .submittoken[disabled] {
-      opacity: 0.4; }
-
-.mfa-login .countdown {
-  font-size: 15px;
-  font-weight: normal;
-  color: #aab0b3;
-  width: 150px;
-  float: left; }
-
-.mfa-login .text3 {
-  font-size: 15px;
-  font-weight: normal;
-  color: #aab0b3; }
-
-.mfa-login .reset1 {
-  font-size: 15px;
-  font-weight: normal;
-  color: #a6a6a6; }
-
-.mfa-login .reset2 {
-  margin-left: 5px;
-  font-size: 15px;
-  font-weight: normal; }
-
-.mfa-expired .text1 {
-  font-size: 20px;
-  font-weight: 300; }
-
-.mfa-expired #resendCodeForm {
-  font-size: 15px;
-  font-weight: 500; }
-  .mfa-expired #resendCodeForm .button {
-    height: 50px;
-    border-radius: 50px;
-    background-color: var(--vitamui-primary);
-    box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
-    padding: 15px 30px;
-    transition: opacity 200ms ease-in-out;
-    border: 1px solid var(--vitamui-primary);
-    font-size: 15px;
-    font-weight: 500;
-    color: #ffffff;
-    text-decoration: none; }
-    .mfa-expired #resendCodeForm .button:focus:not([disabled]), .mfa-expired #resendCodeForm .button:hover:not([disabled]) {
-      cursor: pointer;
-      opacity: 85%;
-      outline: none; }
-    .mfa-expired #resendCodeForm .button[disabled] {
-      opacity: 0.4; }
-
-.mfa-missing-phone .title {
-  font-size: 20px;
-  font-weight: 500; }
-
-.mfa-missing-phone .text1 {
-  font-size: 20px;
-  font-weight: 300; }
-
-.mfa-missing-phone .text2 {
-  font-size: 15px;
-  font-weight: normal;
-  color: #a6a6a6; }
-
-h1, h2, h3, h4, h5 {
-  color: #212121;
-  margin: 10px 0; }
-  h1.light, h2.light, h3.light, h4.light, h5.light {
-    color: #757575; }
-
-h1 {
-  font-size: 96px;
-  font-weight: 800; }
-
-h2 {
-  font-size: 60px;
-  font-weight: 900; }
-
-h3 {
-  font-size: 42px;
-  font-weight: 800; }
-
-h4 {
-  font-size: 30px;
-  font-weight: 600; }
-
-h5 {
-  font-size: 24px;
-  font-weight: 800; }
-
-.text {
-  color: #212121;
-  font-weight: 400; }
-  .text.large {
-    font-size: 20px; }
-  .text.medium {
-    font-size: 16px; }
-  .text.normal {
-    font-size: 14px; }
-  .text.caption {
-    font-size: 12px; }
-  .text.bold {
-    font-weight: bold; }
-  .text.link {
-    text-decoration: underline;
-    cursor: pointer; }
-  .text.spaced {
-    letter-spacing: 0.8px; }
-  .text.light {
-    color: #757575; }
+.step-password-reset {
+  flex-direction: column; }
+  .step-password-reset .password-helper {
+    flex-direction: column; }
+    .step-password-reset .password-helper .password-helper-line {
+      flex-direction: row; }
+      .step-password-reset .password-helper .password-helper-line i {
+        display: none; }
+      .step-password-reset .password-helper .password-helper-line.valid {
+        color: #27740A; }
+        .step-password-reset .password-helper .password-helper-line.valid i {
+          display: flex; }
+    .step-password-reset .password-helper ul {
+      padding: 0 0 0 10px;
+      margin: 0 0 0 20px;
+      list-style-type: disc; }
+      .step-password-reset .password-helper ul li {
+        padding-left: 10px; }
+        .step-password-reset .password-helper ul li i {
+          opacity: 0;
+          transition: opacity 100ms ease-out;
+          vertical-align: middle; }
 
 .loader {
-  border-radius: 50%;
-  border-top: 5px solid transparent;
-  border-right: 5px dashed var(--vitamui-primary);
-  border-bottom: 5px solid var(--vitamui-primary);
-  border-left: 5px solid var(--vitamui-primary);
+  margin-top: 60px;
   width: 100px;
   height: 100px;
   -webkit-animation: spin 1000ms linear infinite;
@@ -827,16 +537,149 @@ body {
   background-color: var(--vitamui-background);
   color: var(--vitamui-grey-900); }
 
+div, span, form, i, button {
+  display: flex; }
+
+.centered {
+  flex-direction: column;
+  align-items: center; }
+  .centered .logo {
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 20px; }
+    .centered .logo img {
+      max-width: 270px;
+      height: 150px; }
+
 button, textarea, input {
   font-family: 'Mulish', sans-serif; }
 
 * {
   box-sizing: border-box; }
 
-.primary {
-  color: var(--vitamui-primary); }
-
 .picto-attention {
   width: 31px;
   height: 28px;
   object-fit: contain; }
+
+.vitamui-card {
+  padding: 40px 100px;
+  position: relative;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 820px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05); }
+  .vitamui-card .vitamui-icon {
+    width: 24px;
+    height: 24px; }
+  .vitamui-card strong {
+    font-weight: 500; }
+  .vitamui-card a {
+    font-size: 15px;
+    color: var(--vitamui-primary);
+    text-decoration: underline; }
+  .vitamui-card input[type=text],
+  .vitamui-card input[type=email],
+  .vitamui-card input[type=password],
+  .vitamui-card select {
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+    transition: border-color 200ms ease-out;
+    height: 50px;
+    padding: 0 30px;
+    background-color: transparent; }
+    .vitamui-card input[type=text]:focus,
+    .vitamui-card input[type=email]:focus,
+    .vitamui-card input[type=password]:focus,
+    .vitamui-card select:focus {
+      border-color: #a6a6a6; }
+    .vitamui-card input[type=text].ng-valid.ng-touched,
+    .vitamui-card input[type=email].ng-valid.ng-touched,
+    .vitamui-card input[type=password].ng-valid.ng-touched,
+    .vitamui-card select.ng-valid.ng-touched {
+      border-color: #27740A; }
+    .vitamui-card input[type=text].ng-invalid.ng-touched,
+    .vitamui-card input[type=email].ng-invalid.ng-touched,
+    .vitamui-card input[type=password].ng-invalid.ng-touched,
+    .vitamui-card select.ng-invalid.ng-touched {
+      border-color: #C10000; }
+    .vitamui-card input[type=text][disabled],
+    .vitamui-card input[type=email][disabled],
+    .vitamui-card input[type=password][disabled],
+    .vitamui-card select[disabled] {
+      opacity: 0.4; }
+  .vitamui-card .warning {
+    flex-direction: row;
+    align-items: start;
+    margin: 5px 0 0 15px;
+    min-height: 24px;
+    color: #C10000; }
+    .vitamui-card .warning .element {
+      min-height: 24px;
+      align-items: center; }
+  .vitamui-card form {
+    flex-direction: column; }
+    .vitamui-card form .form-line {
+      flex-grow: 1;
+      position: relative;
+      margin-top: 10px; }
+      .vitamui-card form .form-line input, .vitamui-card form .form-line select {
+        font-size: 16px;
+        width: 100%;
+        padding-top: 23px;
+        height: 60px;
+        padding-left: 15px; }
+      .vitamui-card form .form-line label {
+        font-family: 'Mulish', sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--vitamui-primary);
+        opacity: 1;
+        /* Firefox */
+        position: absolute;
+        top: 22px;
+        left: 15px;
+        -moz-transition: 0.3s right ease;
+        -ms-transition: 0.3s right ease;
+        -o-transition: 0.3s right ease;
+        -webkit-transition: 0.3s right ease;
+        transition: 0.3s right ease;
+        z-index: 0;
+        transition: transform 150ms ease-out; }
+      .vitamui-card form .form-line select {
+        /* Arrow */
+        appearance: none; }
+      .vitamui-card form .form-line .select-arrow {
+        color: var(--vitamui-primary);
+        pointer-events: none;
+        position: absolute;
+        top: 18px;
+        right: 15px; }
+      .vitamui-card form .form-line select:focus + label,
+      .vitamui-card form .form-line input:focus + label {
+        transform: translateY(-12px); }
+      .vitamui-card form .form-line select:valid + label,
+      .vitamui-card form .form-line input:valid + label {
+        transform: translateY(-12px); }
+    .vitamui-card form button[type=submit] {
+      margin-left: 20px; }
+  .vitamui-card .button-footer {
+    flex-direction: row;
+    margin-top: 30px;
+    align-items: center;
+    gap: 20px; }
+
+@media only screen and (max-width: 801px) {
+  /* Styles pour cette Media Queries */
+  h3 {
+    font-size: 35px !important; }
+  .vitamui-card {
+    width: 95vw;
+    padding: 15px 20px; }
+    .vitamui-card input[type=text], .vitamui-card input[type=email], .vitamui-card input[type=password] {
+      padding: 0 10px; } }

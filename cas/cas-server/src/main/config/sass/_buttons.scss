@@ -1,0 +1,54 @@
+button.Text-button {
+  text-decoration: none;
+  align-items: center;
+  background: transparent;
+  color: var(--vitamui-primary);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    font-size: 26px;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+
+  span {
+    margin-right: 20px;
+    padding-bottom: 2px;
+  }
+}
+
+
+button.Button {
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: $white;
+  border: none;
+  height: 50px;
+  border-radius: 25px;
+  background-color: var(--vitamui-primary);
+  box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
+  padding: 0 30px;
+  transition: opacity 200ms ease-in-out;
+  border: 1px solid var(--vitamui-primary);
+
+  &:focus:not([disabled]),
+  &:hover:not([disabled]) {
+    cursor: pointer;
+    opacity: 85%;
+    outline: none;
+  }
+
+  &[disabled] {
+    opacity: 0.4;
+  }
+}

@@ -2,22 +2,24 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <title th:text="#{screen.mfa.sms.missingphone.pagetitle}"></title>
+  <title th:text="#{screen.mfa.sms.missingphone.pagetitle}"></title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
 
-    <div class="mfa-missing-phone">
 
-        <h4 th:text="#{screen.mfa.sms.missingphone.title}"></h4>
-
-        <div class="text large" th:text="#{screen.mfa.sms.missingphone.text1(${firstname})}"></div>
-
-        <div class="text2 text medium marging-top-form margin-bottom-form" th:text="#{screen.mfa.sms.missingphone.text2}"></div>
-
-    </div>
-
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold" th:text="#{screen.mfa.sms.missingphone.title}">Numéro de téléphone manquant</div>
+  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.missingphone.text1(${firstname})}">
+    {0}, j'ai besoin de vous envoyer un code de validation par SMS mais je ne trouve aucun numéro de téléphone
+    associé
+    à votre profil.
+  </div>
+  <div class="Text-medium" th:text="#{screen.mfa.sms.missingphone.text2}">
+    Veuillez contacter votre administrateur pour lui communiquer votre numéro de téléphone portable.
+  </div>
 </div>
+
+
 </body>
 </html>

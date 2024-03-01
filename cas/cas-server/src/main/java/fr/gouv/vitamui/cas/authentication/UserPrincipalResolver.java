@@ -94,8 +94,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * Resolver to retrieve the user.
- *
- *
  */
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
