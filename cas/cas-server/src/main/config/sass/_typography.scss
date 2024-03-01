@@ -1,72 +1,114 @@
 
 h1, h2, h3, h4, h5 {
-    color: $grey-900;
-    margin: 10px 0;
+  color: $grey-900;
+  margin: 10px 0;
 
-    &.light {
-        color: $grey-600;
-    }
+  &.light {
+    color: $grey-600;
+  }
 }
 
-h1 {
-    font-size: 96px;
-    font-weight: 800;
+h1, .Headline-1 {
+  font-size: 96px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 112px
 }
 
-h2 {
-    font-size: 60px;
-    font-weight: 900; 
+h2, .Headline-2 {
+  font-size: 60px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 900;
+  line-height: 72px
 }
 
-h3 {
-    font-size: 42px;
-    font-weight: 800; 
+h3, .Headline-3 {
+  font-size: 42px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 56px
 }
 
-h4 {
-    font-size: 30px;
-    font-weight: 600; 
+h4, .Headline-4 {
+  font-size: 30px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 36px
 }
 
-h5 {
-    font-size: 24px;
-    font-weight: 800; 
+h5, .Headline-5 {
+  font-size: 24px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  line-height: 32px
 }
 
-.text {
-    color: $grey-900;
-    font-weight: 400;
+.Text-large {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 28px
+}
 
-    &.large {
-        font-size: 20px;
-    }
+.Text-large {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 28px
+}
 
-    &.medium {
-        font-size: 16px;
-    }
+.Text-large-bold {
+  font-size: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 28px
+}
 
-    &.normal {
-        font-size: 14px;
-    }
+.Text-medium {
+  font-size: 16px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 24px
+}
 
-    &.caption {
-        font-size: 12px;
-    }
+.Text-medium-bold {
+  font-size: 16px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 24px
+}
 
-    &.bold {
-        font-weight: bold;
-    }
+.Text-normal {
+  font-size: 14px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 22px
+}
 
-    &.link {
-        text-decoration: underline;
-        cursor: pointer;
-    }
+.Text-normal-bold {
+  font-size: 14px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 22px
+}
 
-    &.spaced {
-        letter-spacing: 0.8px;
-    }
+.Caption {
+  font-size: 12px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  line-height: 16px
+}
 
-    &.light {
-        color: $grey-600;
-    }
+.Caption-bold {
+  font-size: 12px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 16px
+}
+
+.Subcaption {
+  font-size: 9px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  line-height: 13px
 }

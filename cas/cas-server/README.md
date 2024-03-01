@@ -10,6 +10,13 @@ mvn clean package
 java -Dspring.config.location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.jar
 ```
 
+# Developpement 
+
+développement des pages html - en static grace à thymeleaf et avec sass :
+```
+npm install -g sass
+sass --watch src/main/config/sass/cas.scss src/main/resources/static/css/cas.css
+```
 
 # SAML metadata generation
 
@@ -67,8 +74,8 @@ The `ProvidersService` loads the identity providers from the IAM API every minut
 
 The webflow (`webflow/login/login-webflow` file) is customized to perform the login process in two steps:
 
-- login input (`templates/casLoginView.html`)
-- password input (new file: `templates/casPwdView.html`) or authentication delegation.
+- login input (`templates/emailForm.html`)
+- password input (new file: `templates/passwordForm.html`) or authentication delegation.
 
 It's the `DispatcherAction` (called by the webflow) which computes if the user must fill in his password or be redirected to an IdP for login.
 

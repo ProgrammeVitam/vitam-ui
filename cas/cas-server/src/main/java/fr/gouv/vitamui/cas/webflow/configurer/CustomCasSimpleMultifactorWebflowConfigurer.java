@@ -60,6 +60,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
      * Webflow event id.
      */
     public static final String MFA_SIMPLE_EVENT_ID = "mfa-simple";
+    public static final String TEMPLATE_SIMPLE_MFA_LOGIN = "simple-mfa/casSimpleMfaLoginView";
 
     public CustomCasSimpleMultifactorWebflowConfigurer(final FlowBuilderServices flowBuilderServices,
                                                  final FlowDefinitionRegistry loginFlowDefinitionRegistry,
@@ -97,14 +98,13 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             val setPrincipalAction = createSetAction("viewScope.principal", "conversationScope.authentication.principal");
             val propertiesToBind = CollectionUtils.wrapList("token");
             val binder = createStateBinderConfiguration(propertiesToBind);
-            val viewLoginFormState = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM,
-                "simple-mfa/casSimpleMfaLoginView", binder);
+            val viewLoginFormState = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, TEMPLATE_SIMPLE_MFA_LOGIN, binder);
             createStateModelBinding(viewLoginFormState, CasWebflowConstants.VAR_ID_CREDENTIAL, CasSimpleMultifactorTokenCredential.class);
             viewLoginFormState.getEntryActionList().add(setPrincipalAction);
 
             // CUSTO: instead of CasWebflowConstants.STATE_ID_REAL_SUBMIT, send to intermediateSubmit
-            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_SUBMIT,
-                "intermediateSubmit", Map.of("bind", Boolean.TRUE, "validate", Boolean.TRUE));
+            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_SUBMIT, "intemediateSubmit",
+                Map.of("bind", Boolean.TRUE, "validate", Boolean.TRUE));
 
             createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_RESEND,
                 CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN,

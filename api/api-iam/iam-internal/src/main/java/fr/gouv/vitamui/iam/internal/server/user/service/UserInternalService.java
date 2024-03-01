@@ -119,8 +119,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * The service to read, create, update and delete the users.
- *
- *
  */
 @Getter
 @Setter
