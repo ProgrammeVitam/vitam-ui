@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {FileFormat, FILE_FORMAT_EXTERNAL_PREFIX} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {extend, isEmpty} from 'underscore';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { extend, isEmpty } from 'underscore';
 import { ActivatedRoute } from '@angular/router';
-import {FileFormatService} from '../../file-format.service';
+import { FileFormatService } from '../../file-format.service';
 import { ApplicationId, diff, Role, SecurityService } from 'ui-frontend-common';
 
 @Component({
@@ -151,7 +151,7 @@ export class FileFormatInformationTabComponent {
         if (formData.extensions) {
           // The extensions property must be an array of string, not a string
           formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
-        } else if(formData.extensions === ""){
+        } else if (formData.extensions === '') {
           formData.extensions = [];
         }
         return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)));
@@ -171,11 +171,12 @@ export class FileFormatInformationTabComponent {
           this.submited = false;
           this.fileFormat = response;
           this.fileFormatService.updated.next(this.fileFormat);
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      },
+    );
   }
 
   resetForm(fileFormat: FileFormat) {

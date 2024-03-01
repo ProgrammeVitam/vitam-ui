@@ -67,15 +67,11 @@ describe('AuditPreviewComponent', () => {
       providers: [
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy }
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
-      imports: [
-        PipesModule,
-        TranslateModule.forRoot()
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      imports: [PipesModule, TranslateModule.forRoot()],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

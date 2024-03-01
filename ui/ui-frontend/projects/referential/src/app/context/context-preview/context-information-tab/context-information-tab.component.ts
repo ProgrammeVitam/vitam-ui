@@ -102,10 +102,10 @@ export class ContextInformationTabComponent {
       status: [null, Validators.required],
       securityProfile: [null, Validators.required],
       enableControl: [null, Validators.required],
-      creationDate: [{value: null, disabled:true}, Validators.required],
-      activationDate: [{value: null, disabled:true}],
-      lastUpdate: [{value: null, disabled:true}],
-      deactivationDate: [{value: null, disabled:true}],
+      creationDate: [{ value: null, disabled: true }, Validators.required],
+      activationDate: [{ value: null, disabled: true }],
+      lastUpdate: [{ value: null, disabled: true }],
+      deactivationDate: [{ value: null, disabled: true }],
     });
 
     this.securityProfileService.getAll().subscribe((securityProfiles) => {
@@ -160,13 +160,13 @@ export class ContextInformationTabComponent {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.contextService.get(this._context.identifier).pipe(
-          tap((response) => this.contextService.updated.next(response))
-        )
-        .subscribe((response) => {
-          this.submited = false;
-          this.context = response;
-        });
+        this.contextService
+          .get(this._context.identifier)
+          .pipe(tap((response) => this.contextService.updated.next(response)))
+          .subscribe((response) => {
+            this.submited = false;
+            this.context = response;
+          });
       },
       () => {
         this.submited = false;

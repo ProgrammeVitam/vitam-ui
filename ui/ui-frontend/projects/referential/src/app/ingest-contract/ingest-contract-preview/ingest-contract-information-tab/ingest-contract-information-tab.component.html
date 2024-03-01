@@ -1,31 +1,33 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <vitamui-common-slide-toggle [disabled]="isReadOnly" [formControl]="statusControl" class="w-100">
-    <span>{{ ('INGEST_CONTRACT.TAB.INFORMATION.' + (statusControl.value ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT')) | translate }}</span>
+    <span>{{ 'INGEST_CONTRACT.TAB.INFORMATION.' + (statusControl.value ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT') | translate }}</span>
   </vitamui-common-slide-toggle>
 
   <vitamui-common-input formControlName="name" placeholder="{{ 'COMMON.NAME' | translate }}" class="w-100" required>
     <ng-container *ngIf="form.get('name')?.touched">
-      <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{ 'COMMON.REQUIRED' | translate }}
+      <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
+        >{{ 'COMMON.REQUIRED' | translate }}
       </vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
-        {{ 'COMMON.NAME_ALREADY_EXISTS'| translate  }}
+        {{ 'COMMON.NAME_ALREADY_EXISTS' | translate }}
       </vitamui-common-input-error>
     </ng-container>
   </vitamui-common-input>
 
-  <vitamui-common-textarea formControlName="description" placeholder="{{ 'COMMON.DESCRIPTION' | translate }}"
-    required>
+  <vitamui-common-textarea formControlName="description" placeholder="{{ 'COMMON.DESCRIPTION' | translate }}" required>
     <vitamui-common-input-error *ngIf="form.get('description')?.touched && !!form.get('description')?.errors?.required">
       {{ 'COMMON.REQUIRED' | translate }}
     </vitamui-common-input-error>
   </vitamui-common-textarea>
 
   <mat-form-field class="vitamui-mat-select w-100 mt-3 p-0">
-    <mat-select formControlName="archiveProfiles"
-      placeholder="{{'INGEST_CONTRACT.TAB.INFORMATION.ARCHIVE_PROFILE' | translate }}" panelclass="vitamui-mat-select"
-      multiple>
-      <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }}
-      </mat-option>
+    <mat-select
+      formControlName="archiveProfiles"
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.ARCHIVE_PROFILE' | translate }}"
+      panelclass="vitamui-mat-select"
+      multiple
+    >
+      <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }} </mat-option>
     </mat-select>
     <div class="select-arrow">
       <i class="material-icons">keyboard_arrow_up</i>
@@ -33,17 +35,16 @@
     </div>
   </mat-form-field>
 
-    <div class="col-10 form-control">
-      <mat-form-field class="vitamui-mat-select">
-        <mat-select
-          formControlName="managementContractId"
-          placeholder="{{'INGEST_CONTRACT.TAB.INFORMATION.MANAGEMENT_CONTRACT' | translate }}"
-          panelclass="vitamui-mat-select"
-        >
-          <mat-option [value]="null"> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
-          <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier">{{
-            managementContract.name
-          }}</mat-option>
+  <mat-form-field class="vitamui-mat-select">
+    <mat-select
+      formControlName="managementContractId"
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.MANAGEMENT_CONTRACT' | translate }}"
+      panelclass="vitamui-mat-select"
+    >
+      <mat-option [value]="null"> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
+      <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier">{{
+        managementContract.name
+      }}</mat-option>
     </mat-select>
     <div class="select-arrow">
       <i class="material-icons">keyboard_arrow_up</i>
@@ -52,23 +53,43 @@
   </mat-form-field>
 
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
-    [value]="ingestContract.creationDate ? (ingestContract.creationDate  | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+    <input
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
+      [value]="ingestContract.creationDate ? (ingestContract.creationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      disabled
+      matInput
+    />
   </mat-form-field>
 
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
-    [value]="ingestContract.lastUpdate ? (ingestContract.lastUpdate  | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+    <input
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
+      [value]="ingestContract.lastUpdate ? (ingestContract.lastUpdate | dateTime: 'dd/MM/yyyy') : '-'"
+      disabled
+      matInput
+    />
   </mat-form-field>
 
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
-    [value]="ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate ? (ingestContract.activationDate | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+    <input
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
+      [value]="
+        ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate
+          ? (ingestContract.activationDate | dateTime: 'dd/MM/yyyy')
+          : '-'
+      "
+      disabled
+      matInput
+    />
   </mat-form-field>
 
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
-    [value]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'" disabled matInput  />
+    <input
+      placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
+      [value]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      disabled
+      matInput
+    />
   </mat-form-field>
 
   <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">

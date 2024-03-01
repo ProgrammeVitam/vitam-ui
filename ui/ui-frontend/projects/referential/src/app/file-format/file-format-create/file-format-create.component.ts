@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-import {FileFormatService} from '../file-format.service';
-import {FileFormatCreateValidators} from './file-format-create.validators';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { FileFormatService } from '../file-format.service';
+import { FileFormatCreateValidators } from './file-format-create.validators';
 
 @Component({
   selector: 'app-file-format-create',
@@ -66,7 +66,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private fileFormatService: FileFormatService,
-    private fileFormatCreateValidators: FileFormatCreateValidators
+    private fileFormatCreateValidators: FileFormatCreateValidators,
   ) {}
 
   ngOnInit() {

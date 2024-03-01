@@ -52,8 +52,8 @@ export class LogbookSearchService extends SearchService<Event> {
       $filter: {
         $limit: pageRequest.size,
         $offset: Math.max(0, pageRequest.page - 1) * pageRequest.size,
-        $orderby: { evDateTime }
-      }
+        $orderby: { evDateTime },
+      },
     };
 
     if (!criteria) {

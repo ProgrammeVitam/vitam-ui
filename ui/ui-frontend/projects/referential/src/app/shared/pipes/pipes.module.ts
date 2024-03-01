@@ -4,8 +4,8 @@ import { EventTypeColorClassPipe } from './event-type-color-class.pipe';
 import { LastEventPipe } from './last-event.pipe';
 
 @NgModule({
-    declarations: [LastEventPipe, EventTypeBadgeClassPipe, EventTypeColorClassPipe],
-    imports: [],
-    exports: [LastEventPipe, EventTypeBadgeClassPipe, EventTypeColorClassPipe],
+  declarations: [LastEventPipe, EventTypeBadgeClassPipe, EventTypeColorClassPipe],
+  imports: [],
+  exports: [LastEventPipe, EventTypeBadgeClassPipe, EventTypeColorClassPipe],
 })
-export class PipesModule { }
+export class PipesModule {}

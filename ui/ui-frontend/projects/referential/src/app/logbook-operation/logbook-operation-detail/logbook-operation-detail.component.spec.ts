@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientModule} from '@angular/common/http';
-import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {of} from 'rxjs';
-import {AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {LogbookDownloadService} from '../logbook-download.service';
-import {LogbookOperationDetailComponent} from './logbook-operation-detail.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { HttpClientModule } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { LogbookDownloadService } from '../logbook-download.service';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
+import { TranslateModule } from '@ngx-translate/core';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
@@ -83,7 +83,7 @@ describe('LogbookOperationDetailComponent', () => {
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
-        {provide: BASE_URL, useValue: '/fake-api'},
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },

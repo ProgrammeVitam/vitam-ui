@@ -10,9 +10,7 @@ describe(SiteApiService.name, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ]
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
     });
     service = TestBed.inject(SiteApiService);
   });

@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpResponse} from '@angular/common/http';
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {FileTypes} from 'projects/vitamui-library/src/lib/models/file-types.enum';
-import {AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage} from 'ui-frontend-common';
-import {ImportDialogParam, ReferentialTypes} from '../shared/import-dialog/import-dialog-param.interface';
-import {ImportDialogComponent} from '../shared/import-dialog/import-dialog.component';
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
+import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 
-import {Subject, Subscription} from 'rxjs';
-import {DownloadSnackBarService} from '../core/service/download-snack-bar.service';
-import {AccessContractCreateComponent} from './access-contract-create/access-contract-create.component';
-import {AccessContractListComponent} from './access-contract-list/access-contract-list.component';
-import {AccessContractService} from './access-contract.service';
+import { Subject, Subscription } from 'rxjs';
+import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
+import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
+import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
+import { AccessContractService } from './access-contract.service';
 
 @Component({
   selector: 'app-access',
@@ -71,13 +71,13 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     private readonly accessContractService: AccessContractService,
     private applicationService: ApplicationService,
     private translateService: TranslateService,
-    private downloadSnackBarService: DownloadSnackBarService
+    private downloadSnackBarService: DownloadSnackBarService,
   ) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => this.tenantIdentifier = params.tenantIdentifier);
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
     this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
       this.updateSlaveMode();
@@ -112,11 +112,11 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       allowedFiles: [FileTypes.CSV],
       referential: ReferentialTypes.ACCESS_CONTRACT,
       successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',
-      iconMessage: 'vitamui-icon-user'
+      iconMessage: 'vitamui-icon-user',
     };
 
     this.dialog
-      .open(ImportDialogComponent, {panelClass: 'vitamui-modal', disableClose: true,data: params,})
+      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
       .afterClosed()
       .subscribe((result) => {
         if (result?.successfulImport) {
@@ -132,16 +132,18 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
         DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_access_contracts.csv');
         this.downloadSnackBarService.close();
       },
-      () => this.downloadSnackBarService.close()
+      () => this.downloadSnackBarService.close(),
     );
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
   }
 
   public downloadModel(): void {
-    this.accessContractService.downloadImportAccessContractFileModel().subscribe((response: HttpResponse<Blob>) =>
-      DownloadUtils.loadFromBlob(response, response.body.type, 'Import_access_contrat_template.csv')
-    );
+    this.accessContractService
+      .downloadImportAccessContractFileModel()
+      .subscribe((response: HttpResponse<Blob>) =>
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_access_contrat_template.csv'),
+      );
   }
 
   public onSearchSubmit(search: string) {
@@ -161,5 +163,4 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       this.isSlaveMode = value;
     });
   }
-
 }

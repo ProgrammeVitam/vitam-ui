@@ -1,7 +1,10 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-probative-value-preview *ngIf="openedItem" [probativeValue]="openedItem"
-      (previewClose)="closePanel()"></app-probative-value-preview>
+    <app-probative-value-preview
+      *ngIf="openedItem"
+      [probativeValue]="openedItem"
+      (previewClose)="closePanel()"
+    ></app-probative-value-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -10,8 +13,10 @@
         {{ 'PROBATIVE_VALUE.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'PROBATIVE_VALUE.HOME.SEARCH_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)">
+      <vitamui-common-banner
+        [searchbarPlaceholder]="'PROBATIVE_VALUE.HOME.SEARCH_PLACEHOLDER' | translate"
+        (search)="onSearchSubmit($event)"
+      >
         <button class="btn primary mr-3" (click)="openCreateProbativeValueDialog()">
           <span>{{ 'PROBATIVE_VALUE.HOME.GENERATE_VALUE' | translate }}</span>
         </button>
@@ -19,19 +24,29 @@
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
         <mat-form-field class="vitamui-input vitamui-date mr-4">
-          <input [matDatepicker]="pickerStart" [max]="dateRangeFilterForm.get('endDate').value" matInput
-            placeholder="{{ 'PROBATIVE_VALUE.HOME.START_DATE' | translate }}" formControlName="startDate" #stDateInput />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value"
-            (click)="clearDate('startDate', $event, stDateInput)"></i>
+          <input
+            [matDatepicker]="pickerStart"
+            [max]="dateRangeFilterForm.get('endDate').value"
+            matInput
+            placeholder="{{ 'PROBATIVE_VALUE.HOME.START_DATE' | translate }}"
+            formControlName="startDate"
+            #stDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerStart></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="vitamui-input vitamui-date">
-          <input [matDatepicker]="pickerEnd" [min]="dateRangeFilterForm.get('startDate').value" matInput
-            placeholder="{{ 'PROBATIVE_VALUE.HOME.END_DATE' | translate }}" formControlName="endDate" #endDateInput />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value"
-            (click)="clearDate('endDate', $event, endDateInput)"></i>
+          <input
+            [matDatepicker]="pickerEnd"
+            [min]="dateRangeFilterForm.get('startDate').value"
+            matInput
+            placeholder="{{ 'PROBATIVE_VALUE.HOME.END_DATE' | translate }}"
+            formControlName="endDate"
+            #endDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerEnd></mat-datepicker>
         </mat-form-field>
@@ -39,8 +54,11 @@
     </div>
 
     <div class="vitamui-content">
-      <app-probative-value-list (probativeValueClick)="showProbativeValue($event)" [search]="search"
-        [filters]="filters"></app-probative-value-list>
+      <app-probative-value-list
+        (probativeValueClick)="showProbativeValue($event)"
+        [search]="search"
+        [filters]="filters"
+      ></app-probative-value-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

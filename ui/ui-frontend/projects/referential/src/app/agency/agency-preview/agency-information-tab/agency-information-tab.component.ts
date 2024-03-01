@@ -34,10 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { Agency, ApplicationId, diff, Role, SecurityService } from 'ui-frontend-common';
-import { extend } from 'underscore';
+import { extend, isEmpty } from 'underscore';
 import { AgencyService } from '../../agency.service';
 
 @Component({
@@ -45,61 +48,102 @@ import { AgencyService } from '../../agency.service';
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
 })
-export class AgencyInformationTabComponent implements OnInit {
-  @Input() tenantIdentifier: number;
-  @Input() set agency(agency: Agency) {
-    this._agency = agency;
-    this.initForm();
-  }
+export class AgencyInformationTabComponent {
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  form: FormGroup;
+  tenantIdentifier: number;
   submited = false;
-  hasUpdateAgencyRole = false;
-  loading = false;
+  checkUpdateRole = new Observable<boolean>();
 
+  // tslint:disable-next-line:variable-name
   private _agency: Agency;
 
-  constructor(private formBuilder: FormBuilder, private agencyService: AgencyService, private securityService: SecurityService) {}
+  form: FormGroup;
+  previousValue = (): Agency => {
+    return this._agency;
+  };
 
-  ngOnInit() {
-    this.initForm();
-    this.securityService
-      .hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES)
-      .subscribe((value: boolean) => (this.hasUpdateAgencyRole = value));
+  @Input()
+  set agency(agency: Agency) {
+    if (!agency.description) {
+      agency.description = '';
+    }
+    this._agency = agency;
+    this.resetForm(this.agency);
+    this.updated.emit(false);
   }
 
-  private initForm(): void {
-    if (!this._agency.description) {
-      this._agency.description = '';
-    }
+  get agency(): Agency {
+    return this._agency;
+  }
 
+  @Input()
+  set readOnly(readOnly: boolean) {
+    if (readOnly && this.form.enabled) {
+      this.form.disable({ emitEvent: false });
+    } else if (this.form.disabled) {
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
+    }
+  }
+
+  constructor(
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private agencyService: AgencyService,
+    private securityService: SecurityService,
+  ) {
     this.form = this.formBuilder.group({
-      name: [this._agency.name, Validators.required],
-      description: [this._agency.description],
+      identifier: [null, Validators.required],
+      name: [null, Validators.required],
+      description: [null],
     });
+
+    this.route.params.subscribe((params) => {
+      this.tenantIdentifier = +params.tenantIdentifier;
+    });
+
+    this.checkUpdateRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES);
   }
 
-  public onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+  unchanged(): boolean {
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    this.updated.emit(!unchanged);
+    return unchanged;
+  }
 
-    this.loading = true;
-    const partialObj = extend({ id: this._agency.id, identifier: this._agency.identifier }, this.getDiffValues());
-    this.agencyService.patch(partialObj).subscribe(
-      () => {
-        this.loading = false;
-        this._agency = extend(this._agency, partialObj);
-      },
-      () => (this.loading = false)
+  isInvalid(): boolean {
+    return this.form.get('name').invalid || this.form.get('name').pending;
+  }
+
+  prepareSubmit(): Observable<Agency> {
+    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+      filter((formData) => !isEmpty(formData)),
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
-  public hasDiff(): boolean {
-    return Object.getOwnPropertyNames(this.getDiffValues()).length > 0;
+  onSubmit() {
+    this.submited = true;
+    if (this.isInvalid()) {
+      return;
+    }
+    this.prepareSubmit().subscribe(
+      () => {
+        this.agencyService.get(this._agency.identifier).subscribe((response) => {
+          this.submited = false;
+          this.agency = response;
+        });
+      },
+      () => {
+        this.submited = false;
+      },
+    );
   }
 
-  private getDiffValues() {
-    return diff(this.form.getRawValue(), this._agency);
+  // tslint:disable-next-line:no-shadowed-variable
+  resetForm(Agency: Agency) {
+    this.form.reset(Agency, { emitEvent: false });
   }
 }

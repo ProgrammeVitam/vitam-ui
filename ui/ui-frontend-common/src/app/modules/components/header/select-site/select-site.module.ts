@@ -9,16 +9,7 @@ import { SelectSiteComponent } from './select-site.component';
 
 @NgModule({
   declarations: [SelectSiteComponent],
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    ItemSelectModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatButtonModule,
-  ],
-  exports: [
-    SelectSiteComponent
-  ]
+  imports: [CommonModule, MatSelectModule, ItemSelectModule, MatMenuModule, MatToolbarModule, MatButtonModule],
+  exports: [SelectSiteComponent],
 })
-export class SelectSiteModule { }
+export class SelectSiteModule {}

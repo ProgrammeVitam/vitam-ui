@@ -25,11 +25,12 @@
         </button>
 
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="openImport()" [disabled]="!(hasUpdateIngestRole$ | async)">{{ 'INGEST_CONTRACT.HOME.IMPORT' | translate }}</button>
+          <button mat-menu-item (click)="openImport()" [disabled]="!(hasUpdateIngestRole$ | async)">
+            {{ 'INGEST_CONTRACT.HOME.IMPORT' | translate }}
+          </button>
           <button mat-menu-item (click)="export()">{{ 'INGEST_CONTRACT.HOME.EXPORT' | translate }}</button>
           <button mat-menu-item (click)="downloadModel()">{{ 'INGEST_CONTRACT.HOME.DOWNLOAD_MODEL' | translate }}</button>
         </vitamui-common-menu-button>
-
       </vitamui-common-banner>
     </div>
 

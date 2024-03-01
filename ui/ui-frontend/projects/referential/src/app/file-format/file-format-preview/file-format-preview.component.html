@@ -1,15 +1,10 @@
-<vitamui-common-sidenav-header
-  [title]="fileFormat?.name"
-  [subtitle]="'(' + fileFormat?.puid + ')'"
-  (onclose)="emitClose()">
+<vitamui-common-sidenav-header [title]="fileFormat?.name" [subtitle]="'(' + fileFormat?.puid + ')'" (onclose)="emitClose()">
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group" #tabs>
     <mat-tab [label]="'FILE_FORMATS.TAB.INFORMATION.TITLE' | translate">
-      <app-file-format-information-tab
-        [fileFormat]="fileFormat"
-        (updated)="updatedChange($event, 0)" #infoTab>
+      <app-file-format-information-tab [fileFormat]="fileFormat" (updated)="updatedChange($event, 0)" #infoTab>
       </app-file-format-information-tab>
     </mat-tab>
 
@@ -18,7 +13,8 @@
         [id]="fileFormat?.puid"
         [identifier]="fileFormat?.puid"
         collectionName="fileformat"
-        [filter]="filterEvents">
+        [filter]="filterEvents"
+      >
       </vitamui-common-operation-history-tab>
     </mat-tab>
   </mat-tab-group>

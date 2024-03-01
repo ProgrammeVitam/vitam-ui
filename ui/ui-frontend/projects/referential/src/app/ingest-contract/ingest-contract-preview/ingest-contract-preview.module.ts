@@ -94,4 +94,4 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
   ],
   exports: [IngestContractPreviewComponent],
 })
-export class IngestContractPreviewModule { }
+export class IngestContractPreviewModule {}

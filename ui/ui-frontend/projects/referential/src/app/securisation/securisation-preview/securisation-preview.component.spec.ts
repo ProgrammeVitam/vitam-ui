@@ -46,7 +46,6 @@ import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
-
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
@@ -115,16 +114,12 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        MatSnackBarModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [BrowserAnimationsModule, MatSnackBarModule, TranslateModule.forRoot()],
       declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
       providers: [
         { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy }
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

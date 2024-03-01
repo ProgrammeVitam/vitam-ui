@@ -133,7 +133,7 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
     }
 
     @Override
-    public Response getObjectByObjectPersistentIdentifier(VitamContext vitamContext, JsonNode jsonNode, String s) throws VitamClientException {
+    public RequestResponse<JsonNode> getObjectByObjectPersistentIdentifier(VitamContext vitamContext, JsonNode jsonNode, String s) throws VitamClientException {
         throw new NotImplementedException("");
     }
 

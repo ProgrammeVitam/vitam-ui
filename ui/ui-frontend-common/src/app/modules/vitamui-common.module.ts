@@ -135,7 +135,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
         )
         .subscribe(() => resolve(true));
       // tslint:disable-next-line: semicolon whitespace
-    });;
+    });
 }
 
 @NgModule({

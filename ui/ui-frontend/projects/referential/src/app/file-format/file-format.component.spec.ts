@@ -44,7 +44,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FileFormatComponent } from './file-format.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-file-format-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix

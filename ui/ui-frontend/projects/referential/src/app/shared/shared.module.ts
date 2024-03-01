@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { VitamUIImportDialogModule } from './vitamui-import-dialog/vitamui-import-dialog.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule, VitamUIImportDialogModule],
+  exports: [VitamUIImportDialogModule],
 })
 export class SharedModule {}

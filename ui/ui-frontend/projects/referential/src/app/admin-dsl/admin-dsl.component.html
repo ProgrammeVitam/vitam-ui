@@ -79,15 +79,17 @@
 
       <div class="actions">
         <div>
-          <button class="btn primary mr-3" (click)="search()" [disabled]="form.pending || form.invalid" >
+          <button class="btn primary mr-3" (click)="search()" [disabled]="form.pending || form.invalid">
             {{ 'COMMON.SEARCH' | translate }}
           </button>
           <button class="btn secondary" (click)="checkDsl()">{{ 'DSL.HOME.VALIDATE_JSON' | translate }}</button>
         </div>
         <div>
-          <button class="btn outline outline-primary mr-3" (click)="copyToClipbord(responseText.value)">{{ 'COMMON.COPY' | translate }}</button>
+          <button class="btn outline outline-primary mr-3" (click)="copyToClipbord(responseText.value)">
+            {{ 'COMMON.COPY' | translate }}
+          </button>
 
-            <button class="btn outline outline-primary" (click)="clear()">{{ 'COMMON.DELETE' | translate }}</button>
+          <button class="btn outline outline-primary" (click)="clear()">{{ 'COMMON.DELETE' | translate }}</button>
         </div>
       </div>
     </div>

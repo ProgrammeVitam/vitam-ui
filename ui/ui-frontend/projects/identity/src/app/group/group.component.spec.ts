@@ -39,7 +39,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService} from 'ui-frontend-common';
+import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -97,12 +97,6 @@ describe('GroupComponent', () => {
         SearchBarModule,
         LoggerModule.forRoot(),
         MatSnackBarModule,
-      
-      ],
-      declarations: [
-        GroupComponent,
-        GroupListStubComponent,
-        GroupPreviewStubComponent,
       ],
       declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
@@ -111,11 +105,9 @@ describe('GroupComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: DownloadSnackBarService, useValue: {} },
-        { provide: GroupService, useValue: {} }
-        
-      ]
-    })
-      .compileComponents();
+        { provide: GroupService, useValue: {} },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,11 +1,6 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
   <div class="d-flex">
-    <vitamui-common-input
-      class="w-100"
-      formControlName="name"
-      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate"
-      disabled>
+    <vitamui-common-input class="w-100" formControlName="name" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate" disabled>
     </vitamui-common-input>
   </div>
 
@@ -14,7 +9,8 @@
       class="w-100"
       formControlName="mimeType"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate"
-      [disabled]="isInternal() || !(hasUpdatetRole | async)">
+      [disabled]="isInternal() || !(hasUpdatetRole | async)"
+    >
     </vitamui-common-input>
   </div>
 
@@ -23,10 +19,11 @@
       class="w-100"
       formControlName="versionPronom"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate"
-      disabled>
+      disabled
+    >
       <ng-container *ngIf="form.get('versionPronom')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('versionPronom')?.errors?.required">
-          {{'COMMON.REQUIRED' | translate}}
+          {{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </ng-container>
     </vitamui-common-input>
@@ -37,10 +34,11 @@
       class="w-100"
       formControlName="version"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate"
-      [disabled]="!(hasUpdatetRole | async)">
+      [disabled]="!(hasUpdatetRole | async)"
+    >
       <ng-container *ngIf="form.get('version')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required">
-          {{'COMMON.REQUIRED' | translate}}
+          {{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </ng-container>
     </vitamui-common-input>
@@ -51,10 +49,11 @@
       class="w-100"
       formControlName="extensions"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.EXTENSION' | translate"
-      disabled="{{isInternal() || !(hasUpdatetRole | async) ? 'disabled': 'false'}}">
+      disabled="{{ isInternal() || !(hasUpdatetRole | async) ? 'disabled' : 'false' }}"
+    >
       <ng-container *ngIf="form.get('extensions')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required">
-          {{'COMMON.REQUIRED' | translate}}
+          {{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </ng-container>
     </vitamui-common-input>

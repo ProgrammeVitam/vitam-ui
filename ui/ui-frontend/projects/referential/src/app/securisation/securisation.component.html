@@ -1,42 +1,50 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-        <app-securisation-preview *ngIf="openedItem" (previewClose)="closePanel()" [securisation]="openedItem">
-        </app-securisation-preview>
-    </mat-sidenav>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-securisation-preview *ngIf="openedItem" (previewClose)="closePanel()" [securisation]="openedItem"> </app-securisation-preview>
+  </mat-sidenav>
 
-    <mat-sidenav-content>
-        <div class="vitamui-heading">
-            <vitamui-common-title-breadcrumb>
-                {{'SECURE.HOME.TITLE' | translate}}
-            </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{ 'SECURE.HOME.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
 
-            <vitamui-common-banner [searchbarPlaceholder]="'SECURE.HOME.SEARCH_PLACEHOLDER' | translate"
-                (search)="onSearchSubmit($event)">
-            </vitamui-common-banner>
+      <vitamui-common-banner [searchbarPlaceholder]="'SECURE.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      </vitamui-common-banner>
 
-            <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
-                <mat-form-field class="vitamui-input vitamui-date mr-4">
-                    <input [matDatepicker]="pickerStart" [max]="dateRangeFilterForm.get('endDate').value" matInput
-                    placeholder="{{'SECURE.HOME.START_DATE' | translate }}" formControlName="startDate" #stDateInput />
-                    <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
-                    <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
-                    <mat-datepicker #pickerStart></mat-datepicker>
-                </mat-form-field>
+      <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
+        <mat-form-field class="vitamui-input vitamui-date mr-4">
+          <input
+            [matDatepicker]="pickerStart"
+            [max]="dateRangeFilterForm.get('endDate').value"
+            matInput
+            placeholder="{{ 'SECURE.HOME.START_DATE' | translate }}"
+            formControlName="startDate"
+            #stDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
+          <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
 
-                <mat-form-field class="vitamui-input vitamui-date">
-                    <input [matDatepicker]="pickerEnd" [min]="dateRangeFilterForm.get('startDate').value" matInput
-                    placeholder="{{'SECURE.HOME.END_DATE' | translate }}" formControlName="endDate" #endDateInput />
-                    <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
-                    <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
-                    <mat-datepicker #pickerEnd></mat-datepicker>
-                </mat-form-field>
-            </form>
-        </div>
+        <mat-form-field class="vitamui-input vitamui-date">
+          <input
+            [matDatepicker]="pickerEnd"
+            [min]="dateRangeFilterForm.get('startDate').value"
+            matInput
+            placeholder="{{ 'SECURE.HOME.END_DATE' | translate }}"
+            formControlName="endDate"
+            #endDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
+          <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+      </form>
+    </div>
 
-        <div class="vitamui-content">
-            <app-securisation-list (securisationClick)="showSecurisation($event)" [search]="search" [filters]="filters">
-            </app-securisation-list>
-        </div>
-    </mat-sidenav-content>
+    <div class="vitamui-content">
+      <app-securisation-list (securisationClick)="showSecurisation($event)" [search]="search" [filters]="filters"> </app-securisation-list>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
-

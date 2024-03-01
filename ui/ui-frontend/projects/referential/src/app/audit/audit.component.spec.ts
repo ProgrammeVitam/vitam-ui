@@ -36,20 +36,19 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {AuditComponent} from './audit.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuditComponent } from './audit.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
@@ -64,18 +63,17 @@ describe('AuditComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUICommonTestModule,
-          NoopAnimationsModule,
-          MatSelectModule,
-          InjectorModule,
-          MatSidenavModule,
-          MatFormFieldModule,
-          MatInputModule,
-          LoggerModule.forRoot()
-        ],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        MatSelectModule,
+        InjectorModule,
+        MatSidenavModule,
+        MatFormFieldModule,
+        MatInputModule,
+        LoggerModule.forRoot(),
+      ],
       declarations: [AuditComponent],
       providers: [
         FormBuilder,

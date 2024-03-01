@@ -170,5 +170,4 @@ export class RuleInformationTabComponent implements OnInit {
   resetForm(rule: Rule) {
     this.form.reset(rule, { emitEvent: false });
   }
-
 }

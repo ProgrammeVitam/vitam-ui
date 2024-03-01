@@ -113,7 +113,7 @@ export class IngestContractObjectTabComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
@@ -125,9 +125,9 @@ export class IngestContractObjectTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string;[key: string]: any }) =>
-        this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
@@ -147,10 +147,9 @@ export class IngestContractObjectTabComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    const isInvalid = (
+    const isInvalid =
       this.form.get('everyDataObjectVersion').value === false &&
-      (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending)
-    )
+      (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending);
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }

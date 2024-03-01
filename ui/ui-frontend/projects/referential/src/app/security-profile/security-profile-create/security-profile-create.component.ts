@@ -135,5 +135,4 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
       this.form.get('fullAccess').pending
     );
   }
-
 }

@@ -11,7 +11,8 @@
       </li>
       <li *ngIf="permission.accessContracts?.length > 0">
         <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ACCESS_CONTRACT' | translate }}</span> :
-        {{ getAccessContractNames(permission.accessContracts) }}</li>
+        {{ getAccessContractNames(permission.accessContracts) }}
+      </li>
       <li *ngIf="permission.ingestContracts?.length > 0">
         <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.INGEST_CONTRACT' | translate }}</span> :
         {{ getIngestContractNames(permission.ingestContracts) }}

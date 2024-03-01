@@ -49,10 +49,10 @@ import { RouterModule } from '@angular/router';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
-import {OntologyInformationTabComponent} from './ontology-information-tab/ontology-information-tab.component';
-import {OntologyPreviewComponent} from './ontology-preview.component';
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatInputModule} from "@angular/material/input";
+import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
+import { OntologyPreviewComponent } from './ontology-preview.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -71,7 +71,7 @@ import {MatInputModule} from "@angular/material/input";
     MatOptionModule,
     MatTabsModule,
     MatDatepickerModule,
-    MatInputModule
+    MatInputModule,
   ],
   declarations: [OntologyPreviewComponent, OntologyInformationTabComponent],
   exports: [OntologyPreviewComponent],

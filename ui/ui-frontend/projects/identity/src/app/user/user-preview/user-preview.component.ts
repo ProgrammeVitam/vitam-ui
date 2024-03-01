@@ -115,7 +115,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   // tslint:disable-next-line:variable-name
   private _groups: Group[];
 
-
   constructor(
     private matDialog: MatDialog,
     private userService: UserService,

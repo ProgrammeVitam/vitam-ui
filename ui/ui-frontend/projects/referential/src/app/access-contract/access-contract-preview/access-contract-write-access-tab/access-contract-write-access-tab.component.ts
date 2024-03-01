@@ -87,11 +87,10 @@ export class AccessContractWriteAccessTabComponent {
     });
 
     this.form.controls.writingPermission.valueChanges.subscribe((value) => {
-      if(!value){
+      if (!value) {
         this.form.controls.writingRestrictedDesc.setValue(false);
       }
     });
-    
   }
 
   public unChanged(): boolean {
@@ -122,8 +121,8 @@ export class AccessContractWriteAccessTabComponent {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 

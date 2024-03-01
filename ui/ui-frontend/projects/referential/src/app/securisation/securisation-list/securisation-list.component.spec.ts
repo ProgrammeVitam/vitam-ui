@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 
-import {SecurisationService} from '../securisation.service';
-import {SecurisationListComponent} from './securisation-list.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { SecurisationService } from '../securisation.service';
+import { SecurisationListComponent } from './securisation-list.component';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import {ReactiveFormsModule} from "@angular/forms";
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {TableFilterModule} from "ui-frontend-common";
+import { ReactiveFormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TableFilterModule } from 'ui-frontend-common';
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;
@@ -62,9 +62,8 @@ describe('SecurisationListComponent', () => {
         { provide: MatDialog, useValue: {} },
         { provide: SecurisationService, useValue: securisationServiceMock },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

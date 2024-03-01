@@ -51,15 +51,14 @@ export class SecurityService {
    * Returns true if the logged user has any of the specified roles and false otherwise.
    */
   hasAnyRole(appId: string, tenantIdentifier: number, ...roles: string[]): Observable<boolean> {
-    return this.authService.user$
-      .pipe(
-        switchMap((user: AuthUser) => {
-          if (user?.profileGroup?.profiles) {
-            const appProfiles = user.profileGroup.profiles.filter((profile) => profile.applicationName === appId);
-            const tenantProfiles = appProfiles.filter((profile) => profile.tenantIdentifier === tenantIdentifier);
-            const rolesByTenant = tenantProfiles.map((profile) => profile.roles);
-            // Flatten the rolesByTenant (which is an array of arrays) into a simple list of roles
-            const userRoles: Array<{ name: string }> = [].concat.apply([], rolesByTenant);
+    return this.authService.user$.pipe(
+      switchMap((user: AuthUser) => {
+        if (user?.profileGroup?.profiles) {
+          const appProfiles = user.profileGroup.profiles.filter((profile) => profile.applicationName === appId);
+          const tenantProfiles = appProfiles.filter((profile) => profile.tenantIdentifier === tenantIdentifier);
+          const rolesByTenant = tenantProfiles.map((profile) => profile.roles);
+          // Flatten the rolesByTenant (which is an array of arrays) into a simple list of roles
+          const userRoles: Array<{ name: string }> = [].concat.apply([], rolesByTenant);
 
           const userRolesNames = userRoles.map((role) => role.name);
 

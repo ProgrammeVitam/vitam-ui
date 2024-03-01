@@ -56,10 +56,10 @@ export class OidcAuthenticatorService implements AuthenticatorService {
       skipWhile((type) => !(type instanceof OAuthSuccessEvent)),
       take(1),
       tap(() => this.cleanUrlAfterLogin()),
-      map(() => true)
+      map(() => true),
     );
     return zip(from(this.oAuthService.loadDiscoveryDocumentAndLogin()), urlCleaner).pipe(
-      map(([authenticated, urlCleaned]) => authenticated && urlCleaned)
+      map(([authenticated, urlCleaned]) => authenticated && urlCleaned),
     );
   }
 

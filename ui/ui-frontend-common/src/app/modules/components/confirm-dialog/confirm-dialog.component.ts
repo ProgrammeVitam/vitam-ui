@@ -47,5 +47,5 @@ export class ConfirmDialogComponent {
   @Input() cancelLabel: string;
   @Input() confirmLabel: string;
 
-  constructor() { }
+  constructor() {}
 }

@@ -44,10 +44,8 @@ import { DialogInputData } from './dialog-input-data.interface';
   styleUrls: ['./close-popup-dialog.component.scss'],
 })
 export class ClosePopupDialogComponent {
-
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data?: DialogInputData
-  ) { }
-
+    public data?: DialogInputData,
+  ) {}
 }

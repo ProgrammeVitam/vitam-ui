@@ -82,10 +82,8 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
-    MatMomentDateModule
+    MatMomentDateModule,
   ],
-  providers: [
-    { provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }
-  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })
 export class ProbativeValueModule {}

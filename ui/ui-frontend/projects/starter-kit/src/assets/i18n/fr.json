@@ -12,9 +12,9 @@
       "TITLE_PLACEHOLDER": "Nom, Raison sociale, Code organisation, Adresse..."
     }
   },
-  "ARRAY":{
-    "BASIC_TITLE" : "Tableau simple",
-    "BASIC_WITH_DOUBLE_LINES_TITLE" : "Tableau simple avec double lignes",
+  "ARRAY": {
+    "BASIC_TITLE": "Tableau simple",
+    "BASIC_WITH_DOUBLE_LINES_TITLE": "Tableau simple avec double lignes",
     "FILTER_TITLE": "Tableau avec filtres",
     "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
     "DIALOG_TITLE": "Tableau avec détail"

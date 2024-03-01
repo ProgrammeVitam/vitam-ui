@@ -229,14 +229,14 @@ export class ContextPermissionTabComponent implements OnInit {
     this.submited = true;
     this.prepareSubmit().subscribe(
       () => {
-        this.contextService.get(this._context.identifier).pipe(
-          tap((response) => this.contextService.updated.next(response))
-        )
-        .subscribe((response) => {
-          this.submited = false;
-          this.context = response;
-          this.hasChanged();
-        });
+        this.contextService
+          .get(this._context.identifier)
+          .pipe(tap((response) => this.contextService.updated.next(response)))
+          .subscribe((response) => {
+            this.submited = false;
+            this.context = response;
+            this.hasChanged();
+          });
       },
       () => {
         this.submited = false;
@@ -262,8 +262,8 @@ export class ContextPermissionTabComponent implements OnInit {
         this.updatedPermissions = result.permissions;
         // Check if the permissions have been modified
         this.hasChanged();
-        if(!this.unchanged || !this.submited){
-          this.onSubmit()
+        if (!this.unchanged || !this.submited) {
+          this.onSubmit();
         }
       }
     });

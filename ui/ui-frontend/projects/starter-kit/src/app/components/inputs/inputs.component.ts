@@ -52,7 +52,10 @@ export class InputsComponent implements OnInit, OnDestroy {
 
   private readonly destroyer$ = new Subject();
 
-  constructor(private countryService: CountryService, private translateService: TranslateService) {}
+  constructor(
+    private countryService: CountryService,
+    private translateService: TranslateService,
+  ) {}
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -83,7 +86,7 @@ export class InputsComponent implements OnInit, OnDestroy {
         extend({
           key: value.code,
           label: value.name,
-        })
+        }),
       );
       this.autoCompleteSelect.setValue('DE');
       this.multiSelectOptions = { options: this.countries, customSorting: this.sortAlphabetically };
@@ -96,9 +99,8 @@ export class InputsComponent implements OnInit, OnDestroy {
   };
 
   private updateCountryTranslation(): void {
-    this.countries.forEach((country)=> {
+    this.countries.forEach((country) => {
       country.label = this.countryService.getTranslatedCountryNameByCode(country.key);
     });
   }
-
 }

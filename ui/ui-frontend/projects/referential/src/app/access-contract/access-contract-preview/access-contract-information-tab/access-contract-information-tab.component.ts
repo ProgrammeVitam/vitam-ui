@@ -82,7 +82,7 @@ export class AccessContractInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators
+    private accessContractCreateValidators: AccessContractCreateValidators,
   ) {}
 
   public onSubmit() {
@@ -101,7 +101,7 @@ export class AccessContractInformationTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 
@@ -117,7 +117,7 @@ export class AccessContractInformationTabComponent {
   }
 
   public isInvalid(): boolean {
-    const isInvalid = (
+    const isInvalid =
       this.form.get('name').invalid ||
       this.form.get('name').pending ||
       this.form.get('description').invalid ||
@@ -126,8 +126,7 @@ export class AccessContractInformationTabComponent {
       this.form.get('status').pending ||
       this.form.get('accessLog').invalid ||
       this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === false && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
-    );
+      (this.ruleFilter.value === false && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending));
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
@@ -146,7 +145,7 @@ export class AccessContractInformationTabComponent {
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
-      })
+      }),
     );
   }
 

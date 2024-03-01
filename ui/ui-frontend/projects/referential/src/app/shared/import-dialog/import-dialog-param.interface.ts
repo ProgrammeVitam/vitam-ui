@@ -17,7 +17,7 @@ export enum ReferentialTypes {
   INGEST_CONTRACT = 'ingestcontract',
   FILE_FORMAT = 'fileformat',
   ONTOLOGY = 'ontology',
-  RULE = 'rule'
+  RULE = 'rule',
 }
 
 export interface ImportError {

@@ -80,13 +80,12 @@
       "SUBROGATION_DENIED": "Your subrogation request has been refused",
       "SUBROGATION_UNAVAILABLE": "Subrogation for this user is temporarily impossible",
       "ACCOUNT_UPDATE": "Information has been updated",
-      "OIDC_UPDATE":"For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place",
+      "OIDC_UPDATE": "For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place",
       "SAML_UPDATE_ERROR": "For the SAML protocol, these fields must be filled in: IDP Name, Patterns, Keystore of CAS and IDP Metadata for the modification to take place",
       "USER_ALREADY_DELETED": "User already deleted",
       "USER_TO_DELETE": "One or several inactif user in your organization need to clean personal info",
       "USER_EXPORT_SUCCESS": "Users exported successfully.",
       "GROUP_EXPORT_SUCCESS": "Export of profile groups successfully completed."
-
     }
   },
   "CUSTOMER": {

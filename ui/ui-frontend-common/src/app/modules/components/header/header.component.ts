@@ -239,18 +239,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     // Subscribe to route changes
-    this.router.events
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((data: any) => {
+    this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {
       if (data?.snapshot?.params) {
-          const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
-          // Subcribe to active tenant changes
-          if (!!tenantIdentifier){
+        const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
+        // Subcribe to active tenant changes
+        if (!!tenantIdentifier) {
           this.tenantService.setSelectedTenantByIdentifier(tenantIdentifier);
         }
-        }
+      }
     });
-
 
     // Subcribe to active tenant changes
     this.tenantService

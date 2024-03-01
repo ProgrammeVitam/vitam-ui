@@ -33,7 +33,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ContextService } from '../context.service';
 import { ContextPreviewComponent } from './context-preview.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('ContextPreviewComponent', () => {
   let component: ContextPreviewComponent;

@@ -1,9 +1,11 @@
-<vitamui-common-sidenav-header [title]="ingestContract.name" [subtitle]="'(' + ingestContract.identifier + ')'"
-  (onclose)="emitClose()"></vitamui-common-sidenav-header>
+<vitamui-common-sidenav-header
+  [title]="ingestContract.name"
+  [subtitle]="'(' + ingestContract.identifier + ')'"
+  (onclose)="emitClose()"
+></vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group show-pagination" #tabs>
-
     <mat-tab [label]="'INGEST_CONTRACT.TAB.INFORMATION.TITLE' | translate">
       <app-ingest-contract-information-tab
         [ingestContract]="ingestContract"
@@ -12,7 +14,8 @@
         (isFormValid)="formTabValidityChange($event, 0)"
         [readOnly]="readOnly"
         (updatedIngestContract)="updatedIngestContract($event)"
-        #infoTab>
+        #infoTab
+      >
       </app-ingest-contract-information-tab>
     </mat-tab>
 
@@ -23,37 +26,54 @@
         (updated)="updatedChange($event, 1)"
         (isFormValid)="formTabValidityChange($event, 1)"
         [readOnly]="readOnly"
-        #formatsTab>
+        #formatsTab
+      >
       </app-ingest-contract-format-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.TAB.OBJECTS.TITLE' | translate" class="no-padding">
-      <app-ingest-contract-object-tab [readOnly]="readOnly" [ingestContract]="ingestContract"
-                                      (updated)="updatedChange($event, 2)" (isFormValid)="formTabValidityChange($event, 2)" #objectsTab>
+      <app-ingest-contract-object-tab
+        [readOnly]="readOnly"
+        [ingestContract]="ingestContract"
+        (updated)="updatedChange($event, 2)"
+        (isFormValid)="formTabValidityChange($event, 2)"
+        #objectsTab
+      >
       </app-ingest-contract-object-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.TAB.LEGACY.TITLE' | translate" class="no-padding">
-      <app-ingest-contract-heritage-tab [readOnly]="readOnly" [ingestContract]="ingestContract"
-                                        (updated)="updatedChange($event, 3)" #heritageTab>
+      <app-ingest-contract-heritage-tab
+        [readOnly]="readOnly"
+        [ingestContract]="ingestContract"
+        (updated)="updatedChange($event, 3)"
+        #heritageTab
+      >
       </app-ingest-contract-heritage-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate" class="no-padding">
-      <app-ingest-contract-signature-tab [readOnly]="readOnly" [ingestContract]="ingestContract"
-                                         (updated)="updatedChange($event, 4)" #signatureTab>
+      <app-ingest-contract-signature-tab
+        [readOnly]="readOnly"
+        [ingestContract]="ingestContract"
+        (updated)="updatedChange($event, 4)"
+        #signatureTab
+      >
       </app-ingest-contract-signature-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.TAB.ATTACHEMENT.TITLE' | translate" class="no-padding">
-      <app-ingest-contract-attachment-tab [readOnly]="readOnly" [ingestContract]="ingestContract"
-                                          [tenantIdentifier]="tenantIdentifier">
+      <app-ingest-contract-attachment-tab [readOnly]="readOnly" [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
       </app-ingest-contract-attachment-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.TAB.HISTORY.TITLE' | translate">
-      <vitamui-common-operation-history-tab [id]="ingestContract?.id" [identifier]="ingestContract?.identifier"
-        collectionName="ingestcontract" [filter]="filterEvents">
+      <vitamui-common-operation-history-tab
+        [id]="ingestContract?.id"
+        [identifier]="ingestContract?.identifier"
+        collectionName="ingestcontract"
+        [filter]="filterEvents"
+      >
       </vitamui-common-operation-history-tab>
     </mat-tab>
   </mat-tab-group>

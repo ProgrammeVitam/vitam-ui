@@ -42,9 +42,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookSearchService } from '../logbook-search.service';
 import { LogbookOperationListComponent } from './logbook-operation-list.component';
-import {TranslateModule} from "@ngx-translate/core";
-import {TableFilterDirective} from "ui-frontend-common";
-import {OverlayModule} from "@angular/cdk/overlay";
+import { TranslateModule } from '@ngx-translate/core';
+import { TableFilterDirective } from 'ui-frontend-common';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
@@ -56,13 +56,7 @@ describe('LogbookOperationListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), OverlayModule],
-      declarations: [
-        LogbookOperationListComponent,
-        LastEventPipe,
-        EventTypeColorClassPipe,
-        EventTypeBadgeClassPipe,
-        TableFilterDirective
-      ],
+      declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe, TableFilterDirective],
       providers: [
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },

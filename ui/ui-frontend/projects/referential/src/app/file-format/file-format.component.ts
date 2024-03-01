@@ -38,15 +38,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
-import {ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage} from 'ui-frontend-common';
-import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
-import {FileFormatListComponent} from './file-format-list/file-format-list.component';
-import {Observable, Subscription} from 'rxjs';
-import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
-import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
-import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
-import {TranslateService} from "@ngx-translate/core";
+import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
+import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
+import { FileFormatListComponent } from './file-format-list/file-format-list.component';
+import { Observable, Subscription } from 'rxjs';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format',
@@ -67,7 +67,7 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
   }
@@ -129,17 +129,16 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
     };
 
     this.dialog
-    .open(ImportDialogComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: params,
-    })
-    .afterClosed()
-    .subscribe((result) => {
-      if (result?.successfulImport) {
-        this.refreshList();
-      }
-    });
+      .open(ImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: params,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
   }
-
 }

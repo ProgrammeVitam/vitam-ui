@@ -4,7 +4,7 @@
       <div class="col-1 d-flex align-items-center"></div>
 
       <div class="col-6 d-flex align-items-center justify-content-between">
-        <div>{{'SECURITY_PROFILE_APP.HOME.ARRAY.IDENTIFIER' | translate}}</div>
+        <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.IDENTIFIER' | translate }}</div>
         <vitamui-common-order-by-button
           orderByKey="Identifier"
           [(orderBy)]="orderBy"
@@ -14,7 +14,7 @@
       </div>
 
       <div class="col-5 d-flex align-items-center justify-content-between">
-        <div>{{'SECURITY_PROFILE_APP.HOME.ARRAY.NAME' | translate}}</div>
+        <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.NAME' | translate }}</div>
         <vitamui-common-order-by-button
           orderByKey="Name"
           [(orderBy)]="orderBy"
@@ -27,28 +27,26 @@
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows" *ngFor="let profile of dataSource; let index = index" (click)="contextClick.emit(profile)">
         <div class="vitamui-row d-flex align-items-center clickable">
-
           <div class="col-1"><i class="vitamui-icon vitamui-icon-security-profile vitamui-row-icon"></i></div>
           <div class="col-6">{{ profile?.identifier }}</div>
           <div class="col-5">{{ profile?.name }}</div>
-
         </div>
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && securityProfileService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && securityProfileService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="securityProfileService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -57,4 +55,3 @@
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
 </ng-template>
-

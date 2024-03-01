@@ -56,26 +56,25 @@ describe('ProbativeValueComponent', () => {
   beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
-      data: of({ appId: 'PROBATIVE_VALUE_APP' })
+      data: of({ appId: 'PROBATIVE_VALUE_APP' }),
     };
     TestBed.configureTestingModule({
-      imports:
-        [
-          MatInputModule,
-          ReactiveFormsModule,
-          VitamUICommonTestModule,
-          NoopAnimationsModule,
-          MatSelectModule,
-          InjectorModule,
-          MatSidenavModule,
-          LoggerModule.forRoot()
-        ],
+      imports: [
+        MatInputModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        MatSelectModule,
+        InjectorModule,
+        MatSidenavModule,
+        LoggerModule.forRoot(),
+      ],
       declarations: [ProbativeValueComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: Router, useValue: { navigate: () => { } } }
+        { provide: Router, useValue: { navigate: () => {} } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

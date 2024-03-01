@@ -117,10 +117,12 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
       filter((paramMap) => !!paramMap.get('tenantIdentifier')),
       map((paramMap) => +paramMap.get('tenantIdentifier')),
       distinctUntilChanged(),
-      tap((tenantIdentifier) => {this.agencyService.setTenantId(tenantIdentifier);
+      tap((tenantIdentifier) => {
+        this.agencyService.setTenantId(tenantIdentifier);
         this.securityService
-        .hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_CREATE_AGENCIES)
-        .subscribe((value: boolean) => (this.hasDeleteRole = value));})
+          .hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_CREATE_AGENCIES)
+          .subscribe((value: boolean) => (this.hasDeleteRole = value));
+      }),
     );
 
     merge(tenantChange, this.searchChange, this.filterChange, this.orderChange)

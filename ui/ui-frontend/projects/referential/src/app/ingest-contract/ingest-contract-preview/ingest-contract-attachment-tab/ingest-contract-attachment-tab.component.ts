@@ -77,10 +77,10 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private vitamUISnackBarService: VitamUISnackBarService
-  ) { }
+    private vitamUISnackBarService: VitamUISnackBarService,
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   private initSearchAccessContractIdAndTitles(): void {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
@@ -145,15 +145,16 @@ export class IngestContractAttachmentTabComponent implements OnInit {
       return;
     }
 
-    this.dialog.open(IngestContractNodeUpdateComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: {
-        ingestContract: this.ingestContract,
-        accessContractId: this.accessContractId,
-        tenantIdentifier: this.tenantIdentifier,
-      },
-    })
+    this.dialog
+      .open(IngestContractNodeUpdateComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: {
+          ingestContract: this.ingestContract,
+          accessContractId: this.accessContractId,
+          tenantIdentifier: this.tenantIdentifier,
+        },
+      })
       .afterClosed()
       .subscribe((updatedIngestContract: IngestContract) => {
         if (updatedIngestContract) {

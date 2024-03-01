@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject} from 'rxjs';
-import {debounceTime, filter} from 'rxjs/operators';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { merge, Subject } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -52,8 +52,8 @@ import {
   RuleService,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
-import {TranslateService} from "@ngx-translate/core";
+import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { TranslateService } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -76,7 +76,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   ruleTypes = RULE_TYPES;
 
   filterMap: { [key: string]: any[] } = {
-    ruleType: this.ruleTypes.map(value => value.label),
+    ruleType: this.ruleTypes.map((value) => value.label),
   };
 
   // tslint:disable-next-line:variable-name
@@ -115,7 +115,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     private authService: AuthService,
     private matDialog: MatDialog,
     private translateService: TranslateService,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {
     super(ruleService);
     this.genericUserRole = {

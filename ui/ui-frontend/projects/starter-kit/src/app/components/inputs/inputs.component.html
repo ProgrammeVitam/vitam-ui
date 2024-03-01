@@ -160,7 +160,7 @@
       </div>
     </div>
 
-    <h4>{{'INPUT.AUTOCOMPLETE' | translate}}</h4>
+    <h4>{{ 'INPUT.AUTOCOMPLETE' | translate }}</h4>
     <div class="d-flex justify-content-around">
       <vitamui-common-vitamui-autocomplete
         [options]="countries"
@@ -185,7 +185,7 @@
     </vitamui-common-vitamui-autocomplete>
   </div>
 
-  <h4>{{'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate}}</h4>
+  <h4>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate }}</h4>
   <div class="d-flex justify-content-around">
     <vitamui-common-autocomplete-multi-select
       [formControl]="autoCompleteMultiSelect"
@@ -195,17 +195,16 @@
       class="w-100"
       required
     >
-      <vitamui-common-input-error
-        *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')">{{
+      <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')">{{
         'COMMON.REQUIRED' | translate
-        }}</vitamui-common-input-error>
+      }}</vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('match')">{{
         'COMMON.INCORRECT_VALUE' | translate
-        }}</vitamui-common-input-error>
+      }}</vitamui-common-input-error>
     </vitamui-common-autocomplete-multi-select>
   </div>
 
-  <h4>{{'INPUT.TEXTAREA' | translate}}</h4>
+  <h4>{{ 'INPUT.TEXTAREA' | translate }}</h4>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4">
         <div class="col-8">
@@ -222,7 +221,7 @@
       </div>
     </div>
 
-    <h4>{{'INPUT.LEVEL' | translate}}</h4>
+    <h4>{{ 'INPUT.LEVEL' | translate }}</h4>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4 pl-3">
         <vitamui-common-level-input></vitamui-common-level-input>

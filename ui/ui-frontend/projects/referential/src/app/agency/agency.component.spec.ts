@@ -48,6 +48,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 import { AgencyService } from './agency.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-agency-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
@@ -76,6 +77,7 @@ describe('AgencyComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,

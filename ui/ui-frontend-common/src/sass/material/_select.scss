@@ -56,61 +56,61 @@ mat-select-trigger.vitamui-mat-select {
   }
 
   .mat-form-field-label {
-        color: var(--vitamui-grey-600);
-        font-weight: 400;
+    color: var(--vitamui-grey-600);
+    font-weight: 400;
 
-        .mat-form-field-required-marker {
-            color: $red;
-        }
+    .mat-form-field-required-marker {
+      color: $red;
+    }
+  }
+
+  &.mat-form-field-type-mat-input {
+    .mat-form-field-flex .mat-form-field-infix {
+      transition:
+        border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    &.mat-form-field-type-mat-input {
-        .mat-form-field-flex .mat-form-field-infix {
-            transition: border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-                padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
-            padding-bottom: 0;
-        }
-
-        &:not(.mat-form-field-should-float) .mat-form-field-flex .mat-form-field-infix {
-            border-top-width: 0;
-        }
+    &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
+      padding-bottom: 0;
     }
 
-    .mat-form-field-underline {
-        display: none;
+    &:not(.mat-form-field-should-float) .mat-form-field-flex .mat-form-field-infix {
+      border-top-width: 0;
+    }
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  &.mat-form-field-type-mat-select {
+    &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      display: none;
     }
 
-    &.mat-form-field-type-mat-select {
-        &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-            display: none;
+    &.mat-form-field-disabled {
+      .mat-form-field-flex {
+        background-color: var(--vitamui-grey-300);
+        border: none;
+        @include elevation-0;
+
+        .mat-select .mat-select-value {
+          font-weight: normal;
+          color: var(--vitamui-grey-700);
         }
 
-        &.mat-form-field-disabled {
-            .mat-form-field-flex {
-                background-color: var(--vitamui-grey-300);
-                border: none;
-                @include elevation-0;
-
-                .mat-select .mat-select-value {
-                    font-weight: normal;
-                    color: var(--vitamui-grey-700);
-                }
-
-                .select-arrow {
-                    i {
-                        color: var(--vitamui-grey-700);
-                    }
-                }
-            }
+        .select-arrow {
+          i {
+            color: var(--vitamui-grey-700);
+          }
         }
+      }
     }
+  }
 
-    .mat-form-field-label {
-        color: var(--vitamui-grey-900);
-    }
+  .mat-form-field-label {
+    color: var(--vitamui-grey-900);
   }
 
   &:not(.vitamui-mat-select-mini).mat-focused {
@@ -174,7 +174,7 @@ mat-select-trigger.vitamui-mat-select {
         @include elevation-0;
 
         .mat-select .mat-select-value {
-            color: var(--vitamui-grey-900);
+          color: var(--vitamui-grey-900);
         }
 
         .select-arrow {

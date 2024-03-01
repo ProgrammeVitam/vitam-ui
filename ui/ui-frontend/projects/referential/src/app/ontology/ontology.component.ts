@@ -34,26 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 
-import {Ontology} from 'projects/vitamui-library/src/lib/models/ontology';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
-import {OntologyCreateComponent} from './ontology-create/ontology-create.component';
-import {OntologyListComponent} from './ontology-list/ontology-list.component';
-import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
-import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
-import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
-import {TranslateService} from "@ngx-translate/core";
+import { Ontology } from 'projects/vitamui-library/src/lib/models/ontology';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
+import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology',
   templateUrl: './ontology.component.html',
   styleUrls: ['./ontology.component.scss'],
 })
-export class OntologyComponent extends SidenavPage<Ontology>{
-
+export class OntologyComponent extends SidenavPage<Ontology> {
   search = '';
 
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
@@ -106,16 +105,16 @@ export class OntologyComponent extends SidenavPage<Ontology>{
     };
 
     this.dialog
-    .open(ImportDialogComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: params,
-    })
-    .afterClosed()
-    .subscribe((result) => {
-      if (result?.successfulImport) {
-        this.refreshList();
-      }
-    });
+      .open(ImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: params,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
   }
 }

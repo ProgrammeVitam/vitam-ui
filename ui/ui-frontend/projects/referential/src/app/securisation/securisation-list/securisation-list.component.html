@@ -1,71 +1,83 @@
 <div class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-    <div class="vitamui-table-head">
-        <div class="col-1"><i class="vitamui-icon vitamui-icon-operation"></i></div>
-        <div class="col-2 d-flex align-items-center justify-content-between">
-            {{'SECURE.HOME.ARRAY.IDENTIFIER' | translate}}
-            <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-        <div class="col-3 d-flex align-items-center justify-content-between">
-            {{'SECURE.HOME.ARRAY.CATEGORY' | translate}}
-            <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="traceabilityFilterTemplate"
-                #categoryFilterTrigger="vitamuiCommonTableFilter" [class.active]="currentFilters?.types?.length > 0">
-                <i class="material-icons vitamui-row-icon">filter_list</i>
-            </button>
-        </div>
-        <div class="col-2 d-flex align-items-center justify-content-between">
-            {{'SECURE.HOME.ARRAY.CREATION_DATE' | translate}}
-            <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
-                (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-        <div class="col-1">{{'SECURE.HOME.ARRAY.STATUS' | translate}}</div>
-        <div class="col-3">{{'SECURE.HOME.ARRAY.MESSAGE' | translate}}</div>
+  <div class="vitamui-table-head">
+    <div class="col-1"><i class="vitamui-icon vitamui-icon-operation"></i></div>
+    <div class="col-2 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.IDENTIFIER' | translate }}
+      <vitamui-common-order-by-button
+        orderByKey="#id"
+        [(orderBy)]="orderBy"
+        [(direction)]="direction"
+        (orderChange)="emitOrderChange()"
+      ></vitamui-common-order-by-button>
     </div>
-
-    <div class="vitamui-table-body">
-        <div class="vitamui-table-rows" *ngFor="let secu of dataSource" (click)="securisationClick.emit(secu)">
-            <div class="vitamui-row d-flex align-items-center clickable">
-                <div class="col-1">
-                    <i class="vitamui-icon vitamui-icon-operation" [ngClass]="secu | eventTypeBadgeClass"></i>
-                </div>
-                <div class="col-2 d-flex align-items-center text break" vitamuiCommonEllipsis>{{secu.id}}</div>
-                <div class="col-3" vitamuiCommonEllipsis>{{secu?.type}}</div>
-                <div class="col-2" vitamuiCommonEllipsis>{{secu.dateTime | dateTime: 'dd/MM/yyyy'}}</div>
-                <div class="col-1" vitamuiCommonEllipsis [ngClass]="secu | eventTypeColorClass">
-                    {{(secu | lastEvent)?.outcome}}
-                </div>
-                <div class="col-3" vitamuiCommonEllipsis>{{(secu | lastEvent)?.outMessage}}</div>
-            </div>
-        </div>
+    <div class="col-3 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.CATEGORY' | translate }}
+      <button
+        class="vitamui-filter-button"
+        [vitamuiCommonTableFilter]="traceabilityFilterTemplate"
+        #categoryFilterTrigger="vitamuiCommonTableFilter"
+        [class.active]="currentFilters?.types?.length > 0"
+      >
+        <i class="material-icons vitamui-row-icon">filter_list</i>
+      </button>
     </div>
+    <div class="col-2 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.CREATION_DATE' | translate }}
+      <vitamui-common-order-by-button
+        orderByKey="evDateTime"
+        [(orderBy)]="orderBy"
+        [(direction)]="direction"
+        (orderChange)="emitOrderChange()"
+      ></vitamui-common-order-by-button>
+    </div>
+    <div class="col-1">{{ 'SECURE.HOME.ARRAY.STATUS' | translate }}</div>
+    <div class="col-3">{{ 'SECURE.HOME.ARRAY.MESSAGE' | translate }}</div>
+  </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && securisationService.canLoadMore && !pending then loadMore"></div>
+  <div class="vitamui-table-body">
+    <div class="vitamui-table-rows" *ngFor="let secu of dataSource" (click)="securisationClick.emit(secu)">
+      <div class="vitamui-row d-flex align-items-center clickable">
+        <div class="col-1">
+          <i class="vitamui-icon vitamui-icon-operation" [ngClass]="secu | eventTypeBadgeClass"></i>
+        </div>
+        <div class="col-2 d-flex align-items-center text break" vitamuiCommonEllipsis>{{ secu.id }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ secu?.type }}</div>
+        <div class="col-2" vitamuiCommonEllipsis>{{ secu.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+        <div class="col-1" vitamuiCommonEllipsis [ngClass]="secu | eventTypeColorClass">
+          {{ (secu | lastEvent)?.outcome }}
+        </div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ (secu | lastEvent)?.outMessage }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && securisationService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-    <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
-    <div class="vitamui-min-content vitamui-table-message" (click)="securisationService.loadMore()">
-        <span class="clickable">A{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
-    </div>
+  <div class="vitamui-min-content vitamui-table-message" (click)="securisationService.loadMore()">
+    <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
 </ng-template>
 
 <ng-template #loadingSpinner>
-    <div class="vitamui-min-content">
-        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-    </div>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
 </ng-template>
 
 <ng-template #traceabilityFilterTemplate>
-    <vitamui-common-table-filter [(filter)]="currentFilters.types" (filterChange)="onFilterChange($event)">
-        <ng-container *ngFor="let type of traceabilityTypes">
-            <vitamui-common-table-filter-option value="{{ type }}">
-                {{'SECURE.HOME.ARRAY.TRACEABILITY_TYPES.' +  type | translate}}
-            </vitamui-common-table-filter-option>
-        </ng-container>
-    </vitamui-common-table-filter>
+  <vitamui-common-table-filter [(filter)]="currentFilters.types" (filterChange)="onFilterChange($event)">
+    <ng-container *ngFor="let type of traceabilityTypes">
+      <vitamui-common-table-filter-option value="{{ type }}">
+        {{ 'SECURE.HOME.ARRAY.TRACEABILITY_TYPES.' + type | translate }}
+      </vitamui-common-table-filter-option>
+    </ng-container>
+  </vitamui-common-table-filter>
 </ng-template>

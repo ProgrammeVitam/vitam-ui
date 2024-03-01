@@ -63,7 +63,7 @@ import {
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-rule-preview', template: '' })
 class RulePreviewStubComponent {

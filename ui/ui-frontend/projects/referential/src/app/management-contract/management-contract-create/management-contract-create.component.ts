@@ -26,14 +26,13 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   Logger,
   ManagementContract,
-  Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
 } from 'ui-frontend-common';
@@ -81,20 +80,6 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
   keyPressSubscription: Subscription;
   apiSubscriptions: Subscription;
-
-  gotOpened = false;
-  deleteDisabled = true;
-
-  statusControl = new FormControl(true);
-  technicalObjectActivated = false;
-
-  usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
-    { key: 'Dissemination', label: 'Copie de diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignette', info: '' },
-    { key: 'TextContent', label: 'Contenu brut', info: '' },
-    { key: 'PhysicalMaster', label: 'Original papier', info: '' },
-  ];
 
   policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
     { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
@@ -195,11 +180,13 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   firstStepInvalid(): boolean {
     const baseFieldNames = ['name', 'description', 'status'];
     const fieldNames = this.isSlaveMode ? [...baseFieldNames, 'identifier'] : baseFieldNames;
+
     return this.isInvalid(fieldNames, this.form);
   }
 
   secondStepInvalid(): boolean {
     const fieldNames = ['unitStrategy', 'objectGroupStrategy', 'objectStrategy'];
+
     return this.isInvalid(fieldNames, this.form.controls.storage);
   }
 

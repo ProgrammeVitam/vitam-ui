@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {merge, Subject} from 'rxjs';
-import {debounceTime, takeUntil} from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   AccessContract,
   collapseAnimation,
@@ -47,7 +47,7 @@ import {
   rotateAnimation,
 } from 'ui-frontend-common';
 
-import {AccessContractService} from '../access-contract.service';
+import { AccessContractService } from '../access-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -119,14 +119,12 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   }
 
   private replaceUpdatedAccessContract(): void {
-    this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe(
-      (updatedAccessContract: AccessContract) => {
-        const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
-        if (index !== -1) {
-          this.dataSource[index] = updatedAccessContract;
-        }
+    this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAccessContract: AccessContract) => {
+      const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedAccessContract;
       }
-    );
+    });
   }
 
   private buildAccessContractCriteriaFromSearch() {
@@ -146,6 +144,4 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   emitOrderChange() {
     this.orderChange.next();
   }
-
-
 }

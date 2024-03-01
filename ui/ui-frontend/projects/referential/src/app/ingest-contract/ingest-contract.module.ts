@@ -73,7 +73,7 @@ import { IngestContractComponent } from './ingest-contract.component';
     IngestContractPreviewModule,
     IngestContractCreateModule,
     TableFilterModule,
-    ImportDialogModule
+    ImportDialogModule,
   ],
 })
 export class IngestContractModule {}

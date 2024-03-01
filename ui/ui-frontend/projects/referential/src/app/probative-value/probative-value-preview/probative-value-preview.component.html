@@ -1,9 +1,14 @@
-<vitamui-common-sidenav-header [title]="probativeValue?.id | truncate: 30" (onclose)="closePanel()"
-  [badge]="probativeValue | eventTypeBadgeClass | slice: 13" [hasToolTipOnTitle]="true" [toolTipTitleText]="probativeValue?.id"
-  [toolTipTitleDuration]="300" [actionsBelowTitle]="true">
+<vitamui-common-sidenav-header
+  [title]="probativeValue?.id | truncate: 30"
+  (onclose)="closePanel()"
+  [badge]="probativeValue | eventTypeBadgeClass | slice: 13"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="probativeValue?.id"
+  [toolTipTitleDuration]="300"
+  [actionsBelowTitle]="true"
+>
   <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="!hasAccessContract">
     {{ 'PROBATIVE_VALUE.PREVIEW_PANEL.DOWNLOAD' | translate }}
   </button>
 </vitamui-common-sidenav-header>
-<div class="vitamui-sidepanel-body">
-</div>
+<div class="vitamui-sidepanel-body"></div>

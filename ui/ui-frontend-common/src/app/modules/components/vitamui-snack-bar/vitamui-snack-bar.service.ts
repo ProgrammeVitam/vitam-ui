@@ -109,11 +109,12 @@ export class VitamUISnackBarService {
       map((application: Application) => {
         data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
         urlName = this.getTranslateValue(data.translate, urlName);
-        data.htmlContent = '<a href="' + application.url + '"><button class="btn contrast contrast-primary mr-3">' + urlName + '</button></a>'
+        data.htmlContent =
+          '<a href="' + application.url + '"><button class="btn contrast contrast-primary mr-3">' + urlName + '</button></a>';
 
         return this.open(data);
       }),
-      take(1)
+      take(1),
     );
   }
 

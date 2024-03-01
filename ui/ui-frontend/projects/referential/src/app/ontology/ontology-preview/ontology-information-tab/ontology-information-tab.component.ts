@@ -1,12 +1,12 @@
-import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
-import {FormBuilder,FormGroup,Validators} from '@angular/forms';
-import {Ontology} from 'projects/vitamui-library/src/public-api';
-import {Observable,of} from 'rxjs';
-import {catchError,filter,map,switchMap} from 'rxjs/operators';
-import {diff,Option} from 'ui-frontend-common';
-import {extend,isEmpty} from 'underscore';
-import {OntologyService} from '../../ontology.service';
-import {RULE_TYPES} from "../../../rule/rules.constants";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Option } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { OntologyService } from '../../ontology.service';
+import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -49,8 +49,8 @@ export class OntologyInformationTabComponent implements OnInit {
       this._inputOntology.description = '';
     }
 
-    if(!ontology.collections) {
-      this._inputOntology.collections=[];
+    if (!ontology.collections) {
+      this._inputOntology.collections = [];
     }
 
     this.resetForm(this.inputOntology);
@@ -66,11 +66,11 @@ export class OntologyInformationTabComponent implements OnInit {
 
   @Input()
   set readOnly(readOnly: boolean) {
-    if(readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
-    } else if(this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+    if (readOnly && this.form.enabled) {
+      this.form.disable({ emitEvent: false });
+    } else if (this.form.disabled) {
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
@@ -83,12 +83,12 @@ export class OntologyInformationTabComponent implements OnInit {
     private ontologyService: OntologyService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null,Validators.required],
-      shortName: [{value: null, disabled: true},Validators.required],
-      type: [null,Validators.required],
+      identifier: [null, Validators.required],
+      shortName: [{ value: null, disabled: true }, Validators.required],
+      type: [null, Validators.required],
       collections: [null],
       description: [null],
-      creationDate: [{value: null, disabled:true}],
+      creationDate: [{ value: null, disabled: true }],
     });
   }
 
@@ -113,18 +113,19 @@ export class OntologyInformationTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submited=true;
-    this.prepareSubmit().subscribe(() => {
-      this.ontologyService.get(this._inputOntology.identifier).subscribe(
-        response => {
-          this.submited=false;
-          this.inputOntology=response;
+    this.submited = true;
+    this.prepareSubmit().subscribe(
+      () => {
+        this.ontologyService.get(this._inputOntology.identifier).subscribe((response) => {
+          this.submited = false;
+          this.inputOntology = response;
           this.ontologyService.updated.next(this.inputOntology);
-        }
-      );
-    },() => {
-      this.submited=false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      },
+    );
   }
 
   resetForm(ontology: Ontology) {

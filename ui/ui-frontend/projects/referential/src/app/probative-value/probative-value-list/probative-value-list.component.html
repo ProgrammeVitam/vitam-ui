@@ -7,14 +7,22 @@
 
       <div class="col-3 d-flex align-items-center justify-content-between">
         <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.IDENTIFIER' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="#id"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.CREATION_DATE' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="evDateTime"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2">
@@ -42,19 +50,19 @@
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && probativeValueService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && probativeValueService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="probativeValueService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 

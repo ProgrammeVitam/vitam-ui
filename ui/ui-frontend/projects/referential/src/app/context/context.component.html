@@ -6,12 +6,12 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'CONTEXTS_APP.HOME.TITLE' | translate}}
+        {{ 'CONTEXTS_APP.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'CONTEXTS_APP.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-3" (click)="openCreateContextDialog()">
-          <span>{{'CONTEXTS_APP.HOME.CREATE_CONTEXT'  | translate}}</span>
+          <span>{{ 'CONTEXTS_APP.HOME.CREATE_CONTEXT' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>

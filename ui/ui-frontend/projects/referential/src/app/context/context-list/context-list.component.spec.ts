@@ -29,7 +29,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -95,7 +95,7 @@ describe('ContextListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Search criteria should exists when we have some status as criteria', fakeAsync(() =>  {
+  it('Search criteria should exists when we have some status as criteria', fakeAsync(() => {
     // Given
     const filterMap: { [key: string]: any[] } = {
       status: ['ACTIVE', 'INACTIVE'],

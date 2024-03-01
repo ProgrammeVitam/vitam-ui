@@ -52,8 +52,8 @@ export class AuditPreviewComponent implements OnInit {
   constructor(
     private auditService: AuditService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService) {
-  }
+    private vitamUISnackBarService: VitamUISnackBarService,
+  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

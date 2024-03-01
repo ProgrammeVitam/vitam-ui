@@ -61,7 +61,7 @@ export class AdminDslComponent extends AppRootComponent {
     private snackBarService: VitamUISnackBarService,
     private accessContractService: AccessContractService,
     private formBuilder: FormBuilder,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
   ) {
     super(route);
 

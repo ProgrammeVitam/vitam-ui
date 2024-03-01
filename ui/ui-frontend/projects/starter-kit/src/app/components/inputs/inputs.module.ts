@@ -24,7 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    TranslateModule
+    TranslateModule,
   ],
   exports: [InputsComponent],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],

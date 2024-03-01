@@ -6,34 +6,37 @@
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'AUDIT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'AUDIT.CREATE_DIALOG.SUBTITLE' | translate}}</div>
+        <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.SUBTITLE' | translate }}</div>
 
         <div class="mt-3">
-          <div class="text normal mb-3">{{'AUDIT.CREATE_DIALOG.AUDIT_TYPE' | translate}} <span class="asterix">*</span></div>
+          <div class="text normal mb-3">{{ 'AUDIT.CREATE_DIALOG.AUDIT_TYPE' | translate }} <span class="asterix">*</span></div>
           <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
             <mat-button-toggle *ngFor="let action of getAuditActions()" [value]="action">
-              <span>{{'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
+              <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
 
         <div class="mt-4" *ngIf="showProducerToggle()">
           <vitamui-common-slide-toggle [formControl]="allProducerServices">
-            <span>{{'AUDIT.CREATE_DIALOG.ALL_PRODUCERS' | translate}}</span>
+            <span>{{ 'AUDIT.CREATE_DIALOG.ALL_PRODUCERS' | translate }}</span>
           </vitamui-common-slide-toggle>
         </div>
 
         <div class="mt-4" *ngIf="showAllNodesToggle()">
           <vitamui-common-slide-toggle [formControl]="allNodes">
-            <span>{{'AUDIT.CREATE_DIALOG.ALL_NODES' | translate}}</span>
+            <span>{{ 'AUDIT.CREATE_DIALOG.ALL_NODES' | translate }}</span>
           </vitamui-common-slide-toggle>
         </div>
 
         <mat-form-field class="vitamui-mat-select w-100" *ngIf="showProducerSelection()">
-          <mat-select formControlName="objectId" required
-            placeholder="{{'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_PLACEHOLDER' | translate}}"
-            panelclass="vitamui-mat-select">
+          <mat-select
+            formControlName="objectId"
+            required
+            placeholder="{{ 'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_PLACEHOLDER' | translate }}"
+            panelclass="vitamui-mat-select"
+          >
             <mat-option *ngFor="let accession of accessionRegisterSummaries" [value]="accession.originatingAgency">
               {{ accession.originatingAgency }}
             </mat-option>
@@ -45,26 +48,29 @@
           </div>
         </mat-form-field>
 
-        <vitamui-common-input class="w-100 mt-4" formControlName="evidenceAudit" required
+        <vitamui-common-input
+          class="w-100 mt-4"
+          formControlName="evidenceAudit"
+          required
           *ngIf="showEvidenceAuditInput()"
-          placeholder="{{'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate}}">
+          placeholder="{{ 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate }}"
+        >
           <ng-container *ngIf="form.get('evidenceAudit')?.touched">
             <vitamui-common-input-error *ngIf="!!form.get('evidenceAudit').errors?.required">
-              {{'COMMON.REQUIRED' | translate }}
+              {{ 'COMMON.REQUIRED' | translate }}
             </vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit').errors?.invalidEvidenceAuditId">
-              {{'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }}
+              {{ 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }}
             </vitamui-common-input-error>
           </ng-container>
         </vitamui-common-input>
 
         <div class="actions">
           <button type="button" *ngIf="!this.allNodes.value" class="btn primary" cdkStepperNext>
-            {{'COMMON.NEXT' | translate }}
+            {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button type="submit" *ngIf="this.allNodes.value" class="btn primary"
-            [disabled]="!isStepValid() || isDisabledButton">
-            {{'COMMON.TERMINATE' | translate }}
+          <button type="submit" *ngIf="this.allNodes.value" class="btn primary" [disabled]="!isStepValid() || isDisabledButton">
+            {{ 'COMMON.TERMINATE' | translate }}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
@@ -73,11 +79,15 @@
 
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'AUDIT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'AUDIT.CREATE_DIALOG.NODES' | translate}}</div>
+        <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.NODES' | translate }}</div>
 
-        <vitamui-library-filing-plan [formControl]="selectedNodes" [tenantIdentifier]="tenantIdentifier"
-          [accessContract]="accessContractId" [mode]="FILLING_PLAN_MODE_INCLUDE">
+        <vitamui-library-filing-plan
+          [formControl]="selectedNodes"
+          [tenantIdentifier]="tenantIdentifier"
+          [accessContract]="accessContractId"
+          [mode]="FILLING_PLAN_MODE_INCLUDE"
+        >
         </vitamui-library-filing-plan>
 
         <div class="actions">
@@ -86,7 +96,7 @@
         </div>
         <button type="button" class="btn link mt-2" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container>{{'COMMON.BACK' | translate}}</ng-container>
+          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
         </button>
       </div>
     </cdk-step>

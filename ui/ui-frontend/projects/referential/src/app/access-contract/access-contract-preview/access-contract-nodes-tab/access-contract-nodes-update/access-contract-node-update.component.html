@@ -1,31 +1,37 @@
 <form [formGroup]="selectNodesForm" (ngSubmit)="updateAccessContractNodes()">
-  <div class="header">
-  </div>
+  <div class="header"></div>
 
   <div class="content mt-3">
-    <div class="text large bold mb-3">{{'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate}}</div>
+    <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate }}</div>
 
     <vitamui-common-slide-toggle class="mt-3" [formControl]="allRootUnitsControl">
       <div class="d-flex align-items-center">
-        <span>{{'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate}}</span>
+        <span>{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}</span>
 
-        <i class="vitamui-icon vitamui-icon-info text large primary ml-3"
-          vitamuiCommonToolTip="{{'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.ALL_POSITIONS_INFO' | translate}}"
-          vitamuiCommonToolTipPosition="BOTTOM">
+        <i
+          class="vitamui-icon vitamui-icon-info text large primary ml-3"
+          vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.ALL_POSITIONS_INFO' | translate }}"
+          vitamuiCommonToolTipPosition="BOTTOM"
+        >
         </i>
       </div>
     </vitamui-common-slide-toggle>
 
-    <vitamui-library-filing-plan *ngIf="!allRootUnitsControl.value" [formControl]="selectedRootsControl"
-      [tenantIdentifier]="tenantIdentifier" [accessContract]="searchAccessContractId" [mode]="FILLING_PLAN_MODE_BOTH">
+    <vitamui-library-filing-plan
+      *ngIf="!allRootUnitsControl.value"
+      [formControl]="selectedRootsControl"
+      [tenantIdentifier]="tenantIdentifier"
+      [accessContract]="searchAccessContractId"
+      [mode]="FILLING_PLAN_MODE_BOTH"
+    >
     </vitamui-library-filing-plan>
 
     <div class="actions">
       <button type="submit" class="btn primary">
-        {{'COMMON.VALIDATE' | translate}}
+        {{ 'COMMON.VALIDATE' | translate }}
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">
-        {{'COMMON.UNDO' | translate}}
+        {{ 'COMMON.UNDO' | translate }}
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>

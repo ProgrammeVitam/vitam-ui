@@ -1,35 +1,32 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-        <app-rule-preview *ngIf="openedItem" (previewClose)="closePanel()" [rule]="openedItem"></app-rule-preview>
-    </mat-sidenav>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-rule-preview *ngIf="openedItem" (previewClose)="closePanel()" [rule]="openedItem"></app-rule-preview>
+  </mat-sidenav>
 
-    <mat-sidenav-content>
-      <div class="vitamui-heading">
-        <vitamui-common-title-breadcrumb>
-          {{'RULES_APP.HOME.TITLE' | translate}}
-        </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{ 'RULES_APP.HOME.TITLE' | translate }}
+      </vitamui-common-title-breadcrumb>
 
-        <vitamui-common-banner [searchbarPlaceholder]="'RULES_APP.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-          <button class="btn primary ml-3 mr-3" (click)="openCreateRuleDialog()" [disabled]="(checkCreateRole | async)!== true">
-            <span>{{'RULES_APP.HOME.CREATE' | translate}}</span>
+      <vitamui-common-banner [searchbarPlaceholder]="'RULES_APP.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+        <button class="btn primary ml-3 mr-3" (click)="openCreateRuleDialog()" [disabled]="(checkCreateRole | async) !== true">
+          <span>{{ 'RULES_APP.HOME.CREATE' | translate }}</span>
+        </button>
+
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="false">
+          <button mat-menu-item [disabled]="(checkImportRole | async) !== true" (click)="openRuleImportDialog()">
+            {{ 'RULES_APP.HOME.IMPORT' | translate }}
           </button>
+          <button mat-menu-item [disabled]="(checkExportRole | async) !== true" (click)="exportRules()">
+            {{ 'RULES_APP.HOME.EXPORT' | translate }}
+          </button>
+        </vitamui-common-menu-button>
+      </vitamui-common-banner>
+    </div>
 
-          <vitamui-common-menu-button
-            [overlayPos]="'end'"
-            [icon]="'vitamui-icon-more-horiz'"
-            [disabled]="false">
-            <button mat-menu-item [disabled]="(checkImportRole | async)!== true" (click)="openRuleImportDialog()">
-              {{ 'RULES_APP.HOME.IMPORT' | translate }}
-            </button>
-            <button mat-menu-item [disabled]="(checkExportRole | async)!== true" (click)="exportRules()">
-              {{ 'RULES_APP.HOME.EXPORT' | translate }}
-            </button>
-          </vitamui-common-menu-button>
-        </vitamui-common-banner>
-      </div>
-
-      <div class="vitamui-content">
-        <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
-      </div>
-    </mat-sidenav-content>
+    <div class="vitamui-content">
+      <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

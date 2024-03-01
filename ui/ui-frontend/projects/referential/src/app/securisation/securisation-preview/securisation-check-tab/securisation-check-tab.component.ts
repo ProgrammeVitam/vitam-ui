@@ -85,19 +85,19 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
       this.securingService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe(
         (response: { $results: ApiEvent[] }) => {
           this.snackBarService
-          .openWithAppUrlBtn(
-            { message: 'SNACKBAR.TRACEABILITY_OPERATION_SUCCESS' },
-            ApplicationId.LOGBOOK_OPERATION_APP,
-            'SNACKBAR.OPEN_LOGBOOK'
-          )
-          .subscribe();
+            .openWithAppUrlBtn(
+              { message: 'SNACKBAR.TRACEABILITY_OPERATION_SUCCESS' },
+              ApplicationId.LOGBOOK_OPERATION_APP,
+              'SNACKBAR.OPEN_LOGBOOK',
+            )
+            .subscribe();
 
           this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
           this.display = true;
         },
         () => {
           this.snackBarService.open({ message: 'SNACKBAR.TRACEABILITY_OPERATION_FAILED' });
-        }
+        },
       );
     }
   }

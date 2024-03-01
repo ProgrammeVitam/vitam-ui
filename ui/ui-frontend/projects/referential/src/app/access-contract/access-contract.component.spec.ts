@@ -47,8 +47,8 @@ import { AccessContractComponent } from './access-contract.component';
 import { AccessContractService } from './access-contract.service';
 
 import { of } from 'rxjs';
-import {TranslateModule} from "@ngx-translate/core";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { TranslateModule } from '@ngx-translate/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
@@ -73,30 +73,28 @@ describe('AccessContractComponent', () => {
     isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
-        imports: [
-          VitamUICommonTestModule,
-          RouterTestingModule,
-          InjectorModule,
-          LoggerModule.forRoot(),
-          TranslateModule.forRoot(),
-          NoopAnimationsModule,
-          MatSidenavModule,
-          MatSnackBarModule,
-          MatDialogModule,
-        ],
-        providers: [
-          { provide: AccessContractService, useValue: accessContractServiceMock },
-          { provide: ApplicationService, useValue: applicationServiceMock },
-          { provide: WINDOW_LOCATION, useValue: window.location },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
+      imports: [
+        VitamUICommonTestModule,
+        RouterTestingModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        NoopAnimationsModule,
+        MatSidenavModule,
+        MatSnackBarModule,
+        MatDialogModule,
+      ],
+      providers: [
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractComponent);

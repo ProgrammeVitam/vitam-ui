@@ -93,7 +93,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
                   panelClass: 'vitamui-snack-bar',
                   duration: 10000,
                 });
-              })
+              }),
             )
             .subscribe();
         }

@@ -83,4 +83,4 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
   declarations: [VitamUIAutocompleteMultiSelectComponent],
   exports: [VitamUIAutocompleteMultiSelectComponent],
 })
-export class VitamUIAutocompleteMultiSelectModule { }
+export class VitamUIAutocompleteMultiSelectModule {}

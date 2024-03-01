@@ -6,8 +6,8 @@
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content mt-5">
-        <div class="text medium light">{{'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.SUBTITLE' | translate}}</div>
+        <div class="text medium light">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.SUBTITLE' | translate }}</div>
 
         <div class="d-flex">
           <vitamui-common-input
@@ -16,10 +16,11 @@
             formControlName="name"
             minlength="2"
             maxlength="100"
-            [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.NAME' | translate">
+            [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.NAME' | translate"
+          >
             <ng-container *ngIf="form.get('name')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">
-                {{ 'COMMON.REQUIRED' | translate}}
+                {{ 'COMMON.REQUIRED' | translate }}
               </vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
                 {{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.NAME_ALREADY_EXISTS' | translate }}
@@ -35,10 +36,11 @@
             class="w-100"
             maxlength="100"
             required
-            [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate">
+            [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate"
+          >
             <ng-container *ngIf="form.get('identifier')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
-                {{ 'COMMON.REQUIRED' | translate}}
+                {{ 'COMMON.REQUIRED' | translate }}
               </vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists">
                 {{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate }}
@@ -51,22 +53,32 @@
           <vitamui-common-slide-toggle formControlName="fullAccess">
             {{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS' | translate }}
           </vitamui-common-slide-toggle>
-          <i class="vitamui-icon primary vitamui-icon-info ml-3"
-             vitamuiCommonToolTip="{{'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS_TOOLTIP' | translate}}">
+          <i
+            class="vitamui-icon primary vitamui-icon-info ml-3"
+            vitamuiCommonToolTip="{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS_TOOLTIP' | translate }}"
+          >
           </i>
         </div>
 
         <div class="actions mt-3">
-          <button type="button" class="btn primary" cdkStepperNext
-                  *ngIf="!form.value.fullAccess"
-                  [disabled]="firstStepInvalid() || isDisabledButton">
-            {{ 'COMMON.NEXT' | translate}}
+          <button
+            type="button"
+            class="btn primary"
+            cdkStepperNext
+            *ngIf="!form.value.fullAccess"
+            [disabled]="firstStepInvalid() || isDisabledButton"
+          >
+            {{ 'COMMON.NEXT' | translate }}
           </button>
-          <button type="button" class="btn primary" cdkStepperNext
-                  *ngIf="form.value.fullAccess"
-                  [disabled]="form.pending || form.invalid || isDisabledButton"
-                  (click)="finishAfterFirstStep()">
-            {{ 'COMMON.TERMINATE' | translate}}
+          <button
+            type="button"
+            class="btn primary"
+            cdkStepperNext
+            *ngIf="form.value.fullAccess"
+            [disabled]="form.pending || form.invalid || isDisabledButton"
+            (click)="finishAfterFirstStep()"
+          >
+            {{ 'COMMON.TERMINATE' | translate }}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
@@ -75,8 +87,8 @@
 
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.SUBTITLE' | translate}}</div>
+        <div class="text medium light">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.SUBTITLE' | translate }}</div>
 
         <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
 
@@ -91,7 +103,9 @@
         <div class="actions">
           <button type="button" class="btn link" cdkStepperPrevious>
             <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <ng-container><span>{{'COMMON.BACK' | translate}}</span></ng-container>
+            <ng-container
+              ><span>{{ 'COMMON.BACK' | translate }}</span></ng-container
+            >
           </button>
         </div>
       </div>

@@ -86,7 +86,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     protected accessContractService: AccessContractService,
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
@@ -172,7 +172,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   private changeDefaultOnActionSelection(auditActions: AuditAction): void {
-
     // Update the validators
     if (auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
       this.allProducerServices.setValue(false);
@@ -268,7 +267,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       },
       () => {
         this.dialogRef.close({ success: false, action: 'none' });
-      }
+      },
     );
   }
 

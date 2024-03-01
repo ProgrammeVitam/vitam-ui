@@ -1,6 +1,6 @@
-@import "~ui-frontend-common/sass/mixins/elevation";
+@import '~ui-frontend-common/sass/mixins/elevation';
 
-.request  {
+.request {
   display: flex;
   height: 55vh;
 
@@ -10,7 +10,6 @@
 }
 
 .actions {
-
   display: flex;
   align-items: center;
   justify-content: space-between;

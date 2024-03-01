@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage} from 'ui-frontend-common';
-import {RuleCreateComponent} from './rule-create/rule-create.component';
-import {RuleListComponent} from './rule-list/rule-list.component';
-import {ImportDialogParam, ReferentialTypes} from "../shared/import-dialog/import-dialog-param.interface";
-import {FileTypes} from "../../../../vitamui-library/src/lib/models/file-types.enum";
-import {ImportDialogComponent} from "../shared/import-dialog/import-dialog.component";
-import {TranslateService} from "@ngx-translate/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { RuleCreateComponent } from './rule-create/rule-create.component';
+import { RuleListComponent } from './rule-list/rule-list.component';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rules',
@@ -58,7 +58,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   filters: string;
   tenantId: number;
 
-
   checkCreateRole = new Observable<boolean>();
   checkImportRole = new Observable<boolean>();
   checkExportRole = new Observable<boolean>();
@@ -70,7 +69,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     private router: Router,
     private translateService: TranslateService,
     globalEventService: GlobalEventService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -83,7 +82,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
         this.tenantId = parseInt(params.tenantIdentifier);
       }
     });
-
   }
 
   openCreateRuleDialog() {
@@ -141,16 +139,16 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     };
 
     this.dialog
-    .open(ImportDialogComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: params,
-    })
-    .afterClosed()
-    .subscribe((result) => {
-      if (result?.successfulImport) {
-        this.refreshList();
-      }
-    });
+      .open(ImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: params,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
   }
 }

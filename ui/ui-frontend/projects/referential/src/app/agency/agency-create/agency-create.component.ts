@@ -67,7 +67,7 @@ export class AgencyCreateComponent implements OnInit {
     });
   }
 
-  public cancel(): void {
+  public onCancel(): void {
     if (this.form.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {

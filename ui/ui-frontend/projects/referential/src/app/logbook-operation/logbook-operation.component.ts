@@ -61,7 +61,7 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
-    globalEventService: GlobalEventService
+    globalEventService: GlobalEventService,
   ) {
     super(route, globalEventService);
   }

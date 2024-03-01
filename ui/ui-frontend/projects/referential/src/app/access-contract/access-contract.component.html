@@ -11,12 +11,15 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'ACCESS_CONTRACT.HOME.TITLE' | translate}}
+        {{ 'ACCESS_CONTRACT.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'ACCESS_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-common-banner
+        [searchbarPlaceholder]="'ACCESS_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate"
+        (search)="onSearchSubmit($event)"
+      >
         <button class="btn primary mr-3" (click)="openCreateAccesscontractDialog()">
-          <span>{{'ACCESS_CONTRACT.HOME.CREATE_ACCESS_CONTRACT' | translate}}</span>
+          <span>{{ 'ACCESS_CONTRACT.HOME.CREATE_ACCESS_CONTRACT' | translate }}</span>
         </button>
 
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">

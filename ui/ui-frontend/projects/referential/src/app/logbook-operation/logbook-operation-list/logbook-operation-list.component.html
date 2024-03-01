@@ -1,25 +1,32 @@
 <div class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
   <div class="vitamui-table-head">
-    <div class="col-2">{{'LOGBOOK.HOME.ARRAY.IDENTIFIER' | translate}}</div>
+    <div class="col-2">{{ 'LOGBOOK.HOME.ARRAY.IDENTIFIER' | translate }}</div>
     <div class="col-3 d-flex align-items-center justify-content-between">
-      {{'LOGBOOK.HOME.ARRAY.CATEGORY' | translate}}
+      {{ 'LOGBOOK.HOME.ARRAY.CATEGORY' | translate }}
 
-      <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="operationFilterTemplate"
+      <button
+        class="vitamui-filter-button"
+        [vitamuiCommonTableFilter]="operationFilterTemplate"
         #categoryFilterTrigger="vitamuiCommonTableFilter"
-        [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0">
+        [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0"
+      >
         <i class="material-icons vitamui-row-icon">filter_list</i>
       </button>
     </div>
-    <div class="col-2">{{'LOGBOOK.HOME.ARRAY.OPERATION' | translate}}</div>
+    <div class="col-2">{{ 'LOGBOOK.HOME.ARRAY.OPERATION' | translate }}</div>
     <div class="col-1 d-flex align-items-center justify-content-between">
-      <div>{{'LOGBOOK.HOME.ARRAY.START_DATE' | translate}}</div>
-      <vitamui-common-order-by-button orderByKey="dateTime" [(direction)]="orderDirection" (orderChange)="changeOrderByDate()"></vitamui-common-order-by-button>
+      <div>{{ 'LOGBOOK.HOME.ARRAY.START_DATE' | translate }}</div>
+      <vitamui-common-order-by-button
+        orderByKey="dateTime"
+        [(direction)]="orderDirection"
+        (orderChange)="changeOrderByDate()"
+      ></vitamui-common-order-by-button>
     </div>
     <div class="col-1">
-      <div>{{'LOGBOOK.HOME.ARRAY.END_DATE' | translate}}</div>
+      <div>{{ 'LOGBOOK.HOME.ARRAY.END_DATE' | translate }}</div>
     </div>
-    <div class="col-1">{{'LOGBOOK.HOME.ARRAY.STATUS' | translate}}</div>
-    <div class="col-2">{{'LOGBOOK.HOME.ARRAY.STEP' | translate}}</div>
+    <div class="col-1">{{ 'LOGBOOK.HOME.ARRAY.STATUS' | translate }}</div>
+    <div class="col-2">{{ 'LOGBOOK.HOME.ARRAY.STEP' | translate }}</div>
   </div>
 
   <div class="vitamui-table-body">
@@ -27,7 +34,7 @@
       <div class="vitamui-row d-flex align-items-center clickable">
         <div class="col-2 d-flex align-items-center text break">
           <div class="mr-3"><i [ngClass]="event | eventTypeBadgeClass"></i></div>
-          <div class="overflow-hidden"> {{ event.id }} </div>
+          <div class="overflow-hidden">{{ event.id }}</div>
         </div>
         <div class="col-3" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">
           <vitamui-common-event-type-label [key]="event.typeProc"></vitamui-common-event-type-label>
@@ -39,12 +46,12 @@
 
         <div class="col-1">
           <div>{{ event?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-          <div class="text normal light"> {{ event?.dateTime | dateTime: 'HH:mm:ss' }}</div>
+          <div class="text normal light">{{ event?.dateTime | dateTime: 'HH:mm:ss' }}</div>
         </div>
 
         <div class="col-1">
-          <div> {{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }} </div>
-          <div class="text normal light"> {{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }} </div>
+          <div>{{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="text normal light">{{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }}</div>
         </div>
 
         <div class="col-1" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">{{ (event | lastEvent)?.outcome }}</div>
@@ -55,18 +62,18 @@
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && logbookSearchService.canLoadMore && !pending then loadMore"></div>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && logbookSearchService.canLoadMore && !pending; then loadMore"></div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="logbookSearchService.loadMore()">
-    <span class="clickable">A{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -77,11 +84,10 @@
 </ng-template>
 
 <ng-template #operationFilterTemplate>
-  <vitamui-common-table-filter [(filter)]="filterMap['operationCategories']"
-    (filterChange)="onFilterChange('operationCategories', $event)">
+  <vitamui-common-table-filter [(filter)]="filterMap['operationCategories']" (filterChange)="onFilterChange('operationCategories', $event)">
     <ng-container *ngFor="let operation of getOperationCategories()">
       <vitamui-common-table-filter-option value="{{ operation }}">
-        {{'LOGBOOK.OPERATIONS_CATEGORIES.' +  operation | translate}}
+        {{ 'LOGBOOK.OPERATIONS_CATEGORIES.' + operation | translate }}
       </vitamui-common-table-filter-option>
     </ng-container>
   </vitamui-common-table-filter>

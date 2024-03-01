@@ -1,34 +1,36 @@
 <vitamui-common-sidenav-header
   [title]="securityProfile?.name"
-  [subtitle]="'(' + securityProfile?.identifier  + ')'"
+  [subtitle]="'(' + securityProfile?.identifier + ')'"
   (onclose)="emitClose()"
-  [icon]="'vitamui-icon-security-profile'">
+  [icon]="'vitamui-icon-security-profile'"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group" #tabs>
-      <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.INFORMATION.TITLE' | translate">
-        <app-security-profile-information-tab
-          [securityProfile]="securityProfile"
-          (updated)="updatedChange($event, 0)" #infoTab
-          (fullAccessUpdated)="updateFullAccess($event)">
-        </app-security-profile-information-tab>
-      </mat-tab>
+    <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.INFORMATION.TITLE' | translate">
+      <app-security-profile-information-tab
+        [securityProfile]="securityProfile"
+        (updated)="updatedChange($event, 0)"
+        #infoTab
+        (fullAccessUpdated)="updateFullAccess($event)"
+      >
+      </app-security-profile-information-tab>
+    </mat-tab>
 
     <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.PERMISSIONS.TITLE' | translate">
-      <app-security-profile-permissions-tab
-        [SecurityProfile]="securityProfile"
-        (updated)="updatedChange($event, 1)" #permsTab>
+      <app-security-profile-permissions-tab [SecurityProfile]="securityProfile" (updated)="updatedChange($event, 1)" #permsTab>
       </app-security-profile-permissions-tab>
     </mat-tab>
 
-      <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.HISTORY.TITLE' | translate">
-          <vitamui-common-operation-history-tab
-            [id]="securityProfile?.identifier"
-            [identifier]="securityProfile?.identifier"
-            collectionName="security-profile"
-            [filter]="filterEvents">
-          </vitamui-common-operation-history-tab>
-      </mat-tab>
+    <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.HISTORY.TITLE' | translate">
+      <vitamui-common-operation-history-tab
+        [id]="securityProfile?.identifier"
+        [identifier]="securityProfile?.identifier"
+        collectionName="security-profile"
+        [filter]="filterEvents"
+      >
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
   </mat-tab-group>
 </div>

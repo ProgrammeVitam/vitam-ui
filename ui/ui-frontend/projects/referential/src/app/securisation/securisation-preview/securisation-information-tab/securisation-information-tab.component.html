@@ -1,86 +1,86 @@
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.OPERATION_TYPE' | translate }}</label>
-    <div class="word-break">
-        {{ 'SECURE.TAB.INFORMATIONS.OPERATIONS' | translate }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.OPERATION_TYPE' | translate }}</label>
+  <div class="word-break">
+    {{ 'SECURE.TAB.INFORMATIONS.OPERATIONS' | translate }}
+  </div>
 </div>
 
 <div class="d-flex">
-    <div class="read-only-field mr-5">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.RELEASE_DATE' | translate }}</label>
-        <div class="word-break">
-            {{ securisation?.dateTime | dateTime: 'dd/MM/yyyy' }}
-        </div>
+  <div class="read-only-field mr-5">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.RELEASE_DATE' | translate }}</label>
+    <div class="word-break">
+      {{ securisation?.dateTime | dateTime: 'dd/MM/yyyy' }}
     </div>
-    <div class="read-only-field">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.STATUS' | translate }}</label>
-        <div class="word-break">
-            {{ securisation.events[securisation.events.length - 1].outcome }}
-        </div>
+  </div>
+  <div class="read-only-field">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.STATUS' | translate }}</label>
+    <div class="word-break">
+      {{ securisation.events[securisation.events.length - 1].outcome }}
     </div>
+  </div>
 </div>
 
 <div class="d-flex">
-    <div class="read-only-field mr-5">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.START_DATE' | translate }}</label>
-        <div class="word-break">
-            {{ securisation?.parsedData?.StartDate | dateTime: 'dd/MM/yyyy' }}
-        </div>
+  <div class="read-only-field mr-5">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.START_DATE' | translate }}</label>
+    <div class="word-break">
+      {{ securisation?.parsedData?.StartDate | dateTime: 'dd/MM/yyyy' }}
     </div>
-    <div class="read-only-field">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.END_DATE' | translate }}</label>
-        <div class="word-break">
-            {{ securisation?.parsedData?.EndDate | dateTime: 'dd/MM/yyyy' }}
-        </div>
+  </div>
+  <div class="read-only-field">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.END_DATE' | translate }}</label>
+    <div class="word-break">
+      {{ securisation?.parsedData?.EndDate | dateTime: 'dd/MM/yyyy' }}
     </div>
+  </div>
 </div>
 
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.NUMBER_OF_OPERATIONS' | translate }}</label>
-    <div class="word-break">
-        {{ securisation?.parsedData?.NumberOfElements }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.NUMBER_OF_OPERATIONS' | translate }}</label>
+  <div class="word-break">
+    {{ securisation?.parsedData?.NumberOfElements }}
+  </div>
 </div>
 
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_NAME' | translate }}</label>
-    <div class="word-break">
-        {{ securisation?.parsedData?.FileName }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_NAME' | translate }}</label>
+  <div class="word-break">
+    {{ securisation?.parsedData?.FileName }}
+  </div>
 </div>
 
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_SIZE' | translate }}</label>
-    <div class="word-break">
-        {{ securisation?.parsedData?.Size | fileSize }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_SIZE' | translate }}</label>
+  <div class="word-break">
+    {{ securisation?.parsedData?.Size | fileSize }}
+  </div>
 </div>
 
 <div class="d-flex">
-    <div class="read-only-field mr-5">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.HASH_ALGORITHM' | translate }}</label>
-        <div class="word-break">
-            {{ securisation?.parsedData?.DigestAlgorithm }}
-        </div>
+  <div class="read-only-field mr-5">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.HASH_ALGORITHM' | translate }}</label>
+    <div class="word-break">
+      {{ securisation?.parsedData?.DigestAlgorithm }}
     </div>
-    <div class="read-only-field">
-        <label>{{ 'SECURE.TAB.INFORMATIONS.STAMP_DATE' | translate }}</label>
-        <div class="word-break">
-            {{ timestamp?.genTime | dateTime: 'dd/MM/yyyy' }}
-        </div>
+  </div>
+  <div class="read-only-field">
+    <label>{{ 'SECURE.TAB.INFORMATIONS.STAMP_DATE' | translate }}</label>
+    <div class="word-break">
+      {{ timestamp?.genTime | dateTime: 'dd/MM/yyyy' }}
     </div>
+  </div>
 </div>
 
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.SIGNATURE_CERTIFICATE' | translate }}</label>
-    <div class="word-break">
-        {{ timestamp?.signerCertIssuer }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.SIGNATURE_CERTIFICATE' | translate }}</label>
+  <div class="word-break">
+    {{ timestamp?.signerCertIssuer }}
+  </div>
 </div>
 
 <div class="read-only-field">
-    <label>{{ 'SECURE.TAB.INFORMATIONS.MERKLE_TREE_HASH' | translate }}</label>
-    <div class="word-break">
-        {{ securisation?.parsedData?.Hash }}
-    </div>
+  <label>{{ 'SECURE.TAB.INFORMATIONS.MERKLE_TREE_HASH' | translate }}</label>
+  <div class="word-break">
+    {{ securisation?.parsedData?.Hash }}
+  </div>
 </div>

@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-audit-preview *ngIf="openedItem" [audit]="openedItem" (previewClose)="closePanel()" ></app-audit-preview>
+    <app-audit-preview *ngIf="openedItem" [audit]="openedItem" (previewClose)="closePanel()"></app-audit-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -17,19 +17,29 @@
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
         <mat-form-field class="vitamui-input vitamui-date mr-4">
-          <input [matDatepicker]="pickerStart" [max]="dateRangeFilterForm.get('endDate').value" matInput
-            placeholder="{{ 'AUDIT.HOME.START_DATE' | translate }}" formControlName="startDate" #stDateInput />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value"
-            (click)="clearDate('startDate', $event, stDateInput)"></i>
+          <input
+            [matDatepicker]="pickerStart"
+            [max]="dateRangeFilterForm.get('endDate').value"
+            matInput
+            placeholder="{{ 'AUDIT.HOME.START_DATE' | translate }}"
+            formControlName="startDate"
+            #stDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerStart></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="vitamui-input vitamui-date">
-          <input [matDatepicker]="pickerEnd" [min]="dateRangeFilterForm.get('startDate').value" matInput
-            placeholder="{{ 'AUDIT.HOME.END_DATE' | translate }}" formControlName="endDate" #endDateInput />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value"
-            (click)="clearDate('endDate', $event, endDateInput)"></i>
+          <input
+            [matDatepicker]="pickerEnd"
+            [min]="dateRangeFilterForm.get('startDate').value"
+            matInput
+            placeholder="{{ 'AUDIT.HOME.END_DATE' | translate }}"
+            formControlName="endDate"
+            #endDateInput
+          />
+          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerEnd></mat-datepicker>
         </mat-form-field>

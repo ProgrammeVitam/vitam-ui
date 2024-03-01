@@ -54,8 +54,8 @@
     <div class="d-flex align-items-center pl-3 mr-4 account" [matMenuTriggerFor]="accountMenu">
       <vitamui-common-user-photo class="mr-2" [photo]="currentUser?.photo"></vitamui-common-user-photo>
       <div class="mx-2">
-        <div class="text caption bold">{{'HEADER.PROFILE' | translate}}</div>
-        <div class="text normal">{{currentUser?.firstname}} {{currentUser.lastname}}</div>
+        <div class="text caption bold">{{ 'HEADER.PROFILE' | translate }}</div>
+        <div class="text normal">{{ currentUser?.firstname }} {{ currentUser.lastname }}</div>
       </div>
 
       <div class="ml-3">

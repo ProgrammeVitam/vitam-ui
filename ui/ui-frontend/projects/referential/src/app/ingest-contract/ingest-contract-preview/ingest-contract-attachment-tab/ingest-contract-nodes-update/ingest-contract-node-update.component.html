@@ -6,18 +6,22 @@
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_SIP' | translate}}</div>
-        <div class="text large bold mb-3">{{'INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate}}</div>
+        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_SIP' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate }}</div>
 
-        <vitamui-library-filing-plan [formControl]="linkParentIdControl" [tenantIdentifier]="tenantIdentifier"
-          [accessContract]="accessContractId" [mode]="FILING_PLAN_MODE_SOLO"></vitamui-library-filing-plan>
+        <vitamui-library-filing-plan
+          [formControl]="linkParentIdControl"
+          [tenantIdentifier]="tenantIdentifier"
+          [accessContract]="accessContractId"
+          [mode]="FILING_PLAN_MODE_SOLO"
+        ></vitamui-library-filing-plan>
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext>
-            {{'COMMON.NEXT' | translate}}
+            {{ 'COMMON.NEXT' | translate }}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()">
-            {{'COMMON.UNDO' | translate}}
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
       </div>
@@ -25,43 +29,49 @@
 
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_AU' | translate}}</div>
-        <div class="text large bold mb-3">{{'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate}}</div>
+        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_AU' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}</div>
 
         <div class="d-flex align-items-center mb-3">
           <mat-button-toggle-group [formControl]="checkParentLinkControl" class="vitamui-button-toggle-group">
             <mat-button-toggle [value]="'AUTHORIZED'">
-              {{'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.AUTHORIZED' | translate}}
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.AUTHORIZED' | translate }}
             </mat-button-toggle>
             <mat-button-toggle [value]="'REQUIRED'">
-              {{'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.REQUIRED' | translate}}
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.REQUIRED' | translate }}
             </mat-button-toggle>
             <mat-button-toggle [value]="'UNAUTHORIZED'">
-              {{'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.UNAUTHORIZED' | translate}}
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.UNAUTHORIZED' | translate }}
             </mat-button-toggle>
           </mat-button-toggle-group>
 
-          <i class="vitamui-icon vitamui-icon-info text large primary ml-3"
-            vitamuiCommonToolTip="{{'INGEST_CONTRACT.UPDATE_NODE_DIALOG.ATTACHEMENT_CONTROL_INFO' | translate}}"
-            vitamuiCommonToolTipPosition="BOTTOM">
+          <i
+            class="vitamui-icon vitamui-icon-info text large primary ml-3"
+            vitamuiCommonToolTip="{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.ATTACHEMENT_CONTROL_INFO' | translate }}"
+            vitamuiCommonToolTipPosition="BOTTOM"
+          >
           </i>
         </div>
 
-        <vitamui-library-filing-plan [formControl]="checkParentIdControl" [tenantIdentifier]="tenantIdentifier"
-          [accessContract]="accessContractId" [mode]="FILING_PLAN_MODE_INC"></vitamui-library-filing-plan>
+        <vitamui-library-filing-plan
+          [formControl]="checkParentIdControl"
+          [tenantIdentifier]="tenantIdentifier"
+          [accessContract]="accessContractId"
+          [mode]="FILING_PLAN_MODE_INC"
+        ></vitamui-library-filing-plan>
 
         <div class="actions">
           <button type="submit" class="btn primary">
-            {{'COMMON.VALIDATE' | translate}}
+            {{ 'COMMON.VALIDATE' | translate }}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()">
-            {{'COMMON.UNDO' | translate}}
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-        
+
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{'COMMON.BACK' | translate}}</span>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>

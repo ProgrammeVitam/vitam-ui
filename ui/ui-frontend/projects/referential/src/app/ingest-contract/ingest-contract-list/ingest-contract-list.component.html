@@ -1,31 +1,45 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <div class="vitamui-table" >
+  <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1 d-flex align-items-center">
         <i class="vitamui-icon vitamui-icon-contrat mr-2"></i>
         <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate">
-        <i class="material-icons">filter_list</i>
-      </button>
+          <i class="material-icons">filter_list</i>
+        </button>
       </div>
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.IDENTIFIER' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="orderChange.next()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="orderChange.next()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-5 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.NAME' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="Name" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="orderChange.next()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="Name"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="orderChange.next()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.PROFILE_COUNT' | translate }}</div>
       </div>
 
-
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.CREATION_DATE' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="orderChange.next()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="CreationDate"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="orderChange.next()"
+        ></vitamui-common-order-by-button>
       </div>
     </div>
 
@@ -46,19 +60,19 @@
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && ingestContractService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && ingestContractService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
- <ng-template #loadMore>
+<ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="ingestContractService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -72,13 +86,13 @@
   <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
     <vitamui-common-table-filter-option value="ACTIVE">
       <div class="table-filter-icon">
-        <span class="badge-state">{{'INGEST_CONTRACT.HOME.ARRAY.ACTIVE' | translate}}</span>
+        <span class="badge-state">{{ 'INGEST_CONTRACT.HOME.ARRAY.ACTIVE' | translate }}</span>
       </div>
     </vitamui-common-table-filter-option>
 
     <vitamui-common-table-filter-option value="INACTIVE">
       <div class="table-filter-icon">
-        <span class="badge-state">{{'INGEST_CONTRACT.HOME.ARRAY.INACTIVE' | translate}}</span>
+        <span class="badge-state">{{ 'INGEST_CONTRACT.HOME.ARRAY.INACTIVE' | translate }}</span>
       </div>
     </vitamui-common-table-filter-option>
   </vitamui-common-table-filter>

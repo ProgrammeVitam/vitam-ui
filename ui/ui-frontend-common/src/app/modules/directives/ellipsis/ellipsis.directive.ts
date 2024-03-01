@@ -45,7 +45,10 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   domElement: any;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+  ) {}
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
@@ -60,9 +63,9 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   setToolTip() {
-    (this.domElement.offsetHeight < this.domElement.scrollHeight) ?
-    this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent) :
-    this.renderer.removeAttribute(this.domElement, 'title');
+    this.domElement.offsetHeight < this.domElement.scrollHeight
+      ? this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent)
+      : this.renderer.removeAttribute(this.domElement, 'title');
   }
 
   @HostListener('mouseenter')

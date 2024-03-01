@@ -89,7 +89,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     private route: ActivatedRoute,
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {

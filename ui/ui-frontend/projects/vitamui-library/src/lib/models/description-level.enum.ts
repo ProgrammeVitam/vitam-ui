@@ -9,6 +9,6 @@ export enum DescriptionLevel {
   RECORD_GRP = 'RecordGrp', // Dossier
   SUB_GRP = 'SubGrp',
   FILE = 'File', // Dossier
-  ITEM = 'Item',// Document
+  ITEM = 'Item', // Document
   OTHER_LEVEL = 'OtherLevel',
 }

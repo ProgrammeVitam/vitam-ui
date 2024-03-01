@@ -1,17 +1,20 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-logbook-operation-detail *ngIf="openedItem" [tenantIdentifier]="tenantIdentifier" [eventId]="openedItem?.id"
-      (closePanel)="closePanel()"></app-logbook-operation-detail>
+    <app-logbook-operation-detail
+      *ngIf="openedItem"
+      [tenantIdentifier]="tenantIdentifier"
+      [eventId]="openedItem?.id"
+      (closePanel)="closePanel()"
+    ></app-logbook-operation-detail>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{'LOGBOOK.HOME.TITLE' | translate}}
+        {{ 'LOGBOOK.HOME.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK.HOME.SEARCH_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary" (click)="refreshList()">
           <span>{{ 'LOGBOOK.HOME.REFRESH' | translate }}</span>
           <i class="vitamui-icon vitamui-icon-refresh"></i>
@@ -20,16 +23,28 @@
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
         <mat-form-field class="vitamui-input vitamui-date mr-4">
-          <input [matDatepicker]="pickerStart" [max]="dateRangeFilterForm.get('endDate').value" matInput
-            placeholder="{{'LOGBOOK.HOME.START_DATE' | translate }}" formControlName="startDate" #stDateInput />
+          <input
+            [matDatepicker]="pickerStart"
+            [max]="dateRangeFilterForm.get('endDate').value"
+            matInput
+            placeholder="{{ 'LOGBOOK.HOME.START_DATE' | translate }}"
+            formControlName="startDate"
+            #stDateInput
+          />
           <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerStart></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="vitamui-input vitamui-date">
-          <input [matDatepicker]="pickerEnd" [min]="dateRangeFilterForm.get('startDate').value" matInput
-            placeholder="{{'LOGBOOK.HOME.END_DATE' | translate }}" formControlName="endDate" #endDateInput />
+          <input
+            [matDatepicker]="pickerEnd"
+            [min]="dateRangeFilterForm.get('startDate').value"
+            matInput
+            placeholder="{{ 'LOGBOOK.HOME.END_DATE' | translate }}"
+            formControlName="endDate"
+            #endDateInput
+          />
           <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
           <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #pickerEnd></mat-datepicker>
@@ -38,8 +53,12 @@
     </div>
 
     <div class="vitamui-content">
-      <app-logbook-operation-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" [search]="search"
-        (eventClick)="openPanel($event)"></app-logbook-operation-list>
+      <app-logbook-operation-list
+        [filters]="filters"
+        [tenantIdentifier]="tenantIdentifier"
+        [search]="search"
+        (eventClick)="openPanel($event)"
+      ></app-logbook-operation-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

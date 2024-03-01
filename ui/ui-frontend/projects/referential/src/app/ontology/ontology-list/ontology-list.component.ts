@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject} from 'rxjs';
-import {debounceTime, filter, takeUntil} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { merge, Subject } from 'rxjs';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
-import {Ontology} from '../../../../../vitamui-library/src/lib/models/ontology';
-import {OntologyService} from '../ontology.service';
-import {TranslateService} from "@ngx-translate/core";
+import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
+import { OntologyService } from '../ontology.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -75,7 +75,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   constructor(
     public ontologyService: OntologyService,
     private translateService: TranslateService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
   ) {
     super(ontologyService);
   }
@@ -136,19 +136,16 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
       .subscribe(() => {
         this.ontologyService.delete(ontology).subscribe(() => {
           this.searchOntologyOrdered();
-        }
-      );
-    });
+        });
+      });
   }
 
   private replaceUpdatedOntology(): void {
-    this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe(
-      (updatedOntology: Ontology) => {
-        const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
-        if (index !== -1) {
-          this.dataSource[index] = updatedOntology;
-        }
+    this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedOntology: Ontology) => {
+      const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedOntology;
       }
-    );
+    });
   }
 }

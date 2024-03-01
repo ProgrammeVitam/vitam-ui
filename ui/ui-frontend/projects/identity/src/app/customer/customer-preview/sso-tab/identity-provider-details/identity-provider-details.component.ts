@@ -49,7 +49,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
 @Component({
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
-  styleUrls: ['./identity-provider-details.component.scss']
+  styleUrls: ['./identity-provider-details.component.scss'],
 })
 export class IdentityProviderDetailsComponent {
   @Input()
@@ -150,7 +150,7 @@ export class IdentityProviderDetailsComponent {
     this.specificSamlControls = this.initializeSamlControls();
     this.specificOidcControls = this.initializeOidcControls();
     this.form = this.formBuilder.group({
-      ...this.commonsControls.controls
+      ...this.commonsControls.controls,
     });
     this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
   }
@@ -172,7 +172,7 @@ export class IdentityProviderDetailsComponent {
       patterns: [null, Validators.required],
       mailAttribute: [null],
       identifierAttribute: [null],
-      autoProvisioningEnabled: [false, Validators.required]
+      autoProvisioningEnabled: [false, Validators.required],
     });
 
     commonFormGroup.get('protocoleType').valueChanges.subscribe((newProtocol: ProtocoleType) => {
@@ -189,7 +189,7 @@ export class IdentityProviderDetailsComponent {
       maximumAuthenticationLifetime: [null],
       wantsAssertionsSigned: [this.identityProvider ? this.identityProvider.wantsAssertionsSigned : null, Validators.required],
       authnRequestSigned: [this.identityProvider ? this.identityProvider.authnRequestSigned : null, Validators.required],
-      propagateLogout: [this.identityProvider ? this.identityProvider.propagateLogout : null, Validators.required]
+      propagateLogout: [this.identityProvider ? this.identityProvider.propagateLogout : null, Validators.required],
     });
   }
 
@@ -204,7 +204,7 @@ export class IdentityProviderDetailsComponent {
       useState: [true],
       useNonce: [true],
       usePkce: [false],
-      propagateLogout: [false]
+      propagateLogout: [false],
     });
   }
 
@@ -252,7 +252,7 @@ export class IdentityProviderDetailsComponent {
             customParams: null,
             useState: null,
             useNonce: null,
-            usePkce: null
+            usePkce: null,
           };
           break;
         case ProtocoleType.SAML:
@@ -262,7 +262,7 @@ export class IdentityProviderDetailsComponent {
             keystorePassword: null,
             maximumAuthenticationLifetime: null,
             wantsAssertionsSigned: true,
-            authnRequestSigned: true
+            authnRequestSigned: true,
           };
           break;
       }
@@ -279,13 +279,13 @@ export class IdentityProviderDetailsComponent {
     switch (formValue.protocoleType) {
       case ProtocoleType.CERTIFICAT:
         this.form = this.formBuilder.group({
-          ...this.commonsControls.controls
+          ...this.commonsControls.controls,
         });
         break;
       case ProtocoleType.SAML:
         this.form = this.formBuilder.group({
           ...this.commonsControls.controls,
-          ...this.specificSamlControls.controls
+          ...this.specificSamlControls.controls,
         });
         // set default value if it is not defined
         if (!formValue.authnRequestBinding) {
@@ -301,7 +301,7 @@ export class IdentityProviderDetailsComponent {
       case ProtocoleType.OIDC:
         this.form = this.formBuilder.group({
           ...this.commonsControls.controls,
-          ...this.specificOidcControls.controls
+          ...this.specificOidcControls.controls,
         });
         // set default value if it is not defined
         if (formValue.useState === undefined || formValue.useState === null) {

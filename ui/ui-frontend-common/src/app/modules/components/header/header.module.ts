@@ -29,7 +29,7 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     TranslateModule,
     SelectLanguageModule,
     UserAlertsMenuModule,
-    SelectSiteModule
+    SelectSiteModule,
   ],
   exports: [HeaderComponent],
 })

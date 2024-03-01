@@ -121,7 +121,7 @@ export class UploadComponent implements OnInit {
     this.fileSizeString = transformer.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
-      this.message = 'Le fichier déposé n\'est pas au bon format';
+      this.message = "Le fichier déposé n'est pas au bon format";
       this.hasError = true;
       return;
     }

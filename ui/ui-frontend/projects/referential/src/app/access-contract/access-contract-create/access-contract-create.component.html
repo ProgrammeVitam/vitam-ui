@@ -6,12 +6,13 @@
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'ACCESS_CONTRACT.CREATE_DIALOG.SUBTITLE' | translate}}</div>
+        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.SUBTITLE' | translate }}</div>
 
         <div>
-          <vitamui-common-slide-toggle
-            formControlName="status"> {{'ACCESS_CONTRACT.CREATE_DIALOG.STATUS' | translate}}</vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="status">
+            {{ 'ACCESS_CONTRACT.CREATE_DIALOG.STATUS' | translate }}</vitamui-common-slide-toggle
+          >
         </div>
 
         <div class="d-flex">
@@ -25,10 +26,10 @@
           >
             <ng-container *ngIf="form.get('name')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-              >{{ 'COMMON.REQUIRED' | translate }}
+                >{{ 'COMMON.REQUIRED' | translate }}
               </vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists"
-              >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+                >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
               </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
@@ -44,38 +45,37 @@
             [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
           >
             <ng-container *ngIf="form.get('identifier')?.touched">
-              <vitamui-common-input-error
-                *ngIf="!!form.get('identifier')?.errors?.required"
-              >{{ 'COMMON.REQUIRED' | translate }}
+              <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required"
+                >{{ 'COMMON.REQUIRED' | translate }}
               </vitamui-common-input-error>
-              <vitamui-common-input-error
-                *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
-              >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
+              <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
+                >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
               </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
         </div>
 
-        <vitamui-common-textarea formControlName="description"
-                                 [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.DESCRIPTION' | translate">
+        <vitamui-common-textarea formControlName="description" [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.DESCRIPTION' | translate">
         </vitamui-common-textarea>
 
         <div class="mt-3 mb-0">
           <vitamui-common-slide-toggle formControlName="accessLog">
-            {{'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG' | translate}}
-            <i class="vitamui-icon vitamui-icon-info align-middle primary"
-               vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG_TOOLTIP' | translate }}"
+            {{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG' | translate }}
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG_TOOLTIP' | translate }}"
             ></i>
           </vitamui-common-slide-toggle>
         </div>
 
         <div class="mb-0">
           <vitamui-common-slide-toggle [formControl]="ruleFilter"
-          >{{'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER' | translate}}
-          <i class="vitamui-icon vitamui-icon-info align-middle primary"
-             vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER_TOOLTIP' | translate}}"
-          ></i>
-        </vitamui-common-slide-toggle>
+            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER' | translate }}
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER_TOOLTIP' | translate }}"
+            ></i>
+          </vitamui-common-slide-toggle>
         </div>
 
         <div *ngIf="ruleFilter.value === true" class="d-flex align-items-center pb-5">
@@ -92,15 +92,14 @@
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
-          <i class="vitamui-icon vitamui-icon-info ml-3 primary"
-             vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER_SELECT_TOOLTIP' | translate}}"
+          <i
+            class="vitamui-icon vitamui-icon-info ml-3 primary"
+            vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.RULE_FILTER_SELECT_TOOLTIP' | translate }}"
           ></i>
         </div>
 
-
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext
-                  [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
@@ -108,13 +107,14 @@
 
     <cdk-step>
       <div formGroupName="secondStep" class="content mt-3">
-        <div class="text medium light">{{'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'ACCESS_CONTRACT.CREATE_DIALOG.PRODUCER_SERVICES_TITLE' | translate}}</div>
+        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.PRODUCER_SERVICES_TITLE' | translate }}</div>
         <div>
           <vitamui-common-slide-toggle formControlName="everyOriginatingAgency">
-            {{'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY' | translate}}
-            <i class="vitamui-icon vitamui-icon-info align-middle primary"
-               vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_TOOLTIP' | translate}}"
+            {{ 'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY' | translate }}
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_TOOLTIP' | translate }}"
             ></i>
           </vitamui-common-slide-toggle>
         </div>
@@ -131,11 +131,12 @@
         </div>
 
         <div>
-          <vitamui-common-slide-toggle
-            formControlName="everyDataObjectVersion">{{'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION' | translate}}
+          <vitamui-common-slide-toggle formControlName="everyDataObjectVersion"
+            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION' | translate }}
 
-            <i class="vitamui-icon vitamui-icon-info align-middle primary"
-            vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_TOOLTIP' | translate}}"
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_TOOLTIP' | translate }}"
             ></i>
           </vitamui-common-slide-toggle>
         </div>
@@ -159,35 +160,38 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext
-                  [disabled]="form.get('secondStep').errors">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="form.get('secondStep').errors">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{'COMMON.BACK' | translate}}</span>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TITLE' | translate}}</div>
+        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TITLE' | translate }}</div>
 
         <div>
-          <vitamui-common-slide-toggle
-            formControlName="writingPermission">{{'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION' | translate}}
-            <i class="vitamui-icon vitamui-icon-info align-middle primary"
-               vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TOOLTIP' | translate}}"
-               vitamuiCommonToolTipPosition="BOTTOM"></i>
+          <vitamui-common-slide-toggle formControlName="writingPermission"
+            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION' | translate }}
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TOOLTIP' | translate }}"
+              vitamuiCommonToolTipPosition="BOTTOM"
+            ></i>
           </vitamui-common-slide-toggle>
         </div>
 
         <div *ngIf="form.controls.writingPermission.value === true">
           <vitamui-common-slide-toggle formControlName="writingRestrictedDesc"
-          >{{'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_RESTRICTED_DESC' | translate}}
+            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_RESTRICTED_DESC' | translate }}
           </vitamui-common-slide-toggle>
         </div>
 
@@ -197,21 +201,22 @@
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{'COMMON.BACK' | translate}}</span>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content mt-3">
-        <div class="text medium light">{{'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate}}</div>
-        <div class="text large bold mb-3">{{'ACCESS_CONTRACT.CREATE_DIALOG.POSITIONS_TITLE' | translate}}</div>
+        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.POSITIONS_TITLE' | translate }}</div>
 
         <div>
-          <vitamui-common-slide-toggle
-            [formControl]="allNodes">{{'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate}}
-            <i class="vitamui-icon vitamui-icon-info align-middle primary"
-               vitamuiCommonToolTip="{{'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS_TOOLTIP' | translate}}"
+          <vitamui-common-slide-toggle [formControl]="allNodes"
+            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}
+            <i
+              class="vitamui-icon vitamui-icon-info align-middle primary"
+              vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS_TOOLTIP' | translate }}"
             ></i>
           </vitamui-common-slide-toggle>
         </div>
@@ -233,7 +238,7 @@
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{'COMMON.BACK' | translate}}</span>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>

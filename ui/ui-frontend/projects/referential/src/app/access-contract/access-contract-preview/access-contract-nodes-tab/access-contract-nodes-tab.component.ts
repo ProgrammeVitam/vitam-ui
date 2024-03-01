@@ -51,12 +51,11 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
 export class AccessContractNodesTabComponent {
   @Input() tenantIdentifier: number;
   @Input() set accessContract(accessContract: AccessContract) {
-
-    if(!accessContract.rootUnits){
+    if (!accessContract.rootUnits) {
       accessContract.rootUnits = [];
     }
 
-    if(!accessContract.excludedRootUnits){
+    if (!accessContract.excludedRootUnits) {
       accessContract.excludedRootUnits = [];
     }
 
@@ -79,7 +78,7 @@ export class AccessContractNodesTabComponent {
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private vitamUISnackBarService: VitamUISnackBarService
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   get isAllRootUnitsSelected(): boolean {
@@ -91,21 +90,22 @@ export class AccessContractNodesTabComponent {
       return;
     }
 
-    this.dialog.open(AccessContractNodeUpdateComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: {
-        accessContract: this._accessContract,
-        searchAccessContractId: this.searchAccessContractId,
-        tenantIdentifier: this.tenantIdentifier,
-      },
-    })
-    .afterClosed()
-    .subscribe((updatedAccessContract: AccessContract) => {
-      if (updatedAccessContract) {
-        this.accessContract = updatedAccessContract;
-      }
-    });;
+    this.dialog
+      .open(AccessContractNodeUpdateComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: {
+          accessContract: this._accessContract,
+          searchAccessContractId: this.searchAccessContractId,
+          tenantIdentifier: this.tenantIdentifier,
+        },
+      })
+      .afterClosed()
+      .subscribe((updatedAccessContract: AccessContract) => {
+        if (updatedAccessContract) {
+          this.accessContract = updatedAccessContract;
+        }
+      });
   }
 
   private initSearchAccessContractIdAndTitles(): void {

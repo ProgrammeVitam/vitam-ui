@@ -43,7 +43,10 @@
       <div class="vitamui-table-rows" *ngFor="let context of dataSource; let index = index" (click)="contextClick.emit(context)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-1">
-            <i class="vitamui-icon vitamui-icon-securite" [ngClass]="context?.status == 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"></i>
+            <i
+              class="vitamui-icon vitamui-icon-securite"
+              [ngClass]="context?.status == 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"
+            ></i>
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ context?.identifier }}</div>
           <div class="col-4" vitamuiCommonEllipsis>{{ context?.name }}</div>
@@ -52,19 +55,19 @@
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && contextService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && contextService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="contextService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -78,13 +81,13 @@
   <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
     <vitamui-common-table-filter-option value="ACTIVE">
       <div class="table-filter-icon">
-        <span class="badge-state">{{'CONTEXTS_APP.HOME.ARRAY.ACTIVE' | translate}}</span>
+        <span class="badge-state">{{ 'CONTEXTS_APP.HOME.ARRAY.ACTIVE' | translate }}</span>
       </div>
     </vitamui-common-table-filter-option>
 
     <vitamui-common-table-filter-option value="INACTIVE">
       <div class="table-filter-icon">
-        <span class="badge-state">{{'CONTEXTS_APP.HOME.ARRAY.INACTIVE' | translate}}</span>
+        <span class="badge-state">{{ 'CONTEXTS_APP.HOME.ARRAY.INACTIVE' | translate }}</span>
       </div>
     </vitamui-common-table-filter-option>
   </vitamui-common-table-filter>

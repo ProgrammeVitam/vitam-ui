@@ -115,7 +115,8 @@ public class IngestContractInternalService {
 
     @Autowired
     public IngestContractInternalService(IngestContractService ingestContractService, ObjectMapper objectMapper,
-        IngestContractConverter converter, LogbookService logbookService) {
+        IngestContractConverter converter, LogbookService logbookService,
+        ApplicationInternalRestClient applicationInternalRestClient, InternalSecurityService internalSecurityService) {
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;

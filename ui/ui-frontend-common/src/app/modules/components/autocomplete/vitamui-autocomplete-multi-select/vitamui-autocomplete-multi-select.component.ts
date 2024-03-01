@@ -113,7 +113,10 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
 
-  constructor(private cd: ChangeDetectorRef, readonly sd: ScrollDispatcher) {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    readonly sd: ScrollDispatcher,
+  ) {}
 
   @Input()
   set multiSelectOptions(multiselectOptions: VitamuiAutocompleteMultiselectOptions) {
@@ -139,7 +142,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
 
   ngAfterViewInit(): void {
     merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
-      () => this.updateCheckboxes()
+      () => this.updateCheckboxes(),
     );
   }
 
@@ -250,7 +253,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.searchTextControl.setValue(value ? value : null);
     if (this.searchTextControl.value) {
       this.displayedOptions = this.allOptions.filter(
-        (option) => option.label.toLowerCase().indexOf(this.searchTextControl.value.toLowerCase()) !== -1
+        (option) => option.label.toLowerCase().indexOf(this.searchTextControl.value.toLowerCase()) !== -1,
       );
       this.resizeContainerHeightInSearchView();
     }
@@ -356,7 +359,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   private resizeContainerHeightInSelectedItemsView(): void {
     this.containerHeightInSelectedItemsView = this.calculateContainerHeight(
       this.initialHeightInSelectedItemsView,
-      this.selectedOptions.length
+      this.selectedOptions.length,
     );
     this.checkViewportSize();
   }

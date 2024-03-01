@@ -102,7 +102,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     private agencyService: AgencyService,
     private confirmDialogService: ConfirmDialogService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
@@ -126,7 +126,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
         map((agencies: Agency[]) => {
           const options: Option[] = agencies.map((x) => ({ label: x.identifier + ' - ' + x.name, key: x.identifier }));
           return { options };
-        })
+        }),
       )
       .subscribe((options: VitamuiAutocompleteMultiselectOptions) => {
         this.originatingAgenciesOptions = options;
@@ -149,7 +149,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
         },
         {
           validators: [this.secondStepValidator()],
-        }
+        },
       ),
       /* <- step 3 -> */
       writingPermission: [false],

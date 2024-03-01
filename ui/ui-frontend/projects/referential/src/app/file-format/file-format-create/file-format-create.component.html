@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" cdkFocusInitial>
   <div class="content mt-5">
-    <div class="text medium light">{{'FILE_FORMATS.CREATE_DIALOG.SUBTITLE' | translate}}</div>
-    <div class="text large bold mb-3">{{'FILE_FORMATS.CREATE_DIALOG.TITLE' | translate}}</div>
+    <div class="text medium light">{{ 'FILE_FORMATS.CREATE_DIALOG.SUBTITLE' | translate }}</div>
+    <div class="text large bold mb-3">{{ 'FILE_FORMATS.CREATE_DIALOG.TITLE' | translate }}</div>
 
     <div class="d-flex">
       <!-- Must we validate Min / max length ? -->
@@ -11,7 +11,8 @@
         minlength="2"
         maxlength="100"
         required
-        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER' | translate">
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER' | translate"
+      >
         <ng-container *ngIf="form.get('puid')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('puid')?.errors?.required">
             {{ 'COMMON.REQUIRED' | translate }}
@@ -31,7 +32,8 @@
         minlength="2"
         maxlength="100"
         required
-        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.NAME'  | translate">
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.NAME' | translate"
+      >
         <ng-container *ngIf="form.get('name')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
             'COMMON.REQUIRED' | translate
@@ -45,10 +47,7 @@
 
     <div class="d-flex">
       <!-- Must we validate Min / max length ? -->
-      <vitamui-common-input
-        class="w-100"
-        formControlName="mimeType"
-        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.MIME_TYPE' | translate">
+      <vitamui-common-input class="w-100" formControlName="mimeType" [placeholder]="'FILE_FORMATS.CREATE_DIALOG.MIME_TYPE' | translate">
       </vitamui-common-input>
     </div>
 
@@ -58,9 +57,10 @@
         class="w-100"
         formControlName="version"
         required
-        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.VERSION' | translate">
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.VERSION' | translate"
+      >
         <vitamui-common-input-error *ngIf="form.get('version')?.touched && form.get('version')?.hasError('required')">
-          {{ 'COMMON.REQUIRED' | translate}}
+          {{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </vitamui-common-input>
     </div>
@@ -71,9 +71,10 @@
         class="w-100"
         formControlName="extensions"
         required
-        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.EXTENSION' | translate">
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.EXTENSION' | translate"
+      >
         <vitamui-common-input-error *ngIf="form.get('extensions')?.touched && form.get('extensions')?.hasError('required')">
-          {{ 'COMMON.REQUIRED' | translate}}
+          {{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </vitamui-common-input>
     </div>
@@ -84,6 +85,5 @@
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
-
   </div>
 </form>

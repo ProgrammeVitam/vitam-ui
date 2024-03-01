@@ -81,36 +81,10 @@ export class FileFormatService extends SearchService<FileFormat> {
   }
 
   create(fileFormat: FileFormat) {
-    return this.fileFormatApiService.create(fileFormat, this.headers)
-      .pipe(
-        tap(
-          () =>
-            this.snackBarService.open({message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED', icon: 'vitamui-icon-fichiers'}),
-          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-        )
-      );
-  }
-
-  patch(data: { id: string, [key: string]: any }): Observable<FileFormat> {
-    return this.fileFormatApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          () =>
-            this.snackBarService.open({message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED', icon: 'vitamui-icon-fichiers'}),
-          (error) => this.snackBarService.open({ message: error.error.message, translate: false })
-        )
-      );
-  }
-
-  delete(fileFormat: FileFormat): Observable<any> {
-    return this.fileFormatApiService.delete(fileFormat.puid).pipe(
-      tap(() => {
-          this.snackBarService.open({ message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED', icon: 'vitamui-icon-fichiers' });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
+    return this.fileFormatApiService.create(fileFormat, this.headers).pipe(
+      tap(
+        () => this.snackBarService.open({ message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED', icon: 'vitamui-icon-fichiers' }),
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),
     );
   }
@@ -119,18 +93,12 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
+        () =>
           this.snackBarService.open({
             message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
-            translateParams: {
-              name: response.puid,
-            },
-            icon: 'vitamui-icon-admin-key',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
+            icon: 'vitamui-icon-fichiers',
+          }),
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),
     );
   }
@@ -141,10 +109,7 @@ export class FileFormatService extends SearchService<FileFormat> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
-            translateParams: {
-              name: fileFormat.puid,
-            },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-fichiers',
           });
         },
         (error) => {

@@ -3,17 +3,17 @@
 </button>
 
 <div class="mt-3">
-  <div class="text normal bold">{{'INGEST_CONTRACT.TAB.ATTACHEMENT.POSITION' | translate}}</div>
+  <div class="text normal bold">{{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.POSITION' | translate }}</div>
   <ul *ngIf="linkParentIdTitle">
     <li>{{ linkParentIdTitle }}</li>
   </ul>
 </div>
 
 <div class="mt-3">
-  <div class="text normal bold">{{'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.TITLE' | translate}}</div>
+  <div class="text normal bold">{{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.TITLE' | translate }}</div>
   <ul>
     <li *ngIf="ingestContract.checkParentLink">
-      {{'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.' + ingestContract.checkParentLink | translate}}
+      {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.' + ingestContract.checkParentLink | translate }}
     </li>
     <li *ngFor="let checkParentIdTitle of checkParentIdTitles">{{ checkParentIdTitle }}</li>
   </ul>

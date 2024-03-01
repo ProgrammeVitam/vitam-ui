@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <vitamui-common-input
-    [disabled]="!hasUpdateAgencyRole"
+    [disabled]="!(checkUpdateRole | async)"
     class="w-100"
     formControlName="name"
     placeholder="{{ 'AGENCY.TAB.NAME' | translate }}"
@@ -13,11 +13,11 @@
   </vitamui-common-input>
 
   <vitamui-common-input
-    [disabled]="!hasUpdateAgencyRole"
+    [disabled]="!(checkUpdateRole | async)"
     class="w-100"
     formControlName="description"
     placeholder="{{ 'AGENCY.TAB.DESCRIPTION' | translate }}"
-                            >
+  >
     <ng-container *ngIf="form.get('description')?.touched">
       <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
         {{ 'COMMON.REQUIRED' | translate }}
@@ -25,8 +25,12 @@
     </ng-container>
   </vitamui-common-input>
 
-  <button *ngIf="hasUpdateAgencyRole" type="submit" class="btn primary mt-3" [disabled]="form.invalid || !hasDiff() || loading">
+  <button
+    *ngIf="!(checkUpdateRole | async)"
+    type="submit"
+    class="btn primary mt-3"
+    [disabled]="isInvalid() || unchanged() || submited || (checkUpdateRole | async) !== true"
+  >
     <span>{{ 'COMMON.SAVE' | translate }} </span>
-    <mat-spinner *ngIf="loading" class="vitamui-spinner small ml-2"></mat-spinner>
   </button>
 </form>

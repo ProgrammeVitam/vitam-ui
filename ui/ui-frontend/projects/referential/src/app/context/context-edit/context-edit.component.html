@@ -1,32 +1,31 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="content mt-3">
-      <div class="text medium light">{{'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TITLE' | translate}}</div>
-      <div class="text large bold mb-3">{{'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.SUBTITLE' | translate}}</div>
+  <div class="content mt-3">
+    <div class="text medium light">{{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TITLE' | translate }}</div>
+    <div class="text large bold mb-3">{{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.SUBTITLE' | translate }}</div>
 
-      <div class="form-group">
-        <app-context-edit-permission formControlName="permissions"
-          (changeOrganisations)="onChangeOrganisations($event)">
-        </app-context-edit-permission>
-        <div *ngIf="isPermissionsOnMultipleOrganisations">
-          <span class="error-message">{{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.ORGANISATION_ERROR' | translate }}</span>
-        </div>
-        <ng-container>
-          <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant">
-            {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TENANT_ERROR' | translate }}
-          </span>
-          <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions">
-            {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.PERMISSION_ERROR' | translate }}
-          </span>
-        </ng-container>
+    <div class="form-group">
+      <app-context-edit-permission formControlName="permissions" (changeOrganisations)="onChangeOrganisations($event)">
+      </app-context-edit-permission>
+      <div *ngIf="isPermissionsOnMultipleOrganisations">
+        <span class="error-message">{{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.ORGANISATION_ERROR' | translate }}</span>
       </div>
-
-      <div class="actions">
-        <button type="submit" class="btn primary" [disabled]="isPermissionsInvalid()">
-          {{ 'COMMON.TERMINATE' | translate }}
-        </button>
-        <button type="button" class="btn cancel" (click)="onCancel()">
-          {{ 'COMMON.UNDO' | translate }}
-        </button>
-      </div>
+      <ng-container>
+        <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant">
+          {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TENANT_ERROR' | translate }}
+        </span>
+        <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions">
+          {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.PERMISSION_ERROR' | translate }}
+        </span>
+      </ng-container>
     </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="isPermissionsInvalid()">
+        {{ 'COMMON.TERMINATE' | translate }}
+      </button>
+      <button type="button" class="btn cancel" (click)="onCancel()">
+        {{ 'COMMON.UNDO' | translate }}
+      </button>
+    </div>
+  </div>
 </form>

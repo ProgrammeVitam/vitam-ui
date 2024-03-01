@@ -7,24 +7,35 @@
 
       <div class="col-3 d-flex align-items-center justify-content-between">
         <div>{{ 'AUDIT.HOME.ARRAY.IDENTIFIER' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="#id"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         {{ 'AUDIT.HOME.ARRAY.CATEGORY' | translate }}
 
-        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="operationFilterTemplate"
-        #categoryFilterTrigger="vitamuiCommonTableFilter"
-        [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0">
-        <i class="material-icons vitamui-row-icon">filter_list</i>
-      </button>
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="operationFilterTemplate"
+          #categoryFilterTrigger="vitamuiCommonTableFilter"
+          [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0"
+        >
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
       </div>
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'AUDIT.HOME.ARRAY.CREATION_DATE' | translate }}</div>
-        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="evDateTime"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
 
       <div class="col-1">{{ 'AUDIT.HOME.ARRAY.STATUS' | translate }}</div>
@@ -51,19 +62,19 @@
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && auditService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && auditService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="auditService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -77,7 +88,7 @@
   <vitamui-common-table-filter [(filter)]="filterMap['type']" (filterChange)="onFilterCategoryChange($event)">
     <ng-container *ngFor="let operation of getOperationCategories()">
       <vitamui-common-table-filter-option value="{{ operation }}">
-        {{'AUDIT.OPERATIONS_CATEGORIES.' +  operation | translate}}
+        {{ 'AUDIT.OPERATIONS_CATEGORIES.' + operation | translate }}
       </vitamui-common-table-filter-option>
     </ng-container>
   </vitamui-common-table-filter>

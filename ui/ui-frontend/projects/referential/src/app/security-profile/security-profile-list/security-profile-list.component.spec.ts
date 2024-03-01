@@ -37,7 +37,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, SecurityProfile } from 'ui-frontend-common';
 import { SecurityProfileService } from '../security-profile.service';

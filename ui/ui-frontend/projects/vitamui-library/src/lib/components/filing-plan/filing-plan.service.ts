@@ -32,7 +32,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { DescriptionLevel , FileType, Unit, UnitType } from 'ui-frontend-common';
+import { DescriptionLevel, FileType, Unit, UnitType } from 'ui-frontend-common';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { Node } from '../../models/node.interface';
 
@@ -68,8 +68,8 @@ export class FilingPlanService {
 
   private cache: {
     [id: string]: {
-      value: Observable<Unit[]>
-    }
+      value: Observable<Unit[]>;
+    };
   } = {};
 
   getCachedValue(accessContractId: string): Observable<Unit[]> {
@@ -81,7 +81,7 @@ export class FilingPlanService {
   }
 
   setCachedValue(value: Observable<Unit[]>, accessContractId: string) {
-    this.cache[accessContractId] = {value};
+    this.cache[accessContractId] = { value };
   }
 
   public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
@@ -90,21 +90,23 @@ export class FilingPlanService {
       this._pending++;
       const headers = new HttpHeaders({
         'X-Tenant-Id': tenantIdentifier.toString(),
-        'X-Access-Contract-Id': accessContractId
+        'X-Access-Contract-Id': accessContractId,
       });
       units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
         catchError(() => {
-          return of({$hits: null, $results: []});
+          return of({ $hits: null, $results: [] });
         }),
-        map(response => response.$results),
+        map((response) => response.$results),
         tap(() => this._pending--),
         shareReplay(1),
       );
       this.setCachedValue(units$, accessContractId);
     }
-    return units$.pipe(map(results => {
-      return this.getNestedChildren(results, idPrefix)
-    }));
+    return units$.pipe(
+      map((results) => {
+        return this.getNestedChildren(results, idPrefix);
+      }),
+    );
   }
 
   private getFileTypeFromUnit(unit: Unit): FileType {
@@ -166,12 +168,12 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
 /** Required at least one node in included */
 export function oneIncludedNodeRequired(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const nodes: { included: string[], excluded: string[] } = control.value;
+    const nodes: { included: string[]; excluded: string[] } = control.value;
     if (!nodes) {
-      return {missingNodes: {value: 'nodes required'}}
+      return { missingNodes: { value: 'nodes required' } };
     }
     if (!nodes.included || nodes.included.length < 1) {
-      return {missingIncludedNodes: {value: 'included nodes required'}}
+      return { missingIncludedNodes: { value: 'included nodes required' } };
     }
     return null;
   };

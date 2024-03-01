@@ -1,10 +1,6 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
   <div class="d-flex mt-3">
-    <vitamui-common-input
-      formControlName="name"
-      [placeholder]="'SECURITY_PROFILE_APP.TAB.INFORMATION.NAME' | translate"
-      disabled>
+    <vitamui-common-input formControlName="name" [placeholder]="'SECURITY_PROFILE_APP.TAB.INFORMATION.NAME' | translate" disabled>
     </vitamui-common-input>
   </div>
 

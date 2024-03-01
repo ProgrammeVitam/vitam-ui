@@ -107,9 +107,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       this.ingestContract.checkParentId ? { included: this.ingestContract.checkParentId, excluded: [] } : { included: [], excluded: [] },
     );
 
-    this.checkParentLinkControl.setValue(
-      this.ingestContract.checkParentLink ? this.ingestContract.checkParentLink : 'AUTHORIZED'
-    );
+    this.checkParentLinkControl.setValue(this.ingestContract.checkParentLink ? this.ingestContract.checkParentLink : 'AUTHORIZED');
   }
 
   onCancel() {
@@ -125,11 +123,9 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       checkParentLink: this.selectNodesForm.get('checkParentLink').value,
     };
 
-    this.ingestContractService.patch(formData).subscribe(
-      (updatedIngestContract) => {
-        this.dialogRef.close(updatedIngestContract);
-      }
-    );
+    this.ingestContractService.patch(formData).subscribe((updatedIngestContract) => {
+      this.dialogRef.close(updatedIngestContract);
+    });
   }
 
   get stepProgress() {

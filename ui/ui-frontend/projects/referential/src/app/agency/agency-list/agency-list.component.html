@@ -51,7 +51,7 @@
   </div>
 
   <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
 </div>
 
 <ng-template #loadingSpinner>
@@ -61,8 +61,8 @@
 </ng-template>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
- </ng-template>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
 
 <ng-template #confirmDeleteDialog>
   <vitamui-common-confirm-dialog
@@ -70,6 +70,6 @@
     confirmLabel="{{ 'COMMON.CONFIRM' | translate }}"
     cancelLabel="{{ 'COMMON.CANCEL' | translate }}"
   >
-    {{ 'AGENCY.HOME.DELETE_CONFIM_DIALOG.MESSAGE' | translate: {name: agencyToDelete?.name} }}
+    {{ 'AGENCY.HOME.DELETE_CONFIM_DIALOG.MESSAGE' | translate: { name: agencyToDelete?.name } }}
   </vitamui-common-confirm-dialog>
 </ng-template>

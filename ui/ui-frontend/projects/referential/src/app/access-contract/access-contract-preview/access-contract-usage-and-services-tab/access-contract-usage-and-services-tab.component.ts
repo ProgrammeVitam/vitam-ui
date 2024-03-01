@@ -111,7 +111,7 @@ export class AccessContractUsageAndServicesTabComponent {
       },
       () => {
         this.submited = false;
-      }
+      },
     );
   }
 
@@ -119,14 +119,13 @@ export class AccessContractUsageAndServicesTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string;[key: string]: any }) =>
-        this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 
   private setAccessContract(accessContract: AccessContract): void {
-
     if (!accessContract.originatingAgencies) {
       accessContract.originatingAgencies = [];
     }
@@ -144,7 +143,7 @@ export class AccessContractUsageAndServicesTabComponent {
           const options: Option[] = agencies.map((agency) => ({ label: agency.identifier + ' - ' + agency.name, key: agency.identifier }));
           return { options };
         }),
-        tap((options: VitamuiAutocompleteMultiselectOptions) => (this.originatingAgenciesOptions = options))
+        tap((options: VitamuiAutocompleteMultiselectOptions) => (this.originatingAgenciesOptions = options)),
       )
       .subscribe(() => {
         this.form.controls.originatingAgencies.setValue(accessContract.originatingAgencies);

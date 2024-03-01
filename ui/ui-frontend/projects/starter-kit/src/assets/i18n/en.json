@@ -12,9 +12,9 @@
       "TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address..."
     }
   },
-  "ARRAY":{
-    "BASIC_TITLE" : "Basic array",
-    "BASIC_WITH_DOUBLE_LINES_TITLE" : "Basic array with double lines",
+  "ARRAY": {
+    "BASIC_TITLE": "Basic array",
+    "BASIC_WITH_DOUBLE_LINES_TITLE": "Basic array with double lines",
     "FILTER_TITLE": "Array with filters",
     "SUBTABLE_TITLE": "Array with subtable",
     "DIALOG_TITLE": "Dialog array"
@@ -48,7 +48,7 @@
     "EDITABLE_LIST": "Editable list",
     "EDITABLE_LIST_DISABLED": "Editable list disabled",
     "AUTOCOMPLETE": "Auto-complete",
-    "AUTOCOMPLETE_MULTI_SELECT" : "Auto-complete multi select",
+    "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete multi select",
     "SEARCH_PLACEHOLDER": "Search in countries",
     "TEXTAREA": "Textarea",
     "EDITABLE_TEXTAREA": "Editable textarea",

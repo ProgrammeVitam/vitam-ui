@@ -51,18 +51,18 @@ export class ConfirmDialogService {
   constructor(private matDialog: MatDialog) {}
 
   public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
-    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog', data }).afterClosed().pipe(
-      filter((result) => !!result)
-    );
+    return this.matDialog
+      .open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog', data })
+      .afterClosed()
+      .pipe(filter((result) => !!result));
   }
 
   // returns an observable that emits when escape is pressed
   public listenToEscapeKeyPress(matDialogRef: MatDialogRef<unknown>): Observable<any> {
-    return matDialogRef.keydownEvents()
-      .pipe(
-        filter((event) => event.key === 'Escape' && !hasModifierKey(event)),
-        tap((event) => event.preventDefault)
-      );
+    return matDialogRef.keydownEvents().pipe(
+      filter((event) => event.key === 'Escape' && !hasModifierKey(event)),
+      tap((event) => event.preventDefault),
+    );
   }
 
   // Opens a confirmation dialog before closing the dialog

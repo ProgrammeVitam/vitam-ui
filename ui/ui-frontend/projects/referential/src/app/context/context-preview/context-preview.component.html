@@ -1,34 +1,29 @@
 <vitamui-common-sidenav-header
   [title]="context?.name"
-  [subtitle]="'(' + context?.identifier  + ')'"
+  [subtitle]="'(' + context?.identifier + ')'"
   (onclose)="emitClose()"
-  [icon]="'vitamui-icon-securite'">
+  [icon]="'vitamui-icon-securite'"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group" #tabs>
-        <mat-tab [label]="'CONTEXTS_APP.TAB.INFORMATION.TITLE' | translate">
-          <app-context-information-tab
-            [context]="context"
-            (updated)="updatedChange($event, 0)" #infoTab>
-          </app-context-information-tab>
-        </mat-tab>
+  <mat-tab-group class="preview-tab-group" #tabs>
+    <mat-tab [label]="'CONTEXTS_APP.TAB.INFORMATION.TITLE' | translate">
+      <app-context-information-tab [context]="context" (updated)="updatedChange($event, 0)" #infoTab> </app-context-information-tab>
+    </mat-tab>
 
-        <mat-tab [label]="'CONTEXTS_APP.TAB.PERMISSIONS.TITLE' | translate">
-          <app-context-permission-tab
-            [context]="context"
-            (updated)="updatedChange($event, 1)" #permsTab>
+    <mat-tab [label]="'CONTEXTS_APP.TAB.PERMISSIONS.TITLE' | translate">
+      <app-context-permission-tab [context]="context" (updated)="updatedChange($event, 1)" #permsTab> </app-context-permission-tab>
+    </mat-tab>
 
-          </app-context-permission-tab>
-        </mat-tab>
-
-        <mat-tab [label]="'CONTEXTS_APP.TAB.HISTORY.TITLE' | translate">
-            <vitamui-common-operation-history-tab
-              [id]="context?.identifier"
-              [identifier]="context?.identifier"
-              collectionName="context" [filter]="filterEvents">
-            </vitamui-common-operation-history-tab>
-        </mat-tab>
-    </mat-tab-group>
+    <mat-tab [label]="'CONTEXTS_APP.TAB.HISTORY.TITLE' | translate">
+      <vitamui-common-operation-history-tab
+        [id]="context?.identifier"
+        [identifier]="context?.identifier"
+        collectionName="context"
+        [filter]="filterEvents"
+      >
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
-

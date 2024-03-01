@@ -60,12 +60,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
-  declarations: [
-    LogbookOperationComponent,
-    LogbookOperationListComponent,
-    LogbookOperationDetailComponent,
-    LogbookOperationPopupComponent,
-  ],
+  declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -84,10 +79,8 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule
+    PipesModule,
   ],
-  providers: [
-    { provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }
-  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })
 export class LogbookOperationModule {}

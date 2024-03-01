@@ -39,6 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { SecurityService } from 'ui-frontend-common';
 import { AgencyService } from '../../agency.service';
@@ -55,6 +56,7 @@ describe('AgencyInformationTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AgencyInformationTabComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: AgencyService, useValue: {} },

@@ -74,7 +74,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {

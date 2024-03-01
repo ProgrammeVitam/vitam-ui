@@ -96,8 +96,8 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
           DEFAULT_PAGE_SIZE,
           this.orderBy,
           Direction.ASCENDANT,
-          JSON.stringify(this.buildProbativeValueCriteriaFromSearch())
-        )
+          JSON.stringify(this.buildProbativeValueCriteriaFromSearch()),
+        ),
       )
       .subscribe((data: any[]) => (this.dataSource = data));
 

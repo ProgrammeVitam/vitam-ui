@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute} from '@angular/router';
-import {Event} from 'projects/vitamui-library/src/public-api';
-import {GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
 
-import {SecurisationListComponent} from './securisation-list/securisation-list.component';
+import { SecurisationListComponent } from './securisation-list/securisation-list.component';
 import * as moment from 'moment';
 
 @Component({
@@ -61,7 +61,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
     public dialog: MatDialog,
     public route: ActivatedRoute,
     public globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(route, globalEventService);
 
@@ -76,7 +76,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
-      this.filters = {...this.filters, endDate: value ? moment(value).endOf('day') : null };
+      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
     });
 
     this.dateRangeFilterForm.controls.types.valueChanges.subscribe((value) => {

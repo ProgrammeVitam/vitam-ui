@@ -40,7 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBarService } from 'ui-frontend-common';
 import { RuleListComponent } from './rule-list.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RuleListComponent', () => {
   let component: RuleListComponent;
@@ -52,22 +52,20 @@ describe('RuleListComponent', () => {
     search: () => of(null),
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [RuleListComponent],
-        providers: [
-          { provide: BASE_URL, useValue: '' },
-          { provide: RuleService, useValue: ruleServiceMock },
-          { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
-          { provide: VitamUISnackBarService, useValue: {} },
-          { provide: MatDialog, useValue: {} },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [RuleListComponent],
+      providers: [
+        { provide: BASE_URL, useValue: '' },
+        { provide: RuleService, useValue: ruleServiceMock },
+        { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: MatDialog, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleListComponent);

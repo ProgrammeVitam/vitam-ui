@@ -49,11 +49,8 @@ describe('ClosePopupDialogComponent', () => {
       imports: [VitamUICommonTestModule],
       declarations: [ClosePopupDialogComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

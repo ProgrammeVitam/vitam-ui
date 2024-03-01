@@ -143,7 +143,7 @@ describe('IdentityProviderCreateComponent', () => {
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
         authnRequestSigned: true,
-        propagateLogout: false
+        propagateLogout: false,
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -188,7 +188,7 @@ describe('IdentityProviderCreateComponent', () => {
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
         authnRequestSigned: true,
-        propagateLogout: false
+        propagateLogout: false,
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -243,7 +243,7 @@ describe('IdentityProviderCreateComponent', () => {
         maximumAuthenticationLifetime: 0,
         wantsAssertionsSigned: true,
         authnRequestSigned: true,
-        propagateLogout: false
+        propagateLogout: false,
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

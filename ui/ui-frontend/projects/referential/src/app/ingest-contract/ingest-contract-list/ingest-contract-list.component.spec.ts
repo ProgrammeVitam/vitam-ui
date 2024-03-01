@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractListComponent } from './ingest-contract-list.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('IngestContractListComponent', () => {
   let component: IngestContractListComponent;
@@ -57,17 +57,16 @@ describe('IngestContractListComponent', () => {
       search: () => of(null),
     };
 
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [IngestContractListComponent],
-        providers: [
-          { provide: IngestContractService, useValue: ingestContractServiceMock },
-          { provide: IngestContractService, useValue: ingestContractServiceSpy },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [IngestContractListComponent],
+      providers: [
+        { provide: IngestContractService, useValue: ingestContractServiceMock },
+        { provide: IngestContractService, useValue: ingestContractServiceSpy },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractListComponent);

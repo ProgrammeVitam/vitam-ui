@@ -1,28 +1,28 @@
 <div class="vitamui-table">
   <div class="vitamui-table-head">
-
     <div class="col-1 d-flex align-items-center">
-      <i class="vitamui-icon vitamui-icon-info primary vitamui-row-icon text normal"
-         vitamuiCommonToolTip="{{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANT_TOOLTIP' | translate}}">
+      <i
+        class="vitamui-icon vitamui-icon-info primary vitamui-row-icon text normal"
+        vitamuiCommonToolTip="{{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANT_TOOLTIP' | translate }}"
+      >
       </i>
     </div>
     <div class="col-3 d-flex align-items-center justify-content-between">
-      {{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate}}
+      {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate }}
     </div>
     <div class="col-3 d-flex align-items-center justify-content-between">
-      {{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate}}
+      {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate }}
     </div>
     <div class="col-3 d-flex align-items-center justify-content-between">
-      {{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate}}
+      {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate }}
     </div>
     <div class="col-2 d-flex align-items-center justify-content-between">
-      {{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate}}
+      {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate }}
     </div>
   </div>
   <div class="vitamui-table-body">
     <div class="vitamui-table-rows" *ngFor="let permission of permissions; let i = index">
       <div class="vitamui-row d-flex align-items-center">
-
         <div class="col-1 d-flex align-items-center">
           <i (click)="onDelete(i)" class="text normal vitamui-icon vitamui-icon-cross"></i>
         </div>
@@ -32,7 +32,8 @@
             [(value)]="selectedOrganisations[i]"
             [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate"
             (selectionChange)="onCustomerSelect(permission)"
-            required>
+            required
+          >
             <mat-option *ngFor="let customer of customers" [value]="customer.id">
               {{ customer.name }}
             </mat-option>
@@ -42,14 +43,17 @@
           </div>
         </mat-form-field>
 
-        <mat-form-field class="col-3 vitamui-mat-select pb-2 tenants selectorPosition" *ngIf="selectedOrganisations?.length > i &&
-        selectedOrganisations[i] !== null">
+        <mat-form-field
+          class="col-3 vitamui-mat-select pb-2 tenants selectorPosition"
+          *ngIf="selectedOrganisations?.length > i && selectedOrganisations[i] !== null"
+        >
           <mat-select
             [(value)]="permission.tenant"
             [compareWith]="compareTenantIds"
             [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate"
             (selectionChange)="onTenantSelect(permission)"
-            required>
+            required
+          >
             <mat-option *ngFor="let tenant of getTenantsForOrganisation(selectedOrganisations[i])" [value]="tenant.identifier">
               {{ tenant.name }}
             </mat-option>
@@ -65,12 +69,14 @@
             [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate"
             (selectionChange)="onContractSelect()"
             multiple
-            required>
+            required
+          >
             <vitamui-select-all-option
               [value]="permission.accessContracts"
               [values]="getAccessContractKeys(permission.tenant)"
               [title]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT_TITLE' | translate"
-              (toggleSelection)="permission.accessContracts = $event">
+              (toggleSelection)="permission.accessContracts = $event"
+            >
             </vitamui-select-all-option>
             <mat-option *ngFor="let contract of accessContracts.get('' + permission.tenant)" [value]="contract.key">
               {{ contract.label }}
@@ -87,12 +93,14 @@
             (selectionChange)="onContractSelect()"
             [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate"
             multiple
-            required>
+            required
+          >
             <vitamui-select-all-option
               [value]="permission.ingestContracts"
               [values]="getIngestContractKeys(permission.tenant)"
               [title]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT_TITLE' | translate"
-              (toggleSelection)="permission.ingestContracts = $event">
+              (toggleSelection)="permission.ingestContracts = $event"
+            >
             </vitamui-select-all-option>
             <mat-option *ngFor="let contract of ingestContracts.get('' + permission.tenant)" [value]="contract.key">
               {{ contract.label }}
@@ -109,9 +117,11 @@
 
 <div class="d-flex pt-3 align-items-center">
   <button type="button" class="btn outline outline-secondary" (click)="onAdd()">
-    {{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ADD_PERMISSION' | translate}}
+    {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ADD_PERMISSION' | translate }}
   </button>
-  <i class="vitamui-icon vitamui-icon-info  primary vitamui-row-icon ml-2 primary"
-     vitamuiCommonToolTip="{{'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ADD_TENANT' | translate}}">
+  <i
+    class="vitamui-icon vitamui-icon-info primary vitamui-row-icon ml-2 primary"
+    vitamuiCommonToolTip="{{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ADD_TENANT' | translate }}"
+  >
   </i>
 </div>

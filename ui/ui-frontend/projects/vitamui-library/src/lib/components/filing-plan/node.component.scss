@@ -13,16 +13,18 @@
 
   &:hover {
     .hover-btn {
-        transform: translateX(20%);
-        transition: transform 100ms ease-out, opacity 100ms ease-out;
-        opacity: 0;
+      transform: translateX(20%);
+      transition:
+        transform 100ms ease-out,
+        opacity 100ms ease-out;
+      opacity: 0;
     }
 
     &:hover {
-        .hover-btn {
-            transform: translateX(0);
-            opacity: 1;
-        }
+      .hover-btn {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
   }
 }

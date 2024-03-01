@@ -1,39 +1,47 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <vitamui-common-slide-toggle class="w-100" formControlName="everyOriginatingAgency">
-        <span>{{'ACCESS_CONTRACT.TAB.USAGE.ALL_AGENCIES' | translate}}</span>
-    </vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="w-100" formControlName="everyOriginatingAgency">
+    <span>{{ 'ACCESS_CONTRACT.TAB.USAGE.ALL_AGENCIES' | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-    <ng-container *ngIf="!form?.get('everyOriginatingAgency')?.value && originatingAgenciesOptions">
-        <vitamui-common-autocomplete-multi-select formControlName="originatingAgencies"
-            [placeholder]="'ACCESS_CONTRACT.TAB.USAGE.SELECT_AGENCY' | translate"
-            [searchBarPlaceHolder]="'ACCESS_CONTRACT.TAB.USAGE.SELECT_AGENCY_SEARCH' | translate"
-            [multiSelectOptions]="originatingAgenciesOptions" required>
-            <vitamui-common-input-error *ngIf="form.get('originatingAgencies').errors?.required">
-                {{'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate}}
-            </vitamui-common-input-error>
-        </vitamui-common-autocomplete-multi-select>
-    </ng-container>
+  <ng-container *ngIf="!form?.get('everyOriginatingAgency')?.value && originatingAgenciesOptions">
+    <vitamui-common-autocomplete-multi-select
+      formControlName="originatingAgencies"
+      [placeholder]="'ACCESS_CONTRACT.TAB.USAGE.SELECT_AGENCY' | translate"
+      [searchBarPlaceHolder]="'ACCESS_CONTRACT.TAB.USAGE.SELECT_AGENCY_SEARCH' | translate"
+      [multiSelectOptions]="originatingAgenciesOptions"
+      required
+    >
+      <vitamui-common-input-error *ngIf="form.get('originatingAgencies').errors?.required">
+        {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
+      </vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select>
+  </ng-container>
 
-    <vitamui-common-slide-toggle class="w-100 mt-2" formControlName="everyDataObjectVersion">
-        <span>{{'ACCESS_CONTRACT.TAB.USAGE.ALL_USAGES' | translate}}</span>
-    </vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="w-100 mt-2" formControlName="everyDataObjectVersion">
+    <span>{{ 'ACCESS_CONTRACT.TAB.USAGE.ALL_USAGES' | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-    <mat-form-field class="vitamui-mat-select w-100 p-0" *ngIf="!form?.get('everyDataObjectVersion')?.value">
-        <mat-select formControlName="dataObjectVersion" placeholder="{{'ACCESS_CONTRACT.TAB.USAGE.SELECT_USAGES' | translate}}"
-            panelclass="vitamui-mat-select" multiple required>
-            <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
-        </mat-select>
-        <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-    </mat-form-field>
-
-    <div *ngIf="form.controls.dataObjectVersion?.touched && form.controls.dataObjectVersion.errors?.required" class="text caption danger m-2">
-        {{'ACCESS_CONTRACT.TAB.USAGE.NO_USAGE_SELECTED' | translate}}
+  <mat-form-field class="vitamui-mat-select w-100 p-0" *ngIf="!form?.get('everyDataObjectVersion')?.value">
+    <mat-select
+      formControlName="dataObjectVersion"
+      placeholder="{{ 'ACCESS_CONTRACT.TAB.USAGE.SELECT_USAGES' | translate }}"
+      panelclass="vitamui-mat-select"
+      multiple
+      required
+    >
+      <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
+    </mat-select>
+    <div class="select-arrow">
+      <i class="material-icons">keyboard_arrow_up</i>
+      <i class="material-icons">keyboard_arrow_down</i>
     </div>
+  </mat-form-field>
 
-    <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || isInvalid() || submited">
-        {{'COMMON.SAVE' | translate}}
-    </button>
+  <div *ngIf="form.controls.dataObjectVersion?.touched && form.controls.dataObjectVersion.errors?.required" class="text caption danger m-2">
+    {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_USAGE_SELECTED' | translate }}
+  </div>
+
+  <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || isInvalid() || submited">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

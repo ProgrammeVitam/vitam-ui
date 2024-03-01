@@ -79,9 +79,9 @@ let expectedUser: User = {
     country: 'france',
   },
   siteCode: '001',
-  disablingDate : null,
+  disablingDate: null,
   centerCodes: ['000001'],
-  autoProvisioningEnabled: false
+  autoProvisioningEnabled: false,
 };
 let userInfolanguage: UserInfo = {
   id: '1',
@@ -207,9 +207,9 @@ describe('UserInfoTabComponent', () => {
         country: 'france',
       },
       siteCode: '001',
-      disablingDate : null,
+      disablingDate: null,
       centerCodes: ['000001'],
-      autoProvisioningEnabled: false
+      autoProvisioningEnabled: false,
     };
     expectedCustomer = {
       id: 'idCustomer',

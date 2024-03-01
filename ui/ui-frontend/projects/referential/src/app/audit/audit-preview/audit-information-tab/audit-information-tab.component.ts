@@ -37,14 +37,12 @@
 import { Component, Input } from '@angular/core';
 import { Event } from 'ui-frontend-common';
 
-
 @Component({
   selector: 'app-audit-information-tab',
   templateUrl: './audit-information-tab.component.html',
   styleUrls: ['./audit-information-tab.component.scss'],
 })
 export class AuditInformationTabComponent {
-
   @Input()
   audit: Event;
 

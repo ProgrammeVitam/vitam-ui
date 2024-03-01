@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
   <div class="content mt-5">
-    <div class="text medium light">{{'ONTOLOGY.CREATE_DIALOG.TITLE' | translate}}</div>
-    <div class="text large bold mb-3">{{'ONTOLOGY.CREATE_DIALOG.SUBTITLE' | translate}}</div>
+    <div class="text medium light">{{ 'ONTOLOGY.CREATE_DIALOG.TITLE' | translate }}</div>
+    <div class="text large bold mb-3">{{ 'ONTOLOGY.CREATE_DIALOG.SUBTITLE' | translate }}</div>
 
     <div class="d-flex align-items-center">
       <vitamui-common-input
@@ -10,10 +10,11 @@
         minlength="2"
         maxlength="100"
         required
-        [placeholder]="'ONTOLOGY.CREATE_DIALOG.IDENTIFIER' | translate">
+        [placeholder]="'ONTOLOGY.CREATE_DIALOG.IDENTIFIER' | translate"
+      >
         <ng-container *ngIf="form.get('identifier')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate}}
+            {{ 'COMMON.REQUIRED' | translate }}
           </vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.idExists">
             {{ 'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
@@ -23,8 +24,9 @@
           </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
-      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
-        vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_TOOLTIP' | translate}}"
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_TOOLTIP' | translate }}"
       ></i>
     </div>
 
@@ -34,10 +36,11 @@
         formControlName="shortName"
         minlength="2"
         maxlength="100"
-        [placeholder]="'ONTOLOGY.CREATE_DIALOG.NAME' | translate">
+        [placeholder]="'ONTOLOGY.CREATE_DIALOG.NAME' | translate"
+      >
         <ng-container *ngIf="form.get('shortName')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('shortName')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate}}
+            {{ 'COMMON.REQUIRED' | translate }}
           </vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="!!form?.get('shortName')?.errors?.nameExists">
             {{ 'ONTOLOGY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
@@ -48,46 +51,43 @@
 
     <div class="d-flex align-items-center pb-4">
       <mat-form-field class="vitamui-mat-select w-100 pb-0">
-        <mat-select
-          formControlName="type"
-          [placeholder]="'ONTOLOGY.CREATE_DIALOG.TYPE' | translate"
-          required>
+        <mat-select formControlName="type" [placeholder]="'ONTOLOGY.CREATE_DIALOG.TYPE' | translate" required>
           <mat-option *ngFor="let type of types" [value]="type.key">
             {{ type.label }}
           </mat-option>
         </mat-select>
         <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
       </mat-form-field>
-      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
-         vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.TYPE_TOOLTIP' | translate}}">
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.TYPE_TOOLTIP' | translate }}"
+      >
       </i>
     </div>
 
-
     <div class="d-flex align-items-center pb-4">
       <mat-form-field class="vitamui-mat-select w-100 pb-0">
-        <mat-select
-          formControlName="collections"
-          [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate"
-          multiple>
+        <mat-select formControlName="collections" [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate" multiple>
           <mat-option *ngFor="let collection of collections" [value]="collection.key">
             {{ collection.label }}
           </mat-option>
         </mat-select>
         <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
       </mat-form-field>
-      <i class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
-         vitamuiCommonToolTip="{{'ONTOLOGY.CREATE_DIALOG.COLLECTION_TOOLTIP' | translate}}">
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.COLLECTION_TOOLTIP' | translate }}"
+      >
       </i>
     </div>
-
 
     <div class="d-flex">
       <vitamui-common-textarea
         formControlName="description"
         class="w-100"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.DESCRIPTION' | translate"
-        [rows]="3">
+        [rows]="3"
+      >
         <ng-container *ngIf="form.get('description')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
             {{ 'COMMON.REQUIRED' | translate }}
@@ -95,7 +95,6 @@
         </ng-container>
       </vitamui-common-textarea>
     </div>
-
 
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
@@ -105,6 +104,5 @@
         {{ 'COMMON.UNDO' | translate }}
       </button>
     </div>
-
   </div>
 </form>

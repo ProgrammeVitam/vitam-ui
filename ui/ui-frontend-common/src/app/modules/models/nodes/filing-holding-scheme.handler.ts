@@ -25,7 +25,7 @@
  * accept its terms.
  *
  */
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 import { ResultFacet } from '../criteria';
 import { DescriptionLevel, Unit } from '../units';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';

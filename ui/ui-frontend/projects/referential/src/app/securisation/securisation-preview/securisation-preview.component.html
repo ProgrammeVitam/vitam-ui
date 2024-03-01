@@ -1,26 +1,34 @@
-<vitamui-common-sidenav-header [title]="securisation?.id | truncate: 30" (onclose)="emitClose()"
-    [badge]="securisation | eventTypeBadgeClass | slice: 13" [hasToolTipOnTitle]="true"
-    [toolTipTitleText]="securisation?.id" [toolTipTitleDuration]="300" [actionsBelowTitle]="true">
-    <button *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'" class="btn primary"
-        (click)="downloadReport()" [disabled]="!accessContractId">
-        {{ 'SECURE.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
-    </button>
+<vitamui-common-sidenav-header
+  [title]="securisation?.id | truncate: 30"
+  (onclose)="emitClose()"
+  [badge]="securisation | eventTypeBadgeClass | slice: 13"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="securisation?.id"
+  [toolTipTitleDuration]="300"
+  [actionsBelowTitle]="true"
+>
+  <button
+    *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'"
+    class="btn primary"
+    (click)="downloadReport()"
+    [disabled]="!accessContractId"
+  >
+    {{ 'SECURE.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
+  </button>
 </vitamui-common-sidenav-header>
 <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-        <mat-tab [label]="'SECURE.TAB.INFORMATIONS.INFORMATIONS' | translate">
-            <app-securisation-information-tab [securisation]="securisation"></app-securisation-information-tab>
-        </mat-tab>
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab [label]="'SECURE.TAB.INFORMATIONS.INFORMATIONS' | translate">
+      <app-securisation-information-tab [securisation]="securisation"></app-securisation-information-tab>
+    </mat-tab>
 
-        <mat-tab [label]="'SECURE.TAB.CHECK.CHECK' | translate">
-            <app-securisation-check-tab [id]="securisation?.id"
-                [securisation]="securisation"></app-securisation-check-tab>
-        </mat-tab>
+    <mat-tab [label]="'SECURE.TAB.CHECK.CHECK' | translate">
+      <app-securisation-check-tab [id]="securisation?.id" [securisation]="securisation"></app-securisation-check-tab>
+    </mat-tab>
 
-        <mat-tab [label]="'SECURE.TAB.DETAILS.DETAILS' | translate">
-            <vitamui-common-operation-history-tab [id]="securisation?.id" [identifier]="securisation?.id"
-                collectionName="operation">
-            </vitamui-common-operation-history-tab>
-        </mat-tab>
-    </mat-tab-group>
+    <mat-tab [label]="'SECURE.TAB.DETAILS.DETAILS' | translate">
+      <vitamui-common-operation-history-tab [id]="securisation?.id" [identifier]="securisation?.id" collectionName="operation">
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>

@@ -221,5 +221,4 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
       return;
     }
   }
-
 }

@@ -109,12 +109,12 @@ export class IngestContractFormatTabComponent implements OnInit {
               label: file.puid + ' - ' + file.name,
               info: file.description,
             };
-          })
-        )
+          }),
+        ),
       )
       .subscribe((options) => (this.formatOptions = { options }));
 
-    if(!this.ingestContract.everyFormatType){
+    if (!this.ingestContract.everyFormatType) {
       this.form.controls.formatType.setValidators(Validators.required);
     }
 
@@ -138,7 +138,8 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    const isInvalid = this.form.get('everyFormatType').value === false && (this.form.get('formatType').invalid || this.form.get('formatType').pending);
+    const isInvalid =
+      this.form.get('everyFormatType').value === false && (this.form.get('formatType').invalid || this.form.get('formatType').pending);
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
@@ -147,9 +148,9 @@ export class IngestContractFormatTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string;[key: string]: any }) =>
-        this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))
-      )
+      switchMap((formData: { id: string; [key: string]: any }) =>
+        this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
+      ),
     );
   }
 

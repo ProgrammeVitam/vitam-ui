@@ -1,3 +1,3 @@
 export interface VitamConfiguration {
-    enabled: boolean;
+  enabled: boolean;
 }

@@ -1,3 +1,3 @@
 export interface DialogInputData {
-    subTitle?: string;
+  subTitle?: string;
 }

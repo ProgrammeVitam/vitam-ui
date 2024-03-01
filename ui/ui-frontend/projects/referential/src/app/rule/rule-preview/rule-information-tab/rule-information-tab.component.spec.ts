@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {of} from 'rxjs';
-import {AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION} from 'ui-frontend-common';
-import {RuleInformationTabComponent} from './rule-information-tab.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { RuleInformationTabComponent } from './rule-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;
@@ -112,5 +112,4 @@ describe('RuleInformationTabComponent', () => {
   it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
-
 });

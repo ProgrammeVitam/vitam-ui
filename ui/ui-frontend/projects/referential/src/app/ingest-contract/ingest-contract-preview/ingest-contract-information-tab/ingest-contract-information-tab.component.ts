@@ -155,7 +155,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    const isInvalid = (
+    const isInvalid =
       this.form.get('name').invalid ||
       this.form.get('name').pending ||
       this.form.get('description').invalid ||
@@ -163,8 +163,7 @@ export class IngestContractInformationTabComponent implements OnInit {
       this.form.get('status').invalid ||
       this.form.get('status').pending ||
       this.form.get('archiveProfiles').invalid ||
-      this.form.get('archiveProfiles').pending
-    );
+      this.form.get('archiveProfiles').pending;
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
@@ -173,7 +172,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string;[key: string]: any }) => {
+      switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         if (formData.status) {
           if (formData.status === 'ACTIVE') {

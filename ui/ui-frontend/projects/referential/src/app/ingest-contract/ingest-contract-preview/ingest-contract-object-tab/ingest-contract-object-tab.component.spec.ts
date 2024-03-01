@@ -42,8 +42,8 @@ import { IngestContract } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.component';
-import {MatSelectModule} from "@angular/material/select";
-import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestContractObjectTabComponent', () => {
   let component: IngestContractObjectTabComponent;

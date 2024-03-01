@@ -66,7 +66,10 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   @ViewChild('usageTab', { static: false }) usageTab: AccessContractUsageAndServicesTabComponent;
   @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
 
-  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) { }
+  constructor(
+    private matDialog: MatDialog,
+    private accessContractService: AccessContractService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -140,5 +143,4 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   updatedAccessContract(accessContract: AccessContract) {
     this.accessContract = accessContract;
   }
-
 }

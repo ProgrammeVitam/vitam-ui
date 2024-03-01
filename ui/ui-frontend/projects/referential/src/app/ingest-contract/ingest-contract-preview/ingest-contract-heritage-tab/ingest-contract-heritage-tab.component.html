@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <vitamui-common-slide-toggle [disabled]="readOnly" formControlName="computeInheritedRulesAtIngest">
-    <span>{{'INGEST_CONTRACT.TAB.LEGACY.LEGACY_RULES' | translate}}</span>
+    <span>{{ 'INGEST_CONTRACT.TAB.LEGACY.LEGACY_RULES' | translate }}</span>
   </vitamui-common-slide-toggle>
 
   <button type="submit" class="btn primary mt-4" [disabled]="readOnly || unchanged() || submited">

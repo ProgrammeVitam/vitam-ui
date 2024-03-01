@@ -41,7 +41,7 @@ const colorClassMap: { [key: string]: string } = {
   OK: 'text success',
   WARNING: 'text warning',
   KO: 'text danger',
-  FATAL: 'text danger'
+  FATAL: 'text danger',
 };
 
 @Pipe({

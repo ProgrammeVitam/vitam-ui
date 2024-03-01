@@ -68,7 +68,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private route: ActivatedRoute,
     private securityService: SecurityService,
     private agencyService: AgencyService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     super(route, globalEventService);
   }
@@ -86,7 +86,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       this.hasCreateRole = values[0];
       this.hasImportRole = values[1];
       this.hasExportRole = values[2];
-    })
+    });
   }
 
   public openCreateAgencyDialog(): void {
@@ -114,17 +114,17 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     };
 
     this.dialog
-    .open(ImportDialogComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: params,
-    })
-    .afterClosed()
-    .subscribe((result) => {
-      if (result?.successfulImport) {
-        this.refreshList();
-      }
-    });
+      .open(ImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: params,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
   }
 
   public onSearchSubmit(search: string): void {

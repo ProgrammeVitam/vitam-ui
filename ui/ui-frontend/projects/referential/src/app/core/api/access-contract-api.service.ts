@@ -46,7 +46,10 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class AccessContractApiService extends BaseHttpClient<AccessContract> {
-  constructor(http: HttpClient, @Inject(BASE_URL) public baseUrl: string) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) public baseUrl: string,
+  ) {
     super(http, baseUrl + '/accesscontract');
   }
 
@@ -78,7 +81,7 @@ export class AccessContractApiService extends BaseHttpClient<AccessContract> {
       .pipe(map((response: HttpResponse<void>) => (response.status === HTTP_STATUS_OK ? true : false)));
   }
 
-  patch(partialAccessContract: { id: string;[key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAccessContract, headers);
   }
 

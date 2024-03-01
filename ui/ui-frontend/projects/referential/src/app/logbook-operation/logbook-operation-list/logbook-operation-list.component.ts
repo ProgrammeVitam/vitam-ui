@@ -158,7 +158,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   public refreshList(): void {
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, null, null);
     const query = JSON.stringify(
-      LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch(), this.orderByDate ? 1 : -1)
+      LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch(), this.orderByDate ? 1 : -1),
     );
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, null, null, query));
   }

@@ -53,8 +53,8 @@ export class SecurisationPreviewComponent implements OnInit {
   constructor(
     private securisationService: SecurisationService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService) {
-  }
+    private vitamUISnackBarService: VitamUISnackBarService,
+  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

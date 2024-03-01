@@ -62,7 +62,7 @@ export class AuditComponent extends SidenavPage<Event> {
     public dialog: MatDialog,
     public route: ActivatedRoute,
     public globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(route, globalEventService);
 
@@ -76,7 +76,7 @@ export class AuditComponent extends SidenavPage<Event> {
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = {...this.filters, startDate: value };
+      this.filters = { ...this.filters, startDate: value };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {

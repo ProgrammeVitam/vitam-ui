@@ -10,24 +10,24 @@ import { AuthService } from './../../../auth.service';
 @Component({
   selector: 'vitamui-common-select-site',
   templateUrl: './select-site.component.html',
-  styleUrls: ['./select-site.component.scss']
+  styleUrls: ['./select-site.component.scss'],
 })
 export class SelectSiteComponent implements OnInit {
-
   public selectedSite: any;
   public sites: any[];
   private sessionExpireAt: any;
   private defaultSiteCode: string;
-  private siteSession: {code: string, sessionExpireAt: string};
+  private siteSession: { code: string; sessionExpireAt: string };
 
   constructor(
     protected http: HttpClient,
     private authService: AuthService,
     private authStorage: OAuthStorage,
-    private siteApiService: SiteApiService) { }
+    private siteApiService: SiteApiService,
+  ) {}
 
   ngOnInit(): void {
-    this.sessionExpireAt =  this.authStorage.getItem('expires_at');
+    this.sessionExpireAt = this.authStorage.getItem('expires_at');
     this.siteSession = JSON.parse(this.authStorage.getItem('site'));
 
     if (this.siteSession?.sessionExpireAt === this.sessionExpireAt) {
@@ -43,15 +43,16 @@ export class SelectSiteComponent implements OnInit {
    * Initializes list of sites and selected site from extrnal api data
    */
   private loadSites(siteCode: string): void {
-    this.getSitesByCode(siteCode).pipe(
-      map((sites) =>
-        sites.length > 0 ? sites[0].region : null
-      ),
-      switchMap((region) => {
-        return this.getSitesByRegion(region);
-      })).subscribe(result => {
+    this.getSitesByCode(siteCode)
+      .pipe(
+        map((sites) => (sites.length > 0 ? sites[0].region : null)),
+        switchMap((region) => {
+          return this.getSitesByRegion(region);
+        }),
+      )
+      .subscribe((result) => {
         this.sites = result;
-        this.selectedSite = this.sites.find(site => site.code === this.defaultSiteCode);
+        this.selectedSite = this.sites.find((site) => site.code === this.defaultSiteCode);
       });
   }
 
@@ -60,8 +61,10 @@ export class SelectSiteComponent implements OnInit {
    * @param siteCode site code
    */
   getSitesByCode(siteCode: string): Observable<any> {
-    const params = new HttpParams().set('criteria',
-      JSON.stringify({ criteria: [{ key: 'code', value: siteCode, operator: Operators.equals }]}));
+    const params = new HttpParams().set(
+      'criteria',
+      JSON.stringify({ criteria: [{ key: 'code', value: siteCode, operator: Operators.equals }] }),
+    );
     return this.siteApiService.getAllByParams(params);
   }
 
@@ -70,8 +73,10 @@ export class SelectSiteComponent implements OnInit {
    * @param region region
    */
   getSitesByRegion(region: string): Observable<any> {
-    const params = new HttpParams().set('criteria',
-      JSON.stringify({ criteria: [{ key: 'region', value: region, operator: Operators.equals }]}));
+    const params = new HttpParams().set(
+      'criteria',
+      JSON.stringify({ criteria: [{ key: 'region', value: region, operator: Operators.equals }] }),
+    );
     return this.siteApiService.getAllByParams(params);
   }
 
@@ -83,7 +88,7 @@ export class SelectSiteComponent implements OnInit {
     this.selectedSite = site;
     this.siteSession = {
       code: site.code,
-      sessionExpireAt: this.sessionExpireAt
+      sessionExpireAt: this.sessionExpireAt,
     };
     this.authStorage.setItem('site', JSON.stringify(this.siteSession));
   }

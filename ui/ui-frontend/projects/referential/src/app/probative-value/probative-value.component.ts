@@ -82,7 +82,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      this.filters = {...this.filters, endDate: value ? moment(value).endOf('day') : null } ;
+      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
     });
   }
 
@@ -92,7 +92,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      autoFocus: false
+      autoFocus: false,
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result !== undefined && result.success) {
@@ -111,7 +111,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
-
 
   clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
     if (!!this.dateRangeFilterForm.get(dateToClear).value) {

@@ -46,7 +46,10 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class IngestContractApiService extends BaseHttpClient<IngestContract> {
-  constructor(http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) private baseUrl: string,
+  ) {
     super(http, baseUrl + '/ingestcontract');
   }
 
@@ -77,7 +80,7 @@ export class IngestContractApiService extends BaseHttpClient<IngestContract> {
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialIngestContract: { id: string;[key: string]: any }, headers?: HttpHeaders) {
+  patch(partialIngestContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialIngestContract, headers);
   }
 

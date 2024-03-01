@@ -52,12 +52,9 @@ describe('ProbativeValueListComponent', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ProbativeValueListComponent],
-      providers: [
-        { provide: ProbativeValueService, useValue: probativeValueServiceMock }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [{ provide: ProbativeValueService, useValue: probativeValueServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

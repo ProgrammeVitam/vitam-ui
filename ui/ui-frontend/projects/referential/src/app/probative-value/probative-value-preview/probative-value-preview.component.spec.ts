@@ -19,9 +19,7 @@ describe('ProbativeValuePreviewComponent', () => {
   let component: ProbativeValuePreviewComponent;
   let fixture: ComponentFixture<ProbativeValuePreviewComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-
+  beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
     };
@@ -32,18 +30,17 @@ describe('ProbativeValuePreviewComponent', () => {
       getUserExternalParameters: () => of(parameters),
     };
 
-      TestBed.configureTestingModule({
-        declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
-        imports: [MatSnackBarModule, TranslateModule.forRoot()],
-        providers: [
-          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-          { provide: ProbativeValueService, useValue: {} },
-          { provide: ActivatedRoute, useValue: activatedRouteMock },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
+      imports: [MatSnackBarModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: ProbativeValueService, useValue: {} },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProbativeValuePreviewComponent);

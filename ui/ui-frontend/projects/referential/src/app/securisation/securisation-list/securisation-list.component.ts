@@ -90,7 +90,7 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   ngOnInit() {
     this.securisationService
       .search(
-        new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch()))
+        new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())),
       )
       .subscribe((data: any[]) => (this.dataSource = data));
 

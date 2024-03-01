@@ -42,7 +42,6 @@ import { Logger } from '../../logger/logger';
   selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {
-
   @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();
   @Output() private fileDragOverEmitter: EventEmitter<boolean> = new EventEmitter();
   @Output() private fileDragLeaveEmitter: EventEmitter<boolean> = new EventEmitter();
@@ -57,7 +56,7 @@ export class DragAndDropDirective {
 
   @Input() enableFolderDragAndDrop = false;
 
-  constructor(public logger: Logger) { }
+  constructor(public logger: Logger) {}
 
   @HostListener('dragover', ['$event']) public onDragOver(dragOverEvent: any) {
     dragOverEvent.preventDefault();
@@ -78,21 +77,23 @@ export class DragAndDropDirective {
     let fileEntries = await this.getAllFileEntries(dropEvent.dataTransfer.items);
     // Filter files
     if (!this.enableFileDragAndDrop) {
-      fileEntries = fileEntries.filter(fileEntry => fileEntry.fullPath.split('/').length - 1 !== 1);
+      fileEntries = fileEntries.filter((fileEntry) => fileEntry.fullPath.split('/').length - 1 !== 1);
     }
     // Filter folders
     if (!this.enableFolderDragAndDrop) {
-      fileEntries = fileEntries.filter(fileEntry => fileEntry.fullPath.split('/').length - 1 === 1);
+      fileEntries = fileEntries.filter((fileEntry) => fileEntry.fullPath.split('/').length - 1 === 1);
     }
 
-    Promise.all(fileEntries.map(async (fileEntry) => {
-      const file: File = await this.getFile(fileEntry);
-      // Add relative path to folder files
-      if (fileEntry.fullPath.split('/').length - 1 !== 1) {
-      (file as any).relativePath = fileEntry.fullPath?.substring(1);
-       }
-      return file;
-    })).then((files) => {
+    Promise.all(
+      fileEntries.map(async (fileEntry) => {
+        const file: File = await this.getFile(fileEntry);
+        // Add relative path to folder files
+        if (fileEntry.fullPath.split('/').length - 1 !== 1) {
+          (file as any).relativePath = fileEntry.fullPath?.substring(1);
+        }
+        return file;
+      }),
+    ).then((files) => {
       this.fileToUploadEmitter.emit(files);
     });
     dropEvent.stopPropagation();
@@ -119,7 +120,7 @@ export class DragAndDropDirective {
     } catch (err) {
       this.logger.error(this, err);
     }
-  }
+  };
 
   private getAllFileEntries = async (dataTransferItemList: DataTransferItemList) => {
     const fileEntries = [];
@@ -138,31 +139,31 @@ export class DragAndDropDirective {
         fileEntries.push(entry);
       } else if (entry.isDirectory) {
         const reader = entry.createReader();
-        queue.push(...await this.readAllDirectoryEntries(reader));
+        queue.push(...(await this.readAllDirectoryEntries(reader)));
       }
     }
     return fileEntries;
-  }
+  };
 
-// Get all the entries (files or sub-directories) in a directory by calling readEntries until it returns empty array
-private readAllDirectoryEntries = async (directoryReader) => {
-  const entries = [];
-  let readEntries: File[] = await this.readEntriesPromise(directoryReader);
-  while (readEntries.length > 0) {
-    entries.push(...readEntries);
-    readEntries = await this.readEntriesPromise(directoryReader);
-  }
-  return entries;
-}
+  // Get all the entries (files or sub-directories) in a directory by calling readEntries until it returns empty array
+  private readAllDirectoryEntries = async (directoryReader) => {
+    const entries = [];
+    let readEntries: File[] = await this.readEntriesPromise(directoryReader);
+    while (readEntries.length > 0) {
+      entries.push(...readEntries);
+      readEntries = await this.readEntriesPromise(directoryReader);
+    }
+    return entries;
+  };
 
-// Wrap readEntries in a promise to make working with readEntries easier
-private readEntriesPromise = async (directoryReader): Promise<File[]> => {
-  try {
-    return await new Promise((resolve, reject) => {
-      directoryReader.readEntries(resolve, reject);
-    });
-  } catch (err) {
-    this.logger.error(this, err);
-  }
-}
+  // Wrap readEntries in a promise to make working with readEntries easier
+  private readEntriesPromise = async (directoryReader): Promise<File[]> => {
+    try {
+      return await new Promise((resolve, reject) => {
+        directoryReader.readEntries(resolve, reject);
+      });
+    } catch (err) {
+      this.logger.error(this, err);
+    }
+  };
 }

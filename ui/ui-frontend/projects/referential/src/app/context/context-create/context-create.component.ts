@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Context, Option} from 'ui-frontend-common';
-import {SecurityProfileService} from '../../security-profile/security-profile.service';
-import {ContextService} from '../context.service';
-import {ContextCreateValidators} from './context-create.validators';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Context, Option } from 'ui-frontend-common';
+import { SecurityProfileService } from '../../security-profile/security-profile.service';
+import { ContextService } from '../context.service';
+import { ContextCreateValidators } from './context-create.validators';
 
 @Component({
   selector: 'app-context-create',
@@ -148,7 +148,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       },
       () => {
         this.isDisabledButton = false;
-      }
+      },
     );
   }
 

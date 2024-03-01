@@ -249,8 +249,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
 
   private buildApplicationOption(profile: Profile): OptionTree {
     const application = this.applicationsDetails.find((app) => app.identifier === profile.applicationName);
-    let appLabel =  this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
-
+    let appLabel = this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
 
     return {
       key: profile.applicationName,

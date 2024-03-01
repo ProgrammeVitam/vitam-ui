@@ -40,13 +40,22 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, IngestContract, Option, SignaturePolicy, SignedDocumentPolicyEnum, VitamUISnackBarService, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
+import {
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  IngestContract,
+  Option,
+  SignaturePolicy,
+  SignedDocumentPolicyEnum,
+  VitamUISnackBarService,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'ui-frontend-common';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-
 
 @Component({
   selector: 'app-ingest-contract-create',
@@ -84,8 +93,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService
-  ) { }
+    private vitamUISnackBarService: VitamUISnackBarService,
+  ) {}
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
@@ -145,7 +154,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((fileFormats) => {
-      this.formatTypesOptions.options = fileFormats.map(fileFormat => { return { key: fileFormat.puid, label: fileFormat.puid + ' - ' + fileFormat.name }; });
+      this.formatTypesOptions.options = fileFormats.map((fileFormat) => {
+        return { key: fileFormat.puid, label: fileFormat.puid + ' - ' + fileFormat.name };
+      });
     });
 
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
@@ -155,7 +166,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       } else {
         this.vitamUISnackBarService.open({
           message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-        })
+        });
       }
     });
 

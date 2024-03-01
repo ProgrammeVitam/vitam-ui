@@ -4,7 +4,7 @@
       {{ 'Site observé' }}
     </div>
     <div class="text normal bold">
-      {{selectedSite ? selectedSite.name + ' - ' + selectedSite.code : ''}}
+      {{ selectedSite ? selectedSite.name + ' - ' + selectedSite.code : '' }}
     </div>
   </div>
   <div class="ml-3">
@@ -12,7 +12,7 @@
   </div>
   <mat-menu #siteMenu="matMenu" [overlapTrigger]="false" xPosition="before">
     <ng-container *ngFor="let site of sites">
-      <button mat-menu-item (click)="onSelectSite(site)"> {{ site.code + ' - ' + site.name }} </button>
+      <button mat-menu-item (click)="onSelectSite(site)">{{ site.code + ' - ' + site.name }}</button>
     </ng-container>
   </mat-menu>
 </div>

@@ -63,7 +63,7 @@ export class GroupComponent extends SidenavPage<Group> {
     private dialog: MatDialog,
     private downloadSnackBarService: DownloadSnackBarService,
     private snackBarService: VitamUISnackBarService,
-    private groupService: GroupService
+    private groupService: GroupService,
   ) {
     super(route, globalEventService);
   }
@@ -97,28 +97,28 @@ export class GroupComponent extends SidenavPage<Group> {
         const filename = this.getFileName(response.headers.get('Content-Disposition'));
         DownloadUtils.loadFromBlob(response, response.body.type, filename);
         this.downloadSnackBarService.close();
-        this.snackBarService.open({message: 'SHARED.SNACKBAR.GROUP_EXPORT_SUCCESS'});
+        this.snackBarService.open({ message: 'SHARED.SNACKBAR.GROUP_EXPORT_SUCCESS' });
         this.exportButtonDisabled = false;
       },
       () => {
         this.downloadSnackBarService.close();
         this.exportButtonDisabled = false;
-      });
+      },
+    );
 
-      this.downloadSnackBarService.cancelDownload.subscribe(() => {
-        this.exportButtonDisabled = false;
-        exportSub.unsubscribe();
-      });
+    this.downloadSnackBarService.cancelDownload.subscribe(() => {
+      this.exportButtonDisabled = false;
+      exportSub.unsubscribe();
+    });
   }
 
   private getFileName(contentDispositionHeader: string): string {
-
     const match = contentDispositionHeader?.match(/filename=(.+);?/);
     if (match?.length > 1) {
       return match[1];
     }
 
     const timestamps = moment(now()).format('YYYY-MM-DDTHH_mm_ss');
-    return `lexport-groupes-${timestamps}.xlsx`
+    return `lexport-groupes-${timestamps}.xlsx`;
   }
 }

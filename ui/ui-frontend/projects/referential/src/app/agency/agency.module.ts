@@ -59,7 +59,7 @@ import { AgencyComponent } from './agency.component';
     MatSidenavModule,
     TableFilterModule,
     MatProgressSpinnerModule,
-    ImportDialogModule
+    ImportDialogModule,
   ],
 })
 export class AgencyModule {}

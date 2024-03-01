@@ -17,43 +17,45 @@ export class ImportDialogComponent implements OnDestroy {
   public fileToUpload: File;
   public hasWrongFormat = false;
   public isLoading = false;
-  public errorsDuringImport: ImportError[]  = [];
+  public errorsDuringImport: ImportError[] = [];
   private destroy = new Subject();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogParams: ImportDialogParam,
     public dialogRef: MatDialogRef<ImportDialogComponent>,
     private referentialImportService: ReferentialImportService,
-    private snackBarService: VitamUISnackBarService
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
   public submitFile(): void {
     this.isLoading = true;
     this.errorsDuringImport = [];
     this.hasWrongFormat = false;
-    this.referentialImportService.importReferential(this.dialogParams.referential, this.fileToUpload)
-    .pipe(takeUntil(this.destroy)).subscribe(
-      () => {
-        this.snackBarService.open({ message: this.dialogParams.successMessage, icon: this.dialogParams.iconMessage });
-        this.dialogRef.close({ successfulImport: true });
-      },
-      (error) => {
-        this.isLoading = false;
+    this.referentialImportService
+      .importReferential(this.dialogParams.referential, this.fileToUpload)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(
+        () => {
+          this.snackBarService.open({ message: this.dialogParams.successMessage, icon: this.dialogParams.iconMessage });
+          this.dialogRef.close({ successfulImport: true });
+        },
+        (error) => {
+          this.isLoading = false;
 
-        if (this.dialogParams.errorMessage) {
-          this.snackBarService.open({ message: this.dialogParams.errorMessage, icon: this.dialogParams.iconMessage });
-        }
-
-        if(error.error){
-          const errorJson = JSON.parse(error.error);
-          if(errorJson.args){
-            ((errorJson.args) as []).forEach((arg) => {
-              this.errorsDuringImport.push(JSON.parse(arg));
-            });
+          if (this.dialogParams.errorMessage) {
+            this.snackBarService.open({ message: this.dialogParams.errorMessage, icon: this.dialogParams.iconMessage });
           }
-        }
-      }
-    );
+
+          if (error.error) {
+            const errorJson = JSON.parse(error.error);
+            if (errorJson.args) {
+              (errorJson.args as []).forEach((arg) => {
+                this.errorsDuringImport.push(JSON.parse(arg));
+              });
+            }
+          }
+        },
+      );
   }
 
   public cancel(): void {

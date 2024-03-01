@@ -56,8 +56,12 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public analytics(data: { applicationId?: string, lastTenantIdentifier?: number, alerts?: AlertAnalytics [],
-    lastHeaderExtraSelection?: string}): Observable<User> {
+  public analytics(data: {
+    applicationId?: string;
+    lastTenantIdentifier?: number;
+    alerts?: AlertAnalytics[];
+    lastHeaderExtraSelection?: string;
+  }): Observable<User> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });
   }

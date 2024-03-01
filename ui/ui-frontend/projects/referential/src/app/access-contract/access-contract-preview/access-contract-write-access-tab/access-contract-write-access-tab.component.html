@@ -1,14 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <vitamui-common-slide-toggle class="w-100" formControlName="writingPermission">
-        <span>{{'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITE_RIGHT' | translate}}</span>
-    </vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="w-100" formControlName="writingPermission">
+    <span>{{ 'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITE_RIGHT' | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-    <vitamui-common-slide-toggle class="w-100 p-0" *ngIf="!!form.controls.writingPermission.value"
-        formControlName="writingRestrictedDesc">
-        <span>{{'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITING_RESTRICTION' | translate}}</span>
-    </vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="w-100 p-0" *ngIf="!!form.controls.writingPermission.value" formControlName="writingRestrictedDesc">
+    <span>{{ 'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITING_RESTRICTION' | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-    <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || submited">
-        {{'COMMON.SAVE' | translate}}
-    </button>
+  <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || submited">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

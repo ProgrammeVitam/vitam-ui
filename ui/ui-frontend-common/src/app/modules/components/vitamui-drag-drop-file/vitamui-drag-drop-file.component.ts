@@ -158,7 +158,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
     this.message = null;
     this.imageToUpload = files.item(0);
     if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
-      this.message = 'Le fichier que vous essayez de déposer n\'est pas une image';
+      this.message = "Le fichier que vous essayez de déposer n'est pas une image";
       this.hasError = true;
       return;
     }

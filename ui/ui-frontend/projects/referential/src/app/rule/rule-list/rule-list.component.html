@@ -1,7 +1,6 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-
       <div class="col-1"></div>
       <div class="col-2 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.IDENTIFIER' | translate }}</span>
@@ -38,12 +37,12 @@
       </div>
       <div class="col-2 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.UNIT_MEASURE' | translate }}</span>
-          <vitamui-common-order-by-button
-            orderByKey="RuleMeasurement"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
+        <vitamui-common-order-by-button
+          orderByKey="RuleMeasurement"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
       </div>
       <div class="col-1"></div>
     </div>
@@ -61,11 +60,13 @@
             <div>
               <button
                 class="btn btn-circle primary"
-                (click)="$event.stopPropagation(); deleteRuleDialog(rule)" *vitamuiCommonHasRole="{
-                    appId: 'RULES_APP',
-                    tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-                    role: 'ROLE_DELETE_RULES'
-                  }">
+                (click)="$event.stopPropagation(); deleteRuleDialog(rule)"
+                *vitamuiCommonHasRole="{
+                  appId: 'RULES_APP',
+                  tenantIdentifier: +this.genericUserRole.tenantIdentifier,
+                  role: 'ROLE_DELETE_RULES'
+                }"
+              >
                 <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
               </button>
             </div>
@@ -74,19 +75,19 @@
       </div>
     </div>
 
-    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && ruleService.canLoadMore && !pending then loadMore"></div>
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && ruleService.canLoadMore && !pending; then loadMore"></div>
   </div>
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="ruleService.loadMore()">
-    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
   </div>
 </ng-template>
 
@@ -98,14 +99,10 @@
 
 <ng-template #ruleTypeFilterTemplate>
   <vitamui-common-table-filter [(filter)]="filterMap['ruleType']" (filterChange)="onFilterChange('ruleType', $event)">
-
-    <vitamui-common-table-filter-option *ngFor="let ruleType of ruleTypes" value="{{ruleType.key}}">
+    <vitamui-common-table-filter-option *ngFor="let ruleType of ruleTypes" value="{{ ruleType.key }}">
       <div class="table-filter-icon">
-        <span class="badge-state">{{ruleType.label}}</span>
+        <span class="badge-state">{{ ruleType.label }}</span>
       </div>
     </vitamui-common-table-filter-option>
   </vitamui-common-table-filter>
 </ng-template>
-
-
-

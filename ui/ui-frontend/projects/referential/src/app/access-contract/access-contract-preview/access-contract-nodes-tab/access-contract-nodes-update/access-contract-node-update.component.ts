@@ -106,10 +106,8 @@ export class AccessContractNodeUpdateComponent implements OnInit {
       excludedRootUnits,
     };
 
-    this.accessContractService.patch(formData).subscribe(
-      (updatedAccessContract) => {
-        this.dialogRef.close(updatedAccessContract);
-      }
-    );
+    this.accessContractService.patch(formData).subscribe((updatedAccessContract) => {
+      this.dialogRef.close(updatedAccessContract);
+    });
   }
 }

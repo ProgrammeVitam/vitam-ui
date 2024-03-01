@@ -1,16 +1,28 @@
-<vitamui-common-sidenav-header [title]="agency.name" [subtitle]="'(' + agency.identifier + ')'"
-  [icon]="'vitamui-icon-agent'" (onclose)="emitClose()">
+<vitamui-common-sidenav-header
+  [title]="agency.name"
+  [subtitle]="'(' + agency.identifier + ')'"
+  [icon]="'vitamui-icon-agent'"
+  (onclose)="emitClose()"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group" (selectedIndexChange)="selectedIndex = $event">
     <mat-tab [label]="'AGENCY.TAB.INFORMATION' | translate">
-      <app-agency-information-tab *ngIf="selectedIndex === 0" [agency]="agency" [tenantIdentifier]="tenantIdentifier"></app-agency-information-tab>
+      <app-agency-information-tab
+        *ngIf="selectedIndex === 0"
+        [agency]="agency"
+        [tenantIdentifier]="tenantIdentifier"
+      ></app-agency-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'AGENCY.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab [id]="agency?.identifier" [identifier]="agency?.identifier"
-        collectionName="agency" [filter]="filterEvents">
+      <vitamui-common-operation-history-tab
+        [id]="agency?.identifier"
+        [identifier]="agency?.identifier"
+        collectionName="agency"
+        [filter]="filterEvents"
+      >
       </vitamui-common-operation-history-tab>
     </mat-tab>
   </mat-tab-group>

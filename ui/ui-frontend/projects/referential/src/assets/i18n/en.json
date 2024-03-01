@@ -900,7 +900,7 @@
       "UPDATE_SIP": "Modification of SIP attachment positions",
       "UPDATE_AU": "Modification of AU attachment positions",
       "TITLE": "Home position",
-      "ATTACHEMENT_CONTROL_INFO":"Option allowing you to control the attachment declaration in a slip"
+      "ATTACHEMENT_CONTROL_INFO": "Option allowing you to control the attachment declaration in a slip"
     }
   },
   "SECURE": {
@@ -1010,7 +1010,7 @@
         "MESSAGE": "Result"
       }
     },
-    "OPERATIONS_CATEGORIES" : {
+    "OPERATIONS_CATEGORIES": {
       "PROCESS_AUDIT": "Integrity and Existence",
       "EVIDENCE_AUDIT": "Consistency",
       "RECTIFICATION_AUDIT": "Correct"
@@ -1024,7 +1024,7 @@
         "ASSOCIATED_CONTRACT": "Associated contract",
         "ASSIGMENT_DATE": "Assigment date",
         "OPERATION_IDENTIFIER": "Operation identifier",
-        "TRANSACTION_NUMBER":  "Transaction number",
+        "TRANSACTION_NUMBER": "Transaction number",
         "APPLICATION_IDENTIFIER": "Application identifier",
         "OBJECT_IDENTIFIER": "Object identifier",
         "REPORT": "Report",

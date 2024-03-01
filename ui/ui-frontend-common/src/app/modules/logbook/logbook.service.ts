@@ -282,8 +282,8 @@ export function sortEventByDate(ev1: Event, ev2: Event): number {
 }
 
 function getEffectiveDate(event: Event): Date {
-  if (event.parsedData && event.parsedData['Date d\'opération']) {
-    return new Date(event.parsedData['Date d\'opération']);
+  if (event.parsedData && event.parsedData["Date d'opération"]) {
+    return new Date(event.parsedData["Date d'opération"]);
   }
 
   return event.dateTime;

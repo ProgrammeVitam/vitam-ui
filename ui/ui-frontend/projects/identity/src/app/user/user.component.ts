@@ -118,17 +118,17 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
 
     const request: Subscription = this.userService.export().subscribe(
       (response: HttpResponse<Blob>) => {
-        const fileName = 'export-utilisateurs-' + this.buildExportDateTime() + '.xlsx'
+        const fileName = 'export-utilisateurs-' + this.buildExportDateTime() + '.xlsx';
         DownloadUtils.loadFromBlob(response, response.body.type, fileName);
         this.downloadSnackBarService.close();
         this.exportLoading = false;
 
-        this.snackBarService.open({message: 'SHARED.SNACKBAR.USER_EXPORT_SUCCESS'});
+        this.snackBarService.open({ message: 'SHARED.SNACKBAR.USER_EXPORT_SUCCESS' });
       },
       () => {
         this.downloadSnackBarService.close();
         this.exportLoading = false;
-      }
+      },
     );
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());

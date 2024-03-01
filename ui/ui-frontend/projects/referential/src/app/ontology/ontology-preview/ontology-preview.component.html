@@ -1,25 +1,25 @@
 <vitamui-common-sidenav-header
   [title]="inputOntology?.shortName"
-  [subtitle]="'(' + inputOntology?.identifier  + ')'"
-  (onclose)="emitClose()">
+  [subtitle]="'(' + inputOntology?.identifier + ')'"
+  (onclose)="emitClose()"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-        <mat-tab [label]="'ONTOLOGY.TAB.INFORMATION.TITLE' | translate">
-            <app-ontology-information-tab [inputOntology]="inputOntology" #infoTab
-              [readOnly]="isPopup"
-              (updated)="updatedChange($event, 0)">
-            </app-ontology-information-tab>
-        </mat-tab>
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab [label]="'ONTOLOGY.TAB.INFORMATION.TITLE' | translate">
+      <app-ontology-information-tab [inputOntology]="inputOntology" #infoTab [readOnly]="isPopup" (updated)="updatedChange($event, 0)">
+      </app-ontology-information-tab>
+    </mat-tab>
 
-        <mat-tab [label]="'ONTOLOGY.TAB.HISTORY.TITLE' | translate">
-            <vitamui-common-operation-history-tab
-              [id]="inputOntology?.identifier"
-              [identifier]="inputOntology?.identifier"
-              collectionName="ontology" [filter]="filterEvents">
-            </vitamui-common-operation-history-tab>
-        </mat-tab>
-    </mat-tab-group>
+    <mat-tab [label]="'ONTOLOGY.TAB.HISTORY.TITLE' | translate">
+      <vitamui-common-operation-history-tab
+        [id]="inputOntology?.identifier"
+        [identifier]="inputOntology?.identifier"
+        collectionName="ontology"
+        [filter]="filterEvents"
+      >
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
-

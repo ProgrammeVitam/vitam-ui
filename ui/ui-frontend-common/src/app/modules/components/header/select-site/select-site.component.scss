@@ -1,19 +1,19 @@
 $header-height: 72px !default;
 
-.site-label{
-    cursor: pointer;
-    height: $header-height;
-    border-left: 1px solid var(--vitamui-grey-200);
-  
-    .text {
-      color: var(--vitamui-header-footer-font);
-  
-      &.caption {
-        line-height: 1.4;
-      }
-  
-      &.normal {
-        line-height: 2.8;
-      }
+.site-label {
+  cursor: pointer;
+  height: $header-height;
+  border-left: 1px solid var(--vitamui-grey-200);
+
+  .text {
+    color: var(--vitamui-header-footer-font);
+
+    &.caption {
+      line-height: 1.4;
     }
+
+    &.normal {
+      line-height: 2.8;
+    }
+  }
 }

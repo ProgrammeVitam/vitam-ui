@@ -45,5 +45,5 @@ export enum QueryOperator {
   AND = 'AND',
   OR = 'OR',
   HAVING = 'HAVING',
-  NOR = 'NOR'
+  NOR = 'NOR',
 }

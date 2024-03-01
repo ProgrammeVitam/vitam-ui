@@ -45,7 +45,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 import { IngestContractService } from './ingest-contract.service';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 
@@ -53,12 +53,11 @@ describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
   let fixture: ComponentFixture<IngestContractComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'INGEST_CONTRACT_APP' }),
-      };
+  beforeEach(waitForAsync(() => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'INGEST_CONTRACT_APP' }),
+    };
 
     const applicationServiceMock = {
       applications: new Array<any>(),
@@ -72,7 +71,7 @@ describe('IngestContractComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         InjectorModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
       declarations: [IngestContractComponent],
       providers: [

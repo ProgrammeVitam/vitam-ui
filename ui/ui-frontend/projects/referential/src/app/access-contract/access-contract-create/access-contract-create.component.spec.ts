@@ -37,25 +37,25 @@
 /* tslint:disable: max-classes-per-file directive-selector */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {AgencyService} from '../../agency/agency.service';
-import {AccessContractService} from '../access-contract.service';
-import {AccessContractCreateComponent} from './access-contract-create.component';
-import {AccessContractCreateValidators} from './access-contract-create.validators';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {TranslateModule} from "@ngx-translate/core";
+import { AgencyService } from '../../agency/agency.service';
+import { AccessContractService } from '../access-contract.service';
+import { AccessContractCreateComponent } from './access-contract-create.component';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -123,14 +123,14 @@ describe('AccessContractCreateComponent', () => {
       ],
       declarations: [AccessContractCreateComponent],
       providers: [
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: BASE_URL, useValue: '/fake-api'},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: AgencyService, useValue: agencyServiceSpy},
-        {provide: AccessContractService, useValue: accessContractServiceSpy},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
-        {provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}}
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: AgencyService, useValue: agencyServiceSpy },
+        { provide: AccessContractService, useValue: accessContractServiceSpy },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

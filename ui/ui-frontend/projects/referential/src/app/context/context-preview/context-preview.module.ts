@@ -48,14 +48,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import {ConfirmActionModule, VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {ContextEditPermissionModule} from '../context-create/context-edit-permission/context-edit-permission.module';
-import {ContextInformationTabComponent} from './context-information-tab/context-information-tab.component';
-import {ContextPermissionTabComponent} from './context-permission-tab/context-permission-tab.component';
-import {ContextPreviewComponent} from './context-preview.component';
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatInputModule} from "@angular/material/input";
+import { ConfirmActionModule, VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
+import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
+import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
+import { ContextPreviewComponent } from './context-preview.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -77,7 +77,7 @@ import {MatInputModule} from "@angular/material/input";
     MatTabsModule,
     MatDividerModule,
     MatDatepickerModule,
-    MatInputModule
+    MatInputModule,
   ],
   declarations: [ContextPreviewComponent, ContextInformationTabComponent, ContextPermissionTabComponent],
   exports: [ContextPreviewComponent],

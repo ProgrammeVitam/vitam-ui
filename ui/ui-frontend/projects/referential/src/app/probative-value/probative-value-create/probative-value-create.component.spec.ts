@@ -54,36 +54,34 @@ describe('ProbativeValueCreateComponent', () => {
   let component: ProbativeValueCreateComponent;
   let fixture: ComponentFixture<ProbativeValueCreateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const parameters: Map<string, string> = new Map<string, string>();
-      const externalParametersServiceMock = {
-        getUserExternalParameters: () => of(parameters),
-      };
+  beforeEach(waitForAsync(() => {
+    const parameters: Map<string, string> = new Map<string, string>();
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          MatSelectModule,
-          NoopAnimationsModule,
-          MatProgressBarModule,
-          MatSnackBarModule,
-          VitamUICommonTestModule,
-        ],
-        declarations: [ProbativeValueCreateComponent],
-        providers: [
-          FormBuilder,
-          { provide: MatDialogRef, useValue: {} },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-          { provide: ProbativeValueService, useValue: {} },
-          { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-          { provide: TranslateService, useValue: { instant: (key: string) => key }  },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
+        VitamUICommonTestModule,
+      ],
+      declarations: [ProbativeValueCreateComponent],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: ProbativeValueService, useValue: {} },
+        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: TranslateService, useValue: { instant: (key: string) => key } },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProbativeValueCreateComponent);

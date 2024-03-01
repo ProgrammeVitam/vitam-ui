@@ -138,7 +138,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
       debounceTime(FILTER_DEBOUNCE_TIME_MS),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     searchCriteriaChange.subscribe(() => {
@@ -190,14 +190,11 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   }
 
   private replaceUpdatedContext(): void {
-    this.contextService.updated.pipe(takeUntil(this.destroy$)).subscribe(
-      (updatedContext: Context) => {
-        const index = this.dataSource.findIndex((item: Context) => item.id === updatedContext.id);
-        if (index !== -1) {
-          this.dataSource[index] = updatedContext;
-        }
+    this.contextService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedContext: Context) => {
+      const index = this.dataSource.findIndex((item: Context) => item.id === updatedContext.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedContext;
       }
-    );
+    });
   }
-
 }

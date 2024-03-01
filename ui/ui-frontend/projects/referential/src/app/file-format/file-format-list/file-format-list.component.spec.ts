@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateModule} from '@ngx-translate/core';
-import {AuthService, BASE_URL, StartupService, VitamUISnackBarService} from 'ui-frontend-common';
-import {FileFormatService} from '../file-format.service';
-import {FileFormatListComponent} from './file-format-list.component';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'ui-frontend-common';
+import { FileFormatService } from '../file-format.service';
+import { FileFormatListComponent } from './file-format-list.component';
 
 describe('FileFormatListComponent', () => {
   let component: FileFormatListComponent;
@@ -53,12 +52,12 @@ describe('FileFormatListComponent', () => {
       imports: [TranslateModule.forRoot(), HttpClientTestingModule],
       declarations: [FileFormatListComponent],
       providers: [
-        {provide: BASE_URL, useValue: ''},
+        { provide: BASE_URL, useValue: '' },
         FileFormatService,
-        {provide: AuthService, useValue: {user: {proofTenantIdentifier: '1'}}},
-        {provide: VitamUISnackBarService, useValue: {}},
-        {provide: MatDialog, useValue: {}},
-        {provide: StartupService, useValue: { getConfigStringValue: (_param: string) => ''}}
+        { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: MatDialog, useValue: {} },
+        { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

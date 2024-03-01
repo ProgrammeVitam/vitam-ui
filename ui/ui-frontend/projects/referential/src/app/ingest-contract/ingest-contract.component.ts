@@ -75,7 +75,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     private securityService: SecurityService,
     private translateService: TranslateService,
     private downloadSnackBarService: DownloadSnackBarService,
-    private ingestContractService: IngestContractService
+    private ingestContractService: IngestContractService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -95,7 +95,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
         return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
-      })
+      }),
     );
 
     this.updateSlaveMode();
@@ -165,7 +165,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     this.ingestContractService
       .downloadImportFileModel()
       .subscribe((response: HttpResponse<Blob>) =>
-        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_ingest_contract_template.csv')
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_ingest_contract_template.csv'),
       );
   }
 
@@ -176,10 +176,9 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
         DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_ingest_contracts.csv');
         this.downloadSnackBarService.close();
       },
-      () => this.downloadSnackBarService.close()
+      () => this.downloadSnackBarService.close(),
     );
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
-
   }
 }

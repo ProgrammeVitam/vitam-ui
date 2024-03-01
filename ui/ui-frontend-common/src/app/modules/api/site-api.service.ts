@@ -4,10 +4,9 @@ import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class SiteApiService extends BaseHttpClient<any>{
-
+export class SiteApiService extends BaseHttpClient<any> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/sites');
   }

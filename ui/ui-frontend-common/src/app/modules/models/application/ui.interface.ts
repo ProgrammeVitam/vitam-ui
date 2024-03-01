@@ -1,4 +1,4 @@
 export interface Ui {
-    hasTenantList: boolean;
-    hasSiteSelection: boolean;
+  hasTenantList: boolean;
+  hasSiteSelection: boolean;
 }

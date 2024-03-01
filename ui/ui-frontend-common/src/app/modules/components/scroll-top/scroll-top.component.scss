@@ -6,14 +6,14 @@
   right: 1%;
   opacity: 0;
   display: none;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 10;
 }
 
 .show-scrollTop {
   opacity: 1;
   display: block;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .mat-mini-fab {

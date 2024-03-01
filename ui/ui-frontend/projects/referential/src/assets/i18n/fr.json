@@ -900,7 +900,7 @@
       "UPDATE_SIP": "Modification des positions de rattachement SIP",
       "UPDATE_AU": "Modification des positions de rattachement AU",
       "TITLE": "Position de rattachement",
-      "ATTACHEMENT_CONTROL_INFO":"Option permettant de contrôler la déclaration de rattachement dans un bordereau"
+      "ATTACHEMENT_CONTROL_INFO": "Option permettant de contrôler la déclaration de rattachement dans un bordereau"
     }
   },
   "SECURE": {
@@ -1010,7 +1010,7 @@
         "MESSAGE": "Résultat"
       }
     },
-    "OPERATIONS_CATEGORIES" : {
+    "OPERATIONS_CATEGORIES": {
       "PROCESS_AUDIT": "Integrité et Existence",
       "EVIDENCE_AUDIT": "Cohérence",
       "RECTIFICATION_AUDIT": "Correctif"
@@ -1024,7 +1024,7 @@
         "ASSOCIATED_CONTRACT": "Contrat associé",
         "ASSIGMENT_DATE": "Date d’affectation",
         "OPERATION_IDENTIFIER": "Identification de l’opération",
-        "TRANSACTION_NUMBER":  "Numéro de transaction",
+        "TRANSACTION_NUMBER": "Numéro de transaction",
         "APPLICATION_IDENTIFIER": "Identifiant de l'application",
         "OBJECT_IDENTIFIER": "Identification de l’objet",
         "REPORT": "Rapport",
@@ -1045,7 +1045,7 @@
       "NODES": "Positions de rattachement",
       "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant d’audit de cohérence",
       "EVIDENCE_AUDIT_NOT_FOUND": "L'identifiant d'audit de cohérence saisi n'existe pas",
-      "OPERATIONS_CATEGORIES" : {
+      "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
         "AUDIT_FILE_INTEGRITY": "Integrité",
         "AUDIT_FILE_CONSISTENCY": "Cohérence",

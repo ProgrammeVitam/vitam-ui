@@ -171,7 +171,7 @@
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending || !groups then loadingSpinner"></div>
+  <div *ngIf="!dataSource || pending || !groups; then loadingSpinner"></div>
 </div>
 
 <ng-template #loadingSpinner>

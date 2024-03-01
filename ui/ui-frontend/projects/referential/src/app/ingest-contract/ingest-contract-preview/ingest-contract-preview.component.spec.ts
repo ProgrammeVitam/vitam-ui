@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
-import {IngestContractService} from '../ingest-contract.service';
-import {IngestContractPreviewComponent} from './ingest-contract-preview.component';
-import {TranslateModule} from "@ngx-translate/core";
-import {NO_ERRORS_SCHEMA} from '@angular/compiler';
-import {IngestContract} from "ui-frontend-common";
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { IngestContractService } from '../ingest-contract.service';
+import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NO_ERRORS_SCHEMA } from '@angular/compiler';
+import { IngestContract } from 'ui-frontend-common';
 
 describe('IngestContractPreviewComponent', () => {
   let component: IngestContractPreviewComponent;
@@ -73,19 +73,17 @@ describe('IngestContractPreviewComponent', () => {
     signaturePolicy: undefined,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [IngestContractPreviewComponent],
-        providers: [
-          { provide: MatDialog, useValue: {} },
-          { provide: IngestContractService, useValue: {} },
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [IngestContractPreviewComponent],
+      providers: [
+        { provide: MatDialog, useValue: {} },
+        { provide: IngestContractService, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractPreviewComponent);
