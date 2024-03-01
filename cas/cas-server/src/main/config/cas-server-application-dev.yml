@@ -185,9 +185,9 @@ theme:
   #  vitamui-platform-name: VITAM-UI
   #  vitamui-favicon: /absolute/path/to/favicon.ico
   #  vitamui-logo-large: /absolute/path/to/logo.png
-  primary: '#702382'
-  secondary: '#241f63'
-  background: '#FFFFFF'
+  primary: '#9C31B5'
+  secondary: '#7FA1D4'
+  background: '#F6F3FB'
 
 # Jaeger
 opentracing:

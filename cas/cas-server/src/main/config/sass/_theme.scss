@@ -1,9 +1,0 @@
-@import 'fonts';
-@import 'colors';
-
-@mixin vitamui-modal {
-    border-radius: 20px;
-    background-color: $white;
-    box-shadow: $dp-dark;
-    border: 1px solid $grey-400;
-}

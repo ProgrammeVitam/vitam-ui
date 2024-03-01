@@ -2,19 +2,27 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-    <title th:text="#{screen.unavailable.header(${@environment.getProperty('theme.vitamui-platform-name')})}">VITAMUI Error</title>
+  <title th:text="#{screen.unavailable.header(${@environment.getProperty('theme.vitamui-platform-name')})}">VITAMUI
+    Error</title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
-    <div>
-        <h4 th:text="#{screen.unavailable.heading(${status},${error})}">VITAMUI is unable to process this request: "{0}:{1}"</h4>
-        <div class="text medium marging-top-form margin-bottom-form"  th:utext="#{screen.unavailable.message(${@environment.getProperty('theme.vitamui-platform-name')})}">screen.unavailable.message would go here</div>
-    </div>
 
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.unavailable.heading(${status},${error})}">
+    VITAMUI is unable to process this request: "{0}:{1}"
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:utext="#{screen.unavailable.message(${@environment.getProperty('theme.vitamui-platform-name')})}">
+    screen.unavailable.message would go here
+  </div>
 </div>
+
+
 </body>
 </html>

@@ -83,8 +83,6 @@ import lombok.Setter;
 
 /**
  * The service to read, create, update and delete the subrogations.
- *
- *
  */
 @Getter
 @Setter

@@ -1,118 +1,101 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title th:text="#{screen.logout.header}">Propagate Logout View</title>
-
-    <link rel="stylesheet" th:href="@{#{webjars.fontawesomemin.css}}"/>
-
-    <link rel="stylesheet" th:href="@{/css/cas.css}"/>
-
-    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
-
-    <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
-    <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        function redirectToApp() {
-            window.location = encodeURI([[${logoutRedirectUrl}]]) ;
-        }
-
-        function handleCallback(index, status) {
-
-        }
-
-        /**
-        	For Surrogation purposes, do not show logout page information.
-        	Redirect straight to service.
-        */
-        function handleDisplay() {
-       		var _this = this;
-        	var logoutRedirectUrl = [[${logoutRedirectUrl}]];
-
-        	if(logoutRedirectUrl && logoutRedirectUrl.indexOf('username=') > 0) {
-        		window.setTimeout(function(){
-        			_this.redirectToApp();
-        		}, 200);
-        	}
-        	else {
-        		$('body')[0].style.display = '';
-        	}
-        }
-        /*]]>*/
-    </script>
+  <title th:text="#{screen.logout.header}">Propagate Logout View</title>
 </head>
+<body th:styleappend="${@environment.getProperty('theme.body.style')}">
 
 
-<body style='display: none;' th:styleappend="${@environment.getProperty('theme.body.style')}">
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold" th:text="#{screen.logout.header}">
+    Logout successful
+  </div>
+  <p class="Text-medium margin-top-10 display-block" th:utext="#{screen.logout.fc.success}">You have successfully
+    logged out of the Central Authentication
+    Service. Given single logout is enabled with CAS, \
+    the following list of applications are <strong> only notified</strong> to log you out and destroy your
+    user session. Remember that this \
+    is just a notification, not a guarantee. It is up the application itself to honor these notifications
+    and properly take action to log you \
+    out.
+  </p>
 
-	<div class="login">
-    </div>
+  <div th:text="#{screen.logout.security}">
+    For security reasons, exit your web browser.
+  </div>
+
+  <div class="margin-top-20">
+    <button type="button" class="Button" th:if="${logoutRedirectUrl}" name="submit"
+            accesskey="l"
+            onclick="redirectToApp();">
+      [[${'Go to ' + logoutRedirectUrl}]]
+    </button>
+  </div>
+</div>
 
 
-    <div class="centered">
-        <div class="flex-justify-content-center">
-            <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
-        </div>
-        <div class="login-box login-padding step-email">
-        <div>
-            <h4 th:text="#{screen.logout.header}">Logout successful</h4>
-            <p th:utext="#{screen.logout.fc.success}">You have successfully logged out of the Central Authentication
-                Service. Given single logout is enabled with CAS, \
-                the following list of applications are <strong> only notified</strong> to log you out and destroy your
-                user session. Remember that this \
-                is just a notification, not a guarantee. It is up the application itself to honor these notifications
-                and properly take action to log you \
-                out.</p>
-
-            <p th:text="#{screen.logout.security}">For security reasons, exit your web browser.</p>
-
-            <button type="button" th:if="${logoutRedirectUrl}" class="vitamui-secondary" name="submit" accesskey="l" onclick="redirectToApp();">[[${'Go to ' + logoutRedirectUrl}]]</button>
-
-        </div>
-
-    </div>
-
-    </div>
-
-	<div>
-       	<ol style="list-style: none" start="a">
-			<li th:each="entry,iterStat : ${logoutUrls}">
-				<script type="text/javascript" th:inline="javascript">
-                    /*<![CDATA[*/
-                    $.ajax({
-                        url: [[${entry.key.logoutUrl.toExternalForm()}]],
-                        dataType: 'jsonp',
-                        async: true,
-                        contentType: [[${entry.value.contentType}]]
-                        , data: [[${entry.value.message}]]
-                        , success: function (data) {
-                            var index = [[${iterStat.index}]];
-                            handleCallback(index, 200);
-                        },
-                        error: function (err, textStatus, errorThrown) {
-                            var index = [[${iterStat.index}]];
-                            handleCallback(index, err.status);
-                        }
-                    });
-                    handleDisplay();
-                    /*]]>*/
-                </script>
-                <!--
-                <p>
-                    <i data-toggle="tooltip" data-placement="top" class="fa fa-question" th:id="${'service'+iterStat.index}" title="Logout request pending..."> </i>
-                    <kbd th:text="${entry.key.service.id}"/>
-                </p>
-                 -->
-            </li>
-        </ol>
-    </div>
+<div>
+  <ol style="list-style: none" start="a">
+    <li th:each="entry,iterStat : ${logoutUrls}">
+      <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        $.ajax({
+          url: [[${entry.key.logoutUrl.toExternalForm()}]],
+          dataType: 'jsonp',
+          async: true,
+          contentType: [[${entry.value.contentType}]]
+          , data: [[${entry.value.message}]]
+          , success: function (data) {
+            var index = [[${iterStat.index}]];
+            handleCallback(index, 200);
+          },
+          error: function (err, textStatus, errorThrown) {
+            var index = [[${iterStat.index}]];
+            handleCallback(index, err.status);
+          }
+        });
+        handleDisplay();
+        /*]]>*/
+      </script>
+      <!--
+      <p>
+          <i data-toggle="tooltip" data-placement="top" class="fa fa-question" th:id="${'service'+iterStat.index}" title="Logout request pending..."> </i>
+          <kbd th:text="${entry.key.service.id}"/>
+      </p>
+       -->
+    </li>
+  </ol>
+</div>
 
 </body>
 
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  function redirectToApp() {
+    window.location = encodeURI([[${logoutRedirectUrl}]]);
+  }
+
+  function handleCallback(index, status) {
+
+  }
+
+  /**
+   For Surrogation purposes, do not show logout page information.
+   Redirect straight to service.
+   */
+  function handleDisplay() {
+    var _this = this;
+    var logoutRedirectUrl = [[${logoutRedirectUrl}]];
+
+    if (logoutRedirectUrl && logoutRedirectUrl.indexOf('username=') > 0) {
+      window.setTimeout(function () {
+        _this.redirectToApp();
+      }, 200);
+    } else {
+      $('body')[0].style.display = '';
+    }
+  }
+
+  /*]]>*/
+</script>
 </html>

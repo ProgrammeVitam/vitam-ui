@@ -2,19 +2,27 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-    <title th:text="#{screen.service.error.header(${@environment.getProperty('theme.vitamui-platform-name')})}"></title>
+  <title th:text="#{screen.service.error.header(${@environment.getProperty('theme.vitamui-platform-name')})}"></title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
-    <div>
-        <h1 th:text="#{screen.service.error.header(${@environment.getProperty('theme.vitamui-platform-name')})}"/>
-        <p th:if="${rootCauseException != null and rootCauseException.code != null}"
-           th:utext="#{${rootCauseException.code}}"/>
-    </div>
+
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.service.error.header(${@environment.getProperty('theme.vitamui-platform-name')})}">
+    Application non autorisé à utiliser {0}
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:if="${rootCauseException != null and rootCauseException.code != null}"
+       th:utext="#{${rootCauseException.code}}">
+    rootCauseException.code
+  </div>
 </div>
+
+
 </body>
 </html>

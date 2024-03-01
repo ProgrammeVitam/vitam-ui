@@ -33,34 +33,81 @@
   <meta charset="UTF-8"/>
   <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="../../static/images/favicon.ico"
+  <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico"
         th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
-  <link rel="stylesheet" type="text/css" href="../../static/css/cas.css"
+  <link rel="stylesheet" type="text/css" href="../static/css/cas.css"
         th:href="@{/css/cas.css}"/>
-  <link rel="stylesheet" type="text/css" href="../../static/icons/vitamui-icons.css"
+  <link rel="stylesheet" type="text/css" href="../static/icons/vitamui-icons.css"
         th:href="@{/icons/vitamui-icons.css}"/>
-  <script type="text/javascript" src="../../../../../../../deployment/roles/reverse/files/apache/page/js/jquery.min.js"
+  <script type="text/javascript" src="../../../../../../deployment/roles/reverse/files/apache/page/js/jquery.min.js"
           th:src="@{#{webjars.jquery.js}}"></script>
   <script type="text/javascript"
           th:src="@{#{webjars.jqueryui.js}}"></script>
-  <script type="text/javascript" src="../../static/js/cas.js"
+  <script type="text/javascript" src="../static/js/cas.js"
           th:src="@{#{/js/cas.js}}"></script>
-  <meta http-equiv="refresh" th:attr="content=${'1; url=' + portalUrl}"/>
 </head>
 
-<!-- loader -->
 <body style="--vitamui-primary:#9C31B5;--vitamui-secondary:#7FA1D4;--vitamui-background:#F6F3FB;"
       th:st="${@environment.getProperty('theme.body.style')}">
 <div class="centered">
   <div class="logo">
-    <img src="../../static/images/logo-vitam-colored.svg"
+    <img src="../static/images/logo-vitam-colored.svg" alt="logo"
          th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/logo-vitam-colored.svg}">
   </div>
 
-  <img class="loader" src="../../static/images/spinner.svg" alt="loading..."
-       th:src="@{/images/spinner.svg}"/>
+  <div class="vitamui-card">
+    <div class="step-password">
+      <div class="Text-large-bold"
+           th:text="#{cas.authentication.customer.input}">
+        Veuillez sélectionner une organisation
+      </div>
+
+      <form id="main-form" method="post" th:object="${customerModel}" action="login" class="margin-top-20">
+        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+        <input type="hidden" name="_eventId" value="submit"/>
+        <div class="form-line">
+          <select th:field="*{customer}" name="customer" id="customer"
+                  required="true">
+            <option hidden disabled selected value=""></option>
+            <option th:each="c : ${#customers}" th:value="${c.code}" th:text="${c.name}" th:selected="${i==75}">
+              option 1
+            </option>
+          </select>
+          <label for="customer">Organisation *</label>
+          <i class="select-arrow vitamui-icon vitamui-icon-unfold-more"></i>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="button-footer">
+      <button class="Text-button" type="button" th:urlToUse="@{/login(service=${serviceUrl})}"
+              th:onclick="window.location.href=sanitizeUrl(this.getAttribute('urlToUse'))">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <span th:text="#{cas.welcome.button.back}">RETOUR</span>
+      </button>
+      <button id="submit-main-form" class="Button" type="submit" form="main-form">VALIDER</button>
+    </div>
+
+  </div>
 
 </div>
 
+<script>
+  resourceLoadedSuccessfully();
+
+  function sanitizeUrl(inputUrl) {
+    let ESC_MAP = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
+      return ESC_MAP[c];
+    });
+  }
+</script>
 </body>
 </html>
