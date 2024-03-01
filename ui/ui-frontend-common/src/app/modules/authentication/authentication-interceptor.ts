@@ -77,13 +77,14 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       first((config) => !!config),
       switchMap((_) => {
         const sendAccessToken = this.configService.config?.GATEWAY_ENABLED;
+        const authorizationHeaderName = this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization';
         if (sendAccessToken) {
           if (!this.checkUrl(url)) {
             return next.handle(req);
           }
           const token = this.authStorage.getItem('access_token');
           const header = 'Bearer ' + token;
-          const headers = req.headers.set('Authorization', header);
+          const headers = req.headers.set(authorizationHeaderName, header);
           req = req.clone({ headers });
         }
 
