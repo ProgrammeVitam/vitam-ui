@@ -2,26 +2,24 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title th:text="#{screen.error.page.title.permissiondenied}">Error - Permission Denied</title>
-    <link rel="stylesheet" th:href="@{#{webjars.fontawesome.css}}" />
-    <style>
-        .prompt {
-            font-family: Verdana, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title th:text="#{screen.error.page.title.permissiondenied}">Error - Permission Denied</title>
 </head>
 
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-    <div layout:fragment="content">
-        <div>
-            <h4 th:text="#{screen.error.page.authdenied}">Authorization Denied</h4>
-            <p th:text="#{screen.error.page.permissiondenied}">You do not have permission to view this page.</p>
-            <a class="btn btn-submit" th:href="@{/login}" th:text="#{screen.error.page.loginagain}">Login Again</a>
-        </div>
-    </div>
+<body>
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.error.page.authdenied}">
+    Authorization Denied
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.error.page.permissiondenied}">
+    You do not have permission to view this page.
+  </div>
+</div>
+
 </body>
 </html>

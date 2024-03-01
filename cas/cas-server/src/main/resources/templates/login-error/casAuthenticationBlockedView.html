@@ -2,19 +2,27 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-    <title th:text="#{screen.authnblocked.heading}">Authentication Blocked View</title>
+  <title th:text="#{screen.authnblocked.heading}">Authentication Blocked View</title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
-    <div>
-        <h2 th:text="#{screen.authnblocked.heading}">Authentication attempt is blocked.</h2>
-        <p th:text="#{screen.authnblocked.message}">Your authentication attempt is untrusted and unauthorized from
-            your current workstation.</p>
-    </div>
+
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.authnblocked.heading}">
+    Authentication attempt is blocked.
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.authnblocked.message}">
+    Your authentication attempt is untrusted and unauthorized from
+    your current workstation.
+  </div>
 </div>
+
+
 </body>
 </html>

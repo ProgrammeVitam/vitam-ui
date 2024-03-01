@@ -61,8 +61,6 @@ import java.util.Optional;
 
 /**
  * A REST client to perform CAS-specific operations.
- *
- *
  */
 public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
 

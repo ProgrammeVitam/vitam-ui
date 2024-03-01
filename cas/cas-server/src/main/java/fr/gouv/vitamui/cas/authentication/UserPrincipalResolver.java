@@ -120,8 +120,6 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 /**
  * Resolver to retrieve the user.
- *
- *
  */
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {

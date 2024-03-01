@@ -2,27 +2,24 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title th:text="#{screen.error.page.title.pagenotfound}">Error - Page Not Found</title>
-
-    <style>
-        <link rel="stylesheet" th:href="@{#{webjars.fontawesome.css}}" />
-        .prompt {
-            font-family: Verdana, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title th:text="#{screen.error.page.title.pagenotfound}">Error - Page Not Found</title>
 </head>
 
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-    <div layout:fragment="content">
-        <div>
-            <h4 th:text="#{screen.error.page.notfound}">Page Not Found</h4>
-            <p th:text="#{screen.error.page.doesnotexist}">The page you are attempting to access does not exist at the
-                moment.</p>
-        </div>
-    </div>
+<body>
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.error.page.notfound}">
+    Page Not Found
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.error.page.doesnotexist}">
+    The page you are attempting to access does not exist at the moment.
+  </div>
+</div>
+
 </body>
 </html>
