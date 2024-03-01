@@ -579,8 +579,8 @@ Cela est géré par la dépendance `cas-server-support-pac4j-webflow`.
 
 Le flow d'authentification a été modifié (classe `CustomLoginWebflowConfigurer`) pour se dérouler en deux étapes :
 
-* saisie de l'identifiant
-* saisie du mot de passe (`src/main/resources/templates/casPwdView.html`) ou redirection vers le serveur SAML externe pour authentification. Cela est géré par l'action `DispatcherAction`.
+* saisie de l'identifiant (`src/main/resources/templates/emailForm.html`)
+* saisie du mot de passe (`src/main/resources/templates/passwordForm.html`) ou redirection vers le serveur SAML externe pour authentification. Cela est géré par l'action `DispatcherAction`.
 
 Cette délégation d'authentification peut être faite de manière transparente si le paramètre `idp` est présent (il est sauvé dans un cookie de session pour mémorisation).
 Cela est gérée par la classe `CustomDelegatedClientAuthenticationAction`.

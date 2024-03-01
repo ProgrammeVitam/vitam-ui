@@ -124,8 +124,6 @@ import org.springframework.util.Assert;
 
 /**
  * The service to read, create, update and delete the users.
- *
- *
  */
 @Getter
 @Setter
