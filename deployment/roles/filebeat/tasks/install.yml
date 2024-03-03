@@ -13,66 +13,9 @@
     mode: 0644
   notify: "filebeat - restart service"
 
-- name: Create input.d folder
-  file:
-    path: /etc/filebeat/inputs.d
-    state: directory
-    mode: 0755
-  notify: "filebeat - restart service"
+- include_tasks: add_modules.yml
 
-## Copy inputs.d/
-- name: Add Reverse filebeat inputs
-  template:
-    src: inputs/reverse.yml.j2
-    dest: /etc/filebeat/inputs.d/reverse_vitamui.yml
-    mode: 0644
-  when: inventory_hostname in groups['hosts_vitamui_reverseproxy']
-  notify: "filebeat - restart service"
-
-- set_fact:
-    services_on_vm: "{{ group_names | regex_replace('hosts_', '') | regex_replace('hosts_vitamui_', '') | regex_replace('vitamui_', '') }}"
-
-# - debug:
-#     var: services_on_vm
-
-- set_fact:
-    services_on_vm: "{{ services_on_vm | difference(items_to_exclude) }}"
-
-# - debug:
-#     var: services_on_vm
-
-- block:
-
-  - set_fact:
-      vitamui_service_list: "{{ vitamui.keys() | list }}"
-
-  - debug:
-      var: vitamui_service_list
-
-  - set_fact:
-      vitamui_service_list: "{{ services_on_vm | intersect(vitamui_service_list) | regex_replace('_', '-') }}"
-
-  - debug:
-      var: vitamui_service_list
-
-  - name: Add VitamUI filebeat inputs
-    template:
-      src: inputs/vitamui_services.yml.j2
-      dest: /etc/filebeat/inputs.d/vitamui-services.yml
-      mode: 0644
-    notify: "filebeat - restart service"
-
-  - set_fact:
-      cots_service_list: "{{ services_on_vm | intersect(cots_list) }}"
-
-  - name: Add COTS filebeat inputs
-    template:
-      src: inputs/cots.yml.j2
-      dest: /etc/filebeat/inputs.d/cots.yml
-      mode: 0644
-    notify: "filebeat - restart service"
-
-  when: inventory_hostname in groups['hosts_vitamui']
+- include_tasks: add_inputs.yml
 
 - meta: flush_handlers
 

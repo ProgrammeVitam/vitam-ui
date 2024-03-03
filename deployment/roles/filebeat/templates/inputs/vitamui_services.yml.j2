@@ -11,7 +11,7 @@
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/accesslog-{{ vitamui_service }}.*.log"
   fields:
     kind: access
-    vitam_component: "{{ vitamui_service }}"
+    vitam_component: {{ vitamui_service }}
     source: vitamui
 
 - type: filestream
@@ -20,7 +20,7 @@
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/management_accesslog-{{ vitamui_service }}.*.log"
   fields:
     kind: management
-    vitam_component: "{{ vitamui_service }}"
+    vitam_component: {{ vitamui_service }}
     source: vitamui
 
 - type: filestream
@@ -29,7 +29,7 @@
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}.*.log"
   fields:
     kind: log
-    vitam_component: "{{ vitamui_service }}"
+    vitam_component: {{ vitamui_service }}
     source: vitamui
 
 {% endfor %}

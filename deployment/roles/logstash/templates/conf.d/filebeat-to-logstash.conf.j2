@@ -1,0 +1,22 @@
+#jinja2: lstrip_blocks: True
+
+input
+{
+    beats {
+        add_field => [ "input", "filebeat" ]
+        port => "{{ logstash.port | default(10514) }}"
+        ecs_compatibility => "v8"
+    }
+}
+
+output
+{
+    elasticsearch
+    {
+
+        index => "logstash-vitam-%{+YYYY.MM.dd}"
+
+        hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+
+    }
+}

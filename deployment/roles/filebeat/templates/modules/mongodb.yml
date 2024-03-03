@@ -1,0 +1,11 @@
+
+- module: mongodb
+  log:
+    enabled: true
+    var.paths:
+      - "{{ vitamui_defaults.folder.root_path }}/log/mongod/mongo*.log"
+    input:
+      fields:
+        kind: log
+        vitam_component: mongod_data
+        source: vitamui

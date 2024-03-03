@@ -127,7 +127,6 @@
   with_items:
     - "jvm.options"
     - "log4j2.properties"
-    # - "startup.options"
     - "logstash.yml"
   notify:
     - restart logstash
@@ -151,8 +150,20 @@
     - "01-logstash-vitam-filter.conf"
     - "02-logstash-vitam-filter.conf"
     - "03-logstash-vitam-filter.conf"
+  when:  syslog.name | default('filebeat') != 'filebeat'
   notify:
     - restart logstash
+
+- name: configure logstash parser when filebeat
+  template:
+    src: "filebeat-to-logstash.conf.j2"
+    dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
+    owner: "{{ logstash.user }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
+  when:  syslog.name | default('filebeat') == 'filebeat'
+  notify:
+    - "logstash - restart service"
 
 - name: Ensure conf.d subdir exists
   file:
