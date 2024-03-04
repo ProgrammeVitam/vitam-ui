@@ -4774,8 +4774,7 @@
           "CANCEL": "REVENIR À LA SAISIE"
         },
         "MESSAGES": {
-          "SUCCESS": "La demande de modification de l'unité archivistique a bien été envoyée",
-          "FAILURE": ""
+          "SUCCESS": "La demande de modification de l'unité archivistique a bien été envoyée"
         }
       },
       "CANCEL": {
@@ -4784,15 +4783,23 @@
         "BUTTONS": {
           "CONFIRM": "ENREGISTRER",
           "CANCEL": "ANNULER LES MODIFICATIONS"
-        },
-        "MESSAGES": {
-          "SUCCESS": "",
-          "FAILURE": ""
+        }
+      },
+      "REMOVE": {
+        "TITLE": "Confirmer la suppression",
+        "CONTENT": "Le bloc de métadonnées que vous voulez supprimer comprend des valeurs renseignées. Confirmez-vous la suppression ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRMER",
+          "CANCEL": "ANNULER"
         }
       }
     },
     "EDITOR_BANNER": {
       "TITLE": "MODE EDITION (MODIFICATION ET COMPLÉTION) - VERSION {{sedaVersion}} SEDA"
+    },
+    "ACTIONS": {
+      "ADD": "Ajouter un nouveau bloc de métadonnées",
+      "REMOVE": "Supprimer le bloc de métadonnées"
     }
   },
   "UNIT_UPDATE": {

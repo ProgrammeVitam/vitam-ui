@@ -4521,8 +4521,7 @@
           "CANCEL": "RETURN TO INPUT"
         },
         "MESSAGES": {
-          "SUCCESS": "The request to modify the archival unit has been successfully sent",
-          "FAILURE": ""
+          "SUCCESS": "The request to modify the archival unit has been successfully sent"
         }
       },
       "CANCEL": {
@@ -4531,15 +4530,23 @@
         "BUTTONS": {
           "CONFIRM": "SAVE",
           "CANCEL": "CANCEL MODIFICATIONS"
-        },
-        "MESSAGES": {
-          "SUCCESS": "",
-          "FAILURE": ""
+        }
+      },
+      "REMOVE": {
+        "TITLE": "Confirm deletion",
+        "CONTENT": "The current metadat bloc is not empty. Do you confirm the deletion ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRM",
+          "CANCEL": "CANCEL"
         }
       }
     },
     "EDITOR_BANNER": {
       "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
+    },
+    "ACTIONS": {
+      "ADD": "Add a new metadata bloc",
+      "REMOVE": "Remove the metadata bloc"
     }
   },
   "UNIT_UPDATE": {

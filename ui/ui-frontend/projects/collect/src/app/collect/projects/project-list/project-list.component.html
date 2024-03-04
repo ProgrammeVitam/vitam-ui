@@ -75,7 +75,7 @@
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.lastModifyOn | date: 'dd/MM/yyyy' | empty }}</div>
               <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.status }}</div>
               <div class="col-1">
-                <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [isLarge]="false">
+                <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" menuButtonSize="medium">
                   <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>

@@ -1,23 +1,27 @@
-<vitamui-common-accordion *ngIf="editObject?.key && editObject?.kind === 'object-array'; else content" [opened]="editObject.open">
-  <span class="title">{{ editObject.displayRule.ui.label | translate | empty }}</span>
-  <div *ngIf="favoriteEntry" class="title-extra v-col align-items-center favorite-entry">
-    <span>{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
-  </div>
-  <div *ngIf="editObject.actions.add" class="title-extra v-col align-items-center justify-content-end">
-    <button
-      type="button"
-      class="btn link back"
-      matTooltip="{{ 'Add an item to ' + editObject.key + ' list' | translate }}"
-      matTooltipClass="vitamui-tooltip"
-      (click)="add($event)"
-    >
-      <i class="vitamui-icon vitamui-icon-plus"></i>
-    </button>
+<ng-container *ngIf="editObject?.key && editObject?.kind === 'object-array'; else content">
+  <div
+    class="header mat-elevation-z1"
+    [ngClass]="{ 'display-none': editObject.children.length > 0, disabled: editObject.children.length === 0 }"
+    (click)="addFirst()"
+  >
+    <div class="v-row">
+      <div class="v-col">
+        <div class="v-row">
+          <div class="v-col align-items-center">
+            <i class="vitamui-icon icon vitamui-icon-chevron-right"></i>
+            <span class="object-name">{{ editObject.displayRule.ui.label | empty }}</span>
+          </div>
+          <div *ngIf="favoriteEntry" class="v-col align-items-center favorite-entry">
+            {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="content">
     <div *ngTemplateOutlet="content"></div>
   </div>
-</vitamui-common-accordion>
+</ng-container>
 
 <ng-template #content>
   <ng-container *ngIf="editObject?.kind === 'object-array'">
@@ -29,16 +33,6 @@
           *ngIf="child.type === DisplayObjectType.PRIMITIVE"
           [editObject]="child"
         ></vitamui-common-primitive-editor>
-      </div>
-      <div *ngIf="editObject.actions.removeAt" class="col-1">
-        <button
-          class="mat-icon-button delete-button d-flex justify-content-center align-items-center"
-          (click)="removeAt($event, i)"
-          matTooltip="{{ 'Remove ' + child.key | translate }}"
-          matTooltipClass="vitamui-tooltip"
-        >
-          <i class="vitamui-icon vitamui-icon-delete icon primary"></i>
-        </button>
       </div>
     </div>
   </ng-container>

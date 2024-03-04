@@ -6,8 +6,11 @@ import { DisplayRule } from '../../object-viewer/models';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
 import { ComponentType, DisplayObjectType } from '../../object-viewer/types';
-import { EditObject } from '../models/edit-object.model';
+import { Action, EditObject } from '../models/edit-object.model';
 import { SchemaOptions, SchemaService } from './schema.service';
+
+const ADD_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.ADD';
+const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +29,7 @@ export class EditObjectService {
     const baseEditObject = this.baseEditObject(path, schemaPath, data, defaultValue, template, schema);
     let children = [];
     let control: AbstractControl = this.formBuilder.control(data);
-    let actions: any = {};
+    let actions: { [key: string]: Action } = {};
 
     if (data === null) return { ...baseEditObject, control, children } as EditObject;
 
@@ -34,19 +37,34 @@ export class EditObjectService {
       if (baseEditObject.kind === 'object-array') {
         children = data.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema));
         control = this.formBuilder.array(children.map((child) => child.control));
-        actions.add = (data = null) => {
-          const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
-          const editObject = this.editObject(`${path}[${children.length}]`, fullData, template, schema);
 
-          (control as FormArray).push(editObject.control);
-          children.push(editObject);
-          control.markAsDirty();
+        // Add action to current editObject
+        actions.add = {
+          label: ADD_ACTION_LABEL,
+          handler: (data = null) => {
+            const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
+            const editObject = this.editObject(`${path}[${children.length}]`, fullData, template, schema);
+
+            (control as FormArray).push(editObject.control);
+            children.push(editObject);
+            control.markAsDirty();
+
+            editObject.actions.add = actions.add;
+            editObject.actions.remove = {
+              label: REMOVE_ACTION_LABEL,
+              handler: () => this.remove({ ...baseEditObject, control, children })(editObject),
+            };
+          },
         };
-        actions.removeAt = (i: number) => {
-          (control as FormArray).removeAt(i);
-          children.splice(i, 1);
-          control.markAsDirty();
-        };
+
+        // Add actions to child of current object
+        children.forEach((child, index) => {
+          child.actions.add = actions.add;
+          child.actions.remove = {
+            label: REMOVE_ACTION_LABEL,
+            handler: () => this.remove({ ...baseEditObject, control, children })(child),
+          };
+        });
       }
     }
 
@@ -163,8 +181,7 @@ export class EditObjectService {
   ): Partial<EditObject> {
     const key = path.split('.').pop();
     const isRootPath = !Boolean(path);
-    const isArrayElement = /\[\d+\]/gm.test(key);
-    const kind = isRootPath || isArrayElement ? this.kind(value) : this.schemaService.kind(schemaPath, schema);
+    const kind = isRootPath || this.isArrayElement(key) ? this.kind(value) : this.schemaService.kind(schemaPath, schema);
     const type = this.kindToType(kind);
     const displayRule = template.find((rule) => rule.ui.Path === schemaPath);
     const component: ComponentType =
@@ -183,4 +200,21 @@ export class EditObjectService {
       favoriteKeys: [],
     };
   }
+
+  private isArrayElement(path: string): boolean {
+    return /\[\d+\]/gm.test(path);
+  }
+
+  private remove =
+    (parent: Partial<EditObject>) =>
+    (child: EditObject): void => {
+      const index = parent.children.findIndex((item) => item === child);
+
+      if (index < 0) throw new Error('Cannot removeAt negative index');
+      if (parent.kind !== 'object-array') throw new Error('Cannot removeAt on non object array');
+
+      (parent.control as FormArray).removeAt(index);
+      parent.control.markAsDirty();
+      parent.children.splice(index, 1);
+    };
 }

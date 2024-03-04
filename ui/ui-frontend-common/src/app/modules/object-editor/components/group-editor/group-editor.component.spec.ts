@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { LoggerModule } from '../../../logger';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { GroupEditorComponent } from './group-editor.component';
@@ -11,7 +13,7 @@ describe('GroupEditorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GroupEditorComponent],
-      imports: [LoggerModule.forRoot(), PipesModule],
+      imports: [LoggerModule.forRoot(), PipesModule, MatDialogModule, BrowserDynamicTestingModule],
     }).compileComponents();
   });
 

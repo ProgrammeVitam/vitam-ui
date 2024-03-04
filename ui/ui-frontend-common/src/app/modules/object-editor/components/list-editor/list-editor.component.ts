@@ -24,16 +24,17 @@ export class ListEditorComponent implements OnChanges {
     if (editObject) this.favoriteEntryService.favoriteEntry(this.editObject);
   }
 
-  toggle(): void {
-    this.editObject.open = !this.editObject.open;
+  addFirst(): void {
+    if (this.editObject.children.length === 0) this.editObject.actions.add.handler();
   }
 
   add(event: Event): void {
-    this.editObject.actions.add();
+    this.editObject.actions.add.handler();
     event.stopPropagation();
   }
 
   removeAt(event: Event, i: number): void {
-    this.editObject.actions.removeAt(i);
+    this.editObject.actions.removeAt.handler(i);
+    event.stopPropagation();
   }
 }
