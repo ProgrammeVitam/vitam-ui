@@ -1,0 +1,53 @@
+---
+
+- include_tasks: daemon_update_conf.yml
+  when: install_mode == "container"
+
+- include_tasks: RedHat.yml
+  when: ansible_os_family == 'RedHat' and install_mode == "container"
+
+
+- include_tasks: Debian.yml
+  when: ansible_os_family == 'Debian' and install_mode == "container"
+
+# Cf. https://docs.docker.com/engine/admin/systemd/
+- name: Ensure systemd docker service drop-in folder is there
+  file:
+    name: "/etc/systemd/system/docker.service.d"
+    state: directory
+  when: install_mode == "container"
+
+# KWA : add root folders for data / conf / ... directories here ?
+# KWA : configure docker login for repo
+
+
+- name: Add Vitam user to the docker group
+  user:
+    name: vitam
+    groups: docker
+    append: yes
+  when: install_mode == "container"
+
+- name: Add nexus repository ip to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 172.16.0.43 pic-prod-nexus.vitam-factory
+    create: yes
+  when: install_mode == "container"
+
+# Note : we force the restart here, as mongo-express must be restarted when mongodb is restarted...
+# As this is development tools and not production assets, it's OK.
+- name: Ensure docker daemon autostart && docker is started
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: install_mode == "container"
+- name: Login into Docker registry
+  docker_login:
+    registry: pic-prod-nexus.vitam-factory:9080
+    username: vitam
+    password: vitam
+  when: install_mode == "container"
+

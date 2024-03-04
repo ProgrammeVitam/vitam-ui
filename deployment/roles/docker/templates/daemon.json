@@ -1,0 +1,7 @@
+{
+  "bip": "{{ docker_opts.docker_bip }}",
+  "insecure-registries" : [ "pic-prod-nexus.vitam-factory:9080" ],
+  "default-address-pools": [
+      { "base": "{{ docker_opts.docker_address_pools_cidr }}", "size": {{ docker_opts.docker_address_pools_size }} }
+  ]
+}

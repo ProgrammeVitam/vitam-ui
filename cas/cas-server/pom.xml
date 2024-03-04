@@ -25,7 +25,7 @@
         <mongo.version>4.7.1</mongo.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <thymeleaf-spring5.version>3.0.15.RELEASE</thymeleaf-spring5.version>
-
+		<jib.skip>false</jib.skip>
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
     </properties>
@@ -563,6 +563,16 @@
 
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+				 <to>
+				 <image>pic-prod-nexus.vitam-factory:9080/vitamui/cas-server</image>
+                 <tags>${project.version}</tags>
+				</to>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
