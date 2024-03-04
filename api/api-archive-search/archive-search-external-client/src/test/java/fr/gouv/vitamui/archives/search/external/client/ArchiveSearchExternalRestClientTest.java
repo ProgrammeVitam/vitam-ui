@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.external.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -94,13 +95,13 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     @Test
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         SearchCriteriaDto query = new SearchCriteriaDto();
-        final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
+        final VitamUIArchiveUnitResponseDto responseEntity = new VitamUIArchiveUnitResponseDto();
 
         when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class)))
+            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(VitamUIArchiveUnitResponseDto.class)))
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
-        ArchiveUnitsDto response =
+        VitamUIArchiveUnitResponseDto response =
             archiveSearchExternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
 
         assertEquals(response, responseEntity);

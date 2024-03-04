@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  userRefreshRate: 30000,
+  configUrls: ['./assets/config-dev.json'],
 };
 
 /*

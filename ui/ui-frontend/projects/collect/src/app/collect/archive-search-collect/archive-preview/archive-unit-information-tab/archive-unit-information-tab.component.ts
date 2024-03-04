@@ -399,7 +399,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object'], this.archiveUnit['#tenant']);
+    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object']);
   }
 
   showArchiveUniteFullPath() {

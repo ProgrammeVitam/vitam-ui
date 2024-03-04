@@ -52,6 +52,10 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>referential-internal-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
 

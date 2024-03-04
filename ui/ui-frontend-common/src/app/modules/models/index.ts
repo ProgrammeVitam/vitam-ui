@@ -58,6 +58,7 @@ export * from './operation/index';
 export * from './position/index';
 export * from './profile/index';
 export * from './rule/index';
+export * from './schema/index';
 export * from './security-profile/index';
 export * from './subrogation/index';
 export * from './tree-node.interface';

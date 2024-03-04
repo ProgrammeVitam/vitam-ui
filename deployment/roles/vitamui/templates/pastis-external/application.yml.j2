@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True
 rng:
   base:
     file: profiles_new/Profil_seda_pastis_mvp.rng
@@ -41,11 +42,17 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
+    {% if gateway.enabled | default(False) is sameas true %}
+    client-auth: want
+    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
+    {% else %}
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+    {% endif %}
   error:
     path: /error
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
 
 {% endif %}
   tomcat:
@@ -62,6 +69,11 @@ management:
     ssl:
       enabled: false
 
+{% if gateway.enabled | default(False) is sameas true %}
+gateway:
+  enabled: true
+{% endif %}
+
 pastis-external:
   security-client:
     server-host: {{ vitamui.security_internal.host }}
@@ -69,10 +81,12 @@ pastis-external:
 {% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas false %}
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
+      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
@@ -85,10 +99,30 @@ pastis-external:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas false %}
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
+      {% endif %}
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+  referential-internal-client:
+    server-host: {{ vitamui.referential_internal.host }}
+    server-port: {{ vitamui.referential_internal.port_service }}
+
+{% if vitamui.referential_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      {% if gateway.enabled | default(False) is sameas false %}
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}

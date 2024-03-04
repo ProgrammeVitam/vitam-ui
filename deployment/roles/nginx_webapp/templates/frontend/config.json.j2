@@ -1,10 +1,13 @@
 #jinja2: lstrip_blocks: True
 {
   "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  {% if authorization_header_name is defined and authorization_header_name | length %}
+  "AUTHORIZATION_HEADER_NAME": "{{ authorization_header_name }}",
+  {% endif %}
   "REFERENTIAL_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
   "VERSION_RELEASE": "{{ frontend_application_version }}",
   "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",
-  "INGEST_URL": null,
+  "INGEST_URL": "{{ vitamui.ingest.base_url | default(url_prefix+'/ingest') }}",
   "PORTAL_TITLE": "{{ vitamui_platform_informations.portal_title }}",
   "MAX_STREET_LENGTH": {{ vitamui_platform_informations.address.max_street_length }},
   "THEME_COLORS": {
@@ -23,8 +26,15 @@
   "UI_URL": "{{ vitamui.identity_admin.base_url | default(url_prefix+'/identity_admin') }}",
   {% elif vitamui_struct.vitamui_component == 'ui-referential' %}
   "UI_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-archive-search' %}
+  "UI_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-pastis' %}
+  "UI_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
+  {% elif vitamui_struct.vitamui_component == 'ui-collect' %}
+  "UI_URL": "{{ vitamui.collect.base_url | default(url_prefix+'/collect') }}",
   {% endif %}
-  "ARCHIVES_SEARCH_URL": null,
+  "ARCHIVES_SEARCH_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
+  "PASTIS_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
   "PORTAL_URL": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
   {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
   "ALLOWED_URLS": ["/identity-api"],

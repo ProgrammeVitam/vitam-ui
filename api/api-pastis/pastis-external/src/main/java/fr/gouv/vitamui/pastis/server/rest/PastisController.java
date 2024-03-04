@@ -42,15 +42,22 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
+import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -64,14 +71,24 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping(RestApi.PASTIS)
 @RestController
 @ResponseBody
-class PastisController {
+class PastisController extends AbstractInternalClientService {
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
 
     private final PastisService profileService;
 
-    public PastisController(PastisService profileService) {
+    private final ProfileInternalRestClient profileInternalRestClient;
+
+    public PastisController(final ExternalSecurityService externalSecurityService, PastisService profileService,
+        ProfileInternalRestClient profileInternalRestClient) {
+        super(externalSecurityService);
         this.profileService = profileService;
+        this.profileInternalRestClient = profileInternalRestClient;
+    }
+
+    @Override
+    protected BaseRestClient<InternalHttpContext> getClient() {
+        return this.profileInternalRestClient;
     }
 
     @ApiOperation(value = "Download Pa Profile rng file")
@@ -109,6 +126,15 @@ class PastisController {
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(notice);
+        // Code copied from UI-Pastis. Cannot be in PastisService because the service is also used by Pastis Standalone
+        if (notice.getControlSchema() == null) {
+            Resource resource =
+                profileInternalRestClient.download(getInternalHttpContext(), notice.getIdentifier()).getBody();
+            ElementProperties elementProperties = profileService.loadProfilePA(resource);
+            ProfileResponse profileResponse = NoticeUtils.convertToProfileResponse(notice);
+            profileResponse.setProfile(elementProperties);
+            return ResponseEntity.ok(profileResponse);
+        }
         ProfileResponse profileResponse = profileService.loadProfile(notice);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);

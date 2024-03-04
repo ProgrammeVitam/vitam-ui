@@ -25,6 +25,7 @@
         <webpack.test.skip>false</webpack.test.skip>
         <skipAllFrontend>false</skipAllFrontend>
         <skipAllFrontendTests>false</skipAllFrontendTests>
+        <rpm_rsc.skip>false</rpm_rsc.skip>
     </properties>
 
     <dependencies>

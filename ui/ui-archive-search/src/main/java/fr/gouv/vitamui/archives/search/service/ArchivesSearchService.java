@@ -35,6 +35,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
@@ -104,7 +105,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient;
     }
 
-    public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery,
+    public VitamUIArchiveUnitResponseDto findArchiveUnits(final SearchCriteriaDto searchQuery,
         final ExternalHttpContext context) {
         LOGGER.debug("calling find archive units by criteria {} ", searchQuery);
         return getClient().searchArchiveUnitsByCriteria(context, searchQuery);

@@ -25,6 +25,7 @@
         <skipTests>false</skipTests>
         <skipAllFrontend>false</skipAllFrontend>
         <skipAllFrontendTests>false</skipAllFrontendTests>
+        <rpm_rsc.skip>false</rpm_rsc.skip>
     </properties>
 
     <dependencies>

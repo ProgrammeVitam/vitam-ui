@@ -37,7 +37,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
-import { Collection, Schema, SchemaService } from '../../schema';
+import { Collection, Schema } from '../../models';
+import { SchemaService } from '../../schema';
 import { DisplayObject, DisplayObjectService, DisplayRule, SchemaElement } from '../models';
 import { DisplayObjectHelperService } from './display-object-helper.service';
 import { DisplayRuleHelperService } from './display-rule-helper.service';

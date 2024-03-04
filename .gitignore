@@ -151,6 +151,7 @@ maven-eclipse.xml
 *~
 .merge_file*
 .java-version
+.python-version
 
 ######################
 # Gradle Wrapper

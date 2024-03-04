@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { saveAs } from 'file-saver';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -170,8 +171,20 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     );
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, qualifier?: string, version?: number): Promise<void> {
-    return this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, tenantIdentifier, qualifier, version));
+  downloadObjectFromUnit(unitId: string, qualifier?: string, version?: number) {
+    return this.archiveApiService.downloadObjectFromUnit(unitId, qualifier, version).subscribe((resp: HttpResponse<Blob>) => {
+      let fileName = null;
+      // extract filename from content-disposition header
+      const contentDispositionHeader = resp.headers.get('content-disposition');
+      if (contentDispositionHeader !== null) {
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = filenameRegex.exec(contentDispositionHeader);
+        if (matches != null && matches[1]) {
+          fileName = matches[1].replace(/['"]/g, '');
+        }
+      }
+      saveAs(resp.body, fileName);
+    });
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {

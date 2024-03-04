@@ -1,9 +1,9 @@
 {
-  "GATEWAY_ENABLED": false,
+  "GATEWAY_ENABLED": true,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
   "VERSION_RELEASE": "6.4",
   "PLATFORM_NAME": "VITAM-UI",
-  "INGEST_URL": null,
+  "INGEST_URL": "https://dev.vitamui.com:4208/ingest",
   "PORTAL_TITLE": "Portail des applications de Vitam",
   "MAX_STREET_LENGTH": 250,
   "THEME_COLORS": {
@@ -15,7 +15,7 @@
   },
   "PORTAL_MESSAGE": "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics.",
   "UI_URL": "https://dev.vitamui.com:4201",
-  "ARCHIVES_SEARCH_URL": null,
+  "ARCHIVES_SEARCH_URL": "https://dev.vitamui.com:4209/archive-search",
   "PORTAL_URL": "https://dev.vitamui.com:4200",
   "ALLOWED_URLS": ["/identity-api"],
   "OIDC_CONFIG": {

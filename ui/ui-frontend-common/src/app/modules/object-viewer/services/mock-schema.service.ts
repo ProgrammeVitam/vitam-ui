@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Collection } from '../../schema';
+import { Collection } from '../../models';
 import { SchemaElement } from '../models';
 
 @Injectable()

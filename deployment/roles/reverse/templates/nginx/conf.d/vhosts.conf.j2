@@ -61,7 +61,13 @@ server {
 {% if groups['hosts_ui_ingest']|length > 0 %}
   # UI INGEST
   location /ingest {
+     {% if gateway.enabled | default(False) is sameas true %}
+      rewrite /ingest/(.*) /$1  break;
+      proxy_pass https://INGEST;
+    {% else %}
     proxy_pass https://INGEST/ingest;
+    {% endif %}
+
     include /etc/nginx/conf.d/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
@@ -80,7 +86,12 @@ server {
 {% if groups['hosts_ui_archive_search']|length > 0 %}
   # UI ARCHIVE_SEARCH
   location /archive-search {
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /archive-search/(.*) /$1  break;
+    proxy_pass https://ARCHIVE_SEARCH;
+    {% else %}
     proxy_pass https://ARCHIVE_SEARCH/archive-search;
+    {% endif %}
     include /etc/nginx/conf.d/proxy_params;
   }
 {% endif %}
@@ -88,7 +99,12 @@ server {
 {% if groups['hosts_ui_pastis']|length > 0 %}
   # UI PASTIS
   location /pastis {
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /pastis/(.*) /$1  break;
+    proxy_pass https://PASTIS;
+    {% else %}
     proxy_pass https://PASTIS/pastis;
+    {% endif %}
     include /etc/nginx/conf.d/proxy_params;
   }
 {% endif %}
@@ -97,7 +113,12 @@ server {
 {% if groups['hosts_ui_collect']|length > 0 %}
   # UI COLLECT
   location /collect {
+    {% if gateway.enabled | default(False) is sameas true %}
+    rewrite /collect/(.*) /$1  break;
+    proxy_pass https://COLLECT;
+    {% else %}
     proxy_pass https://COLLECT/collect;
+    {% endif %}
     include /etc/nginx/conf.d/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering

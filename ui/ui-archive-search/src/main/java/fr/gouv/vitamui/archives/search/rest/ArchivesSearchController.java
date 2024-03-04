@@ -132,12 +132,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
                 }
             }
         }
-        archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
-
-        if (archiveUnits != null) {
-            archiveResponseDtos = archiveUnits.getArchives();
-        }
-        return archiveResponseDtos;
+        return archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
 
     }
 
@@ -181,7 +176,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String unitId,
         @RequestParam(value = "qualifier", required = false) String qualifier,
         @RequestParam(value = "version", required = false) Integer version,
-        @RequestParam("tenantId") Integer tenantId) throws PreconditionFailedException,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId) throws PreconditionFailedException,
         InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier and The tenantId are mandatory parameters: ",
             unitId, String.valueOf(tenantId));

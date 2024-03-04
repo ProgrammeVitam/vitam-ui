@@ -29,12 +29,12 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
@@ -97,7 +97,7 @@ public class ArchivesSearchExternalController {
 
     @PostMapping(RestApi.SEARCH_PATH)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
+    public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling search archive Units By Criteria {} ", query);
@@ -114,7 +114,8 @@ public class ArchivesSearchExternalController {
         CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
+        final @RequestParam(value = "usage", required = false) String usage,
+        final @RequestParam(value = "version", required = false) Integer version)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);

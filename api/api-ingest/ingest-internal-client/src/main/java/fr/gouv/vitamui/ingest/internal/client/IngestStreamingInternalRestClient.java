@@ -65,7 +65,8 @@ import java.util.List;
 public class IngestStreamingInternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestStreamingInternalRestClient.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(IngestStreamingInternalRestClient.class);
 
     public IngestStreamingInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -99,7 +100,7 @@ public class IngestStreamingInternalRestClient
         final String action) {
         LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD_V2);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD);
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));

@@ -223,56 +223,56 @@ password:
   occurrences-chars-number: 3 # absent for custom profile
   profile: "anssi" # default profile is anssi (Agence Nationale de la Sécurité des Systèmes d'Information), custom otherwise
   constraints:
-        defaults:
-          fr:
-            messages:
-              - Avoir une taille d'au moins ${password.length} caractères
-            special-chars:
-              title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
-              messages:
-                - Minuscules (a-z)
-                - Majuscules (A-Z)
-                - Numériques (0-9)
-                - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-          en:
-            messages:
-              - Have a size of at least ${password.length} characters
-            special-chars:
-              title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
-              messages:
-                - Uppercases (a-z)
-                - Lowercases (A-Z)
-                - Digital (0-9)
-                - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-          de:
-            messages:
-              - Mindestens ${password.length} Zeichen lang sein
-            special-chars:
-              title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
-              messages:
-                - Großbuchstaben (a-z)
-                - Kleinbuchstaben (A-Z)
-                - Digital (0-9)
-                - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-        customs:
-          fr:
-            title: 'Pour des raisons de sécurité, votre mot de passe doit:'
-            messages:
-              - Au moins ${password.length} caractères
-              - Des minuscules et des majuscules
-              - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-          en:
-            title: 'For security reasons, your password must:'
-            messages:
-              - At least ${password.length} characters
-              - Lowercase and uppercase
-              - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-          de:
-            title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
-            messages:
-              - Mindestens ${password.length} Zeichen
-              - Klein- und Großbuchstaben
-              - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+    defaults:
+      fr:
+        messages:
+          - Avoir une taille d'au moins ${password.length} caractères
+        special-chars:
+          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+          messages:
+            - Minuscules (a-z)
+            - Majuscules (A-Z)
+            - Numériques (0-9)
+            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        messages:
+          - Have a size of at least ${password.length} characters
+        special-chars:
+          title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+          messages:
+            - Uppercases (a-z)
+            - Lowercases (A-Z)
+            - Digital (0-9)
+            - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        messages:
+          - Mindestens ${password.length} Zeichen lang sein
+        special-chars:
+          title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+          messages:
+            - Großbuchstaben (a-z)
+            - Kleinbuchstaben (A-Z)
+            - Digital (0-9)
+            - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+    customs:
+      fr:
+        title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+        messages:
+          - Au moins ${password.length} caractères
+          - Des minuscules et des majuscules
+          - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        title: 'For security reasons, your password must:'
+        messages:
+          - At least ${password.length} characters
+          - Lowercase and uppercase
+          - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+        messages:
+          - Mindestens ${password.length} Zeichen
+          - Klein- und Großbuchstaben
+          - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 
 
 ---
@@ -282,4 +282,25 @@ spring:
       on-profile: gateway
 
 cas.http-web-request.cors.allow-credentials: true
-cas.http-web-request.cors.allow-origins: [ "https://dev.vitamui.com:4200", "https://dev.vitamui.com:4201", "https://dev.vitamui.com:4202", 'https://localhost:4202', 'https://localhost:4203', 'https://localhost:4204', 'https://localhost:4205', 'http://localhost']
+cas.http-web-request.cors.allow-origins:
+  - "https://dev.vitamui.com:4200"
+  - "https://dev.vitamui.com:4201"
+  - "https://dev.vitamui.com:4202"
+  - "https://dev.vitamui.com:4203"
+  - "https://dev.vitamui.com:4204"
+  - "https://dev.vitamui.com:4205"
+  - "https://dev.vitamui.com:4208"
+  - "https://dev.vitamui.com:4209"
+  - "https://dev.vitamui.com:4210"
+  - "https://dev.vitamui.com:4251"
+  - "https://localhost:4200"
+  - "https://localhost:4201"
+  - "https://localhost:4202"
+  - "https://localhost:4203"
+  - "https://localhost:4204"
+  - "https://localhost:4205"
+  - "https://localhost:4208"
+  - "https://localhost:4209"
+  - "https://localhost:4210"
+  - "https://localhost:4251"
+  - "https://localhost"
