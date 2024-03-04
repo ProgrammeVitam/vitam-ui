@@ -2024,7 +2024,9 @@
     "STP_OBJECT_GROUP_GRAPH_COMPUTE.STARTED.OK": "Success of the process for updating the graphs of groups of objects",
     "STP_DELETE_ACCESSION_REGISTER_SUMMARY.STARTED.OK": "Successful start of fund register deletion process (Summary)",
     "CHECK_HEADER.OK": "Success of the general check of the transfer slip",
+    "STP_IMPORT_ONTOLOGIES_INCOMPATIBLE_TYPES.KO": "The detailed type is not compatible with the type",
     "STP_IMPORT_ONTOLOGIES_UPDATE_INVALID_TYPE.KO": "The ontologies update process failed: at least one value does not match the expected values.",
+    "STP_IMPORT_ONTOLOGIES_STRING_SIZE_FORBIDDEN.KO": "The StringSize attribute is not authorized for this detailed type",
     "STP_DELETE_MASTERDATA_ARCHIVE_UNIT_PROFILE": "Process of deleting the repository of archival unit profiles",
     "STP_RECLASSIFICATION_PREPARATION.OK": "Success of the preparation process for the modification of the archival unit tree",
     "LFC.OG_OBJECTS_FORMAT_CHECK.FILE_FORMAT.UPDATED_FORMAT.WARNING": "Completion of metadata on formats",
@@ -4186,20 +4188,37 @@
         "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
+      "ATTACHMENT": {
+        "FIX": {
+          "TITLE": "Fix attachment",
+          "ATTACHMENT_ID": "Attachment technical identifier"
+        },
+        "RULES": {
+          "TITLE": "Attachment rules parameters"
+        },
+        "NO_EXISTANT_ATTACHMENT": "No attachment"
+      },
+      "CONFIGURATION": {
+        "AUTO_INGEST": "Automatic transaction management",
+        "ENABLED": "Enabled",
+        "DISABLED": "Disabled"
+      },
       "FIELDS": {
-        "DESCRIPTION": "Description",
-        "ID": "Project technical identifier",
         "NAME": "Name",
-        "NO_EXSISTANT_ATTACHEMENT": "No attachement",
+        "ID": "Project technical identifier",
+        "DESCRIPTION": "Description",
         "SP_ID": "Originating agency",
-        "SV_ID": "Submission agency",
-        "UNIT_UPS_ID": "Attachement technical identifier",
-        "UNIT_UPS_LABEL": "Attachement unit label"
+        "SV_ID": "Submission agency"
       },
       "TABS": {
         "ATTACHEMENT": "Attachement",
         "CONTEXT": "Context",
-        "DESCRIPTION": "Description"
+        "DESCRIPTION": "Description",
+        "CONFIGURATION": "Configuration"
+      },
+      "WORKFLOW": {
+        "MANUAL": "Manual ingest",
+        "FLOW": "Application flow"
       }
     },
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",

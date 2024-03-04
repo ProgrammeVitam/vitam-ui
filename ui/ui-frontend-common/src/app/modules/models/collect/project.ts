@@ -56,3 +56,28 @@ export interface MetadataUnitUp {
   metadataValue: string;
   unitUp: string;
 }
+
+export enum Workflow {
+  MANUAL = 'MANUAL',
+  FLOW = 'FLOW',
+}
+
+export enum FlowType {
+  FIX = 'FIX',
+  RULES = 'RULES',
+}
+
+export function getProjectWorkflow(project: Project): Workflow {
+  // If automaticIngest is not set, this is a MANUAL workflow
+  const isManual = project.automaticIngest === null;
+  return isManual ? Workflow.MANUAL : Workflow.FLOW;
+}
+
+export function getProjectIcon(project: Project): string {
+  switch (getProjectWorkflow(project)) {
+    case Workflow.FLOW:
+      return 'vitamui-icon-ic40-flux-industriel';
+    case Workflow.MANUAL:
+      return 'vitamui-icon-ic40-flux-manuel';
+  }
+}

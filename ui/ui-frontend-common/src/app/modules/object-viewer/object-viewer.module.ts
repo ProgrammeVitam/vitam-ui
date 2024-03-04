@@ -39,6 +39,8 @@ import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { AccordionModule } from '../components/accordion/accordion.module';
+import { DataModule } from '../components/data/data.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
@@ -56,7 +58,7 @@ import { SchemaElementToDisplayRuleService } from './services/schema-element-to-
 import { TypeService } from './services/type.service';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule],
+  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule, AccordionModule, DataModule],
   declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
   providers: [
     DateDisplayService,

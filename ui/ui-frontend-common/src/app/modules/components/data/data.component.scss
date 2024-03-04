@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+label,
+div {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+ul {
+  margin: 0;
+  padding: 0 0 0 10px;
+  list-style-position: inside;
+}
+
+li {
+  overflow-wrap: anywhere;
+}

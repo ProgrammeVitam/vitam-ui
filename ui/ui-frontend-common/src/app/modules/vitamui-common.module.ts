@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -46,6 +46,7 @@ import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
 import { ArchiveModule } from './archive/archive.module';
 import { AuthService } from './auth.service';
+import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
@@ -55,6 +56,7 @@ import { CommonProgressBarModule } from './components/common-progress-bar/common
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
+import { DataModule } from './components/data/data.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { FooterModule } from './components/footer/footer.module';
@@ -141,7 +143,9 @@ export function startupServiceFactory(startupService: StartupService, authServic
 @NgModule({
   declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
+    AccordionModule,
     AccountModule,
+    ApplicationCardModule,
     ApplicationSelectContentModule,
     ArchiveModule,
     AutocompletePositionDirectiveModule,
@@ -151,6 +155,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CommonProgressBarModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
+    DataModule,
     DownloadSnackBarModule,
     DragAndDropModule,
     EditableFieldModule,
@@ -183,40 +188,32 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SubrogationModule,
     TooltipModule,
     TranslateModule,
+    UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
+    VitamUICustomerSelectModule,
+    VitamUIDisplayNodeModule,
+    VitamUIDurationInputModule,
+    VitamUIFieldErrorModule,
+    VitamUIInputModule,
+    VitamUIListInputModule,
+    VitamUIMenuTileModule,
+    VitamUISnackBarModule,
+    VitamUITenantSelectModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
     VitamuiCommonSelectModule,
     VitamuiContentBreadcrumbModule,
-    VitamUICustomerSelectModule,
-    VitamUIDisplayNodeModule,
     VitamuiDragDropFileModule,
-    VitamUIDurationInputModule,
     VitamuiFacetModule,
-    VitamUIFieldErrorModule,
-    VitamUIInputModule,
-    VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamUIMenuTileModule,
     VitamuiSidenavHeaderModule,
-    TranslateModule,
-    ResizeSidebarModule,
-    AutocompletePositionDirectiveModule,
-    LogbookOperationFacetModule,
-    VitamuiFacetModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    ArchiveModule,
-    UserAlertCardModule,
-    ApplicationCardModule,
-    VitamUISnackBarModule,
-    VitamUITenantSelectModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [
+    AccordionModule,
     AccountModule,
+    ApplicationCardModule,
     ApplicationSelectContentModule,
     ArchiveModule,
     AutocompletePositionDirectiveModule,
@@ -226,6 +223,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CommonProgressBarModule,
     CommonTooltipModule,
     ConfirmDialogModule,
+    DataModule,
     DragAndDropModule,
     EditableFieldModule,
     EllipsisDirectiveModule,
@@ -253,30 +251,28 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SubrogationModule,
     TooltipModule,
     TranslateModule,
+    UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
+    VitamUICustomerSelectModule,
+    VitamUIDisplayNodeModule,
+    VitamUIDurationInputModule,
+    VitamUIFieldErrorModule,
+    VitamUIInputModule,
+    VitamUIListInputModule,
+    VitamUIMenuTileModule,
+    VitamUITenantSelectModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
     VitamuiCommonSelectModule,
     VitamuiContentBreadcrumbModule,
-    VitamUICustomerSelectModule,
-    VitamUIDisplayNodeModule,
     VitamuiDragDropFileModule,
-    VitamUIDurationInputModule,
     VitamuiFacetModule,
-    VitamUIFieldErrorModule,
-    VitamUIInputModule,
     VitamuiIntervalDatePickerComponent,
-    VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamUIMenuTileModule,
     VitamuiMultiInputsModule,
-    UserAlertCardModule,
     VitamuiSidenavHeaderModule,
-    VitamUITenantSelectModule,
     VitamuiTreeNodeModule,
-    ArchiveModule,
-    ApplicationCardModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

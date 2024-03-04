@@ -10,12 +10,15 @@ import { map, mergeMap } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
+  getProjectIcon,
+  getProjectWorkflow,
   LegalStatus,
   PageRequest,
   PaginatedResponse,
   Project,
   Transaction,
   TransactionStatus,
+  Workflow,
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
@@ -41,6 +44,10 @@ export class ProjectPreviewComponent implements OnInit {
 
   acquisitionInformationsList: string[];
   legalStatusList: LegalStatus[] = [];
+
+  protected readonly Workflow = Workflow;
+  getProjectIcon = getProjectIcon;
+  getProjectWorkflow = getProjectWorkflow;
 
   @ViewChild('confirmEditProject', { static: true }) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
 

@@ -3127,7 +3127,9 @@
     "STP_IMPORT_MANAGEMENT_CONTRACT.VERSION_RETENTION_POLICY_ERROR.KO": "Échec de l'import du contrat de gestion : politique de conservation de versions invalide",
     "STP_IMPORT_MANAGEMENT_CONTRACT.WARNING": "Avertissement lors du processus d'import du contrat de gestion",
     "STP_IMPORT_MANAGEMENT_CONTRACT": "Processus d'import du contrat de gestion",
+    "STP_IMPORT_ONTOLOGIES_INCOMPATIBLE_TYPES.KO": "Le type détaillé n'est pas compatible avec le type",
     "STP_IMPORT_ONTOLOGIES_NOT_AUTHORIZED_FOR_TENANT.KO": "Échec du processus de mise à jour des ontologies : la mise à jour n'est pas autorisée sur le tenant.",
+    "STP_IMPORT_ONTOLOGIES_STRING_SIZE_FORBIDDEN.KO": "L'attribut StringSize n'est pas autorisé pour ce type détaillé",
     "STP_IMPORT_ONTOLOGIES_UPDATE_INVALID_TYPE.KO": "Échec du processus de mise à jour des ontologies : au moins une valeur ne correspond pas aux valeurs attendues.",
     "STP_IMPORT_PRESERVATION_SCENARIO.FATAL": "Erreur technique lors du processus d'import du référentiel des scénarios de préservation",
     "STP_IMPORT_PRESERVATION_SCENARIO.KO": "Échec du processus d'import du référentiel des scénarios de préservation",
@@ -4589,26 +4591,43 @@
       "WRONG_FORMAT": "Mauvais format de règle"
     },
     "PROJECT_UNIT_PREVIEW": {
-      "TABS": {
-        "DESCRIPTION": "Description",
-        "CONTEXT": "Contexte",
-        "ATTACHEMENT": "Rattachement"
-      },
       "ACTIONS": {
         "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
         "EDIT_PROJECT": "Modifier le projet de versement",
         "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Accéder aux archives"
       },
+      "ATTACHMENT": {
+        "FIX": {
+          "TITLE": "Rattachement fixe",
+          "ATTACHMENT_ID": "Identifiant technique de la position de rattachement"
+        },
+        "RULES": {
+          "TITLE": "Paramétrage des règles de rattachement"
+        },
+        "NO_EXISTANT_ATTACHMENT": "Aucun rattachement"
+      },
+      "CONFIGURATION": {
+        "AUTO_INGEST": "Gestion automatique des transactions",
+        "ENABLED": "Activée",
+        "DISABLED": "Non activée"
+      },
       "FIELDS": {
         "NAME": "Intitulé",
         "ID": "Identifiant technique du projet de versement",
         "DESCRIPTION": "Description",
         "SP_ID": "Service producteur",
-        "SV_ID": "Service versant",
-        "UNIT_UPS_ID": "L'identifiant technique de la position de rattachement",
-        "UNIT_UPS_LABEL": "L'intitulé de la position de rattachement",
-        "NO_EXSISTANT_ATTACHEMENT": "Aucun rattachement"
+        "SV_ID": "Service versant"
+      },
+      "TABS": {
+        "DESCRIPTION": "Description",
+        "CONTEXT": "Contexte",
+        "ATTACHEMENT": "Rattachement",
+        "CONFIGURATION": "Configuration"
+      },
+      "WORKFLOW": {
+        "MANUAL": "Versement manuel",
+        "FLOW": "Flux applicatif"
       }
     },
     "ARCHIVE_UNIT": {

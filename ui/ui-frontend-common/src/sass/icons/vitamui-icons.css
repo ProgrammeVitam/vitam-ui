@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?5al7az');
-  src:  url('fonts/vitamui-icon.eot?5al7az#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?5al7az') format('truetype'),
-    url('fonts/vitamui-icon.woff?5al7az') format('woff'),
-    url('fonts/vitamui-icon.svg?5al7az#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?60fmbd');
+  src:  url('fonts/vitamui-icon.eot?60fmbd#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?60fmbd') format('truetype'),
+    url('fonts/vitamui-icon.woff?60fmbd') format('woff'),
+    url('fonts/vitamui-icon.svg?60fmbd#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,40 +25,12 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.vitamui-icon-ontologie:before {
+.vitamui-icon-ic40-flux-manuel:before {
   content: "\e964";
   color: #757575;
 }
-.vitamui-icon-fichiers:before {
+.vitamui-icon-ic40-flux-industriel:before {
   content: "\e965";
-  color: #757575;
-}
-.vitamui-icon-agent:before {
-  content: "\e966";
-  color: #757575;
-}
-.vitamui-icon-releve:before {
-  content: "\e967";
-  color: #757575;
-}
-.vitamui-icon-dsl:before {
-  content: "\e968";
-  color: #757575;
-}
-.vitamui-icon-operation:before {
-  content: "\e969";
-  color: #757575;
-}
-.vitamui-icon-contrat:before {
-  content: "\e96a";
-  color: #757575;
-}
-.vitamui-icon-securite:before {
-  content: "\e96b";
-  color: #757575;
-}
-.vitamui-icon-audit:before {
-  content: "\e96c";
   color: #757575;
 }
 .vitamui-icon-trash:before {

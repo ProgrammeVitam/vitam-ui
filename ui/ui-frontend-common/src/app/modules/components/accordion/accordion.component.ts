@@ -34,37 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { DisplayObject } from '../../models';
-import { DateDisplayService } from '../../services/date-display.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'vitamui-common-primitive',
-  templateUrl: './primitive.component.html',
-  styleUrls: ['./primitive.component.scss'],
+  selector: 'vitamui-common-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrls: ['./accordion.component.scss'],
 })
-export class PrimitiveComponent implements OnInit {
-  @Input() displayObject: DisplayObject;
+export class AccordionComponent {
+  @Input()
+  opened = false;
 
-  value: string;
+  constructor() {}
 
-  constructor(
-    private dateDisplayService: DateDisplayService,
-    private datePipe: DatePipe,
-  ) {}
-
-  ngOnInit(): void {
-    const uiComponent = this.displayObject.displayRule?.ui?.component;
-
-    switch (uiComponent) {
-      case 'datepicker':
-      case 'datetime':
-        const dateFormat = this.dateDisplayService.getFormat(uiComponent);
-        this.value = this.datePipe.transform(this.displayObject.value, dateFormat);
-        break;
-      default:
-        this.value = this.displayObject.value;
-    }
+  toggle(): void {
+    this.opened = !this.opened;
   }
 }

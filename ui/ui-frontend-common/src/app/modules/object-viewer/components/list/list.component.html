@@ -6,14 +6,9 @@
   </ng-container>
 </ng-container>
 
-<div *ngIf="isPrimitiveList && displayObject.children.length === 1" class="field primitive">
-  <label>{{ displayObject.displayRule.ui.label | empty }}</label>
-  <div>{{ displayObject.children[0].value | empty }}</div>
-</div>
-
-<div *ngIf="isPrimitiveList && displayObject.children.length > 1" class="field primitive">
-  <label>{{ displayObject.displayRule.ui.label | empty }}</label>
-  <ul>
-    <li *ngFor="let item of displayObject.children">{{ item.value }}</li>
-  </ul>
-</div>
+<vitamui-common-data
+  *ngIf="isPrimitiveList"
+  [label]="displayObject.displayRule.ui.label"
+  [value]="childrenValues.length === 1 ? childrenValues[0] : childrenValues"
+>
+</vitamui-common-data>
