@@ -93,6 +93,7 @@ describe('unit-object-helper tests', () => {
       '#opi': null,
       '#storage': null,
       DataObjectProfile: null,
+      PersistentIdentifier: [],
     };
   }
 });
