@@ -85,7 +85,7 @@
       </div>
     </cdk-step>
 
-    <cdk-step>
+    <cdk-step *ngIf="!form.value.fullAccess">
       <div class="content mt-3">
         <div class="text medium light">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.TITLE' | translate }}</div>
         <div class="text large bold mb-3">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.SUBTITLE' | translate }}</div>

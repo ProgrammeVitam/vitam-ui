@@ -163,14 +163,17 @@ describe('SecurityProfileCreateComponent', () => {
     it('should have the right inputs', () => {
       expect(page.control('name')).toBeTruthy();
       expect(page.control('fullAccess')).toBeTruthy();
-      expect(page.control('permissions')).toBeTruthy();
     });
 
     it('should have a submit button', () => {
-      expect(page.submit).toBeTruthy();
-      expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedSecurityProfile);
+      component.form.setValue({
+        name: 'Name',
+        identifier: 'identifier',
+        fullAccess: false,
+        permissions: [''],
+      });
       fixture.detectChanges();
+      expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
   });
