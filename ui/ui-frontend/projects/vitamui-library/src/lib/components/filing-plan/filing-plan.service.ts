@@ -66,46 +66,20 @@ export class FilingPlanService {
     return this._pending > 0;
   }
 
-  private cache: {
-    [id: string]: {
-      value: Observable<Unit[]>;
-    };
-  } = {};
-
-  getCachedValue(tenantId: number, accessContractId: string): Observable<Unit[]> {
-    const item = this.cache[this.getCachedKey(tenantId, accessContractId)];
-    if (!item) {
-      return null;
-    }
-    return item.value;
-  }
-
-  private setCachedValue(value: Observable<Unit[]>, tenantId: number, accessContractId: string): void {
-    this.cache[this.getCachedKey(tenantId, accessContractId)] = { value };
-  }
-
-  private getCachedKey(tenantId: number, accessContractId: string): string {
-    return `${tenantId}_${accessContractId}`;
-  }
-
   public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
-    let units$ = this.getCachedValue(tenantIdentifier, accessContractId);
-    if (!units$) {
-      this._pending++;
-      const headers = new HttpHeaders({
-        'X-Tenant-Id': tenantIdentifier.toString(),
-        'X-Access-Contract-Id': accessContractId,
-      });
-      units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
-        map((response) => response.$results),
-        tap(() => this._pending--),
-        shareReplay(1),
-      );
-      this.setCachedValue(units$, tenantIdentifier, accessContractId);
-    }
+    this._pending++;
+    const headers = new HttpHeaders({
+      'X-Tenant-Id': tenantIdentifier.toString(),
+      'X-Access-Contract-Id': accessContractId,
+    });
+    const units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
+      catchError(() => {
+        return of({ $hits: null, $results: [] });
+      }),
+      map((response) => response.$results),
+      tap(() => this._pending--),
+      shareReplay(1),
+    );
     return units$.pipe(
       map((results) => {
         return this.getNestedChildren(results, idPrefix);
@@ -146,7 +120,6 @@ export class FilingPlanService {
           vitamId: unit['#id'],
           parents: parentNode ? [parentNode] : [],
           checked: false,
-          // OriginatingAgencyArchiveUnitIdentifier: [unit.OriginatingAgencyArchiveUnitIdentifier]
         };
         outNode.children = this.getNestedChildren(arr, idPrefix, outNode);
         out.push(outNode);
