@@ -16,12 +16,13 @@
       ></app-access-contract-information-tab>
     </mat-tab>
 
-    <mat-tab [label]="'ACCESS_CONTRACT.TAB.USAGE.TITLE' | translate">
+    <mat-tab [label]="'ACCESS_CONTRACT.TAB.USAGE.TITLE' | translate" #matTabUsage>
       <app-access-contract-usage-and-services-tab
         #usageTab
         [accessContract]="accessContract"
         (isFormValid)="formTabValidityChange($event, 1)"
         (updated)="updatedChange($event, 1)"
+        [isTabActive]="matTabUsage.isActive"
       >
       </app-access-contract-usage-and-services-tab>
     </mat-tab>

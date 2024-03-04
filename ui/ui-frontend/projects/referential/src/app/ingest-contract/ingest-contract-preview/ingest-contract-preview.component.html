@@ -19,10 +19,11 @@
       </app-ingest-contract-information-tab>
     </mat-tab>
 
-    <mat-tab [label]="'INGEST_CONTRACT.TAB.FORMAT.TITLE' | translate" class="no-padding">
+    <mat-tab #matTabFormat [label]="'INGEST_CONTRACT.TAB.FORMAT.TITLE' | translate">
       <app-ingest-contract-format-tab
         [ingestContract]="ingestContract"
         [tenantIdentifier]="tenantIdentifier"
+        [isTabActive]="matTabFormat.isActive"
         (updated)="updatedChange($event, 1)"
         (isFormValid)="formTabValidityChange($event, 1)"
         [readOnly]="readOnly"
@@ -31,10 +32,11 @@
       </app-ingest-contract-format-tab>
     </mat-tab>
 
-    <mat-tab [label]="'INGEST_CONTRACT.TAB.OBJECTS.TITLE' | translate" class="no-padding">
+    <mat-tab #matTabObject [label]="'INGEST_CONTRACT.TAB.OBJECTS.TITLE' | translate">
       <app-ingest-contract-object-tab
         [readOnly]="readOnly"
         [ingestContract]="ingestContract"
+        [isTabActive]="matTabObject.isActive"
         (updated)="updatedChange($event, 2)"
         (isFormValid)="formTabValidityChange($event, 2)"
         #objectsTab

@@ -62,6 +62,12 @@ export class IngestContractFormatTabComponent implements OnInit {
     return this._ingestContract;
   }
 
+  @Input() set isTabActive(isActive: boolean) {
+    if (isActive) {
+      this.resetForm(this.ingestContract);
+    }
+  }
+
   @Input() set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
       this.form.disable({ emitEvent: false });

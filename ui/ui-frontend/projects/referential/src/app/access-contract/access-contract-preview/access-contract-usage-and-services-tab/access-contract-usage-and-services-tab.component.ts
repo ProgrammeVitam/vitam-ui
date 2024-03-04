@@ -51,18 +51,23 @@ import { AccessContractService } from '../../access-contract.service';
 export class AccessContractUsageAndServicesTabComponent {
   @Input() set accessContract(accessContract: AccessContract) {
     this.setAccessContract(accessContract);
-    this.resetForm(this.accessContract);
   }
 
   get accessContract(): AccessContract {
     return this._accessContract;
   }
 
+  @Input() set isTabActive(isActive: boolean) {
+    if (isActive) {
+      this.resetForm(this.accessContract);
+    }
+  }
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public form: FormGroup;
-  public submited = false;
+  public submitted = false;
   public originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
   public usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
@@ -101,16 +106,16 @@ export class AccessContractUsageAndServicesTabComponent {
   }
 
   public onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     this.prepareSubmit().subscribe(
       () => {
         this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submitted = false;
           this.accessContract = response;
         });
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }

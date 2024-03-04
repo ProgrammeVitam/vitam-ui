@@ -80,6 +80,16 @@ export class IngestContractObjectTabComponent implements OnInit {
     this.updated.emit(false);
   }
 
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
+
+  @Input() set isTabActive(isActive: boolean) {
+    if (isActive) {
+      this.resetForm(this.ingestContract);
+    }
+  }
+
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
