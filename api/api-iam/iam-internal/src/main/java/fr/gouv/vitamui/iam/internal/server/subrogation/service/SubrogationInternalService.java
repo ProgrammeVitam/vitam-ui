@@ -36,21 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.subrogation.service;
 
-import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -59,6 +44,9 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -80,11 +68,21 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the subrogations.
- *
- *
  */
 @Getter
 @Setter
@@ -124,9 +122,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
 
     @Autowired
     public SubrogationInternalService(final SequenceGeneratorService sequenceGeneratorService, final SubrogationRepository subrogationRepository,
-            final UserRepository userRepository, final UserInternalService userInternalService, final GroupInternalService groupInternalService,
-            final GroupRepository groupRepository, final ProfileRepository profilRepository, final InternalSecurityService internalSecurityService,
-            final CustomerRepository customerRepository, final SubrogationConverter subrogationConverter, final IamLogbookService iamLogbookService) {
+        final UserRepository userRepository, final UserInternalService userInternalService, final GroupInternalService groupInternalService,
+        final GroupRepository groupRepository, final ProfileRepository profilRepository, final InternalSecurityService internalSecurityService,
+        final CustomerRepository customerRepository, final SubrogationConverter subrogationConverter, final IamLogbookService iamLogbookService) {
         super(sequenceGeneratorService);
         this.subrogationRepository = subrogationRepository;
         this.userRepository = userRepository;
@@ -171,8 +169,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         final int ttlInMinutes;
         if (dto.getStatus().equals(SubrogationStatusEnum.ACCEPTED)) {
             ttlInMinutes = genericUsersSubrogationTtl;
-        }
-        else {
+        } else {
             ttlInMinutes = subrogationTtl;
         }
         final OffsetDateTime nowPlusXMinutes = OffsetDateTime.now().plusMinutes(ttlInMinutes);
@@ -198,23 +195,33 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     private void checkUsers(final SubrogationDto dto) {
-
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
-        final User surrogate = userRepository.findByEmail(emailSurrogate);
-        final User superUser = userRepository.findByEmail(emailSuperUser);
-        Assert.isTrue(surrogate != null, "No surrogate found with email : " + emailSurrogate);
-        dto.setSurrogateCustomerId(surrogate.getCustomerId());
+        final List<User> surrogateUsers = userRepository.findByEmail(emailSurrogate);
+        if (surrogateUsers.isEmpty()) {
+            throw new IllegalArgumentException("No surrogate found with email : " + emailSurrogate);
+        }
+        if (surrogateUsers.size() > 1) {
+            throw new NotImplementedException("Found multiple surrogateUsers with email " + emailSurrogate);
+        }
+        User surrogate = surrogateUsers.get(0);
 
-        final Optional<Customer> optCustomer = customerRepository.findById(surrogate.getCustomerId());
-        final Customer surrogateCustomer = optCustomer.orElseThrow(() -> new ApplicationServerException("Unable to check users : customer not found"));
+        final List<User> superUsers = userRepository.findByEmail(emailSuperUser);
+        if (superUsers.isEmpty()) {
+            throw new IllegalArgumentException("No superUser found with email : " + emailSuperUser);
+        }
+        if (superUsers.size() > 1) {
+            throw new NotImplementedException("Found multiple surrogateUsers with email " + emailSurrogate);
+        }
+        User superUser = superUsers.get(0);
 
         Assert.isTrue(surrogate.isSubrogeable(), " User is not subrogeable");
+        dto.setSurrogateCustomerId(surrogate.getCustomerId());
+        final Optional<Customer> optCustomer = customerRepository.findById(surrogate.getCustomerId());
+        final Customer surrogateCustomer = optCustomer.orElseThrow(() -> new ApplicationServerException("Unable to check users : customer not found"));
         Assert.isTrue(surrogateCustomer.isSubrogeable(), " Customer is not subrogeable");
         Assert.isTrue(surrogate.getStatus().equals(UserStatusEnum.ENABLED), "User status is not enabled");
-        Assert.isTrue(superUser != null, "No superUser found with email : " + emailSuperUser);
         dto.setSuperUserCustomerId(superUser.getCustomerId());
-
         Assert.isTrue(!surrogate.getId().equals(superUser.getId()), "Users cannot subrogate itself, email : " + emailSuperUser);
         final String emailCurrentUser = internalSecurityService.getUser().getEmail();
         Assert.isTrue(StringUtils.equals(emailSuperUser, emailCurrentUser), "Only super user can create subrogation");
@@ -244,7 +251,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     public SubrogationDto accept(final String id) {
         final Optional<Subrogation> optSubrogation = subrogationRepository.findById(id);
         final Subrogation subro = optSubrogation
-                .orElseThrow(() -> new IllegalArgumentException("Unable to accept subrogation: no subrogation found with id=" + id));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to accept subrogation: no subrogation found with id=" + id));
         final String emailCurrentUser = internalSecurityService.getUser().getEmail();
 
         Assert.isTrue(subro.getSurrogate().equals(emailCurrentUser), "Users " + emailCurrentUser + " can't accept subrogation of " + subro.getSurrogate());
@@ -261,12 +268,11 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     public void decline(final String id) {
         final Optional<Subrogation> optSubrogation = subrogationRepository.findById(id);
         final Subrogation subro = optSubrogation
-                .orElseThrow(() -> new IllegalArgumentException("Unable to decline subrogation: no subrogation found with id=" + id));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to decline subrogation: no subrogation found with id=" + id));
 
         if (subro.getStatus().equals(SubrogationStatusEnum.ACCEPTED)) {
             iamLogbookService.subrogation(subro, EventType.EXT_VITAMUI_STOP_SURROGATE);
-        }
-        else {
+        } else {
             iamLogbookService.subrogation(subro, EventType.EXT_VITAMUI_DECLINE_SURROGATE);
         }
         final String emailCurrentUser = internalSecurityService.getUser().getEmail();
@@ -285,11 +291,12 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     public PaginatedValuesDto<UserDto> getUsers(final Integer page, final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) {
+        final Optional<DirectionDto> direction) {
         return userInternalService.getAllPaginatedByPassSecurity(page, size, criteria, orderBy, direction);
     }
 
     public GroupDto getGroupById(final String id, final Optional<String> embedded) {
         return groupInternalService.getOneByPassSecurity(id, embedded);
     }
+
 }

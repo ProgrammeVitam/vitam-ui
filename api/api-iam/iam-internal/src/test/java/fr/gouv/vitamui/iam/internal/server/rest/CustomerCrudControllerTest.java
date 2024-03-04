@@ -1,7 +1,14 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -43,19 +50,29 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -155,7 +172,7 @@ public final class CustomerCrudControllerTest {
         MockitoAnnotations.initMocks(this);
         customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
         internalCustomerService = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService, userInternalService,
-                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+            internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
         controller = new CustomerInternalController(internalCustomerService);
         initCustomerService.setOwnerConverter(ownerConverter);
         initCustomerService.setIdpConverter(identityProviderConverter);
@@ -247,13 +264,10 @@ public final class CustomerCrudControllerTest {
         customerDto.setOwners(null);
 
         prepareServices();
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException ex) {
-            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.",
-                ex.getMessage());
-        }
+
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create customer " + customerDto.getName() + ": a customer must have owners.");
     }
 
     @Test
@@ -262,13 +276,10 @@ public final class CustomerCrudControllerTest {
         customerDto.setOwners(Collections.emptyList());
 
         prepareServices();
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException ex) {
-            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.",
-                ex.getMessage());
-        }
+
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create customer " + customerDto.getName() + ": a customer must have owners.");
     }
 
     @Test
@@ -276,12 +287,9 @@ public final class CustomerCrudControllerTest {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId("customerId");
 
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals("The DTO identifier must be null for creation.", e.getMessage());
-        }
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("The DTO identifier must be null for creation.");
     }
 
     @Test
@@ -292,73 +300,72 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.of(buildCustomer()));
 
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Integrity constraint error on the customer [Undefined] : the new code is already used by another customer.",
-                e.getMessage());
-        }
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Integrity constraint error on the customer [Undefined] : the new code is already used by another customer.");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnIdpError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
         when(identityProviderRepository.save(any())).thenThrow(new InternalServerException("IDP Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("IDP Creation error");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnOwnerError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
         when(ownerRepository.save(any())).thenThrow(new InternalServerException("Owner Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Owner Creation error");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnTenantError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
         when(tenantRepository.save(any())).thenThrow(new InternalServerException("Tenant Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Tenant Creation error");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnGroupError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
         when(groupRepository.save(any())).thenThrow(new InternalServerException("Group Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Group Creation error");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnProfileError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
         when(profileRepository.save(any())).thenThrow(new InternalServerException("Profile Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("Profile Creation error");
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRollbackOnUserError() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -366,8 +373,9 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(internalUserService.create(any())).thenThrow(new InternalServerException("User Creation error"));
 
-        controller.create(buildCustomerData(customerDto));
-        fail("should fail");
+        Assertions.assertThatThrownBy(() -> controller.create(buildCustomerData(customerDto)))
+            .isInstanceOf(InternalServerException.class)
+            .hasMessage("User Creation error");
     }
 
     private CustomerCreationFormData buildCustomerData(final CustomerDto customerDto) {
@@ -387,15 +395,10 @@ public final class CustomerCrudControllerTest {
     @Test
     public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws Exception {
         final CustomerDto customerDto = buildCustomerDto();
-
-        try {
-            prepareServices();
-
-            controller.update(customerDto.getId() + "_BAD", customerDto);
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
-        }
+        prepareServices();
+        Assertions.assertThatThrownBy(() -> controller.update(customerDto.getId() + "_BAD", customerDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("The DTO identifier must match the path identifier for update.");
     }
 
     @Test
@@ -406,19 +409,12 @@ public final class CustomerCrudControllerTest {
 
         final Customer customer = buildCustomer();
         customer.setCode(customerDto.getCode() + "_");
-
-        try {
-            prepareServices();
-            when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.of(conlictedCustomerDto));
-            when(customerRepository.findById(customerDto.getId())).thenReturn(Optional.of(customer));
-
-            controller.update(customerDto.getId(), customerDto);
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Integrity constraint error on the customer customerId : the new code is already used by another customer.",
-                e.getMessage());
-        }
+        prepareServices();
+        when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.of(conlictedCustomerDto));
+        when(customerRepository.findById(customerDto.getId())).thenReturn(Optional.of(customer));
+        Assertions.assertThatThrownBy(() -> controller.update(customerDto.getId(), customerDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Integrity constraint error on the customer customerId : the new code is already used by another customer.");
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -466,25 +462,18 @@ public final class CustomerCrudControllerTest {
                 Optional.of(DirectionDto.ASC));
         Assert.assertNotNull("Customer should be created.", result);
     }
+
     @Test
-    public void testCreationFailsAsTheDomainMailIsAlreadyUsed() throws InvalidParseOperationException,
+    public void create_should_not_fail_when_email_already_exist() throws InvalidParseOperationException,
         PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId(null);
-
         prepareServices();
-        when(customerRepository.findByEmailDomainsIgnoreCase(anyString()))
-            .thenReturn(Optional.of(buildCustomer()));
+        when(customerRepository.findByEmailDomainsIgnoreCase(anyString())).thenReturn(Optional.of(buildCustomer()));
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
 
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
-                    customerDto.getDefaultEmailDomain(),
-                e.getMessage());
-        }
+        final CustomerDto createdCustomer = controller.create(buildCustomerData(customerDto));
+        Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
     }
 
     private CustomerDto buildFullCustomerDto() {
@@ -532,4 +521,5 @@ public final class CustomerCrudControllerTest {
     private ProfileDto buildProfileDto() {
         return IamServerUtilsTest.buildProfileDto();
     }
+
 }

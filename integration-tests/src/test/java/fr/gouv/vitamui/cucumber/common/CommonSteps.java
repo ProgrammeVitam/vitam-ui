@@ -92,7 +92,7 @@ public abstract class CommonSteps extends BaseIntegration {
 
         final String adminEmail = "admin@" + customer.getDefaultEmailDomain();
         final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         adminEmail, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         final QueryDto criteria = QueryDto.criteria("name", ownerName, CriterionOperator.CONTAINSIGNORECASE);

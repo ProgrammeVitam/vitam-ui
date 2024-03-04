@@ -136,8 +136,8 @@ public final class UserInternalServiceTest {
         applicationInternalService = mock(ApplicationInternalService.class);
 
         internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, internalGroupService, internalProfileService,
-                userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
-                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService,  null);
+            userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
+            mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService, null);
 
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -192,7 +192,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -220,8 +220,8 @@ public final class UserInternalServiceTest {
     public void testGetUsersGenericByCustomer() {
         final String customerId = "customerId";
         when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
+            .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(buildPageable(buildUser("id")));
 
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -238,7 +238,7 @@ public final class UserInternalServiceTest {
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
         final PaginatedValuesDto<UserDto> subrogateUsers =
-                internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
+            internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
         assertThat(subrogateUsers.getValues()).isNotEmpty();
         assertThat(subrogateUsers.getValues()).hasSize(1);
     }
@@ -247,10 +247,10 @@ public final class UserInternalServiceTest {
     public void testGetResultsUsersGenericByCustomer() {
         final String customerId = "customerId";
         when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
+            .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(buildPageable(buildUser("id")));
         when(userRepository.aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
+            .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
 
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -283,8 +283,8 @@ public final class UserInternalServiceTest {
     @Test
     public void testGetUsersGenericByCustomerNotSubreogable() {
         when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
+            .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(buildPageable(buildUser("id")));
         final String customerId = "customerId";
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -375,7 +375,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -431,7 +431,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -477,7 +477,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -546,7 +546,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -650,7 +650,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmail(email)).thenReturn(user);
+        when(userRepository.findByEmail(email)).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -702,7 +702,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmail(any())).thenReturn(user);
+        when(userRepository.findByEmail(any())).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -796,7 +796,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmail(email)).thenReturn(user);
+        when(userRepository.findByEmail(email)).thenReturn(List.of(user));
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -856,7 +856,7 @@ public final class UserInternalServiceTest {
         final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
+            .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
         verifyNoInteractions(applicationInternalService);
         verifyNoInteractions(userRepository);
     }
@@ -897,7 +897,7 @@ public final class UserInternalServiceTest {
         final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "applicationWithoutPermission")));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
+            .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
         verify(userRepository).findById(user.getId());
         verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
         verifyNoMoreInteractions(applicationInternalService);
@@ -934,7 +934,7 @@ public final class UserInternalServiceTest {
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
     }
 
-    private AlertAnalytics buildAlert(final String mockedData){
+    private AlertAnalytics buildAlert(final String mockedData) {
         var alert = new AlertAnalytics();
         alert.setType(mockedData);
         alert.setAction(mockedData);
@@ -951,11 +951,11 @@ public final class UserInternalServiceTest {
     public void patchAlertAnalyticsOk() {
         // Given
         internalUserService = spy(internalUserService);
-        final var firstAlert= buildAlert("firstAlert");
-        final var secondAlert= buildAlert("secondAlert");
+        final var firstAlert = buildAlert("firstAlert");
+        final var secondAlert = buildAlert("secondAlert");
         final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
         final User user = IamServerUtilsTest.buildUser(authUserDto.getId(), "", "");
-        final var listAlerts= new ArrayList<AlertAnalytics>();
+        final var listAlerts = new ArrayList<AlertAnalytics>();
 
         listAlerts.add(firstAlert);
         listAlerts.add(secondAlert);

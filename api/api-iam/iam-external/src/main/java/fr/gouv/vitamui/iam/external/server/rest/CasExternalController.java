@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -70,8 +71,6 @@ import java.util.Optional;
 
 /**
  * The controller for CAS operations.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
@@ -108,16 +107,16 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
+    public List<? extends UserDto> getUserByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
         ParameterChecker.checkParameter("The email is mandatory : ", email);
         return casService.getUserByEmail(email, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
+    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = {"email", "idp"})
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUser(@RequestParam final String email, @RequestParam final String idp,
-            @RequestParam final Optional<String> userIdentifier, @RequestParam final Optional<String> embedded) {
+        @RequestParam final Optional<String> userIdentifier, @RequestParam final Optional<String> embedded) {
         LOGGER.debug("getUser - email : {}, idp : {}, user identifier : {}, embedded: {}", email, idp, userIdentifier, embedded);
         return casService.getUser(email, idp, userIdentifier, embedded);
     }
@@ -125,7 +124,7 @@ public class CasExternalController {
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUserById(@RequestParam final String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
+        PreconditionFailedException {
         LOGGER.debug("getUserById: {}", id);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
@@ -159,4 +158,5 @@ public class CasExternalController {
         ParameterChecker.checkParameter("The authToken is mandatory : ", authToken);
         casService.logout(authToken, superUser);
     }
+
 }

@@ -37,16 +37,16 @@
 package fr.gouv.vitamui.iam.common.utils;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Helper to work with identity providers.
- *
- *
  */
 public class IdentityProviderHelper {
 
@@ -59,19 +59,39 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers, final String identifier) {
+
+    public List<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers, final String identifier) {
+        List<IdentityProviderDto> list = new ArrayList<>();
+        List<IdentityProviderDto> list2 = providers.stream()
+            .filter(provider -> provider.getPatterns().stream().anyMatch(pattern -> Pattern.compile(pattern).matcher(identifier).matches()))
+            .collect(Collectors.toList());
         for (final IdentityProviderDto provider : providers) {
             for (final String pattern : provider.getPatterns()) {
                 if (Pattern.compile(pattern).matcher(identifier).matches()) {
-                    return Optional.of(provider);
+                    list.add(provider);
                 }
             }
         }
-        return Optional.empty();
+        return list;
+    }
+
+    public IdentityProviderDto findByUserIdentifierAndCustomerId(final List<IdentityProviderDto> providers, final String identifier, final String customerId) {
+        List<IdentityProviderDto> list = providers.stream()
+            .filter(provider -> StringUtils.equals(provider.getCustomerId(), customerId))
+            .filter(provider -> provider.getPatterns().stream().anyMatch(pattern -> Pattern.compile(pattern).matcher(identifier).matches()))
+            .collect(Collectors.toList());
+        if (list.size() > 1) {
+            throw new IllegalStateException("Multiple providers found for one organisation and one user...");
+        }
+        if (list.isEmpty()) {
+            throw new IllegalStateException("No providers found for one organisation and one user...");
+        }
+        return list.get(0);
     }
 
     public boolean identifierMatchProviderPattern(final List<IdentityProviderDto> providers, final String identifier) {
-        final Optional<IdentityProviderDto> optProvider = findByUserIdentifier(providers, identifier);
-        return optProvider.isPresent() && optProvider.get().getInternal() == Boolean.TRUE;
+        List<IdentityProviderDto> providersMatching = findByUserIdentifier(providers, identifier);
+        return providersMatching.stream().anyMatch(IdentityProviderDto::getInternal);
     }
+
 }

@@ -2,20 +2,26 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title th:text="#{screen.accountdisabled.heading}">CAS Account Disabled View</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title th:text="#{screen.accountdisabled.heading}">CAS Account Disabled View</title>
 </head>
 
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
-    <div>
-        <h4 th:text="#{screen.accountdisabled.heading}">This account has been disabled.</h4>
-        <p th:text="#{screen.accountdisabled.message}">Please contact the system administrator to regain
-            access.</p>
-    </div>
+<body>
+
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.accountdisabled.heading}">
+    This account has been disabled.
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.accountdisabled.message}">
+    Please contact the system administrator to regain access.
+  </div>
 </div>
-</div>
+
+
 </body>
 </html>

@@ -66,7 +66,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Import({ TestMongoConfig.class })
+@Import({TestMongoConfig.class})
 @ActiveProfiles(value = "test")
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class InitCustomerServiceIntegrationTest {
@@ -317,7 +317,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
             .contains(ROLE_3);
 
-        final User user = userRepository.findByEmail(EMAIl);
+        final User user = userRepository.findByEmail(EMAIl).get(0);
         assertThat(user).isNotNull();
         assertThat(user.getLastname()).isEqualTo(LAST_NAME);
         assertThat(user.getFirstname()).isEqualTo(FIRST_NAME);
@@ -350,4 +350,5 @@ public class InitCustomerServiceIntegrationTest {
         dto.setGdprAlert(false);
         return dto;
     }
+
 }

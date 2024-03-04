@@ -1,32 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Map;
-import java.util.Optional;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -42,12 +20,34 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserEmailInternalService
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link UserInternalController}.
  *
  * Emmanuel Deviller
- *
  */
 public final class UserControllerTest implements InternalCrudControllerTest {
 
@@ -131,13 +131,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         final UserDto userDto = buildUserDto();
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update user " + userDto.getId() + ": mail already exists", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to update user " + userDto.getId() + ": mail already exists");
     }
 
     @Test
@@ -149,13 +145,10 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setCustomerId(UNKNOWN_CUSTOMER_ID);
 
         prepareServices();
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": customer does not exist", e.getMessage());
-        }
+
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create user " + userDto.getEmail() + ": customer does not exist");
     }
 
     @Test
@@ -168,13 +161,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": customer does not exist", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create user " + userDto.getEmail() + ": customer does not exist");
     }
 
     @Test
@@ -184,13 +173,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("The DTO identifier must be null for creation.", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("The DTO identifier must be null for creation.");
     }
 
     @Test
@@ -201,17 +186,13 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": identifier must be null", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create user " + userDto.getEmail() + ": identifier must be null");
     }
 
     @Test
-    public void testCreationFailsAsEmailAlreadyExists() throws InvalidParseOperationException,
+    public void create_should_not_fail_when_email_already_exists() throws InvalidParseOperationException,
         PreconditionFailedException {
 
         final UserDto userDto = buildUserDto();
@@ -219,15 +200,12 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setIdentifier(null);
 
         prepareServices();
-        when(userRepository.findByEmail(any())).thenReturn(buildUser());
+        when(userRepository.findByEmail(any())).thenReturn(List.of(buildUser()));
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": mail already exists", e.getMessage());
-        }
+        userController.create(userDto);
+        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository, times(1)).save(captor.capture());
+        assertThat(captor.getValue()).isEqualTo(userConverter.convertDtoToEntity(userDto));
     }
 
     @Test
@@ -239,13 +217,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": group does not exist", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create user " + userDto.getEmail() + ": group does not exist");
     }
 
     @Test
@@ -255,13 +229,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.create(userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": identifier must be null", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.create(userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to create user " + userDto.getEmail() + ": identifier must be null");
     }
 
     @Override
@@ -287,13 +257,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         prepareServices();
         when(internalCustomerService.getOne(userDto.getCustomerId(), Optional.empty())).thenReturn(null);
 
-        try {
-            userController.update(userDto.getId(), userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update user " + userDto.getId() + ": customerId " + UNKNOWN_CUSTOMER_ID + " is not allowed", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.update(userDto.getId(), userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to update user " + userDto.getId() + ": customerId " + UNKNOWN_CUSTOMER_ID + " is not allowed");
     }
 
     @Test
@@ -303,30 +269,24 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         prepareServices();
         when(internalGroupService.getOne(userDto.getGroupId(), Optional.empty(), Optional.empty())).thenReturn(null);
 
-        try {
-            userController.update(userDto.getId(), userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update user " + userDto.getId() + ": group does not exist", e.getMessage());
-        }
+        assertThatThrownBy(() -> userController.update(userDto.getId(), userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to update user " + userDto.getId() + ": group does not exist");
     }
 
     @Test
-    public void testUpdateFailsAsTheEmailAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
+    public void update_should_not_throw_when_email_already_exists() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setEmail("test" + userDto.getEmail());
 
         prepareServices();
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(buildUser());
+        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(List.of(buildUser()));
 
-        try {
-            userController.update(userDto.getId(), userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update user " + userDto.getId() + ": mail already exists", e.getMessage());
-        }
+        userController.update(userDto.getId(), userDto);
+
+        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository, times(1)).save(captor.capture());
+        assertThat(captor.getValue()).isEqualTo(userConverter.convertDtoToEntity(userDto));
     }
 
     @Override
@@ -335,14 +295,9 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        try {
-            userController.update("BAD ID", userDto);
-            fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update user " + userDto.getId() + ": mail already exists", e.getMessage());
-        }
-
+        assertThatThrownBy(() -> userController.update("BAD ID", userDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to update user " + userDto.getId() + ": mail already exists");
     }
 
     @Test
@@ -355,7 +310,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         UserDto result = userController.patchAnalytics(partialDto);
 
-        ArgumentCaptor<Map<String, Object> > captor = ArgumentCaptor.forClass(Map.class);
+        ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
         verify(userInternalService).patchAnalytics(captor.capture());
         assertThat(captor.getValue()).isEqualTo(partialDto);
         assertThat(result).isEqualTo(userDto);

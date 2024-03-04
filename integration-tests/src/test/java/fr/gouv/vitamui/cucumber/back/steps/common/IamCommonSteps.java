@@ -106,7 +106,7 @@ public class IamCommonSteps extends CommonSteps {
         testContext.savedSubrogationDto = subrogationDto;
         testContext.authUserDto =
                 (AuthUserDto) getCasRestClient(false, new Integer[]{TestConstants.CAS_TENANT_IDENTIFIER}, new String[]{ServicesData.ROLE_CAS_USERS})
-                        .getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), subrogationDto.getSurrogate(),
+                        .getUsersByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), subrogationDto.getSurrogate(),
                                 Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 

@@ -36,19 +36,22 @@
  */
 package fr.gouv.vitamui.iam.internal.server.subrogation.converter;
 
+import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.internal.server.common.exception.MultipleUsersWithSameEmailException;
+import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
+import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.utils.ApiUtils;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
-import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 
 public class SubrogationConverter implements Converter<SubrogationDto, Subrogation> {
 
@@ -71,8 +74,11 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
     }
 
     private String getUserId(final String email) {
-        final User u = userRepository.findByEmail(email);
-        return u.getIdentifier();
+        final List<User> users = userRepository.findByEmail(email);
+        if (users.size() > 1) {
+            throw new NotImplementedException("More than one user with couple email. NOT YET IMPLEMENTED");
+        }
+        return users.get(0).getIdentifier();
     }
 
     @Override
@@ -94,4 +100,5 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
         }
         return dto;
     }
+
 }

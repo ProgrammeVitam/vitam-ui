@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.security;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -56,11 +46,18 @@ import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 
 /**
  * External authentication service
- *
- *
  */
 @Getter
 @Setter
@@ -78,7 +75,7 @@ public class IamAuthentificationService {
     private Integer tokenAdditionalTtl;
 
     public IamAuthentificationService(final UserInternalService internalUserService, final TokenRepository tokenRepository,
-            final SubrogationRepository subrogationRepository) {
+        final SubrogationRepository subrogationRepository) {
         this.internalUserService = internalUserService;
         this.tokenRepository = tokenRepository;
         this.subrogationRepository = subrogationRepository;
@@ -86,6 +83,7 @@ public class IamAuthentificationService {
 
     /**
      * Return the User profile and check security data.
+     *
      * @param httpContext HTTP Context.
      * @return
      */
@@ -101,7 +99,6 @@ public class IamAuthentificationService {
 
     private AuthUserDto getUserByToken(final String userToken) {
         final Token token = tokenRepository.findById(userToken).orElseThrow(() -> new BadCredentialsException("No user found for usertoken: " + userToken));
-
         if (!token.isSurrogation()) {
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
@@ -111,7 +108,6 @@ public class IamAuthentificationService {
                 tokenRepository.save(token);
             }
         }
-
         final UserDto userDto = internalUserService.findUserById(token.getRefId());
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
@@ -119,7 +115,11 @@ public class IamAuthentificationService {
             final Subrogation subrogation = subrogationRepository.findOneBySurrogate(surrogateEmail);
             final String superUserEmail = subrogation.getSuperUser();
             authUserDto.setSuperUser(superUserEmail);
-            final UserDto superUserDto = internalUserService.findUserByEmail(superUserEmail);
+            final List<UserDto> superUsersDto = internalUserService.findUserByEmail(superUserEmail);
+            if (superUsersDto.size() > 1) {
+                throw new IllegalStateException("Multiple superadmin account found !");
+            }
+            UserDto superUserDto = superUsersDto.get(0);
             authUserDto.setSuperUserIdentifier(superUserDto.getIdentifier());
         }
         internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
@@ -131,4 +131,5 @@ public class IamAuthentificationService {
     private LocalDate convertToLocalDate(final Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
+
 }

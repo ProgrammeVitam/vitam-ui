@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.After;
@@ -130,7 +131,7 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(List.of(new User()));
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
@@ -150,7 +151,7 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(List.of(new User()));
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 

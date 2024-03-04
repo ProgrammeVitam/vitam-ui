@@ -1,38 +1,210 @@
-@import 'indigo-pink.css';
-@import 'material-icons.css';
+@import 'fonts';
+@import 'colors';
+@import 'typography';
+@import 'flex';
 
-@import 'theme';
-@import 'font-styles';
-@import 'material-custom';
+@import 'buttons';
 @import 'login';
 @import 'password-recovery';
 @import 'step-email';
 @import 'step-password';
-@import 'mfa-sms';
-@import 'typography';
+@import 'step-password-reset';
 @import 'loader';
 
+// COMMONS
+
 body {
-    margin: 0;
-    font-family: 'Mulish', sans-serif;
-    background-color: var(--vitamui-background);
-    color: var(--vitamui-grey-900);
+  margin: 0;
+  font-family: 'Mulish', sans-serif;
+  background-color: var(--vitamui-background);
+  color: var(--vitamui-grey-900);
+}
+
+div, span, form, i, button {
+  display: flex;
+}
+
+.centered {
+  flex-direction: column;
+  align-items: center;
+
+  .logo {
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 20px;
+
+    img {
+      max-width: 270px;
+      height: 150px;
+    }
+  }
 }
 
 button, textarea, input {
-    font-family: 'Mulish', sans-serif;
+  font-family: 'Mulish', sans-serif;
 }
 
 * {
-    box-sizing: border-box;
-}
-
-.primary {
-    color: var(--vitamui-primary);
+  box-sizing: border-box;
 }
 
 .picto-attention {
   width: 31px;
   height: 28px;
   object-fit: contain;
+}
+
+.vitamui-card {
+  padding: 40px 100px;
+  position: relative;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 820px;
+  border-radius: 20px;
+  background-color: $white;
+  box-shadow: $dp-dark;
+
+  .vitamui-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  strong {
+    font-weight: 500;
+  }
+
+  a {
+    font-size: 15px;
+    color: var(--vitamui-primary);
+    text-decoration: underline;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password],
+  select {
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+    transition: border-color 200ms ease-out;
+    height: 50px;
+    padding: 0 30px;
+    background-color: transparent;
+
+    &:focus {
+      border-color: $greyish-two;
+    }
+
+    &.ng-valid.ng-touched {
+      border-color: $green;
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: $red-500;
+    }
+
+    &[disabled] {
+      opacity: 0.4;
+    }
+  }
+
+  .warning {
+    flex-direction: row;
+    align-items: start;
+    margin: 5px 0 0 15px;
+    min-height: 24px;
+    color: $red-500;
+
+    .element {
+      min-height: 24px;
+      align-items: center;
+    }
+  }
+
+  form {
+    flex-direction: column;
+
+    .form-line {
+      flex-grow: 1;
+      position: relative;
+      margin-top: 10px;
+
+      input, select {
+        font-size: 16px;
+        width: 100%;
+        padding-top: 23px;
+        height: 60px;
+        padding-left: 15px;
+      }
+
+      label {
+        font-family: 'Mulish', sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--vitamui-primary);
+        opacity: 1; /* Firefox */
+        position: absolute;
+        top: 22px;
+        left: 15px;
+        -moz-transition: 0.3s right ease;
+        -ms-transition: 0.3s right ease;
+        -o-transition: 0.3s right ease;
+        -webkit-transition: 0.3s right ease;
+        transition: 0.3s right ease;
+        z-index: 0;
+        transition: transform 150ms ease-out;
+      }
+
+      select {
+        /* Arrow */
+        appearance: none;
+      }
+
+      .select-arrow {
+        color: var(--vitamui-primary);
+        pointer-events: none;
+        position: absolute;
+        top: 18px;
+        right: 15px;
+      }
+
+      select:focus + label,
+      input:focus + label {
+        transform: translateY(-12px);
+      }
+
+      select:valid + label,
+      input:valid + label {
+        transform: translateY(-12px);
+      }
+    }
+
+    button[type=submit] {
+      margin-left: 20px;
+    }
+  }
+
+  .button-footer {
+    flex-direction: row;
+    margin-top: 30px;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+@media only screen and (max-width: 801px) {
+  /* Styles pour cette Media Queries */
+  h3 {
+    font-size: 35px !important;
+  }
+  .vitamui-card {
+    width: 95vw;
+    padding: 15px 20px;
+
+    input[type=text], input[type=email], input[type=password] {
+      padding: 0 10px;
+    }
+  }
 }

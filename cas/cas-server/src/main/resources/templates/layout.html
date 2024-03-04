@@ -1,63 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html>
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <title layout:title-pattern="$CONTENT_TITLE">VITAMUI</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{#{webjars.fontawesomemin.css}}"/>
-
-    <!--/* Core CAS CSS */-->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/cas.css}"/>
-
-    <link rel="icon" type="image/x-icon"
-          th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
-
-    <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta charset="UTF-8"/>
+  <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico"
+        th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
+  <link rel="stylesheet" type="text/css" href="../static/css/cas.css"
+        th:href="@{/css/cas.css}"/>
+  <link rel="stylesheet" type="text/css" href="../static/icons/vitamui-icons.css"
+        th:href="@{/icons/vitamui-icons.css}"/>
+  <script type="text/javascript" src="../../../../../../deployment/roles/reverse/files/apache/page/js/jquery.min.js"
+          th:src="@{#{webjars.jquery.js}}"></script>
+  <script type="text/javascript"
+          th:src="@{#{webjars.jqueryui.js}}"></script>
+  <script type="text/javascript" src="../static/js/password-checks.js"
+          th:src="@{/js/password-checks.js}"></script>
+  <script type="text/javascript" src="../static/js/cas.js"
+          th:src="@{#{/js/cas.js}}"></script>
 </head>
+<body style="--vitamui-primary:#9C31B5;--vitamui-secondary:#7FA1D4;--vitamui-background:#F6F3FB;"
+      th:st="${@environment.getProperty('theme.body.style')}">
+<div class="centered">
+  <div class="logo">
+    <img src="../static/images/logo-vitam-colored.svg"
+         th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/logo-vitam-colored.svg}">
+  </div>
+  <div class="vitamui-card">
 
-<body th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div id="container" class="container">
 
-    <div class="login">
+  <div layout:fragment="content" id="content">
+      ici rentrera le fragment content
     </div>
-    <div class="centered">
-        <div class="flex-justify-content-center">
-            <img
-                th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
-        </div>
-        <div class="login-box login-padding  step-email">
-            <div layout:fragment="content" id="content">
-                <h1/>
-                <p/>
-            </div>
 
-            <button class="back" type="button" th:urlToUse="@{/login(service=${serviceUrl})}"
-                    th:onclick="window.location.href=sanitizeUrl(this.getAttribute('urlToUse'))">
-                <i class="material-icons">chevron_left</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
-            </button>
-        </div>
+
+    <div class="button-footer">
+      <button class="Text-button" th:urlToUse="@{/login(service=${serviceUrl})}"
+              th:onclick="window.location.href=sanitizeUrl(this.getAttribute('urlToUse'))">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <span th:text="#{cas.welcome.button.back}">RETOUR</span>
+      </button>
+      <button id="submit-main-form" class="Button" type="submit" form="main-form" style="display: none">VALIDER</button>
     </div>
+
+  </div>
 </div>
-<script th:replace="fragments/scripts"/>
-
 
 <script>
-    function sanitizeUrl(inputUrl) {
-        let ESC_MAP = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
-        };
-        return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
-            return ESC_MAP[c];
-        });
-    }
+  function sanitizeUrl(inputUrl) {
+    let ESC_MAP = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return inputUrl.replace(/[&<>'"]/g, function (c) {
+      return ESC_MAP[c];
+    });
+  }
 </script>
+
+
 </body>
 </html>

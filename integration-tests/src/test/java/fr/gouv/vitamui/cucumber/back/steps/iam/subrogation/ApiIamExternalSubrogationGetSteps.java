@@ -68,7 +68,7 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
         deleteAllSubrogations(subrogationDto);
         testContext.savedSubrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
         testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         subrogationDto.getSurrogate(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
@@ -89,7 +89,7 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
         buildSubrogation(true, true, null, UserStatusEnum.ENABLED);
         testContext.savedSubrogationDto = subrogationDto;
         testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         subrogationDto.getSuperUser(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
@@ -111,7 +111,7 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
         user.setCustomerId(TestConstants.SYSTEM_CUSTOMER_ID);
         user = getUserRestClient().create(getSystemTenantUserAdminContext(), user);
         testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUsersByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         user.getEmail(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 

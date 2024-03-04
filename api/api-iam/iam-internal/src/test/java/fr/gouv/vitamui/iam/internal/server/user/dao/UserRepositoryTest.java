@@ -1,13 +1,12 @@
 package fr.gouv.vitamui.iam.internal.server.user.dao;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Test;
@@ -23,21 +22,20 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
-import fr.gouv.vitamui.iam.internal.server.user.domain.User;
-import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 
 @RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
+@Import({TestMongoConfig.class})
 @EnableMongoRepositories(basePackageClasses = UserRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class UserRepositoryTest {
 
@@ -64,10 +62,10 @@ public class UserRepositoryTest {
         repository.save(userVitamUI);
         repository.save(userOuidou);
 
-        final User user = repository.findByEmail(emailVitamUIMoctar);
+        final List<User> user = repository.findByEmail(emailVitamUIMoctar);
 
         assertNotNull(user);
-        assertEquals(user.getEmail(), emailVitamUIMoctar);
+        assertEquals(user.get(0).getEmail(), emailVitamUIMoctar);
     }
 
     @Test
@@ -98,7 +96,7 @@ public class UserRepositoryTest {
         final User probe = new User();
         probe.setEmail(emailVitamUIMoctar);
         Example<User> example = Example.of(probe,
-                ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
+            ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
         boolean exist = repository.exists(example);
         assertThat(exist).isTrue();
 
@@ -119,20 +117,20 @@ public class UserRepositoryTest {
         repository.save(userVitamUI);
 
         Page<User> users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED,
-                PageRequest.of(0, 20));
+            PageRequest.of(0, 20));
         assertThat(users).isNotEmpty();
         assertThat(users.getContent().size()).isEqualTo(1);
 
         users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.GENERIC, UserStatusEnum.ENABLED,
-                PageRequest.of(0, 20));
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
         users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE, UserStatusEnum.DISABLED,
-                PageRequest.of(0, 20));
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
         users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, false, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED,
-                PageRequest.of(0, 20));
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
         users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus("toto", true, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED, PageRequest.of(0, 20));

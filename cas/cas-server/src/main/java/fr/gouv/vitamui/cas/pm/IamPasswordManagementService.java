@@ -38,8 +38,10 @@ package fr.gouv.vitamui.cas.pm;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -68,15 +70,15 @@ import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
 /**
  * Specific password management service based on the IAM API.
- *
- *
  */
 @Getter
 @Setter
@@ -164,8 +166,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
         LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
 
-        if((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
-            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
+        if ((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
+            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null &&
+                passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
             String userLastName = findUserLastName(username);
             Assert.notNull(userLastName, "user last name can not be null");
             if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(), passwordConfiguration.getOccurrencesCharsNumber())) {
@@ -180,17 +184,17 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         LOGGER.debug("username: {}", usernameLowercase);
         val identityProvider =
             identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
-        Assert.isTrue(identityProvider.isPresent(),
+        Assert.isTrue(!identityProvider.isEmpty(),
             "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
-        Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
-                "only an internal user [" + usernameLowercase + "] can change his password");
+        Assert.isTrue(identityProvider.get(0).getInternal() != null && identityProvider.get(0).getInternal(),
+            "only an internal user [" + usernameLowercase + "] can change his password");
 
         try {
             casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
-        }  catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot change password", e);
             return false;
         }
@@ -198,19 +202,23 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
-        val username = query.getUsername();
-        String email = null;
-        val usernameWithLowercase = username.toLowerCase().trim();
+        val usernameWithLowercase = query.getUsername().toLowerCase().trim();
         try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
-            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
-                email = user.getEmail();
+            List<UserDto> users = casExternalRestClient.getUsersByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            List<String> emails = users.stream().filter(u -> UserStatusEnum.ENABLED.equals(u.getStatus()))
+                .map(UserDto::getEmail).distinct().collect(Collectors.toList());
+            if (emails.isEmpty()) {
+                return null;
             }
-        }
-        catch (final VitamUIException e) {
+            if (emails.size() > 1) {
+                //TODO maybe remove - getUsersByEmail should return only users with the same email
+                throw new NotImplementedException("Problème lors du reset de mot de passe, plusieurs utilisateurs - NOT YET IMPLEMENTED");
+            }
+            return emails.get(0);
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
+            return null;
         }
-        return email;
     }
 
     @Override
@@ -230,21 +238,23 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "password already used";
         }
+
     }
 
     public String findUserLastName(final String userMail) {
-        String userLastName = null;
         val usernameWithLowercase = userMail.toLowerCase().trim();
         try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
-            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
-                return user.getLastname();
+            List<UserDto> users = casExternalRestClient.getUsersByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            List<String> usernames = users.stream().filter(u -> UserStatusEnum.ENABLED.equals(u.getStatus()))
+                .map(UserDto::getLastname).distinct().collect(Collectors.toList());
+            if (usernames.size() != 1) {
+                throw new NotImplementedException("Problème lors du reset de mot de passe");
             }
-        }
-        catch (final VitamUIException e) {
+            return usernames.get(0);
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
+            return null;
         }
-        return userLastName;
     }
 
     protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
@@ -259,6 +269,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "password not match global regex";
         }
+
     }
 
     protected static class PasswordConfirmException extends InvalidPasswordException {
@@ -273,6 +284,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "password confirm error";
         }
+
     }
 
     protected static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
@@ -287,5 +299,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "Invalid password containing an occurence of user name !";
         }
+
     }
+
 }
