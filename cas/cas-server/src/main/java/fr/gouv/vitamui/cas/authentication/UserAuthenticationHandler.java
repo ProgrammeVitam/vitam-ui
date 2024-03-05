@@ -51,7 +51,6 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.PreventedException;
-import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.exceptions.AccountDisabledException;
 import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
@@ -69,11 +68,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Authentication handler to check the username/password on the IAM API.
- *
- *
  */
 public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
 
@@ -86,7 +86,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     private final String ipHeaderName;
 
     public UserAuthenticationHandler(final ServicesManager servicesManager, final PrincipalFactory principalFactory,
-                                     final CasExternalRestClient casExternalRestClient, final Utils utils, final String ipHeaderName) {
+        final CasExternalRestClient casExternalRestClient, final Utils utils, final String ipHeaderName) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;
@@ -94,65 +94,66 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     }
 
     @Override
-    protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(final UsernamePasswordCredential transformedCredential,
-                                                                                        final String originalPassword) throws GeneralSecurityException, PreventedException {
-
-        val username = transformedCredential.getUsername().toLowerCase().trim();
+    protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(
+        final UsernamePasswordCredential transformedCredential,
+        final String originalPassword) throws GeneralSecurityException, PreventedException {
         val requestContext = RequestContextHolder.getRequestContext();
-        String surrogate = null;
-        String ip = null;
-        if (requestContext != null) {
-            val flowScope = requestContext.getFlowScope();
-            if (flowScope != null) {
-                val credential = flowScope.get("credential");
-                if (credential instanceof SurrogateUsernamePasswordCredential) {
-                    surrogate = ((SurrogateUsernamePasswordCredential) credential).getSurrogateUsername();
-                } else {
-                    flowScope.put(Constants.PROVIDED_USERNAME, transformedCredential.getUsername());
-                }
-            }
-            val externalContext = requestContext.getExternalContext();
-            if (externalContext != null) {
-                ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
-            }
-        }
+        val flowScope = requestContext.getFlowScope();
+        val loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
+        val loginCustomerId = flowScope.getRequiredString(Constants.FLOW_LOGIN_CUSTOMER_ID);
+        val surrogateEmail = flowScope.getString(Constants.FLOW_SURROGATE_EMAIL);
+        val surrogateCustomerId = flowScope.getString(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        val externalContext = requestContext.getExternalContext();
+        val ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
+        val context = utils.buildContext(loginEmail);
 
-        LOGGER.debug("Authenticating username: {} / surrogate: {} / IP: {}", username, surrogate, ip);
+        LOGGER.debug("Authenticating loginEmail: {} / loginCustomerId: {} / surrogateEmail: {} / surrogateCustomerId:" +
+            " {} / IP: {}", loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId, ip);
 
-        val context = utils.buildContext(username);
         try {
-            val user = casExternalRestClient.login(context, username, originalPassword, surrogate, ip);
+            val user = casExternalRestClient.login(context,
+                loginEmail, loginCustomerId,
+                originalPassword,
+                surrogateEmail, surrogateCustomerId,
+                ip);
             if (user != null) {
                 if (mustChangePassword(user)) {
-                    LOGGER.info("Password expired for: {}", username);
-                    throw new AccountPasswordMustChangeException("Password expired for: " + username);
+                    LOGGER.info("Password expired for: {} ({})", loginEmail, loginCustomerId);
+                    throw new AccountPasswordMustChangeException("Password expired for: " + loginEmail);
                 } else if (user.getStatus() == UserStatusEnum.ENABLED && user.getType() == UserTypeEnum.NOMINATIVE) {
-                    final Principal principal = principalFactory.createPrincipal(username);
+
+                    Map<String, List<Object>> attributes = new HashMap<>();
+
+                    attributes.put(Constants.FLOW_LOGIN_EMAIL, List.of(loginEmail));
+                    attributes.put(Constants.FLOW_LOGIN_CUSTOMER_ID, List.of(loginCustomerId));
+
+                    if (surrogateEmail != null) {
+                        attributes.put(Constants.FLOW_SURROGATE_EMAIL, List.of(surrogateEmail));
+                        attributes.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, List.of(surrogateCustomerId));
+                    }
+
+                    final Principal principal = principalFactory.createPrincipal(loginEmail, attributes);
                     LOGGER.debug("Successful authentication, created principal: {}", principal);
                     return createHandlerResult(transformedCredential, principal, new ArrayList<>());
                 } else {
-                    LOGGER.debug("Cannot login user: {}", username);
-                    throw new AccountException("Disabled or cannot login user: " + username);
+                    LOGGER.debug("Cannot login user: {} ({})", loginEmail, loginCustomerId);
+                    throw new AccountException("Disabled or cannot login user: " + loginEmail);
                 }
             } else {
-                LOGGER.debug("No user found for: {}", username);
-                throw new AccountNotFoundException("Bad credentials for: " + username);
+                LOGGER.debug("No user found for: {} ({})", loginEmail, loginCustomerId);
+                throw new AccountNotFoundException("Bad credentials for: " + loginEmail);
             }
-        }
-        catch (final InvalidAuthenticationException e) {
-            LOGGER.error("Bad credentials for username: {}", username);
-            throw new CredentialNotFoundException("Bad credentials for username: " + username);
-        }
-        catch (final TooManyRequestsException e) {
-            LOGGER.error("Too many login attempts for username: {}", username);
-            throw new AccountLockedException("Too many login attempts for username: " + username);
-        }
-        catch (final InvalidFormatException e) {
-            LOGGER.error("Bad status for username: {}", username);
-            throw new AccountDisabledException("Bad status: " + username);
-        }
-        catch (final VitamUIException e) {
-            LOGGER.error("Unexpected exception for username: {} -> {}", username, e);
+        } catch (final InvalidAuthenticationException e) {
+            LOGGER.error("Bad credentials for username: {} ({})", loginEmail, loginCustomerId);
+            throw new CredentialNotFoundException("Bad credentials for username: " + loginEmail);
+        } catch (final TooManyRequestsException e) {
+            LOGGER.error("Too many login attempts for username: {} ({})", loginEmail, loginCustomerId);
+            throw new AccountLockedException("Too many login attempts for username: " + loginEmail);
+        } catch (final InvalidFormatException e) {
+            LOGGER.error("Bad status for username: {} ({})", loginEmail, loginCustomerId);
+            throw new AccountDisabledException("Bad status: " + loginEmail);
+        } catch (final VitamUIException e) {
+            LOGGER.error(String.format("Unexpected exception for username: %s(%s)", loginEmail, loginCustomerId), e);
             throw new PreventedException(e);
         }
     }

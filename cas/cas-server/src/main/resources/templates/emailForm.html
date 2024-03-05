@@ -57,7 +57,7 @@
   <div class="vitamui-card">
 
 
-    <div class="step-subrogation col" th:if="${!#strings.isEmpty(superUser)}">
+    <div class="step-subrogation col" th:if="${!#strings.isEmpty(surrogateEmail)}">
       <div class="Text-large-bold">
         Subrogation
       </div>
@@ -65,21 +65,22 @@
       <form id="main-form" class="margin-top-10" method="post" th:object="${credential}" action="login">
         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
         <input type="hidden" name="_eventId" value="submit"/>
-        <!--suppress XmlDuplicatedId -->
-        <input type="hidden" id="username" name="username" th:value="${surrogate + ',' + superUser}"/>
-        <div class="form-line">
-          <div class="Text-medium-bold" th:text="#{screen.welcome.label.surrogate}">Subrogé : &nbsp;</div>
-          <div class="Text-medium" th:text="${surrogate}">admin@societedugrandparis.fr</div>
+          <!--suppress XmlDuplicatedId -->
+          <input type="hidden" id="username" name="username" th:value="_ignored"/>
+
+          <div class="form-line">
+          <div class="Text-medium-bold" th:text="#{screen.welcome.label.surrogate}">Subrogé :</div>&nbsp;
+          <div class="Text-medium" th:text="${surrogateEmail}">admin@programmevitam.fr</div>
         </div>
         <div class="form-line">
-          <div class="Text-medium-bold" th:text="#{screen.welcome.label.superuser}">Super utilisateur :&nbsp;</div>
-          <div class="Text-medium" th:text="${superUser}">superadmin@programmevitam.fr</div>
+          <div class="Text-medium-bold" th:text="#{screen.welcome.label.superuser}">Super utilisateur :</div>&nbsp;
+          <div class="Text-medium" th:text="${loginEmail}">superadmin@programmevitam.fr</div>
         </div>
       </form>
     </div>
 
 
-    <div class="step-email col" th:if="${#strings.isEmpty(superUser)}">
+    <div class="step-email col" th:if="${#strings.isEmpty(surrogateEmail)}">
       <div class="Headline-3" th:text="#{cas.welcome.header.msg}">
         Bienvenue
       </div>
@@ -154,11 +155,15 @@
   </div>
 </div>
 
+<!--/*-->
+  Special syntax to inject "providedUserName" variable.
+  See https://stackoverflow.com/a/25688291/106971
+<!--*/-->
 <script th:inline="javascript" th:if="${!#strings.isEmpty(providedUsername)}">
-  var providedUsername = /*[[${providedUsername}]]*/ "";
-  $(document).ready(function () {
-    $('#username').val(providedUsername);
-  });
+    var providedUsername = /*[[${providedUsername}]]*/ "";
+    $(document).ready(function() {
+        $('#username').val(providedUsername);
+    });
 </script>
 <script>
   $('#main-form').submit(function () {

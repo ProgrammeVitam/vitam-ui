@@ -149,17 +149,20 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
                     final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
-                    final String emailSuperUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+                    final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+                    final String superUserCustomerId =
+                        (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE);
 
                     final ExternalHttpContext externalHttpContext;
-                    if (StringUtils.isNotBlank(emailSuperUser)) {
-                        externalHttpContext = utils.buildContext(emailSuperUser);
+                    if (StringUtils.isNotBlank(superUserCustomerId)) {
+                        externalHttpContext = utils.buildContext(superUserCustomerId);
                     } else {
                         externalHttpContext = utils.buildContext(principalEmail);
                     }
 
-                    LOGGER.debug("calling logout for authToken={} and superUser={}", authToken, emailSuperUser);
-                    casExternalRestClient.logout(externalHttpContext, authToken, emailSuperUser);
+                    LOGGER.debug("calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+                        authToken, superUserEmail, superUserCustomerId);
+                    casExternalRestClient.logout(externalHttpContext, authToken, superUserEmail, superUserCustomerId);
                 }
             } catch (final InvalidTicketException e) {
                 LOGGER.warn("No TGT found for the CAS cookie: {}", tgtId);

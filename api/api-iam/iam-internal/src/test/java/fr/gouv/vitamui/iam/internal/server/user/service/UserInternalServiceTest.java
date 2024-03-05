@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest.CUSTOMER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.assertEquals;
@@ -197,7 +198,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -380,7 +381,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -424,7 +425,7 @@ public final class UserInternalServiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void beforePatch_whenUserWasBlocked_thenIllegalArgumentException() {
         final String emailToTest = "test@vitamui.com";
-        final User user = IamServerUtilsTest.buildUser(USER_ID, "test@vitamui.com", "profileGroupId");
+        final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
         user.setStatus(UserStatusEnum.BLOCKED);
         final User userUpdated = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
         userUpdated.setStatus(UserStatusEnum.BLOCKED);
@@ -436,7 +437,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -482,7 +483,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(userRepository.existsById(any())).thenReturn(true);
@@ -551,7 +552,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -655,7 +656,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmailIgnoreCase(email)).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -707,7 +708,7 @@ public final class UserInternalServiceTest {
         groupDto.setLevel(user.getLevel());
 
         when(userRepository.save(any())).thenReturn(user);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
@@ -801,7 +802,7 @@ public final class UserInternalServiceTest {
         groupDto.setCustomerId(user.getCustomerId());
         groupDto.setLevel(user.getLevel());
 
-        when(userRepository.findByEmailIgnoreCase(email)).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, CUSTOMER_ID)).thenReturn(user);
         when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 

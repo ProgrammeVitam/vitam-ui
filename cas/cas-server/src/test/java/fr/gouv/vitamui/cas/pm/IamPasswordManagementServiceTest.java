@@ -80,7 +80,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-import static org.junit.Assert.*;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -280,6 +280,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     public void testChangePasswordFailsBecauseOfASuperUser2() {
         val attributes = new HashMap<String, List<Object>>();
         attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList("fakeSuperUser"));
+        attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList("fakeSuperUserCustomerId"));
         when(principal.getAttributes()).thenReturn(attributes);
 
         try {

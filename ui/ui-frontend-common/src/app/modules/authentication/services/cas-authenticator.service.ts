@@ -53,8 +53,12 @@ export class CasAuthenticatorService implements AuthenticatorService {
     this.location.href = this.logoutUrl;
   }
 
-  public initSubrogationFlow(username: string) {
+  public logoutSubrogationAndRedirectToLoginPage(username: string) {
     this.location.href = this.logoutRedirectUiUrl + '?cas_username=' + username;
+  }
+
+  public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string) {
+    throw new Error('Unsupported');
   }
 
   public redirectToLoginPage(): void {

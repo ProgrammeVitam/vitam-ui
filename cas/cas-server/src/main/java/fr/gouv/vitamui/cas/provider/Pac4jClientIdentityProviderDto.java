@@ -56,7 +56,7 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setEnabled(dto.getEnabled());
         setPatterns(dto.getPatterns());
         setReadonly(dto.isReadonly());
-
+        setCustomerId(dto.getCustomerId());
         setMailAttribute(dto.getMailAttribute());
         setIdentifierAttribute(dto.getIdentifierAttribute());
         setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());

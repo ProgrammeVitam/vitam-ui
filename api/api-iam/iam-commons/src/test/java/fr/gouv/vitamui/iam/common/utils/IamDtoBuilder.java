@@ -49,7 +49,7 @@ public class IamDtoBuilder {
         return userDto;
     }
 
-    public static AuthUserDto buildAuthUserDto(final String id, final String email) {
+    public static AuthUserDto buildAuthUserDto(final String id, final String email, final String customerId) {
         final AuthUserDto userDto = new AuthUserDto();
         userDto.setId(id);
         userDto.setEmail(email);
@@ -57,7 +57,7 @@ public class IamDtoBuilder {
         userDto.setStatus(UserStatusEnum.ENABLED);
         userDto.setFirstname("Jean");
         userDto.setLastname("DUPONT");
-        userDto.setCustomerId("customerId");
+        userDto.setCustomerId(customerId);
         userDto.setGroupId("groupId");
         userDto.setOtp(true);
         userDto.setIdentifier("code");
@@ -160,13 +160,16 @@ public class IamDtoBuilder {
         return ownerDto;
     }
 
-    public static SubrogationDto buildSubrogationDto(final String id, final String surrogate, final String superUser) {
+    public static SubrogationDto buildSubrogationDto(final String id, final String surrogate,
+        final String surrogateCustomerId, final String superUser, final String superUserCustomerId) {
         final SubrogationDto subrogation = new SubrogationDto();
         subrogation.setId(id);
         subrogation.setDate(OffsetDateTime.now());
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
         subrogation.setSurrogate(surrogate);
+        subrogation.setSurrogateCustomerId(surrogateCustomerId);
         subrogation.setSuperUser(superUser);
+        subrogation.setSuperUserCustomerId(superUserCustomerId);
         return subrogation;
     }
 

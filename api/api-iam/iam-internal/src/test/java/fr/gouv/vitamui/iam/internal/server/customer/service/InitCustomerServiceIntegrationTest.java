@@ -317,7 +317,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
             .contains(ROLE_3);
 
-        final User user = userRepository.findByEmailIgnoreCase(EMAIl);
+        final User user = userRepository.findByEmailIgnoreCaseAndCustomerId(EMAIl, customer.get().getId());
         assertThat(user).isNotNull();
         assertThat(user.getLastname()).isEqualTo(LAST_NAME);
         assertThat(user.getFirstname()).isEqualTo(FIRST_NAME);

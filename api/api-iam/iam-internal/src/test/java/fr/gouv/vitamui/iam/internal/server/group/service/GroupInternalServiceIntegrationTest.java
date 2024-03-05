@@ -119,7 +119,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     @Test
     public void testCheckExistByCustomerIdAndName() {
-        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com");
+        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
         mainUserDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
         Mockito.when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(internalSecurityService.getUser()).thenReturn(mainUserDto);
@@ -165,7 +165,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         repository.save(IamServerUtilsTest.buildGroup("idAdmin", "id3", "nameAdmin", CUSTOMER_ID, ApiIamInternalConstants.ADMIN_LEVEL));
         repository.save(IamServerUtilsTest.buildGroup("idSubLvl", "id4", "nameSubLvl", CUSTOMER_ID, LEVEL + ".SUB"));
 
-        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com");
+        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
         userDto.setGroupId(ID);
@@ -204,7 +204,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     @Test
     public void testCheckExistAdminUser() {
-        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com");
+        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
         mainUserDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
         mainUserDto.setCustomerId(CUSTOMER_ID);
 

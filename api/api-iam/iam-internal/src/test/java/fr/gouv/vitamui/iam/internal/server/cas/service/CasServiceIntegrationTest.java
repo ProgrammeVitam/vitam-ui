@@ -58,6 +58,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -152,16 +153,21 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     @Test
     public void testLogoutSubrogation() {
         final String superUser = "superUser@vitamui.com";
+        final String superUserCustomerId = "superUserCustomerId";
         final String surrogate = jsonNode.findValue("EMAIL").textValue();
+        String surrogateCustomerId = jsonNode.findValue("CUSTOMER_ID").textValue();
         final Subrogation subro = new Subrogation();
         subro.setSuperUser(superUser);
-        subro.setSuperUserCustomerId("superUserCustomerId");
+        subro.setSuperUserCustomerId(superUserCustomerId);
         subro.setSurrogate(surrogate);
-        subro.setSurrogateCustomerId("surrogateCustomerId");
-        Mockito.when(subrogationRepository.findBySuperUserAndSurrogate(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
-            .thenReturn(Optional.of(subro));
-        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
-        casService.deleteSubrogationBySuperUserAndSurrogate(superUser, surrogate);
+        subro.setSurrogateCustomerId(surrogateCustomerId);
+        Mockito.when(subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
+            superUser, superUserCustomerId, surrogate, surrogateCustomerId)).thenReturn(Optional.of(subro));
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(surrogate, surrogateCustomerId)).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUser, superUserCustomerId))
+            .thenReturn(new User());
+        casService.deleteSubrogationBySuperUserAndSurrogate(superUser, superUserCustomerId,
+            surrogate, surrogateCustomerId);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
             .is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
@@ -175,6 +181,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         user.setType(UserTypeEnum.GENERIC);
         user.setId("ID");
         user.setEmail(jsonNode.findValue("EMAIL").textValue());
+        user.setCustomerId(jsonNode.findValue("CUSTOMER_ID").textValue());
         final Subrogation subro = getUsersByEmail(user);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
@@ -189,6 +196,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setId("ID");
         user.setEmail(jsonNode.findValue("EMAIL").textValue());
+        user.setCustomerId(jsonNode.findValue("CUSTOMER_ID").textValue());
         final Subrogation subro = getUsersByEmail(user);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
@@ -199,15 +207,21 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private Subrogation getUsersByEmail(final UserDto user) {
         final String email = user.getEmail();
+        final String customerId = user.getCustomerId();
         final AuthUserDto authUser = new AuthUserDto();
         authUser.setId("ID");
         final Subrogation subro = new Subrogation();
         subro.setSuperUser("superuser@vitamui.com");
+        subro.setSuperUserCustomerId("customer_system");
         subro.setSurrogate(email);
-        Mockito.when(internalUserService.findUserByEmail(ArgumentMatchers.anyString())).thenReturn(user);
+        subro.setSurrogateCustomerId(customerId);
+        Mockito.when(internalUserService.findUserByEmailAndCustomerId(email, customerId))
+            .thenReturn(user);
+        Mockito.when(internalUserService.findUsersByEmail(email))
+            .thenReturn(List.of(user));
         Mockito.when(internalUserService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
         Mockito.when(subrogationRepository.findOneBySurrogate(ArgumentMatchers.anyString())).thenReturn(subro);
-        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
+        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
         casService.getUserByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
         return subro;
     }

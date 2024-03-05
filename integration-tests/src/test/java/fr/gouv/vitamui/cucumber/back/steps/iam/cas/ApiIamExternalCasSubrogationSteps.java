@@ -1,17 +1,17 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.cas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API CAS dans IAM admin : opérations liées à la subrogation.
@@ -27,8 +27,9 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
         // Get or Initialize defaultSubrogation before requesting superUser
         getOrInitializeDefaultSubrogationId();
         subrogationDtos = getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
-                .getSubrogationsBySuperUserEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+                .getSubrogationsBySuperUserEmailAndCustomerId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                        TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                    TestConstants.JULIEN_USER_CUSTOMER_ID);
     }
 
     @Then("^le serveur retourne la bonne subrogation$")
@@ -48,9 +49,11 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
     @When("^cet utilisateur cherche une subrogation par l'email de son superuser$")
     public void cet_utilisateur_cherche_une_subrogation_par_l_email_de_son_superuser() {
         try {
-            getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles).getSubrogationsBySuperUserEmail(
-                    getContext(testContext.tenantIHMContext, testContext.tokenUser),
-                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+            getCasRestClient(testContext.fullAccess, testContext.certificateTenants,
+                testContext.certificateRoles).getSubrogationsBySuperUserEmailAndCustomerId(
+                getContext(testContext.tenantIHMContext, testContext.tokenUser),
+                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.JULIEN_USER_CUSTOMER_ID);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;

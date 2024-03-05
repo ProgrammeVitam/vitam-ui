@@ -126,15 +126,27 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
 
     @Test
     public void testDeclineSubrogation() {
+
+        final String superUserEmail = "sub-roggator@vitamui.com";
+        final String superUserCustomerId = "surrogate_system";
+
         final String currentUserEmail = "surrogate@vitamui.com";
+        final String currentUserCustomerId = "surrogate_customer";
         final Subrogation subro = buildSubro();
         subro.setStatus(SubrogationStatusEnum.CREATED);
         subro.setSurrogate(currentUserEmail);
+        subro.setSurrogateCustomerId(currentUserCustomerId);
+        subro.setSuperUser(superUserEmail);
+        subro.setSuperUserCustomerId(superUserCustomerId);
 
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
-        currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
+        currentUser.setEmail(currentUserEmail);
+        currentUser.setCustomerId(currentUserCustomerId);
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId))
+            .thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId))
+            .thenReturn(new User());
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
@@ -146,15 +158,27 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
 
     @Test
     public void testStopSubrogation() {
+
+        final String superUserEmail = "sub-roggator@vitamui.com";
+        final String superUserCustomerId = "surrogate_system";
+
         final String currentUserEmail = "surrogate@vitamui.com";
+        final String currentUserCustomerId = "surrogate_customer";
         final Subrogation subro = buildSubro();
         subro.setStatus(SubrogationStatusEnum.ACCEPTED);
         subro.setSurrogate(currentUserEmail);
+        subro.setSurrogateCustomerId(currentUserCustomerId);
+        subro.setSuperUser(superUserEmail);
+        subro.setSuperUserCustomerId(superUserCustomerId);
 
         repository.save(subro);
         final AuthUserDto currentUser = new AuthUserDto();
-        currentUser.setEmail("surrogate@vitamui.com");
-        Mockito.when(userRepository.findByEmailIgnoreCase(ArgumentMatchers.anyString())).thenReturn(new User());
+        currentUser.setEmail(currentUserEmail);
+        currentUser.setCustomerId(currentUserCustomerId);
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId))
+            .thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId))
+            .thenReturn(new User());
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 

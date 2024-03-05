@@ -434,7 +434,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         userRepository.save(IamServerUtilsTest.buildUser("userAdmin", "user-admin@vitamui.com", GROUP_ID, CUSTOMER_ID, ApiIamInternalConstants.ADMIN_LEVEL));
         userRepository.save(IamServerUtilsTest.buildUser("userSubDev", "user-sub-dev@vitamui.com", GROUP_ID, "otherCustomerId", LEVEL + ".SUB"));
 
-        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
+        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com", CUSTOMER_ID);
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
 
@@ -476,7 +476,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
     @Test
     public void testCheckExistAdminUser() {
-        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
+        final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com", CUSTOMER_ID);
         mainUserDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
 
         final User userDev = IamServerUtilsTest.buildUser("userDev", "user-dev@vitamui.com", GROUP_ID, CUSTOMER_ID, LEVEL);
@@ -633,7 +633,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @Test
     public void testGetLevels() {
 
-        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
+        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com", CUSTOMER_ID);
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
 
@@ -651,12 +651,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @Test
     public void testGroupFields() {
 
-        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "julien@vitamui.com");
+        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "julien@vitamui.com", CUSTOMER_ID);
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
         userDto.setIdentifier("1");
 
-        final AuthUserDto user2Dto = IamDtoBuilder.buildAuthUserDto(USER_ID + "2", "pierre@vitamui.com");
+        final AuthUserDto user2Dto = IamDtoBuilder.buildAuthUserDto(USER_ID + "2", "pier08re@vitamui.com", CUSTOMER_ID);
         user2Dto.setLevel(LEVEL + ".2");
         user2Dto.setCustomerId(CUSTOMER_ID);
         userDto.setIdentifier("2");

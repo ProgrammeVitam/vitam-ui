@@ -50,8 +50,10 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     private static final String SURROGATE_EMAIL = "sub.roger@vitamui.com";
 
     private static final String SUPER_USER_EMAIL = "sub.rogateur@vitamui.com";
+    private static final String SUPER_USER_CUSTOMER_ID = "systemCustomerId";
 
     private static final String SURROGATE_CREATE_EMAIL = "surrogate@test.fr";
+    private static final String SURROGATE_CUSTOMER_ID = "customerId";
 
     private static final OffsetDateTime NOW = OffsetDateTime.now();
 
@@ -64,6 +66,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         SURROGATE = new User();
         SURROGATE.setId(SURROGATE_EMAIL);
         SURROGATE.setEmail(SURROGATE_EMAIL);
+        SURROGATE.setCustomerId(SURROGATE_CUSTOMER_ID);
         SURROGATE.setType(UserTypeEnum.NOMINATIVE);
         SURROGATE.setStatus(UserStatusEnum.ENABLED);
         SURROGATE.setSubrogeable(true);
@@ -71,6 +74,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         SURROGATE_CREATE = new User();
         SURROGATE_CREATE.setId(SURROGATE_CREATE_EMAIL);
         SURROGATE_CREATE.setEmail(SURROGATE_CREATE_EMAIL);
+        SURROGATE_CREATE.setCustomerId(SURROGATE_CUSTOMER_ID);
         SURROGATE_CREATE.setType(UserTypeEnum.NOMINATIVE);
         SURROGATE_CREATE.setStatus(UserStatusEnum.ENABLED);
         SURROGATE_CREATE.setSubrogeable(true);
@@ -78,6 +82,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         SUPERUSER = new User();
         SUPERUSER.setId(SUPER_USER_EMAIL);
         SUPERUSER.setEmail(SUPER_USER_EMAIL);
+        SUPERUSER.setCustomerId(SUPER_USER_CUSTOMER_ID);
     }
 
     @InjectMocks
@@ -150,9 +155,12 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     @Override
     protected void prepareServices() {
-        Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_EMAIL)).thenReturn(new Subrogation());
-        Mockito.when(userRepository.findByEmailIgnoreCase(SURROGATE_EMAIL)).thenReturn(SURROGATE);
-        Mockito.when(userRepository.findByEmailIgnoreCase(SUPER_USER_EMAIL)).thenReturn(SUPERUSER);
+        Mockito.when(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
+            SURROGATE_EMAIL, SURROGATE_CUSTOMER_ID)).thenReturn(new Subrogation());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(SURROGATE_EMAIL, SURROGATE_CUSTOMER_ID))
+            .thenReturn(SURROGATE);
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID))
+            .thenReturn(SUPERUSER);
         final Customer customer = new Customer();
         customer.setSubrogeable(true);
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
@@ -163,10 +171,16 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     public void testCreationOK() throws InvalidParseOperationException, PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
+        dto.setSurrogateCustomerId(SURROGATE_CUSTOMER_ID);
+        dto.setSuperUser(SUPER_USER_EMAIL);
+        dto.setSuperUserCustomerId(SUPER_USER_CUSTOMER_ID);
         prepareServices();
-        Mockito.when(userRepository.findByEmailIgnoreCase(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
-        Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_CREATE_EMAIL)).thenReturn(null);
-        Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL));
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID))
+            .thenReturn(SURROGATE_CREATE);
+        Mockito.when(subrogationRepository.
+            findOneBySurrogateAndSurrogateCustomerId(SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID)).thenReturn(null);
+        Mockito.when(internalSecurityService.getUser())
+            .thenReturn(IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID));
         getController().create(dto);
 
     }

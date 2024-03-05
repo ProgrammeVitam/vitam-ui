@@ -44,6 +44,7 @@ import javax.validation.constraints.NotNull;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,15 +140,15 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     public SubrogationDto getMySubrogationAsSuperuser() {
-        return internalConvertFromEntityToDto(subrogationRepository.findOneBySuperUser(getCurrentUserEmail()));
-    }
-
-    protected String getCurrentUserEmail() {
-        return internalSecurityService.getUser().getEmail();
+        AuthUserDto user = internalSecurityService.getUser();
+        return internalConvertFromEntityToDto(subrogationRepository.findOneBySuperUserAndSuperUserCustomerId(
+            user.getEmail(), user.getCustomerId()));
     }
 
     public SubrogationDto getMySubrogationAsSurrogate() {
-        return convertFromEntityToDto(subrogationRepository.findOneBySurrogate(getCurrentUserEmail()));
+        AuthUserDto user = internalSecurityService.getUser();
+        return convertFromEntityToDto(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
+            user.getEmail(), user.getCustomerId()));
     }
 
     @Override
@@ -176,17 +177,17 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         final OffsetDateTime nowPlusXMinutes = OffsetDateTime.now().plusMinutes(ttlInMinutes);
         dto.setDate(nowPlusXMinutes);
 
-        checkSubrogationAlreadyExist(dto.getSurrogate());
-        checkSubrogationWithSuperUserAlreadyExist(dto.getSuperUser());
+        checkSubrogationAlreadyExist(dto.getSurrogate(), dto.getSurrogateCustomerId());
+        checkSubrogationWithSuperUserAlreadyExist(dto.getSuperUser(), dto.getSuperUserCustomerId());
     }
 
-    private void checkSubrogationWithSuperUserAlreadyExist(final String superUser) {
-        final Subrogation subro = subrogationRepository.findOneBySuperUser(superUser);
+    private void checkSubrogationWithSuperUserAlreadyExist(final String superUser, final String customerId) {
+        final Subrogation subro = subrogationRepository.findOneBySuperUserAndSuperUserCustomerId(superUser, customerId);
         Assert.isTrue(subro == null, (subro != null ? subro.getSuperUser() : "") + " is already subrogating " + (subro != null ? subro.getSurrogate() : ""));
     }
 
-    private void checkSubrogationAlreadyExist(final String email) {
-        final Subrogation subro = subrogationRepository.findOneBySurrogate(email);
+    private void checkSubrogationAlreadyExist(final String email, final String customerId) {
+        final Subrogation subro = subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(email, customerId);
         Assert.isTrue(subro == null, email + " is already subrogated by " + (subro != null ? subro.getSuperUser() : ""));
     }
 
@@ -199,8 +200,8 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
 
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
-        final User surrogate = userRepository.findByEmailIgnoreCase(emailSurrogate);
-        final User superUser = userRepository.findByEmailIgnoreCase(emailSuperUser);
+        final User surrogate = userRepository.findByEmailIgnoreCaseAndCustomerId(dto.getSurrogate(), dto.getSurrogateCustomerId());
+        final User superUser = userRepository.findByEmailAndCustomerId(dto.getSuperUser(), dto.getSuperUserCustomerId());
         Assert.isTrue(surrogate != null, "No surrogate found with email : " + emailSurrogate);
         dto.setSurrogateCustomerId(surrogate.getCustomerId());
 
@@ -214,8 +215,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         dto.setSuperUserCustomerId(superUser.getCustomerId());
 
         Assert.isTrue(!surrogate.getId().equals(superUser.getId()), "Users cannot subrogate itself, email : " + emailSuperUser);
-        final String emailCurrentUser = internalSecurityService.getUser().getEmail();
-        Assert.isTrue(StringUtils.equals(emailSuperUser, emailCurrentUser), "Only super user can create subrogation");
+        AuthUserDto currentUser = internalSecurityService.getUser();
+        Assert.isTrue(StringUtils.equals(emailSuperUser, currentUser.getEmail()), "Only super user can create subrogation");
+        Assert.isTrue(StringUtils.equals(dto.getSuperUserCustomerId(), currentUser.getCustomerId()), "Only super user can create subrogation");
         dto.setStatus(UserTypeEnum.GENERIC.equals(surrogate.getType()) ? SubrogationStatusEnum.ACCEPTED : SubrogationStatusEnum.CREATED);
     }
 
@@ -243,9 +245,12 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         final Optional<Subrogation> optSubrogation = subrogationRepository.findById(id);
         final Subrogation subro = optSubrogation
                 .orElseThrow(() -> new IllegalArgumentException("Unable to accept subrogation: no subrogation found with id=" + id));
-        final String emailCurrentUser = internalSecurityService.getUser().getEmail();
+        final AuthUserDto currentUser = internalSecurityService.getUser();
 
-        Assert.isTrue(subro.getSurrogate().equals(emailCurrentUser), "Users " + emailCurrentUser + " can't accept subrogation of " + subro.getSurrogate());
+        Assert.isTrue(subro.getSurrogate().equals(currentUser.getEmail()),
+            "Users " + currentUser.getEmail() + " can't accept subrogation of " + subro.getSurrogate());
+        Assert.isTrue(subro.getSurrogateCustomerId().equals(currentUser.getCustomerId()),
+            "Users " + currentUser.getCustomerId() + " can't accept subrogation of " + subro.getSurrogate());
         subro.setStatus(SubrogationStatusEnum.ACCEPTED);
 
         final Date nowPlusXMinutes = DateUtils.addMinutes(new Date(), subrogationTtl);

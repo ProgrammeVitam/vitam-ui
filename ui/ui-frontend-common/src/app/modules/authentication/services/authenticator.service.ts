@@ -39,6 +39,7 @@ import { Observable } from 'rxjs';
 export interface AuthenticatorService {
   login(): Observable<boolean>;
   logout(): void;
-  initSubrogationFlow(username: string): void;
+  logoutSubrogationAndRedirectToLoginPage(username: string): void;
+  initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): void;
   redirectToLoginPage(): void;
 }
