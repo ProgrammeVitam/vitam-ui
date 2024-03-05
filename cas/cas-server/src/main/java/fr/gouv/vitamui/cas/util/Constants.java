@@ -48,7 +48,6 @@ public abstract class Constants {
     public static final String LOGIN_SUPER_USER_EMAIL_PARAM = "superUserEmail";
     public static final String LOGIN_SUPER_USER_CUSTOMER_ID_PARAM = "superUserCustomerId";
 
-
     public static final String SELECT_CUSTOMER_ID_PARAM = "customerId";
 
     public static final String FLOW_SURROGATE_EMAIL = "surrogateEmail";
@@ -58,8 +57,6 @@ public abstract class Constants {
     public static final String FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST = "availableCustomerList";
 
     public static final String USERNAME = "username";
-
-    public static final String PROVIDED_USERNAME = "providedUsername";
 
     // surrogation:
     public static final String SURROGATE = "surrogate";
