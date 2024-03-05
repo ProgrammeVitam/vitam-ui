@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -114,8 +115,8 @@ public class CasInternalController {
 
     @PostMapping(value = RestApi.CAS_LOGIN_PATH)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
-        final String username = dto.getUsername();
-        final User user = casService.findEntityByEmail(username);
+        final String username = dto.getLoginEmail();
+        final User user = casService.findUserByEmailAndCustomerId(dto.getLoginEmail(), dto.getLoginCustomerId());
         final UserStatusEnum oldStatus = user.getStatus();
         final String password = user.getPassword();
         int nbFailedAttemps = user.getNbFailedAttempts();
@@ -149,29 +150,30 @@ public class CasInternalController {
         LOGGER.debug("username: {} -> passwordMatch: {} / nbFailedAttemps: {}", username, passwordMatch, nbFailedAttemps);
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             final String message = "Too many login attempts for username: " + username;
-            iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), message);
+            iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new TooManyRequestsException(message);
         }
         else if (passwordMatch) {
             final UserDto userDto = internalUserService.internalConvertFromEntityToDto(user);
-            iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), null);
+            iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), null);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         }
         else {
             final String message = "Bad credentials for username: " + username;
-            iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), message);
+            iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new UnAuthorizedException(message);
         }
     }
 
-    private String findSurrogateByEmail(final LoginRequestDto loginRequest) {
-        final String surrogate = loginRequest.getSurrogate();
+    private String findSurrogateDescriptionStringForLogging(final LoginRequestDto loginRequest) {
+        final String surrogate = loginRequest.getSurrogateEmail();
+        final String surrogateCustomerId = loginRequest.getSurrogateCustomerId();
         if (surrogate != null) {
             try {
-                return internalUserService.findUserByEmail(surrogate).getIdentifier();
+                return internalUserService.findUserByEmailAndCustomerId(surrogate, surrogateCustomerId).getIdentifier();
             }
             catch (final NotFoundException e) {
-                return "User not found: " + surrogate;
+                return "User not found: " + surrogate + " and customerId " + surrogateCustomerId;
             }
         }
         return null;
@@ -186,10 +188,10 @@ public class CasInternalController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    public UserDto getUserByEmail(@RequestParam final String email, final @RequestParam Optional<String> embedded) {
+    public List<UserDto> getUsersByEmail(@RequestParam final String email, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {}", email);
         ParameterChecker.checkParameter("user email is mandatory : ", email);
-        return casService.getUserByEmail(email, embedded);
+        return casService.getUsersByEmail(email, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
@@ -229,6 +231,13 @@ public class CasInternalController {
         else {
             return new ArrayList<>();
         }
+    }
+
+    @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
+    public List<CustomerDto> getCustomersByIds(@RequestParam final List<String> customerIds) {
+        LOGGER.debug("getUserByEmail: {}", customerIds);
+        ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
+        return casService.getCustomersByIds(customerIds);
     }
 
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)

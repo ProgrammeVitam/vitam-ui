@@ -56,12 +56,14 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
@@ -78,6 +80,7 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
@@ -104,6 +107,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Specific CAS service.
@@ -147,6 +151,9 @@ public class CasInternalService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerInternalService customerInternalService;
 
     @Autowired
     private TenantInternalService internalTenantService;
@@ -200,6 +207,7 @@ public class CasInternalService {
     }
 
     @Transactional
+    @Deprecated
     public void updatePassword(final String email, final String rawPassword) {
         final User user = checkUserInformations(email);
         final Optional<Customer> optCustomer = customerRepository.findById(user.getCustomerId());
@@ -244,12 +252,25 @@ public class CasInternalService {
         }
     }
 
+    @Deprecated
     public User findEntityByEmail(final String email) {
         return checkUserInformations(email);
     }
 
+    @Deprecated
     private User checkUserInformations(final String email) {
         final User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
+        } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
+            throw new InvalidAuthenticationException("User unavailable: " + email);
+        }
+        checkStatus(user.getStatus(), user.getEmail());
+        return user;
+    }
+
+    public User findUserByEmailAndCustomerId(final String email, String customerId) {
+        final User user = userRepository.findByEmailAndCustomerId(email, customerId);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
@@ -267,7 +288,7 @@ public class CasInternalService {
     }
 
     @Transactional
-    public UserDto getUserByEmail(final String email, final Optional<String> optEmbedded) {
+    public List<UserDto> getUsersByEmail(final String email, final Optional<String> optEmbedded) {
         boolean loadFullProfile = false;
         boolean isSubrogation = false;
         boolean isApi = false;
@@ -285,21 +306,26 @@ public class CasInternalService {
             }
         }
 
-        final UserDto userDto = internalUserService.findUserByEmail(email);
-        if (userDto == null) {
-            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        }
-        checkStatus(userDto.getStatus(), userDto.getEmail());
-        if (loadFullProfile) {
-            final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
-            internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
-            internalUserService.addTenantsByAppInformation(authUserDto);
-            generateAndAddAuthToken(authUserDto, isSubrogation, isApi);
-            createEventsSubrogation(userDto, isSubrogation);
-            return authUserDto;
+        final List<UserDto> usersDto = internalUserService.findUsersByEmail(email);
 
+        // FIXME: LGH
+        // if (userDto == null) {
+        //     throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
+        // }
+        // checkStatus(userDto.getStatus(), userDto.getEmail());
+        if (loadFullProfile) {
+            final boolean subrogation = isSubrogation;
+            final boolean api = isApi;
+            return usersDto.stream().map(user -> {
+                final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
+                internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
+                internalUserService.addTenantsByAppInformation(authUserDto);
+                generateAndAddAuthToken(authUserDto, subrogation, api);
+                createEventsSubrogation(user, subrogation);
+                return authUserDto;
+            }).collect(Collectors.toList());
         } else {
-            return userDto;
+            return usersDto;
         }
     }
 
@@ -321,7 +347,9 @@ public class CasInternalService {
             }
         }
 
-        return getUserByEmail(email, Optional.ofNullable(optEmbedded));
+        List<UserDto> user = getUsersByEmail(email, Optional.ofNullable(optEmbedded));
+        // FIXME LGH
+        return user.get(0);
     }
 
     /**
@@ -579,4 +607,7 @@ public class CasInternalService {
         return null;
     }
 
+    public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
+        return customerInternalService.getAllById(customerIds);
+    }
 }

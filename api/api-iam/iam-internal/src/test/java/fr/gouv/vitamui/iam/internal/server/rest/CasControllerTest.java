@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -180,10 +181,12 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         userProfile.setProfileGroup(new GroupDto());
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
         when(tokenRepository.generateSuperId()).thenReturn("en");
-        final AuthUserDto result = (AuthUserDto) controller.getUserByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        final List<UserDto> results =
+            controller.getUsersByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
+        assertThat(results).hasSize(1);
         userProfile.setAuthToken("TOKEN");
-        assertEquals(userProfile, result);
+        assertEquals(userProfile, results.get(0));
         verify(tokenRepository, times(1)).save(any());
     }
 
@@ -192,7 +195,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -206,7 +209,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -219,7 +222,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -232,7 +235,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword(PASSWORD);
         try {
             controller.login(request);
@@ -250,7 +253,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setPassword(passwordEncoder.encode("badPassword"));
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword(PASSWORD);
         controller.login(request);
     }
@@ -259,7 +262,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     public void testLoginKoBlankPasswords() {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(EMAIL);
+        request.setLoginEmail(EMAIL);
         request.setPassword("");
         try {
             controller.login(request);

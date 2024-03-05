@@ -45,7 +45,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -64,12 +63,11 @@ import java.io.IOException;
  * - automatic delegation given the provided IdP
  * - extraction of the username/surrogate passed as a request parameter
  * - save the portalUrl in the webflow.
- *
- *
  */
 public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
 
     private final IdentityProviderHelper identityProviderHelper;
 
@@ -81,24 +79,21 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final String vitamuiPortalUrl;
 
-    private final String surrogationSeparator;
-
-    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext configContext,
-                                                     final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
-                                                     final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
-                                                     final IdentityProviderHelper identityProviderHelper,
-                                                     final ProvidersService providersService,
-                                                     final Utils utils,
-                                                     final TicketRegistry ticketRegistry,
-                                                     final String vitamuiPortalUrl,
-                                                     final String surrogationSeparator) {
+    public CustomDelegatedClientAuthenticationAction(
+        final DelegatedClientAuthenticationConfigurationContext configContext,
+        final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
+        final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final String vitamuiPortalUrl) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
         this.vitamuiPortalUrl = vitamuiPortalUrl;
-        this.surrogationSeparator = surrogationSeparator;
     }
 
     @Override
@@ -117,24 +112,29 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         val event = super.doExecute(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
 
-            // extract and parse the request username if provided
-            String username = context.getRequestParameters().get(Constants.USERNAME);
-            if (username != null) {
+            // extract and parse subrogation information
+            String surrogateEmail = context.getRequestParameters().get(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
+            String surrogateCustomerId =
+                context.getRequestParameters().get(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
 
-                username = username.toLowerCase();
-                LOGGER.debug("Provided username: {}", username);
-                if (username.startsWith(surrogationSeparator)) {
-                    username = org.apache.commons.lang.StringUtils.substringAfter(username, surrogationSeparator);
-                }
+            String superUserEmail = context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
+            String superUserCustomerId =
+                context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
 
-                WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
-                flowScope.put(Constants.PROVIDED_USERNAME, username);
+            if (StringUtils.isNoneBlank(surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId)) {
 
-                if (username.contains(surrogationSeparator)) {
-                    final String[] parts = username.split("\\" + surrogationSeparator);
-                    flowScope.put(Constants.SURROGATE, parts[0]);
-                    flowScope.put(Constants.SUPER_USER, parts[1]);
-                }
+                validateEmail(surrogateEmail);
+                validateEmail(superUserEmail);
+                validateCustomerId(surrogateCustomerId);
+                validateCustomerId(superUserCustomerId);
+
+                LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+                    surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+
+                flowScope.put(Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
+                flowScope.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
+                flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
+                flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
             }
 
             // get the idp if it exists
@@ -171,5 +171,24 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         }
 
         return event;
+    }
+
+    private void validateEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Null email");
+        }
+        // FIXME : Implement this
+        // FIXME : Move to common helper
+    }
+
+    private void validateCustomerId(String customerId) {
+        if (customerId == null) {
+            throw new IllegalArgumentException("Null customerId");
+        }
+        // FIXME : Implement this
+        // FIXME : Move to common helper
+        if (!customerId.matches("^[a-z0-9_]+$")) {
+            throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
+        }
     }
 }
