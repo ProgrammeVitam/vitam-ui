@@ -133,4 +133,9 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
     }
     this.previewClose.emit();
   }
+
+  updateSecurityProfile(securityProfileUpdated: SecurityProfile): void {
+    this.securityProfile = securityProfileUpdated;
+    this.permsTab.SecurityProfile = securityProfileUpdated;
+  }
 }

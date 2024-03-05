@@ -13,6 +13,7 @@
         [securityProfile]="securityProfile"
         (updated)="updatedChange($event, 0)"
         #infoTab
+        (securityProfileUpdated)="updateSecurityProfile($event)"
         (fullAccessUpdated)="updateFullAccess($event)"
       >
       </app-security-profile-information-tab>

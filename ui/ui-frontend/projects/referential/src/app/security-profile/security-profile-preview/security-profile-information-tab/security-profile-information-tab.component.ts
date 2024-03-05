@@ -51,6 +51,7 @@ import { SecurityProfileService } from '../../security-profile.service';
 export class SecurityProfileInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() fullAccessUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() securityProfileUpdated: EventEmitter<SecurityProfile> = new EventEmitter<SecurityProfile>();
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
@@ -64,7 +65,7 @@ export class SecurityProfileInformationTabComponent {
 
   form: FormGroup;
 
-  submited = false;
+  submitted = false;
 
   ruleFilter = new FormControl();
 
@@ -122,27 +123,31 @@ export class SecurityProfileInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) =>
-        this.securityProfileService.patch(formData).pipe(catchError(() => of(null))),
-      ),
+      switchMap((formData: { id: string; [key: string]: any }) => {
+        if (formData.fullAccess) {
+          formData = { ...formData, permissions: [] };
+        }
+        return this.securityProfileService.patch(formData).pipe(catchError(() => of(null)));
+      }),
     );
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     if (this.isInvalid()) {
       return;
     }
     this.prepareSubmit().subscribe(
       () => {
         this.securityProfileService.get(this._securityProfile.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submitted = false;
           this.securityProfile = response;
+          this.fullAccessUpdated.emit(this.form.value.fullAccess);
+          this.securityProfileUpdated.emit(response);
         });
-        this.fullAccessUpdated.emit(this.form.value.fullAccess);
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }
