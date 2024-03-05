@@ -63,7 +63,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
 
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;
 
-  updateChildrenStatusAndSelectedNodes(children: Node[], check: boolean) {
+  updateChildrenStatusAndSelectedNodes(children: Node[], check: boolean, enableAllChildren: boolean | null = false) {
     if (!children || children.length === 0) {
       return;
     }
@@ -83,11 +83,15 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
       this.selectedNodes.included = this.selectedNodes.included.filter((id) => childNode.vitamId !== id);
 
       if (this.mode === FilingPlanMode.BOTH) {
-        childNode.disabled = !childNode.parents[0]?.checked;
+        if (enableAllChildren) {
+          childNode.disabled = false;
+        } else {
+          childNode.disabled = !childNode.parents[0]?.checked;
+        }
         this.selectedNodes.excluded = this.selectedNodes.excluded.filter((id) => childNode.vitamId !== id);
       }
 
-      this.updateChildrenStatusAndSelectedNodes(childNode.children, check);
+      this.updateChildrenStatusAndSelectedNodes(childNode.children, check, enableAllChildren);
     });
   }
 
@@ -145,9 +149,14 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
 
     if (this.mode === FilingPlanMode.BOTH) {
       this.updateParentsStatus(node.parents, nodeChecked, node.disabledChild);
+      let enableAllChildren = false;
+      if (!nodeChecked) {
+        enableAllChildren = this.areAllParentsUnchecked(node.parents);
+      }
+      this.updateChildrenStatusAndSelectedNodes(node.children, nodeChecked, enableAllChildren);
     }
 
-    if (this.mode === FilingPlanMode.INCLUDE_ONLY || this.mode === FilingPlanMode.BOTH) {
+    if (this.mode === FilingPlanMode.INCLUDE_ONLY) {
       this.updateChildrenStatusAndSelectedNodes(node.children, node.checked);
     }
 
@@ -177,6 +186,16 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
     this.onChange(this.selectedNodes);
   }
 
+  private areAllParentsUnchecked(parents: Node[]): boolean {
+    if (parents[0]?.checked) {
+      return false;
+    }
+    if (parents.length === 0 || !parents[0].parents || parents[0].parents.length === 0) {
+      return true;
+    }
+    return this.areAllParentsUnchecked(parents[0].parents);
+  }
+
   initCheckedNodes(obj: { included: string[]; excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
     if (!obj || !nodes) {
       return;
@@ -189,10 +208,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
         return;
       }
 
-      if (this.mode === FilingPlanMode.BOTH && node.parents?.length > 0) {
-        node.disabled = !node.parents[0].checked;
-      }
-
       if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         shouldStop = true;
@@ -203,6 +218,14 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
         node.checked = true;
         this.updateChildrenStatusAndSelectedNodes(node.children, true);
         return;
+      }
+
+      if (
+        this.mode === FilingPlanMode.BOTH &&
+        node.parents?.length > 0 &&
+        (node.parents[0].disabled || (obj.excluded && obj.excluded.includes(node.parents[0].vitamId)))
+      ) {
+        node.disabled = true;
       }
 
       if ((this.mode === FilingPlanMode.BOTH && !parentChecked && obj.included && obj.included.includes(node.vitamId)) || parentChecked) {
