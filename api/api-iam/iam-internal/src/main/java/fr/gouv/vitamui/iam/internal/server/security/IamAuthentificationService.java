@@ -42,6 +42,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -106,7 +107,7 @@ public class IamAuthentificationService {
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
             final LocalDate currentTokenExpirationLocalDate = convertToLocalDate(currentTokenExpirationDate);
-            if (currentTokenExpirationLocalDate.isAfter(LocalDate.of(2018, 10, 1)) && currentTokenExpirationDate.before(newTokenExpirationDate)) {
+            if (currentTokenExpirationDate.before(newTokenExpirationDate)) {
                 token.setUpdatedDate(newTokenExpirationDate);
                 tokenRepository.save(token);
             }
@@ -116,10 +117,13 @@ public class IamAuthentificationService {
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
             final String surrogateEmail = userDto.getEmail();
-            final Subrogation subrogation = subrogationRepository.findOneBySurrogate(surrogateEmail);
+            final Subrogation subrogation = subrogationRepository
+                .findOneBySurrogateAndSurrogateCustomerId(surrogateEmail, userDto.getCustomerId());
             final String superUserEmail = subrogation.getSuperUser();
             authUserDto.setSuperUser(superUserEmail);
-            final UserDto superUserDto = internalUserService.findUserByEmail(superUserEmail);
+            authUserDto.setSuperUserCustomerId(subrogation.getSuperUserCustomerId());
+            final UserDto superUserDto =
+                internalUserService.findUserByEmailAndCustomerId(superUserEmail, subrogation.getSuperUserCustomerId());
             authUserDto.setSuperUserIdentifier(superUserDto.getIdentifier());
         }
         internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);

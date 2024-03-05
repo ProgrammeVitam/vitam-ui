@@ -154,7 +154,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": customer does not exist", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (unknownCustomerId): customer does not exist", e.getMessage());
         }
     }
 
@@ -173,7 +173,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": customer does not exist", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (null): customer does not exist", e.getMessage());
         }
     }
 
@@ -206,7 +206,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": identifier must be null", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null", e.getMessage());
         }
     }
 
@@ -219,14 +219,15 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setIdentifier(null);
 
         prepareServices();
-        when(userRepository.findByEmail(any())).thenReturn(buildUser());
+        when(userRepository.findByEmailAndCustomerId(IamServerUtilsTest.USER_MAIL, IamServerUtilsTest.CUSTOMER_ID))
+            .thenReturn(buildUser());
 
         try {
             userController.create(userDto);
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": mail already exists", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): mail already exists", e.getMessage());
         }
     }
 
@@ -244,7 +245,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": group does not exist", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): group does not exist", e.getMessage());
         }
     }
 
@@ -260,7 +261,7 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user " + userDto.getEmail() + ": identifier must be null", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null", e.getMessage());
         }
     }
 
@@ -318,7 +319,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setEmail("test" + userDto.getEmail());
 
         prepareServices();
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(buildUser());
+        when(userRepository.findByEmailAndCustomerId(userDto.getEmail(), userDto.getCustomerId()))
+            .thenReturn(buildUser());
 
         try {
             userController.update(userDto.getId(), userDto);

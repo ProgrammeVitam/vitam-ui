@@ -74,6 +74,8 @@ public class AuthUserDto extends UserDto implements UserDetails {
 
     private String superUser;
 
+    private String superUserCustomerId;
+
     private String superUserIdentifier;
 
     private String username;
@@ -242,6 +244,9 @@ public class AuthUserDto extends UserDto implements UserDetails {
                         break;
                     case SUPER_USER_ATTRIBUTE :
                         setSuperUser((String) value);
+                        break;
+                    case SUPER_USER_CUSTOMER_ID_ATTRIBUTE:
+                        setSuperUserCustomerId((String) value);
                         break;
                     case SUPER_USER_IDENTIFIER_ATTRIBUTE :
                         setSuperUserIdentifier((String) value);

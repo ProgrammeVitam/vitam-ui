@@ -12,6 +12,7 @@ public class TestConstants {
     public static final String SYSTEM_USER_PREFIX_EMAIL = "admin";
 
     public static final String JULIEN_USER_PREFIX_EMAIL = "julien";
+    public static final String JULIEN_USER_CUSTOMER_ID = "customer_1";
 
     public static final String JULIEN_USER_ID = "vitamuijulien";
 
@@ -20,8 +21,6 @@ public class TestConstants {
     public static final String CLIENT1_CUSTOMER_ID = "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9";
 
     public static final String SYSTEM_CUSTOMER_CODE = "000000";
-
-    public static final String VITAM_UI_CUSTOMER_CODE = "123456";
 
     /**
      * This value is defined now in {@link BaseIntegration} and is read from config file.
@@ -96,6 +95,7 @@ public class TestConstants {
     public static final String EVENT_DATE_TIME_KEY = "Date d'opération";
 
     public static final String PIERRE_USER_PREFIX_EMAIL = "pierre";
+    public static final String PIERRE_USER_CUSTOMER_ID = "customer_2";
 
     public static final String CONTEXT_ID = "CONTEXT_ID";
 
@@ -103,19 +103,13 @@ public class TestConstants {
 
     public static final String CONTEXT_NAME = "admin-context";
 
-    public static final String ACCESS_CONTRACT_ID = "ACCESS_CONTRACT_ID";
-
     public static final String ACCESS_CONTRACT_IDENTIFIER = "IC-000001";
 
     public static final String ACCESS_CONTRACT_NAME = "IC-000001";
 
-    public static final String INGEST_CONTRACT_ID = "INGEST_CONTRACT_ID";
-
     public static final String INGEST_CONTRACT_IDENTIFIER = "ArchivalAgreement0";
 
     public static final String INGEST_CONTRACT_NAME = "ArchivalAgreement0";
-
-    public static final String SECURITY_PROFILE_ID = "SECURITY_PROFILE_ID";
 
     public static final String SECURITY_PROFILE_IDENTIFIER = "admin-security-profile";
 

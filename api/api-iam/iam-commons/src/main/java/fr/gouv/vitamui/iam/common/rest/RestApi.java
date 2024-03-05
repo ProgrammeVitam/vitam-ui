@@ -78,6 +78,8 @@ public abstract class RestApi {
     public static final String CAS_CHANGE_PASSWORD_PATH = "/password/change";
 
     public static final String CAS_USERS_PATH = "/users";
+
+    public static final String CAS_CUSTOMERS_PATH = "/customers";
     public static final String CAS_USER_INFO_PATH = "/userinfos";
 
     public static final String USERS_PROVISIONING = "/provisioning";

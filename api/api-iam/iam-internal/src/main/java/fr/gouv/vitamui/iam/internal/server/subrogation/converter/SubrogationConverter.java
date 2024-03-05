@@ -65,13 +65,13 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
     @Override
     public String convertToLogbook(final SubrogationDto dto) {
         final Map<String, String> logbookData = new HashMap<>();
-        logbookData.put(SURROGATE_KEY, getUserId(dto.getSurrogate()));
-        logbookData.put(SUPER_USER_KEY, getUserId(dto.getSuperUser()));
+        logbookData.put(SURROGATE_KEY, getUserId(dto.getSurrogate(), dto.getSurrogateCustomerId()));
+        logbookData.put(SUPER_USER_KEY, getUserId(dto.getSuperUser(), dto.getSuperUserCustomerId()));
         return ApiUtils.toJson(logbookData);
     }
 
-    private String getUserId(final String email) {
-        final User u = userRepository.findByEmail(email);
+    private String getUserId(final String email, final String customerId) {
+        final User u = userRepository.findByEmailAndCustomerId(email, customerId);
         return u.getIdentifier();
     }
 

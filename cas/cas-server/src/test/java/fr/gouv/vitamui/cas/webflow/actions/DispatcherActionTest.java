@@ -71,7 +71,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
-        action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils, mock(SessionStore.class));
+        action = new DispatcherAction(providersService, identityProviderHelper, utils, mock(SessionStore.class));
 
         final SAML2Client client = new SAML2Client();
         provider = new Pac4jClientIdentityProviderDto(new IdentityProviderDto(), client);
@@ -116,7 +116,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     @Test
     public void testInternalDisabled() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(casExternalRestClient.getUsersByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty())))
+            .thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 

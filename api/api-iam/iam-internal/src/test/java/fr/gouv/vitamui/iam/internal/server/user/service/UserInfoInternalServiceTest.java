@@ -49,7 +49,7 @@ class UserInfoInternalServiceTest {
     @Test
     void testGetMe_should_be_ok() {
         //Given
-        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com");
+        final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com",  "customerId");
         userDto.setUserInfoId("userInfoId");
         Mockito.when(internalSecurityService.getUser()).thenReturn(userDto);
         Mockito.when(userInfoRepository.findById(any())).thenReturn(buildUserInfoEntity());
@@ -66,7 +66,7 @@ class UserInfoInternalServiceTest {
     void testGetMe_should_throw_ApplicationServerException_when_user_not_have_userInfoId() {
         assertThrows(ApplicationServerException.class, () -> {
             //Given
-            final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com");
+            final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com", "customerId");
             Mockito.when(internalSecurityService.getUser()).thenReturn(userDto);
 
             //when
@@ -83,7 +83,7 @@ class UserInfoInternalServiceTest {
     void testGetMe_should_throw_ApplicationServerException_when_userInfoId_not_found() {
         assertThrows(ApplicationServerException.class, () -> {
             //Given
-            final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com");
+            final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("1", "test@vitamui.com", "customerId");
             userDto.setUserInfoId("userInfoId");
             Mockito.when(internalSecurityService.getUser()).thenReturn(userDto);
             Mockito.when(userInfoRepository.findById(any())).thenReturn(Optional.empty());
