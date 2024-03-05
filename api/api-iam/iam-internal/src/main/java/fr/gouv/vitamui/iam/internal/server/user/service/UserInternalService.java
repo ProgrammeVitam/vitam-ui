@@ -49,7 +49,13 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -122,6 +128,25 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
+
 /**
  * The service to read, create, update and delete the users.
  */
@@ -188,13 +213,17 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private ConnectionHistoryService connectionHistoryService;
 
     @Autowired
-    public UserInternalService(final SequenceGeneratorService sequenceGeneratorService, final UserRepository userRepository,
-                               final GroupInternalService groupInternalService, final ProfileInternalService profileInternalService,
-                               final UserEmailInternalService userEmailInternalService, final TenantRepository tenantRepository,
-                               final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository, final ProfileRepository profilRepository,
-                               final GroupRepository groupRepository, final IamLogbookService iamLogbookService, final UserConverter userConverter,
-                               final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService, final AddressService addressService,
-                               final ApplicationInternalService applicationInternalService, final PasswordConfiguration passwordConfiguration,
+    public UserInternalService(final SequenceGeneratorService sequenceGeneratorService,
+        final UserRepository userRepository,
+        final GroupInternalService groupInternalService, final ProfileInternalService profileInternalService,
+        final UserEmailInternalService userEmailInternalService, final TenantRepository tenantRepository,
+        final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository,
+        final ProfileRepository profilRepository,
+        final GroupRepository groupRepository, final IamLogbookService iamLogbookService,
+        final UserConverter userConverter,
+        final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService,
+        final AddressService addressService,
+        final ApplicationInternalService applicationInternalService, final PasswordConfiguration passwordConfiguration,
                                final UserExportService userExportService, final UserInfoInternalService userInfoInternalService, final ConnectionHistoryService connectionHistoryService) {
         super(sequenceGeneratorService);
         this.userRepository = userRepository;
@@ -213,7 +242,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         this.addressService = addressService;
         this.applicationInternalService = applicationInternalService;
         this.passwordConfiguration = passwordConfiguration;
-        maxOldPassword = (passwordConfiguration != null && passwordConfiguration.getMaxOldPassword() != null) ? passwordConfiguration.getMaxOldPassword() : MAX_OLD_PASSWORDS;
+        maxOldPassword = (passwordConfiguration != null && passwordConfiguration.getMaxOldPassword() != null) ?
+            passwordConfiguration.getMaxOldPassword() :
+            MAX_OLD_PASSWORDS;
         this.userExportService = userExportService;
         this.userInfoInternalService = userInfoInternalService;
         this.connectionHistoryService = connectionHistoryService;
@@ -226,12 +257,19 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         return super.getOneByPassSecurity(id, Optional.empty());
     }
 
-    public UserDto findUserByEmail(final String email) {
-        final User user = getRepository().findByEmailIgnoreCase(email);
+    public UserDto findUserByEmailAndCustomerId(final String email, final String customerId) {
+        final User user = getRepository().findByEmailIgnoreCaseAndCustomerId(email, customerId);
         if (user == null) {
             throw new NotFoundException("User not found for email: " + email);
         }
         return convertFromEntityToDto(user);
+    }
+
+    public List<UserDto> findUsersByEmail(final String email) {
+        List<User> users = getRepository().findAllByEmail(email);
+        return users.stream()
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
     }
 
     public AuthUserDto getMe() {
@@ -240,7 +278,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     @Override
     protected void beforeCreate(final UserDto dto) {
-        final String message = "Unable to create user " + dto.getEmail();
+        final String message = "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")";
 
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
@@ -347,7 +385,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
+            final TransactionDefinition definition =
+                new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
             status = mongoTransactionManager.getTransaction(definition);
         }
 
@@ -420,13 +459,15 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
+            final TransactionDefinition definition =
+                new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
             status = mongoTransactionManager.getTransaction(definition);
         }
 
         try {
 
-            final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+            final VitamContext vitamContext =
+                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
             if (vitamContext != null) {
                 LOGGER.debug("Update User EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             }
@@ -436,7 +477,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final User entity = convertFromDtoToEntity(dto);
             final String entityId = entity.getId();
             final Optional<User> optExistingUser = getRepository().findById(entityId);
-            Assert.isTrue(optExistingUser.isPresent(), "Unable to update " + getObjectName() + ": no entity found with id: " + entityId);
+            Assert.isTrue(optExistingUser.isPresent(),
+                "Unable to update " + getObjectName() + ": no entity found with id: " + entityId);
 
             final User existingUser = optExistingUser.get();
             entity.setPassword(existingUser.getPassword());
@@ -444,7 +486,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
             final UserStatusEnum existingStatus = existingUser.getStatus();
             final UserStatusEnum newStatus = dto.getStatus();
-            if (statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)) {
+            if (statusEquals(newStatus, UserStatusEnum.ENABLED) &&
+                statusEquals(existingStatus, UserStatusEnum.DISABLED)) {
                 saveCurrentPasswordInOldPasswords(entity, entity.getPassword(), maxOldPassword);
                 entity.setPassword(null);
                 entity.setPasswordExpirationDate(OffsetDateTime.now());
@@ -506,7 +549,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
+            final TransactionDefinition definition =
+                new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
             status = mongoTransactionManager.getTransaction(definition);
         }
 
@@ -521,10 +565,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final User entity = beforePatch(partialDto);
             final UserStatusEnum existingStatus = entity.getStatus();
             processPatch(entity, partialDto);
-            Assert.isTrue(getRepository().existsById(entity.getId()), "Unable to patch " + getObjectName() + ": no entity found with id: " + entity.getId());
+            Assert.isTrue(getRepository().existsById(entity.getId()),
+                "Unable to patch " + getObjectName() + ": no entity found with id: " + entity.getId());
 
             final UserStatusEnum newStatus = entity.getStatus();
-            if (statusEquals(existingStatus, UserStatusEnum.DISABLED) && statusEquals(newStatus, UserStatusEnum.ENABLED)) {
+            if (statusEquals(existingStatus, UserStatusEnum.DISABLED) &&
+                statusEquals(newStatus, UserStatusEnum.ENABLED)) {
                 entity.setPassword(null);
                 entity.setPasswordExpirationDate(OffsetDateTime.now());
                 entity.setNbFailedAttempts(0);
@@ -646,13 +692,18 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
                 case "groupId":
-                    final GroupDto oldGroup = groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
+                    final GroupDto oldGroup =
+                        groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
                     if (CastUtils.toString(entry.getValue()).isEmpty()) {
-                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), Optional.empty()));
+                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(),
+                            Optional.empty()));
                         user.setGroupId(CastUtils.toString(entry.getValue()));
                     } else {
-                        final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
-                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), newGroup.getIdentifier()));
+                        final GroupDto newGroup =
+                            groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(),
+                                Optional.empty());
+                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(),
+                            newGroup.getIdentifier()));
                         user.setGroupId(CastUtils.toString(entry.getValue()));
                     }
                     break;
@@ -681,7 +732,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
                     break;
                 case "subrogeable":
-                    logbooks.add(new EventDiffDto(UserConverter.SUBROGEABLE_KEY, user.isSubrogeable(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(UserConverter.SUBROGEABLE_KEY, user.isSubrogeable(), entry.getValue()));
                     user.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "otp":
@@ -696,7 +748,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, true);
                     break;
                 case "internalCode":
-                    logbooks.add(new EventDiffDto(UserConverter.INTERNAL_CODE_KEY, user.getInternalCode(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(UserConverter.INTERNAL_CODE_KEY, user.getInternalCode(), entry.getValue()));
                     user.setInternalCode(CastUtils.toString(entry.getValue()));
                     break;
                 case "siteCode":
@@ -708,11 +761,14 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     user.setCenterCodes(CastUtils.toList(entry.getValue()));
                     break;
                 case "autoProvisioningEnabled":
-                    logbooks.add(new EventDiffDto(UserConverter.AUTO_PROVISIONING_ENABLED_KEY, user.isAutoProvisioningEnabled(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(UserConverter.AUTO_PROVISIONING_ENABLED_KEY, user.isAutoProvisioningEnabled(),
+                            entry.getValue()));
                     user.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 default:
-                    throw new IllegalArgumentException("Unable to patch group " + user.getId() + ": key " + entry.getKey() + " is not allowed");
+                    throw new IllegalArgumentException(
+                        "Unable to patch group " + user.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateUserEvent(user, logbooks);
@@ -738,10 +794,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         // We enforce session customerId (no cross customer allowed for user
         // We make exception for cas user to be allowed for updating all users during provisioning process
         if (!internalSecurityService.hasRole(ServicesData.ROLE_PROVISIONING_USER)) {
-            Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
+            Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()),
+                message + ": customerId " + customerId + " is not allowed");
         }
         return getRepository().findByIdAndCustomerId(id, customerId)
-            .orElseThrow(() -> new IllegalArgumentException(message + ": no user found for id " + id + " - customerId " + customerId));
+            .orElseThrow(() -> new IllegalArgumentException(
+                message + ": no user found for id " + id + " - customerId " + customerId));
     }
 
     private void checkIsReadonly(final boolean readonly, final String message) {
@@ -751,7 +809,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private void checkGroup(final GroupDto groupDto, final String customerId, final String message) {
         Assert.isTrue(groupDto != null, message + ": group does not exist");
 
-        Assert.isTrue(StringUtils.equals(groupDto.getCustomerId(), customerId), message + ": group and user customerId must be equals");
+        Assert.isTrue(StringUtils.equals(groupDto.getCustomerId(), customerId),
+            message + ": group and user customerId must be equals");
 
         Assert.isTrue(groupDto.isEnabled(), message + ": group must be enabled");
     }
@@ -762,8 +821,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private void checkEmail(final String email, final String customerId, final String message) {
         Assert.notNull(email, "email : " + email + " format is not allowed");
-        Assert.isTrue(Pattern.matches(IamUtils.EMAIL_VALID_REGEXP, email), "email : " + email + " format is not allowed");
-        Assert.isNull(getRepository().findByEmailIgnoreCase(email), message + ": mail already exists");
+        Assert.isTrue(Pattern.matches(IamUtils.EMAIL_VALID_REGEXP, email),
+            "email : " + email + " format is not allowed");
+        Assert.isNull(getRepository().findByEmailIgnoreCaseAndCustomerId(email, customerId), message + ": mail already exists");
         if (email.matches(ADMIN_EMAIL_PATTERN + ".*")) {
             final Query query = new Query();
             query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));
@@ -779,7 +839,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkLevel(final String level, final String message) {
-        Assert.isTrue(Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level), "level : " + level + " format is not allowed");
+        Assert.isTrue(Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level),
+            "level : " + level + " format is not allowed");
         Assert.isTrue(internalSecurityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
     }
 
@@ -806,21 +867,26 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         checkOtp(userHasOtp, user.getEmail(), user.getMobile(), user.getCustomerId());
     }
 
-    private void checkOtp(final boolean userHasOtp, final String userEmail, final String userMobile, final String customerId) {
+    private void checkOtp(final boolean userHasOtp, final String userEmail, final String userMobile,
+        final String customerId) {
 
         final Customer customer = customerRepository.findById(customerId)
-            .orElseThrow(() -> new ApplicationServerException("Unable to check opt for user " + userEmail + " - Customer  not found: " + customerId));
+            .orElseThrow(() -> new ApplicationServerException(
+                "Unable to check opt for user " + userEmail + " - Customer  not found: " + customerId));
 
         if (OtpEnum.MANDATORY.equals(customer.getOtp()) && !userHasOtp) {
-            throw new IllegalArgumentException("Unable to disable otp for user:" + userEmail + " . Otp is mandatory this customer");
+            throw new IllegalArgumentException(
+                "Unable to disable otp for user:" + userEmail + " . Otp is mandatory this customer");
         }
 
         if (OtpEnum.DISABLED.equals(customer.getOtp()) && userHasOtp) {
-            throw new IllegalArgumentException("Unable to enable otp for user:" + userEmail + " . Otp is mandatory this customer");
+            throw new IllegalArgumentException(
+                "Unable to enable otp for user:" + userEmail + " . Otp is mandatory this customer");
         }
 
         if (userHasOtp && StringUtils.isEmpty(userMobile)) {
-            throw new IllegalArgumentException("Unable to enable otp for user:" + userEmail + " without a mobile phone");
+            throw new IllegalArgumentException(
+                "Unable to enable otp for user:" + userEmail + " without a mobile phone");
         }
     }
 
@@ -876,7 +942,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     public void addBasicCustomerAndProofTenantIdentifierInformation(final AuthUserDto userDto) {
         final String id = userDto.getId();
         final Customer customer = customerRepository.findById(userDto.getCustomerId())
-            .orElseThrow(() -> new NotFoundException("Cannot find customer : " + userDto.getCustomerId() + " of the user: " + id));
+            .orElseThrow(() -> new NotFoundException(
+                "Cannot find customer : " + userDto.getCustomerId() + " of the user: " + id));
         userDto.setCustomerIdentifier(customer.getIdentifier());
         final BasicCustomerDto basicCustomerDto = new BasicCustomerDto();
         basicCustomerDto.setId(customer.getId());
@@ -901,9 +968,11 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private Tenant findTenantByCustomerId(final String customerId, final String userId) {
-        final Optional<Tenant> proofTenant = tenantRepository.findByCustomerId(customerId).stream().filter(Tenant::isProof).findFirst();
+        final Optional<Tenant> proofTenant =
+            tenantRepository.findByCustomerId(customerId).stream().filter(Tenant::isProof).findFirst();
         if (!proofTenant.isPresent()) {
-            throw new NotFoundException("Cannot find any proof tenant attached for customer : " + customerId + " of the user: " + userId);
+            throw new NotFoundException(
+                "Cannot find any proof tenant attached for customer : " + customerId + " of the user: " + userId);
         }
 
         return proofTenant.get();
@@ -921,10 +990,14 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         final List<ProfileDto> profiles = profileInternalService.getMany(profileIds.toArray(new String[0]));
         if (profiles.size() != profileIds.size()) {
             final List<String> profilesNotFound = profileIds.stream()
-                .filter((profileId) -> profiles.stream().filter((profile) -> profile.getId().equals(profileId)).count() == 0).collect(Collectors.toList());
+                .filter(
+                    (profileId) -> profiles.stream().filter((profile) -> profile.getId().equals(profileId)).count() ==
+                        0).collect(Collectors.toList());
+
             LOGGER.info("profile non trouvé {} ", profilesNotFound);
             LOGGER.info("profile touvé {}", profileIds);
-            throw new ApplicationServerException("Unable to embed group " + groupId + " for user " + userDto.getId() + " : one of the profiles does not exist");
+            throw new ApplicationServerException("Unable to embed group " + groupId + " for user " + userDto.getId() +
+                " : one of the profiles does not exist");
         }
         groupDto.setProfiles(profiles);
 
@@ -944,13 +1017,16 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         final Map<String, Set<TenantDto>> tenantsByApp = new HashMap<>();
         if (authUserDto.getProfileGroup().getProfiles() != null) {
-            authUserDto.getProfileGroup().getProfiles().stream().filter(profile -> profile.getTenantName() != null).forEach(profile -> {
-                if (!tenantsByApp.containsKey(profile.getApplicationName())) {
-                    tenantsByApp.put(profile.getApplicationName(), new HashSet<>());
-                }
-                final TenantDto tenant = VitamUIUtils.copyProperties(tenantRepository.findByIdentifier(profile.getTenantIdentifier()), new TenantDto());
-                tenantsByApp.get(profile.getApplicationName()).add(tenant);
-            });
+            authUserDto.getProfileGroup().getProfiles().stream().filter(profile -> profile.getTenantName() != null)
+                .forEach(profile -> {
+                    if (!tenantsByApp.containsKey(profile.getApplicationName())) {
+                        tenantsByApp.put(profile.getApplicationName(), new HashSet<>());
+                    }
+                    final TenantDto tenant =
+                        VitamUIUtils.copyProperties(tenantRepository.findByIdentifier(profile.getTenantIdentifier()),
+                            new TenantDto());
+                    tenantsByApp.get(profile.getApplicationName()).add(tenant);
+                });
         }
 
         final List<TenantInformationDto> tenantsData = new ArrayList<>();
@@ -993,7 +1069,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         final Optional<User> user = getRepository().findById(id);
         user.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
-        return logbookService.findEventsByIdentifierAndCollectionNames(user.get().getIdentifier(), MongoDbCollections.USERS, vitamContext).toJsonNode();
+        return logbookService.findEventsByIdentifierAndCollectionNames(user.get().getIdentifier(),
+            MongoDbCollections.USERS, vitamContext).toJsonNode();
     }
 
     /**
@@ -1036,9 +1113,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     patchLastTenantIdentifier(user, CastUtils.toInteger(value));
                     break;
                 case "alerts":
-                    final ObjectMapper objectMapper = new ObjectMapper();
-                    final List<AlertAnalytics> alertAnalytics = objectMapper.convertValue(CastUtils.toList(value), new TypeReference<>() {
-                    });
+                    finalObjectMapper objectMapper = new ObjectMapper();
+                    final List<AlertAnalytics> alertAnalytics =
+                        objectMapper.convertValue(CastUtils.toList(value), new TypeReference<>() {
+                        });
                     patchAlertsAnalytics(user, alertAnalytics);
                     break;
             }
@@ -1049,11 +1127,13 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private User getUserById(final String id) {
-        return getRepository().findById(id).orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+        return getRepository().findById(id)
+            .orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        final Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, "lastTenantIdentifier", "alerts", USER_ID_ATTRIBUTE);
+        final Set<String> analyticsPatchAllowedFields =
+            Set.of(APPLICATION_ID, "lastTenantIdentifier", "alerts", USER_ID_ATTRIBUTE);
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");
@@ -1061,7 +1141,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         partialDto.keySet().forEach(key -> {
             if (!analyticsPatchAllowedFields.contains(key)) {
-                throw new IllegalArgumentException(String.format("Unable to patch user analytics key : %s is not allowed", key));
+                throw new IllegalArgumentException(
+                    String.format("Unable to patch user analytics key : %s is not allowed", key));
             }
         });
     }
@@ -1080,10 +1161,13 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkApplicationAccessPermission(final String applicationId) {
-        final List<ApplicationDto> loggedUserApplications = applicationInternalService.getAll(Optional.empty(), Optional.empty());
-        final boolean userHasPermission = loggedUserApplications.stream().anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
+        final List<ApplicationDto> loggedUserApplications =
+            applicationInternalService.getAll(Optional.empty(), Optional.empty());
+        final boolean userHasPermission = loggedUserApplications.stream()
+            .anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
         if (!userHasPermission && !applicationId.equals(PORTAL_APP_IDENTIFIER)) {
-            throw new IllegalArgumentException(String.format("User has no permission to access to the application : %s", applicationId));
+            throw new IllegalArgumentException(
+                String.format("User has no permission to access to the application : %s", applicationId));
         }
     }
 

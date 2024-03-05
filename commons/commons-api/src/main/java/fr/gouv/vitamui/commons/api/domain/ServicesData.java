@@ -213,6 +213,8 @@ public class ServicesData {
 
     public static final String ROLE_CAS_USERS = ROLE_PREFIX + "CAS_USERS";
 
+    public static final String ROLE_CAS_CUSTOMER_IDS = ROLE_PREFIX + "CAS_CUSTOMERS";
+
     public static final String ROLE_CAS_SUBROGATIONS = ROLE_PREFIX + "CAS_SUBROGATIONS";
 
     public static final String ROLE_LOGBOOKS = "ROLE_LOGBOOKS";

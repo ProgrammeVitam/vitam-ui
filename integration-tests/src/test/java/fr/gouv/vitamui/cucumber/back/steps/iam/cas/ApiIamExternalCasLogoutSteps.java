@@ -31,7 +31,8 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
                 new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         surrogateUser.getEmail(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
         getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_LOGOUT })
-                .logout(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), surrogateUser.getAuthToken(), superUser.getEmail());
+                .logout(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), surrogateUser.getAuthToken(),
+                    superUser.getEmail(), superUser.getCustomerId());
     }
 
     @Then("^la subrogation a bien été supprimée$")
@@ -66,7 +67,8 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
                         surrogateUser.getEmail(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
         try {
             getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
-                    .logout(getContext(testContext.tenantIHMContext, testContext.tokenUser), surrogateUser.getAuthToken(), superUser.getEmail());
+                    .logout(getContext(testContext.tenantIHMContext, testContext.tokenUser),
+                        surrogateUser.getAuthToken(), superUser.getEmail(), superUser.getCustomerId());
         }
         catch (final RuntimeException e) {
             testContext.exception = e;

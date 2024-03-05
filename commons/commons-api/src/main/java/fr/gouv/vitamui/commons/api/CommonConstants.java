@@ -271,6 +271,7 @@ public class CommonConstants {
     public static final String USERNAME_PARAMETER = "username";
 
     public static final String SUPER_USER_ATTRIBUTE = "_superUser";
+    public static final String SUPER_USER_CUSTOMER_ID_ATTRIBUTE = "_superUserCustomerId";
 
     public static final String CUSTOMER_ID = "customerId";
 

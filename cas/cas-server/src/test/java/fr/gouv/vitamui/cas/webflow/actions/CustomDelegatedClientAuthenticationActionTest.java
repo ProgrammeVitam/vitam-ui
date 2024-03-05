@@ -57,7 +57,7 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
         action = new CustomDelegatedClientAuthenticationAction(configContext, mock(DelegatedClientAuthenticationWebflowManager.class),
             mock(DelegatedClientAuthenticationFailureEvaluator.class), mock(IdentityProviderHelper.class),
-            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
+            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "");
     }
 
     @Test

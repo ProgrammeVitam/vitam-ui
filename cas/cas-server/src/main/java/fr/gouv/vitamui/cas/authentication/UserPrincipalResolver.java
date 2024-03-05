@@ -36,43 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.FIRSTNAME_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GROUP_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.INTERNAL_CODE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LASTNAME_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_CONNECTION_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LEVEL_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.MOBILE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.NB_FAILED_ATTEMPTS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.OTP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PASSWORD_EXPIRATION_DATE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PHONE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PROFILE_GROUP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PROOF_TENANT_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.READONLY_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ROLES_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.STATUS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
-
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -118,6 +81,56 @@ import org.pac4j.core.util.CommonHelper;
 import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
+import java.security.cert.CertificateParsingException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.FIRSTNAME_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.GROUP_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.INTERNAL_CODE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LASTNAME_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_CONNECTION_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.LEVEL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.MOBILE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.NB_FAILED_ATTEMPTS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.OTP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PASSWORD_EXPIRATION_DATE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PHONE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PROFILE_GROUP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.PROOF_TENANT_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.READONLY_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ROLES_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.STATUS_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
+
 /**
  * Resolver to retrieve the user.
  */
@@ -161,6 +174,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
         val requestContext = RequestContextHolder.getRequestContext();
 
         final boolean surrogationCall;
+        String loginEmail;
+        String loginCustomerId;
+        String superUserEmail;
+        String superUserCustomerId;
+
         String username;
         final String superUsername;
         String userProviderId;
@@ -170,13 +188,20 @@ public class UserPrincipalResolver implements PrincipalResolver {
             try {
                 val certificate = ((X509CertificateCredential) credential).getCertificate();
                 username = CertificateParser.extract(certificate, x509EmailAttributeMapping);
-                technicalUserId = Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
+                technicalUserId =
+                    Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
             } catch (final CertificateParsingException e) {
                 throw new RuntimeException(e.getMessage());
             }
             superUsername = null;
             userProviderId = null;
             surrogationCall = false;
+
+            // FIXME:
+            loginEmail = null;
+            loginCustomerId = null;
+            superUserEmail = null;
+            superUserCustomerId = null;
 
             String userDomain = username;
 
@@ -197,32 +222,55 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUsername = surrogationCredential.getUsername();
             userProviderId = null;
             technicalUserId = Optional.empty();
+
             surrogationCall = true;
+            loginEmail = (String) principal.getAttributes().get(Constants.FLOW_SURROGATE_EMAIL).get(0);
+            loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0);
+            superUserEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0);
+            superUserCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
+
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
             username = principalId;
             superUsername = null;
             userProviderId = null;
             technicalUserId = Optional.empty();
+
             surrogationCall = false;
+            loginEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0);
+            loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
+            superUserEmail = null;
+            superUserCustomerId = null;
+
         } else {
+
+            // FIXME:
+            loginEmail = null;
+            loginCustomerId = null;
+            superUserEmail = null;
+            superUserCustomerId = null;
+
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             val webContext = new JEEContext(request, response);
             val clientCredential = (ClientCredential) credential;
             val providerName = clientCredential.getClientName();
-            val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
+            val provider =
+                identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
             val mailAttribute = provider.getMailAttribute();
             String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
                 if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
-                    LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value", providerName, mailAttribute);
+                    LOGGER.error(
+                        "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
+                        providerName, mailAttribute);
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, principalId, mail);
+                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'",
+                        providerName, mailAttribute, principalId, mail);
                     email = mail;
                 }
             }
@@ -231,15 +279,21 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
-                if (identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))) {
-                    LOGGER.error("Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value", providerName, identifierAttribute);
+                if (identifiers == null || identifiers.size() == 0 ||
+                    CommonHelper.isBlank((String) identifiers.get(0))) {
+                    LOGGER.error(
+                        "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
+                        providerName, identifierAttribute);
                     return NullPrincipal.getInstance();
                 } else {
                     val identifierAttr = (String) identifiers.get(0);
-                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, principalId, identifierAttr);
+                    LOGGER.info(
+                        "Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'",
+                        providerName, identifierAttribute, principalId, identifierAttr);
                     identifier = identifierAttr;
                 }
             }
+            // FIXME
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
             if (surrogateInSession != null) {
                 username = (String) surrogateInSession;
@@ -256,7 +310,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
             }
         }
 
-        LOGGER.debug("Resolving username: {} | superUsername: {} | surrogationCall: {}", username, superUsername, surrogationCall);
+        LOGGER.debug("Resolving loginEmail: {} | loginCustomerId: {} | superUserEmail: {} | superUserCustomerId: {} |" +
+            " surrogationCall: {}", loginEmail, loginCustomerId, superUserEmail, superUserCustomerId, surrogationCall);
 
         String embedded = AUTH_TOKEN_PARAMETER;
         if (surrogationCall) {
@@ -266,32 +321,33 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        final UserDto user = casExternalRestClient.getUser(utils.buildContext(username), username, userProviderId, technicalUserId, Optional.ofNullable(embedded));
+        final UserDto user = casExternalRestClient.getUser(utils.buildContext(loginEmail),
+            loginEmail, loginCustomerId, userProviderId, technicalUserId, Optional.of(embedded));
 
         if (user == null) {
-            LOGGER.debug("No user resolved for: {}", username);
+            LOGGER.debug("No user resolved for: {}", loginEmail);
             return null;
-        }
-        else if (user.getStatus() != UserStatusEnum.ENABLED) {
-            LOGGER.debug("User cannot login: {} - User {}", username, user.toString());
+        } else if (user.getStatus() != UserStatusEnum.ENABLED) {
+            LOGGER.debug("User cannot login: {} - User {}", loginEmail, user.toString());
             return null;
         }
 
-        if (Objects.isNull(username)) {
-            username = user.getEmail();
+        if (Objects.isNull(loginEmail)) {
+            loginEmail = user.getEmail();
         }
 
         val attributes = new HashMap<String, List<Object>>();
         attributes.put(USER_ID_ATTRIBUTE, Collections.singletonList(user.getId()));
         attributes.put(CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(user.getCustomerId()));
-        attributes.put(EMAIL_ATTRIBUTE, Collections.singletonList(username));
+        attributes.put(EMAIL_ATTRIBUTE, Collections.singletonList(loginEmail));
         attributes.put(FIRSTNAME_ATTRIBUTE, Collections.singletonList(user.getFirstname()));
         attributes.put(LASTNAME_ATTRIBUTE, Collections.singletonList(user.getLastname()));
         attributes.put(IDENTIFIER_ATTRIBUTE, Collections.singletonList(user.getIdentifier()));
         val otp = user.isOtp();
         attributes.put(OTP_ATTRIBUTE, Collections.singletonList(otp));
-        val otpUsername = superUsername != null ? superUsername : username;
-        val computedOtp = otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
+        val otpUsername = superUserEmail != null ? superUserEmail : loginEmail;
+        val computedOtp =
+            otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
         attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
         attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
         attributes.put(USER_INFO_ID, Collections.singletonList(user.getUserInfoId()));
@@ -310,10 +366,12 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         UserDto superUser = null;
         if (surrogationCall) {
-            attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
-            superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
+            attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
+            superUser = casExternalRestClient.getUser(utils.buildContext(superUserEmail), superUserEmail,
+                superUserCustomerId, null, Optional.empty(), Optional.empty());
             if (superUser == null) {
-                LOGGER.debug("No super user found for: {}", superUsername);
+                LOGGER.debug("No super user found for: {}", superUserEmail);
                 return NullPrincipal.getInstance();
             }
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
@@ -321,12 +379,15 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         if (user instanceof AuthUserDto) {
             final AuthUserDto authUser = (AuthUserDto) user;
-            attributes.put(PROFILE_GROUP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup())));
+            attributes.put(PROFILE_GROUP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup())));
             attributes.put(CUSTOMER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(authUser.getCustomerIdentifier()));
-            attributes.put(BASIC_CUSTOMER_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer())));
+            attributes.put(BASIC_CUSTOMER_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer())));
             attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
-            attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
+            attributes.put(TENANTS_BY_APP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
             attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
             attributes.put(CENTER_CODES, Collections.singletonList(user.getCenterCodes()));
             final Set<String> roles = new HashSet<>();
@@ -346,7 +407,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
     @Override
     public boolean supports(final Credential credential) {
         return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
-            || credential instanceof SurrogateUsernamePasswordCredential || credential instanceof X509CertificateCredential;
+            || credential instanceof X509CertificateCredential;
     }
 
     @Override

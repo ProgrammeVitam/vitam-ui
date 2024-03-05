@@ -273,6 +273,52 @@ db.users.insertOne(
 	"_class": "users"
 });
 
+db.customers.updateOne({ "_id": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68" },
+  {
+    $addToSet: {
+      "emailDomains": {
+        $each: [
+          "change-it.fr"
+        ]
+      }
+    }
+  }
+);
+
+db.customers.updateOne({customerId: '5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68'},
+  {
+    $addToSet: {
+      "patterns": {
+        $each: [
+          ".*@change-it.fr"
+        ]
+      }
+    }
+  }
+);
+
+db.users.insertOne(
+  {
+    "_id": "5c7902ee7884583d1ebb6e6063569f12508f46e293f99e31a96c6b4449a7573f",
+    "email": "demo@change-it.fr",
+    "firstname": "Demo",
+    "identifier": "10100000",
+    "otp": false,
+    "subrogeable": false,
+    "lastname": "2",
+    "language": "FRENCH",
+    "groupId": "5c7928337884583d1ebb6ecbee8ed316ea5546bf92500eb136afa905d237233b",
+    "nbFailedAttempts": 0,
+    "status": "ENABLED",
+    "type": "NOMINATIVE",
+    "readonly": false,
+    "level": "",
+    "password" : "$2a$10$8fZVa7gCaj9UTNMAn36C5uyfPt7WQ.Vj1SqHzknWLkzhq9xFBClXy",
+    "passwordExpirationDate": "2050-01-09T00:00:00.000+01:00",
+    "customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
+    "_class": "users"
+  });
+
 db.providers.updateOne( {
 	"_id": "system_idp"
 }, {

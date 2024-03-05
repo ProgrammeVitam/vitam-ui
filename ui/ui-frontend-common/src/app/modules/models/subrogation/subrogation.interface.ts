@@ -41,4 +41,6 @@ export interface Subrogation extends Id {
   date: string;
   surrogate: string;
   superUser: string;
+  surrogateCustomerId: string;
+  superUserCustomerId: string;
 }

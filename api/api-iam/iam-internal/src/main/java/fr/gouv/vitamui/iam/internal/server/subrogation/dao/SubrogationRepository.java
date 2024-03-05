@@ -49,12 +49,15 @@ import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
  */
 public interface SubrogationRepository extends VitamUIRepository<Subrogation, String> {
 
-    List<Subrogation> findBySuperUser(String superUser);
+    List<Subrogation> findBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
 
-    Subrogation findOneBySuperUser(String superUser);
+    Subrogation findOneBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
 
+    @Deprecated
     Subrogation findOneBySurrogate(String email);
+    Subrogation findOneBySurrogateAndSurrogateCustomerId(String email, String customerId);
 
-    Optional<Subrogation> findBySuperUserAndSurrogate(String superUser, String surrogate);
+    Optional<Subrogation> findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
+        String superUser, String superUserCustomerId, String surrogate, String surrogateCustomerId);
 
 }

@@ -53,6 +53,7 @@ export class SubrogationModalComponent implements OnInit {
   public stepIndex = 0;
   public stepCount = 2;
   public domains: string[];
+  public customerId: string;
   public user: { email: string; firstname: string; lastname: string };
   public form: FormGroup;
   public pending: boolean;
@@ -75,6 +76,7 @@ export class SubrogationModalComponent implements OnInit {
 
   ngOnInit() {
     this.domains = this.data.domains;
+    this.customerId = this.data.customerId;
     this.user = this.data.user;
     if (this.user) {
       this.stepIndex = 1;
@@ -133,12 +135,15 @@ export class SubrogationModalComponent implements OnInit {
     // TODO subscribe to the modal close event and cancel the subrogation
     this.pending = true;
     const currentUserEmail = this.authService.user.email;
+    const currentUserCustomerId = this.authService.user.customerId;
     this.subrogation = {
       id: null,
       status: 'CREATED',
       date: null,
       surrogate: surrogateEmail,
       superUser: currentUserEmail,
+      surrogateCustomerId: this.customerId,
+      superUserCustomerId: currentUserCustomerId,
     };
     this.subrogationService.createSubrogation(this.subrogation).subscribe(
       (subrogation) => {
@@ -165,7 +170,12 @@ export class SubrogationModalComponent implements OnInit {
 
   logoutAndLaunchSubrogation(subrogation: Subrogation) {
     this.dialogRef.close();
-    this.authService.logoutForSubrogation(subrogation.superUser, subrogation.surrogate);
+    this.authService.logoutForSubrogation(
+      subrogation.superUser,
+      subrogation.superUserCustomerId,
+      subrogation.surrogate,
+      subrogation.surrogateCustomerId,
+    );
   }
 
   onCancel() {

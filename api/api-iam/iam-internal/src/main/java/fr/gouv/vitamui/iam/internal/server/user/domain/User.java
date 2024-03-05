@@ -48,6 +48,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -64,6 +65,7 @@ import java.util.List;
  */
 @Document(collection = MongoDbCollections.USERS)
 @TypeAlias(MongoDbCollections.USERS)
+@CompoundIndex(def = "{'email': 1, 'customerId': 1}", name = "idx_user_email_customerid", unique = true)
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -76,7 +78,6 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
     private List<String> oldPasswords = new ArrayList<>();
 
     @NotNull
-    @Indexed(name = "idx_user_email", unique = true, background = true)
     @Length(min = 4, max = 100)
     @Email
     private String email;

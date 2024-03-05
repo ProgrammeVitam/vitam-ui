@@ -62,18 +62,17 @@
         Veuillez sélectionner une organisation
       </div>
 
-      <form id="main-form" method="post" th:object="${customerModel}" action="login" class="margin-top-20">
+      <form id="main-form" method="post" action="login" class="margin-top-20">
         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
         <input type="hidden" name="_eventId" value="submit"/>
         <div class="form-line">
-          <select th:field="*{customer}" name="customer" id="customer"
-                  required="true">
+          <select name="customerId" id="customerId" required="true">
             <option hidden disabled selected value=""></option>
-            <option th:each="c : ${#customers}" th:value="${c.code}" th:text="${c.name}" th:selected="${i==75}">
-              option 1
+            <option th:each="c : ${availableCustomerList}" th:value="${c.customerId}" th:text="${c.code} + ' - ' + ${c.name}">
+              00001 - Orga 1
             </option>
           </select>
-          <label for="customer">Organisation *</label>
+          <label for="customerId">Organisation *</label>
           <i class="select-arrow vitamui-icon vitamui-icon-unfold-more"></i>
         </div>
 
