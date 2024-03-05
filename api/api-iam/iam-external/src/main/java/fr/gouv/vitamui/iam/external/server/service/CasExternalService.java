@@ -36,9 +36,11 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,8 +83,8 @@ public class CasExternalService extends AbstractInternalClientService {
         return getClient().login(getInternalHttpContext(), dto);
     }
 
-    public UserDto getUserByEmail(final String email, final Optional<String> embedded) {
-        return getClient().getUserByEmail(getInternalHttpContext(), email, embedded);
+    public  List<? extends UserDto> getUsersByEmail(final String email, final Optional<String> embedded) {
+        return getClient().getUsersByEmail(getInternalHttpContext(), email, embedded);
     }
 
     public UserDto getUser(final String email, final String idp, final Optional<String> userIdentifier, final Optional<String> embedded) {
@@ -108,5 +110,9 @@ public class CasExternalService extends AbstractInternalClientService {
     @Override
     protected CasInternalRestClient getClient() {
         return casInternalRestClient;
+    }
+
+    public Collection<CustomerDto> getCustomersByIds(List<String> customerIds) {
+        return getClient().getCustomersByIds(getInternalHttpContext(), customerIds);
     }
 }

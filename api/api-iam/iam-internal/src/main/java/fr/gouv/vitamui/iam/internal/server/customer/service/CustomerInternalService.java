@@ -672,4 +672,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         LOGGER.debug("get Gdpr Setting Status ");
         return this.gdprAlertReadonly;
     }
+
+    public List<CustomerDto> getAllById(List<String> customerIds) {
+        Iterable<Customer> customers = this.customerRepository.findAllById(customerIds);
+        List<CustomerDto> customerDtos = new ArrayList<>();
+        for (Customer customer : customers) {
+            customerDtos.add(convertFromEntityToDto(customer));
+        }
+        return customerDtos;
+    }
 }

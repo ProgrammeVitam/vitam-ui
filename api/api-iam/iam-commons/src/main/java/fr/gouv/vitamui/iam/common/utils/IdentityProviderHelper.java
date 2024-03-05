@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Helper to work with identity providers.
@@ -59,6 +60,21 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
+    public Optional<IdentityProviderDto> findByCustomerId(final List<IdentityProviderDto> providers,
+        final String customerId) {
+        return providers.stream()
+            .filter(provider -> provider.getCustomerId().equals(customerId))
+            .findFirst();
+    }
+
+    public List<IdentityProviderDto> findAllByUserIdentifier(final List<IdentityProviderDto> providers,
+        final String identifier) {
+        return providers.stream()
+            .filter(provider -> provider.getPatterns().stream().anyMatch(identifier::matches))
+            .collect(Collectors.toList());
+    }
+
+    @Deprecated
     public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers, final String identifier) {
         for (final IdentityProviderDto provider : providers) {
             for (final String pattern : provider.getPatterns()) {

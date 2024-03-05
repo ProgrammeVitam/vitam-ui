@@ -36,33 +36,32 @@
  */
 package fr.gouv.vitamui.iam.common.dto.cas;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * Authentication request with username, password, super user and IP.
- *
- *
+ * Authentication request with username & its customerId, password, surrogate & its customerId and IP.
  */
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString(exclude = "password")
 public class LoginRequestDto {
 
     @NotNull
-    private String username;
+    private String loginEmail;
+    @NotNull
+    private String loginCustomerId;
 
     @NotNull
     private String password;
 
-    private String surrogate;
+    private String surrogateEmail;
+    private String surrogateCustomerId;
 
     private String ip;
-
-    @Override
-    public String toString() {
-        return "[username: " + username + ", passwordExists?: " + (password != null) +
-            ", surrogate: " + surrogate + ", IP: " + ip + "]";
-    }
 }

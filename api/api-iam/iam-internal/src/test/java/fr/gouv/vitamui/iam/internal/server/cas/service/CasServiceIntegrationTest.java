@@ -200,7 +200,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         Mockito.when(internalUserService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
         Mockito.when(subrogationRepository.findOneBySurrogate(ArgumentMatchers.anyString())).thenReturn(subro);
         Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
-        casService.getUserByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
+        // FIXME LGH : Is that really useful?
+        casService.getUsersByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
         return subro;
     }
 

@@ -188,9 +188,6 @@ public class WebflowConfig {
     @Value("${vitamui.portal.url}")
     private String vitamuiPortalUrl;
 
-    @Value("${cas.authn.surrogate.separator}")
-    private String surrogationSeparator;
-
     @Value("${theme.vitamui-platform-name:VITAM-UI}")
     private String vitamuiPlatformName;
 
@@ -202,7 +199,7 @@ public class WebflowConfig {
 
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils,
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, utils,
                 delegatedClientDistributedSessionStore.getObject());
     }
 
@@ -275,7 +272,7 @@ public class WebflowConfig {
             .withProperties(casProperties)
             .withAction(() -> new CustomDelegatedClientAuthenticationAction(delegatedClientAuthenticationConfigurationContext,
                 delegatedClientWebflowManager, delegatedClientAuthenticationFailureEvaluator, identityProviderHelper,
-                providersService, utils, ticketRegistry, vitamuiPortalUrl, surrogationSeparator))
+                providersService, utils, ticketRegistry, vitamuiPortalUrl))
             .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION)
             .build()
             .get();

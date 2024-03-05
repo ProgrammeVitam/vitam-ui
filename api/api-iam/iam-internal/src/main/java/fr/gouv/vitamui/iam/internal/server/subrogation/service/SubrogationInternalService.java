@@ -199,8 +199,8 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
 
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
-        final User surrogate = userRepository.findByEmail(emailSurrogate);
-        final User superUser = userRepository.findByEmail(emailSuperUser);
+        final User surrogate = userRepository.findByEmailAndCustomerId(dto.getSurrogate(), dto.getSurrogateCustomerId());
+        final User superUser = userRepository.findByEmailAndCustomerId(dto.getSuperUser(), dto.getSuperUserCustomerId());
         Assert.isTrue(surrogate != null, "No surrogate found with email : " + emailSurrogate);
         dto.setSurrogateCustomerId(surrogate.getCustomerId());
 

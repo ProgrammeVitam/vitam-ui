@@ -54,6 +54,7 @@ public interface SubrogationRepository extends VitamUIRepository<Subrogation, St
     Subrogation findOneBySuperUser(String superUser);
 
     Subrogation findOneBySurrogate(String email);
+    Subrogation findOneBySurrogateAndSurrogateCustomerId(String email, String customerId);
 
     Optional<Subrogation> findBySuperUserAndSurrogate(String superUser, String surrogate);
 

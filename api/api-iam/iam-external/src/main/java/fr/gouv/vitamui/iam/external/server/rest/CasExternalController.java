@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -65,6 +66,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,10 +110,10 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
+    public List<? extends UserDto> getUsersByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
         ParameterChecker.checkParameter("The email is mandatory : ", email);
-        return casService.getUserByEmail(email, embedded);
+        return casService.getUsersByEmail(email, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
@@ -158,5 +160,15 @@ public class CasExternalController {
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
         ParameterChecker.checkParameter("The authToken is mandatory : ", authToken);
         casService.logout(authToken, superUser);
+    }
+
+    @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
+    // FIXME LGH : Create dedicated role
+    @Secured(ServicesData.ROLE_CAS_USERS)
+    public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
+        LOGGER.debug("get all customers by ids={}", customerIds);
+        ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
+        SanityChecker.checkSecureParameter(customerIds.toArray(customerIds.toArray(new String[0])));
+        return casService.getCustomersByIds(customerIds);
     }
 }
