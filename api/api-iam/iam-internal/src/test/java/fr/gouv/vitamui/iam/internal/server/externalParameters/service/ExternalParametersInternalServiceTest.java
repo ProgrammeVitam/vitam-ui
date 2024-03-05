@@ -76,15 +76,17 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.getProfileGroup().getProfiles().get(0).setApplicationName(Application.EXTERNAL_PARAMS.toString());
         user.getProfileGroup().getProfiles().get(0).setExternalParamId(ANY_EXTERNAL_PARAM_ID);
+        user.getProfileGroup().getProfiles().get(0).setTenantIdentifier(1);
         ExternalParameters externalParameters = new ExternalParameters();
         externalParameters.setId(ID);
 
-        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.of(externalParameters));
+        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(externalParameters));
         when(internalSecurityService.getUser()).thenReturn(user);
+        when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
 
         ExternalParametersDto res = this.service.getMyExternalParameters();
         Assert.assertNotNull("ExternalParameters should be returned.", res);
         Assert.assertTrue(res.getId().equals(ID));
     }
+
 }
