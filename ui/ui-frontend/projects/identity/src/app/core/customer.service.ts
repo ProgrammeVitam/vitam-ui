@@ -36,7 +36,7 @@
  */
 import { Observable, Subject, zip } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService, VitamUISnackBarService } from '../../../../ui-frontend-common';
 
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';

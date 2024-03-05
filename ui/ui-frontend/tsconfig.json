@@ -49,6 +49,12 @@
       ],
       "vitamui-library/*": [
         "dist/vitamui-library/*"
+      ],
+      "vitamui-testing": [
+        "dist/vitamui-testing"
+      ],
+      "vitamui-testing/*": [
+        "dist/vitamui-testing/*"
       ]
     },
     "noUnusedLocals": true,

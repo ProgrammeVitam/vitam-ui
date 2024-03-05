@@ -492,6 +492,37 @@
         }
       }
     },
+    "vitamui-testing": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "prefix": "vitamui",
+          "styleext": "scss"
+        },
+        "@schematics/angular:directive": {
+          "prefix": "vitamui"
+        }
+      },
+      "root": "projects/vitamui-testing",
+      "sourceRoot": "projects/vitamui-testing/src",
+      "prefix": "vitamui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/vitamui-testing/tsconfig.lib.json",
+            "project": "projects/vitamui-testing/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["projects/vitamui-testing/tsconfig.lib.json", "projects/vitamui-testing/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
     "starter-kit": {
       "root": "projects/starter-kit/",
       "sourceRoot": "projects/starter-kit/src",

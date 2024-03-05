@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { AccessContract, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from '../../../../../ui-frontend-common';
 
 const HTTP_STATUS_OK = 200;
 

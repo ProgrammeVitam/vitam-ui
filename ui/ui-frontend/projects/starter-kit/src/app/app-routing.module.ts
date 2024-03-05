@@ -36,7 +36,7 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { ApplicationId } from 'ui-frontend-common';
 import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -54,24 +54,24 @@ import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
 const routes: Routes = [
   { path: '', component: StarterKitComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'arrays', component: ArraysComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'inputs', component: InputsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'breadcrumbs', component: BreadcrumbComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'elevations', component: ElevationComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'inputs', component: InputsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'progress-bar', component: ProgressBarComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'tooltip', component: TooltipComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-  { path: 'elevations', component: ElevationComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'translation', component: TranslationComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [
+    QuicklinkModule,
     RouterModule.forRoot(routes, {
       preloadingStrategy: QuicklinkStrategy,
     }),

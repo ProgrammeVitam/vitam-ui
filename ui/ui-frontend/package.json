@@ -94,6 +94,7 @@
     "copy-scss:vitamui-library": "mkdir -p dist/ && cp -a ./projects/vitamui-library/src/sass ./dist/",
     "build:vitamui-library": "ng build vitamui-library",
     "watch:vitamui-library": "ng build vitamui-library --watch",
+    "build:vitamui-testing": "ng build vitamui-testing",
     "copy-scss:ui-frontend-common": "cp-cli ./projects/ui-frontend-common/src/sass ./dist/ui-frontend-common/sass",
     "build:ui-frontend-common": "ng build ui-frontend-common",
     "publish:portal": "cp projects/portal/package.json dist/portal/package.json && npm publish dist/portal/",
