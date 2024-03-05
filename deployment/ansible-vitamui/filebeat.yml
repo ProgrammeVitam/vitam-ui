@@ -4,10 +4,12 @@
   any_errors_fatal: true
   roles:
     - filebeat
+  when: syslog.name | default('filebeat') == "filebeat"
   tags: filebeat
 
 - hosts: hosts_vitamui_reverseproxy
   any_errors_fatal: true
   roles:
     - filebeat
+  when: syslog.name | default('filebeat') == "filebeat"
   tags: filebeat
