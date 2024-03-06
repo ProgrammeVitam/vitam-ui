@@ -11,3 +11,12 @@
     kind: log
     vitam_component: consul
     source: vitamui
+  processors:
+  - dissect:
+      tokenizer: '%{timestamp} [%{loglevel}]  %{logger}: %{message}'
+      field: "message"
+      target: ""
+  - copy_fields:
+      fields:
+        - from: dissect.loglevel
+          to: loglevel
