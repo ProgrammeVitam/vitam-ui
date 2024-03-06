@@ -31,9 +31,9 @@
     kind: log
     vitam_component: {{ vitamui_service }}
     source: vitamui
-    processors:
+  processors:
     - dissect:
-        tokenizer: '%{timestamp} [%{thread}] [%{request_id}] [%{tenant_id}] %{loglevel} %{logger} - %{message}'
+        tokenizer: '%{timestamp} [%{thread}] [] %{log_level} %{logger} - %{message}'
         field: "message"
         target: ""
     - drop_fields:
@@ -42,7 +42,7 @@
         fields:
           - from: dissect.loglevel
             to: loglevel
-    parsers:
+  parsers:
     - multiline:
         type: pattern
         pattern: '^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3}'
