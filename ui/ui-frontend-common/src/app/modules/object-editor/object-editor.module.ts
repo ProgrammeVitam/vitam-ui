@@ -13,6 +13,7 @@ import { DatepickerModule } from '../components/datepicker/datepicker.module';
 import { VitamUIInputModule } from '../components/vitamui-input/vitamui-input.module';
 import { VitamUIListInputModule } from '../components/vitamui-list-input';
 import { VitamuiMenuButtonModule } from '../components/vitamui-menu-button/vitamui-menu-button.module';
+import { VitamuiRepeatableInputModule } from '../components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { DisplayObjectService } from '../object-viewer/models';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
@@ -41,6 +42,7 @@ import { ObjectEditorComponent } from './object-editor.component';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    VitamuiRepeatableInputModule,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

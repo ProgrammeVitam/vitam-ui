@@ -15,7 +15,7 @@ $anim-timing: 150ms ease-out;
   border-radius: 4px;
   border: none;
   background-color: white;
-  padding: 8px 30px;
+  padding: 10px 15px;
   transition: border-color $anim-timing;
   vertical-align: top;
 
@@ -48,11 +48,12 @@ $anim-timing: 150ms ease-out;
   input,
   textarea {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--vitamui-grey-900);
     background: none;
     border: none;
     outline: none;
+    line-height: 24px;
   }
 
   input {

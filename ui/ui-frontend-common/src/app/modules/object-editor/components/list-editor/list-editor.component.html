@@ -36,9 +36,10 @@
       </div>
     </div>
   </ng-container>
-  <vitamui-common-list-input
+  <vitamui-common-repeatable-input
     *ngIf="editObject?.kind === 'primitive-array'"
     [placeholder]="editObject.displayRule.ui.label | empty"
+    [textarea]="editObject.displayRule.ui.layout.size === 'large'"
     [formControl]="editObject.control"
-  ></vitamui-common-list-input>
+  ></vitamui-common-repeatable-input>
 </ng-template>

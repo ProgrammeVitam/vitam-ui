@@ -1,0 +1,55 @@
+<div
+  *ngFor="let item of items; trackBy: trackBy; let i = index; let first = first; let last = last"
+  class="item"
+  [class.first]="first"
+  [class.vitamui-focused]="i === focused"
+>
+  <div class="vitamui-input" [class.first]="first">
+    <label *ngIf="first">{{ placeholder }}</label>
+
+    <input
+      *ngIf="!textarea"
+      type="text"
+      (blur)="onBlur(i)"
+      (focus)="onFocus(i)"
+      [ngModel]="item.value"
+      (ngModelChange)="onValueChange($event, i)"
+    />
+    <div *ngIf="textarea" class="grow-wrap" [attr.data-replicated-value]="item.value">
+      <textarea
+        rows="3"
+        (blur)="onBlur(i)"
+        (focus)="onFocus(i)"
+        [ngModel]="item.value"
+        (ngModelChange)="onValueChange($event, i)"
+        onInput="this.parentNode.dataset.replicatedValue = this.value"
+      ></textarea>
+    </div>
+
+    <div [class.hgap-5]="!textarea" [class.gap-5]="textarea">
+      <button
+        *ngIf="items.length > 1"
+        type="button"
+        class="btn btn-circle link primary xsmall remove"
+        (click)="removeInput(i)"
+        [vitamuiCommonToolTip]="removeTooltipKey | translate"
+        vitamuiCommonToolTipPosition="LEFT"
+        [outline]="true"
+      >
+        <i class="vitamui-icon vitamui-icon-remove"></i>
+      </button>
+      <button
+        *ngIf="last && (i === focused || !isEmpty(item.value))"
+        type="button"
+        class="btn btn-circle link primary xsmall"
+        (click)="addInput()"
+        [disabled]="isEmpty(item.value)"
+        [vitamuiCommonToolTip]="addTooltipKey | translate"
+        vitamuiCommonToolTipPosition="LEFT"
+        [outline]="true"
+      >
+        <i class="material-icons vitamui-icon vitamui-icon-add"> </i>
+      </button>
+    </div>
+  </div>
+</div>

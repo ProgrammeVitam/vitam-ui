@@ -117,32 +117,33 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     this.overlayRef?.detach();
   }
 
-  @HostListener('mouseenter')
+  @HostListener('mouseover')
+  @HostListener('focus')
   show() {
     clearTimeout(this.hideTimeoutId);
 
-    this.showTimeoutId = setTimeout(() => {
-      if (this.disabled || !this.text) {
-        return;
-      }
-      const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
-      if (this.overlayRef) {
+    if (!this.disabled && this.text && this.overlayRef && !this.overlayRef.hasAttached()) {
+      this.showTimeoutId = setTimeout(() => {
+        const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
         const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(tooltipPortal);
         tooltipRef.instance.text = this.text;
         tooltipRef.instance.position = this.position;
         tooltipRef.instance.outline = this.outline;
         tooltipRef.instance.className = this.vitamuiCommonToolTipClass;
-      }
-    }, this.vitamuiCommonToolTipShowDelay);
+      }, this.vitamuiCommonToolTipShowDelay);
+    }
   }
 
   @HostListener('mouseout')
   @HostListener('mousedown')
+  @HostListener('blur')
   hide() {
     clearTimeout(this.showTimeoutId);
 
     this.hideTimeoutId = setTimeout(() => {
-      this.overlayRef?.detach();
+      if (this.overlayRef.hasAttached()) {
+        this.overlayRef?.detach();
+      }
     }, this.vitamuiCommonToolTipShowDelay);
   }
 }

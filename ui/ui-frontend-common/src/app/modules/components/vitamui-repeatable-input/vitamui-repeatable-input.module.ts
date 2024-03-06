@@ -34,9 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export enum TooltipType {
-  TOP = 'TOP',
-  BOTTOM = 'BOTTOM',
-  LEFT = 'LEFT',
-  RIGHT = 'RIGHT',
-}
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+import { VitamuiRepeatableInputComponent } from './vitamui-repeatable-input.component';
+
+@NgModule({
+  declarations: [VitamuiRepeatableInputComponent],
+  imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule],
+  exports: [VitamuiRepeatableInputComponent],
+})
+export class VitamuiRepeatableInputModule {}

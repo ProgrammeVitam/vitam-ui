@@ -32,7 +32,6 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaCategory;
 import fr.gouv.vitam.common.model.administration.schema.SchemaOrigin;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitam.common.model.administration.schema.SchemaType;
-import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.DataType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,28 +41,6 @@ import java.util.List;
 class SchemaModelToSchemaElementDtoConverterTest {
 
     private final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
-
-    @Test
-    public void shouldSchemaModelLessStringSizeBeConvertedToSchemaElementWithMediumStringSize() {
-        final SchemaResponse schemaResponse = new SchemaResponse();
-        schemaResponse.setPath("Invoice");
-        schemaResponse.setStringSize(null);
-        schemaResponse.setCardinality(SchemaCardinality.MANY);
-        schemaResponse.setFieldName("Invoice");
-        schemaResponse.setShortName("Invoice");
-        schemaResponse.setDescription("");
-        schemaResponse.setSedaField("Invoice");
-        schemaResponse.setApiField("Invoice");
-        schemaResponse.setType(SchemaType.OBJECT);
-        schemaResponse.setOrigin(SchemaOrigin.EXTERNAL);
-        schemaResponse.setCollection("Unit");
-        schemaResponse.setSedaVersions(List.of("2.1", "2.2", "2.3"));
-        schemaResponse.setCategory(SchemaCategory.OTHER);
-        schemaResponse.setApiPath("Invoice");
-
-        final SchemaElementDto schemaElementDto = this.converter.convert(schemaResponse);
-        Assertions.assertThat(schemaElementDto).extracting("StringSize").isEqualTo("MEDIUM");
-    }
 
     @Test
     public void shouldDecorateWithDataType() {

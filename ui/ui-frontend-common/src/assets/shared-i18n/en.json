@@ -4723,5 +4723,9 @@
     "OTHER_METADATA": {
       "LABEL": "Other metadata"
     }
+  },
+  "REPEATABLE_INPUT": {
+    "ADD_TOOLTIP": "Add a value",
+    "REMOVE_TOOLTIP": "Remove a value"
   }
 }
