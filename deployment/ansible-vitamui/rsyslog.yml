@@ -4,5 +4,3 @@
   gather_facts: no
   roles:
     - rsyslog
-  when: syslog.name | default('filebeat') == "rsyslog"
-
