@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.configurer;
 
-import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import lombok.val;
@@ -64,7 +63,7 @@ import java.util.Map;
 public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
     private static final String VIEW_STATE_PASSWORD_FORM = "viewPwfForm";
-    private static final String VIEW_STATE_CUSTOMER_FORM = "viewStateCustomerForm";
+    private static final String VIEW_STATE_LOGIN_CUSTOMER_FORM = "viewStateCustomerForm";
     private static final String ACTION_STATE_TRIGGER_CHANGE_PASSWORD = "triggerChangePassword"; // NOSONAR
     private static final String ACTION_STATE_INTERMEDIATE_SUBMIT = "intermediateSubmit";
     private static final String TEMPLATE_BAD_CONFIGURATION = "casAccountBadConfigurationView";
@@ -76,7 +75,6 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String CUSTOMER_ID = "customerId";
-    public static final String STATE_BINDING_CUSTOMER_MODEL = "customerList";
 
     public CustomLoginWebflowConfigurer(final FlowBuilderServices flowBuilderServices, final FlowDefinitionRegistry flowDefinitionRegistry,
                                         final ConfigurableApplicationContext applicationContext, final CasConfigurationProperties casProperties) {
@@ -123,14 +121,14 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         attributes.put("history", History.INVALIDATE);
 
         createIntermediateSubmitAction(flow);
-        createCustomerFormView(flow);
+        createLoginCustomerFormView(flow);
         createPwdFormView(flow);
     }
 
     protected void createIntermediateSubmitAction(final Flow flow) {
         val action = createActionState(flow, ACTION_STATE_INTERMEDIATE_SUBMIT, "dispatcherAction");
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_STATE_PASSWORD_FORM);
-        createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_CUSTOMER_FORM);
+        createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_STOP, CasWebflowConstants.STATE_ID_STOP_WEBFLOW);
         createTransitionForState(action, DispatcherAction.DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
         createTransitionForState(action, DispatcherAction.BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
@@ -157,15 +155,13 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD, CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
     }
 
-    protected void createCustomerFormView(final Flow flow) {
+    protected void createLoginCustomerFormView(final Flow flow) {
         val propertiesToBind = Map.of(
             CUSTOMER_ID, Map.of("required", "true")
         );
         val binder = createStateBinderConfiguration(propertiesToBind);
-        val state = createViewState(flow, VIEW_STATE_CUSTOMER_FORM, TEMPLATE_CUSTOMER_FORM, binder);
+        val state = createViewState(flow, VIEW_STATE_LOGIN_CUSTOMER_FORM, TEMPLATE_CUSTOMER_FORM, binder);
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_RENDER_LOGIN_FORM));
-        // createStateModelBinding(state, CasWebflowConstants.VAR_ID_CUSTOMER_ID, SelectedCustomerId.class);
-        // createStateModelBinding(state, STATE_BINDING_CUSTOMER_MODEL, CustomerModel.class);
         val transition = createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_SUBMIT,
             ACTION_STATE_INTERMEDIATE_SUBMIT);
         val attributes = transition.getAttributes();

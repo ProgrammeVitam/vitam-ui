@@ -80,7 +80,6 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
@@ -288,23 +287,11 @@ public class CasInternalService {
     }
 
     @Transactional
-    public List<UserDto> getUsersByEmail(final String email, final Optional<String> optEmbedded) {
-        boolean loadFullProfile = false;
-        boolean isSubrogation = false;
-        boolean isApi = false;
-        if (optEmbedded.isPresent()) {
-            final String embedded = optEmbedded.get();
-            final Set<String> values = splitIntoValues(embedded);
-            if (values.contains(CommonConstants.AUTH_TOKEN_PARAMETER)) {
-                loadFullProfile = true;
-            }
-            if (values.contains(CommonConstants.SURROGATION_PARAMETER)) {
-                isSubrogation = true;
-            }
-            if (values.contains(CommonConstants.API_PARAMETER)) {
-                isApi = true;
-            }
-        }
+    public List<UserDto> getUsersByEmail(final String email, final String optEmbedded) {
+
+        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
+        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
+        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
 
         final List<UserDto> usersDto = internalUserService.findUsersByEmail(email);
 
@@ -313,43 +300,74 @@ public class CasInternalService {
         //     throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         // }
         // checkStatus(userDto.getStatus(), userDto.getEmail());
-        if (loadFullProfile) {
-            final boolean subrogation = isSubrogation;
-            final boolean api = isApi;
-            return usersDto.stream().map(user -> {
-                final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
-                internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
-                internalUserService.addTenantsByAppInformation(authUserDto);
-                generateAndAddAuthToken(authUserDto, subrogation, api);
-                createEventsSubrogation(user, subrogation);
-                return authUserDto;
-            }).collect(Collectors.toList());
-        } else {
-            return usersDto;
+
+        return usersDto.stream()
+            .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public UserDto getUserByEmailAndCustomerId(final String email, final String customerId,
+        final String optEmbedded) {
+
+        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
+        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
+        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
+
+        UserDto userDto = internalUserService.findUserByEmailAndCustomerId(email, customerId);
+        if (userDto == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         }
+        checkStatus(userDto.getStatus(), userDto.getEmail());
+
+        return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+    }
+
+    private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
+        if (optEmbedded == null) {
+            return false;
+        }
+        final Set<String> values = splitIntoValues(optEmbedded);
+        return values.contains(authTokenParameter);
+    }
+
+    private UserDto loadFullUserProfileIfRequired(UserDto user, boolean loadFullProfile, boolean subrogation,
+        boolean api) {
+        if (!loadFullProfile) {
+            return user;
+        }
+        final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
+        internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
+        internalUserService.addTenantsByAppInformation(authUserDto);
+        generateAndAddAuthToken(authUserDto, subrogation, api);
+        createEventsSubrogation(user, subrogation);
+        return authUserDto;
     }
 
     /**
-     * Method to retrieve the user informations
-     * @param email email of the user
+     * Method to retrieve the user information
+     *
+     * @param loginEmail email of the user
+     * @param loginCustomerId The customerId of the user
      * @param idp can be null
      * @param userIdentifier can be null
      * @param optEmbedded
      * @return
      */
     @Transactional
-    public UserDto getUser(String email, final String idp, final String userIdentifier, final String optEmbedded) {
+    public UserDto getUser(String loginEmail, final String loginCustomerId, final String idp,
+        final String userIdentifier, final String optEmbedded) {
+
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
-            Optional<ProvidedUserDto> providedUser = this.provisionUser(email, idp, userIdentifier);
-            if (email.isBlank() && providedUser.isPresent()) {
-                email = providedUser.get().getEmail();
+            // FIXME LGH
+            Optional<ProvidedUserDto> providedUser = this.provisionUser(loginEmail, idp, userIdentifier);
+            if (loginEmail.isBlank() && providedUser.isPresent()) {
+                loginEmail = providedUser.get().getEmail();
             }
         }
 
-        List<UserDto> user = getUsersByEmail(email, Optional.ofNullable(optEmbedded));
-        // FIXME LGH
-        return user.get(0);
+        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId, optEmbedded);
     }
 
     /**

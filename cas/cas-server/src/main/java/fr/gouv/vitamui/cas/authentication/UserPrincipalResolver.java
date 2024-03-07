@@ -135,6 +135,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
         val requestContext = RequestContextHolder.getRequestContext();
 
         final boolean surrogationCall;
+        String loginEmail;
+        String loginCustomerId;
+        String surrogateEmail;
+        String surrogateCustomerId;
+
         String username;
         final String superUsername;
         String userProviderId;
@@ -151,6 +156,12 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUsername = null;
             userProviderId = null;
             surrogationCall = false;
+
+            // FIXME:
+            loginEmail = null;
+            loginCustomerId = null;
+            surrogateEmail = null;
+            surrogateCustomerId = null;
 
             String userDomain = username;
 
@@ -171,15 +182,34 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUsername = surrogationCredential.getUsername();
             userProviderId = null;
             technicalUserId = Optional.empty();
+
             surrogationCall = true;
+            loginEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0);
+            loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
+            surrogateEmail =  (String) principal.getAttributes().get(Constants.FLOW_SURROGATE_EMAIL).get(0);
+            surrogateCustomerId =  (String) principal.getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0);
+
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
             username = principalId;
             superUsername = null;
             userProviderId = null;
             technicalUserId = Optional.empty();
+
             surrogationCall = false;
+            loginEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0);
+            loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
+            surrogateEmail = null;
+            surrogateCustomerId = null;
+
         } else {
+
+            // FIXME:
+            loginEmail = null;
+            loginCustomerId = null;
+            surrogateEmail = null;
+            surrogateCustomerId = null;
+
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
@@ -240,7 +270,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        final UserDto user = casExternalRestClient.getUser(utils.buildContext(username), username, userProviderId, technicalUserId, Optional.ofNullable(embedded));
+        final UserDto user = casExternalRestClient.getUser(utils.buildContext(loginEmail),
+            loginEmail, loginCustomerId, userProviderId, technicalUserId, Optional.of(embedded));
 
         if (user == null) {
             LOGGER.debug("No user resolved for: {}", username);

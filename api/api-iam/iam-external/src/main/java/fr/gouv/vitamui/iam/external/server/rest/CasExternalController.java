@@ -116,12 +116,15 @@ public class CasExternalController {
         return casService.getUsersByEmail(email, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
+    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
+        params = {"loginEmail", "loginCustomerId", "idp"})
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp,
-            @RequestParam final Optional<String> userIdentifier, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("getUser - email : {}, idp : {}, user identifier : {}, embedded: {}", email, idp, userIdentifier, embedded);
-        return casService.getUser(email, idp, userIdentifier, embedded);
+    public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
+        @RequestParam final String idp, @RequestParam final Optional<String> userIdentifier,
+        @RequestParam(required = false) String embedded) {
+        LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, user identifier : {}, embedded: {}",
+            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")

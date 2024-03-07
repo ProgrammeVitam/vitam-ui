@@ -68,6 +68,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Authentication handler to check the username/password on the IAM API.
@@ -141,8 +144,18 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
                     LOGGER.info("Password expired for: {} ({})", loginEmail, loginCustomerId);
                     throw new AccountPasswordMustChangeException("Password expired for: " + loginEmail);
                 } else if (user.getStatus() == UserStatusEnum.ENABLED && user.getType() == UserTypeEnum.NOMINATIVE) {
-                    // FIXME : Faut-il d'autre attributs?
-                    final Principal principal = principalFactory.createPrincipal(loginEmail);
+
+                    Map<String, List<Object>> attributes = new HashMap<>();
+
+                    attributes.put(Constants.FLOW_LOGIN_EMAIL, List.of(loginEmail));
+                    attributes.put(Constants.FLOW_LOGIN_CUSTOMER_ID, List.of(loginCustomerId));
+
+                    if (surrogateEmail != null) {
+                        attributes.put(Constants.FLOW_SURROGATE_EMAIL, List.of(surrogateEmail));
+                        attributes.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, List.of(surrogateCustomerId));
+                    }
+
+                    final Principal principal = principalFactory.createPrincipal(loginEmail, attributes);
                     LOGGER.debug("Successful authentication, created principal: {}", principal);
                     return createHandlerResult(transformedCredential, principal, new ArrayList<>());
                 } else {
