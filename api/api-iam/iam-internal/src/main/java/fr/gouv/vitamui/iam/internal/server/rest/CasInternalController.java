@@ -188,21 +188,25 @@ public class CasInternalController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    public List<UserDto> getUsersByEmail(@RequestParam final String email, final @RequestParam Optional<String> embedded) {
+    public List<UserDto> getUsersByEmail(@RequestParam final String email,
+        @RequestParam(required = false) String embedded) {
         LOGGER.debug("getUserByEmail: {}", email);
         ParameterChecker.checkParameter("user email is mandatory : ", email);
         return casService.getUsersByEmail(email, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
-    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
-            @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
-        SanityChecker.checkSecureParameter(idp, email);
-        if(userIdentifier!= null) {
+    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
+        params = {"loginEmail", "loginCustomerId", "idp"})
+    public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
+        @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
+        @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(idp, loginEmail);
+        if (userIdentifier != null) {
             SanityChecker.checkSecureParameter(userIdentifier);
         }
-        LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
-        return casService.getUser(email, idp, userIdentifier, embedded);
+        LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
+            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")

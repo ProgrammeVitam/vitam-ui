@@ -78,6 +78,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
 
     @Deprecated
     public UserDto login(final ExternalHttpContext context, final String username, final String password, final String surrogate, final String ip) {
+        // FIXME : tests
         throw new NotImplementedException("");
     }
 
@@ -141,25 +142,31 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
 
     public UserDto getUser(final ExternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
             final Optional<String> embedded) {
-        LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
-        uriBuilder.queryParam("email", email);
-        uriBuilder.queryParam("idp", idp);
-        if (userIdentifier.isPresent()) {
-            uriBuilder.queryParam("userIdentifier", userIdentifier.get());
-        }
-        if (embedded.isPresent()) {
-            uriBuilder.queryParam("embedded", embedded.get());
-        }
+        // FIXME : subrogation + tests
+        throw new NotImplementedException("TODO");
+    }
 
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, AuthUserDto.class);
+    public UserDto getUser(final ExternalHttpContext context, final String loginEmail, final String loginCustomerId,
+        final String idp, final Optional<String> userIdentifier,
+        final Optional<String> embedded) {
+        LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
+            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
+        uriBuilder.queryParam("loginEmail", loginEmail);
+        uriBuilder.queryParam("loginCustomerId", loginCustomerId);
+        uriBuilder.queryParam("idp", idp);
+        userIdentifier.ifPresent(s -> uriBuilder.queryParam("userIdentifier", s));
+        embedded.ifPresent(s -> uriBuilder.queryParam("embedded", s));
+
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<AuthUserDto> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, AuthUserDto.class);
         checkResponse(response);
         final AuthUserDto authUserDto = response.getBody();
         if (authUserDto.getProfileGroup() != null) {
             return authUserDto;
-        }
-        else {
+        } else {
             return authUserDto.newBasicUserDto();
         }
     }

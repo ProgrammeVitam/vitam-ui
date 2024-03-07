@@ -105,7 +105,7 @@ class CasInternalServiceTest {
     void should_return_the_user_known_in_database_when_idp_auto_provisioning_is_disabled(String idp) {
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
 
-        final UserDto user = casInternalService.getUser(USER_EMAIL, idp, null, null);
+        final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, idp, null, null);
         assertThat(user).isNotNull();
     }
 
@@ -129,7 +129,7 @@ class CasInternalServiceTest {
         customer.setLanguage("fr");
         when(customerRepository.findById(anyString())).thenReturn(Optional.of(customer));
 
-        final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);
+        final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
         verify(userInternalService, times(1)).create(any());
         verify(userInternalService, times(0)).patch(any());
         assertThat(user).isNotNull();
@@ -156,7 +156,7 @@ class CasInternalServiceTest {
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(true));
 
 
-        final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);
+        final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
         verify(userInternalService, times(1)).patch(any());
         verify(userInternalService, times(0)).create(any());
         assertThat(user).isNotNull();
@@ -170,7 +170,7 @@ class CasInternalServiceTest {
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
 
-        final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);
+        final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
         verify(userInternalService, times(0)).patch(any());
         verify(userInternalService, times(0)).create(any());
         assertThat(user).isNotNull();

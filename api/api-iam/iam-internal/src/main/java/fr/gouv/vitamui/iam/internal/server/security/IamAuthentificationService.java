@@ -107,7 +107,7 @@ public class IamAuthentificationService {
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
             final LocalDate currentTokenExpirationLocalDate = convertToLocalDate(currentTokenExpirationDate);
-            if (currentTokenExpirationLocalDate.isAfter(LocalDate.of(2018, 10, 1)) && currentTokenExpirationDate.before(newTokenExpirationDate)) {
+            if (currentTokenExpirationDate.before(newTokenExpirationDate)) {
                 token.setUpdatedDate(newTokenExpirationDate);
                 tokenRepository.save(token);
             }

@@ -182,7 +182,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
         when(tokenRepository.generateSuperId()).thenReturn("en");
         final List<UserDto> results =
-            controller.getUsersByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+            controller.getUsersByEmail(EMAIL, CommonConstants.AUTH_TOKEN_PARAMETER);
 
         assertThat(results).hasSize(1);
         userProfile.setAuthToken("TOKEN");
