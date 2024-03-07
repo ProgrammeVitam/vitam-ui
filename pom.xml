@@ -142,7 +142,7 @@
         <spring.boot.version>2.5.15</spring.boot.version>
         <reactor.version>3.4.18</reactor.version>
         <spring.version>5.3.20</spring.version>
-        <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
+        <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
         <spring-cloud.version>2020.0.6</spring-cloud.version>
         <spring.security.version>5.5.3</spring.security.version>
         <spring.test.version>5.3.18</spring.test.version>
