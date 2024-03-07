@@ -46,7 +46,11 @@ setup.template.overwrite: true
 #
 output.logstash:
   # The Logstash hosts
+  {% if hosts_vitamui_logstash is defined and hosts_vitamui_logstash|length > 0 %}
+  hosts: [{% for item in groups['hosts_vitamui_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
+  {% else %}
   hosts: [{% for item in groups['hosts_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
+  {% endif %}
   compression_level: {{ filebeat.compression_level | default(3) }}
 
 #

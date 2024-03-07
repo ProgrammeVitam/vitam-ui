@@ -200,7 +200,7 @@ hosts_elasticsearch_log
 # EDIT: Mandatory when [hosts_vitamui_logstash] is defined
 
 [hosts_logstash]
-# EDIT: Mandatory when filebeat is used
+EDIT: Mandatory when syslog.name: filebeat is used
 
 ################################################################################
 # ZONE TOOLS
