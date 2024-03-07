@@ -478,7 +478,7 @@
         </div>
         <div class="actions">
           <div class="line">
-            <button type="submit" class="btn primary" [disabled]="selectedSignedDocumentPolicyInvalid()">
+            <button type="submit" class="btn primary" [disabled]="isDisabledButton || selectedSignedDocumentPolicyInvalid()">
               {{ 'COMMON.SUBMIT' | translate }}
             </button>
             <button type="button" class="btn link" (click)="onCancel()">

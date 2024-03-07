@@ -236,9 +236,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
         this.isDisabledButton = false;
         this.dialogRef.close(true);
       },
-      (error) => {
+      () => {
+        this.isDisabledButton = false;
         this.dialogRef.close(false);
-        console.error(error);
       },
     );
   }
