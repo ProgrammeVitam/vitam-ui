@@ -62,7 +62,7 @@ export class AgencyApiService extends BaseHttpClient<Agency> {
     return super.getOne(id, headers);
   }
 
-  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Agency> {
     return super.patch(partialAgency, headers);
   }
 

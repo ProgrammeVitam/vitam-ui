@@ -7,13 +7,9 @@
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
-  <mat-tab-group class="preview-tab-group" (selectedIndexChange)="selectedIndex = $event">
+  <mat-tab-group #tabs class="preview-tab-group" (selectedIndexChange)="selectedIndex = $event">
     <mat-tab [label]="'AGENCY.TAB.INFORMATION' | translate">
-      <app-agency-information-tab
-        *ngIf="selectedIndex === 0"
-        [agency]="agency"
-        [tenantIdentifier]="tenantIdentifier"
-      ></app-agency-information-tab>
+      <app-agency-information-tab #infoTab [agency]="agency" (updated)="updatedChange($event, 0)"></app-agency-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'AGENCY.TAB.HISTORY' | translate">

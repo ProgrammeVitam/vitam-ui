@@ -38,7 +38,7 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
   // AccessContract,
   AdminUserProfile,
@@ -101,6 +101,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
+  private readonly destroyer$ = new Subject();
 
   constructor(
     public agencyService: AgencyService,
@@ -132,10 +133,8 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
         const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
         this.search(pageRequest);
       });
-  }
 
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
+    this.replaceUpdatedAgency();
   }
 
   public searchAgencyOrdered(): void {
@@ -164,5 +163,20 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     }
 
     return criteria;
+  }
+
+  private replaceUpdatedAgency(): void {
+    this.agencyService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAgency: Agency) => {
+      const index = this.dataSource.findIndex((item: Agency) => item.id === updatedAgency.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedAgency;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.updatedData.unsubscribe();
+    this.destroyer$.next();
+    this.destroyer$.complete();
   }
 }
