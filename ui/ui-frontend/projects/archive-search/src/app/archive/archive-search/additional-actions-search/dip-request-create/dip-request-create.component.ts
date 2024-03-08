@@ -47,6 +47,7 @@ import {
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
   StartupService,
+  UsageVersionEnum
 } from 'ui-frontend-common';
 import * as uuid from 'uuid';
 import { ArchiveService } from '../../../archive.service';
@@ -84,6 +85,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
   dataObjectVersions = ObjectQualifierTypeList;
+  UsageVersionEnum = UsageVersionEnum;
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
@@ -107,7 +109,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       this.fb.group({
         includeLifeCycleLogs: [false],
         sedaVersion: ['2.2'],
-        includeObjects: [true],
+        includeObjects: [UsageVersionEnum.ALL],
         usages: this.fb.array([
           this.fb.group({
             usage: ['BinaryMaster', Validators.required],
@@ -171,7 +173,8 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
 
     const step1Values = this.formGroups[0].getRawValue();
     const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] = step2Values.includeObjects ? step2Values.usages : [];
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[]
+      = step2Values.includeObjects === UsageVersionEnum.SELECTION  ? step2Values.usages : [];
     const exportDIPRequestDto: ExportDIPRequestDto = {
       dipRequestParameters: step1Values,
       exportDIPSearchCriteria: this.data.exportDIPSearchCriteria,
@@ -183,6 +186,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
         {} as ExportDIPRequestDto['dataObjectVersionsPatterns'],
       ),
       lifeCycleLogs: step2Values.includeLifeCycleLogs,
+      withoutObjects: step2Values.includeObjects === UsageVersionEnum.NONE,
       sedaVersion: step2Values.sedaVersion,
     };
 

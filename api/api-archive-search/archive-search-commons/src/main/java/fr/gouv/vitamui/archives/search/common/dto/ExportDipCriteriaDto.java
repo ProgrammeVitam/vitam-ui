@@ -59,5 +59,6 @@ public class ExportDipCriteriaDto implements Serializable {
     private SearchCriteriaDto exportDIPSearchCriteria;
     private Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns;
     private boolean lifeCycleLogs;
+    private boolean withoutObjects;
     private String sedaVersion;
 }
