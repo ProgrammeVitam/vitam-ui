@@ -310,6 +310,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
+        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
+            .andReturn(1);
+
         expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
             .andReturn(new RequestResponseOK().setHttpCode(200));
         EasyMock.replay(ingestContractService);
@@ -324,6 +327,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
+
+        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
+            .andReturn(1);
 
         expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
             .andReturn(new RequestResponseOK().setHttpCode(400));
@@ -340,6 +346,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
+        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
+            .andReturn(1);
+
         expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
             .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
         EasyMock.replay(ingestContractService);
@@ -355,6 +364,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
+        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
+            .andReturn(1);
+
         expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
             .andThrow(new IOException("Exception thrown by vitam"));
         EasyMock.replay(ingestContractService);
@@ -369,6 +381,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
+
+        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
+            .andReturn(1);
 
         expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
             .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));

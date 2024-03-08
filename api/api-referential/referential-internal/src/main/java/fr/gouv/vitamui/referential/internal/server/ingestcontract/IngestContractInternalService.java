@@ -213,8 +213,14 @@ public class IngestContractInternalService {
     }
 
     public IngestContractDto create(VitamContext vitamContext, IngestContractDto ingestContractDto) {
+
+    ingestContractService.checkAbilityToCreateIngestContractInVitam(
+        converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
+        vitamContext.getApplicationSessionId());
+
         try {
             LOGGER.debug("Create Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+
             RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext,
                 converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
             final IngestContractModel ingestContractVitamDto = objectMapper
