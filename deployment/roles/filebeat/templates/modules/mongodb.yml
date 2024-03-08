@@ -7,5 +7,5 @@
     input:
       fields:
         kind: log
-        vitam_component: mongod_data
+        vitam_component: mongod_vitamui
         source: vitamui
