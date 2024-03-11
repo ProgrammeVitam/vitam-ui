@@ -36,36 +36,39 @@
  */
 /* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
+const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => VitamUIInputPositiveNumberComponent),
+  useExisting: forwardRef(() => VitamUIInputComponent),
   multi: true,
 };
 
 @Component({
-  selector: 'vitamui-common-input-positive-number',
-  templateUrl: './vitamui-input-positive-number.component.html',
-  styleUrls: ['./vitamui-input-positive-number.component.scss'],
+  selector: 'vitamui-common-input',
+  templateUrl: './vitamui-input.component.html',
+  styleUrls: ['./vitamui-input.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
 })
-export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor {
+export class VitamUIInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
   @Input() type = 'text';
+  @Input() minValue;
+  @Input() maxValue;
   @Input() maxlength: number;
-  @Input() min: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;
+  @Input() value: string | number;
   @Input()
-  get required(): boolean {
-    return this._required;
+  get autoFocus(): boolean {
+    return this._autoFocus;
   }
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
+  set autoFocus(value: boolean) {
+    this._autoFocus = coerceBooleanProperty(value);
   }
   // tslint:disable-next-line:variable-name
-  private _required = false;
+  private _autoFocus = false;
 
   @Input()
   get disabled(): boolean {
@@ -76,20 +79,38 @@ export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor
   }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('vitamUIInputPositiveNumber') private input: ElementRef;
+  @Input()
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
+  // tslint:disable-next-line:variable-name
+  private _required = false;
+  @ViewChild('vitamUIInput') private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  value: string | number;
-
   onChange = (_: any) => {};
   onTouched = () => {};
-  onKeyPress = (_: any) => {};
 
   @HostListener('click')
   onClick() {
     this.input.nativeElement.focus();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.autoFocus) {
+      setTimeout(() => {
+        this.input.nativeElement.focus();
+      }, 200);
+    }
+  }
+
+  ngOnInit() {
+    this.labelFloat = !!this.value;
   }
 
   writeValue(value: string | number) {
@@ -126,6 +147,7 @@ export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor
 
   onFocus() {
     this.focused = true;
+    this.onTouched();
   }
 
   onBlur() {

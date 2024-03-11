@@ -38,11 +38,23 @@
       "vitamui-collect": [
         "./projects/collect/src/app/"
       ],
+      "ui-frontend-common": [
+        "dist/ui-frontend-common"
+      ],
+      "ui-frontend-common/*": [
+        "dist/ui-frontend-common/*"
+      ],
       "vitamui-library": [
         "dist/vitamui-library"
       ],
       "vitamui-library/*": [
         "dist/vitamui-library/*"
+      ],
+      "vitamui-testing": [
+        "dist/vitamui-testing"
+      ],
+      "vitamui-testing/*": [
+        "dist/vitamui-testing/*"
       ]
     },
     "noUnusedLocals": true,

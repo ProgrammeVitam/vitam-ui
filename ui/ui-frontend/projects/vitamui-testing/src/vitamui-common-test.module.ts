@@ -35,14 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 // tslint:disable:max-classes-per-file
-import {
-  Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform
-} from '@angular/core';
-import {
-  AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn
-} from '@angular/forms';
+import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
+import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
-@Component({ selector: 'vitamui-common-navbar', template: '<ng-content></ng-content>'})
+@Component({ selector: 'vitamui-common-navbar', template: '<ng-content></ng-content>' })
 export class NavbarStubComponent {
   @Input() appId: string;
   @Input() hideTenantMenu = false;
@@ -50,25 +46,26 @@ export class NavbarStubComponent {
   @Input() customers: any[];
 }
 
-@Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>'})
+@Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>' })
 export class ApplicationSelectContentStubComponent {
   @Input() applications: any[];
   @Input() categories: any;
   @Input() isModalMenu: boolean;
 }
 
-@Component({ selector: 'vitamui-common-customer-select', template: '<ng-content></ng-content>'})
-export class VitamUICustomerSelectStubComponent {
-}
+@Component({ selector: 'vitamui-common-customer-select', template: '<ng-content></ng-content>' })
+export class VitamUICustomerSelectStubComponent {}
 
 @Component({
   selector: 'vitamui-common-vitamui-duration-input',
   template: '<ng-content></ng-content>',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIDurationInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIDurationInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIDurationInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -78,11 +75,10 @@ export class VitamUIDurationInputStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
-@Component({ selector: 'vitamui-common-tenant-select', template: '<ng-content></ng-content>'})
-export class VitamUITenantSelectStubComponent {
-}
+@Component({ selector: 'vitamui-common-tenant-select', template: '<ng-content></ng-content>' })
+export class VitamUITenantSelectStubComponent {}
 
-@Component({selector: 'vitamui-common-stepper', template: '<ng-content></ng-content>' })
+@Component({ selector: 'vitamui-common-stepper', template: '<ng-content></ng-content>' })
 export class StepperStubComponent {
   @Input() selectedIndex: number;
 }
@@ -93,11 +89,13 @@ export class VitamUIInputErrorStubComponent {}
 @Component({
   selector: 'vitamui-common-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -110,11 +108,13 @@ export class VitamUIInputStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'vitamui-common-input-positive-number',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIInputPositiveNumberStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIInputPositiveNumberStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -127,14 +127,16 @@ export class VitamUIInputPositiveNumberStubComponent implements ControlValueAcce
 @Component({
   selector: 'vitamui-common-list-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIListInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIListInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIListInputStubComponent implements ControlValueAccessor {
-  @Input () placeholder: any;
+  @Input() placeholder: any;
 
   writeValue() {}
   registerOnChange() {}
@@ -144,11 +146,13 @@ export class VitamUIListInputStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'vitamui-common-textarea',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUITextareaStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUITextareaStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUITextareaStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -161,17 +165,21 @@ export class VitamUITextareaStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'vitamui-common-slide-toggle',
   template: '<ng-content></ng-content>',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUISlideToggleStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUISlideToggleStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() checked: any;
   value: boolean;
-  writeValue(value: boolean) { this.value = value; }
+  writeValue(value: boolean) {
+    this.value = value;
+  }
   registerOnChange() {}
   registerOnTouched() {}
 }
@@ -184,7 +192,9 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;
   value: string;
-  writeValue(value: string) { this.value = value; }
+  writeValue(value: string) {
+    this.value = value;
+  }
   registerOnChange() {}
   registerOnTouched() {}
 }
@@ -192,11 +202,13 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'vitamui-common-editable-email-input',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableEmailInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableEmailInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableEmailInputStubComponent extends EditableFieldStubComponent {
   @Input() domains: string[];
@@ -208,44 +220,52 @@ export class VitamUIFieldErrorStubComponent {}
 @Component({
   selector: 'vitamui-common-editable-file',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableFileStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableFileStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-input',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-textarea',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableTextareaStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableTextareaStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-select',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableSelectStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableSelectStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
 
@@ -259,11 +279,13 @@ export class VitamUIEditableOptionStubComponent {
 @Component({
   selector: 'vitamui-common-editable-toggle-group',
   template: '{{value}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => VitamUIEditableToggleGroupStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VitamUIEditableToggleGroupStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
 
@@ -275,11 +297,13 @@ export class VitamUIEditableButtonToggleStubComponent {
 @Component({
   selector: 'vitamui-common-editable-level-input',
   template: '{{prefix}}',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => EditableLevelInputStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => EditableLevelInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 export class EditableLevelInputStubComponent implements ControlValueAccessor {
   @Input() validator: any;
@@ -293,22 +317,30 @@ export class EditableLevelInputStubComponent implements ControlValueAccessor {
 
 @Pipe({ name: 'strongify' })
 export class StrongifyStubPipe implements PipeTransform {
-  transform(value: any): any { return value; }
+  transform(value: any): any {
+    return value;
+  }
 }
 
 @Pipe({ name: 'truncate' })
 export class TruncateStubPipe implements PipeTransform {
-  transform(value: string = ''): any { return value; }
+  transform(value: string = ''): any {
+    return value;
+  }
 }
 
 @Pipe({ name: 'translate' })
 export class TranslateStubPipe implements PipeTransform {
-  transform(value: string = ''): any { return value; }
+  transform(value: string = ''): any {
+    return value;
+  }
 }
 
 @Pipe({ name: 'dateTime' })
 export class DateTimeStubPipe implements PipeTransform {
-  transform(value: string = ''): any { return value; }
+  transform(value: string = ''): any {
+    return value;
+  }
 }
 
 @Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
@@ -320,15 +352,14 @@ export class InfiniteScrollStubDirective {
 
 @Directive({
   selector: '[vitamuiCommonRowCollapse]',
-  exportAs: 'vitamuiRowCollapse'
+  exportAs: 'vitamuiRowCollapse',
 })
 export class RowCollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
 }
 
-
 @Directive({
-  selector: '[vitamuiCommonRowCollapseTriggerFor]'
+  selector: '[vitamuiCommonRowCollapseTriggerFor]',
 })
 export class RowCollapseTriggerForStubDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: any;
@@ -364,7 +395,7 @@ export class RowCollapseTriggerForStubDirective {
     StrongifyStubPipe,
     TruncateStubPipe,
     TranslateStubPipe,
-    DateTimeStubPipe
+    DateTimeStubPipe,
   ],
   exports: [
     ApplicationSelectContentStubComponent,
@@ -395,7 +426,7 @@ export class RowCollapseTriggerForStubDirective {
     StrongifyStubPipe,
     TruncateStubPipe,
     TranslateStubPipe,
-    DateTimeStubPipe
-  ]
+    DateTimeStubPipe,
+  ],
 })
 export class VitamUICommonTestModule {}

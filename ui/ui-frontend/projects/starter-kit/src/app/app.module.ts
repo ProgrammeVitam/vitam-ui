@@ -45,35 +45,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import {
-  AuthenticationModule,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  VitamUICommonModule,
-  VitamuiMissingTranslationHandler,
-  WINDOW_LOCATION,
-} from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, LoggerModule, SelectLanguageModule, WINDOW_LOCATION } from '../../../ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ArraysModule } from './components/arrays/arrays.module';
-import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
-import { ButtonsModule } from './components/buttons/buttons.module';
-import { ColorsModule } from './components/colors/colors.module';
-import { ElevationModule } from './components/elevations/elevations.module';
-import { IconsModule } from './components/icons/icons.module';
-import { InputsModule } from './components/inputs/inputs.module';
-import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
-import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
-import { TooltipModule } from './components/tooltip/tooltip.module';
-import { TranslationModule } from './components/translation/translation.module';
-import { TypographyModule } from './components/typography/typography.module';
-import { StarterKitModule } from './starter-kit/starter-kit.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -87,41 +63,42 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AuthenticationModule.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule,
-    InjectorModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    VitamUICommonModule,
+    // AuthenticationModule.forRoot(),
     AppRoutingModule,
-    StarterKitModule,
-    QuicklinkModule,
-    ButtonsModule,
-    MiscellaneousModule,
-    ArraysModule,
-    BreadcrumbModule,
-    InputsModule,
-    ProgressBarModule,
-    TypographyModule,
-    TooltipModule,
-    ColorsModule,
-    IconsModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatListModule,
-    ElevationModule,
-    TranslationModule,
+    // ArraysModule,
+    // BreadcrumbModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    // ButtonsModule,
+    // ColorsModule,
+    // ElevationModule,
+    // IconsModule,
+    // InjectorModule,
+    // InputsModule,
     LoggerModule.forRoot(),
-    TranslateModule.forRoot({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    MatCardModule,
+    MatDialogModule,
+    MatListModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    // MiscellaneousModule,
+    // ProgressBarModule,
+    // QuicklinkModule,
+    SelectLanguageModule,
+    // StarterKitModule,
+    // TooltipModule,
+    // TranslateModule.forRoot({
+    //   missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
+    //   defaultLanguage: 'fr',
+    //   loader: {
+    //     provide: TranslateLoader,
+    //     useFactory: httpLoaderFactory,
+    //     deps: [HttpClient],
+    //   },
+    // }),
+    // TranslationModule,
+    // TypographyModule,
+    // VitamUICommonModule,
   ],
   providers: [
     Title,

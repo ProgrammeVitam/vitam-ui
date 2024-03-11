@@ -1,10 +1,13 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
+    "outDir": "../../out-tsc/lib",
     "module": "es2015",
     "types": [],
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
   "files": [
     "src/main.ts",

@@ -41,7 +41,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilingPlanMode, Status } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import { AccessContract, ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
+import {
+  AccessContract,
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  Option,
+} from '../../../../../ui-frontend-common';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
