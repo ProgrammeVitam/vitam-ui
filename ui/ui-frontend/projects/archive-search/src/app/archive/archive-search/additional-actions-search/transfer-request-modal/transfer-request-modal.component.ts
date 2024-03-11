@@ -36,6 +36,7 @@ import {
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
   StartupService,
+  UsageVersionEnum
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
@@ -53,6 +54,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
   dataObjectVersions = ObjectQualifierTypeList;
+  UsageVersionEnum = UsageVersionEnum;
 
   constructor(
     private translate: TranslateService,
@@ -94,7 +96,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       this.fb.group({
         includeLifeCycleLogs: [true],
         sedaVersion: ['2.2'],
-        includeObjects: [true],
+        includeObjects: [UsageVersionEnum.ALL],
         usages: this.fb.array([
           this.fb.group({
             usage: ['BinaryMaster', Validators.required],
@@ -151,6 +153,21 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  hasBinaryMasterSelected(){
+    const usagesArray = this.formGroups[1].getRawValue().usages;
+    for (const usage of usagesArray) {
+      if (usage.usage === 'BinaryMaster') {
+        return true; // Si un usage de BinaryMaster est trouvé, retourne vrai
+      }
+    }
+    return false;
+  }
+
+  showWarning(): boolean {
+    const step2Values = this.formGroups[1].getRawValue(); // Récupère les valeurs du deuxième formGroup
+    return step2Values.includeObjects === UsageVersionEnum.NONE || !this.hasBinaryMasterSelected();
+  }
+
   onSubmit() {
     if (this.formGroups.some((fg) => fg.invalid)) {
       return;
@@ -158,7 +175,8 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
 
     const step1Values = this.formGroups[0].getRawValue();
     const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] = step2Values.includeObjects ? step2Values.usages : [];
+    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[]
+      = step2Values.includeObjects === UsageVersionEnum.SELECTION  ? step2Values.usages : [];
     const transferRequestDto: TransferRequestDto = {
       transferRequestParameters: step1Values,
       searchCriteria: this.data.searchCriteria,
@@ -170,6 +188,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
         {} as TransferRequestDto['dataObjectVersionsPatterns'],
       ),
       lifeCycleLogs: step2Values.includeLifeCycleLogs,
+      withoutObjects: step2Values.includeObjects === UsageVersionEnum.NONE,
       sedaVersion: step2Values.sedaVersion,
     };
 

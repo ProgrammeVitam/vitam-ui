@@ -75,6 +75,7 @@ public class ExportDipInternalService {
             final DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
             dataObjectVersionToExport.setDataObjectVersionsPatterns(exportDipCriteriaDto.getDataObjectVersionsPatterns());
             dipRequest.setExportWithLogBookLFC(exportDipCriteriaDto.isLifeCycleLogs());
+            dipRequest.setExportWithoutObjects(exportDipCriteriaDto.isWithoutObjects());
             dipRequest.setDslRequest(dslQuery);
             dipRequest.setDipExportType(DipExportType.FULL);
             dipRequest.setDataObjectVersionToExport(dataObjectVersionToExport);

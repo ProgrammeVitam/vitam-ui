@@ -113,6 +113,7 @@ class TransferVitamOperationsInternalServiceTest {
         verify(transferRequestService).transferRequest(any(VitamContext.class), argumentCaptor.capture());
         final TransferRequest transferRequest = argumentCaptor.getValue();
         assertThat(transferRequest.isTransferWithLogBookLFC()).isTrue();
+        assertThat(transferRequest.isTransferWithoutObjects()).isFalse();
         assertThat(transferRequest.getSedaVersion()).isEqualTo("2.2");
         assertThat(transferRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(dataObjectVersionsPatterns);
     }
@@ -169,6 +170,7 @@ class TransferVitamOperationsInternalServiceTest {
         final TransferRequestDto transferRequestDto = new TransferRequestDto();
         transferRequestDto.setLifeCycleLogs(lifeCycleLogs);
         transferRequestDto.setSedaVersion(sedaVersion);
+        transferRequestDto.setWithoutObjects(false);
         transferRequestDto.setDataObjectVersionsPatterns(dataObjectVersionsPatterns);
         return transferRequestDto;
     }

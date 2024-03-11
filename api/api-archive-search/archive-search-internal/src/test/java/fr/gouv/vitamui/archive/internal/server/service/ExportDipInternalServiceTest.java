@@ -104,6 +104,7 @@ class ExportDipInternalServiceTest {
         verify(exportDipV2Service).exportDip(any(VitamContext.class), argumentCaptor.capture());
         final DipRequest dipRequest = argumentCaptor.getValue();
         assertThat(dipRequest.isExportWithLogBookLFC()).isTrue();
+        assertThat(dipRequest.isExportWithoutObjects()).isFalse();
         assertThat(dipRequest.getSedaVersion()).isEqualTo("2.2");
         assertThat(dipRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(dataObjectVersionsPatterns);
     }
@@ -121,6 +122,7 @@ class ExportDipInternalServiceTest {
         final ExportDipCriteriaDto exportDipCriteriaDto = new ExportDipCriteriaDto();
         exportDipCriteriaDto.setLifeCycleLogs(lifeCycleLogs);
         exportDipCriteriaDto.setSedaVersion(sedaVersion);
+        exportDipCriteriaDto.setWithoutObjects(false);
         exportDipCriteriaDto.setDataObjectVersionsPatterns(dataObjectVersionsPatterns);
         return exportDipCriteriaDto;
     }

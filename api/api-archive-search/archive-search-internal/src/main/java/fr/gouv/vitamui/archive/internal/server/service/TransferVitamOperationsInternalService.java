@@ -75,6 +75,7 @@ public class TransferVitamOperationsInternalService {
             dataObjectVersions.setDataObjectVersionsPatterns(transferRequestDto.getDataObjectVersionsPatterns());
 
             transferRequest.setTransferWithLogBookLFC(transferRequestDto.isLifeCycleLogs());
+            transferRequest.setTransferWithoutObjects(transferRequestDto.isWithoutObjects());
             transferRequest.setDslRequest(dslQuery);
             transferRequest.setDataObjectVersionToExport(dataObjectVersions);
             transferRequest.setTransferRequestParameters(transferRequestDto.getTransferRequestParameters());

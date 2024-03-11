@@ -152,12 +152,13 @@
               <div class="gap-10">
                 <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
                 <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
-                  <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }} </mat-button-toggle>
-                  <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }} </mat-button-toggle>
+                  <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
+                  <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
+                  <mat-button-toggle [value]="UsageVersionEnum.SELECTION">{{ 'ARCHIVE_SEARCH.DIP.SELECTION' | translate }} </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
 
-              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value" formArrayName="usages">
+              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
                 <div *ngFor="let usage of usages.controls; let i = index" class="hgap-40">
                   <div class="hgap-20" [formGroupName]="i">
                     <mat-form-field class="vitamui-mat-select usage">
@@ -195,6 +196,14 @@
                 </button>
               </div>
             </div>
+
+            <div class="text large text-red  bold" *ngIf="showWarning()">
+              <div class="icon-container">
+                <i class="vitamui-icon vitamui-icon-anomalie"></i>
+              </div>
+              <span class="msg-warning">{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_WARNING_MESSAGE' | translate }}</span>
+            </div>
+
           </div>
 
           <div class="gap-20">
