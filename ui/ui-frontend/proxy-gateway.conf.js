@@ -281,6 +281,7 @@ const PROXY_CONFIG = [
       '/collect-api/ontology',
       '/collect-api/search/filingplan',
       '/collect-api/schemas',
+      '/collect-api/rules',
     ],
     target: {
       protocol: 'https:',
@@ -296,6 +297,7 @@ const PROXY_CONFIG = [
       '^/collect-api/ontology': '/referential/v1/ontology',
       '^/collect-api/search/filingplan': '/units/filingplan',
       '^/collect-api/schemas': '/schemas',
+      '^/collect-api/rules': '/referential/v1/rules',
     },
   },
   {
