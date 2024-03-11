@@ -99,20 +99,35 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
      */
     public ExternalParametersDto getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");
-        AuthUserDto authUserDto = internalSecurityService.getUser();
-
-        if (authUserDto != null && authUserDto.getProfileGroup() != null &&
-            authUserDto.getProfileGroup().getProfiles() != null) {
-
-            Optional<ProfileDto> externalParametersProfile = authUserDto.getProfileGroup().getProfiles().stream()
-                .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
-                .findFirst();
-            if (!externalParametersProfile.isEmpty() && externalParametersProfile.isPresent()) {
-                return this.getOne(externalParametersProfile.get().getExternalParamId());
-            }
+        final AuthUserDto authUserDto = internalSecurityService.getUser();
+        if (authUserDto == null) {
+            LOGGER.warn("AuthUser is null");
+            return null;
         }
-
-        return null;
+        if (authUserDto.getProfileGroup() == null) {
+            LOGGER.warn("AuthUser has no profile group");
+            return null;
+        }
+        if (authUserDto.getProfileGroup().getProfiles() == null) {
+            LOGGER.warn("AuthUser profile group has no profiles");
+            return null;
+        }
+        Integer tenant = internalSecurityService.getTenantIdentifier();
+        final Optional<ProfileDto> optionalExternalParamsProfileDto =
+            authUserDto.getProfileGroup().getProfiles().stream()
+                .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
+                .filter(p -> p.getTenantIdentifier().equals(tenant))
+                .findFirst();
+        if (optionalExternalParamsProfileDto.isEmpty()) {
+            LOGGER.warn("External parameter profile not found");
+            return null;
+        }
+        final ProfileDto externalParametersProfile = optionalExternalParamsProfileDto.get();
+        if (externalParametersProfile.getExternalParamId() == null) {
+            LOGGER.warn("External parameter profile have no external parameter id");
+            return null;
+        }
+        return this.getOne(externalParametersProfile.getExternalParamId());
     }
 
     @Override
@@ -172,4 +187,5 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     protected Converter<ExternalParametersDto, ExternalParameters> getConverter() {
         return externalParametersConverter;
     }
+
 }
