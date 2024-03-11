@@ -127,7 +127,6 @@
   with_items:
     - "jvm.options"
     - "log4j2.properties"
-    # - "startup.options"
     - "logstash.yml"
   notify:
     - restart logstash
@@ -140,19 +139,51 @@
     state: directory
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
 
-- name: configure logstash parser
-  template:
-    src: "conf.d/{{ item }}.j2"
-    dest: "{{ logstash_conf_dir }}/conf.d/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  with_items:
-    - "01-logstash-vitam-filter.conf"
-    - "02-logstash-vitam-filter.conf"
-    - "03-logstash-vitam-filter.conf"
-  notify:
-    - restart logstash
+- block:
+
+  - name: remove filebeat logstash configuration if it exists
+    file:
+      path: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
+      state: absent
+
+  - name: configure logstash parser
+    template:
+      src: "conf.d/{{ item }}.j2"
+      dest: "{{ logstash_conf_dir }}/{{ item }}"
+      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+      mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    with_items:
+      - "01-logstash-vitam-filter.conf"
+      - "02-logstash-vitam-filter.conf"
+      - "03-logstash-vitam-filter.conf"
+    notify:
+      - restart logstash
+
+  when:  syslog.name | default('filebeat') != 'filebeat'
+
+- block:
+
+  - name: remove rsyslog logstash configuration if it exists
+    file:
+      path: "{{ logstash_conf_dir }}/{{ item }}"
+      state: absent
+    with_items:
+      - "01-logstash-vitam-filter.conf"
+      - "02-logstash-vitam-filter.conf"
+      - "03-logstash-vitam-filter.conf"
+
+  - name: configure logstash parser when filebeat
+    template:
+      src: "filebeat-to-logstash.conf.j2"
+      dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
+      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+      mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    notify:
+      - restart logstash
+
+  when:  syslog.name | default('filebeat') == 'filebeat'
 
 - name: Ensure conf.d subdir exists
   file:

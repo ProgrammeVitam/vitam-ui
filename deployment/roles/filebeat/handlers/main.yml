@@ -1,0 +1,17 @@
+---
+
+- name: "filebeat - restart service"
+  systemd:
+    name: filebeat
+    state: restarted
+    daemon_reload: yes
+
+- name: "filebeat - reload consul configuration"
+  systemd:
+    name: vitam-consul
+    state: reloaded
+  tags: consul_conf
+
+- name: daemon reload
+  systemd:
+    daemon_reload: yes

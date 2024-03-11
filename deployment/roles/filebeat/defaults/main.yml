@@ -1,0 +1,29 @@
+---
+
+filebeat_processors:
+  processors:
+    - add_host_metadata:
+        when.not.contains.tags: forwarded
+    - add_cloud_metadata: ~
+    - add_docker_metadata: ~
+
+filebeat_log:
+  level: INFO
+  directory: "/vitamui/log/filebeat"
+  filename: filebeat.log
+  keepfiles: 7
+
+#apache_log_path: "{{ '/var/log/apache2' if ansible_distribution == 'Debian' else '/var/log/httpd' }}"
+nginx_access_path: '/var/log/nginx'
+
+items_to_exclude:
+  - hosts
+  - browse
+  - vitamui
+  - ui_search
+  - zone_admin
+  - zone_cas
+  - zone_data
+  - zone_ui
+  - zone_app
+

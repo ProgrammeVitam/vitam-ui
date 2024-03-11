@@ -1,0 +1,22 @@
+#jinja2: lstrip_blocks: True
+
+#
+# Consul
+#
+- type: filestream
+  id: "{{ vitam_site_name }}-consul"
+  paths:
+    - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
+  fields:
+    kind: log
+    vitam_component: consul
+    source: vitamui
+  processors:
+  - dissect:
+      tokenizer: '%{timestamp} [%{loglevel}]  %{logger}: %{message}'
+      field: "message"
+      target: ""
+  - copy_fields:
+      fields:
+        - from: dissect.loglevel
+          to: loglevel

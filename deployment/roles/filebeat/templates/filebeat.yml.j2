@@ -1,0 +1,61 @@
+#
+# FILEBEAT CONFIGURATION - filebeat.yml
+#
+
+#
+# Logs filebeat
+#
+logging:
+  ### Filebeat log
+  level: {{ filebeat_log.level }}
+
+  # Enable file rotation with default configuration
+  to_files: true
+
+  # Do not log to syslog
+  to_syslog: false
+
+  files:
+    path: {{ filebeat_log.directory }}
+    name: {{ filebeat_log.filename }}
+    keepfiles: {{ filebeat_log.keepfiles }}
+
+#
+# Inputs
+#
+
+# by module in /etc/filebeat/module.d
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: true
+
+# by filestream
+filebeat.config.inputs:
+  enabled: true
+  path: inputs.d/*.yml
+
+#
+# Override for custom indexes
+#
+setup.ilm.enabled: false
+setup.template.enabled: false
+setup.template.overwrite: true
+
+#
+# Logstash
+#
+output.logstash:
+  # The Logstash hosts
+  {% if hosts_vitamui_logstash is defined and hosts_vitamui_logstash|length > 0 %}
+  hosts: [{% for item in groups['hosts_vitamui_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
+  {% else %}
+  hosts: [{% for item in groups['hosts_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
+  {% endif %}
+  compression_level: {{ filebeat.compression_level | default(3) }}
+
+#
+# Processors
+#
+{% if filebeat_processors is defined %}
+{{ filebeat_processors | to_yaml }}
+{% endif %}

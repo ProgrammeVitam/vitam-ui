@@ -369,3 +369,6 @@ opentracing:
     udp_sender:
       host: changeme
       port: changeme
+
+syslog:
+  name: filebeat # or rsyslog

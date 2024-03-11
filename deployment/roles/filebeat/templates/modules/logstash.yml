@@ -1,0 +1,15 @@
+#jinja2: lstrip_blocks: True
+
+- module: logstash
+  log:
+    enabled: true
+    var.paths:
+      - "{{ vitam_defaults.folder.root_path }}/log/logstash/logstash-plain.log"
+    input:
+      fields:
+        kind: log
+        vitam_component: logstash
+        source: vitamui
+
+  slowlog:
+    enabled: false

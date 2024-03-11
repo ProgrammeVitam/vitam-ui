@@ -1,0 +1,52 @@
+#jinja2: lstrip_blocks: True
+
+{% for vitamui_service in vitamui_service_list %}
+
+#
+# VITAMUI SERVICE : "{{ vitamui_service  }}"
+#
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-access"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/accesslog-{{ vitamui_service }}.*.log"
+  fields:
+    kind: access
+    vitam_component: {{ vitamui_service }}
+    source: vitamui
+
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-security"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/management_accesslog-{{ vitamui_service }}.*.log"
+  fields:
+    kind: management
+    vitam_component: {{ vitamui_service }}
+    source: vitamui
+
+- type: filestream
+  id: "{{ vitam_site_name }}-{{ vitamui_service }}-error"
+  paths:
+    - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}.*.log"
+  fields:
+    kind: log
+    vitam_component: {{ vitamui_service }}
+    source: vitamui
+  processors:
+    - dissect:
+        tokenizer: '%{timestamp} [%{thread}] [] %{loglevel} %{logger} - %{message}'
+        field: "message"
+        target: ""
+    - drop_fields:
+        fields: ["timestamp","dissect.timestamp"]
+    - copy_fields:
+        fields:
+          - from: dissect.loglevel
+            to: loglevel
+  parsers:
+    - multiline:
+        type: pattern
+        pattern: '^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3}'
+        negate: true
+        match: after
+
+{% endfor %}

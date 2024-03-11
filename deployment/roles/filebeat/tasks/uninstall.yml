@@ -1,0 +1,30 @@
+---
+
+- name: Uninstall filebeat
+
+  block:
+    - name: Stop filebeat service
+      systemd:
+        name: filebeat
+        state: stopped
+      ignore_errors: true
+
+    - name: Uninstall filebeat package
+      package:
+        name: filebeat
+        state: absent
+      notify: daemon reload
+
+    - name: Remove consul agent service declaration for filebeat
+      file:
+        path: "{{ consul_folder_conf }}/service-filebeat.json"
+        state: absent
+      tags: consul_conf
+      notify: "filebeat - reload consul configuration"
+
+    - name: Clean systemd
+      command: systemctl reset-failed
+
+  tags:
+    - never
+    - uninstall

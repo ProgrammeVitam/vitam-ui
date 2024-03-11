@@ -1,0 +1,26 @@
+---
+
+- name: Install Filebeat
+  package:
+    name: filebeat
+    state: latest
+  notify: "filebeat - restart service"
+
+- name: Add Filebeat config file
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    mode: 0644
+  notify: "filebeat - restart service"
+
+- include_tasks: add_modules.yml
+
+- include_tasks: add_inputs.yml
+
+- meta: flush_handlers
+
+- name: Ensure filebeat is started at boot
+  service:
+    name: filebeat
+    enabled: "{{ filebeat.at_boot | default(service_at_boot) }}"
+    state: started
