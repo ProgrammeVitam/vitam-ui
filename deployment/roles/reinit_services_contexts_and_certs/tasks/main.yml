@@ -1,0 +1,40 @@
+---
+# tasks file for bootstrap
+
+- name: 'Set mongodb authentication credentials'
+  set_fact:
+    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
+
+- name: 'Create temp folder'
+  file:
+    path: "{{ bootstrap_temp_dir }}"
+    state: directory
+  become: true
+
+- name: "Compute scripts"
+  template:
+    src: "{{ item }}"
+    dest: "{{ bootstrap_temp_dir }}/{{ item | basename | regex_replace('\\.j2$') }}"
+  with_items:
+  - cas-services.js.j2
+  - security.js.j2
+  - contexts.js.j2
+  become: true
+
+- name: 'List all mongo scripts'
+  shell:
+    cmd: 'find  {{ bootstrap_temp_dir }} -type f -iname "*.js"'
+  register: files_matched
+  become: true
+
+- name: 'Execute scripts'
+  shell: 'mongo "{{ mongo_uri }}" {{ mongo_credentials }} {{ item }}'
+  no_log: false
+  with_items: "{{ files_matched.stdout_lines }}"
+  become: true
+
+- name: 'Delete temp folder'
+  file:
+    path: "{{ bootstrap_temp_dir }}"
+    state: absent
+  become: true

@@ -1,0 +1,189 @@
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+print("START cas_services.js");
+
+db.services.deleteMany({})
+
+{% if not gateway.enabled %}
+db.services.insert({
+	"_id" : 1,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+    "serviceId": "^{{ vitamui.portal.base_url | default(url_prefix) }}/.*",
+	"name" : "Portal Application",
+	"logoutType" : "FRONT_CHANNEL",
+	"logoutUrl": "{{ vitamui.portal.base_url | default(url_prefix) }}/logout",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	},
+	"evaluationOrder" : 10000
+});
+
+db.services.insert({
+	"_id" : 2,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+	"serviceId": "^{{ vitamui.identity.base_url | default(url_prefix + '/identity') }}/.*)",
+	"name" : "Identity Access Management Application",
+	"logoutType" : "FRONT_CHANNEL",
+	"logoutUrl" : "{{ vitamui.identity.base_url | default(url_prefix + '/identity') }}/logout",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : 3,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+	"serviceId": "^{{ vitamui.identity_admin.base_url | default(url_prefix + '/identity-admin') }}/.*",
+	"name" : "Identity Admin Access Management Application",
+	"logoutType" : "FRONT_CHANNEL",
+    "logoutUrl" : "{{ vitamui.identity_admin.base_url | default(url_prefix + '/identity-admin') }}/logout",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : 4,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+    "serviceId": "^{{ vitamui.referential.base_url | default(url_prefix + '/referential') }}/.*",
+	"name" : "Referential Management Application 2",
+	"logoutType" : "FRONT_CHANNEL",
+    "logoutUrl" : "{{ vitamui.referential.base_url | default(url_prefix + '/referential') }}/logout",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : 5,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+    "serviceId": "^{{ vitamui.ingest.base_url | default(url_prefix + '/ingest') }}/.*",
+    "logoutUrl" : "{{ vitamui.ingest.base_url | default(url_prefix + '/ingest') }}/logout",
+	"name" : "Ingest Management Application",
+	"logoutType" : "FRONT_CHANNEL",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : 6,
+	"_class" : "org.apereo.cas.services.CasRegisteredService",
+    "serviceId": "^{{ vitamui.archive_search.base_url | default(url_prefix + '/archive_search') }}/.*",
+	"name" : "Archive Search Management Application",
+	"logoutType" : "FRONT_CHANNEL",
+    "logoutUrl" : "{{ vitamui.archive_search.base_url | default(url_prefix + '/archive_search') }}/logout",
+	"attributeReleasePolicy" : {
+		"_class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+{% else %}
+
+db.services.insert({
+	"_id" : 1,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "portal",
+    "serviceId": "^{{ vitamui.portal.base_url | default(url_prefix) }}/.*",
+	"name" : "Portal Application",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	evaluationOrder: 10000,
+	jsonFormat: true
+});
+
+db.services.insert({
+	"_id" : 2,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "identity",
+    "serviceId": "^{{ vitamui.identity.base_url | default(url_prefix + '/identity') }}/.*)",
+	"name" : "Identity Access Management Application",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	jsonFormat: true
+});
+
+db.services.insert({
+	"_id" : 3,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "identity-admin",
+    "serviceId": "^{{ vitamui.identity_admin.base_url | default(url_prefix + '/identity-admin') }}/.*",
+	"name" : "Identity Admin Access Management Application",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	jsonFormat: true
+});
+
+db.services.insert({
+	"_id" : 4,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "referential",
+    "serviceId": "^{{ vitamui.referential.base_url | default(url_prefix + '/referential') }}/.*",
+	"name" : "Referential Management Application 2",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	jsonFormat: true
+});
+
+db.services.insert({
+	"_id" : 5,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "ingest",
+    "serviceId": "^{{ vitamui.ingest.base_url | default(url_prefix + '/ingest') }}/.*",
+	"logoutUrl" : "{{ ui_ingest.base_url }}/logout",
+	"name" : "Ingest Management Application",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	jsonFormat: true
+});
+
+db.services.insert({
+	"_id" : 6,
+	_class: "org.apereo.cas.services.OidcRegisteredService",
+  	clientId: "archive_search",
+    "serviceId": "^{{ vitamui.archive_search.base_url | default(url_prefix + '/archive_search') }}/.*",
+	"name" : "Archive Search Management Application",
+	bypassApprovalPrompt: true,
+	supportedGrantTypes: ["authorization_code"],
+	supportedResponseTypes: ["code", "token"],
+	attributeReleasePolicy: {
+		_class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+		allowedAttributes: ["authtoken"],
+	},
+	jsonFormat: true
+});
+
+
+{% endif %}
+
+
+{% for customer_config in customer_cas_services %}
+db.services.insert({{ customer_config | to_json(indent=4) }});
+{% endfor %}
+
+print("END cas_services.js");
