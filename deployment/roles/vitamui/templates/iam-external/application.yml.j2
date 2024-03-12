@@ -23,14 +23,8 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
-    {% if gateway.enabled | default(False) is sameas true %}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
-    {% else %}
-    client-auth: need
-    enabled-protocols: {{ssl_setting.enabled_protocols}}
-    ciphers: {{ssl_setting.ciphers}}
-    {% endif %}
   error:
     path: /error
 {% endif %}
@@ -55,10 +49,8 @@ server-identity:
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
-{% if gateway.enabled | default(False) is sameas true %}
 gateway:
   enabled: true
-{% endif %}
 
 iam-external:
   security-client:
@@ -67,19 +59,9 @@ iam-external:
 {% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      {% if gateway.enabled | default(False) is sameas true %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      {% else %}
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      {% endif %}
       hostname-verification: false
 {% endif %}
   iam-internal-client:
@@ -91,19 +73,9 @@ iam-external:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      {% if gateway.enabled | default(False) is sameas true %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      {% else %}
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      {% endif %}
       hostname-verification: false
 {% endif %}
 

@@ -1,6 +1,5 @@
 ---
 
-
 - name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}'
   package:
     name: "{{ vitamui_struct.package_name | default(package_name) }}"
