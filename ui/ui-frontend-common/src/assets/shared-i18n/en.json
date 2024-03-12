@@ -4511,6 +4511,44 @@
       "Thumbnail": "Thumbnail"
     }
   },
+  "ARCHIVE_UNIT": {
+    "DIALOGS": {
+      "SAVE": {
+        "TITLE": "Edit Descriptive Metadata",
+        "CONTENT": "Have you completed all modifications to the descriptive metadata of the archival unit before saving ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRM SAVE",
+          "CANCEL": "RETURN TO INPUT"
+        },
+        "MESSAGES": {
+          "SUCCESS": "The request to modify the archival unit has been successfully sent"
+        }
+      },
+      "CANCEL": {
+        "TITLE": "Save Pending Changes",
+        "CONTENT": "You have made modifications to the descriptive metadata of the archival unit. Do you wish to save or cancel them ?",
+        "BUTTONS": {
+          "CONFIRM": "SAVE",
+          "CANCEL": "CANCEL MODIFICATIONS"
+        }
+      },
+      "REMOVE": {
+        "TITLE": "Confirm deletion",
+        "CONTENT": "The current metadat bloc is not empty. Do you confirm the deletion ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRM",
+          "CANCEL": "CANCEL"
+        }
+      }
+    },
+    "EDITOR_BANNER": {
+      "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
+    },
+    "ACTIONS": {
+      "ADD": "Add a new metadata bloc",
+      "REMOVE": "Remove the metadata bloc"
+    }
+  },
   "UNIT_UPDATE": {
     "CLASS": "Class",
     "CLOSE": "CLOSE",
@@ -4532,7 +4570,7 @@
     "SUBFONDS": "Subfonds",
     "SUBGRP": "SubGrp",
     "SUBSERIES": "Subseries",
-    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives"
+    "UPDATE_DESC_METADATA": "Update descriptive metadata"
   },
   "PERSISTENT_IDENTIFIER_SEARCH": {
     "SEARCH_PLACEHOLDER": "Search for an archive unit or technical object by permanent identifier",
@@ -4680,5 +4718,10 @@
       }
     }
   },
-  "TAB.DESCRIPTION": "Description"
+  "TAB.DESCRIPTION": "Description",
+  "DISPLAY_RULE": {
+    "OTHER_METADATA": {
+      "LABEL": "Other metadata"
+    }
+  }
 }

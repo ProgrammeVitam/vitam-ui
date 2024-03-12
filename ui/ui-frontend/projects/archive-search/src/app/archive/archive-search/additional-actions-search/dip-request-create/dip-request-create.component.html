@@ -128,11 +128,13 @@
                 <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
                   <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
                   <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
-                  <mat-button-toggle [value]="UsageVersionEnum.SELECTION">{{ 'ARCHIVE_SEARCH.DIP.SELECTION' | translate }} </mat-button-toggle>
+                  <mat-button-toggle [value]="UsageVersionEnum.SELECTION"
+                    >{{ 'ARCHIVE_SEARCH.DIP.SELECTION' | translate }}
+                  </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
 
-              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION"  formArrayName="usages">
+              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
                 <div *ngFor="let usage of usages.controls; let i = index" class="hgap-40">
                   <div class="hgap-20" [formGroupName]="i">
                     <mat-form-field class="vitamui-mat-select usage">

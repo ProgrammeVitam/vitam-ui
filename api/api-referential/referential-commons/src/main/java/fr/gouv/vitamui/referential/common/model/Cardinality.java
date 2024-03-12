@@ -31,10 +31,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public enum Cardinality {
-    ZERO_OR_ONE("0-1"),
-    ZERO_OR_MORE("0-N"),
-    ONE_OR_ONE("1-1"),
-    ONE_OR_MORE("1-N");
+    ONE("0-1"),
+    MANY("0-N"),
+    ONE_REQUIRED("1-1"),
+    MANY_REQUIRED("1-N");
 
     private final String cardinality;
 

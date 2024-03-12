@@ -204,12 +204,14 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
   }
 
   private hideSchemaCategoryDisplayObjects(displayObject: DisplayObject, schema: Schema, categories: string[]): void {
-    const dataPath = displayObject.displayRule.Path;
-    const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
-    const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
+    if (displayObject.displayRule.Path) {
+      const dataPath = displayObject.displayRule.Path;
+      const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
+      const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
 
-    if (Boolean(schemaElement) && categories.includes(schemaElement.Category)) {
-      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+      if (Boolean(schemaElement) && categories.includes(schemaElement.Category)) {
+        displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+      }
     }
 
     displayObject.children.forEach((child) => this.hideSchemaCategoryDisplayObjects(child, schema, categories));
@@ -226,13 +228,19 @@ export class SchemaStrategyDisplayObjectService implements DisplayObjectService 
   }
 
   private fillDisplayObjectLabelsWithSchemaShortNames(displayObject: DisplayObject, schema: Schema) {
-    const dataPath = displayObject.displayRule.Path;
-    const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
-    const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
+    if (displayObject.displayRule.Path) {
+      const dataPath = displayObject.displayRule.Path;
+      const schemaPath = this.displayRuleHelper.convertDataPathToSchemaPath(dataPath);
+      const schemaElement = schema.find((se) => se.ApiPath === schemaPath);
 
-    if (Boolean(schemaElement)) {
-      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, label: schemaElement.ShortName } };
+      if (Boolean(schemaElement)) {
+        displayObject.displayRule = {
+          ...displayObject.displayRule,
+          ui: { ...displayObject.displayRule.ui, label: schemaElement.ShortName },
+        };
+      }
     }
+
     displayObject.children.forEach((child) => this.fillDisplayObjectLabelsWithSchemaShortNames(child, schema));
   }
 

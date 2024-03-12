@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { Logger } from '../../logger/logger';
 import { DisplayObject, DisplayRule } from '../models';
 import { ComponentType, DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
@@ -45,7 +44,6 @@ import { TypeService } from './type.service';
 @Injectable()
 export class DisplayObjectHelperService {
   constructor(
-    private logger: Logger,
     private typeService: TypeService,
     private dataStructureService: DataStructureService,
     private displayRuleHelperService: DisplayRuleHelperService,

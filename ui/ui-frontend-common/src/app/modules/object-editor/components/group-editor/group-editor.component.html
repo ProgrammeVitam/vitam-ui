@@ -1,0 +1,54 @@
+<vitamui-common-accordion *ngIf="editObject?.key; else content" [opened]="editObject.open">
+  <span class="title">{{ editObject.displayRule.ui.label | translate | empty }}</span>
+  <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
+    <span *ngIf="favoriteEntry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
+    <vitamui-common-menu-button
+      *ngIf="actionList.length"
+      overlayPos="end"
+      icon="vitamui-icon-more-vert"
+      menuButtonSize="small"
+      outlineSecondary="true"
+      (click)="stopPropagation($event)"
+    >
+      <ng-container *ngFor="let action of actionList">
+        <button mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
+      </ng-container>
+    </vitamui-common-menu-button>
+  </div>
+
+  <div class="content">
+    <div *ngTemplateOutlet="content"></div>
+  </div>
+</vitamui-common-accordion>
+
+<ng-template #content>
+  <div *ngFor="let column of rows" class="v-row">
+    <div *ngFor="let child of column" class="v-col">
+      <ng-container [ngSwitch]="child.type">
+        <vitamui-common-group-editor *ngSwitchCase="DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
+        <vitamui-common-list-editor *ngSwitchCase="DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
+        <vitamui-common-primitive-editor *ngSwitchCase="DisplayObjectType.PRIMITIVE" [editObject]="child"></vitamui-common-primitive-editor>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="editObject && (editObject.value === null || editObject.value === undefined)">{{ editObject.value | empty }}</div>
+</ng-template>
+
+<ng-template #removeDialog>
+  <mat-dialog-content>
+    <div class="text-title">
+      {{ 'ARCHIVE_UNIT.DIALOGS.REMOVE.TITLE' | translate }}
+    </div>
+
+    <div class="text large bold">
+      {{ 'ARCHIVE_UNIT.DIALOGS.REMOVE.CONTENT' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_UNIT.DIALOGS.REMOVE.BUTTONS.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.REMOVE.BUTTONS.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

@@ -22,11 +22,7 @@ export class VitamuiMenuButtonComponent {
    */
   @Input() label: string;
 
-  @Input()
-  public disabled = false;
-
-  @Input()
-  isLarge = true;
-
-  constructor() {}
+  @Input() disabled = false;
+  @Input() outlineSecondary = false;
+  @Input() menuButtonSize: 'large' | 'medium' | 'small' = 'large';
 }

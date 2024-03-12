@@ -1,0 +1,110 @@
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.v-col {
+  display: flex;
+  flex: 1;
+}
+
+.v-col:not(:last-child) {
+  margin-right: 10px;
+}
+
+.v-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.display-none {
+  display: none;
+}
+
+.content {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .header {
+    // Le header du deuxième niveau a une hauteur de 40px
+    .content & {
+      min-height: 40px;
+      border-radius: unset;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 700;
+      padding-left: 16px;
+      padding-right: 16px;
+
+      &.opened {
+        border-left: 2px solid var(--vitamui-primary);
+        color: var(--vitamui-primary);
+      }
+
+      .favorite-entry {
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: 700;
+      }
+
+      // Le header du troisième niveau a une hauteur de 30px
+      .content & {
+        min-height: 30px;
+
+        // Le header du quatrième niveau a une hauteur de 20px
+        .content & {
+          min-height: 20px;
+        }
+      }
+    }
+  }
+
+  .content {
+    background-color: white;
+    padding: 20px 30px;
+  }
+}
+
+.header {
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 5px;
+  display: flex;
+  background-color: white;
+  flex-direction: row;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+
+  &.opened {
+    border-left: 2px solid var(--vitamui-primary);
+    color: var(--vitamui-primary);
+    margin-bottom: 5px;
+  }
+
+  &.disabled {
+    border-left: 2px solid transparent;
+    color: var(--vitamui-grey);
+  }
+
+  &.display-none {
+    display: none;
+  }
+}
+
+.icon {
+  font-size: 24px;
+  margin-left: 5px;
+  margin-right: 5px;
+}

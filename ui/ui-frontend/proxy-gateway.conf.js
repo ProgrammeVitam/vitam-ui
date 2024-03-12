@@ -108,11 +108,7 @@ const PROXY_CONFIG = [
 
   {
     // archive-search to Referential External Backend
-    context: [
-      '/archive-search-api/security-profile',
-      '/archive-search-api/ontology',
-      '/archive-search-api/schemas',
-    ],
+    context: ['/archive-search-api/security-profile', '/archive-search-api/ontology', '/archive-search-api/schemas'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -162,7 +158,7 @@ const PROXY_CONFIG = [
     },
   },
   {
-    context: ['/archive-search-api/archive-search'],
+    context: ['/archive-search-api/archive-search', '/archive-search-api/archive-units'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -177,14 +173,12 @@ const PROXY_CONFIG = [
       '^/archive-search-api/archive-search/searchcriteriahistory': '/searchcriteriahistory',
       '^/archive-search-api/archive-search/filingholdingscheme': '/archives-search/filling-holding-schema',
       '^/archive-search-api/archive-search/': '/archives-search/',
+      '^/archive-search-api/archive-units': '/archive-units',
     },
   },
   {
     // Pastis to Referential External Backend
-    context: [
-      '/pastis-api/archival-profile',
-      '/pastis-api/profile',
-    ],
+    context: ['/pastis-api/archival-profile', '/pastis-api/profile'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -277,12 +271,7 @@ const PROXY_CONFIG = [
   },
   {
     // collect to Referential External Backend
-    context: [
-      '/collect-api/ontology',
-      '/collect-api/search/filingplan',
-      '/collect-api/schemas',
-      '/collect-api/rules',
-    ],
+    context: ['/collect-api/ontology', '/collect-api/search/filingplan', '/collect-api/schemas', '/collect-api/rules'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -301,10 +290,7 @@ const PROXY_CONFIG = [
     },
   },
   {
-    context: [
-      '/collect-api/projects',
-      '/collect-api/transactions',
-    ],
+    context: ['/collect-api/projects', '/collect-api/transactions'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -320,17 +306,17 @@ const PROXY_CONFIG = [
       '^/collect-api/projects': '/collect-api/v1/projects',
       '^/collect-api/projects/object-groups': '/collect-api/v1/projects/object-groups',
       '^/collect-api/transactions/archive-units/([^/]+)/search': '/collect-api/v1/transactions/$1/archive-units',
-      '^/collect-api/transactions/archive-units/([^/]+)/export-csv-search': '/collect-api/v1/transactions/$1/archive-units/export-csv-search',
-      '^/collect-api/transactions/archive-units/([^/]+)/update-units-metadata': '/collect-api/v1/transactions/$1/archive-units/update-units-metadata',
+      '^/collect-api/transactions/archive-units/([^/]+)/export-csv-search':
+        '/collect-api/v1/transactions/$1/archive-units/export-csv-search',
+      '^/collect-api/transactions/archive-units/([^/]+)/update-units-metadata':
+        '/collect-api/v1/transactions/$1/archive-units/update-units-metadata',
       '^/collect-api/transactions/archive-units': '/collect-api/v1/transactions',
       '^/collect-api/transactions': '/collect-api/v1/transactions',
-    }
+    },
   },
   {
     // ingest to Referential External Backend
-    context: [
-      '/ingest-api/ontology'
-    ],
+    context: ['/ingest-api/ontology'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -388,9 +374,9 @@ const PROXY_CONFIG = [
     secure: false,
     logLevel: 'debug',
     pathRewrite: {
-      '^/ingest-api/': '/v1/'
+      '^/ingest-api/': '/v1/',
     },
-  }
+  },
 ];
 
 module.exports = PROXY_CONFIG;

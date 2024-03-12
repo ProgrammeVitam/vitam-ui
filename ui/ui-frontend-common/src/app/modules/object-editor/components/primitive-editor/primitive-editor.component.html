@@ -1,0 +1,32 @@
+<ng-container *ngIf="editObject?.control">
+  <ng-container [ngSwitch]="uiComponent">
+    <vitamui-common-input
+      *ngSwitchCase="'textfield'"
+      [formControl]="editObject.control"
+      [placeholder]="editObject.displayRule.ui.label | translate"
+      class="w-100"
+    ></vitamui-common-input>
+    <vitamui-common-input
+      *ngSwitchCase="'select'"
+      [formControl]="editObject.control"
+      [placeholder]="editObject.displayRule.ui.label | translate"
+      class="w-100"
+    ></vitamui-common-input>
+    <vitamui-common-textarea
+      *ngSwitchCase="'textarea'"
+      [formControl]="editObject.control"
+      [placeholder]="editObject.displayRule.ui.label | translate"
+      class="w-100"
+    ></vitamui-common-textarea>
+    <vitamui-common-datepicker
+      *ngSwitchCase="'datepicker'"
+      [formControl]="editObject.control"
+      [label]="editObject.displayRule.ui.label | translate"
+    ></vitamui-common-datepicker>
+    <vitamui-common-datepicker
+      *ngSwitchCase="'datetime'"
+      [formControl]="editObject.control"
+      [label]="editObject.displayRule.ui.label | translate"
+    ></vitamui-common-datepicker>
+  </ng-container>
+</ng-container>

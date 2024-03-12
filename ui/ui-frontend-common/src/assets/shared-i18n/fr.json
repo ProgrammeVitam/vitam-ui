@@ -4764,12 +4764,50 @@
       "GEL": "Gel / Dégel"
     }
   },
+  "ARCHIVE_UNIT": {
+    "DIALOGS": {
+      "SAVE": {
+        "TITLE": "Modifier les métadonnées descriptives",
+        "CONTENT": "Avez-vous effectué l'ensemble des modifications des métadonnées descriptives de l'unité archivistique avant leur enregistrement ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRMER L'ENREGISTREMENT",
+          "CANCEL": "REVENIR À LA SAISIE"
+        },
+        "MESSAGES": {
+          "SUCCESS": "La demande de modification de l'unité archivistique a bien été envoyée"
+        }
+      },
+      "CANCEL": {
+        "TITLE": "Sauvegarder les modifications en cours",
+        "CONTENT": "Vous avez effectué des modifications sur les métadonnées descriptives de l'unité archivistique. Souhaitez-vous les enregistrer ou les annuler ?",
+        "BUTTONS": {
+          "CONFIRM": "ENREGISTRER",
+          "CANCEL": "ANNULER LES MODIFICATIONS"
+        }
+      },
+      "REMOVE": {
+        "TITLE": "Confirmer la suppression",
+        "CONTENT": "Le bloc de métadonnées que vous voulez supprimer comprend des valeurs renseignées. Confirmez-vous la suppression ?",
+        "BUTTONS": {
+          "CONFIRM": "CONFIRMER",
+          "CANCEL": "ANNULER"
+        }
+      }
+    },
+    "EDITOR_BANNER": {
+      "TITLE": "MODE EDITION (MODIFICATION ET COMPLÉTION) - VERSION {{sedaVersion}} SEDA"
+    },
+    "ACTIONS": {
+      "ADD": "Ajouter un nouveau bloc de métadonnées",
+      "REMOVE": "Supprimer le bloc de métadonnées"
+    }
+  },
   "UNIT_UPDATE": {
     "EXECUTE_UNIT_UPDATE_MESSAGE": "La demande de mise à jour d'unité archivistique a bien été envoyée",
     "MESSAGE": "Voulez-vous confirmer la mise à jour des métadonnées de cette unité archivistique ?",
     "HINT": "Validation de mise à jour",
     "NO_PERMISSION": "Votre contrat d'accès n'autorise pas cette action",
-    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "UPDATE_DESC_METADATA": "Modifier les metadonnées descriptives",
     "CLOSE": "FERMER",
     "CONFIRM_CLOSE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
     "CLOSE_WINDOW_HINT": "Quitter la mise à jour",
@@ -5528,5 +5566,10 @@
       }
     }
   },
-  "TAB.DESCRIPTION": "Description"
+  "TAB.DESCRIPTION": "Description",
+  "DISPLAY_RULE": {
+    "OTHER_METADATA": {
+      "LABEL": "Autres métadonnées"
+    }
+  }
 }

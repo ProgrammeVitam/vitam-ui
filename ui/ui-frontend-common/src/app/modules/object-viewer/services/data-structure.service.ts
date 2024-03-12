@@ -36,7 +36,9 @@
  */
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DataStructureService {
   /**
    * Transforms a nested object into a flat object.
@@ -44,14 +46,14 @@ export class DataStructureService {
    * @param data Nested object.
    * @returns Flat object.
    */
-  public flatten(data: any) {
+  public flatten(data: any, arrayNotation = true) {
     const result = {};
     function recurse(cur: any, prop: any) {
       if (Object(cur) !== cur) {
         result[prop] = cur;
       } else if (Array.isArray(cur)) {
         for (let i = 0, l = cur.length; i < l; i++) {
-          recurse(cur[i], prop + '[' + i + ']');
+          recurse(cur[i], `${prop}${arrayNotation ? '[' + i + ']' : '.' + i}`);
         }
         if (cur.length === 0) {
           result[prop] = [];

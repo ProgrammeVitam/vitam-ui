@@ -25,7 +25,6 @@
  * accept its terms.
  */
 
-
 export enum UsageVersionEnum {
   ALL = 'ALL',
   SELECTION = 'SELECTION',

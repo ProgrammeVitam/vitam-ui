@@ -1,0 +1,51 @@
+<vitamui-common-archive-unit-viewer *ngIf="!editMode" [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
+
+<div *ngIf="editMode">
+  <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.2' }" class="editor-banner">
+    <button (click)="onSave()" [disabled]="editObject?.control?.pristine" class="btn primary save">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
+    <button (click)="onCancel()" class="btn primary cancel">
+      {{ 'COMMON.UNDO' | translate }}
+    </button>
+  </vitamui-common-editor-banner>
+  <vitamui-common-archive-unit-editor [data]="archiveUnit"></vitamui-common-archive-unit-editor>
+</div>
+
+<ng-template #updateDialog>
+  <mat-dialog-content>
+    <div class="text-title">
+      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.TITLE' | translate }}
+    </div>
+
+    <div class="text large bold">
+      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.CONTENT' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #cancelDialog>
+  <mat-dialog-content>
+    <div class="text-title">
+      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.TITLE' | translate }}
+    </div>
+
+    <div class="text large bold">
+      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.CONTENT' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

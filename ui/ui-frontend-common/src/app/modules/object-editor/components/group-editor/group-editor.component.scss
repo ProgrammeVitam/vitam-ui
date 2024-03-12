@@ -1,0 +1,19 @@
+:host {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.v-col {
+  display: flex;
+  flex: 1;
+}
+
+.v-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+}

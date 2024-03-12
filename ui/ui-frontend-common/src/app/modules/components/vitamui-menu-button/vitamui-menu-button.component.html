@@ -1,11 +1,15 @@
 <button
   #trigger="matMenuTrigger"
   [matMenuTriggerFor]="moreMenu"
-  class="btn outline secondary"
-  [ngClass]="{ 'btn-circle': icon && !label, large: icon && !label && isLarge }"
-  [class.hidden]="trigger.menuOpen"
+  [ngClass]="{
+    'outline-secondary': outlineSecondary,
+    'btn-circle': this.icon && !this.label,
+    hidden: trigger.menuOpen
+  }"
   [disabled]="disabled"
   aria-label="more menu"
+  [class]="menuButtonSize"
+  class="btn secondary"
 >
   <i *ngIf="icon" class="vitamui-icon {{ icon }}" [class.mr-3]="label"></i>
   {{ label }}

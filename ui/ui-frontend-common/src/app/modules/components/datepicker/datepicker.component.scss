@@ -1,0 +1,20 @@
+i {
+  transform: scale(1.5);
+}
+
+.filled {
+  .search-date-label {
+    top: 13px;
+
+    transition: top 150ms ease-out;
+  }
+
+  input {
+    position: relative;
+    top: 8px;
+    left: -2px;
+
+    transition: top left 150ms ease-out;
+    transition: left 150ms ease-out;
+  }
+}

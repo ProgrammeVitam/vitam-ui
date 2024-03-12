@@ -108,6 +108,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
+import { ObjectEditorModule } from './object-editor/object-editor.module';
 import { ObjectViewerModule } from './object-viewer/object-viewer.module';
 import { PipesModule } from './pipes/pipes.module';
 import { SecurityModule } from './security/security.module';
@@ -172,6 +173,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     MatSnackBarModule,
     NavbarModule,
     ObjectViewerModule,
+    ObjectEditorModule,
     OrderByButtonModule,
     OrderDropdownModule,
     PipesModule,
@@ -235,6 +237,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     LoggerModule,
     NavbarModule,
     ObjectViewerModule,
+    ObjectEditorModule,
     OrderByButtonModule,
     OrderDropdownModule,
     PipesModule,
