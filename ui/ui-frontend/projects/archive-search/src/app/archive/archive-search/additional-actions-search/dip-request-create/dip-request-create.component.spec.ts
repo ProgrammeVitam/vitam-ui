@@ -52,6 +52,7 @@ import {
   ObjectQualifierType,
   ObjectQualifierTypeList,
   StartupService,
+  UsageVersionEnum,
   WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
@@ -138,7 +139,7 @@ describe('DipRequestCreateComponent', () => {
   it('should have correct default values for toggle buttons', () => {
     expect(component.formGroups[1].get('includeLifeCycleLogs').value).toBe(false);
     expect(component.formGroups[1].get('sedaVersion').value).toBe('2.2');
-    expect(component.formGroups[1].get('includeObjects').value).toBe(true);
+    expect(component.formGroups[1].get('includeObjects').value).toBe(UsageVersionEnum.ALL);
   });
 
   it('should have "Original numérique" usage with "Initiale" version by default', () => {

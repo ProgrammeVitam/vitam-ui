@@ -114,9 +114,9 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
     	ProfileDto profile = new ProfileDto();
     	profile.setApplicationName(Application.EXTERNAL_PARAMS.toString());
     	profile.setExternalParamId(PARAMETER_ID);
+    	profile.setTenantIdentifier(1);
     	List<ProfileDto> profiles = new ArrayList<ProfileDto>();
     	profiles.add(profile);
-
     	GroupDto group = new GroupDto();
     	group.setProfiles(profiles);
 
@@ -128,6 +128,7 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
     	result.setId(PARAMETER_ID);
 
     	when(internalSecurityService.getUser()).thenReturn(user);
+    	when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
     	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(result));
         ExternalParametersDto dto = controller.getMyExternalParameters();
 
