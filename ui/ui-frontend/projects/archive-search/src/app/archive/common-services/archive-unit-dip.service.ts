@@ -43,6 +43,8 @@ export class ArchiveUnitDipService {
     public dialog: MatDialog,
   ) {}
 
+  private readonly maxWithInVw = '800px';
+
   launchExportDipModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     selectedItemCountKnown: boolean,
@@ -96,6 +98,7 @@ export class ArchiveUnitDipService {
         tenantIdentifier,
         selectedItemCountKnown,
       },
+      maxWidth: this.maxWithInVw,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -169,7 +172,9 @@ export class ArchiveUnitDipService {
         tenantIdentifier,
         selectedItemCountKnown,
       },
+      maxWidth: this.maxWithInVw,
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         return;
