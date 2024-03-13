@@ -17,25 +17,20 @@
 - hosts: hosts_ui_*
   gather_facts: no
   any_errors_fatal: true
-  roles:
-    - assets_copy
+  tasks:
+    - include_role:
+        name: assets_copy
 
-- hosts:
-    - hosts_ui_portal
-    - hosts_ui_identity
-    - hosts_ui_identity_admin
-    - hosts_ui_referential
-    - hosts_ui_archive_search
-    - hosts_ui_pastis
-    - hosts_ui_collect
-    - hosts_ui_ingest
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui | dict2items | selectattr('value.vitamui_component', 'eq', hostvars[inventory_hostname]['group_names'][0]) | map(attribute='value') | list | first }}"
-    #vitamui_struct: "{{ vitamui[hostvars[inventory_hostname]['group_names'][0]] }"
+    - set_fact:
+        vitamui_component: "{{ vitamui[inventory_hostname.split('_')[-1]] }}"
+      when: vitamui is defined and inventory_hostname.split('_')[-1] in vitamui
+
+    - debug:
+        var: vitamui_component
+
+    - include_role:
+        name: nginx_webapp
+      when: vitamui_component | default('') != ''
 
 # - hosts: hosts_ui_portal
 #   gather_facts: no
