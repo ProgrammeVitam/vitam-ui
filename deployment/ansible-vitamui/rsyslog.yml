@@ -3,4 +3,4 @@
 - hosts: hosts_vitamui
   gather_facts: no
   roles:
-    - rsyslog
+    - { role: rsyslog, when: syslog.name | default('filebeat') == 'rsyslog' }

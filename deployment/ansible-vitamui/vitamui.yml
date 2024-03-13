@@ -5,10 +5,8 @@
 - import_playbook: pre_install.yml
 
 - import_playbook: rsyslog.yml
-  when: syslog.name | default('filebeat') == "rsyslog"
 
 - import_playbook: filebeat.yml
-  when: syslog.name | default('filebeat') == "filebeat"
 
 - import_playbook: consul.yml
 
