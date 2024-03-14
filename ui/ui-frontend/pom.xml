@@ -27,6 +27,7 @@
   <properties>
     <skipTests>false</skipTests>
     <skipAllFrontend>false</skipAllFrontend>
+    <skipAllFrontendTests>false</skipAllFrontendTests>
   </properties>
 
   <build>
