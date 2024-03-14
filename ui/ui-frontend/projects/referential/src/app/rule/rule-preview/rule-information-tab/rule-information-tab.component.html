@@ -1,12 +1,7 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="d-flex">
     <mat-form-field class="vitamui-mat-select w-100">
-      <mat-select
-        formControlName="ruleType"
-        [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate"
-        required
-        [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-      >
+      <mat-select formControlName="ruleType" [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate" required [disabled]="true">
         <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">{{ ruleType.label }}</mat-option>
       </mat-select>
       <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
@@ -20,7 +15,7 @@
       minlength="2"
       required
       [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"
-      [disabled]="(hasUpdateAgencyRole$ | async) !== true"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
     >
       <ng-container *ngIf="form.get('ruleValue')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
@@ -37,7 +32,7 @@
       pattern="[0-9]*"
       required
       [placeholder]="'RULES_APP.TAB.INFORMATION.PERIOD' | translate"
-      [disabled]="(hasUpdateAgencyRole$ | async) !== true"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
     >
       <ng-container *ngIf="form.get('ruleDuration')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required">
@@ -53,7 +48,7 @@
         formControlName="ruleMeasurement"
         [placeholder]="'RULES_APP.TAB.INFORMATION.UNIT_MEASURE' | translate"
         required
-        [disabled]="(hasUpdateAgencyRole$ | async) !== true"
+        [disabled]="(hasUpdateRuleRole$ | async) !== true"
       >
         <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
           {{ ruleMeasurement.label }}
@@ -68,7 +63,7 @@
       class="w-100"
       required
       formControlName="ruleDescription"
-      [disabled]="(hasUpdateAgencyRole$ | async) !== true"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
       [placeholder]="'RULES_APP.TAB.INFORMATION.DESCRIPTION' | translate"
       [rows]="2"
     >
@@ -81,11 +76,7 @@
   </div>
 
   <div class="actions mt-5">
-    <button
-      type="submit"
-      class="btn primary"
-      [disabled]="isInvalid() || unchanged() || submited || (hasUpdateAgencyRole$ | async) !== true"
-    >
+    <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">
       {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
