@@ -235,4 +235,16 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
     return managementContract;
   }
+
+  get identifier(): AbstractControl | null {
+    return this.form.get('identifier');
+  }
+
+  get name(): AbstractControl | null {
+    return this.form.get('name');
+  }
+
+  get description(): AbstractControl | null {
+    return this.form.get('description');
+  }
 }
