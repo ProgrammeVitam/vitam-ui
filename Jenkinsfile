@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'contrib'
+        label 'build-slave-1'
     }
 
     environment {
