@@ -57,13 +57,13 @@
 - hosts: hosts_vitamui_reverseproxy
   gather_facts: no
   tasks:
-    - name: Remove vitamui httpd reverse configuration when vitam reverse is on the same host
+    - name: Remove vitamui httpd reverse configuration
       file:
         name: "/etc/httpd/conf.d/zz_{{ vitam_reverse_external_dns }}.conf"
         state: absent
-      when: inventory_hostname is in groups['hosts_vitam_reverse'] and inventory_hostname is in groups['hosts_vitamui_reverseproxy']
+      when: inventory_hostname is in groups['hosts_vitamui_reverseproxy']
     - block:
-      - name: Remove httpd package when Vitam reverse and Vitamui reverse are on different host
+      - name: Remove Vitamui httpd package (vitam reverse should be different !!!)
         package:
           name:
             - "httpd"
@@ -79,7 +79,7 @@
         with_items:
           - /etc/httpd/
           - /var/log/httpd
-      when: inventory_hostname not in groups['hosts_vitam_reverse'] and inventory_hostname is in groups['hosts_vitamui_reverseproxy']
+      when: inventory_hostname is in groups['hosts_vitamui_reverseproxy']
 
 #- hosts: hosts_vitamui_mongod
 #  role:
