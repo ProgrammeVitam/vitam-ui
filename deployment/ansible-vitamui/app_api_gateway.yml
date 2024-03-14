@@ -14,84 +14,92 @@
     vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "api-gateway, api, internal"
 
-- hosts: hosts_ui_*
+# - hosts: hosts_ui_*
+#   gather_facts: no
+#   any_errors_fatal: true
+#   tasks:
+#     - include_role:
+#         name: assets_copy
+
+#     - set_fact:
+#         vitamui_component: "{{ vitamui[inventory_hostname.split('_')[-1]] }}"
+#       when: vitamui is defined and inventory_hostname.split('_')[-1] in vitamui
+
+#     - debug:
+#         var: vitamui_component
+
+#     - include_role:
+#         name: nginx_webapp
+#       when: vitamui_component | default('') != ''
+
+- hosts: hosts_ui_portal
   gather_facts: no
   any_errors_fatal: true
-  tasks:
-    - include_role:
-        name: assets_copy
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.portal }}"
 
-    - set_fact:
-        vitamui_component: "{{ vitamui[inventory_hostname.split('_')[-1]] }}"
-      when: vitamui is defined and inventory_hostname.split('_')[-1] in vitamui
+- hosts: hosts_ui_identity
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.identity }}"
 
-    - debug:
-        var: vitamui_component
+- hosts: hosts_ui_identity_admin
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.identity_admin }}"
 
-    - include_role:
-        name: nginx_webapp
-      when: vitamui_component | default('') != ''
+- hosts: hosts_ui_referential
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.referential }}"
 
-# - hosts: hosts_ui_portal
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.portal }}"
+- hosts: hosts_ui_archive_search
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.archive_search }}"
 
-# - hosts: hosts_ui_identity
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.identity }}"
+- hosts: hosts_ui_pastis
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.pastis }}"
 
-# - hosts: hosts_ui_identity_admin
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.identity_admin }}"
+- hosts: hosts_ui_collect
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.collect }}"
 
-# - hosts: hosts_ui_referential
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.referential }}"
-
-# - hosts: hosts_ui_archive_search
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.archive_search }}"
-
-# - hosts: hosts_ui_pastis
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.pastis }}"
-
-# - hosts: hosts_ui_collect
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.collect }}"
-
-# - hosts: hosts_ui_ingest
-#   gather_facts: no
-#   any_errors_fatal: true
-#   roles:
-#     - nginx_webapp
-#   vars:
-#     vitamui_struct: "{{ vitamui.ingest }}"
+- hosts: hosts_ui_ingest
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - assets_copy
+    - nginx_webapp
+  vars:
+    vitamui_struct: "{{ vitamui.ingest }}"
