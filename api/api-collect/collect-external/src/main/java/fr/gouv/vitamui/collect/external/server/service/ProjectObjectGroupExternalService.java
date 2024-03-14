@@ -35,7 +35,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
@@ -112,7 +112,7 @@ public class ProjectObjectGroupExternalService extends
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
-        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
+        for (String qualifierName : ObjectQualifierTypeEnum.allValuesOrdered) {
             QualifiersDto qualifierFound = got.getQualifiers().stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)

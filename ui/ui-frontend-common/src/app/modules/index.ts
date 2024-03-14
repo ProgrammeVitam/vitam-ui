@@ -96,7 +96,7 @@ export * from './components/search-bar/index';
 export * from './components/stepper/index';
 export * from './components/table-filter/index';
 export * from './components/user-alerts/index';
-export * from './components/vitamui-autocomplete/index';
+export * from './components/autocomplete';
 export * from './components/vitamui-customer-select/index';
 export * from './components/vitamui-display-node/index';
 export * from './components/vitamui-field-error/index';

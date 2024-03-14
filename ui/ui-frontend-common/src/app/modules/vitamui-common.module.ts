@@ -119,13 +119,15 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   // tslint:disable-next-line: semicolon whitespace
-  return () => configService.load(environment.configUrls).toPromise();
+  const p = () => configService.load(environment.configUrls).toPromise();
+
+  return p;
 }
 
 export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
-  return () =>
+  const p = () =>
     new Promise((resolve) => {
       authService
         .login()
@@ -136,6 +138,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
         .subscribe(() => resolve(true));
       // tslint:disable-next-line: semicolon whitespace
     });
+
+  return p;
 }
 
 @NgModule({
