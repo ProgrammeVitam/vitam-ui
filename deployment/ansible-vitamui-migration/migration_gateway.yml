@@ -81,6 +81,6 @@
           - /var/log/httpd
       when: inventory_hostname not in groups['hosts_vitam_reverse'] and inventory_hostname is in groups['hosts_vitamui_reverseproxy']
 
-- hosts: hosts_vitamui_mongod
-  role:
-    - reinit_services_contexts_and_certs
+#- hosts: hosts_vitamui_mongod
+#  role:
+#    - reinit_services_contexts_and_certs
