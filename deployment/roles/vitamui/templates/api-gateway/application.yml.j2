@@ -284,7 +284,7 @@ spring:
             - RewritePath=/collect-api/projects/object-groups/(?<segment>.*),/collect-api/v1/projects/objectgroups/$\{segment},
             - RewritePath=/collect-api/projects(?<segment>.*),/collect-api/v1/projects$\{segment},
             - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/search,/collect-api/v1/transactions/$\{segment}/archive-units,
-            - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/export-csv-search,/collect-api/v1/transactions/$\{segment}/export-csv-search,
+            - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/export-csv-search,/collect-api/v1/transactions/$\{segment}/archive-units/export-csv-search,
             - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/update-units-metadata,/collect-api/v1/transactions/$\{segment}/update-units-metadata,
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
