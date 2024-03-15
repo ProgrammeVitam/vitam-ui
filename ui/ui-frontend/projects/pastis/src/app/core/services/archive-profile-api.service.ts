@@ -82,7 +82,7 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
 
   updateProfilePa(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
     profile.path = null;
-    return this.http.put<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath + '/' + profile.identifier, profile, { headers });
+    return this.http.put<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath + '/' + profile.id, profile, { headers });
   }
 
   patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
