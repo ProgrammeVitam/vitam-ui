@@ -160,6 +160,16 @@
   </div>
 </div>
 
+<!--/*-->
+  Special syntax to inject "providedUserName" variable.
+  See https://stackoverflow.com/a/25688291/106971
+<!--*/-->
+<script th:inline="javascript" th:if="${!#strings.isEmpty(providedUsername)}">
+    var providedUsername = /*[[${providedUsername}]]*/ "";
+    $(document).ready(function() {
+        $('#username').val(providedUsername);
+    });
+</script>
 <script>
   $('#main-form').submit(function () {
     $(this).find('#username').each(function () {
@@ -169,7 +179,11 @@
 
   // FIXME
   $(document).ready(function () {
-      $('#username').val("demo@change-it.fr");
+      if(!$('#username').val()) {
+          setTimeout(function () {
+              $('#username').val("demo@change-it.fr");
+          }, 1000);
+      }
   });
 
   function sanitizeUrl(inputUrl) {

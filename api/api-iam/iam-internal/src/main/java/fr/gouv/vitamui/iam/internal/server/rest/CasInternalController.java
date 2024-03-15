@@ -200,7 +200,7 @@ public class CasInternalController {
     public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
         @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
         @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
-        SanityChecker.checkSecureParameter(idp, loginEmail);
+        SanityChecker.checkSecureParameter(idp, loginEmail, loginCustomerId);
         if (userIdentifier != null) {
             SanityChecker.checkSecureParameter(userIdentifier);
         }
@@ -229,8 +229,9 @@ public class CasInternalController {
         final UserDto user = internalUserService.getOne(superUserId, Optional.empty());
         if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
             final String email = user.getEmail();
-            LOGGER.debug("-> email: {}", email);
-            return casService.getSubrogationsBySuperUser(email);
+            final String customerId = user.getCustomerId();
+            LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
+            return casService.getSubrogationsBySuperUser(email, customerId);
         }
         else {
             return new ArrayList<>();

@@ -107,29 +107,6 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
         val ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
         val context = utils.buildContext(loginEmail);
 
-        //  FIXME LGH !!!
-        //        val username = transformedCredential.getUsername().toLowerCase().trim();
-        //        val requestContext = RequestContextHolder.getRequestContext();
-        //        String surrogate = null;
-        //        String ip = null;
-        //        if (requestContext != null) {
-        //            val flowScope = requestContext.getFlowScope();
-        //            if (flowScope != null) {
-        //                val credential = flowScope.get("credential");
-        //                if (credential instanceof SurrogateUsernamePasswordCredential) {
-        //                    surrogate = ((SurrogateUsernamePasswordCredential) credential).getSurrogateUsername();
-        //                } else {
-        //                    flowScope.put(Constants.PROVIDED_USERNAME, transformedCredential.getUsername());
-        //                }
-        //            }
-        //            val externalContext = requestContext.getExternalContext();
-        //            if (externalContext != null) {
-        //                ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
-        //            }
-        //        }
-        //        LOGGER.debug("Authenticating username: {} / surrogate: {} / IP: {}", username, surrogate, ip);
-        //        val context = utils.buildContext(username);
-
         LOGGER.debug("Authenticating loginEmail: {} / loginCustomerId: {} / surrogateEmail: {} / surrogateCustomerId:" +
             " {} / IP: {}", loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId, ip);
 

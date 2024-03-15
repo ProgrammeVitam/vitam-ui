@@ -45,10 +45,10 @@ import { SubrogationModalComponent } from './subrogation-modal.component';
 export class SubrogationModalService {
   constructor(private dialog: MatDialog) {}
 
-  open(domains: string[], subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
+  open(domains: string[], customerId: string, subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {
       panelClass: 'vitamui-modal',
-      data: { domains, user: subrogateUser },
+      data: { domains, customerId, user: subrogateUser },
     });
   }
 }
