@@ -335,7 +335,7 @@ public class CasInternalService {
         boolean api) {
         if (!loadFullProfile) {
             return user;
-        }
+        } // FIXME : rename : loadFullUserProfileIfRequired & subrogation
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
         internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         internalUserService.addTenantsByAppInformation(authUserDto);
@@ -527,7 +527,8 @@ public class CasInternalService {
 
     private void createEventsSubrogation(final UserDto surrogate, final boolean isSubrogation) {
         if (isSubrogation) {
-            final Subrogation subro = subrogationRepository.findOneBySurrogate(surrogate.getEmail());
+            final Subrogation subro = subrogationRepository.
+                findOneBySurrogateAndSurrogateCustomerId(surrogate.getEmail(), surrogate.getCustomerId());
             final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
@@ -583,8 +584,17 @@ public class CasInternalService {
         return user;
     }
 
+    @Deprecated
     public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser) {
         final List<Subrogation> subrogations = subrogationRepository.findBySuperUser(superUser);
+        final List<SubrogationDto> dtos = new ArrayList<>();
+        subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
+        return dtos;
+    }
+
+    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
+        final List<Subrogation> subrogations =
+            subrogationRepository.findBySuperUserAndSuperUserCustomerId(superUser, superUserCustomerId);
         final List<SubrogationDto> dtos = new ArrayList<>();
         subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
         return dtos;

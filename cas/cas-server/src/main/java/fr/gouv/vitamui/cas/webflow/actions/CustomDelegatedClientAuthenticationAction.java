@@ -45,6 +45,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -112,6 +114,9 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         val event = super.doExecute(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
 
+            // extract and parse username
+            String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
+
             // extract and parse subrogation information
             String surrogateEmail = context.getRequestParameters().get(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
             String surrogateCustomerId =
@@ -135,6 +140,16 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 flowScope.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
                 flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
                 flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
+
+                SurrogateUsernamePasswordCredential credential = new SurrogateUsernamePasswordCredential();
+                credential.setUsername(superUserEmail);
+                credential.setSurrogateUsername(surrogateEmail);
+                WebUtils.putCredential(context, credential);
+
+            } else if (StringUtils.isNotBlank(username)) {
+                validateEmail(username);
+                WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
+                flowScope.put(Constants.PROVIDED_USERNAME, username);
             }
 
             // get the idp if it exists
