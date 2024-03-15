@@ -116,7 +116,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
         final Optional<ProfileDto> optionalExternalParamsProfileDto =
             authUserDto.getProfileGroup().getProfiles().stream()
                 .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
-                .filter(p -> p.getTenantIdentifier().equals(tenant))
+                .filter(p -> tenant.equals(p.getTenantIdentifier()))
                 .findFirst();
         if (optionalExternalParamsProfileDto.isEmpty()) {
             LOGGER.warn("External parameter profile not found");
