@@ -4,19 +4,20 @@ print("START security.js");
 
 db.certificates.remove({})
 
-{% macro insertCertififcate(pemFile, contextId) -%}
+{% macro insertCertificate(pemFile, contextId, host) -%}
 db.certificates.deleteOne(
-    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
 )
 db.certificates.insertOne({
-    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",
     "issuerDN": "issuerDN",
     "serialNumber": "serialNumberAdmin",
     "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
 })
+
 {%- endmacro %}
 
 {% macro process(keyPath, contextId, groupName) -%}

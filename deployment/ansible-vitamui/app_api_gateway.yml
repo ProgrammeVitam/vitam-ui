@@ -14,24 +14,6 @@
     vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "api-gateway, api, internal"
 
-# - hosts: hosts_ui_*
-#   gather_facts: no
-#   any_errors_fatal: true
-#   tasks:
-#     - include_role:
-#         name: assets_copy
-
-#     - set_fact:
-#         vitamui_component: "{{ vitamui[inventory_hostname.split('_')[-1]] }}"
-#       when: vitamui is defined and inventory_hostname.split('_')[-1] in vitamui
-
-#     - debug:
-#         var: vitamui_component
-
-#     - include_role:
-#         name: nginx_webapp
-#       when: vitamui_component | default('') != ''
-
 - hosts: hosts_ui_portal
   gather_facts: no
   any_errors_fatal: true

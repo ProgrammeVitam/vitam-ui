@@ -30,34 +30,19 @@
       until: result is succeeded
       delay: "{{ packages_install_retries_delay | default(10) }}"
 
-    # - name: Remove old configuration related
-    #   file:
-    #     name: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/ui-*"
-    #     state: absent
-    #   with_items:
-    #     - app
-    #     - bin
-    #     - conf
-    #     - defaults
-    #     - lib
-    #     - log
-    #     - run
-    #     - script
-    #     - tmp
-
-    - name: Remove files and folders related to old ui java
+    - name: Find folders matching the pattern
       find:
-        paths: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}"
-        patterns: 'ui-*'
+        paths: "/vitamui"
+        patterns: "ui-*"
         recurse: yes
-        use_regex: no
-      register: files_to_remove
+        file_type: directory
+      register: folders_to_remove
 
-    - name: Delete old configuration files
+    - name: Remove folders matching the pattern
       file:
         path: "{{ item.path }}"
         state: absent
-      with_items: "{{ files_to_remove.files }}"
+      with_items: "{{ folders_to_remove.files }}"
 
     - name: Ensure no more pending transactions on vitam yum repository
       shell: yum-complete-transaction --cleanup-only
@@ -95,6 +80,6 @@
           - /var/log/httpd
       when: inventory_hostname is in groups['hosts_vitamui_reverseproxy']
 
-#- hosts: hosts_vitamui_mongod
-#  role:
-#    - reinit_services_contexts_and_certs
+- hosts: hosts_vitamui_mongod
+  roles:
+    - reinit_services_contexts_and_certs

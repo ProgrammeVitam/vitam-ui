@@ -1,9 +1,16 @@
 ---
-# tasks file for bootstrap
 
-- name: 'Set mongodb authentication credentials'
+- name: Compute list of mongo nodes
   set_fact:
-    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
+    mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':'+ mongodb.mongod_port | string ] }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
+
+- name: Set Mongo URI and credentials
+  set_fact:
+    mongod_uri: "{{ mongo_nodes | join(',') }}"
+    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
+  no_log: "{{ hide_passwords_during_deploy }}"
 
 - name: 'Create temp folder'
   file:
@@ -13,12 +20,8 @@
 
 - name: "Compute scripts"
   template:
-    src: "{{ item }}"
-    dest: "{{ bootstrap_temp_dir }}/{{ item | basename | regex_replace('\\.j2$') }}"
-  with_items:
-  - cas-services.js.j2
-  - security.js.j2
-  - contexts.js.j2
+    src: "security.js.j2"
+    dest: "{{ bootstrap_temp_dir }}/security.js"
   become: true
 
 - name: 'List all mongo scripts'
@@ -28,8 +31,8 @@
   become: true
 
 - name: 'Execute scripts'
-  shell: 'mongo "{{ mongo_uri }}" {{ mongo_credentials }} {{ item }}'
-  no_log: false
+  shell: "mongosh mongodb://{{ mongod_uri }}/admin {{ mongo_credentials }} --file {{ item }}"
+  no_log: "{{ hide_passwords_during_deploy }}"
   with_items: "{{ files_matched.stdout_lines }}"
   become: true
 
