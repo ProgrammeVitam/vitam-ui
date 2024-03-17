@@ -31,22 +31,21 @@ import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link UserAuthenticationHandler}.
- *
- *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class UserAuthenticationHandlerTest {
 
-    private static final String USERNAME = "jleleu@test.com";
+    private static final String USERNAME = "user@test.com";
+    private static final String CUSTOMER_ID = "customerId";
 
     private static final String PASSWORD = "password";
 
@@ -60,48 +59,55 @@ public final class UserAuthenticationHandlerTest {
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
         val utils = new Utils(null, 0, null, null, "");
-        handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils, null);
+        handler =
+            new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils, null);
         credential = new UsernamePasswordCredential(USERNAME, PASSWORD);
     }
 
     @Test
     public void testSuccessfulAuthentication() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenReturn(basicUser(UserStatusEnum.ENABLED));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         val result = handler.authenticate(credential, null);
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
     @Test
-    public void testSuccessfulAuthentication_when_spaceBeforeAndAfterUsername() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenReturn(basicUser(UserStatusEnum.ENABLED));
+    public void testSuccessfulAuthentication_when_spaceBeforeAndAfterUsername()
+        throws GeneralSecurityException, PreventedException {
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenReturn(basicUser(UserStatusEnum.ENABLED));
 
-        credential = new UsernamePasswordCredential(" " +USERNAME + "  ", PASSWORD);
+        credential = new UsernamePasswordCredential(" " + USERNAME + "  ", PASSWORD);
         val result = handler.authenticate(credential, null);
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
     @Test(expected = AccountNotFoundException.class)
     public void testNoUser() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null))).thenReturn(null);
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(CUSTOMER_ID),
+            eq(null), eq(null), eq(null))).thenReturn(null);
 
         handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountException.class)
     public void testUserDisabled() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenReturn(basicUser(UserStatusEnum.DISABLED));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(CUSTOMER_ID),
+            eq(null), eq(null), eq(null)))
+            .thenReturn(basicUser(UserStatusEnum.DISABLED));
 
         handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountException.class)
     public void testUserCannotLogin() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenReturn(basicUser(UserStatusEnum.BLOCKED));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenReturn(basicUser(UserStatusEnum.BLOCKED));
 
         handler.authenticate(credential, null);
     }
@@ -110,7 +116,8 @@ public final class UserAuthenticationHandlerTest {
     public void testExpiredPassword() throws GeneralSecurityException, PreventedException {
         val user = basicUser(UserStatusEnum.ENABLED);
         user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
             .thenReturn(user);
 
         handler.authenticate(credential, null);
@@ -118,24 +125,27 @@ public final class UserAuthenticationHandlerTest {
 
     @Test(expected = CredentialException.class)
     public void testUserBadCredentials() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenThrow(new InvalidAuthenticationException(""));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenThrow(new InvalidAuthenticationException(""));
 
         handler.authenticate(credential, null);
     }
 
     @Test(expected = AccountLockedException.class)
     public void testUserLockedAccount() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenThrow(new TooManyRequestsException(""));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenThrow(new TooManyRequestsException(""));
 
         handler.authenticate(credential, null);
     }
 
     @Test(expected = PreventedException.class)
     public void testTechnicalError() throws GeneralSecurityException, PreventedException {
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
-                .thenThrow(new BadRequestException(""));
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
+            eq(null), eq(null), eq(null)))
+            .thenThrow(new BadRequestException(""));
 
         handler.authenticate(credential, null);
     }

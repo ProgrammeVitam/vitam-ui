@@ -74,8 +74,10 @@ public abstract class CommonSteps extends BaseIntegration {
     protected String getOrInitializeDefaultSubrogationId() {
         if (!defaultSubrogationInitialized) {
             writeSubrogation(IamDtoBuilder.buildSubrogationDto("juliensurrogatespierre",
-                    TestConstants.PIERRE_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain));
+                TestConstants.PIERRE_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.PIERRE_USER_CUSTOMER_ID,
+                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.JULIEN_USER_CUSTOMER_ID));
         }
 
         return "juliensurrogatespierre";
@@ -123,7 +125,7 @@ public abstract class CommonSteps extends BaseIntegration {
         surrogateUser = new AuthUserDto(basicUserDto);
 
         subrogationDto = IamDtoBuilder.buildSubrogationDto(null, TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+            TestConstants.JULIEN_USER_CUSTOMER_ID, TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain, TestConstants.SYSTEM_CUSTOMER_ID);
         subrogationDto.setSurrogateCustomerId(surrogateUser.getCustomerId());
         subrogationDto.setSuperUserCustomerId(customerId);
 

@@ -36,6 +36,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     private static final String SU_ID = "id";
 
     private static final String SU_EMAIL = "superUser";
+    private static final String SU_CUSTOMER_ID = "superUserCustomerId";
 
     private IamSurrogateAuthenticationService service;
 
@@ -76,7 +77,9 @@ public final class IamSurrogateAuthenticationServiceTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAccounts() {
-        when(casExternalRestClient.getSubrogationsBySuperUserEmail(any(ExternalHttpContext.class), eq(SU_EMAIL))).thenReturn(Arrays.asList(surrogation()));
+        when(casExternalRestClient.getSubrogationsBySuperUserEmailAndCustomerId(any(ExternalHttpContext.class), eq(SU_EMAIL),
+            eq(SU_CUSTOMER_ID))
+        ).thenReturn(Arrays.asList(surrogation()));
 
         service.getImpersonationAccounts(SU_EMAIL);
     }

@@ -116,7 +116,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     @Test
     public void testInternalDisabled() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(casExternalRestClient.getUsersByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty())))
+            .thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 

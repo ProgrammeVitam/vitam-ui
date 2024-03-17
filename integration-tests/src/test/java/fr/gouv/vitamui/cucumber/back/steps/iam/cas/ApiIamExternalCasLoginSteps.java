@@ -14,6 +14,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +33,7 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
                 new String[] {ServicesData.ROLE_CAS_LOGIN}).login(
                 getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                 TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                adminPassword, null, null));
+                TestConstants.SYSTEM_CUSTOMER_ID, adminPassword, null, null, null));
     }
 
     @Then("^le serveur retourne l'utilisateur authentifié$")
@@ -55,7 +56,7 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
                 testContext.certificateRoles).login(
                 getContext(testContext.tenantIHMContext, testContext.tokenUser),
                 TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                adminPassword, null, null);
+                TestConstants.SYSTEM_CUSTOMER_ID, adminPassword, null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }
@@ -68,8 +69,8 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
             getCasRestClient(false, new Integer[] {casTenantIdentifier},
                 new String[] {ServicesData.ROLE_CAS_LOGIN}).login(
                 getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(),
-                BAD_PASSWORD, null,
-                null);
+                testContext.authUserDto.getCustomerId(),
+                BAD_PASSWORD, null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }
@@ -99,9 +100,11 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
         testContext.authUserDto =
             new AuthUserDto(getUserRestClient().create(getSystemTenantUserAdminContext(), basicUserDto));
         final String login = testContext.authUserDto.getEmail();
+        final String customerId = testContext.authUserDto.getCustomerId();
         try {
             getCasRestClient(false, new Integer[] {casTenantIdentifier}, new String[] {ServicesData.ROLE_CAS_LOGIN})
-                .login(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), login, adminPassword, null, null);
+                .login(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), login, customerId, adminPassword,
+                    null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }
@@ -112,19 +115,20 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
         createUserAndSetPassword();
         final ExternalHttpContext context = getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS);
         final String login = testContext.authUserDto.getEmail();
+        final String customerId = testContext.authUserDto.getCustomerId();
         for (int i = 0; i < 4; i++) {
             try {
                 getCasRestClient(false, new Integer[] {casTenantIdentifier},
                     new String[] {ServicesData.ROLE_CAS_LOGIN}).login(context,
-                    login, BAD_PASSWORD, null, null);
+                    login, customerId, BAD_PASSWORD, null, null, null);
             } catch (final RuntimeException e) {
                 // ignore the first times
             }
         }
         try {
             getCasRestClient(false, new Integer[] {casTenantIdentifier},
-                new String[] {ServicesData.ROLE_CAS_LOGIN}).login(context, login,
-                BAD_PASSWORD, null, null);
+                new String[] {ServicesData.ROLE_CAS_LOGIN}).login(context, login, customerId,
+                BAD_PASSWORD, null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }
@@ -142,10 +146,11 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
     @Then("^l'utilisateur est bloqué$")
     public void l_utilisateur_est_bloqué() {
         final ExternalHttpContext context = getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS);
-        final UserDto basicUserDto = getCasRestClient(false, new Integer[] {casTenantIdentifier},
-            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmail(context, testContext.authUserDto.getEmail(),
+        final List<UserDto> basicUsersDto = getCasRestClient(false, new Integer[] {casTenantIdentifier},
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUsersByEmail(context, testContext.authUserDto.getEmail(),
             Optional.empty());
-        assertThat(basicUserDto.getStatus()).isEqualTo(UserStatusEnum.BLOCKED);
+        assertThat(basicUsersDto).hasSize(1);
+        assertThat(basicUsersDto.get(0).getStatus()).isEqualTo(UserStatusEnum.BLOCKED);
     }
 
     @When("^un utilisateur avec le rôle ROLE_CAS_LOGIN authentifie un utilisateur désactivé dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_LOGIN$")
@@ -153,13 +158,13 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
         final UserDto basicUserDto = FactoryDto.buildDto(UserDto.class);
         basicUserDto.setStatus(UserStatusEnum.DISABLED);
         testContext.authUserDto =
-            new AuthUserDto(getUserRestClient().create(getSystemTenantUserAdminContext(), basicUserDto));
+            new AuthUserDto(getUserRestClient().create(getSystemTenantUserAdminContext()
+                , basicUserDto));
         try {
             getCasRestClient(false, new Integer[] {casTenantIdentifier},
                 new String[] {ServicesData.ROLE_CAS_LOGIN}).login(
                 getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(),
-                adminPassword, null,
-                null);
+                testContext.authUserDto.getCustomerId(), adminPassword, null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }
@@ -170,7 +175,7 @@ public class ApiIamExternalCasLoginSteps extends CommonSteps {
         try {
             getCasRestClient(false, new Integer[] {casTenantIdentifier}, new String[] {ServicesData.ROLE_CAS_LOGIN})
                 .login(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), TestConstants.BAD_LOGIN,
-                    adminPassword, null, null);
+                    TestConstants.CLIENT1_CUSTOMER_ID, adminPassword, null, null, null);
         } catch (final RuntimeException e) {
             testContext.exception = e;
         }

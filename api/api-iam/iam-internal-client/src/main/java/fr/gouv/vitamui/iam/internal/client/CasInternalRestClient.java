@@ -140,12 +140,13 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         return response.getBody();
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUserEmail(final InternalHttpContext context,
-        final String superUserEmail) {
-        LOGGER.debug("getMySubrogationAsSuperuser {}", superUserEmail);
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(final InternalHttpContext context,
+        final String superUserEmail, final String superUserCustomerId) {
+        LOGGER.debug("getMySubrogationAsSuperuser {} / {}", superUserEmail, superUserCustomerId);
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request,
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail +
+                "&superUserCustomerId=" + superUserCustomerId, HttpMethod.GET, request,
             getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();

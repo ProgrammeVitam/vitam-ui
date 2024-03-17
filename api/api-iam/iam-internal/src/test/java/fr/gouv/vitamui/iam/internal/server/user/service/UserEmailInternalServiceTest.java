@@ -84,7 +84,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(user);
 
         verify(restTemplate).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME,
-            "fr");
+            "fr", CUSTOMER_ID);
     }
 
     @Test

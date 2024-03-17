@@ -73,13 +73,6 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         super(restTemplate, baseUrl);
     }
 
-    @Deprecated
-    public UserDto login(final ExternalHttpContext context, final String username, final String password,
-        final String surrogate, final String ip) {
-        // FIXME : tests
-        throw new NotImplementedException("");
-    }
-
     public UserDto login(final ExternalHttpContext context,
         final String username, final String loginCustomerId, final String password,
         final String surrogateEmail, final String surrogateCustomerId,
@@ -114,6 +107,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
 
 
     @Deprecated
+    // FIXME : Tests
     public UserDto getUserByEmail(final ExternalHttpContext context, final String email,
         final Optional<String> embedded) {
         List<UserDto> users = getUsersByEmail(context, email, embedded);
@@ -141,13 +135,6 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
                 return user.newBasicUserDto();
             }
         }).collect(Collectors.toList());
-    }
-
-    public UserDto getUser(final ExternalHttpContext context, final String email, final String idp,
-        final Optional<String> userIdentifier,
-        final Optional<String> embedded) {
-        // FIXME : subrogation + tests
-        throw new NotImplementedException("TODO");
     }
 
     public UserDto getUser(final ExternalHttpContext context, final String loginEmail, final String loginCustomerId,
@@ -187,12 +174,13 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         return response.getBody();
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUserEmail(final ExternalHttpContext context,
-        final String superUserEmail) {
-        LOGGER.debug("getMySubrogationAsSuperuser {}", superUserEmail);
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(final ExternalHttpContext context,
+        final String superUserEmail, final String superUserCustomerId) {
+        LOGGER.debug("getMySubrogationAsSuperuser {} / {}", superUserEmail, superUserCustomerId);
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail, HttpMethod.GET, request,
+            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail +
+            "&superUserCustomerId=" + superUserCustomerId, HttpMethod.GET, request,
             getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();

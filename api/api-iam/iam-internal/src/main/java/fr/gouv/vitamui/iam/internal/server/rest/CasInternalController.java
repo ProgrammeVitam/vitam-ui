@@ -213,11 +213,13 @@ public class CasInternalController {
         return casService.getUserProfileById(id);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserEmail")
-    public List<SubrogationDto> getSubrogationsBySuperUserEmail(@RequestParam final String superUserEmail) {
-        LOGGER.debug("getMySubrogationAsSuperuser: {}", superUserEmail);
+    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = {"superUserEmail", "superUserCustomerId"})
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(@RequestParam final String superUserEmail,
+        @RequestParam final String superUserCustomerId) {
+        LOGGER.debug("getMySubrogationAsSuperuser: {} / {}", superUserEmail, superUserCustomerId);
         ParameterChecker.checkParameter("super user email is mandatory : ", superUserEmail);
-        return casService.getSubrogationsBySuperUser(superUserEmail);
+        ParameterChecker.checkParameter("super user customerId is mandatory : ", superUserCustomerId);
+        return casService.getSubrogationsBySuperUser(superUserEmail, superUserCustomerId);
     }
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserId")
@@ -244,13 +246,16 @@ public class CasInternalController {
 
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
-        LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
+    public void logout(@RequestParam final String authToken, @RequestParam final String superUser,
+        @RequestParam final String superUserCustomerId) {
+        LOGGER.debug("logout: authToken={}, superUser={}, superUserCustomerId={}", authToken,
+            superUser, superUserCustomerId);
         ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
-        final String principal = casService.removeTokenAndGetUsername(authToken);
+        final CasInternalService.PrincipalFromToken principal = casService.removeTokenAndGetPrincipal(authToken);
 
-        if (StringUtils.isNotBlank(principal) && StringUtils.isNotBlank(superUser)) {
-            casService.deleteSubrogationBySuperUserAndSurrogate(superUser, principal);
+        if ((null != principal) && StringUtils.isNotBlank(superUser)) {
+            casService.deleteSubrogationBySuperUserAndSurrogate(superUser, superUserCustomerId,
+                principal.getEmail(), principal.getCustomerId());
         }
     }
 }

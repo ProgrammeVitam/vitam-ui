@@ -78,10 +78,11 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,13 +206,6 @@ public class CasInternalService {
     private static final UniqueTicketIdGenerator TICKET_GENERATOR = new DefaultUniqueTicketIdGenerator();
 
     public CasInternalService() {
-    }
-
-    //FIXME
-    @Transactional
-    @Deprecated
-    public void updatePassword(final String email, final String rawPassword) {
-
     }
 
     //FIXME handle customerId as mondatory
@@ -372,7 +366,7 @@ public class CasInternalService {
         boolean api) {
         if (!loadFullProfile) {
             return user;
-        } // FIXME : rename : loadFullUserProfileIfRequired & subrogation
+        }
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
         internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         internalUserService.addTenantsByAppInformation(authUserDto);
@@ -397,7 +391,7 @@ public class CasInternalService {
 
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
-            // FIXME LGH
+            // FIXME : Implement auto-provisioning (mono-organisation only)
             Optional<ProvidedUserDto> providedUser = this.provisionUser(loginEmail, idp, userIdentifier);
             if (loginEmail.isBlank() && providedUser.isPresent()) {
                 loginEmail = providedUser.get().getEmail();
@@ -634,14 +628,6 @@ public class CasInternalService {
         return user;
     }
 
-    @Deprecated
-    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser) {
-        final List<Subrogation> subrogations = subrogationRepository.findBySuperUser(superUser);
-        final List<SubrogationDto> dtos = new ArrayList<>();
-        subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
-        return dtos;
-    }
-
     public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
         final List<Subrogation> subrogations =
             subrogationRepository.findBySuperUserAndSuperUserCustomerId(superUser, superUserCustomerId);
@@ -659,11 +645,14 @@ public class CasInternalService {
     }
 
     @Transactional
-    public void deleteSubrogationBySuperUserAndSurrogate(final String superUser, final String surrogate) {
-        if (StringUtils.isBlank(superUser) || StringUtils.isBlank(surrogate)) {
+    public void deleteSubrogationBySuperUserAndSurrogate(final String superUser, final String superUserCustomerId,
+        final String surrogate, final String surrogateCustomerId) {
+        if (StringUtils.isAnyBlank(superUser, superUserCustomerId, surrogate, surrogateCustomerId)) {
             throw ApiErrorGenerator.getBadRequestException("superUser and surrogate must be filled");
         }
-        final Optional<Subrogation> subro = subrogationRepository.findBySuperUserAndSurrogate(superUser, surrogate);
+        final Optional<Subrogation> subro = subrogationRepository
+            .findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(superUser, superUserCustomerId,
+                surrogate, surrogateCustomerId);
         if (subro.isPresent()) {
             final Subrogation subrogation = subro.get();
             iamLogbookService.subrogation(subrogation, EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
@@ -671,7 +660,7 @@ public class CasInternalService {
         }
     }
 
-    public String removeTokenAndGetUsername(final String authToken) {
+    public PrincipalFromToken removeTokenAndGetPrincipal(final String authToken) {
         final Optional<Token> optToken = tokenRepository.findById(authToken);
         if (optToken.isPresent()) {
             tokenRepository.deleteById(authToken);
@@ -679,7 +668,7 @@ public class CasInternalService {
             final String userId = token.getRefId();
             final Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
-                return optionalUser.get().getEmail();
+                return new PrincipalFromToken(optionalUser.get().getEmail(), optionalUser.get().getCustomerId());
             }
         }
         return null;
@@ -687,5 +676,12 @@ public class CasInternalService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerInternalService.getAllById(customerIds);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PrincipalFromToken {
+        private final String email;
+        private final String customerId;
     }
 }

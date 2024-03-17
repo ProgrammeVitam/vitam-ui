@@ -137,12 +137,14 @@ public class CasExternalController {
         return casService.getUserById(id);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserEmail")
+    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = {"superUserEmail", "superUserCustomerId"})
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserEmail(@RequestParam final String superUserEmail) {
-        LOGGER.debug("getMySubrogationAsSuperuser: {}", superUserEmail);
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(@RequestParam final String superUserEmail,
+        @RequestParam final String superUserCustomerId) {
+        LOGGER.debug("getMySubrogationAsSuperuser: {} / {}", superUserEmail, superUserCustomerId);
         ParameterChecker.checkParameter("The superUserEmail is mandatory : ", superUserEmail);
-        return casService.getSubrogationsBySuperUser(superUserEmail);
+        ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", superUserCustomerId);
+        return casService.getSubrogationsBySuperUserAndCustomerId(superUserEmail, superUserCustomerId);
     }
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserId")

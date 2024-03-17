@@ -94,8 +94,10 @@ public class CasExternalService extends AbstractInternalClientService {
         return getClient().getUserById(getInternalHttpContext(), id);
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUserEmail) {
-        return getClient().getSubrogationsBySuperUserEmail(getInternalHttpContext(), superUserEmail);
+    public List<SubrogationDto> getSubrogationsBySuperUserAndCustomerId(final String superUserEmail,
+        final String superUserCustomerId) {
+        return getClient().
+            getSubrogationsBySuperUserEmailAndCustomerId(getInternalHttpContext(), superUserEmail, superUserCustomerId);
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUserId(final String superUserId) {

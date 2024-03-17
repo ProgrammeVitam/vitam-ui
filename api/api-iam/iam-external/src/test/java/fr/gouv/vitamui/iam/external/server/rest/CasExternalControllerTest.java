@@ -42,6 +42,7 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
         loginRequestDto.setLoginEmail("user");
+        loginRequestDto.setLoginCustomerId("customerId");
 
         ResultActions result = this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto), status().isOk());
         result.andExpect(handler().methodCall(casExternalController.login(null)));

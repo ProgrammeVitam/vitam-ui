@@ -14,11 +14,10 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import org.junit.Test;
 
 /**
  * Teste l'API subrogations dans IAM admin : opérations de création.
- *
- *
  */
 public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
 
@@ -45,10 +44,10 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     @When("^cet utilisateur ajoute une nouvelle subrogation$")
     public void cet_utilisateur_ajoute_une_nouvelle_subrogation() {
         try {
-            getSubrogationRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
-                    .create(getContext(testContext.tenantIHMContext, testContext.tokenUser), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+            getSubrogationRestClient(testContext.fullAccess, testContext.certificateTenants,
+                testContext.certificateRoles)
+                .create(getContext(testContext.tenantIHMContext, testContext.tokenUser), subrogationDto);
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -58,8 +57,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
         try {
             buildSubrogation(true, false, null, null);
             subrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -68,7 +66,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void le_serveur_refuse_la_création_de_la_subrogation_à_cause_de_l_utilisateur() {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString())
-                .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException:  User is not subrogeable");
+            .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException:  User is not subrogeable");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_SUBROGATIONS ajoute une nouvelle subrogation pour un subrogé dont le client est non subrogeable dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_SUBROGATIONS$")
@@ -79,12 +77,13 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
             surrogate.setCustomerId(TestConstants.SYSTEM_CUSTOMER_ID);
             surrogate = getUserRestClient().create(getSystemTenantUserAdminContext(), surrogate);
             final SubrogationDto subrogationDto = IamDtoBuilder.buildSubrogationDto(null,
-                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                    TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.JULIEN_USER_CUSTOMER_ID,
+                TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.SYSTEM_CUSTOMER_ID);
             subrogationDto.setSurrogate(surrogate.getEmail());
             getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -93,7 +92,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void le_serveur_refuse_la_création_de_la_subrogation_à_cause_du_client() {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString())
-                .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException:  Customer is not subrogeable");
+            .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException:  Customer is not subrogeable");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_SUBROGATIONS ajoute une nouvelle subrogation pour un subrogateur non existant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_SUBROGATIONS$")
@@ -102,8 +101,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
             buildSubrogation(true, true, null, null);
             subrogationDto.setSuperUser(TestConstants.FAKE_USER_EMAIL);
             getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -112,19 +110,21 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void le_serveur_refuse_la_création_de_la_subrogation_à_cause_du_subrogateur_non_existant() {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString()).isEqualTo(
-                "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: No superUser found with email : " + TestConstants.FAKE_USER_EMAIL);
+            "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: No superUser found with email : " +
+                TestConstants.FAKE_USER_EMAIL);
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_SUBROGATIONS ajoute une nouvelle subrogation pour un subrogé non existant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_SUBROGATIONS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_SUBROGATIONS_ajoute_une_nouvelle_subrogation_pour_un_subrogé_non_existant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_SUBROGATIONS() {
         try {
             final SubrogationDto subrogationDto = IamDtoBuilder.buildSubrogationDto(null,
-                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                    TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.JULIEN_USER_CUSTOMER_ID,
+                TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.SYSTEM_CUSTOMER_ID);
             subrogationDto.setSurrogate(TestConstants.FAKE_USER_EMAIL);
             getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -133,7 +133,8 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void le_serveur_refuse_la_création_de_la_subrogation_à_cause_du_subrogé_non_existant() {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString()).isEqualTo(
-                "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: No surrogate found with email : " + TestConstants.FAKE_USER_EMAIL);
+            "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: No surrogate found with email : " +
+                TestConstants.FAKE_USER_EMAIL);
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_SUBROGATIONS ajoute une nouvelle subrogation pour un subrogé désactivé dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_SUBROGATIONS$")
@@ -141,8 +142,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
         try {
             buildSubrogation(true, true, UserStatusEnum.DISABLED, null);
             getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -151,6 +151,6 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void le_serveur_refuse_la_création_de_la_subrogation_à_cause_du_subrogé_désactivé() {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString())
-                .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: User status is not enabled");
+            .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: User status is not enabled");
     }
 }

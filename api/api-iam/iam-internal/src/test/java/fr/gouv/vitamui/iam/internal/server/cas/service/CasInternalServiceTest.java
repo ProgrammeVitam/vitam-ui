@@ -103,7 +103,8 @@ class CasInternalServiceTest {
     @ParameterizedTest
     @NullAndEmptySource
     void should_return_the_user_known_in_database_when_idp_auto_provisioning_is_disabled(String idp) {
-        when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
+        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
+            .thenReturn(buildAuthUser(false));
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, idp, null, null);
         assertThat(user).isNotNull();
@@ -121,7 +122,7 @@ class CasInternalServiceTest {
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(false);
 
-        when(userInternalService.findUserByEmail(USER_EMAIL))
+        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
                 .thenReturn(buildAuthUser(false));
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfo());
 
@@ -153,7 +154,10 @@ class CasInternalServiceTest {
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
-        when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(true));
+        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
+            .thenReturn(buildAuthUser(true));
+        when(userInternalService.findUserByEmail(USER_EMAIL))
+            .thenReturn(buildAuthUser(true));
 
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
@@ -168,7 +172,10 @@ class CasInternalServiceTest {
                 .thenReturn(buildIDP(true));
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
-        when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
+        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
+            .thenReturn(buildAuthUser(false));
+        when(userInternalService.findUserByEmail(USER_EMAIL))
+            .thenReturn(buildAuthUser(false));
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
         verify(userInternalService, times(0)).patch(any());

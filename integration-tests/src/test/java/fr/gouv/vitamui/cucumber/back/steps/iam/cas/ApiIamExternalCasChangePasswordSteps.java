@@ -41,8 +41,7 @@ public class ApiIamExternalCasChangePasswordSteps extends CommonSteps {
             getCasRestClient(false, new Integer[] {casTenantIdentifier},
                 new String[] {ServicesData.ROLE_CAS_LOGIN}).login(
                 getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), testContext.authUserDto.getEmail(),
-                NEW_PASSWORD, null,
-                null));
+                testContext.authUserDto.getCustomerId(), NEW_PASSWORD, null, null, null));
         assertThat(testContext.authUserDto.getPasswordExpirationDate().isEqual(pwdExpirationDate)).isFalse();
     }
 

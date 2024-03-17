@@ -38,7 +38,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +63,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     private static final String EMAIL = "jerome.leleu@vitamui.com";
 
     private static final String SUPER_USER_EMAIL = "sub.rogateur@vitamui.com";
+    private static final String SUPER_USER_CUSTOMER_ID = "superAdminCustomerId";
 
     private static final String PASSWORD = "password";
 
@@ -177,7 +177,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setStatus(UserStatusEnum.ENABLED);
         user.setLevel("DEV");
 
-        when(internalUserService.findUserByEmail(EMAIL)).thenReturn(user);
+        when(internalUserService.findUsersByEmail(EMAIL)).thenReturn(List.of(user));
         final AuthUserDto userProfile = new AuthUserDto();
         userProfile.setProfileGroup(new GroupDto());
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
@@ -197,6 +197,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -211,6 +212,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -224,6 +226,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword(PASSWORD);
         controller.login(request);
         verify(casService).updateNbFailedAttempsPlusLastConnectionAndStatus(user, 0, UserStatusEnum.ENABLED);
@@ -237,6 +240,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword(PASSWORD);
         try {
             controller.login(request);
@@ -254,6 +258,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword(PASSWORD);
         controller.login(request);
     }
@@ -263,6 +268,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setLoginEmail(EMAIL);
+        request.setLoginCustomerId(CUSTOMER_ID);
         request.setPassword("");
         try {
             controller.login(request);
@@ -285,9 +291,11 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     @Test
     public void testFindSubrogationsBySuperUserId() {
         final Subrogation subrogation = buildSubrogation();
-        when(subrogationRepository.findBySuperUser(SUPER_USER_EMAIL)).thenReturn(Arrays.asList(subrogation));
+        when(subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID))
+            .thenReturn(List.of(subrogation));
         final UserDto user = new UserDto();
         user.setEmail(SUPER_USER_EMAIL);
+        user.setCustomerId(SUPER_USER_CUSTOMER_ID);
         user.setStatus(UserStatusEnum.ENABLED);
         when(internalUserService.getOne(ID, Optional.empty())).thenReturn(user);
 
@@ -304,9 +312,11 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     @Test
     public void testFindSubrogationsBySuperUserEmail() {
         final Subrogation subrogation = buildSubrogation();
-        when(subrogationRepository.findBySuperUser(SUPER_USER_EMAIL)).thenReturn(Arrays.asList(subrogation));
+        when(subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID))
+            .thenReturn(List.of(subrogation));
 
-        final List<SubrogationDto> subrogations = controller.getSubrogationsBySuperUserEmail(SUPER_USER_EMAIL);
+        final List<SubrogationDto> subrogations = controller
+            .getSubrogationsBySuperUserEmailAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID);
         assertEquals(1, subrogations.size());
         final SubrogationDto dto = subrogations.get(0);
         assertEquals(subrogation.getId(), dto.getId());
