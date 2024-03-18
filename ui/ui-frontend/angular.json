@@ -104,7 +104,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/identity/src/test.ts",
-            "karmaConfig": "projects/identity/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "polyfills": "projects/identity/src/polyfills.ts",
             "tsConfig": "projects/identity/tsconfig.spec.json",
             "scripts": [],
@@ -217,7 +217,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/portal/src/test.ts",
-            "karmaConfig": "projects/portal/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "polyfills": "projects/portal/src/polyfills.ts",
             "tsConfig": "projects/portal/tsconfig.spec.json",
             "scripts": [],
@@ -429,7 +429,7 @@
             "main": "projects/referential/src/test.ts",
             "polyfills": "projects/referential/src/polyfills.ts",
             "tsConfig": "projects/referential/tsconfig.spec.json",
-            "karmaConfig": "projects/referential/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "assets": ["projects/referential/src/favicon.ico", "projects/referential/src/assets"],
             "styles": ["projects/referential/src/sass/styles.scss"],
             "scripts": []
@@ -487,7 +487,7 @@
           "options": {
             "main": "projects/vitamui-library/src/test.ts",
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "karmaConfig": "projects/vitamui-library/karma.conf.js"
+            "karmaConfig": "karma.conf.ci.js",
           }
         },
         "lint": {
@@ -575,7 +575,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/starter-kit/src/test.ts",
-            "karmaConfig": "projects/starter-kit/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "polyfills": "projects/starter-kit/src/polyfills.ts",
             "tsConfig": "projects/starter-kit/tsconfig.spec.json",
             "scripts": [],
@@ -684,7 +684,7 @@
             "main": "projects/ingest/src/test.ts",
             "polyfills": "projects/ingest/src/polyfills.ts",
             "tsConfig": "projects/ingest/tsconfig.spec.json",
-            "karmaConfig": "projects/ingest/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "assets": ["projects/ingest/src/favicon.ico", "projects/ingest/src/assets"],
             "styles": ["projects/ingest/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
@@ -789,7 +789,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/archive-search/src/test.ts",
-            "karmaConfig": "projects/archive-search/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "polyfills": "projects/archive-search/src/polyfills.ts",
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
             "scripts": [],
@@ -896,7 +896,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/collect/src/test.ts",
-            "karmaConfig": "projects/collect/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "polyfills": "projects/collect/src/polyfills.ts",
             "tsConfig": "projects/collect/tsconfig.spec.json",
             "scripts": [],
@@ -1049,7 +1049,7 @@
             "main": "projects/pastis/src/test.ts",
             "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.spec.json",
-            "karmaConfig": "projects/pastis/karma.conf.ci.js",
+            "karmaConfig": "karma.conf.ci.js",
             "assets": ["projects/pastis/src/favicon.ico", "projects/pastis/src/assets"],
             "styles": ["projects/pastis/src/sass/styles.scss"],
             "scripts": []

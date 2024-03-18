@@ -1,7 +1,11 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
+const path = require('path');
 
 module.exports = function (config) {
+  const projectPath = config.buildWebpack.webpackConfig.context;
+  const projectName = path.basename(projectPath);
+
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
@@ -10,6 +14,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('puppeteer'),
       require('karma-spec-reporter'),
+      require('karma-junit-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
@@ -18,14 +23,14 @@ module.exports = function (config) {
       captureConsole: false,
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
-      dir: 'target/coverage',
+      reports: [ 'html', 'lcovonly' ],
+      dir: path.join(projectPath, 'target/coverage'),
       fixWebpackSourcePaths: true
     },
     angularCli: {
       environment: 'dev'
     },
-    reporters : ['spec', 'coverage-istanbul'],
+    reporters : ['spec', 'junit', 'coverage-istanbul'],
     specReporter: {
       maxLogLines: 5,             // limit number of lines logged per test
       suppressSummary: false,      // do not print summary
@@ -36,6 +41,12 @@ module.exports = function (config) {
       showBrowser: false,        // print the browser for each spec
       showSpecTiming: true,      // print the time elapsed for each spec
       failFast: false,           // test would finish with error when a first
+    },
+    junitReporter: {
+      outputDir: path.join(projectPath, 'target/junit'),
+      suite: projectName,
+      classNameFormatter: (browser, result) => `${projectName}.${result.suite[0]}`,
+      useBrowserName: false,
     },
     port: 9876,
     colors: true,

@@ -116,6 +116,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
+    "karma-junit-reporter": "2.0.1",
     "karma-spec-reporter": "0.0.36",
     "lint-staged": "13.2.3",
     "material-design-icons": "^3.0.1",
