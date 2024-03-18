@@ -13,6 +13,18 @@ import { extend } from 'underscore';
 export class InputsComponent implements OnInit {
   public control = new FormControl();
 
+  public repeatableEmpty = new FormControl(['']);
+  public repeatableOneValue = new FormControl(['Lorem Ipsum']);
+  public repeatableThreeValues = new FormControl(['Lorem Ipsum', 'Index géographique des archives départementales de la Vendée', 'Affred']);
+  public repeatableTextareaEmpty = new FormControl(['']);
+  public repeatableTextareaOneValue = new FormControl([
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  ]);
+  public repeatableTextareaTwoValues = new FormControl([
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    'Consectetur adipiscing elit, sed do eiusmod ut labore et dolore magna. Ut enim ad minim veniam, quis laboris nisi ut aliquip ex ea commodo consequat. ',
+  ]);
+
   public streetEmpty = new FormControl('', [Validators.maxLength(3)]);
   public streetInvalid = new FormControl('azerty', [Validators.maxLength(3)]);
   public streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);

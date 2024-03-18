@@ -91,6 +91,7 @@ import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
 import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
+import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
@@ -172,8 +173,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
     MatDialogModule,
     MatSnackBarModule,
     NavbarModule,
-    ObjectViewerModule,
     ObjectEditorModule,
+    ObjectViewerModule,
     OrderByButtonModule,
     OrderDropdownModule,
     PipesModule,
@@ -209,6 +210,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiDragDropFileModule,
     VitamuiFacetModule,
     VitamuiMenuButtonModule,
+    VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
   ],
   entryComponents: [ErrorDialogComponent],
@@ -236,8 +238,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
     LogbookOperationFacetModule,
     LoggerModule,
     NavbarModule,
-    ObjectViewerModule,
     ObjectEditorModule,
+    ObjectViewerModule,
     OrderByButtonModule,
     OrderDropdownModule,
     PipesModule,
@@ -274,6 +276,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiIntervalDatePickerComponent,
     VitamuiMenuButtonModule,
     VitamuiMultiInputsModule,
+    VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamuiTreeNodeModule,
   ],

@@ -36,20 +36,17 @@ import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.common.model.DataType;
 
-import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaResponse, SchemaElementDto> {
     @Override
     public SchemaElementDto convert(SchemaResponse schemaModel) {
         final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
-        final String stringSize = stringTypeSize != null ?
-            stringTypeSize.value().toLowerCase(Locale.ROOT) :
-            SchemaStringSizeType.MEDIUM.value();
 
         return (SchemaElementDto) new SchemaElementDto()
             .setPath(schemaModel.getPath())
-            .setStringSize(stringSize)
+            .setStringSize(Optional.ofNullable(stringTypeSize).map(SchemaStringSizeType::value).orElse(null))
             .setCardinality(Cardinality.of(schemaModel.getCardinality().value()))
             .setFieldName(schemaModel.getFieldName())
             .setShortName(schemaModel.getShortName())

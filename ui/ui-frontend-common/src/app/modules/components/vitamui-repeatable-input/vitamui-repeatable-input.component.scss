@@ -1,0 +1,161 @@
+@import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
+
+:host {
+  @include elevation-1-dark;
+  cursor: text;
+  border-radius: 5px;
+  border: solid 1px var(--vitamui-grey-300);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  &.textarea {
+    .vitamui-input {
+      height: 100% !important;
+      min-height: 92px !important;
+      align-items: flex-end;
+
+      &.first {
+        min-height: 108px !important;
+      }
+    }
+
+    label {
+      top: 24px;
+    }
+  }
+
+  &:focus-within {
+    border: solid 1px var(--vitamui-primary);
+  }
+}
+
+input {
+  margin-top: 0 !important;
+
+  .vitamui-input.first & {
+    margin-top: 15px !important;
+  }
+}
+
+.vitamui-input {
+  height: 44px !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+
+  &.first {
+    height: 60px !important;
+  }
+}
+
+button.remove {
+  display: none;
+  :host.textarea & {
+    display: block;
+    visibility: hidden;
+  }
+
+  .vitamui-input:hover & {
+    display: block;
+    visibility: visible;
+  }
+}
+
+.vitamui-focused .vitamui-input {
+  border: none;
+}
+
+label {
+  user-select: none;
+  cursor: text;
+
+  position: absolute;
+  line-height: 0;
+  font-size: 14px;
+  top: 50%;
+  transition:
+    font-size 150ms ease-out,
+    top 150ms ease-out;
+
+  .vitamui-focused &,
+  :host.vitamui-float & {
+    font-size: 12px;
+    top: 10px;
+    transform: none;
+  }
+}
+
+.item {
+  border-top: 1px solid var(--vitamui-grey-300);
+
+  &.first {
+    border-top: none;
+  }
+}
+
+@mixin gap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@mixin hgap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: row;
+  align-items: center;
+}
+
+.gap-5 {
+  @include gap(5px);
+}
+
+.hgap-5 {
+  @include hgap(5px);
+}
+
+// This is used to automatically grow the textarea height depending on its content
+.grow-wrap {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+  width: 100%;
+
+  &::after {
+    /* Note the weird space! Needed to preventy jumpy behavior */
+    content: attr(data-replicated-value) ' ';
+
+    /* This is how textarea text behaves */
+    white-space: pre-wrap;
+
+    /* Hidden from view, clicks, and screen readers */
+    visibility: hidden;
+  }
+
+  & > textarea {
+    /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+    resize: none;
+
+    /* Firefox shows scrollbar on growth, you can hide like this. */
+    overflow: hidden;
+  }
+
+  & > textarea,
+  &::after {
+    /* Identical styling required!! */
+    line-height: 24px;
+    height: 100%;
+    max-height: 240px; // Max 10 lines, then scroll
+    overflow-y: auto;
+    margin-top: 0;
+
+    .first & {
+      margin-top: 16px;
+    }
+
+    /* Place on top of each other */
+    grid-area: 1 / 1 / 2 / 2;
+  }
+}
