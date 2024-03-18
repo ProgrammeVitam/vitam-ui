@@ -43,6 +43,10 @@
       ],
       "vitamui-library/*": [
         "dist/vitamui-library/*"
+      ],
+      "ui-toolkit": [
+        "dist/ui-toolkit/ui-toolkit",
+        "dist/ui-toolkit"
       ]
     },
     "noUnusedLocals": true,
