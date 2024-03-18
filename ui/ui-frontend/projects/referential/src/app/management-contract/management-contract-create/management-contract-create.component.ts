@@ -92,11 +92,15 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.form = this.formBuilder.group({
       // Step 1
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
-        this.managementContractCreateValidators.uniqueIdentifier(),
-      ],
+      ...(this.isSlaveMode
+        ? {
+            identifier: [
+              null,
+              [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
+              this.managementContractCreateValidators.uniqueIdentifier(),
+            ],
+          }
+        : {}),
       status: [true],
       name: [
         null,
@@ -230,5 +234,17 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     }
 
     return managementContract;
+  }
+
+  get identifier(): AbstractControl | null {
+    return this.form.get('identifier');
+  }
+
+  get name(): AbstractControl | null {
+    return this.form.get('name');
+  }
+
+  get description(): AbstractControl | null {
+    return this.form.get('description');
   }
 }

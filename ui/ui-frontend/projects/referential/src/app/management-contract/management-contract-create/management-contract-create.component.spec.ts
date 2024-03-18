@@ -27,14 +27,16 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
@@ -57,7 +59,7 @@ describe('ManagementContractCreateComponent', () => {
     exists: () => of(true),
     existsProperties: () => of(true),
     patch: () => of({}),
-    create: () => of({}),
+    create: () => of({}).pipe(delay(100)),
   };
 
   const confirmDialogServiceMock = {
@@ -79,6 +81,7 @@ describe('ManagementContractCreateComponent', () => {
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         NoopAnimationsModule,
+        MatSelectModule,
       ],
       declarations: [ManagementContractCreateComponent],
       providers: [
@@ -99,86 +102,174 @@ describe('ManagementContractCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ManagementContractCreateComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('component should be created', () => {
-    expect(component).toBeTruthy();
+  describe('when in slave mode', () => {
+    beforeEach(() => {
+      component.isSlaveMode = true;
+      fixture.detectChanges();
+    });
+
+    it('component should be created', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('form should have an "identifier" field', () => {
+      expect(component.form.get('identifier')).toBeTruthy();
+    });
+
+    it('isDisabledButton should be true then false after calling create service', fakeAsync(() => {
+      const managementContractForm: any = {
+        identifier: 'contract_id',
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+        storage: {
+          unitStrategy: 'default1',
+          objectGroupStrategy: 'default2',
+          objectStrategy: 'default3',
+        },
+      };
+      const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+      component.form.patchValue({ ...managementContractForm, ...formGroup.value });
+      component.onSubmit();
+      expect(component.isDisabledButton).toBeTruthy(); // Button disabled while waiting for creation
+      tick(500);
+      expect(component.isDisabledButton).toBeFalsy(); // Button enabled after creation
+    }));
+
+    it('first step should be valid after async validation', fakeAsync(() => {
+      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(false));
+
+      const managementContractForm: any = {
+        identifier: 'Contract identifier',
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+      };
+
+      component.form.patchValue(managementContractForm);
+
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
+      tick(1000); // We "wait" for async validation
+      expect(component.firstStepInvalid()).toBeFalsy(); // Finally, the form is valid
+    }));
+
+    it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
+      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(true));
+
+      const managementContractForm: any = {
+        identifier: 'Contract identifier',
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+      };
+
+      component.form.patchValue(managementContractForm);
+
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
+      tick(1000); // We "wait" for async validation
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is still invalid as async validation is KO
+    }));
+
+    it('second step should be valid only if every field is filled', () => {
+      expect(component.secondStepInvalid()).toBeFalsy(); // Step is valid by default as fields have default values that are valid
+
+      component.form.patchValue({
+        storage: {
+          unitStrategy: '',
+          objectGroupStrategy: 'default',
+          objectStrategy: 'default',
+        },
+      });
+      expect(component.secondStepInvalid()).toBeTruthy(); // Step should be invalid if one field is empty
+
+      component.form.patchValue({
+        storage: {
+          unitStrategy: 'default',
+          objectGroupStrategy: '',
+          objectStrategy: 'default',
+        },
+      });
+      expect(component.secondStepInvalid()).toBeTruthy(); // Step should be invalid if one field is empty
+
+      component.form.patchValue({
+        storage: {
+          unitStrategy: 'default',
+          objectGroupStrategy: 'default',
+          objectStrategy: '',
+        },
+      });
+      expect(component.secondStepInvalid()).toBeTruthy(); // Step should be invalid if one field is empty
+    });
+
+    it('should call create of ManagementContractService', () => {
+      // Given
+      spyOn(managementContractServiceMock, 'create').and.callThrough();
+
+      // When
+      const managementContractForm: any = {
+        identifier: 'Contract identifier',
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+        storage: {
+          unitStrategy: 'default',
+          objectGroupStrategy: 'default',
+          objectStrategy: 'default',
+        },
+      };
+      const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
+      component.form.patchValue({ ...managementContractForm, ...formGroup.value });
+      component.onSubmit();
+
+      // Then
+      expect(managementContractServiceMock.create).toHaveBeenCalled();
+    });
   });
 
-  it('isDisabledButton should be false after calling create service', () => {
-    const managementContractForm = {
-      identifier: 'contract_id',
-      name: 'Contract name',
-      description: 'description',
-      status: 'INACTIVE',
-      storage: {
-        unitStrategy: 'default1',
-        objectGroupStrategy: 'default2',
-        objectStrategy: 'default3',
-      },
-    };
-    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-    component.form.setValue({ ...managementContractForm, ...formGroup.value });
-    component.onSubmit();
-    expect(component.isDisabledButton).toBeFalsy();
-  });
+  describe('when NOT in slave mode', () => {
+    beforeEach(() => {
+      component.isSlaveMode = false;
+      fixture.detectChanges();
+    });
 
-  it('first step should be valid', () => {
-    const managementContractForm = {
-      identifier: 'Contract identifier',
-      name: 'Contract name',
-      description: 'description',
-      status: 'INACTIVE',
-      storage: {
-        unitStrategy: 'default',
-        objectGroupStrategy: 'default',
-        objectStrategy: 'default',
-      },
-    };
-    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-    component.form.setValue({ ...managementContractForm, ...formGroup.value });
-    expect(component.firstStepInvalid()).toBeTruthy();
-  });
+    it('form should not have "identifier" field', () => {
+      expect(component.form.get('identifier')).toBeFalsy();
+    });
 
-  it('second step should be valid', () => {
-    const managementContractForm = {
-      identifier: 'contract_id',
-      name: 'Contract name',
-      description: 'description',
-      status: 'INACTIVE',
-      storage: {
-        unitStrategy: 'default1',
-        objectGroupStrategy: 'default2',
-        objectStrategy: 'default3',
-      },
-    };
-    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-    component.form.setValue({ ...managementContractForm, ...formGroup.value });
-    expect(component.secondStepInvalid()).toBeFalsy();
-  });
+    it('first step should be valid after async validation', fakeAsync(() => {
+      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(false));
 
-  it('should call create of ManagementContractService', () => {
-    // Given
-    spyOn(managementContractServiceMock, 'create').and.callThrough();
+      const managementContractForm: any = {
+        // No "identifier" when no slave mode
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+      };
 
-    // When
-    const managementContractForm = {
-      identifier: 'Contract identifier',
-      name: 'Contract name',
-      description: 'description',
-      status: 'INACTIVE',
-      storage: {
-        unitStrategy: 'default',
-        objectGroupStrategy: 'default',
-        objectStrategy: 'default',
-      },
-    };
-    const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-    component.form.setValue({ ...managementContractForm, ...formGroup.value });
-    component.onSubmit();
+      component.form.patchValue(managementContractForm);
 
-    // Then
-    expect(managementContractServiceMock.create).toHaveBeenCalled();
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
+      tick(1000); // We "wait" for async validation
+      expect(component.firstStepInvalid()).toBeFalsy(); // Finally, the form is valid
+    }));
+
+    it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
+      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(true));
+
+      const managementContractForm: any = {
+        // No "identifier" when no slave mode
+        name: 'Contract name',
+        description: 'description',
+        status: 'INACTIVE',
+      };
+
+      component.form.patchValue(managementContractForm);
+
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
+      tick(1000); // We "wait" for async validation
+      expect(component.firstStepInvalid()).toBeTruthy(); // Form is still invalid as async validation is KO
+    }));
   });
 });

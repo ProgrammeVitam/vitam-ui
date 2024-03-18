@@ -26,18 +26,18 @@
                 placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER' | translate }}"
                 required
               >
-                <ng-container *ngIf="form.get('identifier')?.touched">
-                  <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
+                <ng-container *ngIf="identifier?.touched">
+                  <vitamui-common-input-error *ngIf="!!identifier?.errors?.required">
                     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate }}
                   </vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists">
+                  <vitamui-common-input-error *ngIf="!!identifier?.errors?.identifierExists">
                     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER_ALREADY_EXIST' | translate }}
                   </vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.minlength">
-                    {{ 'COMMON.MIN_LENGTH' | translate: form?.get('identifier')?.errors }}
+                  <vitamui-common-input-error *ngIf="!!identifier?.errors?.minlength">
+                    {{ 'COMMON.MIN_LENGTH' | translate: identifier?.errors }}
                   </vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.maxlength">
-                    {{ 'COMMON.MAX_LENGTH' | translate: form?.get('identifier')?.errors }}
+                  <vitamui-common-input-error *ngIf="!!identifier?.errors?.maxlength">
+                    {{ 'COMMON.MAX_LENGTH' | translate: identifier?.errors }}
                   </vitamui-common-input-error>
                 </ng-container>
               </vitamui-common-input>
@@ -49,18 +49,18 @@
                 placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME' | translate }}"
                 required
               >
-                <ng-container *ngIf="form.get('name')?.touched">
-                  <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
+                <ng-container *ngIf="name?.touched">
+                  <vitamui-common-input-error *ngIf="!!name?.errors?.required">{{
                     'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate
                   }}</vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
+                  <vitamui-common-input-error *ngIf="!!name?.errors?.nameExists">
                     {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME_ALREADY_EXIST' | translate }}
                   </vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.minlength">
-                    {{ 'COMMON.MIN_LENGTH' | translate: form?.get('name')?.errors }}
+                  <vitamui-common-input-error *ngIf="!!name?.errors?.minlength">
+                    {{ 'COMMON.MIN_LENGTH' | translate: name?.errors }}
                   </vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.maxlength">
-                    {{ 'COMMON.MAX_LENGTH' | translate: form?.get('name')?.errors }}
+                  <vitamui-common-input-error *ngIf="!!name?.errors?.maxlength">
+                    {{ 'COMMON.MAX_LENGTH' | translate: name?.errors }}
                   </vitamui-common-input-error>
                 </ng-container>
               </vitamui-common-input>
@@ -72,8 +72,8 @@
                 placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.DESCRIPTION' | translate }}"
                 [rows]="4"
               >
-                <ng-container *ngIf="form.get('description')?.touched">
-                  <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+                <ng-container *ngIf="description?.touched">
+                  <vitamui-common-input-error *ngIf="!!description?.errors?.required">
                     {{ 'COMMON.REQUIRED' | translate }}
                   </vitamui-common-input-error>
                 </ng-container>
