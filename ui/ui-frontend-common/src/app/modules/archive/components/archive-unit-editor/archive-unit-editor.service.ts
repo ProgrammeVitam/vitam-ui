@@ -20,7 +20,7 @@ import { JsonPatch, JsonPatchDto } from '../../models/json-patch';
 @Injectable()
 export class ArchiveUnitEditorService {
   private collection = new BehaviorSubject<Collection>(Collection.ARCHIVE_UNIT);
-  private sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.1']);
+  private sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.3']);
   private category = new BehaviorSubject<SchemaElement['Category']>('DESCRIPTION');
   private data = new BehaviorSubject<any>(null);
   private editObject = new BehaviorSubject<EditObject>(null);
