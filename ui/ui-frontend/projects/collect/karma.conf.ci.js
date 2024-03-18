@@ -8,7 +8,11 @@ module.exports = function (config) {
   config.set({
     coverageIstanbulReporter: {
       dir: 'target/coverage/collect',
-      fixWebpackSourcePaths: true
-    }
+      fixWebpackSourcePaths: true,
+    },
+    junitReporter: {
+      outputDir: 'target/junit', // results will be saved as $outputDir/$browserName.xml
+      outputFile: 'collect', // if included, results will be saved as $outputDir/$browserName/$outputFile
+    },
   });
 };

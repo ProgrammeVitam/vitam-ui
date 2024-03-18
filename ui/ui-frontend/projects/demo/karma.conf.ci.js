@@ -1,6 +1,6 @@
 var baseConfig = require('../../karma.conf.ci.js');
 
-module.exports = function(config){
+module.exports = function (config) {
   // Load base config
   baseConfig(config);
 
@@ -8,7 +8,11 @@ module.exports = function(config){
   config.set({
     coverageIstanbulReporter: {
       dir: 'target/coverage/demo',
-      fixWebpackSourcePaths: true
-    }
+      fixWebpackSourcePaths: true,
+    },
+    junitReporter: {
+      outputDir: 'target/junit', // results will be saved as $outputDir/$browserName.xml
+      outputFile: 'demo', // if included, results will be saved as $outputDir/$browserName/$outputFile
+    },
   });
 };
