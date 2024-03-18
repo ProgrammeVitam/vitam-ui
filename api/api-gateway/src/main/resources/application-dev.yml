@@ -9,6 +9,10 @@ server:
     trust-store-password: changeme
   max-http-header-size: 16KB
 
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+
 spring:
   cloud:
     consul:
@@ -23,7 +27,7 @@ spring:
         wiretap: true
       routes:
         - id: iam-external-service
-          uri: https://localhost:8083  # URL IAM EXTERNAL
+          uri: https://localhost:8083 # URL IAM EXTERNAL
           predicates:
             - >
               Path=
@@ -139,7 +143,6 @@ spring:
             - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
             - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
 
-
             # Ingest IAM API
             - RewritePath=/ingest-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/ingest-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
@@ -150,7 +153,7 @@ spring:
             - RewritePath=/ingest-api/(?<segment>.*),/iam/v1/$\{segment}
 
         - id: referential-external-service
-          uri: https://localhost:8087  # URL REFERENTIAL EXTERNAL
+          uri: https://localhost:8087 # URL REFERENTIAL EXTERNAL
           predicates:
             - >
               Path=
@@ -207,22 +210,20 @@ spring:
             - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
 
         - id: archive-search-external-service
-          uri: https://localhost:8089  # URL ARCHIVE-SEARCH EXTERNAL
+          uri: https://localhost:8089 # URL ARCHIVE-SEARCH EXTERNAL
           predicates:
             - >
               Path=
               /archive-search-api/archive-search/**,
-              /archive-search-api/archive-units/**
-
+              /archive-search-api/archive-units/**,
           filters:
-            # Archive search API
             - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
             - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
-            - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archives-units/$\{segment}
+            - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
 
         - id: pastis-external-service
-          uri: https://localhost:8015  # URL PASTIS EXTERNAL
+          uri: https://localhost:8015 # URL PASTIS EXTERNAL
           predicates:
             - >
               Path=
@@ -233,7 +234,7 @@ spring:
             - RewritePath=/pastis-api/,/
 
         - id: collect-external-service
-          uri: https://localhost:8090  # URL COLLECT EXTERNAL
+          uri: https://localhost:8090 # URL COLLECT EXTERNAL
           predicates:
             - >
               Path=
@@ -254,7 +255,7 @@ spring:
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
         - id: ingest-external-service
-          uri: https://localhost:8088  # URL INGEST EXTERNAL
+          uri: https://localhost:8088 # URL INGEST EXTERNAL
           predicates:
             - >
               Path=
