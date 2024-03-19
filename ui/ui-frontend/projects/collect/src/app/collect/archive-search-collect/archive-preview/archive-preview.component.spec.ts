@@ -137,12 +137,6 @@ describe('ArchivePreviewComponent', () => {
     expect(component.selectedIndex).toEqual(0);
   });
 
-  it('should the selectedIndex to be 0 after selecting new ArchiveUnit ', () => {
-    component.showExtendedPanel();
-    component.showNormalPanel();
-    expect(component.selectedIndex).toEqual(1);
-  });
-
   it('should show the extended panel ', () => {
     // Given
     const matTabEvent = { index: 1 } as MatTabChangeEvent;
@@ -191,11 +185,6 @@ describe('ArchivePreviewComponent', () => {
     const response = component.getArchiveUnitIcon(archiveUnit);
 
     expect(response).toEqual('vitamui-icon-folder');
-  });
-
-  it('should the selectedIndex to be 1 after choosing the extended lateral panel ', () => {
-    component.showExtendedPanel();
-    expect(component.selectedIndex).toEqual(1);
   });
 
   it('should return the exact values ', () => {

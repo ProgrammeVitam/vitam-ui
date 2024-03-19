@@ -54,6 +54,7 @@ export * from './lib/models/file-types.enum';
 
 /* SERVICES */
 export * from './lib/services/metadata.service';
+export * from './lib/services/spinner-overlay.service';
 export * from './lib/components/filing-plan/filing-plan.service';
 /* UTILS */
 export * from './lib/utils/download';

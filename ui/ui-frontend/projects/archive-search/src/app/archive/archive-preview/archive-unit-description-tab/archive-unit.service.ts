@@ -31,8 +31,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
-import { ArchiveUnit } from './models/archive-unit';
-import { JsonPatchDto, MultiJsonPatchDto } from './models/json-patch';
+import { JsonPatchDto, MultiJsonPatchDto, ArchiveUnit } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',

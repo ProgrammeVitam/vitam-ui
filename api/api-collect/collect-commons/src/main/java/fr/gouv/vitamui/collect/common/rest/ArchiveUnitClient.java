@@ -25,19 +25,26 @@
  * accept its terms.
  */
 
-export interface ArchiveUnit extends ManagementMetadata, SystemMetadata, DescriptiveMetadata {
-  [key: string]: any;
-}
+package fr.gouv.vitamui.collect.common.rest;
 
-export interface ManagementMetadata {
-  '#management'?: any;
-}
+import fr.gouv.vitamui.collect.common.dto.JsonPatchDto;
+import fr.gouv.vitamui.collect.common.dto.MultiJsonPatchDto;
+import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
+import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
+import fr.gouv.vitamui.collect.common.model.JsonPatch;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 
-export interface SystemMetadata {
-  '#id': String;
-}
+import java.util.Set;
 
-export interface DescriptiveMetadata {
-  Title?: string;
-  Description?: string;
+public interface ArchiveUnitClient {
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
+        String transactionId, final Set<UpdateArchiveUnitDto> updateOperationDtoSet);
+
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, String transactionId, final String id,
+        final JsonPatch jsonPatch);
+
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, String transactionId, final JsonPatchDto jsonPatchDto);
+
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
+        String transactionId, final MultiJsonPatchDto multiJsonPatchDto);
 }

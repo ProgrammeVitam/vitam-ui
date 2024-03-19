@@ -1,0 +1,33 @@
+db = db.getSiblingDB('iam');
+dbSecurity = db.getSiblingDB('security')
+
+print("START 57_migration_collect_profiles_roles.js");
+
+// ---- le role ROLE_UPDATE_UNIT_DESC_METADATA sera ajouté pour le profil Collecte --- //
+
+db.profiles.updateMany({
+   "name": "Collect Profile",
+   "applicationName": "COLLECT_APP"
+},
+{
+   "$addToSet": {
+      "roles":{
+           $each: [
+              {
+              "name":"ROLE_UPDATE_UNIT_DESC_METADATA"
+              }
+          ]
+      }
+   }
+});
+
+dbSecurity.contexts.updateOne({
+   "_id":"ui_collect_context"
+},
+{
+   $addToSet: {
+       "roleNames": "ROLE_UPDATE_UNIT_DESC_METADATA"
+   }
+});
+
+print("END 57_migration_collect_profiles_roles.js");

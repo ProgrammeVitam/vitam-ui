@@ -155,11 +155,6 @@ describe('ArchivePreviewComponent', () => {
     expect(component.selectedIndex).toEqual(currentIndex);
   });
 
-  it('should the selectedIndex to be 1 after choosing the exteded lateral panel ', () => {
-    component.showExtendedPanel();
-    expect(component.selectedIndex).toEqual(1);
-  });
-
   it('should have the correct values ', () => {
     component.updateMetadataDesc();
     expect(component.isPanelextended).toBeTruthy();

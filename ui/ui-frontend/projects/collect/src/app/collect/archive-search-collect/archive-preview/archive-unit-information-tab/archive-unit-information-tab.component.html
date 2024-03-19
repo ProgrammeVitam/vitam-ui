@@ -1,236 +1,114 @@
-<form [formGroup]="form">
-  <div class="row">
-    <div class="col-12">
-      <div class="read-only-field" *ngIf="!updateStarted">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
-        <div>
-          {{ archiveUnit | unitI18n: 'Title' }}
-        </div>
-      </div>
-      <div class="form-control read-only-field" *ngIf="updateStarted">
-        <vitamui-common-input
-          formControlName="title"
-          required
-          placeholder="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
-          class="col-6 px-0"
-          [value]="getAuTitle(archiveUnit)"
-        >
-        </vitamui-common-input>
-        <div class="col-6"></div>
+<div class="row">
+  <div class="col-12">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
+      <div>
+        {{ archiveUnit | unitI18n: 'Title' }}
       </div>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="read-only-field">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate }} :</label>
-        <div>
-          {{ archiveUnit['#opi'] }}
-        </div>
+<div class="row">
+  <div class="col-12">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate }} :</label>
+      <div>
+        {{ archiveUnit['#opi'] }}
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="read-only-field">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate }} :</label>
-        <div>
-          {{ archiveUnit['#id'] }}
-        </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate }} :</label>
+      <div>
+        {{ archiveUnit['#id'] }}
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="read-only-field text-justify" *ngIf="!updateStarted">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
-        <div>
-          {{ archiveUnit | unitI18n: 'Description' }}
-        </div>
-      </div>
-      <div class="form-control" *ngIf="updateStarted">
-        <vitamui-common-input
-          formControlName="description"
-          placeholder="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }}"
-          class="col-6 px-0"
-          [value]="getAuDescription(archiveUnit)"
-        >
-        </vitamui-common-input>
-        <div class="col-6"></div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="read-only-field text-justify">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
+      <div>
+        {{ archiveUnit | unitI18n: 'Description' }}
       </div>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col-6">
-      <div class="read-only-field">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
-        <div>
-          {{ archiveUnit['#originating_agency'] }}
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="read-only-field">
-        <label></label><br />
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
-        <div>
-          {{ archiveUnit?.originating_agencyName }}
-        </div>
+<div class="row">
+  <div class="col-6">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
+      <div>
+        {{ archiveUnit['#originating_agency'] }}
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-6">
-      <div class="read-only-field">
-        <label
-          >{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }} :
-          <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
-            {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
-          </button>
-        </label>
-        <div>
-          <span *ngIf="!fullPath">{{ (uaPath$ | async)?.resumePath }}</span>
-          <span *ngIf="fullPath">{{ (uaPath$ | async)?.fullPath }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="read-only-field" *ngIf="!updateStarted">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
-        <div>
-          {{ 'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate }}
-        </div>
-      </div>
-
-      <div class="form-group select-group-info read-only-field" *ngIf="updateStarted">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
-        <div>
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="descriptionLevel" placeholder="Niveau de description" panelclass="vitamui-mat-select" required>
-              <mat-option *ngFor="let descriptionLevel of descriptionLevels" [value]="descriptionLevel.key">
-                {{ descriptionLevel.label }}
-              </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
-        </div>
+  <div class="col-6">
+    <div class="read-only-field">
+      <label></label><br />
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
+      <div>
+        {{ archiveUnit?.originating_agencyName }}
       </div>
     </div>
   </div>
-
-  <div class="row content vitamui-form margin_right">
-    <div class="col-3 form-control" *ngIf="updateStarted">
-      <div class="vitamui-input" (click)="pickerSatrDate.open()">
-        <span *ngIf="!form.get('startDate').value; else showStartDate" (click)="pickerSatrDate.open()" class="search-date-label">
-          {{ 'RULES.APRAISAL_RULES.START_DATE' | translate }}</span
-        >
-
-        <ng-template #showStartDate
-          ><span (click)="pickerSatrDate.open()">{{ form.get('startDate').value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
-        <mat-datepicker #pickerSatrDate></mat-datepicker>
-      </div>
-      <button class="btn-circle btn-size" *ngIf="form.get('startDate').value" type="button" (click)="clearDate('startDate')">
-        <i class="material-icons close-color">close</i>
-      </button>
-    </div>
-
-    <div class="col-3 form-control" *ngIf="updateStarted">
-      <div class="vitamui-input" (click)="pickerEndDate.open()">
-        <span *ngIf="!form.get('endDate').value; else showEndDate" (click)="pickerEndDate.open()" class="search-date-label">
-          {{ 'RULES.APRAISAL_RULES.END_DATE' | translate }}</span
-        >
-
-        <ng-template #showEndDate
-          ><span (click)="pickerEndDate.open()">{{ form.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerEndDate" formControlName="endDate" />
-        <mat-datepicker #pickerEndDate></mat-datepicker>
-      </div>
-      <button class="btn-circle btn-size" *ngIf="form.get('endDate').value" type="button" (click)="clearDate('endDate')">
-        <i class="material-icons close-color">close</i>
-      </button>
-    </div>
-    <div class="col-6" *ngIf="updateStarted"></div>
-    <div class="col-6" *ngIf="!updateStarted">
-      <div class="read-only-field">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
-        <div>
-          {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
-        </div>
-      </div>
-    </div>
-    <div class="col-6" *ngIf="!updateStarted">
-      <div class="read-only-field">
-        <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
-        <div>
-          {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
-        </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <div class="read-only-field">
+      <label
+        >{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }} :
+        <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
+          {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
+        </button>
+      </label>
+      <div>
+        <span *ngIf="!fullPath">{{ (uaPath$ | async)?.resumePath }}</span>
+        <span *ngIf="fullPath">{{ (uaPath$ | async)?.fullPath }}</span>
       </div>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-12" *ngIf="!updateStarted">
-      <button class="btn primary download-btn" [disabled]="archiveUnit['#object'] == null" (click)="onDownloadObjectFromUnit(archiveUnit)">
-        <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
-        <i class="vitamui-icon vitamui-icon-deposit"></i>
-      </button>
+  <div class="col-6">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
+      <div>
+        {{ 'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate }}
+      </div>
     </div>
   </div>
-  <div class="row padding-style" *ngIf="updateStarted">
-    <div class="col-2 actions">
-      <button type="button" class="btn primary" [disabled]="!formHasChangesAndIsValid()" (click)="launchUpdate()">
-        {{ 'UNIT_UPDATE.SAVE' | translate }}
-      </button>
+</div>
+
+<div class="row content vitamui-form margin_right">
+  <div class="col-6">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
+      <div>
+        {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
+      </div>
     </div>
-    <div class="col-4">
-      <button type="button" class="btn link cancel cancel-popup" (click)="cancelUpdate()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
-    </div>
-    <div class="col-6"></div>
   </div>
-</form>
-
-<ng-template #updateArchiveUnitDescMetadataAlerteMessageDialog>
-  <mat-dialog-content>
-    <br />
-    <div class="text-title">
-      {{ 'UNIT_UPDATE.HINT' | translate }}
+  <div class="col-6">
+    <div class="read-only-field">
+      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
+      <div>
+        {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+      </div>
     </div>
+  </div>
+</div>
 
-    <div class="text large bold">
-      {{ 'UNIT_UPDATE.MESSAGE' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
-
-    <button matDialogClose class="btn link cancel cancel-popup">{{ 'RULES.COMMON.UNDO' | translate }}</button>
-  </mat-dialog-actions>
-</ng-template>
-
-<ng-template #updateArchiveUnitDescMetadataAlerteFormCancelDialog>
-  <mat-dialog-content>
-    <br />
-    <div class="text-title">
-      {{ 'UNIT_UPDATE.CLOSE_WINDOW_HINT' | translate }}
-    </div>
-
-    <div class="text large bold">
-      {{ 'UNIT_UPDATE.CONFIRM_CLOSE' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'UNIT_UPDATE.CLOSE' | translate }}</button>
-
-    <button matDialogClose class="btn link cancel cancel-popup">{{ 'RULES.COMMON.UNDO' | translate }}</button>
-  </mat-dialog-actions>
-</ng-template>
+<div class="row">
+  <div class="col-12">
+    <button class="btn primary download-btn" [disabled]="archiveUnit['#object'] == null" (click)="onDownloadObjectFromUnit(archiveUnit)">
+      <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
+      <i class="vitamui-icon vitamui-icon-deposit"></i>
+    </button>
+  </div>
+</div>

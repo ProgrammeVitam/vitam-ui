@@ -47,7 +47,6 @@ import { ArchiveService } from '../../archive.service';
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;
   @Input() accessContract: string;
-  @Input() tenantIdentifier: number;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
 

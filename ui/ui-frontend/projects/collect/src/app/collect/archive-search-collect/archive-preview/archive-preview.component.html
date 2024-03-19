@@ -8,12 +8,6 @@
   (onclose)="emitClose()"
 >
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-    <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
-      {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
-    </button>
-    <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
-      {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
-    </button>
     <button
       mat-menu-item
       matTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
@@ -36,13 +30,16 @@
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
-        [updateStarted]="updateStarted"
         (showNormalPanel)="showNormalPanel()"
       ></app-archive-unit-information-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'TAB.DESCRIPTION' | translate }}">
-      <vitamui-common-archive-unit-viewer [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
+      <app-archive-unit-description-tab
+        [archiveUnit]="archiveUnit"
+        [(editMode)]="updateStarted"
+        [transactionId]="transactionId"
+      ></app-archive-unit-description-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">

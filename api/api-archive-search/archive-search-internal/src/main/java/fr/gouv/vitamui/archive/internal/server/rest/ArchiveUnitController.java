@@ -34,7 +34,6 @@ import fr.gouv.vitamui.archives.search.common.dto.UpdateArchiveUnitDto;
 import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
 import fr.gouv.vitamui.archives.search.common.service.ArchiveUnitService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -53,7 +52,11 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 @RestController
 @RequestMapping("/archive-units")
 public class ArchiveUnitController {
-    @Autowired ArchiveUnitService archiveUnitService;
+    final ArchiveUnitService archiveUnitService;
+
+    public ArchiveUnitController(ArchiveUnitService archiveUnitService) {
+        this.archiveUnitService = archiveUnitService;
+    }
 
     @PatchMapping
     @Consumes(APPLICATION_JSON)

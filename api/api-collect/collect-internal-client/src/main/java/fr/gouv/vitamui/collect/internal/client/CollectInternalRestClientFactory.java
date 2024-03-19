@@ -27,6 +27,7 @@
 
 package fr.gouv.vitamui.collect.internal.client;
 
+import fr.gouv.vitamui.collect.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -55,5 +56,9 @@ public class CollectInternalRestClientFactory extends BaseRestClientFactory {
 
     public CollectTransactionInternalRestClient getCollectTransactionInternalRestClient() {
         return new CollectTransactionInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
+    public ArchiveUnitClient getArchiveUnitClient() {
+        return new ArchiveUnitClientImpl(getRestTemplate(), getBaseUrl());
     }
 }
