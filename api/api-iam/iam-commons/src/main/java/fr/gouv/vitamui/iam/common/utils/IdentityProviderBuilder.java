@@ -36,6 +36,11 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,16 +48,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.Resource;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-
 /**
  * Build an identity provider.
- *
- *
  */
 public class IdentityProviderBuilder {
 
@@ -112,11 +109,15 @@ public class IdentityProviderBuilder {
     private Boolean usePkce;
 
     private String protocoleType;
+
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
-                                   final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
-                                   final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-                                   final boolean readonly, final String mailAttribute, final String identifierAttribute, final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding, final boolean wantsAssertionsSigned, final boolean authnRequestSigned, final boolean autoProvisioningEnabled,
-                                   String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
+        final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
+        final String privateKeyPassword, final Resource idpMetadata, final String customerId,
+        final Boolean readonly, final String mailAttribute, final String identifierAttribute,
+        final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding,
+        final Boolean wantsAssertionsSigned, final Boolean authnRequestSigned, final Boolean autoProvisioningEnabled,
+        String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm,
+        Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -131,20 +132,20 @@ public class IdentityProviderBuilder {
         this.mailAttribute = mailAttribute;
         this.identifierAttribute = identifierAttribute;
         this.maximumAuthenticationLifetime = maximumAuthenticationLifetime;
-        this.authnRequestBinding =  authnRequestBinding;
+        this.authnRequestBinding = authnRequestBinding;
         this.wantsAssertionsSigned = wantsAssertionsSigned;
         this.authnRequestSigned = authnRequestSigned;
         this.autoProvisioningEnabled = autoProvisioningEnabled;
-        this.clientId=clientId;
-        this.clientSecret=clientSecret;
-        this.discoveryUrl=discoveryUrl;
-        this.scope=scope;
-        this.preferredJwsAlgorithm=preferredJwsAlgorithm;
-        this.customParams=customParams;
-        this.useNonce=useNonce;
-        this.usePkce=usePkce;
-        this.useState=useState;
-        this.protocoleType= protocoleType;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.discoveryUrl = discoveryUrl;
+        this.scope = scope;
+        this.preferredJwsAlgorithm = preferredJwsAlgorithm;
+        this.customParams = customParams;
+        this.useNonce = useNonce;
+        this.usePkce = usePkce;
+        this.useState = useState;
+        this.protocoleType = protocoleType;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -191,7 +192,7 @@ public class IdentityProviderBuilder {
     }
 
     public static void extractIdpMetadata(final IdentityProviderDto idp, final Resource idpMetadata)
-            throws IOException {
+        throws IOException {
         if (idpMetadata != null) {
             try (final InputStream isIdpMeta = idpMetadata.getInputStream()) {
                 final String idpMeta = IOUtils.toString(isIdpMeta, "UTF-8");
@@ -201,7 +202,7 @@ public class IdentityProviderBuilder {
     }
 
     public static void extractKeystore(final IdentityProviderDto idp, final Resource keystore)
-            throws IOException, UnsupportedEncodingException {
+        throws IOException, UnsupportedEncodingException {
         if (keystore != null) {
             try (final InputStream isKeystore = keystore.getInputStream()) {
                 final byte[] keystoreArray = IOUtils.toByteArray(isKeystore);
