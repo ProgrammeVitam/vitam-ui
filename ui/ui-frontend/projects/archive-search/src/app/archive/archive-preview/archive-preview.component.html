@@ -8,12 +8,6 @@
   (onclose)="emitClose()"
 >
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-    <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
-      {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
-    </button>
-    <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
-      {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
-    </button>
     <button
       mat-menu-item
       matTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
@@ -38,7 +32,6 @@
         [archiveUnit]="archiveUnit"
         [accessContract]="accessContract"
         [tenantIdentifier]="tenantIdentifier"
-        [updateStarted]="updateStarted"
         (showNormalPanel)="showNormalPanel()"
       ></app-archive-unit-information-tab>
     </mat-tab>
@@ -48,16 +41,11 @@
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
-      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit" [accessContract]="accessContract">
-      </app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"> </app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}">
-      <app-archive-unit-objects-details-tab
-        [archiveUnit]="archiveUnit"
-        [accessContract]="accessContract"
-        [tenantIdentifier]="tenantIdentifier"
-      >
+      <app-archive-unit-objects-details-tab [archiveUnit]="archiveUnit" [accessContract]="accessContract">
       </app-archive-unit-objects-details-tab>
     </mat-tab>
   </mat-tab-group>

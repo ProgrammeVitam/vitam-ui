@@ -4,8 +4,8 @@ import { BehaviorSubject, Observable, Subscription, throwError } from 'rxjs';
 import { EditObject } from '../../../object-editor/models/edit-object.model';
 import { DisplayRule } from '../../../object-viewer/models';
 import { customTemplate } from '../../archive-unit-template';
-import { ArchiveUnitService } from '../../archive-unit.service';
 import { ArchiveUnit } from '../../models/archive-unit';
+import { JsonPatchDto } from '../../models/json-patch';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
 
 @Component({
@@ -22,10 +22,7 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
 
   private subscriptions = new Subscription();
 
-  constructor(
-    private archiveUnitEditorService: ArchiveUnitEditorService,
-    private archiveUnitService: ArchiveUnitService,
-  ) {}
+  constructor(private archiveUnitEditorService: ArchiveUnitEditorService) {}
 
   ngOnInit(): void {
     this.archiveUnitEditorService.setTemplate(this.template);
@@ -45,11 +42,9 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
     this.subscriptions.unsubscribe();
   }
 
-  update(): Observable<{ operationId: String }> {
+  getJsonPatch(): JsonPatchDto {
     const jsonPatchDto = this.archiveUnitEditorService.toJsonPatchDto();
-
-    if (jsonPatchDto.jsonPatch.length === 0) return throwError(new Error('No change to submit'));
-
-    return this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto);
+    if (jsonPatchDto.jsonPatch.length === 0) throw new Error('No changes to generate in Json Patch');
+    return jsonPatchDto;
   }
 }

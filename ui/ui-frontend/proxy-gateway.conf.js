@@ -291,7 +291,7 @@ const PROXY_CONFIG = [
     },
   },
   {
-    context: ['/collect-api/projects', '/collect-api/transactions'],
+    context: ['/collect-api/projects', '/collect-api/transactions', '/collect-api/archive-units'],
     target: {
       protocol: 'https:',
       host: 'localhost',

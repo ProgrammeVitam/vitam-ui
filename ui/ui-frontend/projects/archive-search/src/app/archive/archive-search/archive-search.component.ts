@@ -1281,4 +1281,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       emit,
     );
   }
+
+  trackBy(_: number, unit: Unit) {
+    return unit['#id'];
+  }
 }

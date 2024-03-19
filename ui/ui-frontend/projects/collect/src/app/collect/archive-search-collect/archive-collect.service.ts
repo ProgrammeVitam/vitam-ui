@@ -55,6 +55,7 @@ import {
   SearchCriteriaEltDto,
   SearchResponse,
   SearchService,
+  SecurityService,
   Transaction,
   Unit,
 } from 'ui-frontend-common';
@@ -72,6 +73,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private accessContractApiService: AccessContractApiService,
+    private securityService: SecurityService,
   ) {
     super(projectsApiService, 'ALL');
   }
@@ -305,6 +307,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
+  }
+
+  hasCollectRole(role: string, tenantIdentifier: number): Observable<boolean> {
+    const applicationIdentifier = 'COLLECT_APP';
+    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
   }
 }
 

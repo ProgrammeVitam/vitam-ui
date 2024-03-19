@@ -4800,7 +4800,8 @@
           "CANCEL": "REVENIR À LA SAISIE"
         },
         "MESSAGES": {
-          "SUCCESS": "La demande de modification de l'unité archivistique a bien été envoyée"
+          "IN_PROGRESS": "La demande de modification a bien été envoyée. En attendant sa prise en compte effective, vous pouvez la suivre dans le journal des opérations.",
+          "SUCCESS": "La demande de modification de l'unité archivistique a bien été effectuée"
         }
       },
       "CANCEL": {
@@ -5351,10 +5352,6 @@
         "INFORMATIONS": "Informations",
         "RULES": "Règles",
         "OBJECTS": "Objets"
-      },
-      "ACTIONS": {
-        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
       }
     },
     "ARCHIVE_UNIT": {

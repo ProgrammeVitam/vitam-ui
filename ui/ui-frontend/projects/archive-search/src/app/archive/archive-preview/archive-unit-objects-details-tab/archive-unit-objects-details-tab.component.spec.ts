@@ -68,7 +68,6 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     component.archiveUnit = archiveUnit;
-    component.tenantIdentifier = 1;
     fixture.detectChanges();
   });
 

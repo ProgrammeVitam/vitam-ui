@@ -28,13 +28,10 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-
-import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor

@@ -105,7 +105,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     this.hasUpdateUnitDescriptiveMetadataPermission();
   }
 
-  public hasUpdateUnitDescriptiveMetadataPermission() {
+  private hasUpdateUnitDescriptiveMetadataPermission() {
     this.archiveService.hasArchiveSearchRole('ROLE_UPDATE_UNIT_DESC_METADATA', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasUpdateDescriptiveUnitMetadataRole = result;
     });

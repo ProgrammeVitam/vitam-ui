@@ -245,7 +245,9 @@ spring:
               /collect-api/projects$,
               /collect-api/projects/**,
               /collect-api/transactions$,
-              /collect-api/transactions/**
+              /collect-api/transactions/**,
+              /collect-api/archive-units$,
+              /collect-api/archive-units/**
 
           filters:
             # Collect API

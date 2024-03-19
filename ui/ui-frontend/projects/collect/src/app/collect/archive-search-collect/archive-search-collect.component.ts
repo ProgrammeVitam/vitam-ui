@@ -311,6 +311,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.show = hidden;
       }),
     );
+
+    this.hasUpdateUnitDescriptiveMetadataPermission();
+  }
+
+  private hasUpdateUnitDescriptiveMetadataPermission() {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_UPDATE_UNIT_DESC_METADATA', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasUpdateDescriptiveUnitMetadataRole = result;
+    });
   }
 
   private addInitialCriteriaValues() {
@@ -1006,5 +1014,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
+  }
+
+  trackBy(_: number, unit: Unit) {
+    // FIXME: for some reason, that trackBy - used to make Angular update the Unit in the list when it's modified in the sidenav - is not always working correctly: sometimes, the Unit is updated, sometimes not. It looks like it is updated for "simple" Units (with only Généralités) and not for "complex" ones.
+    return unit['#id'];
   }
 }

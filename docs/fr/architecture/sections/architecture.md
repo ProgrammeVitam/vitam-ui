@@ -1119,13 +1119,14 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_GET_RULES
             - ROLE_SEND_TRANSACTIONS
             - ROLE_CLOSE_TRANSACTIONS
+            - ROLE_UPDATE_UNITS_METADATA
             - ROLE_REOPEN_TRANSACTIONS
             - ROLE_ABORT_TRANSACTIONS
             - ROLE_GET_TRANSACTIONS
             - ROLE_CREATE_TRANSACTIONS
             - ROLE_UPDATE_TRANSACTIONS
             - ROLE_DELETE_TRANSACTIONS
-            - ROLE_UPDATE_UNITS_METADATA
+            - ROLE_UPDATE_UNIT_DESC_METADATA
 ```
 
 ## Application avec plusieurs profils

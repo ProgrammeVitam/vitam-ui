@@ -62,6 +62,7 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
 
   items: InternalValue[];
   focused: number;
+  @HostBinding('class.disabled') disabled: boolean;
 
   @HostBinding('class.vitamui-float')
   get labelFloat() {
@@ -133,5 +134,9 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
 
   trackBy(_: number, item: InternalValue) {
     return item.id;
+  }
+
+  setDisabledState(isDisabled: boolean) {
+    this.disabled = isDisabled;
   }
 }
