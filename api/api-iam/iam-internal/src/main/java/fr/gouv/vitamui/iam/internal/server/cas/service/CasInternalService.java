@@ -94,7 +94,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
@@ -208,26 +207,18 @@ public class CasInternalService {
     public CasInternalService() {
     }
 
-    //FIXME handle customerId as mondatory
     @Transactional
     public void updatePassword(final String email, final String rawPassword, final String customerId) {
 
-        Optional<Customer> optCustomer = Optional.empty();
-        User user;
-        if (!StringUtils.isBlank(customerId)) {
-            optCustomer = customerRepository.findById(customerId);
-            if (!optCustomer.isPresent()) {
-                throw new ApplicationServerException("Unable to update password : customer not found");
-            }
-            user = findUserByEmailAndCustomerId(email, customerId);
-        } else {
-            user = checkUserInformations(email);
-            optCustomer = customerRepository.findById(user.getCustomerId());
-            if (!optCustomer.isPresent()) {
-                throw new ApplicationServerException("Unable to update password : customer not found");
-            }
+        Optional<Customer> optCustomer = customerRepository.findById(customerId);
+        if (!optCustomer.isPresent()) {
+            throw new ApplicationServerException("Unable to update password : customer not found");
         }
-
+        User user = findUserByEmailAndCustomerId(email, customerId);
+        if (UserTypeEnum.NOMINATIVE != user.getType()) {
+            throw new InvalidAuthenticationException("User unavailable: " + email);
+        }
+        checkStatus(user.getStatus(), user.getEmail());
         final Customer customer = optCustomer.orElseThrow(
             () -> new ApplicationServerException("Unable to update password : customer not found"));
 
@@ -274,28 +265,6 @@ public class CasInternalService {
 
         if (newStatus == UserStatusEnum.BLOCKED) {
             iamLogbookService.blockUserEvent(user, oldStatus, Duration.ofMinutes(timeIntervalForLoginAttempts));
-        }
-    }
-
-    @Deprecated
-    public User findEntityByEmail(final String email) {
-        return checkUserInformations(email);
-    }
-
-    @Deprecated
-    private User checkUserInformations(final String email) {
-        final List<User> users = userRepository.findAllByEmail(email);
-        if (CollectionUtils.isEmpty(users)) {
-            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        } else if (users.size() > 1) {
-            throw new IllegalArgumentException(USER_CONFLICT + email);
-        } else {
-            User user = users.get(0);
-            if (UserTypeEnum.NOMINATIVE != user.getType()) {
-                throw new InvalidAuthenticationException("User unavailable: " + email);
-            }
-            checkStatus(user.getStatus(), user.getEmail());
-            return user;
         }
     }
 
