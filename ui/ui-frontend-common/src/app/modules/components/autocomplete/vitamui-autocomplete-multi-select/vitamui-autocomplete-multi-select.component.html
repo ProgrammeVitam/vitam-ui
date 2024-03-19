@@ -16,12 +16,17 @@
       <div>
         <div *ngIf="!showOnlySelectedOption" [style.height]="containerHeightInSearchView">
           <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
-            <button (click)="toogleShowOnlySelectedOption()" [disabled]="selectedOptions.length === 0" class="btn link right-link">
+            <button
+              *ngIf="enableDisplaySelected"
+              (click)="toggleShowOnlySelectedOption()"
+              [disabled]="selectedOptions.length === 0"
+              class="btn link right-link"
+            >
               <i class="vitamui-icon vitamui-icon-chevron-right"></i>
               <span> {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.CONSULT_SELECTION' | translate }} ({{ getSelectedOptionsCount() }}) </span>
             </button>
 
-            <div class="search-bar mb-2">
+            <div *ngIf="enableSearch" class="search-bar mb-2">
               <vitamui-common-search-bar
                 #searchBar
                 (clear)="resetSearchBar()"
@@ -57,7 +62,7 @@
 
         <div *ngIf="showOnlySelectedOption" [style.height]="containerHeightInSelectedItemsView">
           <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
-            <button (click)="toogleShowOnlySelectedOption()" class="btn link right-link">
+            <button (click)="toggleShowOnlySelectedOption()" class="btn link right-link">
               <i class="vitamui-icon vitamui-icon-chevron-left"></i>
               <span>
                 {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.COMPLETE_SELECTION' | translate }}

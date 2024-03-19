@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   forwardRef,
   Input,
-  OnInit,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -56,14 +57,13 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
-import { SearchBarComponent } from '../../search-bar';
-import { Option } from '../utils/option.interface';
-import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { filter } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import { merge } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Option } from '../utils/option.interface';
+import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
+import { SearchBarComponent } from '../../search-bar/search-bar.component';
 
 export const VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -84,39 +84,79 @@ export const VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS: any = {
   providers: [VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAccessor, Validator, AfterViewInit {
-  @Input() placeholder: string;
-  @Input() searchBarPlaceHolder: string;
-  @Input() enableSelectAll = true;
-
+export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAccessor, Validator, AfterViewInit, AfterViewChecked {
   public nbSelectedItemsMap: { [k: string]: string } = {
     '=1': 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.SINGULAR',
     other: 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.PLURAL',
   };
-  @ViewChild('searchBar') searchBar: SearchBarComponent;
-  @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
-  @ViewChild('matSelect') matSelect: MatSelect;
-
-  public readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
   public control = new FormControl([]);
   public searchTextControl = new FormControl();
   public showOnlySelectedOption = false;
   public allOptions: Option[] = [];
   public displayedOptions: Option[] = [];
   public selectedOptions: Option[] = [];
-  public containerHeightInSearchView: string = '0px';
-  public containerHeightInSelectedItemsView: string = '0px';
+  public containerHeightInSearchView = '0px';
+  public containerHeightInSelectedItemsView = '0px';
+  public readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
 
-  private initialHeightInSearchView = 111;
-  private initialHeightInSelectedItemsView = 106;
+  private visibleItemsInSearchView = 4;
+  private initialHeightInSearchView = 160;
+  private initialHeightInSelectedItemsView = 105;
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
+  // tslint:disable-next-line:variable-name
+  private _enableSelectAll = true;
+  // tslint:disable-next-line:variable-name
+  private _enableDisplaySelected = true;
+  // tslint:disable-next-line:variable-name
+  private _enableSearch = true;
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    readonly sd: ScrollDispatcher,
-  ) {}
+  @ViewChild('searchBar') searchBar: SearchBarComponent;
+  @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
+  @ViewChild('matSelect') matSelect: MatSelect;
+
+  // tslint:disable-next-line:variable-name
+  private _required = false;
+  @Input() placeholder: string;
+  @Input() searchBarPlaceHolder: string;
+
+  @Input() set enableSelectAll(enableSelectAll: boolean) {
+    this._enableSelectAll = enableSelectAll;
+    if (!this._enableSelectAll) {
+      this.initialHeightInSearchView -= 48;
+      this.visibleItemsInSearchView = 5;
+      this.resizeContainerHeightInSearchView();
+    }
+  }
+
+  get enableSelectAll(): boolean {
+    return this._enableSelectAll;
+  }
+
+  @Input() set enableSearch(enableSearch: boolean) {
+    this._enableSearch = enableSearch;
+    if (!this._enableSearch) {
+      this.initialHeightInSearchView -= 52;
+      this.resizeContainerHeightInSearchView();
+    }
+  }
+
+  get enableSearch(): boolean {
+    return this._enableSearch;
+  }
+
+  @Input() set enableDisplaySelected(enableDisplaySelected: boolean) {
+    this._enableDisplaySelected = enableDisplaySelected;
+    if (!this._enableDisplaySelected) {
+      this.initialHeightInSearchView -= 48;
+      this.resizeContainerHeightInSearchView();
+    }
+  }
+
+  get enableDisplaySelected(): boolean {
+    return this._enableDisplaySelected;
+  }
 
   @Input()
   set multiSelectOptions(multiselectOptions: VitamuiAutocompleteMultiselectOptions) {
@@ -128,22 +168,35 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
     this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys?.includes(option.key));
-    this.updateSelectAll();
     this.resizeContainerHeightInSelectedItemsView();
   }
-
-  // tslint:disable-next-line:variable-name
-  private _required = false;
 
   @Input()
   get required(): boolean {
     return this._required;
   }
 
+  // tslint:disable-next-line:adjacent-overload-signatures
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
+
+  constructor(
+    private cd: ChangeDetectorRef,
+    readonly sd: ScrollDispatcher,
+  ) {}
+
   ngAfterViewInit(): void {
     merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
-      () => this.updateCheckboxes(),
+      () => {
+        this.updateCheckboxes();
+        this.updateSelectAll();
+      },
     );
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateSelectAll();
   }
 
   private updateCheckboxes(): void {
@@ -172,12 +225,17 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.updateMatSelectTriggerContent();
   }
 
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
+  private updateMatSelectTriggerContent(): void {
+    Object.defineProperties(this.matSelect, {
+      empty: {
+        value: this.selectedOptions.length <= 0,
+        writable: true,
+      },
+    });
   }
 
   public openedChange(opened: boolean): void {
-    if (opened) {
+    if (opened && this.enableSearch) {
       this.searchBar.onFocus();
     }
   }
@@ -191,8 +249,9 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
-
+    this.updateCheckboxes();
     this.updateSelectAll();
+
     this.resizeContainerHeightInSelectedItemsView();
   }
 
@@ -212,6 +271,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     }
   }
 
+  // tslint:disable-next-line:variable-name
   validate(_control: AbstractControl): ValidationErrors | null {
     if (this.required && this.selectedOptions.length === 0) {
       return { required: true };
@@ -220,17 +280,17 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   public getSelectedOptionsCount(): number {
-    return this.selectedOptions.filter((option) => option.key !== this.SELECT_ALL_OPTIONS).length;
+    return this.selectedOptions.length;
   }
 
-  public toogleShowOnlySelectedOption(): void {
+  public toggleShowOnlySelectedOption(): void {
     this.showOnlySelectedOption = !this.showOnlySelectedOption;
     if (!this.showOnlySelectedOption) {
       this.displayedOptions = this.allOptions;
       this.resizeContainerHeightInSearchView();
       this.searchTextControl.reset();
     } else {
-      this.searchBar.reset();
+      this.searchBar?.reset();
     }
   }
 
@@ -256,12 +316,14 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
         (option) => option.label.toLowerCase().indexOf(this.searchTextControl.value.toLowerCase()) !== -1,
       );
       this.resizeContainerHeightInSearchView();
+    } else {
+      this.resetSearchBar();
     }
   }
 
   public onSelectClosed(): void {
     this.showOnlySelectedOption = false;
-    if (this.searchBar) {
+    if (this.searchBar && this.enableSearch) {
       this.searchBar.reset();
     }
     this.searchTextControl.reset();
@@ -271,7 +333,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.searchTextControl.reset();
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
-    this.searchBar.onFocus();
+    this.searchBar?.onFocus();
   }
 
   public onSelectionChange(change: MatOptionSelectionChange) {
@@ -290,26 +352,13 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.resizeContainerHeightInSelectedItemsView();
 
     if (this.selectedOptions.length === 0) {
-      this.showOnlySelectedOption = false;
-      this.onChange([]);
+      this.clearAllSelectedOptions();
     } else {
       const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
       this.onChange(selectedKeys);
     }
 
-    this.updateSelectAll();
     this.updateMatSelectTriggerContent();
-  }
-
-  public calculateContainerHeight(initialHeight: number, optionLenght: number): string {
-    const itemHeight = 48;
-    const visibleItems = 5;
-
-    if (optionLenght <= visibleItems) {
-      return `${initialHeight + itemHeight * optionLenght}px`;
-    }
-
-    return `${initialHeight + itemHeight * visibleItems}px`;
   }
 
   private onChange = (_: any) => {};
@@ -317,42 +366,39 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   private onTouched = () => {};
 
   private updateSelectAll(): void {
-    const selectedOptionsCount: number = this.getSelectedOptionsCount();
-    if (selectedOptionsCount > 0 && selectedOptionsCount === this.allOptions.length) {
-      this.selectAll(true);
-    } else {
-      const index = this.selectedOptions.findIndex((option) => option.key === this.SELECT_ALL_OPTIONS);
-      if (index !== -1) {
-        this.selectedOptions.splice(index, 1);
-        const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
-        this.onChange(selectedKeys);
-        this.updateCheckboxes();
+    if (
+      !this.showOnlySelectedOption &&
+      this.optionKeys &&
+      this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).length !== 0
+    ) {
+      const selectedOptionsCount = this.getSelectedOptionsCount();
+      if (selectedOptionsCount === this.allOptions.length) {
+        this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS)[0].select();
+      } else {
+        this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS)[0].deselect();
       }
+      this.cd.detectChanges();
     }
   }
 
   private selectAll(value: boolean): void {
     if (value) {
-      this.selectedOptions = [...this.allOptions, { key: this.SELECT_ALL_OPTIONS }];
-      const selectedKeys = [...this.selectedOptions.map((option) => option.key)].filter((key) => key !== this.SELECT_ALL_OPTIONS).sort();
+      this.selectedOptions = [...this.allOptions];
+      const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
       this.onChange(selectedKeys);
       this.updateCheckboxes();
     } else {
       this.clearAllSelectedOptions();
     }
-  }
-
-  private updateMatSelectTriggerContent(): void {
-    Object.defineProperties(this.matSelect, {
-      empty: {
-        value: this.selectedOptions.length <= 0,
-        writable: true,
-      },
-    });
+    this.resizeContainerHeightInSelectedItemsView();
   }
 
   private resizeContainerHeightInSearchView(): void {
-    this.containerHeightInSearchView = this.calculateContainerHeight(this.initialHeightInSearchView, this.displayedOptions.length);
+    this.containerHeightInSearchView = this.calculateContainerHeight(
+      this.initialHeightInSearchView,
+      this.displayedOptions.length,
+      this.visibleItemsInSearchView,
+    );
     this.checkViewportSize();
   }
 
@@ -360,8 +406,19 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.containerHeightInSelectedItemsView = this.calculateContainerHeight(
       this.initialHeightInSelectedItemsView,
       this.selectedOptions.length,
+      5,
     );
     this.checkViewportSize();
+  }
+
+  private calculateContainerHeight(initialHeight: number, optionLenght: number, visibleItems: number): string {
+    const itemHeight = 48;
+
+    if (optionLenght <= visibleItems) {
+      return `${initialHeight + itemHeight * optionLenght}px`;
+    }
+
+    return `${initialHeight + itemHeight * visibleItems}px`;
   }
 
   private checkViewportSize(): void {
