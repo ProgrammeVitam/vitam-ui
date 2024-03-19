@@ -719,7 +719,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         Assert.notNull(email, "email : " + email + " format is not allowed");
         Assert.isTrue(Pattern.matches(ApiIamInternalConstants.EMAIL_VALID_REGEXP, email),
             "email : " + email + " format is not allowed");
-        Assert.isNull(getRepository().findByEmail(email), message + ": mail already exists");
+        Assert.isNull(getRepository().findByEmailAndCustomerId(email, customerId), message + ": mail already exists");
         if (email.matches(ADMIN_EMAIL_PATTERN + ".*")) {
             final Query query = new Query();
             query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));

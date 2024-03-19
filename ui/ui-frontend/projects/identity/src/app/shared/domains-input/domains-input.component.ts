@@ -39,8 +39,6 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 
-import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
-
 /*eslint no-use-before-define: "error"*/
 export const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -68,12 +66,8 @@ export class DomainsInputComponent implements ControlValueAccessor {
   onChange: (_: any) => void;
   onTouched: () => void;
 
-  constructor(private customerCreateValidators: CustomerCreateValidators) {
-    this.control = new FormControl(
-      null,
-      [Validators.required, Validators.pattern(/^\s*([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\s*$/)],
-      this.customerCreateValidators.uniqueDomain,
-    );
+  constructor() {
+    this.control = new FormControl(null, [Validators.required, Validators.pattern(/^\s*([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\s*$/)], null);
   }
 
   writeValue(domains: string[]) {
