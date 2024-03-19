@@ -38,7 +38,7 @@
 
             <div class="vitamui-mat-select-options">
               <ng-container *ngIf="enableSelectAll">
-                <mat-option (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
+                <mat-option [id]="0" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
                   <span class="text normal secondary bold">
                     {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECT_ALL' | translate }}
                   </span>
@@ -46,8 +46,8 @@
                 <mat-divider></mat-divider>
               </ng-container>
 
-              <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last">
-                <mat-option [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
+              <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last; let index = index">
+                <mat-option [id]="index + 1" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
                   <span
                     [innerHTML]="option.label | highlight: this.searchTextControl.value"
                     vitamuiCommonEllipsis
@@ -79,8 +79,8 @@
             <mat-divider class="separator"></mat-divider>
 
             <div class="vitamui-mat-select-options">
-              <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last">
-                <mat-option [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
+              <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last; let index = index">
+                <mat-option [id]="index" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
                   <span
                     [innerHTML]="option.label | highlight: this.searchTextControl.value"
                     vitamuiCommonEllipsis

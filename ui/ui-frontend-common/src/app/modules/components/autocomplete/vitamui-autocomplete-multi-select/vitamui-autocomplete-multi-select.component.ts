@@ -43,6 +43,7 @@ import {
   ChangeDetectorRef,
   Component,
   forwardRef,
+  HostListener,
   Input,
   QueryList,
   ViewChild,
@@ -174,6 +175,16 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   @Input()
   get required(): boolean {
     return this._required;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      const focusedOptionIndex = this.optionKeys.toArray().find((option) => option.active === true);
+      if (focusedOptionIndex) {
+        this.cdkVirtualScrollViewport.scrollToIndex(+focusedOptionIndex.id);
+      }
+    }
   }
 
   // tslint:disable-next-line:adjacent-overload-signatures

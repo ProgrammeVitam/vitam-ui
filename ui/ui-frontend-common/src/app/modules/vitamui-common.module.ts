@@ -280,6 +280,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamuiTreeNodeModule,
+    VitamUIAutocompleteMultiSelectModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
