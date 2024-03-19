@@ -59,6 +59,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
@@ -187,6 +188,7 @@ public class OntologyInternalService {
         ontologies.add(ontologyDto);
         try {
             RequestResponse requestResponse = ontologyService.importOntologies(context, converter.convertDtosToVitams(ontologies));
+            VitamRestUtils.checkResponse(requestResponse);
             OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
             List<OntologyDto> ontologyDtos = converter.convertVitamsToDtos(ontologyResponseDto.getResults());
             return (ontologyDtos == null || ontologyDtos.isEmpty())? ontologyDto : ontologyDtos.get(0);

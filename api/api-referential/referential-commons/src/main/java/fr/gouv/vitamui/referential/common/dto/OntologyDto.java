@@ -39,6 +39,8 @@ package fr.gouv.vitamui.referential.common.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitam.common.model.administration.OntologyOrigin;
 import fr.gouv.vitam.common.model.administration.OntologyType;
+import fr.gouv.vitam.common.model.administration.StringSize;
+import fr.gouv.vitam.common.model.administration.TypeDetail;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -73,7 +75,12 @@ public class OntologyDto extends IdDto implements Serializable {
 
     private OntologyType type;
 
+    private TypeDetail typeDetail;
+
+    private StringSize stringSize;
+
     private OntologyOrigin origin;
 
     private List<String> collections;
+
 }

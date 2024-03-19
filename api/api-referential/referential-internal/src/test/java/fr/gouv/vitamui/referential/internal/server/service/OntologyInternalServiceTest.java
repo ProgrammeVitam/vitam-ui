@@ -36,33 +36,14 @@
  */
 package fr.gouv.vitamui.referential.internal.server.service;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.mock;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.OntologyModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
@@ -70,12 +51,30 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import java.io.IOException;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.mock;
+
+@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
+@PrepareForTest({ ServerIdentityConfiguration.class })
 public class OntologyInternalServiceTest {
 
     private OntologyService ontologyService;
@@ -93,6 +92,14 @@ public class OntologyInternalServiceTest {
         logbookService = mock(LogbookService.class);
         ontologyInternalService = new OntologyInternalService(ontologyService, objectMapper, converter, logbookService);
 
+        // Mock server identity for Logs when not using spring
+        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
+        PowerMock.mockStatic(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS ContextInternalServiceTest - ").anyTimes();
+        PowerMock.replay(ServerIdentityConfiguration.class);
+        PowerMock.replay(serverIdentityConfigurationMock);
     }
 
     @Test
@@ -251,7 +258,7 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void create_should_return_400_when_vitamclient_return_400() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
@@ -263,13 +270,13 @@ public class OntologyInternalServiceTest {
             .andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.create(vitamContext, ontologyDto);
-        }).doesNotThrowAnyException();
+        assertThatThrownBy(() -> ontologyInternalService.create(vitamContext, ontologyDto))
+            .isInstanceOf(BadRequestException.class);
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
@@ -287,7 +294,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
@@ -305,7 +313,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
@@ -357,7 +366,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -374,7 +384,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -391,7 +402,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -444,7 +456,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void updateOntology_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
         OntologyDto patchOntology = new OntologyDto();
@@ -480,7 +493,8 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+    public void updateOntology_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
         OntologyDto patchOntology = new OntologyDto();
@@ -538,4 +552,5 @@ public class OntologyInternalServiceTest {
             ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier);
         }).isInstanceOf(VitamClientException.class);
     }
+
 }
