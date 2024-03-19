@@ -108,7 +108,7 @@ const PROXY_CONFIG = [
 
   {
     // archive-search to Referential External Backend
-    context: ['/archive-search-api/security-profile', '/archive-search-api/ontology', '/archive-search-api/schemas'],
+    context: ['/archive-search-api/security-profile', '/archive-search-api/ontology', '/archive-search-api/schemas', '/archive-search-api/rules'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -122,6 +122,7 @@ const PROXY_CONFIG = [
     pathRewrite: {
       '^/archive-search-api/ontology': '/referential/v1/ontology',
       '^/archive-search-api/schemas': '/schemas',
+      '^/archive-search-api/rules': '/referential/v1/rules',
       '^/archive-search-api': '/archive-search/v1',
     },
   },
