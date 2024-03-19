@@ -39,8 +39,10 @@ export class DownloadUtils {
   static getFilenameFromContentDisposition(contentDisposition: string): string {
     const regex = /filename[^;\n=]*=((['"]).*?\2|[^;\n]*)/g;
     const match = regex.exec(contentDisposition);
-    const filename = match[1];
-    return filename;
+    if (!match || match.length <= 1) {
+      return 'attachment';
+    }
+    return match[1];
   }
 
   static isSurroundedByDoubleQuotes(charSequence: string): boolean {
