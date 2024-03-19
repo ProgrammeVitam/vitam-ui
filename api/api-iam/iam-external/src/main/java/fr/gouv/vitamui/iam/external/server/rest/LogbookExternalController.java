@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -82,6 +83,11 @@ import java.util.Optional;
 public class LogbookExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookExternalController.class);
+
+    private static final String DOWNLOAD_TYPE_DIP = "dip";
+    private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
+    private static final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
+    private static final String DOWNLOAD_TYPE_OBJECT = "object";
 
     private final LogbookExternalService logbookExternalService;
 
@@ -173,7 +179,28 @@ public class LogbookExternalController {
         SanityChecker.checkSecureParameter(id, downloadType);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
         ResponseEntity<Resource> responseResource = logbookExternalService.downloadReport(id, downloadType).block();
-        return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.empty());
+        String fileName = getDownloadReportFileName(id, downloadType);
+        return RestUtils.buildFileResponse(responseResource, Optional.of(ContentDispositionType.ATTACHMENT), Optional.of(fileName));
+    }
+
+    private static String getDownloadReportFileName(String id, String downloadType) {
+        String fileName = id;
+        switch (downloadType) {
+            case DOWNLOAD_TYPE_OBJECT:
+                fileName += ".xml";
+                break;
+            case DOWNLOAD_TYPE_BATCH_REPORT:
+                fileName += ".jsonl";
+                break;
+            case DOWNLOAD_TYPE_DIP:
+            case DOWNLOAD_TYPE_TRANSFER_SIP:
+                fileName += ".zip";
+                break;
+            default:
+                fileName += ".json";
+                break;
+        }
+        return fileName;
     }
 
 }
