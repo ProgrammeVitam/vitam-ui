@@ -138,7 +138,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   updateTransaction(data: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(this.urlTransaction + '/' + data.id, data);
+    return this.http.put<Transaction>(this.urlTransaction, data);
   }
 
   getLastTransactionByProjectId(projectId: string): Observable<Transaction> {
