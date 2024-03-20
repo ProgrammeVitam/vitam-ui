@@ -63,25 +63,30 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the identity providers.
- *
- *
  */
 @Getter
 @Setter
 @Service
 public class IdentityProviderExternalService
-        extends AbstractResourceClientService<IdentityProviderDto, IdentityProviderDto> {
+    extends AbstractResourceClientService<IdentityProviderDto, IdentityProviderDto> {
 
     @Autowired
     private final IdentityProviderInternalRestClient identityProviderInternalRestClient;
 
     public IdentityProviderExternalService(final IdentityProviderInternalRestClient identityProviderInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+        final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.identityProviderInternalRestClient = identityProviderInternalRestClient;
     }
@@ -91,13 +96,22 @@ public class IdentityProviderExternalService
         return super.create(dto);
     }
 
-    public IdentityProviderDto mapToIdentityProviderDto(final MultipartFile keystore, final MultipartFile idpMetadata, final String provider)
+    public IdentityProviderDto mapToIdentityProviderDto(final MultipartFile keystore, final MultipartFile idpMetadata,
+        final String provider)
         throws Exception {
         IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
-        final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
-            dto.getPatterns(), Objects.nonNull(keystore)?new ByteArrayResource(keystore.getBytes()):null, dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getMaximumAuthenticationLifetime(), dto.getAuthnRequestBinding(), dto.getWantsAssertionsSigned(), dto.getAuthnRequestSigned(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
-            dto.getClientSecret(),dto.getDiscoveryUrl(), dto.getScope(),dto.getPreferredJwsAlgorithm(),dto.getCustomParams(),dto.getUseState(),dto.getUseNonce(),dto.getUsePkce(), dto.getProtocoleType());
+        final IdentityProviderBuilder builder =
+            new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
+                dto.getPatterns(), Objects.nonNull(keystore) ? new ByteArrayResource(keystore.getBytes()) : null,
+                dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
+                Objects.nonNull(idpMetadata) ? new ByteArrayResource(idpMetadata.getBytes()) : null,
+                dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(),
+                dto.getMaximumAuthenticationLifetime(), dto.getAuthnRequestBinding(),
+                Objects.isNull(dto.getWantsAssertionsSigned()) ? false : dto.getWantsAssertionsSigned(),
+                Objects.isNull(dto.getAuthnRequestSigned()) ? false : dto.getAuthnRequestSigned(),
+                dto.isAutoProvisioningEnabled(), dto.getClientId(),
+                dto.getClientSecret(), dto.getDiscoveryUrl(), dto.getScope(), dto.getPreferredJwsAlgorithm(),
+                dto.getCustomParams(), dto.getUseState(), dto.getUseNonce(), dto.getUsePkce(), dto.getProtocoleType());
         return builder.build();
     }
 
@@ -106,34 +120,38 @@ public class IdentityProviderExternalService
         return super.patch(partialDto);
     }
 
-    protected void beforePatch(final Map<String, Object> partialDto, final MultipartFile keystore, final MultipartFile idpMetadata, final String id,
-                               final ProviderPatchType patchType) {
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for patch.");
+    protected void beforePatch(final Map<String, Object> partialDto, final MultipartFile keystore,
+        final MultipartFile idpMetadata, final String id,
+        final ProviderPatchType patchType) {
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for patch.");
         switch (patchType) {
-            case KEYSTORE :
-                Assert.isTrue(StringUtils.isNotEmpty((String) partialDto.get("keystorePassword")) && !keystore.isEmpty(), "The keystorePassword is missing");
+            case KEYSTORE:
+                Assert.isTrue(
+                    StringUtils.isNotEmpty((String) partialDto.get("keystorePassword")) && !keystore.isEmpty(),
+                    "The keystorePassword is missing");
                 break;
-            case IDPMETADATA :
+            case IDPMETADATA:
                 Assert.isTrue(!idpMetadata.isEmpty(), "idpMetadata is missing");
                 break;
-            default :
+            default:
                 break;
         }
     }
 
     public IdentityProviderDto patch(final Map<String, Object> partialDto, final MultipartFile keystore,
-                                     final MultipartFile idpMetadata, final String id, final ProviderPatchType patchType) {
+        final MultipartFile idpMetadata, final String id, final ProviderPatchType patchType) {
         beforePatch(partialDto, keystore, idpMetadata, id, patchType);
         switch (patchType) {
-            case KEYSTORE :
+            case KEYSTORE:
                 final String keystoreBase64 = getKeystoreBase64(keystore);
                 partialDto.put("keystoreBase64", keystoreBase64);
                 break;
-            case IDPMETADATA :
+            case IDPMETADATA:
                 final String idpMetadataFormatter = getIdpMetadata(idpMetadata);
                 partialDto.put("idpMetadata", idpMetadataFormatter);
                 break;
-            default :
+            default:
                 break;
         }
         return convertDtoFromApi(super.patch(partialDto));
@@ -143,8 +161,7 @@ public class IdentityProviderExternalService
         try (final InputStream isKeystore = keystoreFile.getInputStream()) {
             final byte[] keystore = IOUtils.toByteArray(isKeystore);
             return new String(Base64.getEncoder().encode(keystore), StandardCharsets.UTF_8);
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InvalidFormatException("Keystore is unreadable");
         }
     }
@@ -152,11 +169,11 @@ public class IdentityProviderExternalService
     private String getIdpMetadata(final MultipartFile idpMetadata) {
         try (final InputStream isIdpMeta = idpMetadata.getInputStream()) {
             return IOUtils.toString(isIdpMeta);
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InvalidFormatException("IdpMetadata is unreadable");
         }
     }
+
     protected IdentityProviderDto convertDtoFromApi(final IdentityProviderDto apiDto) {
         final IdentityProviderDto dto = new IdentityProviderDto();
         VitamUIUtils.copyProperties(apiDto, dto);
@@ -170,11 +187,14 @@ public class IdentityProviderExternalService
         }
     }
 
-    public Resource getMetadataProviderByProviderId(final String id, final ProviderEmbeddedOptions option, final Optional<String> embedded){
+    public Resource getMetadataProviderByProviderId(final String id, final ProviderEmbeddedOptions option,
+        final Optional<String> embedded) {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         final IdentityProviderDto dto = getOne(id, embedded);
-        return new ByteArrayResource(ProviderEmbeddedOptions.IDPMETADATA.equals(option) ? dto.getIdpMetadata().getBytes() : dto.getSpMetadata().getBytes());
+        return new ByteArrayResource(ProviderEmbeddedOptions.IDPMETADATA.equals(option) ?
+            dto.getIdpMetadata().getBytes() :
+            dto.getSpMetadata().getBytes());
     }
 
     @Override
