@@ -45,10 +45,11 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
@@ -109,7 +110,7 @@ public class DispatcherAction extends AbstractAction {
         ParameterChecker.checkParameter("Missing subrogation params",
             surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
 
-        return dispatchUser(requestContext, superUserEmail, superUserCustomerId);
+        return dispatchUser(requestContext, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
     }
 
     private Event processLoginRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
@@ -122,35 +123,43 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
-        return dispatchUser(requestContext, userEmail, customerId);
+        return dispatchUser(requestContext, userEmail, customerId, null, null);
     }
 
-    private Event dispatchUser(RequestContext requestContext, String username,
-        String customerId) throws IOException {
+    private Event dispatchUser(RequestContext requestContext, String loginEmail,
+        String loginCustomerId, String surrogateEmail, String surrogateCustomerId) throws IOException {
 
         Optional<IdentityProviderDto> providerOpt =
-            identityProviderHelper.findByCustomerId(providersService.getProviders(), customerId);
+            identityProviderHelper.findByCustomerId(providersService.getProviders(), loginCustomerId);
         if (providerOpt.isEmpty()) {
-            LOGGER.error("No provider found for superUserCustomerId: {}", customerId);
+            LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
         }
         var identityProviderDto = providerOpt.get();
 
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        val webContext = new JEEContext(request, response);
+
         if (identityProviderDto.getInternal()) {
 
-            // FIXME :
-            //  sessionStore.set(webContext, Constants.SURROGATE, null);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, null);
+
             LOGGER.debug("Redirect the user to the password page...");
             return success();
 
         } else {
 
-            // FIXME :
-            // // save the surrogate in the session to be retrieved by the UserPrincipalResolver and DelegatedSurrogateAuthenticationPostProcessor
-            //  if (surrogate != null) {
-            //      LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
-            //      sessionStore.set(webContext, Constants.SURROGATE, surrogate);
-            // }
+            LOGGER.debug("Saving surrogate for after authentication delegation: loginEmail : {}, " +
+                    "loginCustomerId : {}, surrogateEmail : {}, surrogateCustomerId : {}",
+                loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, loginEmail);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, loginCustomerId);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
 
             return utils.performClientRedirection(this,
                 ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(), requestContext);
