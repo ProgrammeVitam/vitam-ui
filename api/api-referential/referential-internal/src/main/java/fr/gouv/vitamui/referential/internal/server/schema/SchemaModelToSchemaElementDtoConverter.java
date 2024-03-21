@@ -40,6 +40,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaResponse, SchemaElementDto> {
+
     @Override
     public SchemaElementDto convert(SchemaResponse schemaModel) {
         final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
@@ -58,7 +59,7 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
             .setCollection(mapCollections(schemaModel))
             .setSedaVersions(schemaModel.getSedaVersions())
             .setCategory(schemaModel.getCategory())
-            .setApiPath(schemaModel.getApiPath())
+            .setApiPath(Optional.ofNullable(schemaModel.getApiPath()).orElse(schemaModel.getPath()))
             .setDataType(convertFromIndexationType(schemaModel.getType()));
     }
 
@@ -85,4 +86,5 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
         }
         return Collection.valueOf(schemaResponse.getCollection());
     }
+
 }

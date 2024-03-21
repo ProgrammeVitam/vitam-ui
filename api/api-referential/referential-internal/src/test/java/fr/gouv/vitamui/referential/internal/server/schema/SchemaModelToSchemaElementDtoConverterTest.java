@@ -32,6 +32,7 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaCategory;
 import fr.gouv.vitam.common.model.administration.schema.SchemaOrigin;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitam.common.model.administration.schema.SchemaType;
+import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.DataType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,29 @@ class SchemaModelToSchemaElementDtoConverterTest {
         schemaResponse.setType(SchemaType.LONG);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.LONG);
+    }
+
+    @Test
+    public void avoid_apiPath_null() {
+        final SchemaResponse schemaResponse = new SchemaResponse();
+        schemaResponse.setPath("Invoice");
+        schemaResponse.setStringSize(null);
+        schemaResponse.setCardinality(SchemaCardinality.MANY);
+        schemaResponse.setFieldName("Invoice");
+        schemaResponse.setShortName("Invoice");
+        schemaResponse.setDescription("");
+        schemaResponse.setSedaField("Invoice");
+        schemaResponse.setApiField("Invoice");
+        schemaResponse.setType(SchemaType.OBJECT);
+        schemaResponse.setOrigin(SchemaOrigin.EXTERNAL);
+        schemaResponse.setCollection("Unit");
+        schemaResponse.setSedaVersions(List.of("2.1", "2.2", "2.3"));
+        schemaResponse.setCategory(SchemaCategory.OTHER);
+        schemaResponse.setApiPath(null);
+
+        final SchemaElementDto schemaElementDto = this.converter.convert(schemaResponse);
+        Assertions.assertThat(schemaElementDto.getPath()).isEqualTo("Invoice");
+        Assertions.assertThat(schemaElementDto.getApiPath()).isEqualTo(schemaElementDto.getPath());
     }
 
 }
