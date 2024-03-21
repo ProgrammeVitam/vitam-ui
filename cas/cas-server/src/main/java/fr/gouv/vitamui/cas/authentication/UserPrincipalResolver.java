@@ -79,6 +79,8 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.jee.context.JEEContext;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.security.cert.CertificateParsingException;
@@ -137,7 +139,8 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+    public static final String EMAIL_VALID_REGEXP =
+        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -162,7 +165,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
     private final String x509DefaultDomain;
 
     @Override
-    public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
+    public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal,
+        final Optional<AuthenticationHandler> handler) {
 
         // OAuth 2 authorization code flow (client credentials authentication)
         if (optPrincipal.isEmpty()) {
@@ -180,7 +184,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
         String superUserCustomerId;
 
         String username;
-        final String superUsername;
         String userProviderId;
         final Optional<String> technicalUserId;
         // x509 certificate
@@ -193,7 +196,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
             } catch (final CertificateParsingException e) {
                 throw new RuntimeException(e.getMessage());
             }
-            superUsername = null;
             userProviderId = null;
             surrogationCall = false;
 
@@ -216,10 +218,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 userProviderId = userProvider.get().getId();
             }
         } else if (credential instanceof SurrogateUsernamePasswordCredential) {
-            // login/password + surrogation
-            val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
-            username = surrogationCredential.getSurrogateUsername();
-            superUsername = surrogationCredential.getUsername();
             userProviderId = null;
             technicalUserId = Optional.empty();
 
@@ -231,8 +229,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
-            username = principalId;
-            superUsername = null;
             userProviderId = null;
             technicalUserId = Optional.empty();
 
@@ -243,12 +239,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUserCustomerId = null;
 
         } else {
-
-            // FIXME:
-            loginEmail = null;
-            loginCustomerId = null;
-            superUserEmail = null;
-            superUserCustomerId = null;
 
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
@@ -262,7 +252,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
-                if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
+                if (CollectionUtils.isEmpty(mails) || CommonHelper.isBlank((String) mails.get(0))) {
                     LOGGER.error(
                         "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
                         providerName, mailAttribute);
@@ -279,7 +269,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
-                if (identifiers == null || identifiers.size() == 0 ||
+                if (CollectionUtils.isEmpty(identifiers) ||
                     CommonHelper.isBlank((String) identifiers.get(0))) {
                     LOGGER.error(
                         "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
@@ -293,20 +283,38 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     identifier = identifierAttr;
                 }
             }
-            // FIXME
-            val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
-            if (surrogateInSession != null) {
-                username = (String) surrogateInSession;
-                superUsername = email;
+
+            String surrogateEmailFromSession =
+                (String) sessionStore.get(webContext, Constants.FLOW_SURROGATE_EMAIL).orElse(null);
+            String surrogateCustomerIdFromSession =
+                (String) sessionStore.get(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID).orElse(null);
+            String loginEmailFromSession =
+                (String) sessionStore.get(webContext, Constants.FLOW_LOGIN_EMAIL).orElseThrow();
+            String loginCustomerIdFromSession =
+                (String) sessionStore.get(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID).orElseThrow();
+
+            Assert.isTrue(email.equals(loginEmailFromSession),
+                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email));
+
+            if (surrogateEmailFromSession != null) {
                 userProviderId = null;
                 technicalUserId = Optional.empty();
                 surrogationCall = true;
+
+                loginEmail = surrogateEmailFromSession;
+                loginCustomerId = surrogateCustomerIdFromSession;
+                superUserEmail = loginEmailFromSession;
+                superUserCustomerId = loginCustomerIdFromSession;
+
             } else {
-                username = email;
-                superUsername = null;
                 userProviderId = provider.getId();
                 technicalUserId = Optional.of(identifier);
                 surrogationCall = false;
+
+                loginEmail = loginEmailFromSession;
+                loginCustomerId = loginCustomerIdFromSession;
+                superUserEmail = null;
+                superUserCustomerId = null;
             }
         }
 
@@ -393,7 +401,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             final Set<String> roles = new HashSet<>();
             final List<ProfileDto> profiles = authUser.getProfileGroup().getProfiles();
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
-            attributes.put(ROLES_ATTRIBUTE, new ArrayList(roles));
+            attributes.put(ROLES_ATTRIBUTE, new ArrayList<>(roles));
         }
         val createdPrincipal = principalFactory.createPrincipal(user.getId(), attributes);
         if (surrogationCall) {
