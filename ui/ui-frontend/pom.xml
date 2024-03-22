@@ -65,7 +65,7 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>process-sources</phase>
+            <phase>generate-sources</phase>
             <configuration>
               <skip>${skipAllFrontend}</skip>
               <arguments>run build:vitamui-library</arguments>
