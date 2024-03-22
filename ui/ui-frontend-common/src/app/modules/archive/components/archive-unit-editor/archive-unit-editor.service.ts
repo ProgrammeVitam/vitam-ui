@@ -300,8 +300,8 @@ export class ArchiveUnitEditorService {
     addEntries.forEach(([key, value]) => {
       jsonPatch.push({ op: 'add', path: key, value });
     });
-    replaceEntries.forEach(([key, value]) => {
-      jsonPatch.push({ op: 'replace', path: key, value });
+    replaceEntries.forEach(([key]) => {
+      jsonPatch.push({ op: 'replace', path: key, value: consistentUpdatedValue[key] });
     });
 
     return jsonPatch;
