@@ -133,7 +133,9 @@ public class ResetPasswordController {
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
-        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email)) {
+        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(),
+            email, customerId)) {
+
             LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
             return false;
         }

@@ -132,15 +132,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
 
         val email = passwordManagementService.findEmail(query);
-        // CUSTO: only retrieve email (and not phone) and force success event (instead of error) when failure
-        if (StringUtils.isBlank(email)) {
-            LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
-            return success();
-        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email)) {
-            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
-            return success();
-        }
-
         val service = WebUtils.getService(requestContext);
         List<Object> customerIdValues = query.getRecord().get(CUSTOMER_ID);
         String customerId = customerIdValues.stream()
@@ -148,6 +139,17 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             .map(value -> (String) value)
             .findFirst()
             .orElse(null);
+
+        // CUSTO: only retrieve email (and not phone) and force success event (instead of error) when failure
+        if (StringUtils.isBlank(email)) {
+            LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
+            return success();
+        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(),
+            email, customerId)) {
+
+            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
+            return success();
+        }
 
         UserLoginModel userLoginModel = new UserLoginModel();
         userLoginModel.setUserEmail(query.getUsername());

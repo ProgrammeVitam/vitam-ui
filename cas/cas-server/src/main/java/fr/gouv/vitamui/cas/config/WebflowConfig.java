@@ -227,7 +227,7 @@ public class WebflowConfig {
 
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, utils,
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, utils,
             delegatedClientDistributedSessionStore.getObject());
     }
 

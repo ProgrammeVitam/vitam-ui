@@ -92,6 +92,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -151,12 +152,14 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
-        when(identityProviderHelper.findByUserIdentifier(any(List.class),
-            eq(jsonNode.findValue("EMAIL").textValue()))).thenReturn(Optional.of(identityProviderDto));
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue())))
+            .thenReturn(Optional.of(identityProviderDto));
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMIN");
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()), any(Optional.class))).thenReturn(userDto);
+            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("CUSTOMER_ID").textValue()), any(Optional.class))).thenReturn(userDto);
         val utils = new Utils(null, 0, null, null, "");
         service =
             new IamPasswordManagementService(passwordManagementProperties, null, null, null, casExternalRestClient,
@@ -238,7 +241,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             UserDto userDto = new UserDto();
             userDto.setType(UserTypeEnum.GENERIC);
             when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-                eq(jsonNode.findValue("EMAIL").textValue()),
+                eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
                 any(Optional.class))).thenReturn(userDto);
             assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
                     jsonNode.findValue("PASSWORD").textValue()),
@@ -255,7 +258,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMI");
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             any(Optional.class))).thenReturn(userDto);
         assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
                 jsonNode.findValue("PASSWORD").textValue()),
@@ -269,7 +272,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             UserDto userDto = new UserDto();
             userDto.setLastname("ADMIN");
             when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-                eq(jsonNode.findValue("EMAIL").textValue()),
+                eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
                 any(Optional.class))).thenReturn(userDto);
             assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
                     jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue()),
@@ -337,8 +340,9 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testChangePasswordFailsBecauseUserIsNotLinkedToAnIdentityProvider() {
-        when(identityProviderHelper.findByUserIdentifier(any(List.class),
-            eq(jsonNode.findValue("EMAIL").textValue()))).thenReturn(Optional.empty());
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue())
+            )).thenReturn(Optional.empty());
 
         try {
             service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(), null),
@@ -366,7 +370,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testFindEmailOk() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 
@@ -377,7 +381,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testFindEmailErrorThrown() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             eq(Optional.empty())))
             .thenThrow(new BadRequestException("error"));
 
@@ -388,7 +392,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testFindEmailUserNull() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             eq(Optional.empty())))
             .thenReturn(null);
 
@@ -399,7 +403,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testFindEmailUserDisabled() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.DISABLED));
 
@@ -410,7 +414,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test(expected = UnsupportedOperationException.class)
     public void testGetSecurityQuestionsOk() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+            eq(jsonNode.findValue("EMAIL").textValue()), eq(jsonNode.findValue("CUSTOMER_ID").textValue()),
             eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 

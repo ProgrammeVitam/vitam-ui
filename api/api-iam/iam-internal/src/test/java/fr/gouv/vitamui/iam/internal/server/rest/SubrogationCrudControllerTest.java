@@ -190,8 +190,10 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
-        Mockito.when(userRepository.findByEmail(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
-        Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_CREATE_EMAIL)).thenReturn(null);
+        Mockito.when(userRepository.findByEmailAndCustomerId(SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID))
+            .thenReturn(SURROGATE_CREATE);
+        Mockito.when(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
+            SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID)).thenReturn(null);
         final Customer customer = new Customer();
         customer.setSubrogeable(false);
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
