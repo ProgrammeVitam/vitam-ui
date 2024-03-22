@@ -32,12 +32,12 @@ import static org.mockito.Mockito.when;
 public final class UserEmailInternalServiceTest {
 
 
-    private static final String LASTNAME = "Leleu";
+    private static final String LASTNAME = "John";
 
-    private static final String FIRSTNAME = "Jérome";
+    private static final String FIRSTNAME = "Doe";
     private static final String CUSTOMER_ID = "CustomerId";
 
-    private static final String EMAIL = "jerome.leleu@vitamui.com";
+    private static final String EMAIL = "john.doe@vitamui.com";
 
     private static final String BASE_URL = "http://mycassserver";
 
@@ -72,7 +72,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.setCasResetPasswordUrl(casResetPasswordUrl);
         final List<IdentityProviderDto> providers = new ArrayList<>();
         when(internalIdentityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(providers);
-        when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL)).thenReturn(true);
+        when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userInfoInternalService.getOne(any())).thenReturn(buildUserInfoDto());
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -121,7 +121,8 @@ public final class UserEmailInternalServiceTest {
     @Test
     public void testSendEmailKoUserIsNotInternal() {
         final UserDto user = buildUser();
-        when(identityProviderHelper.identifierMatchProviderPattern(any(List.class), eq(EMAIL))).thenReturn(false);
+        when(identityProviderHelper.identifierMatchProviderPattern(any(List.class), eq(EMAIL), eq(CUSTOMER_ID)))
+            .thenReturn(false);
 
         internalUserEmailService.sendCreationEmail(user);
 

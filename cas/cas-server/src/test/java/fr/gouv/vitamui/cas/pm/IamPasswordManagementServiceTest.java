@@ -36,12 +36,10 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -57,9 +55,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
-import org.apereo.cas.authentication.CredentialMetaData;
 import org.apereo.cas.authentication.DefaultAuthentication;
-import org.apereo.cas.authentication.MessageDescriptor;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -73,6 +69,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
@@ -92,8 +89,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -107,7 +105,13 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class IamPasswordManagementServiceTest extends BaseWebflowActionTest {
 
-    private static final String CREDENTIALS_DETAILS_FILE = "credentialsRepository/userCredentials.json";
+    private final static String EMAIL = "user@test.com";
+    private final static String CUSTOMER_ID = "customer_id";
+    private final static String PASSWORD = "Change-itChange-it0!0!";
+    private final static String NOT_PASSWORD = "password1234";
+    private final static String BAD_PASSWORD = "password1234";
+    private final static String PASSWORD_CONTAINS_DICTIONARY = "ADMIN-Change-itChange-it0!0!";
+    private final static String PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE = "admin-Change-itChange-it0!0!";
 
     private IamPasswordManagementService service;
 
@@ -132,14 +136,10 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private PasswordConfiguration passwordConfiguration;
 
-    private JsonNode jsonNode;
-
     @Before
     public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
-        jsonNode =
-            JsonHandler.getFromFile(PropertiesUtils.findFile(CREDENTIALS_DETAILS_FILE));
         casExternalRestClient = mock(CasExternalRestClient.class);
         providersService = mock(ProvidersService.class);
         passwordValidator = new PasswordValidator();
@@ -151,12 +151,13 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
-        when(identityProviderHelper.findByUserIdentifier(any(List.class),
-            eq(jsonNode.findValue("EMAIL").textValue()))).thenReturn(Optional.of(identityProviderDto));
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID)))
+            .thenReturn(Optional.of(identityProviderDto));
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMIN");
+        userDto.setCustomerId(CUSTOMER_ID);
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()), any(Optional.class))).thenReturn(userDto);
+            eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
         val utils = new Utils(null, 0, null, null, "");
         service =
             new IamPasswordManagementService(passwordManagementProperties, null, null, null, casExternalRestClient,
@@ -168,50 +169,40 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         flowParameters.put("authentication", new DefaultAuthentication(
             ZonedDateTime.now(),
             principal,
-            new ArrayList<MessageDescriptor>(),
-            new ArrayList<CredentialMetaData>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
             authAttributes,
             successes,
-            new HashMap<String, Throwable>()
+            new HashMap<>()
         ));
+        givenLoginRequestInRequestContext();
     }
 
     @Test
     public void testChangePasswordSuccessfully() {
-        assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue()),
-            new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue(), jsonNode.findValue("PASSWORD").textValue())));
+        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
+            new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
     }
 
     @Test
     public void testChangePasswordFailureNotMatchConfirmed() {
-        assertThatCode(() -> service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("NOT_PASSWORD").textValue()),
-            new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue(),
-                jsonNode.findValue("NOT_PASSWORD").textValue()))).
+        assertThatCode(() -> service.change(new UsernamePasswordCredential(EMAIL, NOT_PASSWORD),
+            new PasswordChangeRequest(EMAIL, PASSWORD, NOT_PASSWORD))).
             isInstanceOf(IamPasswordManagementService.PasswordConfirmException.class);
     }
 
     @Test
     public void testChangePasswordFailureNotConformWithRegex() {
-        assertThatCode(() -> service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("BAD_PASSWORD").textValue()),
-            new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("BAD_PASSWORD").textValue(),
-                jsonNode.findValue("BAD_PASSWORD").textValue()))).
+        assertThatCode(() -> service.change(new UsernamePasswordCredential(EMAIL, BAD_PASSWORD),
+            new PasswordChangeRequest(EMAIL, BAD_PASSWORD, BAD_PASSWORD))).
             isInstanceOf(IamPasswordManagementService.PasswordNotMatchRegexException.class);
     }
 
     @Test
     public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInPassword() {
         try {
-            assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue())));
+            assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY),
+                new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY, PASSWORD_CONTAINS_DICTIONARY)));
             fail("should fail");
         } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
             assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
@@ -221,11 +212,9 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInsensitiveCaseInPassword() {
         try {
-            assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE").textValue())));
+            assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE),
+                new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE,
+                    PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE)));
             fail("should fail");
         } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
             assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
@@ -237,13 +226,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         try {
             UserDto userDto = new UserDto();
             userDto.setType(UserTypeEnum.GENERIC);
-            when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-                eq(jsonNode.findValue("EMAIL").textValue()),
+            userDto.setCustomerId(CUSTOMER_ID);
+            when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
                 any(Optional.class))).thenReturn(userDto);
-            assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue(), jsonNode.findValue("PASSWORD").textValue())));
+            assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
+                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("user last name can not be null", e.getMessage());
@@ -255,12 +242,9 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMI");
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
-            any(Optional.class))).thenReturn(userDto);
-        assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue()),
-            new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue(), jsonNode.findValue("PASSWORD").textValue())));
+            eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
+        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
+            new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
     }
 
     @Test
@@ -269,13 +253,12 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             UserDto userDto = new UserDto();
             userDto.setLastname("ADMIN");
             when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-                eq(jsonNode.findValue("EMAIL").textValue()),
-                any(Optional.class))).thenReturn(userDto);
-            assertTrue(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue(),
-                    jsonNode.findValue("PASSWORD_CONTAINS_DICTIONARY").textValue())));
+                eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
+            assertTrue(service.change(new UsernamePasswordCredential(EMAIL,
+                    PASSWORD_CONTAINS_DICTIONARY),
+                new PasswordChangeRequest(EMAIL,
+                    PASSWORD_CONTAINS_DICTIONARY,
+                    PASSWORD_CONTAINS_DICTIONARY)));
             fail("should fail");
         } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
             assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
@@ -288,11 +271,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             Collections.singletonList("fakeSuperUser"));
 
         try {
-            service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()));
+            service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
+                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("cannot use password management with subrogation", e.getMessage());
@@ -307,11 +287,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(principal.getAttributes()).thenReturn(attributes);
 
         try {
-            service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()));
+            service.change(new UsernamePasswordCredential(EMAIL,
+                    PASSWORD),
+                new PasswordChangeRequest(EMAIL,
+                    PASSWORD,
+                    PASSWORD));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("cannot use password management with subrogation", e.getMessage());
@@ -323,31 +303,26 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderDto.setInternal(null);
 
         try {
-            service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(), null),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()));
+            service.change(new UsernamePasswordCredential(EMAIL, null),
+                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "only an internal user [" + jsonNode.findValue("EMAIL").textValue() + "] can change his password",
-                e.getMessage());
+                "only an internal user [" + EMAIL + "] can change his password", e.getMessage());
         }
     }
 
     @Test
     public void testChangePasswordFailsBecauseUserIsNotLinkedToAnIdentityProvider() {
-        when(identityProviderHelper.findByUserIdentifier(any(List.class),
-            eq(jsonNode.findValue("EMAIL").textValue()))).thenReturn(Optional.empty());
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID)))
+            .thenReturn(Optional.empty());
 
         try {
-            service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(), null),
-                new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue(),
-                    jsonNode.findValue("PASSWORD").textValue()));
+            service.change(new UsernamePasswordCredential(EMAIL, null),
+                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("only a user [" + jsonNode.findValue("EMAIL").textValue() +
+            assertEquals("only a user [" + EMAIL +
                 "] linked to an identity provider can change his password", e.getMessage());
         }
     }
@@ -357,71 +332,68 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         doThrow(new InvalidAuthenticationException("")).when(casExternalRestClient)
             .changePassword(any(ExternalHttpContext.class), any(String.class), any(String.class), any(String.class));
 
-        assertFalse(service.change(new UsernamePasswordCredential(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue()),
-            new PasswordChangeRequest(jsonNode.findValue("EMAIL").textValue(),
-                jsonNode.findValue("PASSWORD").textValue(), jsonNode.findValue("PASSWORD").textValue())));
+        assertFalse(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
+            new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
     }
 
     @Test
     public void testFindEmailOk() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
             eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 
-        assertEquals(jsonNode.findValue("EMAIL").textValue(), service.findEmail(PasswordManagementQuery.builder()
-            .username(jsonNode.findValue("EMAIL").textValue()).build()));
+        assertEquals(EMAIL, service.findEmail(getPasswordManagementQuery()));
     }
+
+    private static PasswordManagementQuery getPasswordManagementQuery() {
+        LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
+        customerIdMapElt.add(ResetPasswordController.CUSTOMER_ID, CUSTOMER_ID);
+        return PasswordManagementQuery.builder().username(EMAIL).record(customerIdMapElt).build();
+    }
+
 
     @Test
     public void testFindEmailErrorThrown() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
             eq(Optional.empty())))
             .thenThrow(new BadRequestException("error"));
 
-        assertNull(service.findEmail(
-            PasswordManagementQuery.builder().username(jsonNode.findValue("EMAIL").textValue()).build()));
+        assertNull(service.findEmail(getPasswordManagementQuery()));
     }
 
     @Test
     public void testFindEmailUserNull() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
             eq(Optional.empty())))
             .thenReturn(null);
 
-        assertNull(service.findEmail(
-            PasswordManagementQuery.builder().username(jsonNode.findValue("EMAIL").textValue()).build()));
+        assertNull(service.findEmail(getPasswordManagementQuery()));
     }
 
     @Test
     public void testFindEmailUserDisabled() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
             eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.DISABLED));
 
-        assertNull(service.findEmail(
-            PasswordManagementQuery.builder().username(jsonNode.findValue("EMAIL").textValue()).build()));
+        assertNull(service.findEmail(getPasswordManagementQuery()));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetSecurityQuestionsOk() {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
-            eq(jsonNode.findValue("EMAIL").textValue()),
-            eq(Optional.empty())))
+            eq(EMAIL), eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 
         service.getSecurityQuestions(
-            PasswordManagementQuery.builder().username(jsonNode.findValue("EMAIL").textValue()).build());
+            getPasswordManagementQuery());
     }
 
     private UserDto user(final UserStatusEnum status) {
         val user = new UserDto();
         user.setStatus(status);
-        user.setEmail(jsonNode.findValue("EMAIL").textValue());
+        user.setEmail(EMAIL);
+        user.setCustomerId(CUSTOMER_ID);
         return user;
     }
 
@@ -431,4 +403,10 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         return new String(policyPattern.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
     }
 
+    private void givenLoginRequestInRequestContext() {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
+        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID);
+        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, null);
+        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, null);
+    }
 }

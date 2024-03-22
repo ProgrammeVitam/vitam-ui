@@ -295,7 +295,7 @@ public class CasInternalService {
 
         final List<UserDto> usersDto = internalUserService.findUsersByEmail(email);
 
-        // FIXME: LGH
+        // FIXME: LGH ...
         // if (userDto == null) {
         //     throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         // }
@@ -395,7 +395,7 @@ public class CasInternalService {
 
         if (StringUtils.isBlank(loginEmail)) {
             providedUser =
-                Optional.of(getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null, loginCustomerId));
+                Optional.of(getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null));
             loginEmail = providedUser.get().getEmail();
         }
 
@@ -405,8 +405,7 @@ public class CasInternalService {
             final UserDto user = internalUserService.findUserByEmailAndCustomerId(loginEmail, loginCustomerId);
             if (user.isAutoProvisioningEnabled()) {
                 updateUser(user,
-                    getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, user.getGroupId(),
-                        loginCustomerId));
+                    getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, user.getGroupId()));
             }
         }
         // Try to create a new user
@@ -414,7 +413,7 @@ public class CasInternalService {
             if (providedUser.isEmpty()) {
                 providedUser =
                     Optional.of(
-                        getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null, loginCustomerId));
+                        getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null));
             }
             createNewUser(loginEmail, providedUser.get());
         }
@@ -423,17 +422,15 @@ public class CasInternalService {
     }
 
     private ProvidedUserDto getProvidedUser(String email, String loginCustomerId, String idp, String userIdentifier,
-        String groupId,
-        String customerId) {
+        String groupId) {
         ProvidedUserDto userProvidedInfo;
         userProvidedInfo =
-            provisioningInternalService.getUserInformation(idp, email, loginCustomerId, groupId, null, userIdentifier,
-                customerId);
+            provisioningInternalService.getUserInformation(idp, email, loginCustomerId, groupId, null, userIdentifier);
 
         if (Objects.isNull(userProvidedInfo)) {
             throw new NotFoundException(String.format(
                 "The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s",
-                email, userIdentifier, groupId, idp, customerId));
+                email, userIdentifier, groupId, idp, loginCustomerId));
         }
 
         return userProvidedInfo;

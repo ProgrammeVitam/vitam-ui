@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.cas.webflow.configurer;
 
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
+import fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction;
 import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -166,8 +167,7 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         val action = createActionState(flow, ACTION_STATE_LIST_CUSTOMERS, "listCustomersAction");
         createTransitionForState(action, TRANSITION_TO_CUSTOMER_SELECTION_VIEW, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(action, TRANSITION_TO_CUSTOMER_SELECTED, ACTION_STATE_INTERMEDIATE_SUBMIT);
-        createTransitionForState(action, DispatcherAction.DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
-        createTransitionForState(action, DispatcherAction.BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
+        createTransitionForState(action, ListCustomersAction.BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
     }
 
     protected void createLoginCustomerFormView(final Flow flow) {

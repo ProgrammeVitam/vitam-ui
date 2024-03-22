@@ -90,7 +90,8 @@ public class UserEmailInternalService {
             userDto.getType() == UserTypeEnum.NOMINATIVE) {
             final List<IdentityProviderDto> providers =
                     internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
-            if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail())) {
+                if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail(),
+                    userDto.getCustomerId())) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
                     restClientFactory.getRestTemplate()

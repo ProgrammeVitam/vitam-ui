@@ -78,12 +78,12 @@ public class ProvisioningInternalService {
     }
 
     public ProvidedUserDto getUserInformation(final String idp, final String email, final String loginCustomerId,
-        final String groupId, final String unit, final String userIdentifier, final String customerId) {
+        final String groupId, final String unit, final String userIdentifier) {
         final IdPProvisioningClientConfiguration idpProvisioningClient = getProvisioningClientConfiguration(idp);
 
         try (var webClient = buildWebClient(idpProvisioningClient)) {
             final ProvidedUserDto providedUser = webClient.getProvidedUser(
-                securityService.getHttpContext(), email, loginCustomerId, groupId, unit, userIdentifier, customerId);
+                securityService.getHttpContext(), email, loginCustomerId, groupId, unit, userIdentifier);
 
             if (Objects.isNull(providedUser)) {
                 throw new NotFoundException(

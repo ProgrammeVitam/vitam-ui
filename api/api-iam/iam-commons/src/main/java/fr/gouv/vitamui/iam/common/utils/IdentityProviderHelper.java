@@ -60,13 +60,6 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public Optional<IdentityProviderDto> findByCustomerId(final List<IdentityProviderDto> providers,
-        final String customerId) {
-        return providers.stream()
-            .filter(provider -> provider.getCustomerId().equals(customerId))
-            .findFirst();
-    }
-
     public List<IdentityProviderDto> findAllByUserIdentifier(final List<IdentityProviderDto> providers,
         final String identifier) {
         return providers.stream()
@@ -87,21 +80,10 @@ public class IdentityProviderHelper {
             .findFirst();
     }
 
-    @Deprecated
-    public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers,
-        final String userIdentifier) {
-
-        if (CollectionUtils.isEmpty(providers))
-            return Optional.empty();
-
-        return providers.stream()
-            .filter(provider -> provider.getPatterns().stream()
-                .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches()))
-            .findFirst();
-    }
-
-    public boolean identifierMatchProviderPattern(final List<IdentityProviderDto> providers, final String identifier) {
-        final Optional<IdentityProviderDto> optProvider = findByUserIdentifier(providers, identifier);
+    public boolean identifierMatchProviderPattern(final List<IdentityProviderDto> providers, final String userEmail,
+        final String userCustomerId) {
+        final Optional<IdentityProviderDto> optProvider =
+            findByUserIdentifierAndCustomerId(providers, userEmail, userCustomerId);
         return optProvider.isPresent() && optProvider.get().getInternal() == Boolean.TRUE;
     }
 }
