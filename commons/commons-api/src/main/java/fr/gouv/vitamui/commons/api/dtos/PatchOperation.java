@@ -25,20 +25,23 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.exception;
+package fr.gouv.vitamui.commons.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public enum PatchOperation {
+    ADD("add"),
+    REMOVE("remove"),
+    REPLACE("replace");
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+    final private String value;
 
-@ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to create dsl query")
-public class DslQueryCreateException extends RuntimeException {
-    public DslQueryCreateException(Throwable e) {
-        super(e);
+    PatchOperation(final String value) {
+        this.value = value;
     }
 
-    public DslQueryCreateException(String e) {
-        super(e);
+    @JsonValue
+    public String getValue() {
+        return value;
     }
 }

@@ -25,39 +25,28 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto.converter;
+package fr.gouv.vitamui.commons.api.converter;
 
-import fr.gouv.vitam.common.database.builder.query.action.UnsetAction;
-import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.archives.search.common.exception.DslQueryCreateException;
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
-import fr.gouv.vitamui.archives.search.common.model.PatchCommand;
-import fr.gouv.vitamui.archives.search.common.model.PatchOperation;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
+import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
-@Service
-public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@Service
+public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateMultiQuery>, BulkCommandDto> {
     @Override
-    public UnsetAction convert(JsonPatch source) {
-        try {
-            final String[] paths = source.stream()
-                .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
-                .map(PatchCommand::getPath)
-                .toArray(String[]::new);
-            if (paths.length > 0) {
-                return UpdateActionHelper.unset(paths);
-            }
-        } catch (InvalidCreateOperationException e) {
-            log.error("{}", e);
-            throw new DslQueryCreateException(e);
-        }
-        return null;
+    public BulkCommandDto convert(Set<UpdateMultiQuery> source) {
+        final List<ObjectNode> finalUpdateMultiQueries =
+            source.stream()
+                .map(UpdateMultiQuery::getFinalUpdate)
+                .peek(objectNode -> objectNode.remove("$roots"))
+                .peek(objectNode -> objectNode.remove("$filter"))
+                .collect(Collectors.toList());
+        return new BulkCommandDto(finalUpdateMultiQueries);
     }
 }

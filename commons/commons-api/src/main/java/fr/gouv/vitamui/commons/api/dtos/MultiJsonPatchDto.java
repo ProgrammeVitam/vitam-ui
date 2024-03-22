@@ -25,28 +25,14 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.dto.converter;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
-import fr.gouv.vitamui.collect.common.dto.BulkCommandDto;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Service;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
-@Service
-public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateMultiQuery>, BulkCommandDto> {
-    @Override
-    public BulkCommandDto convert(Set<UpdateMultiQuery> source) {
-        final List<ObjectNode> finalUpdateMultiQueries =
-            source.stream()
-                .map(UpdateMultiQuery::getFinalUpdate)
-                .peek(objectNode -> objectNode.remove("$roots"))
-                .peek(objectNode -> objectNode.remove("$filter"))
-                .collect(Collectors.toList());
-        return new BulkCommandDto(finalUpdateMultiQueries);
-    }
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class MultiJsonPatchDto extends ArrayList<JsonPatchDto> {
 }

@@ -27,11 +27,11 @@
 
 package fr.gouv.vitamui.collect.common.rest;
 
-import fr.gouv.vitamui.collect.common.dto.JsonPatchDto;
-import fr.gouv.vitamui.collect.common.dto.MultiJsonPatchDto;
 import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
 import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
-import fr.gouv.vitamui.collect.common.model.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 
 import java.util.Set;

@@ -27,12 +27,12 @@
 
 package fr.gouv.vitamui.archives.search.external.client;
 
-import fr.gouv.vitamui.archives.search.common.dto.JsonPatchDto;
-import fr.gouv.vitamui.archives.search.common.dto.MultiJsonPatchDto;
 import fr.gouv.vitamui.archives.search.common.dto.OperationIdDto;
 import fr.gouv.vitamui.archives.search.common.dto.UpdateArchiveUnitDto;
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
 import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;

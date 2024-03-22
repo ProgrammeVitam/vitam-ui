@@ -25,26 +25,15 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Data;
-import lombok.NonNull;
+import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Size;
-import java.util.Collection;
+import java.util.ArrayList;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
-@JsonInclude(NON_NULL)
-public class BulkCommandDto {
-    @NonNull
-    @Size(min = 1, message = "Requires at least one command to play a bulk operation")
-    @JsonProperty("queries")
-    private Collection<ObjectNode> commands;
-
-    private Integer threshold;
+@EqualsAndHashCode(callSuper = true)
+public class JsonPatch extends ArrayList<PatchCommand> {
 }
