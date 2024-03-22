@@ -36,6 +36,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
@@ -65,10 +67,35 @@ public class MetadataSearchCriteriaUtilsTest {
             .setValues(List.of(new CriteriaValue().setValue("2023-03-05T23:00:00.000Z")))
             .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
 
-        MetadataSearchCriteriaUtils.handleSimpleFieldCriteria(queryToFill, searchCriteria);
+        MetadataSearchCriteriaUtils.fillQueryFromCriteriaList(queryToFill, Collections.singletonList(searchCriteria));
 
         Assertions.assertEquals(
-            "{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-05T23:00:00.000Z\"}}]}",
+            "{\"$or\":[{\"$and\":[{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-06\"}}]}]}]}",
+            queryToFill.toString()
+        );
+    }
+
+    @Test
+    public void handleSimpleDateFieldCriteria() throws InvalidCreateOperationException {
+        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.AND);
+        SearchCriteriaEltDto startSearchCriteria = new SearchCriteriaEltDto()
+            .setCriteria("START_DATE")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.GTE.name())
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T23:00:00.000Z")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+        SearchCriteriaEltDto endSearchCriteria = new SearchCriteriaEltDto()
+            .setCriteria("END_DATE")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.GTE.name())
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-15T23:00:00.000Z")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+
+        MetadataSearchCriteriaUtils.fillQueryFromCriteriaList(queryToFill,
+            Arrays.asList(startSearchCriteria, endSearchCriteria));
+
+        Assertions.assertEquals(
+            "{\"$and\":[{\"$or\":[{\"$gte\":{\"StartDate\":\"2023-03-06\"}}]},{\"$or\":[{\"$gte\":{\"EndDate\":\"2023-03-16\"}}]}]}",
             queryToFill.toString()
         );
     }
