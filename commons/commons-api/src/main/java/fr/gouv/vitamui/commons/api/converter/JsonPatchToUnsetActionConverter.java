@@ -25,15 +25,39 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.model;
+package fr.gouv.vitamui.commons.api.converter;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import fr.gouv.vitam.common.database.builder.query.action.UnsetAction;
+import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
+import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
+import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+@Service
+public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
+    private static final VitamUILogger log =
+        VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
 
-
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class JsonPatch extends ArrayList<PatchCommand> {
+    @Override
+    public UnsetAction convert(JsonPatch source) {
+        try {
+            final String[] paths = source.stream()
+                .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
+                .map(PatchCommand::getPath)
+                .toArray(String[]::new);
+            if (paths.length > 0) {
+                return UpdateActionHelper.unset(paths);
+            }
+        } catch (InvalidCreateOperationException e) {
+            log.error("{}", e);
+            throw new DslQueryCreateException(e);
+        }
+        return null;
+    }
 }

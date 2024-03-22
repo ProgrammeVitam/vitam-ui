@@ -25,38 +25,45 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.dto.converter;
+package fr.gouv.vitamui.commons.api.converter;
 
-import fr.gouv.vitam.common.database.builder.query.action.UnsetAction;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.database.builder.query.action.SetAction;
 import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.collect.common.exception.DslQueryCreateException;
-import fr.gouv.vitamui.collect.common.model.JsonPatch;
-import fr.gouv.vitamui.collect.common.model.PatchCommand;
-import fr.gouv.vitamui.collect.common.model.PatchOperation;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
+import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.ADD;
+import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.REPLACE;
+
 @Service
-public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
+public class JsonPatchToSetActionConverter implements Converter<JsonPatch, SetAction> {
+
     private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
+        VitamUILoggerFactory.getInstance(JsonPatchToSetActionConverter.class);
 
     @Override
-    public UnsetAction convert(JsonPatch source) {
-        try {
-            final String[] paths = source.stream()
-                .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
-                .map(PatchCommand::getPath)
-                .toArray(String[]::new);
-            if (paths.length > 0) {
-                return UpdateActionHelper.unset(paths);
+    public SetAction convert(JsonPatch source) {
+        final Map<String, JsonNode> map = source.stream()
+            .filter(patchCommand -> List.of(ADD, REPLACE).contains(patchCommand.getOp()))
+            .collect(Collectors.toMap(PatchCommand::getPath, PatchCommand::getValue));
+        if (!map.isEmpty()) {
+            try {
+                return UpdateActionHelper.set(map);
+            } catch (InvalidCreateOperationException e) {
+                log.error("{}", e);
+                throw new DslQueryCreateException(e);
             }
-        } catch (InvalidCreateOperationException e) {
-            log.error("{}", e);
-            throw new DslQueryCreateException(e);
         }
         return null;
     }

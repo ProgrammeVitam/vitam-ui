@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("fr.gouv.vitamui.collect.common.dto.converter")
+@ComponentScan("fr.gouv.vitamui.commons.api.converter")
 public class ConverterConfig {
 
 

@@ -25,19 +25,20 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.model;
+package fr.gouv.vitamui.commons.api.exception;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Data
-@Accessors(chain = true)
-public class PatchCommand {
-    @NotNull private PatchOperation op;
-    @NotBlank private String path;
-    @NotNull private JsonNode value;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
+@ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to create dsl query")
+public class DslQueryCreateException extends RuntimeException {
+    public DslQueryCreateException(Throwable e) {
+        super(e);
+    }
+
+    public DslQueryCreateException(String e) {
+        super(e);
+    }
 }

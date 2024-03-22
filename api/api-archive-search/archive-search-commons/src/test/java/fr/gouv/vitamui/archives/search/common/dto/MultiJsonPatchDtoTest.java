@@ -31,9 +31,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
-import fr.gouv.vitamui.archives.search.common.model.PatchCommand;
-import fr.gouv.vitamui.archives.search.common.model.PatchOperation;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
+import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

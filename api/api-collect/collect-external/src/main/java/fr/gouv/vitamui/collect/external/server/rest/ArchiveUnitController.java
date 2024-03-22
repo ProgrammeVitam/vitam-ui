@@ -27,13 +27,13 @@
 
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitamui.collect.common.dto.JsonPatchDto;
-import fr.gouv.vitamui.collect.common.dto.MultiJsonPatchDto;
 import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
 import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
-import fr.gouv.vitamui.collect.common.model.JsonPatch;
 import fr.gouv.vitamui.collect.common.service.ArchiveUnitService;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
