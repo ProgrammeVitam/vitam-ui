@@ -41,10 +41,13 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apereo.cas.web.support.WebUtils;
@@ -79,6 +82,8 @@ public class DispatcherAction extends AbstractAction {
 
     private final IdentityProviderHelper identityProviderHelper;
 
+    private final CasExternalRestClient casExternalRestClient;
+
     private final Utils utils;
 
     private final SessionStore sessionStore;
@@ -110,6 +115,13 @@ public class DispatcherAction extends AbstractAction {
         ParameterChecker.checkParameter("Missing subrogation params",
             surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
 
+        if (isUserLocked(superUserEmail, superUserCustomerId)) {
+            return handleUserDisabled(superUserEmail, superUserCustomerId);
+        }
+        if (isUserLocked(surrogateEmail, surrogateCustomerId)) {
+            return handleUserDisabled(superUserEmail, surrogateCustomerId);
+        }
+
         return dispatchUser(requestContext, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
     }
 
@@ -123,6 +135,10 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
+        if (isUserLocked(userEmail, customerId)) {
+            return handleUserDisabled(userEmail, customerId);
+        }
+
         return dispatchUser(requestContext, userEmail, customerId, null, null);
     }
 
@@ -130,7 +146,8 @@ public class DispatcherAction extends AbstractAction {
         String loginCustomerId, String surrogateEmail, String surrogateCustomerId) throws IOException {
 
         Optional<IdentityProviderDto> providerOpt =
-            identityProviderHelper.findByCustomerId(providersService.getProviders(), loginCustomerId);
+            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(), loginEmail,
+                loginCustomerId);
         if (providerOpt.isEmpty()) {
             LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
@@ -164,6 +181,22 @@ public class DispatcherAction extends AbstractAction {
             return utils.performClientRedirection(this,
                 ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(), requestContext);
         }
+    }
+
+    private boolean isUserLocked(String email, String customerId) {
+        UserDto userDto =
+            this.casExternalRestClient.getUserByEmail(utils.buildContext(email), email, customerId, Optional.empty());
+        if (userDto == null) {
+            // To avoid account existence disclosure, unknown users are silently ignored.
+            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
+            return false;
+        }
+        return (userDto.getStatus() != UserStatusEnum.ENABLED);
+    }
+
+    private Event handleUserDisabled(final String emailUser, String customerId) {
+        LOGGER.error("Bad status for user: {} ({})", emailUser, customerId);
+        return new Event(this, DISABLED);
     }
 
     private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {

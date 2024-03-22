@@ -60,7 +60,7 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
     }
 
     public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email,
-        final String loginCustomerId, final String groupId, final String unit, final String userIdentifier, final String customerId)  {
+        final String loginCustomerId, final String groupId, final String unit, final String userIdentifier)  {
 
         final URIBuilder builder = getUriBuilderFromUrl();
 
@@ -78,10 +78,6 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
         }
         if (StringUtils.isNotBlank(userIdentifier)) {
             builder.addParameter("technicalUserId", userIdentifier);
-        }
-
-        if (StringUtils.isNotBlank(customerId)) {
-            builder.addParameter("customerId", customerId);
         }
 
         return webClient.get().uri(buildUriBuilder(builder)).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)

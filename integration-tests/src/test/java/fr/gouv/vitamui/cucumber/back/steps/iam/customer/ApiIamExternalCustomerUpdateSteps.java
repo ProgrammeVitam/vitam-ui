@@ -106,10 +106,11 @@ public class ApiIamExternalCustomerUpdateSteps extends CommonSteps {
     @Then("^les utilisateurs du client ont leur OTP désactivé$")
     public void les_utilisateurs_du_client_ont_leur_OTP_désactivé() {
         final String adminEmail = "admin@" + testContext.basicCustomerDto.getDefaultEmailDomain();
+        final String adminCustomerId = "admin@" + testContext.basicCustomerDto.getId();
         final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false,
-                new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_USERS })
-                        .getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                                adminEmail, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+            new Integer[] {casTenantIdentifier}, new String[] {ServicesData.ROLE_CAS_USERS})
+            .getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+                adminEmail, adminCustomerId, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         QueryDto criteria = QueryDto.criteria("name",
                 testContext.savedBasicCustomerDto.getOwners().get(0).getName(), CriterionOperator.EQUALS);

@@ -136,18 +136,18 @@ class ProvisioningInternalServiceTest {
             .buildWebClient(ArgumentMatchers.any());
         Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
                 ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any()))
+                ArgumentMatchers.any()))
             .thenReturn(providedUserDtoStub);
 
         // Do
         ProvidedUserDto providedUserDto =
             provisioningInternalServiceSpy
-                .getUserInformation("idp", "email@toto.com", null, null, null, null, null);
+                .getUserInformation("idp", "email@toto.com", null, null, null, null);
 
         // Verify
         Mockito.verify(provisioningWebClient, Mockito.times(1)).getProvidedUser(ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any());
+            ArgumentMatchers.any());
         assertEquals(providedUserDtoStub, providedUserDto);
     }
 
@@ -169,12 +169,11 @@ class ProvisioningInternalServiceTest {
             .buildWebClient(ArgumentMatchers.any());
         Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any(),
             ArgumentMatchers.any())).thenReturn(providedUserDtoStub);
 
         ProvidedUserDto providedUserDto =
             provisioningInternalServiceSpy
-                .getUserInformation("idp", "email@toto.com", null, null, null, null, null);
+                .getUserInformation("idp", "email@toto.com", null, null, null, null);
 
 
         assertEquals(providedUserDto.getAddress().getStreet(), "57 Avenue de Grandes");

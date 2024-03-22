@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -105,13 +106,14 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         checkResponse(response);
     }
 
-    @Deprecated
-    // FIXME : Tests
-    public UserDto getUserByEmail(final ExternalHttpContext context, final String email,
+    // FIXME :  getUserByEmail vs getUser
+    @VisibleForTesting
+    public UserDto getUserByEmail(final ExternalHttpContext context, final String email, final String customerId,
         final Optional<String> embedded) {
         List<UserDto> users = getUsersByEmail(context, email, embedded);
-        /* Assert.isTrue(users.size() == 1);*/
-        return users.get(0);
+        return users.stream()
+            .filter(user -> user.getCustomerId().equals(customerId))
+            .findFirst().orElse(null);
     }
 
     public List<UserDto> getUsersByEmail(final ExternalHttpContext context, final String email,

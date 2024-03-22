@@ -60,6 +60,7 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setMailAttribute(dto.getMailAttribute());
         setIdentifierAttribute(dto.getIdentifierAttribute());
         setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
+        setProtocoleType(dto.getProtocoleType());
         setPropagateLogout(dto.isPropagateLogout());
 
         setKeystoreBase64(dto.getKeystoreBase64());

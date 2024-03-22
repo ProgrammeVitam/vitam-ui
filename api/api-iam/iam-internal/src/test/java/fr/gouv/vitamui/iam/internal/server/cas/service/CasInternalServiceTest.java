@@ -91,7 +91,7 @@ class CasInternalServiceTest {
         when(identityProviderInternalService.getOne(IDP))
             .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, null, CUSTOMER_ID))
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, CUSTOMER_ID, null, null, null))
             .thenReturn(buildProvidedUser("jean-vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
@@ -124,7 +124,7 @@ class CasInternalServiceTest {
         when(identityProviderInternalService.getOne(IDP))
             .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, null, CUSTOMER_ID))
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, CUSTOMER_ID, GROUP_ID, null, null))
             .thenReturn(buildProvidedUser("jean vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));

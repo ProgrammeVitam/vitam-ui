@@ -163,6 +163,8 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
 
+                // FIXME : IDP vs subrogation vs login. What about customerId
+
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
@@ -195,6 +197,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private void validateEmail(String email) {
         if (email == null) {
+            // FIXME
             throw new IllegalArgumentException("Null email");
         }
         if (!Pattern.matches(EMAIL_VALID_REGEXP, email)) {

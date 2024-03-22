@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
 import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
 import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
@@ -62,7 +61,6 @@ import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
-import org.apereo.cas.authentication.AuthenticationPostProcessor;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -73,7 +71,12 @@ import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
+import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.TicketCatalog;
+import org.apereo.cas.ticket.TicketDefinition;
+import org.apereo.cas.ticket.TicketGrantingTicketFactory;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
@@ -269,13 +272,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     public PrincipalResolver x509SubjectDNPrincipalResolver(@Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver) {
         return defaultPrincipalResolver;
-    }
-
-    @Bean
-    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor(@Qualifier("delegatedClientDistributedSessionStore")
-                                                                            SessionStore delegatedClientDistributedSessionStore) {
-        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-            registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
     }
 
     @Bean

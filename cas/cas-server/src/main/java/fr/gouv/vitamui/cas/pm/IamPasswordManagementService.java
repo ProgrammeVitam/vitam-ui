@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -182,8 +183,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         Assert.notNull(username, "username can not be null");
         UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
-        final UserDto user = casExternalRestClient.getUser(utils.buildContext(userLogin.getUserEmail()),
-            userLogin.getUserEmail(), userLogin.getCustomerId(), null, Optional.empty(), Optional.empty());
+        final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(userLogin.getUserEmail()),
+            userLogin.getUserEmail(), userLogin.getCustomerId(), Optional.empty());
         if (user == null) {
             LOGGER.debug("User not found with login: {}", userLogin.getUserEmail());
             throw new InvalidPasswordException();
@@ -235,7 +236,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         UserLoginModel userLoginNode;
         String userCustomerIdFromScope = null;
         if (flowScope != null) {
-            userCustomerIdFromScope = (String) flowScope.get("loginCustomerId");
+            userCustomerIdFromScope = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
         }
 
         try {
@@ -268,6 +269,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
         val username = query.getUsername();
+        // FIXME !
         String customerId = null;
         if (query.getRecord().containsKey("customerId")) {
             Object customerIdValue = query.getRecord().getFirst("customerId");
@@ -277,18 +279,14 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         String email = null;
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            List<UserDto> users =
-                casExternalRestClient.getUsersByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase,
-                    Optional.empty());
-            String finalCustomerId = customerId;
-            Optional<UserDto> userWithEmailAndCustomerIdOpt =
-                users.stream().filter(userDto -> userDto.getCustomerId().equals(finalCustomerId)).findFirst();
-            if (userWithEmailAndCustomerIdOpt.isEmpty()) {
+            UserDto user =
+                casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase,
+                    customerId, Optional.empty());
+            if (user == null) {
                 LOGGER.error("User not found");
-                throw new UserNotFoundException("User not found");
+                return null;
             }
-            var user = userWithEmailAndCustomerIdOpt.get();
-            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
+            if (UserStatusEnum.ENABLED.equals(user.getStatus())) {
                 email = user.getEmail();
             }
         } catch (final VitamUIException e) {

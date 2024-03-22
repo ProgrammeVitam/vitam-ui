@@ -67,9 +67,11 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
         subrogationDto = buildGoodSubrogation();
         deleteAllSubrogations(subrogationDto);
         testContext.savedSubrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
-        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        subrogationDto.getSurrogate(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmail(
+            getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+            subrogationDto.getSurrogate(), subrogationDto.getSurrogateCustomerId(),
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
     @When("^je demande ma subrogation courante en tant que subrogé$")
@@ -88,9 +90,11 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
     public void une_subrogation_existe_pour_moi_en_tant_que_subrogateur() {
         buildSubrogation(true, true, null, UserStatusEnum.ENABLED);
         testContext.savedSubrogationDto = subrogationDto;
-        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        subrogationDto.getSuperUser(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmail(
+            getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+            subrogationDto.getSuperUser(), subrogationDto.getSuperUserCustomerId(),
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
     @When("^je demande ma subrogation courante en tant que subrogateur$")
@@ -112,7 +116,7 @@ public class ApiIamExternalSubrogationGetSteps extends CommonSteps {
         user = getUserRestClient().create(getSystemTenantUserAdminContext(), user);
         testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
                 new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        user.getEmail(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+                        user.getEmail(), user.getCustomerId(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
     @Then("^le serveur ne retourne aucune subrogation pour moi en tant que subrogé$")

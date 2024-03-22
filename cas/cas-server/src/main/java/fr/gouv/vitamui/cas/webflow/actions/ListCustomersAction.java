@@ -81,7 +81,6 @@ import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigure
 @RequiredArgsConstructor
 public class ListCustomersAction extends AbstractAction {
 
-    public static final String DISABLED = "disabled";
     public static final String BAD_CONFIGURATION = "badConfiguration";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ListCustomersAction.class);
@@ -109,7 +108,6 @@ public class ListCustomersAction extends AbstractAction {
     private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope)
         throws IOException {
         // We came from subrogation validation (emailForm)
-
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
@@ -121,21 +119,13 @@ public class ListCustomersAction extends AbstractAction {
         ParameterChecker.checkParameter("Missing subrogation params",
             surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
 
-        // Ensure users are not disabled
-        Optional<UserDto> surrogateUserDto = getUser(surrogateEmail, surrogateCustomerId);
-        if (surrogateUserDto.isPresent() && isUserDisabled(surrogateUserDto.get())) {
-            return handleUserDisabled(surrogateEmail);
-        }
-
-        Optional<UserDto> superUserUserDto = getUser(superUserEmail, superUserCustomerId);
-        if (superUserUserDto.isPresent() && isUserDisabled(superUserUserDto.get())) {
-            return handleUserDisabled(superUserEmail);
-        }
-
-        Optional<IdentityProviderDto> provider =
-            identityProviderHelper.findByCustomerId(providersService.getProviders(), superUserCustomerId);
-        if (provider.isEmpty()) {
-            LOGGER.error("No provider found for superUserCustomerId: {}", superUserCustomerId);
+        // Filter by both email (domain) & customerId
+        Optional<IdentityProviderDto> providerDto =
+            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(), superUserEmail,
+                    superUserCustomerId);
+        if (providerDto.isEmpty()) {
+            LOGGER.error("No provider found for superUserEmail / superUserCustomerId: {}",
+                superUserEmail, superUserCustomerId);
             return new Event(this, BAD_CONFIGURATION);
         }
 
@@ -166,13 +156,9 @@ public class ListCustomersAction extends AbstractAction {
         // Ensure it's not disabled & persist its customerId in
         LOGGER.debug("A single user matched provided login of '{}': {}", username, user);
 
-        if (isUserDisabled(user)) {
-            return handleUserDisabled(username);
-        }
-
         String customerId = user.getCustomerId();
-        Optional<IdentityProviderDto> provider =
-            identityProviderHelper.findByCustomerId(providersService.getProviders(), customerId);
+        Optional<IdentityProviderDto> provider = identityProviderHelper.
+            findByUserIdentifierAndCustomerId(providersService.getProviders(), username, customerId);
         if (provider.isEmpty()) {
             LOGGER.error("No provider found for customerId: {}", customerId);
             return new Event(this, BAD_CONFIGURATION);
@@ -258,17 +244,6 @@ public class ListCustomersAction extends AbstractAction {
         flowScope.put(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST, customerToSelect);
 
         return new Event(this, TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
-    }
-
-    private Event handleUserDisabled(final String emailUser) {
-        LOGGER.error("Bad status for user: {}", emailUser);
-        return new Event(this, DISABLED);
-    }
-
-    private Optional<UserDto> getUser(String email, String customerId) {
-        return getUsers(email).stream()
-            .filter(user -> user.getCustomerId().equals(customerId))
-            .findFirst();
     }
 
     private List<UserDto> getUsers(String email) {

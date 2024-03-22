@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.dao;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * MongoDB repository for the users.
@@ -56,14 +55,8 @@ public interface UserRepository extends VitamUIRepository<User, String> {
 
     Optional<User> findByIdAndCustomerId(String id, String customerId);
 
-    @Deprecated
-    User findByEmailIgnoreCase(String email);
-
     User findByEmailIgnoreCaseAndCustomerId(String email, String customerId);
-    List<User> findAllByEmail(String email);
-
-    @Deprecated
-    boolean existsByEmailIgnoreCase(String email);
+    List<User> findAllByEmailIgnoreCase(String email);
 
     boolean existsByEmailAndCustomerId(String email, String customerId);
 
