@@ -89,9 +89,9 @@ class CasInternalServiceTest {
     @Test
     void should_create_new_user_when_authenticated_user_is_unknown_in_database_and_idp_auto_provisioning_is_enabled() {
         when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+            .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, CUSTOMER_ID))
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, null, CUSTOMER_ID))
             .thenReturn(buildProvidedUser("jean-vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
@@ -99,7 +99,7 @@ class CasInternalServiceTest {
         when(userRepository.existsByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(false);
 
         when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
-                .thenReturn(buildAuthUser(false));
+            .thenReturn(buildAuthUser(false));
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfo());
 
         final Customer customer = new Customer();
@@ -122,9 +122,9 @@ class CasInternalServiceTest {
     @Test
     void should_update_user_when_authenticated_user_is_known_in_database_and_idp_and_user_auto_provisioning_is_enabled() {
         when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+            .thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, CUSTOMER_ID))
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, null, CUSTOMER_ID))
             .thenReturn(buildProvidedUser("jean vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
@@ -145,7 +145,7 @@ class CasInternalServiceTest {
     @Test
     void should_not_update_user_when_user_auto_provisioning_is_disabled() {
         when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+            .thenReturn(buildIDP(true));
 
         when(userRepository.existsByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))

@@ -122,7 +122,7 @@ public class ListCustomersAction extends AbstractAction {
         // Filter by both email (domain) & customerId
         Optional<IdentityProviderDto> providerDto =
             identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(), superUserEmail,
-                    superUserCustomerId);
+                superUserCustomerId);
         if (providerDto.isEmpty()) {
             LOGGER.error("No provider found for superUserEmail / superUserCustomerId: {}",
                 superUserEmail, superUserCustomerId);

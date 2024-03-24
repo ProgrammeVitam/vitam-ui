@@ -38,10 +38,6 @@
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-
-import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -56,15 +52,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Customer provisioning service.
- *
- *
  */
 @Service
 public class ProvisioningInternalService {
@@ -79,35 +69,39 @@ public class ProvisioningInternalService {
     @NotNull
     private int maxStreetLength;
 
-    public ProvisioningInternalService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration,
+    public ProvisioningInternalService(final WebClient.Builder webClientBuilder,
+        final ProvisioningClientConfiguration provisioningClientConfiguration,
         final InternalSecurityService securityService) {
         this.webClientBuilder = webClientBuilder;
         this.provisioningClientConfiguration = provisioningClientConfiguration;
         this.securityService = securityService;
     }
 
-    public ProvidedUserDto getUserInformation(final String idp, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId) {
+    public ProvidedUserDto getUserInformation(final String idp, final String email, final String loginCustomerId,
+        final String groupId, final String unit, final String userIdentifier, final String customerId) {
         final IdPProvisioningClientConfiguration idpProvisioningClient = getProvisioningClientConfiguration(idp);
 
-        final var webClient = buildWebClient(idpProvisioningClient);
+        try (var webClient = buildWebClient(idpProvisioningClient)) {
+            final ProvidedUserDto providedUser = webClient.getProvidedUser(
+                securityService.getHttpContext(), email, loginCustomerId, groupId, unit, userIdentifier, customerId);
 
-        final ProvidedUserDto providedUser = webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, userIdentifier, customerId);
+            if (Objects.isNull(providedUser)) {
+                throw new NotFoundException(
+                    String.format("No user returned by provisioning with email %s, technicalUserId %s, idp %s", email,
+                        userIdentifier, idp));
+            }
 
-        if (Objects.isNull(providedUser)) {
-            throw new NotFoundException(String.format("No user returned by provisioning with email %s, technicalUserId %s, idp %s", email, userIdentifier, idp));
+            final AddressDto address = providedUser.getAddress();
+            if (address != null) {
+                final var shortStreetAddress = StringUtils.substring(address.getStreet(), 0, maxStreetLength);
+                address.setStreet(shortStreetAddress);
+                providedUser.setAddress(address);
+            }
+            return providedUser;
         }
-
-        final AddressDto address = providedUser.getAddress();
-        if(address != null){
-            final var shortStreetAddress = StringUtils.substring(address.getStreet(), 0, maxStreetLength);
-            address.setStreet(shortStreetAddress);
-            providedUser.setAddress(address);
-        }
-        return providedUser;
     }
 
     /**
-     *
      * @param idp
      * @return
      */
@@ -115,17 +109,20 @@ public class ProvisioningInternalService {
         return provisioningClientConfiguration.getIdentityProviders()
             .stream()
             .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equalsIgnoreCase(idp))
-            .findFirst().orElseThrow(() -> new NotFoundException(String.format("Provisioning client configuration not found for IdP : %S", idp)));
+            .findFirst().orElseThrow(() -> new NotFoundException(
+                String.format("Provisioning client configuration not found for IdP : %S", idp)));
     }
 
     /**
      * Method for build webClient
+     *
      * @param idpProvisioningClient
      * @return
      */
     protected ProvisioningWebClient buildWebClient(final IdPProvisioningClientConfiguration idpProvisioningClient) {
-        final BaseWebClientFactory clientFactory = new BaseWebClientFactory(idpProvisioningClient.getClient(), null , webClientBuilder,
-            idpProvisioningClient.getUri());
+        final BaseWebClientFactory clientFactory =
+            new BaseWebClientFactory(idpProvisioningClient.getClient(), null, webClientBuilder,
+                idpProvisioningClient.getUri());
 
         return new ProvisioningWebClient(clientFactory.getWebClient(), idpProvisioningClient.getUri());
     }

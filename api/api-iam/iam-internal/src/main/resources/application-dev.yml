@@ -119,6 +119,20 @@ provisioning-client:
             key-password: changeme
             type: JKS
           hostname-verification: false
+    - idp-identifier: keycloak-idp
+      uri: https://localhost:8090/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
 
 address:
   max-street-length: 250
