@@ -91,6 +91,7 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 export const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
+export const GUID = 'GUID';
 
 @Component({
   selector: 'app-archive-search',
@@ -359,7 +360,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.searchCriteriaKeys = [];
 
     const hasPermanentIdentifierParam = this.route.snapshot.queryParamMap.has(PERMANENT_IDENTIFIER);
-    const hasGUIDParam = this.route.snapshot.queryParamMap.has('GUID');
+    const hasGUIDParam = this.route.snapshot.queryParamMap.has(GUID);
     if (!hasPermanentIdentifierParam && !hasGUIDParam) {
       this.addInitialCriteriaValues();
     }
@@ -405,14 +406,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     this.route.queryParamMap
       .pipe(
-        map((params) => params.get('GUID')),
+        map((params) => params.get(GUID)),
         filter((guid) => !!guid),
       )
       .subscribe((guid) => {
         this.initializeSelectionParams();
         this.searchCriterias = new Map();
         this.addCriteria(
-          'GUID',
+          GUID,
           { value: guid, id: guid },
           guid,
           true,
@@ -486,9 +487,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     } else {
       this.removeCriteriaAllValues(criteriaToRemove.keyElt, true);
     }
-    this.resetParam(criteriaToRemove.keyElt);
-    if (this.searchCriteriaKeys.length === 0) {
-      this.addInitialCriteriaValues();
+    // TODO: this is a temporary fix. This needs to be cleaned up when we synchronize search parameters with query params
+    if (criteriaToRemove.keyElt === PERMANENT_IDENTIFIER || criteriaToRemove.keyElt === GUID) {
+      this.resetParam(criteriaToRemove.keyElt);
     }
   }
 
