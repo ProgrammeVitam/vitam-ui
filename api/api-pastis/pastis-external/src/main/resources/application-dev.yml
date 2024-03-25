@@ -54,7 +54,7 @@ server:
 management:
   server:
     address: localhost
-    port: 8189
+    port: 8191
     ssl:
       enabled: false
 pastis-external:
