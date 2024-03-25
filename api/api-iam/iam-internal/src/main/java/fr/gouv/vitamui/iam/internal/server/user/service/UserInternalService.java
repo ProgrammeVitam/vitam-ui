@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,6 +95,14 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -110,21 +121,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
-import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * The service to read, create, update and delete the users.
@@ -172,8 +168,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private final String ADMIN_EMAIL_PATTERN = "admin@";
 
     private final String PORTAL_APP_IDENTIFIER = "PORTAL_APP";
-
-    private static final String EXPORT_TEMP_PATH = "/tmp/temp.xlsx";
 
     private MongoTransactionManager mongoTransactionManager;
 
@@ -275,7 +269,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public Resource exportUsers(final Optional<String> criteria) {
-        final var pathToTargetXlsFile = new File(EXPORT_TEMP_PATH);
 
         try (final var xlsOutputStream = new ByteArrayOutputStream()) {
             final List<UserDto> usersDto = this.getAll(criteria);
@@ -294,12 +287,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             return new ByteArrayResource(xlsOutputStream.toByteArray());
         } catch (final IOException exception) {
             throw new InternalServerException("An error occurred while creating the xls users list export", exception);
-        } finally {
-            try {
-                Files.deleteIfExists(pathToTargetXlsFile.toPath());
-            } catch (final IOException e) {
-                LOGGER.warn("error while deleting file {} : {}", pathToTargetXlsFile, e);
-            }
         }
     }
 
@@ -579,8 +566,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         Assert.isTrue(!partialDto.containsKey("identifier"), message + user.getId() + " cannot patch identifier");
         Assert.isTrue(!partialDto.containsKey("readonly"), message + user.getId() + " cannot patch readonly");
         Assert.isTrue(!partialDto.containsKey("level"), message + user.getId() + " cannot patch level");
-        Assert.isTrue(!UserStatusEnum.BLOCKED.toString().equals(partialDto.get("status")),
-            "User cann't be blocked by API, this action need a special workflow for be realised");
+    Assert.isTrue(
+        !UserStatusEnum.BLOCKED.toString().equals(partialDto.get("status")),
+        "User can't be blocked by API, this action need a special workflow for be realised");
         Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "customerId")), message);
 
         checkLevel(user.getLevel(), message);

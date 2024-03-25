@@ -49,6 +49,4 @@ export class ConfirmActionComponent {
   // delete message values
   @Input() objectName: string;
   @Input() objectType: string;
-
-  ngOnInit() {}
 }

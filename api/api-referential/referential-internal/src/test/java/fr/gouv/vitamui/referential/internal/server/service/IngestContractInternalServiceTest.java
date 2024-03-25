@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.referential.internal.server.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.easymock.EasyMock.*;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,7 +69,9 @@ import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
-import org.apache.commons.io.IOUtils;
+import java.io.*;
+import java.util.List;
+import java.util.Set;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,14 +84,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
 
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
 @PrepareForTest({ServerIdentityConfiguration.class})
@@ -441,9 +439,8 @@ public class IngestContractInternalServiceTest {
 
         //Given
         VitamContext vitamContext = new VitamContext(0);
-        File file = new File("src/test/resources/data/import_ingest_contracts_valid.csv");
-        FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        String fileName = "import_ingest_contracts_valid.csv";
+        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, "text/csv", getClass().getResourceAsStream("/data/" + fileName));
 
         expect(internalSecurityService.getHttpContext())
             .andReturn(new InternalHttpContext(0, "", "", "", "", "", "", ""));
@@ -468,9 +465,8 @@ public class IngestContractInternalServiceTest {
 
         //Given
         VitamContext vitamContext = new VitamContext(0);
-        File file = new File("src/test/resources/data/import_ingest_contracts_invalid_wrong_ids.csv");
-        FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        String fileName = "import_ingest_contracts_invalid_wrong_ids.csv";
+        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, "text/csv", getClass().getResourceAsStream("/data/" + fileName));
 
         expect(internalSecurityService.getHttpContext())
             .andReturn(new InternalHttpContext(0, "", "", "", "", "", "", ""));

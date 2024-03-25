@@ -4,7 +4,4 @@ public enum CheckParentLink {
     AUTHORIZED,
     REQUIRED,
     UNAUTHORIZED;
-
-    CheckParentLink() {
-    }
 }

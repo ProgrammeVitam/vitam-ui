@@ -40,7 +40,7 @@
           <div class="col-1"><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></div>
           <div class="col-3" vitamuiCommonEllipsis>{{ format?.puid }}</div>
           <div class="col-4" vitamuiCommonEllipsis>{{ format?.name }}</div>
-          <div class="col-4 actions" vitamuiCommonEllipsis>
+          <div class="col-4 actions">
             <span>{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</span>
             <div *ngIf="!isInternal(format)">
               <button

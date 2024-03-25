@@ -52,6 +52,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
 import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
+import java.io.IOException;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +64,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.UNITS_PATH)
@@ -133,7 +132,6 @@ public class UnitInternalController {
         ParameterChecker.checkParameter("The accessContractId is a mandatory parameter: ", accessContractId);
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
-        SanityChecker.checkSecureParameter(accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         final JsonNode fillingOrHoldingQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
         return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext),

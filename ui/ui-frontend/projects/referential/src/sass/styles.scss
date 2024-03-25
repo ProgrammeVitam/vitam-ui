@@ -5,9 +5,6 @@
 @import '~ui-frontend-common/sass/fonts/font-styles.css';
 
 @import 'form';
-@import 'login';
-@import 'profile-tag';
-@import 'vitamui-tab-group';
 @import 'tooltip';
 @import 'text';
 
@@ -25,33 +22,8 @@ vitamui-common-slide-toggle {
   }
 }
 
-.mat-tab-body-wrapper {
-  flex-grow: 1;
-}
-
 .preview-tab-group {
   height: 100%;
-}
-.btn.more-actions {
-  background-color: transparent;
-  color: var(--vitamui-secondary);
-  border-color: var(--vitamui-secondary) !important;
-
-  &:disabled {
-    @include disabled(transparent, var(--vitamui-grey), transparent);
-  }
-}
-
-.btn-container {
-  display: flex;
-}
-
-.custom-flex-controls {
-  .btn {
-    background-color: transparent;
-    color: var(--vitamui-secondary);
-    border-color: var(--vitamui-secondary) !important;
-  }
 }
 
 .btn.cancel {
@@ -64,13 +36,6 @@ vitamui-common-slide-toggle {
   background-color: transparent;
   color: var(--vitamui-primary);
   border: transparent;
-}
-
-.vitamui-container {
-  position: relative;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 40px;
 }
 
 .title-text {
@@ -134,13 +99,4 @@ vitamui-common-slide-toggle {
   outline: -webkit-focus-ring-color auto 0;
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
-}
-
-.sub-title-text {
-  font-family: Mulish;
-  font-style: normal;
-  font-size: 12px;
-  line-height: 22px;
-  letter-spacing: 0.1px;
-  color: var(--vitamui-grey-900);
 }

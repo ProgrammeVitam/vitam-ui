@@ -4753,5 +4753,9 @@
   "REPEATABLE_INPUT": {
     "ADD_TOOLTIP": "Add a value",
     "REMOVE_TOOLTIP": "Remove a value"
+  },
+  "DRAG_AND_DROP_FILE": {
+    "FILE_IS_NOT_AN_IMAGE": "The file you are trying to upload is not an image",
+    "WRONG_FILE_SIZE": "The dimensions of the file you are trying to upload are larger than {{width}} * {{height}}px"
   }
 }

@@ -38,7 +38,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
-import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -171,7 +171,7 @@ public class ProjectObjectGroupServiceTest {
     }
 
 
-    private VersionsDto newVersionsDto(String id, ObjectQualifierTypeEnum type, Integer version, String filename) {
+    private VersionsDto newVersionsDto(String id, ObjectQualifierType type, Integer version, String filename) {
         return new VersionsDto()
             .setId(id)
             .setFileInfoModel(newFileInfoModel(filename))

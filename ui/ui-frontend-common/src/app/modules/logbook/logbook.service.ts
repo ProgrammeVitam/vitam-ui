@@ -36,7 +36,6 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
@@ -272,9 +271,9 @@ export function sortEventByDate(ev1: Event, ev2: Event): number {
   const ev1Date = getEffectiveDate(ev1);
   const ev2Date = getEffectiveDate(ev2);
 
-  if (moment(ev1Date).isAfter(moment(ev2Date))) {
+  if (ev1Date > ev2Date) {
     return -1;
-  } else if (moment(ev1Date).isBefore(moment(ev2Date))) {
+  } else if (ev1Date < ev2Date) {
     return 1;
   }
 

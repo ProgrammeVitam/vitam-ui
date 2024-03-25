@@ -5601,5 +5601,9 @@
   "REPEATABLE_INPUT": {
     "ADD_TOOLTIP": "Ajouter une valeur",
     "REMOVE_TOOLTIP": "Supprimer la valeur"
+  },
+  "DRAG_AND_DROP_FILE": {
+    "FILE_IS_NOT_AN_IMAGE": "Le fichier que vous essayez de déposer n'est pas une image",
+    "WRONG_FILE_SIZE": "Les dimensions du fichier que vous essayez de déposer sont supérieures à {{width}} * {{height}}px"
   }
 }

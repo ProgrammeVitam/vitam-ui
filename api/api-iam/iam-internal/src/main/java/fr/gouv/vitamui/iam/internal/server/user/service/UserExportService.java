@@ -1,23 +1,22 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
+
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.xls.ExcelFileGeneratorUtils;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-
-import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -122,6 +121,7 @@ public class UserExportService {
             var lastConnectionDate = user.getLastConnection() == null ? null : user.getLastConnection().format(DATE_FORMAT);
             var userLang = userInfoLangMap == null ? null : userInfoLangMap.get(user.getUserInfoId());
             var userGroupName = userGroupNameMap == null ? null : userGroupNameMap.get(user.getGroupId());
+            var centerCodes = user.getCenterCodes() != null && !user.getCenterCodes().isEmpty() ? String.join(",", user.getCenterCodes()) : "";
 
             row.createCell(0).setCellValue(user.getIdentifier());
             row.createCell(1).setCellValue(user.getLastname());
@@ -133,7 +133,7 @@ public class UserExportService {
             row.createCell(7).setCellValue(user.getAddress().getZipCode());
             row.createCell(8).setCellValue(user.getAddress().getCity());
             row.createCell(9).setCellValue(user.getAddress().getCountry());
-            row.createCell(10).setCellValue(String.join(",", user.getCenterCodes()));
+            row.createCell(10).setCellValue(centerCodes);
             row.createCell(11).setCellValue(user.getSiteCode());
             row.createCell(12).setCellValue(user.getInternalCode());
             row.createCell(13).setCellValue(translateService.translate(userLang));
