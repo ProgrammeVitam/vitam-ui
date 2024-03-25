@@ -5,10 +5,7 @@
   roles:
     - browser
 
-- hosts: hosts_vitamui_reverseproxy
-  tasks:
-    - name: merge index
-      include_role:
-        name: reverse
-        tasks_from: apache/merge_index_apache
-      when: reverse|lower == 'apache' and extra | d(false)
+- hosts: hosts_reverse
+  gather_facts: no
+  roles:
+    - merge_index_apache
