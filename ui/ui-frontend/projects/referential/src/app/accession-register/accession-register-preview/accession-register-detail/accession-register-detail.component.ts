@@ -59,7 +59,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const comment = this.accessionRegisterDetail.comment;
-    this.hasLongComment = !(comment === undefined || comment.length < 1 || comment.join('').length < this.longCommentSize);
+    this.hasLongComment = !(!comment || comment.length < 1 || comment.join('').length < this.longCommentSize);
   }
 
   onClicShowMoreOrLessOfComment() {
@@ -67,7 +67,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
   }
 
   formatedComment() {
-    if (this.accessionRegisterDetail.comment === undefined || this.accessionRegisterDetail.comment.length < 1) {
+    if (!this.accessionRegisterDetail.comment || this.accessionRegisterDetail.comment.length < 1) {
       return '';
     }
     if (this.showFullComment) {
