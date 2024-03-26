@@ -1,0 +1,66 @@
+version: "3.7"
+
+services:
+  vitamui-keycloak:
+    build:
+      context: .
+      args:
+        - KEYCLOAK_VERSION=22.0.1
+
+    container_name: vitamui-keycloak
+    volumes:
+      - ./realms:/opt/keycloak/data/import
+
+    ports:
+      - "8041:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=changeme
+      - KEYCLOAK_USER=keycloak
+      - KEYCLOAK_PASSWORD=changeme
+      - KC_DB=mysql
+      - KC_DB_URL_HOST=vitamui-database-keycloak
+      - KC_DB_URL_PORT=3306
+      - KC_DB_SCHEMA=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=changeme
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_PROXY=edge
+      - KC_HTTP_PORT=8080
+      - KC_HOSTNAME_STRICT= false
+      - KC_HTTP_ENABLED= true
+
+    depends_on:
+      - vitamui-database-keycloak
+    networks:
+      - vitamui-keycloak-network
+
+  vitamui-database-keycloak:
+    image: mysql:latest
+    container_name: vitamui-database-keycloak
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./provision/mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=changeme
+    networks:
+      - vitamui-keycloak-network
+
+networks:
+  vitamui-keycloak-network:
+    driver: bridge
+
+
+volumes:
+  conf:
+  mysql_data:
+    driver: local
+
