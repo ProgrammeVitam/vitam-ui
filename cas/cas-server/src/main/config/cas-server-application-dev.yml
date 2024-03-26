@@ -206,7 +206,8 @@ logging:
     org.springframework.amqp: 'OFF'
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
-    org.apereo.inspektr.audit.support: 'OFF'
+    org.apereo.inspektr.audit.support: 'INFO'
+    org.apereo.cas: 'DEBUG'
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
