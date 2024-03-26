@@ -59,12 +59,16 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
         super(webClient, baseUrl);
     }
 
-    public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId)  {
+    public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email,
+        final String loginCustomerId, final String groupId, final String unit, final String userIdentifier, final String customerId)  {
 
         final URIBuilder builder = getUriBuilderFromUrl();
 
         if (StringUtils.isNotBlank(email)) {
             builder.addParameter("email", email);
+        }
+        if (StringUtils.isNotBlank(loginCustomerId)) {
+            builder.addParameter("customerId", loginCustomerId);
         }
         if (StringUtils.isNotBlank(groupId)) {
             builder.addParameter("groupId", groupId);
