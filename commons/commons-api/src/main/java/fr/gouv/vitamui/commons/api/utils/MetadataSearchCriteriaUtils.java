@@ -117,7 +117,7 @@ public final class MetadataSearchCriteriaUtils {
     private MetadataSearchCriteriaUtils() {
     }
 
-    public static JsonNode createDslQueryWithFacets(SearchCriteriaDto searchQuery)
+    public static SelectMultiQuery createDslQueryWithFacets(SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidCreateOperationException {
 
         fillWaitingToComputeCriteria(searchQuery);
@@ -133,7 +133,7 @@ public final class MetadataSearchCriteriaUtils {
             selectMultiQuery.setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(),
                 searchQuery.getSize());
         }
-        return selectMultiQuery.getFinalSelect();
+        return selectMultiQuery;
     }
 
     public static SelectMultiQuery getBasicQuery(SearchCriteriaDto searchQuery)

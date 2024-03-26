@@ -138,7 +138,7 @@ public class ArchiveSearchInternalService {
             archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
             archiveSearchRulesInternalService.mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
 
-            JsonNode dslQuery = createDslQueryWithFacets(searchQuery);
+            JsonNode dslQuery = createDslQueryWithFacets(searchQuery).getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
             Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();

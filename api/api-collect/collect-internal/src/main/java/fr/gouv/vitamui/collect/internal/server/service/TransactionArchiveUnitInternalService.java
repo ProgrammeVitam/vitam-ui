@@ -39,6 +39,7 @@ import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.facet.RangeFacetValue;
+import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
@@ -104,6 +105,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.missing;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -132,6 +139,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUT
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_END_DATE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.COMPUTED_FIELDS;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.FINAL_ACTION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.MAX_END_DATE_FIELD;
@@ -149,6 +157,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class TransactionArchiveUnitInternalService {
     public static final String DSL_QUERY_FACETS = "$facets";
     public static final String TITLE_FIELD = "Title";
+    private static final String OBJECT = "#object";
+    private static final String STATIC_ATTACHMENT = "STATIC_ATTACHEMENT";
     private final CollectService collectService;
 
     private AgencyService agencyService;
@@ -174,9 +184,25 @@ public class TransactionArchiveUnitInternalService {
         InvalidCreateOperationException {
 
         LOGGER.debug("get units by query {}", searchQuery);
-        JsonNode searchQueryToDSL = isEmpty(searchQuery.getCriteriaList()) ?
-            getBasicQuery(searchQuery).getFinalSelect() :
+        SelectMultiQuery searchQuerySelectMultiQuery = isEmpty(searchQuery.getCriteriaList()) ?
+            getBasicQuery(searchQuery) :
             createDslQueryWithFacets(searchQuery);
+        /* Ensure that we do not return the "STATIC_ATTACHEMENT" unit in the results */
+        Query originalQuery = searchQuerySelectMultiQuery.getQueries().get(0);
+        Query modifiedQuery =
+            and()
+                .add(
+                    not().add(
+                        and()
+                            .add(eq(UNIT_TYPE, INGEST_ARCHIVE_TYPE))
+                            .add(not().add(exists(OBJECT)))
+                            .add(eq(TITLE_FIELD, STATIC_ATTACHMENT))
+                    )
+                )
+                .add(originalQuery);
+        searchQuerySelectMultiQuery.setQuery(modifiedQuery);
+        /* Perform query */
+        JsonNode searchQueryToDSL = searchQuerySelectMultiQuery.getFinalSelect();
         final RequestResponse<JsonNode> result =
             collectService.searchUnitsByTransactionId(transactionId, searchQueryToDSL, vitamContext);
         VitamRestUtils.checkResponse(result);
