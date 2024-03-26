@@ -118,8 +118,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private subscribeOnFacetsChangesToResetCounts(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        this.hasMatchesInSearch = facets && facets.length > 0;
-        if (this.hasMatchesInSearch) {
+        if (facets && facets.length > 0) {
           this.requestResultFacets = facets;
           FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
           this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
@@ -224,6 +223,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private subscribeOnTotalResultsChange(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
+        this.hasMatchesInSearch = totalResults > 0;
         this.requestTotalResults = totalResults;
         this.addOrRemoveOrphansNode();
       }),
