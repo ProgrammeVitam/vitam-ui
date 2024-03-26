@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-
-import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 
 @Injectable({
@@ -52,9 +51,8 @@ export class OntologyService extends SearchService<Ontology> {
   constructor(
     private ontologyApiService: OntologyApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, ontologyApiService, 'ALL');
+    super(ontologyApiService, 'ALL');
   }
 
   get(id: string): Observable<Ontology> {

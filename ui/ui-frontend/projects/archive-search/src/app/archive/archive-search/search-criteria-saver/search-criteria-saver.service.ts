@@ -34,22 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
+import { SearchCriteriaHistory } from 'ui-frontend-common';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SearchCriteriaSaverService extends SearchService<any> {
-  constructor(
-    private archiveApiService: ArchiveApiService,
-    http: HttpClient,
-  ) {
-    super(http, archiveApiService, 'ALL');
-  }
+export class SearchCriteriaSaverService {
+  constructor(private archiveApiService: ArchiveApiService) {}
+
   saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.archiveApiService.saveSearchCriteriaHistory(searchCriteriaHistory);
   }

@@ -24,7 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -63,11 +62,10 @@ export class ProjectsService extends SearchService<Project> {
   ];
 
   constructor(
-    http: HttpClient,
     private projectsApiService: ProjectsApiService,
     private translationService: TranslateService,
   ) {
-    super(http, projectsApiService, 'ALL');
+    super(projectsApiService, 'ALL');
   }
 
   public create(project: Project): Observable<any> {

@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Criterion, Group, Operators, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 
 import { GroupApiService } from '../core/api/group-api.service';
 
@@ -52,9 +51,8 @@ export class GroupService extends SearchService<Group> {
   constructor(
     private groupApi: GroupApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, groupApi);
+    super(groupApi);
   }
 
   create(group: Group) {

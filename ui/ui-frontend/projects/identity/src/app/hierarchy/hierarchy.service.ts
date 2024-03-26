@@ -1,5 +1,4 @@
-import { HttpParams } from '@angular/common/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
@@ -49,10 +48,9 @@ export class HierarchyService extends SearchService<Profile> {
 
   constructor(
     private profileApi: ProfileApiService,
-    http: HttpClient,
     private snackBarService: VitamUISnackBarService,
   ) {
-    super(http, profileApi, 'ALL');
+    super(profileApi, 'ALL');
   }
 
   setTenantId(tenantIdentifier: number) {

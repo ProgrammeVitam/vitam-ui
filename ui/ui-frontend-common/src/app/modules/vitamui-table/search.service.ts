@@ -52,7 +52,6 @@ export class SearchService<T extends Id> {
   protected optionalValues: BehaviorSubject<Map<string, any>> = new BehaviorSubject(new Map());
 
   constructor(
-    protected http: HttpClient,
     protected paginatedApi: PaginatedApi<T>,
     protected embedded?: string,
     protected headers?: HttpHeaders,

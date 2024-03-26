@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -51,9 +51,8 @@ export class IngestContractService extends SearchService<IngestContract> {
   constructor(
     private ingestContractApi: IngestContractApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, ingestContractApi, 'ALL');
+    super(ingestContractApi, 'ALL');
   }
 
   get(id: string): Observable<IngestContract> {

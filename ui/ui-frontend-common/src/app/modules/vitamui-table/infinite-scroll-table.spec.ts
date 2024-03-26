@@ -45,7 +45,7 @@ import { SearchService } from './search.service';
 
 class SearchServiceMock extends SearchService<any> {
   constructor() {
-    super(null, null);
+    super(null);
   }
 
   search(): Observable<any[]> {

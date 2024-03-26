@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
@@ -44,9 +44,8 @@ export class ManagementContractService extends SearchService<ManagementContract>
     private managementContractApi: ManagementContractsApiService,
     private snackBarService: VitamUISnackBarService,
     private translateService: TranslateService,
-    http: HttpClient,
   ) {
-    super(http, managementContractApi, 'ALL');
+    super(managementContractApi, 'ALL');
   }
 
   get(id: string): Observable<ManagementContract> {

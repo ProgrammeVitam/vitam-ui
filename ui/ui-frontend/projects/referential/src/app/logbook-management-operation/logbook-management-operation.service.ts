@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -52,9 +51,8 @@ export class LogbookManagementOperationService extends SearchService<any> {
   constructor(
     private logbookManagementOperationApiService: LogbookManagementOperationApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, logbookManagementOperationApiService, 'ALL');
+    super(logbookManagementOperationApiService, 'ALL');
   }
 
   getBaseUrl() {

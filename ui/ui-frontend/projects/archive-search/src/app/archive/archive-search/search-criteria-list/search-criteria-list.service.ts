@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
@@ -44,11 +43,8 @@ import { ArchiveApiService } from '../../../core/api/archive-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaListService extends SearchService<any> {
-  constructor(
-    private archiveApiService: ArchiveApiService,
-    http: HttpClient,
-  ) {
-    super(http, archiveApiService, 'ALL');
+  constructor(private archiveApiService: ArchiveApiService) {
+    super(archiveApiService, 'ALL');
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {

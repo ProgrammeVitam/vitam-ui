@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -51,9 +51,8 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   constructor(
     private securityProfileApiService: SecurityProfileApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, securityProfileApiService, 'ALL');
+    super(securityProfileApiService, 'ALL');
   }
 
   get(id: string): Observable<SecurityProfile> {

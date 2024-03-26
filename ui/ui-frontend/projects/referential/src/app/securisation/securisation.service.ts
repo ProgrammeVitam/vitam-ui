@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { download, Event } from 'projects/vitamui-library/src/public-api';
 import { SearchService } from 'ui-frontend-common';
@@ -45,11 +45,8 @@ import { OperationApiService } from '../core/api/operation-api.service';
   providedIn: 'root',
 })
 export class SecurisationService extends SearchService<Event> {
-  constructor(
-    private operationApiService: OperationApiService,
-    http: HttpClient,
-  ) {
-    super(http, operationApiService, 'ALL');
+  constructor(private operationApiService: OperationApiService) {
+    super(operationApiService, 'ALL');
   }
 
   download(id: string, accessContractId: string) {
