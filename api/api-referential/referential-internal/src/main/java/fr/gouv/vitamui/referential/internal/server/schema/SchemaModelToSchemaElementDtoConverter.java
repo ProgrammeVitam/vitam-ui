@@ -39,6 +39,8 @@ import fr.gouv.vitamui.referential.common.model.DataType;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaResponse, SchemaElementDto> {
 
     @Override
@@ -81,6 +83,9 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
     }
 
     private Collection mapCollections(final SchemaResponse schemaResponse) {
+        if (isNull(schemaResponse.getCollection())) {
+            return null;
+        }
         if (Objects.equals(schemaResponse.getCollection(), "Unit")) {
             return Collection.ARCHIVE_UNIT;
         }

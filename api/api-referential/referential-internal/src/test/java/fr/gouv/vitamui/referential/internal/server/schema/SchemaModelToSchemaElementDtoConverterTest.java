@@ -65,31 +65,24 @@ class SchemaModelToSchemaElementDtoConverterTest {
         schemaResponse.setType(SchemaType.KEYWORD);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.STRING);
-
         schemaResponse.setType(SchemaType.TEXT);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.STRING);
-
         schemaResponse.setType(SchemaType.ENUM);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.STRING);
-
         schemaResponse.setType(SchemaType.DATE);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.DATETIME);
-
         schemaResponse.setType(SchemaType.OBJECT);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.OBJECT);
-
         schemaResponse.setType(SchemaType.BOOLEAN);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.BOOLEAN);
-
         schemaResponse.setType(SchemaType.DOUBLE);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.DOUBLE);
-
         schemaResponse.setType(SchemaType.LONG);
         Assertions.assertThat(this.converter.convert(schemaResponse)).extracting(DATE_TYPE_KEY)
             .isEqualTo(DataType.LONG);
@@ -114,8 +107,32 @@ class SchemaModelToSchemaElementDtoConverterTest {
         schemaResponse.setApiPath(null);
 
         final SchemaElementDto schemaElementDto = this.converter.convert(schemaResponse);
+
         Assertions.assertThat(schemaElementDto.getPath()).isEqualTo("Invoice");
         Assertions.assertThat(schemaElementDto.getApiPath()).isEqualTo(schemaElementDto.getPath());
+    }
+
+    @Test
+    public void handle_collection_null() {
+        final SchemaResponse schemaResponse = new SchemaResponse();
+        schemaResponse.setPath("Invoice");
+        schemaResponse.setStringSize(null);
+        schemaResponse.setCardinality(SchemaCardinality.MANY);
+        schemaResponse.setFieldName("Invoice");
+        schemaResponse.setShortName("Invoice");
+        schemaResponse.setDescription("");
+        schemaResponse.setSedaField("Invoice");
+        schemaResponse.setApiField("Invoice");
+        schemaResponse.setType(SchemaType.OBJECT);
+        schemaResponse.setOrigin(SchemaOrigin.EXTERNAL);
+        schemaResponse.setCollection(null);
+        schemaResponse.setSedaVersions(List.of("2.1", "2.2", "2.3"));
+        schemaResponse.setCategory(SchemaCategory.OTHER);
+        schemaResponse.setApiPath(null);
+
+        final SchemaElementDto schemaElementDto = this.converter.convert(schemaResponse);
+
+        Assertions.assertThat(schemaElementDto.getCollection()).isNull();
     }
 
 }
