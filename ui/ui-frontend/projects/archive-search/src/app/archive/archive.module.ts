@@ -58,7 +58,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
@@ -146,7 +145,6 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     CommonModule,
   ],
   providers: [
-    ArchiveApiService,
     ArchiveSharedDataService,
     DatePipe,
     TranslateService,
