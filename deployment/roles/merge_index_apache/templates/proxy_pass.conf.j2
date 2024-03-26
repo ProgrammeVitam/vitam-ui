@@ -1,0 +1,13 @@
+# VitamUI ProxyPass
+{% for host in groups['hosts_browse'] %}
+    ProxyPass /nodes/{{ host }}/browse http://{{ hostvars[host]['ip_admin'] }}/browse/
+    ProxyPassReverse  /nodes/{{ host }}/browse http://{{ hostvars[host]['ip_admin'] }}/browse/
+{% endfor %}
+
+{% for host in groups['hosts_vitamui_mongod'] %}
+{% if hostvars[host]['mongo_express_enabled'] | default(false) | bool == true %}
+    # MONGO-EXPRESS
+    ProxyPass {{ mongo_express.baseuri }} http://{{ hostvars[host]['ip_admin'] }}:{{ mongo_express.port | default('8081') }}{{ mongo_express.baseuri }}
+    ProxyPassReverse {{ mongo_express.baseuri }} http://{{ hostvars[host]['ip_admin'] }}:{{ mongo_express.port | default('8081') }}{{ mongo_express.baseuri }}
+{% endif %}
+{% endfor %}
