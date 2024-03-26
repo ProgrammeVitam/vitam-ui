@@ -49,7 +49,7 @@
       "NONE": "None",
       "YES": "Yes",
       "NO": "No",
-      "SELECT_MANAGEMENT_CONTRACT": "Select a management contract"
+      "SELECT_MANAGEMENT_CONTRACT": "None"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Contract identifier",
