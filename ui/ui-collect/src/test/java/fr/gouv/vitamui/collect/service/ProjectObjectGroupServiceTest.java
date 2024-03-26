@@ -53,8 +53,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum.BINARYMASTER;
-import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum.DISSEMINATION;
+import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType.BINARYMASTER;
+import static fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType.DISSEMINATION;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
