@@ -360,7 +360,8 @@ public class CasInternalService {
 
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
-            Optional<ProvidedUserDto> providedUser = this.provisionUser(loginEmail, idp, userIdentifier);
+            Optional<ProvidedUserDto> providedUser =
+                this.provisionUser(loginEmail, loginCustomerId, idp, userIdentifier);
             if (loginEmail.isBlank() && providedUser.isPresent()) {
                 loginEmail = providedUser.get().getEmail();
             }
@@ -372,13 +373,18 @@ public class CasInternalService {
     /**
      * Method to perform auto provisioning
      *
-     * @param email
+     * @param loginEmail
+     * @param loginCustomerId
      * @param idp
      * @param userIdentifier
      */
-    public Optional<ProvidedUserDto> provisionUser(String email, final String idp, final String userIdentifier) {
+    public Optional<ProvidedUserDto> provisionUser(String loginEmail, String loginCustomerId, final String idp,
+        final String userIdentifier) {
         final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
-        String customerId = identityProvider.getCustomerId();
+
+        Assert.isTrue(loginCustomerId.equals(identityProvider.getCustomerId()),
+            "CustomerId mismatch. LoginCustomerId : " + loginCustomerId
+                + ", IDP customerId: " + identityProvider.getCustomerId());
 
         // Do nothing is autoProvisioning is disabled
         if (!identityProvider.isAutoProvisioningEnabled()) {
@@ -387,38 +393,42 @@ public class CasInternalService {
 
         Optional<ProvidedUserDto> providedUser = Optional.empty();
 
-        if (StringUtils.isBlank(email)) {
+        if (StringUtils.isBlank(loginEmail)) {
             providedUser =
-                Optional.of(getProvidedUser(email, idp, userIdentifier, null, customerId));
-            email = providedUser.get().getEmail();
+                Optional.of(getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null, loginCustomerId));
+            loginEmail = providedUser.get().getEmail();
         }
 
-        final boolean userExist = userRepository.existsByEmailIgnoreCaseAndCustomerId(email, customerId);
+        final boolean userExist = userRepository.existsByEmailIgnoreCaseAndCustomerId(loginEmail, loginCustomerId);
         // Try to update user
         if (userExist) {
-            final UserDto user = internalUserService.findUserByEmailAndCustomerId(email, customerId);
+            final UserDto user = internalUserService.findUserByEmailAndCustomerId(loginEmail, loginCustomerId);
             if (user.isAutoProvisioningEnabled()) {
                 updateUser(user,
-                    getProvidedUser(email, idp, userIdentifier, user.getGroupId(), customerId));
+                    getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, user.getGroupId(),
+                        loginCustomerId));
             }
         }
         // Try to create a new user
         else {
             if (providedUser.isEmpty()) {
                 providedUser =
-                    Optional.of(getProvidedUser(email, idp, userIdentifier, null, customerId));
+                    Optional.of(
+                        getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null, loginCustomerId));
             }
-            createNewUser(email, providedUser.get());
+            createNewUser(loginEmail, providedUser.get());
         }
 
         return providedUser;
     }
 
-    private ProvidedUserDto getProvidedUser(String email, String idp, String userIdentifier, String groupId,
+    private ProvidedUserDto getProvidedUser(String email, String loginCustomerId, String idp, String userIdentifier,
+        String groupId,
         String customerId) {
         ProvidedUserDto userProvidedInfo;
         userProvidedInfo =
-            provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
+            provisioningInternalService.getUserInformation(idp, email, loginCustomerId, groupId, null, userIdentifier,
+                customerId);
 
         if (Objects.isNull(userProvidedInfo)) {
             throw new NotFoundException(String.format(
