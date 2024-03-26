@@ -22,7 +22,7 @@ hosts_vitamui_reverseproxy
 
 [hosts_vitamui_reverseproxy]
 # EDIT: Mandatory
-# WARNING: Do not colocate with [hosts_browse] and [hosts_reverse] from Vitam when using reverse: nginx
+# WARNING: Do not colocate with [hosts_browse] and [reverse] from Vitam when using reverse: nginx
 localhost
 
 ################################################################################
@@ -207,6 +207,8 @@ hosts_vitamui_consul_server
 [vitam:children]
 hosts_consul_server
 hosts_elasticsearch_log
+hosts_logstash
+reverse
 
 # MINIMUM REQUIRED IN ZONE VITAM
 [hosts_consul_server]
@@ -217,6 +219,9 @@ localhost
 
 [hosts_logstash]
 localhost
+
+[reverse]
+
 
 ################################################################################
 # ZONE TOOLS
