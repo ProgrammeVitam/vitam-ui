@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.vitam.api.model;
 
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,28 +49,26 @@ public enum ObjectQualifierType {
     THUMBNAIL("Thumbnail"),
     TEXTCONTENT("TextContent");
 
-  public static final List<String> allValuesOrdered =
-      Arrays.stream(ObjectQualifierType.values())
-          .map(ObjectQualifierType::getValue)
-          .collect(Collectors.toList());
+    public static final List<String> allValuesOrdered = Arrays.stream(ObjectQualifierType.values())
+        .map(ObjectQualifierType::getValue)
+        .collect(Collectors.toList());
 
-  private final String value;
+    private final String value;
 
-  ObjectQualifierType(String value) {
-    this.value = value;
-  }
-
-  public static ObjectQualifierType fromValue(String value) {
-    for (ObjectQualifierType objectQualifierType : ObjectQualifierType.values()) {
-      if (objectQualifierType.getValue().equalsIgnoreCase(value)) {
-        return objectQualifierType;
-      }
+    ObjectQualifierType(String value) {
+        this.value = value;
     }
-    throw new BadRequestException(
-        "the object qualifier type " + value + " specified is not a valid one");
-  }
 
-  public String getValue() {
-    return value;
-  }
+    public String getValue() {
+        return value;
+    }
+
+    public static ObjectQualifierType fromValue(String value) {
+        for (ObjectQualifierType objectQualifierTypeEnum : ObjectQualifierType.values()) {
+            if (objectQualifierTypeEnum.getValue().equalsIgnoreCase(value)) {
+                return objectQualifierTypeEnum;
+            }
+        }
+        throw new BadRequestException("the object qualifier type " + value + " specified is not a valid one");
+    }
 }

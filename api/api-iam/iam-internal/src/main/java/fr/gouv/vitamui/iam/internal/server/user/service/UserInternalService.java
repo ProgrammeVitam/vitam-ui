@@ -566,9 +566,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         Assert.isTrue(!partialDto.containsKey("identifier"), message + user.getId() + " cannot patch identifier");
         Assert.isTrue(!partialDto.containsKey("readonly"), message + user.getId() + " cannot patch readonly");
         Assert.isTrue(!partialDto.containsKey("level"), message + user.getId() + " cannot patch level");
-    Assert.isTrue(
-        !UserStatusEnum.BLOCKED.toString().equals(partialDto.get("status")),
-        "User can't be blocked by API, this action need a special workflow for be realised");
+        Assert.isTrue(
+            !UserStatusEnum.BLOCKED.toString().equals(partialDto.get("status")),
+            "User can't be blocked by API, this action need a special workflow for be realised");
         Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "customerId")), message);
 
         checkLevel(user.getLevel(), message);
