@@ -3,11 +3,11 @@
     path: "/var/www/html-{{ vitam_site_name }}/index.html"
     marker: "          <!-- {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI LINKS -->"
     insertafter: <!-- Vitam UI - Liens -->
-    block: "{{ lookup('template', 'apache/page/index_links.html.j2') }}"
+    block: "{{ lookup('template', 'index_links.html.j2') }}"
 
 - name: Add debug information and Browser link
   blockinfile:
     path: "/var/www/html-{{ vitam_site_name }}/index.html"
     marker: "          <!-- {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI DEBUG -->"
     insertafter: <!-- Vitam UI - Debug -->
-    block: "{{ lookup('template', 'apache/page/index_debug.html.j2') }}"
+    block: "{{ lookup('template', 'index_debug.html.j2') }}"

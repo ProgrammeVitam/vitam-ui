@@ -1,0 +1,37 @@
+#jinja2: lstrip_blocks: True
+          <div class="panel panel-default col-md-12 container">
+            <a class="panel-header no-toggle" href="#">
+              <h2>Vitam UI - Debug</h2>
+            </a>
+            <div class="panel-body">
+              {% for item in groups['hosts_vitamui'] %}
+              <div class="row component-line">
+                <div class="col-md-3">{{ item }}</div>
+                <div class="col-md-2">{{ hostvars[item]['ip_admin'] }}</div>
+                <div class="col-md-2">
+                  {% for group in groups %}
+                  {% if item in groups[group] %}
+                  {% if (group not in ('hosts','all','vitam','prometheus','reverse','elasticsearch','mongo_common')) and (not(group is search('^zone'))) %}
+                  {{ group|regex_replace('hosts_', '')| replace('_','-') }}<br/>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="col-md-2">
+                  {% for group in groups %}
+                  {% if group is search('^zone') %}
+                  {% if item in groups[group] %}
+                  {{ group| replace('_',' ') }}<br/>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </div>
+                {% if item in groups['hosts_browse'] %}
+                <div class="col-md-2">
+                  <a href="https://{{ vitam_reverse_external_dns }}/nodes/{{ item }}/browse" class="btn btn-primary btn-xs" target="_blank">Browser</a>
+                </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
