@@ -42,7 +42,9 @@ import { map, take } from 'rxjs/operators';
 import { Group } from 'ui-frontend-common';
 import { GroupService } from './group.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GroupResolver implements Resolve<Group> {
   constructor(
     private groupService: GroupService,

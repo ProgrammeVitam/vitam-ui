@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { AgencyCreateComponent } from './agency-create.component';
-import { AgencyCreateValidators } from './agency-create.validators';
 
 @NgModule({
   imports: [
@@ -64,6 +63,5 @@ import { AgencyCreateValidators } from './agency-create.validators';
   ],
   declarations: [AgencyCreateComponent],
   entryComponents: [AgencyCreateComponent],
-  providers: [AgencyCreateValidators],
 })
 export class AgencyCreateModule {}

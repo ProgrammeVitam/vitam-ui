@@ -42,7 +42,9 @@ import { map, take } from 'rxjs/operators';
 import { Customer } from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CustomerResolver implements Resolve<Customer> {
   constructor(
     private customerService: CustomerService,

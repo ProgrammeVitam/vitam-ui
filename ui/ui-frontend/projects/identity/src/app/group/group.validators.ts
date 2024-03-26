@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { GroupService } from './group.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GroupValidators {
   private debounceTime = 400;
 

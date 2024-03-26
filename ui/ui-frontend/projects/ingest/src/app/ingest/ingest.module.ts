@@ -48,7 +48,6 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { UploadModule } from '../core/common/upload.module';
 import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { IngestRoutingModule } from './ingest-routing.module';
@@ -73,6 +72,5 @@ import { IngestComponent } from './ingest.component';
     MatTooltipModule,
   ],
   declarations: [IngestComponent],
-  providers: [VitamUISnackBar],
 })
 export class IngestModule {}

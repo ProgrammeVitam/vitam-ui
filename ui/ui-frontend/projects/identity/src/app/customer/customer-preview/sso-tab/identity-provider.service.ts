@@ -43,7 +43,9 @@ import { Injectable } from '@angular/core';
 
 import { ProviderApiService } from './provider-api.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class IdentityProviderService {
   updated = new Subject<IdentityProvider>();
 

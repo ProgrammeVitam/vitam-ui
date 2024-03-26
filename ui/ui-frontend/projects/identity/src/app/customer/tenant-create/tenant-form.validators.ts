@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { TenantService } from '../tenant.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TenantFormValidators {
   private debounceTime = 400;
 

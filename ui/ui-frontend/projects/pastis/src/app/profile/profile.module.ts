@@ -86,7 +86,6 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     FilterByStringNamePipe,
     FilterByTypePipe,
   ],
-  providers: [],
   declarations: [
     CreateNoticeChoiceComponent,
     CreateProfileComponent,

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
@@ -127,6 +127,7 @@ const themeServiceClass = environment.standalone ? StandaloneThemeService : Them
     },
     { provide: StartupService, useClass: startupServiceClass },
     { provide: ThemeService, useClass: themeServiceClass },
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

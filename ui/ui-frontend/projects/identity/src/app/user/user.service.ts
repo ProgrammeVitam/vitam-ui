@@ -52,7 +52,9 @@ import {
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService extends SearchService<User> {
   userUpdated = new Subject<User>();
 

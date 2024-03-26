@@ -34,7 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -70,6 +70,5 @@ import { CollectRoutingModule } from './collect-routing.module';
     MatTabsModule,
     MatNativeDateModule,
   ],
-  providers: [DatePipe],
 })
 export class CollectModule {}

@@ -65,7 +65,6 @@ import { HomepageMessageComponent } from './homepage-message-tab/homepage-messag
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-create/identity-provider-create.component';
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
-import { IdentityProviderService } from './sso-tab/identity-provider.service';
 import { SsoTabComponent } from './sso-tab/sso-tab.component';
 
 @NgModule({
@@ -103,6 +102,5 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
   ],
   exports: [CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
   entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
-  providers: [IdentityProviderService],
 })
 export class CustomerPreviewModule {}

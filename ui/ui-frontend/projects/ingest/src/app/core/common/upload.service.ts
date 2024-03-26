@@ -42,7 +42,9 @@ import { IngestApiService } from '../api/ingest-api.service';
 import { IngestInfo, IngestList, IngestUploadStatus } from './ingest-list';
 import { IngestType } from './ingest-type.enum';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UploadService {
   uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 

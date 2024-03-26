@@ -46,7 +46,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { VitamUICommonModule, VitamUIFieldErrorModule } from 'ui-frontend-common';
-import { TenantService } from '../../../../../identity/src/app/customer/tenant.service';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextEditComponent } from './context-edit.component';
@@ -69,6 +68,5 @@ import { ContextEditComponent } from './context-edit.component';
   ],
   declarations: [ContextEditComponent],
   entryComponents: [ContextEditComponent],
-  providers: [TenantService],
 })
 export class ContextEditModule {}

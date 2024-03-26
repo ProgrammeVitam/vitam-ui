@@ -40,7 +40,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { ArchiveSharedDataService } from './archive-shared-data.service';
 import { ManagementRulesSharedDataService } from './management-rules-shared-data.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RuleValidator {
   private debounceTime = 400;
   ruleCategorySelected: string;

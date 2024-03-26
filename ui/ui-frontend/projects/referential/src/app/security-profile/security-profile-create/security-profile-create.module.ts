@@ -48,7 +48,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
-import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
 
 @NgModule({
@@ -68,6 +67,5 @@ import { SecurityProfileEditPermissionModule } from './security-profile-edit-per
   ],
   declarations: [SecurityProfileCreateComponent],
   entryComponents: [SecurityProfileCreateComponent],
-  providers: [SecurityProfileCreateValidators],
 })
 export class SecurityProfileCreateModule {}

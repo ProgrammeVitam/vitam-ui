@@ -38,6 +38,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -47,12 +49,9 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
+import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { CustomerColorsInputModule } from './customer-colors-input/customer-colors-input.module';
 import { CustomerCreateComponent } from './customer-create.component';
-import { CustomerCreateValidators } from './customer-create.validators';
-
-import { MatDialogModule } from '@angular/material/dialog';
-import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 
 @NgModule({
   imports: [
@@ -72,6 +71,5 @@ import { CustomerAlertingComponent } from './customer-alerting/customer-alerting
   ],
   declarations: [CustomerCreateComponent, CustomerAlertingComponent],
   entryComponents: [CustomerCreateComponent, CustomerAlertingComponent],
-  providers: [CustomerCreateValidators],
 })
 export class CustomerCreateModule {}

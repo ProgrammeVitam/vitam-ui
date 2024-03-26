@@ -48,7 +48,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { RuleCreateComponent } from './rule-create.component';
-import { RuleCreateValidators } from './rule-create.validators';
 
 @NgModule({
   imports: [
@@ -66,6 +65,5 @@ import { RuleCreateValidators } from './rule-create.validators';
   ],
   declarations: [RuleCreateComponent],
   entryComponents: [RuleCreateComponent],
-  providers: [RuleCreateValidators],
 })
 export class RuleCreateModule {}

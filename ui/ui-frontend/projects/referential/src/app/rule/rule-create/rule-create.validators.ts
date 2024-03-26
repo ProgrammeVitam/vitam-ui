@@ -40,7 +40,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RuleCreateValidators {
   private debounceTime = 400;
 

@@ -42,18 +42,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { LevelInputModule } from 'ui-frontend-common';
+import { LevelInputModule, VitamUICommonModule } from 'ui-frontend-common';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ProfileCreateModule } from './profile-create/profile-create.module';
 import { ProfileDetailModule } from './profile-detail/profile-detail.module';
 import { ProfileListModule } from './profile-list/profile-list.module';
-import { ProfileResolver } from './profile-resolver.service';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
-import { ProfileService } from './profile.service';
 
 @NgModule({
   imports: [
@@ -73,6 +70,5 @@ import { ProfileService } from './profile.service';
     ProfileRoutingModule,
   ],
   declarations: [ProfileComponent],
-  providers: [ProfileResolver, ProfileService],
 })
 export class ProfileModule {}

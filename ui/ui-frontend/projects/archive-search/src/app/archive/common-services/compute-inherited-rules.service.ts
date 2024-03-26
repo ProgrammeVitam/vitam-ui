@@ -45,7 +45,9 @@ import { ArchiveSearchHelperService } from './archive-search-helper.service';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ComputeInheritedRulesService {
   constructor(
     private archiveSearchHelperService: ArchiveSearchHelperService,

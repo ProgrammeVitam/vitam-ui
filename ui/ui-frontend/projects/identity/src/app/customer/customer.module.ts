@@ -39,25 +39,18 @@ import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { CustomerRoutingModule } from './customer-routing.module';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { CustomerService } from '../core/customer.service';
 import { SharedModule } from '../shared/shared.module';
 import { CustomerCreateModule } from './customer-create';
 import { CustomerListModule } from './customer-list';
 import { CustomerPreviewModule } from './customer-preview';
 import { CustomerPopupComponent } from './customer-preview/customer-popup.component';
-import { CustomerResolver } from './customer-resolver.service';
+import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
-import { CustomerDataService } from './customer.data.service';
 import { OwnerCreateModule } from './owner-create/owner-create.module';
 import { OwnerPreviewModule } from './owner-preview/owner-preview.module';
-import { OwnerResolver } from './owner-resolver.service';
-import { OwnerService } from './owner.service';
 import { TenantCreateModule } from './tenant-create/tenant-create.module';
-import { TenantResolver } from './tenant-resolver.service';
-import { TenantService } from './tenant.service';
 
 @NgModule({
   imports: [
@@ -77,6 +70,5 @@ import { TenantService } from './tenant.service';
   ],
   declarations: [CustomerComponent, CustomerPopupComponent],
   exports: [],
-  providers: [CustomerResolver, CustomerService, CustomerDataService, OwnerResolver, OwnerService, TenantResolver, TenantService],
 })
 export class CustomerModule {}

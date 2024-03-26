@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { HierarchyService } from './hierarchy.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProfileValidators {
   private debounceTime = 400;
 

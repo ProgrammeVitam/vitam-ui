@@ -39,7 +39,9 @@ import { ArchiveService } from '../archive.service';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UpdateUnitManagementRuleService {
   constructor(
     private archiveService: ArchiveService,

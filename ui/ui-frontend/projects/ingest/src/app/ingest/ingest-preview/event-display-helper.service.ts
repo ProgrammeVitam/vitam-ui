@@ -37,7 +37,9 @@
 import { Injectable } from '@angular/core';
 import { Event } from './event';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class EventDisplayHelperService {
   eventData: any;
 

@@ -44,7 +44,9 @@ import { OwnerService } from '../owner.service';
 export const OWNER_CODE_MAX_LENGTH = 15;
 export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OwnerFormValidators {
   private debounceTime = 400;
 

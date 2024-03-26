@@ -46,7 +46,6 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../group-attribution/group-attribution.module';
 import { UserCreateComponent } from './user-create.component';
-import { UserCreateValidators } from './user-create.validators';
 
 @NgModule({
   imports: [
@@ -63,6 +62,5 @@ import { UserCreateValidators } from './user-create.validators';
   ],
   declarations: [UserCreateComponent],
   entryComponents: [UserCreateComponent],
-  providers: [UserCreateValidators],
 })
 export class UserCreateModule {}

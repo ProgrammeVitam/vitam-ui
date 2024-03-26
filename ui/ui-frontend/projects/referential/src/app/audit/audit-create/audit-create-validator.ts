@@ -41,7 +41,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AuditService } from '../audit.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuditCreateValidators {
   private debounceTime = 400;
 
