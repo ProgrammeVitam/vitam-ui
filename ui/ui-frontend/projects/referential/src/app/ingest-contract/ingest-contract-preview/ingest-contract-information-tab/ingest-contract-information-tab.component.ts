@@ -140,7 +140,8 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const currentFormValue = { ...this.form.getRawValue(), managementContractId: this.form.get('managementContractId').value || '' };
+    const unchanged = JSON.stringify(diff(currentFormValue, this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
