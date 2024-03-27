@@ -44,9 +44,8 @@ package fr.gouv.vitamui.cas.util;
 public abstract class Constants {
 
     public static final String PROVIDED_USERNAME = "providedUsername";
-
-    // surrogation:
-    public static final String SURROGATE = "surrogate";
+    public static final String SHOW_SURROGATE_CUSTOMER_NAME = "surrogateCustomerName";
+    public static final String SHOW_SURROGATE_CUSTOMER_CODE = "surrogateCustomerCode";
 
     public static final String LOGIN_USER_EMAIL_PARAM = "username";
     public static final String LOGIN_SURROGATE_EMAIL_PARAM = "surrogateEmail";
