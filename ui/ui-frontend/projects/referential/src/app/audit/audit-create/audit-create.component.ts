@@ -37,8 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
@@ -49,6 +48,7 @@ import {
   StartupService,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
+import { FilingPlanMode } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditAction, AuditType } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';

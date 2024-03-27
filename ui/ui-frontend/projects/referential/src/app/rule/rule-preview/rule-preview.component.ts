@@ -37,9 +37,9 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { Rule, RuleService } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 
 @Component({

@@ -38,8 +38,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import { ExternalParameters, ExternalParametersService, IngestContract, VitamUISnackBarService } from 'ui-frontend-common';
+import { SearchUnitApiService } from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({

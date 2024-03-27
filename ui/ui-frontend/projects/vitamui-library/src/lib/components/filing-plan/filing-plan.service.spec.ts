@@ -2,9 +2,9 @@
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
-import { inject, TestBed } from '@angular/core/testing';
-import { Node } from 'projects/vitamui-library/src/public-api';
+import { TestBed, inject } from '@angular/core/testing';
 import { BASE_URL, DescriptionLevel, FileType, UnitType } from 'ui-frontend-common';
+import { Node } from 'vitamui-library';
 import { FilingPlanService } from './filing-plan.service';
 
 describe('FilingPlanService', () => {
@@ -73,7 +73,7 @@ describe('FilingPlanService', () => {
     };
     children[1].children.push(subChild);
 
-    service.loadTree(42, '', 'prefix').subscribe((tree) => {
+    service.loadTree(42, 'access-contract', 'prefix').subscribe((tree) => {
       console.log('Result: ', tree);
       console.log('Expected: ', rootNode);
       expect(tree).toEqual(rootNode);

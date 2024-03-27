@@ -37,8 +37,8 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent, Ontology } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
+import { ConfirmActionComponent, Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
 

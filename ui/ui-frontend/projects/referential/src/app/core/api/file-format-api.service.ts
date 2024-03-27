@@ -38,8 +38,8 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { FileFormat } from '../../../../../vitamui-library/src/lib/models/file-format';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { FileFormat } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 

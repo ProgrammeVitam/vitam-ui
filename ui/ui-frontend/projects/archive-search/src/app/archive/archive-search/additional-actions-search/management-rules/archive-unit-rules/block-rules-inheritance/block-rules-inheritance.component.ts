@@ -29,9 +29,10 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, Rule, RuleService, SearchCriteriaDto } from 'ui-frontend-common';
+import { Rule, RuleService, SearchCriteriaDto, diff } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
@@ -86,7 +87,7 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
     this.ruleDetailsForm = this.formBuilder.group({
       rule: [
         null,
-        [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+        [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       ruleName: [{ value: null, disabled: true }],

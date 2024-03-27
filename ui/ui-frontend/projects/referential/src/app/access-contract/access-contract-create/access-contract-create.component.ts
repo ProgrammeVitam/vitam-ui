@@ -37,7 +37,6 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilingPlanMode, Status } from 'projects/vitamui-library/src/public-api';
 import {
   AccessContract,
   Agency,
@@ -48,13 +47,14 @@ import {
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
 } from 'ui-frontend-common';
+import { FilingPlanMode, Status } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
+import { RULE_TYPES } from '../../rule/rules.constants';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { RULE_TYPES } from '../../rule/rules.constants';
 
-import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-access-contract-create',

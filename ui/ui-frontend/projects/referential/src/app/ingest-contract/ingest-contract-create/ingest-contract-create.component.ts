@@ -38,7 +38,6 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
@@ -51,6 +50,7 @@ import {
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
 } from 'ui-frontend-common';
+import { FilingPlanMode } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';

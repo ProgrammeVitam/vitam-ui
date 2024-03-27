@@ -42,8 +42,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 
 import { SharedModule } from '../shared/shared.module';
 import { OntologyCreateModule } from './ontology-create/ontology-create.module';

@@ -42,7 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadModule } from 'ng2-file-upload';
-import { VitamUIInputModule } from 'projects/vitamui-library/src/public-api';
+import { VitamUIInputModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { PastisMaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';

@@ -38,14 +38,14 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Ontology } from 'projects/vitamui-library/src/lib/models/ontology';
+import { TranslateService } from '@ngx-translate/core';
 import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { Ontology } from 'vitamui-library';
+import { FileTypes } from 'vitamui-library';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
-import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
-import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
-import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology',

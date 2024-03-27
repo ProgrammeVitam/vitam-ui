@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'ui-frontend-common';

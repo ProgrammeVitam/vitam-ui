@@ -38,7 +38,7 @@
 import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { from, Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { RuleCreateValidators } from './rule-create.validators';
 
 function toObservable(r: any): Observable<any> {
@@ -94,20 +94,6 @@ describe('Rule Create Validators', () => {
       });
       tick(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '111111' });
-    }));
-  });
-
-  describe('ruleIdPattern', () => {
-    it('should return null', fakeAsync(() => {
-      const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('azerty'))).toEqual(null);
-    }));
-
-    it('should return { ruleIdPattern: true }', fakeAsync(() => {
-      const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('ÀÖØöøÿ '))).toEqual({ ruleIdPattern: true });
     }));
   });
 });

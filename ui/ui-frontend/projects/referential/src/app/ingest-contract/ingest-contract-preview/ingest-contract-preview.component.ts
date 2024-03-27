@@ -37,9 +37,9 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { IngestContract } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';

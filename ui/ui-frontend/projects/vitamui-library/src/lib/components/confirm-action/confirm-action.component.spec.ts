@@ -36,9 +36,17 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 import { ConfirmActionComponent } from './confirm-action.component';
+
+const translations: { [key: string]: string } = {};
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
 
 describe('ConfirmActionComponent', () => {
   let component: ConfirmActionComponent;
@@ -46,9 +54,13 @@ describe('ConfirmActionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useValue: FakeLoader },
+        }),
+      ],
       declarations: [ConfirmActionComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

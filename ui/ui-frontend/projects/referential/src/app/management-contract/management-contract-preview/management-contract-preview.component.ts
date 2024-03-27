@@ -37,10 +37,10 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ManagementContract } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';

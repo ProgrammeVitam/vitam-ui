@@ -68,8 +68,8 @@ button.primary {
   .main-content {
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-bottom: 15px;
 
     .row {
@@ -81,7 +81,7 @@ button.primary {
     display: flex;
     margin-top: 25px !important;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 
     .line {
       display: flex;

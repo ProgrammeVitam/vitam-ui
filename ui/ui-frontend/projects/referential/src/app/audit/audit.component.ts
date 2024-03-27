@@ -38,11 +38,11 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Event } from 'projects/vitamui-library/src/public-api';
+import moment from 'moment';
 import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { Event } from 'vitamui-library';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
-import moment from 'moment';
 
 @Component({
   selector: 'app-audit',

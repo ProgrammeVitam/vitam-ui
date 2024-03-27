@@ -38,9 +38,9 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { SecurityProfile } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';

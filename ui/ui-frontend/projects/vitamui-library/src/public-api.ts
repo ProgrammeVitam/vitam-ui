@@ -40,6 +40,7 @@ export * from './lib/models/description-level.enum';
 export * from './lib/models/dsl-query-type.enum';
 export * from './lib/models/event';
 export * from './lib/models/file-format';
+export * from './lib/models/file-types.enum';
 export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
@@ -49,15 +50,15 @@ export * from './lib/models/search-criteria.interface';
 export * from './lib/models/search-query.interface';
 export * from './lib/models/unit.interface';
 export * from './lib/models/year-month-query.interface';
-export * from './lib/models/dsl-query-type.enum';
-export * from './lib/models/file-types.enum';
 
 /* SERVICES */
+export * from './lib/components/filing-plan/filing-plan.service';
 export * from './lib/services/metadata.service';
 export * from './lib/services/spinner-overlay.service';
-export * from './lib/components/filing-plan/filing-plan.service';
 /* UTILS */
 export * from './lib/utils/download';
 export * from './lib/utils/keyword.util';
 export * from './lib/vitamui-library.module';
 export * from './lib/vitamui-library.service';
+
+export * from './lib/validators/management-rule.validators';

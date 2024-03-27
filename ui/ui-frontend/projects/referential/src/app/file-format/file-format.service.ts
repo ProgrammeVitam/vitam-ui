@@ -36,10 +36,10 @@
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 

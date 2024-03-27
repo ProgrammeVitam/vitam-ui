@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,48 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { AgencyService } from '../agency.service';
 import { AgencyListComponent } from './agency-list.component';
+
+const authServiceMock = { user: { proofTenantIdentifier: '1' } };
+const activatedRouteMock = { params: of({ tenantIdentifier: 1 }), paramMap: EMPTY };
 
 describe('AgencyListComponent', () => {
   let component: AgencyListComponent;
   let fixture: ComponentFixture<AgencyListComponent>;
 
-  beforeEach(waitForAsync(() => {
-    const authServiceMock = { user: { proofTenantIdentifier: '1' } };
-    const activatedRouteMock = {
-      params: of({ tenantIdentifier: 1 }),
-      paramMap: EMPTY,
-    };
-    const agencyServiceMock = {
-      search: () => of([]),
-      updated: of(),
-    };
-
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [AgencyListComponent],
-      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: AgencyService, useValue: agencyServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: MatDialog, useValue: {} },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+
+    TestBed.inject(AgencyService);
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AgencyListComponent);

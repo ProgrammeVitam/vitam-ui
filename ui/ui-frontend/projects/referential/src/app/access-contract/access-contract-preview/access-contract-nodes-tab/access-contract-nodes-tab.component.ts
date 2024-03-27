@@ -39,8 +39,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import { AccessContract, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { SearchUnitApiService } from 'vitamui-library';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({
