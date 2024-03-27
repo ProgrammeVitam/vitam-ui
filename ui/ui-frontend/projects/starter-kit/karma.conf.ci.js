@@ -9,6 +9,10 @@ module.exports = function(config){
         coverageIstanbulReporter: {
             dir: 'target/coverage/starter-kit',
             fixWebpackSourcePaths: true
-        }
+        },
+      junitReporter: {
+        outputDir: 'target/junit', // results will be saved as $outputDir/$browserName.xml
+        outputFile: 'starter-kit', // if included, results will be saved as $outputDir/$browserName/$outputFile
+      }
     });
 };

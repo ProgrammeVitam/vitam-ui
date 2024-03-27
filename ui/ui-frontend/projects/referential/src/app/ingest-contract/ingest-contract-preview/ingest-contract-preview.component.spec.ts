@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
 
@@ -48,6 +48,7 @@ describe('IngestContractPreviewComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestContractPreviewComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: IngestContractService, useValue: {} },

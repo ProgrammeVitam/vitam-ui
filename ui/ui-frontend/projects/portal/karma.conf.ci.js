@@ -1,14 +1,18 @@
 var baseConfig = require('../../karma.conf.ci.js');
 
-module.exports = function(config){
-    // Load base config
-    baseConfig(config);
+module.exports = function (config) {
+  // Load base config
+  baseConfig(config);
 
-    // Override base config dir
-    config.set({
-        coverageIstanbulReporter: {
-            dir: 'target/coverage/portal',
-            fixWebpackSourcePaths: true
-        }
-    });
+  // Override base config dir
+  config.set({
+    coverageIstanbulReporter: {
+      dir: 'target/coverage/portal',
+      fixWebpackSourcePaths: true,
+    },
+    junitReporter: {
+      outputDir: 'target/junit', // results will be saved as $outputDir/$browserName.xml
+      outputFile: 'portal', // if included, results will be saved as $outputDir/$browserName/$outputFile
+    },
+  });
 };

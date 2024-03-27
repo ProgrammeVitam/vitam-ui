@@ -34,12 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
@@ -97,21 +95,19 @@ describe('SecurisationCheckTabComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    const activatedRouteMock = {
-      params: of({ tenantIdentifier: 1 }),
-      data: of({ appId: 'TRACEABILITY_APP' }),
-    };
-
-    const accessContractServiceMock = {
-      getAllForTenant: () => of([]),
-    };
-
     TestBed.configureTestingModule({
       declarations: [SecurisationCheckTabComponent],
       providers: [
-        { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: SecurisationService, useValue: {} },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        {
+          provide: ExternalParametersService,
+          useValue: {
+            getUserExternalParameters: () =>
+              of({
+                [ExternalParameters.PARAM_ACCESS_CONTRACT]: 'contractID',
+              }),
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
