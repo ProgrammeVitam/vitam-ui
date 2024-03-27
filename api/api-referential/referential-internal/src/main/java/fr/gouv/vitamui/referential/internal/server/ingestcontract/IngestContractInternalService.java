@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -288,11 +289,20 @@ public class IngestContractInternalService {
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
-            ObjectNode action = JsonHandler.createObjectNode();
-            action.set("$set", fieldsUpdated);
-
             ArrayNode actions = JsonHandler.createArrayNode();
-            actions.add(action);
+            if (partialDto.get("managementContractId") == null) {
+                ObjectNode unsetAction = JsonNodeFactory.instance.objectNode();
+                ArrayNode unsetArray = JsonNodeFactory.instance.arrayNode();
+                unsetArray.add("ManagementContractId");
+                unsetAction.set("$unset", unsetArray);
+                actions.add(unsetAction);
+            }
+
+            if (!fieldsUpdated.isEmpty()) {
+                ObjectNode action = JsonHandler.createObjectNode();
+                action.set("$set", fieldsUpdated);
+                actions.add(action);
+            }
 
             ObjectNode query = JsonHandler.createObjectNode();
             query.set("$action", actions);
