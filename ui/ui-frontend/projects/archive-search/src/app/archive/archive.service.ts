@@ -379,7 +379,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     let headers = new HttpHeaders();
     headers = headers.append('X-Tenant-Id', tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
-    headers = headers.append('fileName', fileName);
+    headers = headers.append('X-Original-Filename', fileName);
 
     return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
   }
