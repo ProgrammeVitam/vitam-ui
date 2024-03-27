@@ -36,17 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.server.context;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -54,14 +43,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
-import fr.gouv.vitam.common.database.builder.request.single.Update;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -81,6 +67,15 @@ import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
 import fr.gouv.vitamui.referential.common.dto.PermissionDto;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ContextInternalService {
@@ -202,7 +197,10 @@ public class ContextInternalService {
     public ContextDto create(VitamContext vitamContext, ContextDto contextDto) {
         try {
             LOGGER.debug("Create Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            vitamContextService.createContext(vitamContext, contextDto);
+            RequestResponse<?> requestResponse = vitamContextService.createContext(vitamContext, contextDto);
+            if (!requestResponse.isOk()) {
+                throw new InternalServerException(requestResponse.toJsonNode().get("message").textValue());
+            }
             return contextDto;
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create context", e);
