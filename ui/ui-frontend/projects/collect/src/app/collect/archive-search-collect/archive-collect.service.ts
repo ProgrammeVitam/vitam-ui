@@ -48,6 +48,7 @@ import {
   ApiUnitObject,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
+  getUnitI18nAttribute,
   Ontology,
   PagedResult,
   SearchArchiveUnitsInterface,
@@ -85,7 +86,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   }
 
   public static fetchAuTitle(unit: any) {
-    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
+    return getUnitI18nAttribute(unit, 'Title');
   }
 
   private static buildPagedResults(response: SearchResponse): PagedResult {

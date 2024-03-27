@@ -245,10 +245,14 @@ public class ArchiveSearchConsts {
 
     /* Title and Description Query fields */
     public static final String TITLE = "Title";
+    // FIXME: shouldn't be used, but how can we search on Title_.*?
     public static final String TITLE_FR = "Title_.fr";
+    // FIXME: shouldn't be used, but how can we search on Title_.*?
     public static final String TITLE_EN = "Title_.en";
     public static final String DESCRIPTION = "Description";
+    // FIXME: shouldn't be used, but how can we search on Description_.*?
     public static final String DESCRIPTION_FR = "Description_.fr";
+    // FIXME: shouldn't be used, but how can we search on Description_.*?
     public static final String DESCRIPTION_EN = "Description_.en";
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";

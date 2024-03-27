@@ -71,6 +71,13 @@ class MockTruncatePipe implements PipeTransform {
   }
 }
 
+@Pipe({ name: 'unitI18n' })
+class MockUnitI18nPipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
+
 describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
@@ -115,7 +122,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, MockDateTimePipe],
+      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, MockDateTimePipe, MockUnitI18nPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },

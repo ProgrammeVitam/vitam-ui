@@ -66,7 +66,7 @@ public class ResultsDto {
     private String title;
 
     @JsonProperty("Title_")
-    private TitleDto title_;
+    private Map<String, String> title_;
 
     @JsonProperty("DescriptionLevel")
     private String descriptionLevel;
@@ -75,7 +75,7 @@ public class ResultsDto {
     private String description;
 
     @JsonProperty("Description_")
-    private DescriptionDto description_;
+    private Map<String, String> description_;
 
     @JsonProperty("OriginatingAgencyArchiveUnitIdentifier")
     private List<String> originatingAgencyArchiveUnitIdentifier = new ArrayList<>();

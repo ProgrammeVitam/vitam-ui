@@ -4,19 +4,7 @@
       <div class="read-only-field" *ngIf="!updateStarted">
         <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
         <div>
-          <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
-            {{ archiveUnit?.Title }}
-          </ng-container>
-          <ng-template #subTitleFr>
-            <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
-              {{ archiveUnit.Title_.fr }}
-            </ng-container>
-          </ng-template>
-          <ng-template #subTitleEn>
-            <ng-container *ngIf="archiveUnit.Title_.en">
-              {{ archiveUnit.Title_.en }}
-            </ng-container>
-          </ng-template>
+          {{ archiveUnit | unitI18n: 'Title' }}
         </div>
       </div>
       <div class="form-control read-only-field" *ngIf="updateStarted">
@@ -58,19 +46,7 @@
       <div class="read-only-field text-justify" *ngIf="!updateStarted">
         <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
         <div>
-          <ng-container *ngIf="archiveUnit?.Description; else descriptionFr">
-            {{ archiveUnit?.Description }}
-          </ng-container>
-          <ng-template #descriptionFr>
-            <ng-container *ngIf="archiveUnit?.Description_?.fr; else descriptionEn">
-              {{ archiveUnit.Description_.fr }}
-            </ng-container>
-          </ng-template>
-          <ng-template #descriptionEn>
-            <ng-container *ngIf="archiveUnit?.Description_?.en">
-              {{ archiveUnit.Description_.en }}
-            </ng-container>
-          </ng-template>
+          {{ archiveUnit | unitI18n: 'Description' }}
         </div>
       </div>
       <div class="form-control" *ngIf="updateStarted">

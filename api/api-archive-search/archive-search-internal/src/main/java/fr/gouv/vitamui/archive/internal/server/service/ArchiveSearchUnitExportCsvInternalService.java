@@ -65,8 +65,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.cleanString;
 
@@ -251,8 +254,7 @@ public class ArchiveSearchUnitExportCsvInternalService {
         }
         ArchiveUnitCsv archiveUnitCsv = new ArchiveUnitCsv();
         BeanUtils.copyProperties(archiveUnit, archiveUnitCsv);
-        archiveUnitCsv.setDescription(
-            archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null);
+        archiveUnitCsv.setDescription(cleanString(getArchiveUnitDescription(archiveUnit)));
         archiveUnitCsv.setDescriptionLevel(
             archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null);
         archiveUnitCsv.setArchiveUnitType(getArchiveUnitType(archiveUnit, language));
@@ -264,22 +266,30 @@ public class ArchiveSearchUnitExportCsvInternalService {
     }
 
     private String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
-        String title = null;
-        if (archiveUnit != null) {
-            if (StringUtils.isEmpty(archiveUnit.getTitle()) || StringUtils.isBlank(archiveUnit.getTitle())) {
-                if (archiveUnit.getTitle_() != null) {
-                    if (!StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) &&
-                        !StringUtils.isBlank(archiveUnit.getTitle_().getFr())) {
-                        title = archiveUnit.getTitle_().getFr();
-                    } else {
-                        title = archiveUnit.getTitle_().getEn();
-                    }
-                }
-            } else {
-                title = archiveUnit.getTitle();
-            }
+        return getArchiveUnitI18nAttribute(archiveUnit, ResultsDto::getTitle, ResultsDto::getTitle_);
+    }
+
+    private String getArchiveUnitDescription(ArchiveUnit archiveUnit) {
+        return getArchiveUnitI18nAttribute(archiveUnit, ResultsDto::getDescription, ResultsDto::getDescription_);
+    }
+
+    private String getArchiveUnitI18nAttribute(ArchiveUnit archiveUnit, Function<ArchiveUnit, String> attributeExtractor, Function<ArchiveUnit, Map<String, String>> i18nAttributeExtractor) {
+        if (archiveUnit == null) {
+            return null;
         }
-        return title;
+        final String attribute = attributeExtractor.apply(archiveUnit);
+        if (StringUtils.isNotBlank(attribute)) {
+            return attribute;
+        }
+        final Map<String, String> attribute_ = i18nAttributeExtractor.apply(archiveUnit);
+        return Stream.of("fr", "en")
+            .map(lang -> attribute_.entrySet().stream().filter(e -> lang.equalsIgnoreCase(e.getKey())).findFirst())
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .map(Map.Entry::getValue)
+            .or(() -> attribute_.values().stream().findFirst())
+            .orElse(null);
     }
 
     private String getArchiveUnitType(ArchiveUnit archiveUnit, String language) {

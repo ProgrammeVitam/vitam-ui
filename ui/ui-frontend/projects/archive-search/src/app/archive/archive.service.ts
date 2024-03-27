@@ -48,6 +48,7 @@ import {
   CriteriaOperator,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
+  getUnitI18nAttribute,
   Ontology,
   PagedResult,
   SearchArchiveUnitsInterface,
@@ -90,7 +91,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   public static fetchAuTitle(unit: any) {
-    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
+    return getUnitI18nAttribute(unit, 'Title');
   }
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number): Observable<FilingHoldingSchemeNode[]> {

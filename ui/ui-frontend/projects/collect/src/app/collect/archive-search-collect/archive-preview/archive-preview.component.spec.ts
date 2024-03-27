@@ -72,6 +72,13 @@ describe('ArchivePreviewComponent', () => {
     }
   }
 
+  @Pipe({ name: 'unitI18n' })
+  class MockUnitI18nPipe implements PipeTransform {
+    transform(value: number): number {
+      return value;
+    }
+  }
+
   beforeEach(waitForAsync(() => {
     const archiveServiceMock = {
       getBaseUrl: () => '/fake-api',
@@ -93,7 +100,7 @@ describe('ArchivePreviewComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [ArchivePreviewComponent, MockTruncatePipe],
+      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

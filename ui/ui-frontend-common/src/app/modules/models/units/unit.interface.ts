@@ -41,9 +41,9 @@ export interface Unit {
 
   originating_agencyName?: string;
   Title?: string;
-  Title_?: any;
+  Title_?: { [key: string]: string };
   Description?: string;
-  Description_?: any;
+  Description_?: { [key: string]: string };
   DescriptionLevel?: DescriptionLevel;
   CreatedDate?: Date;
   StartDate?: Date;
