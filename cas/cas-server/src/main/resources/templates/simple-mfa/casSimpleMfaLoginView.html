@@ -7,15 +7,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <title th:text="#{screen.error.page.title.requestunsupported}">Error - Unsupported Request</title>
 </head>
-<body>
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 
 
 <div layout:fragment="content" class="col">
-  <div class="Text-large-bold" th:utext="#{screen.mfa.sms.login.text1(${mobile})}">
-    Veuillez saisir le&nbsp;<strong> code de validation</strong>&nbsp;reÃ§u par SMS au {0}.
+  <div class="Text-large-bold" th:utext="#{screen.mfa.sms.login.text1}">
+    Vérification de votre identité
   </div>
-  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.login.text2}">
-    Pour sÃ©curiser vos donnÃ©es, votre administrateur m'a demandÃ© d'activer la validation en deux Ã©tapes.
+
+  <div class="Text-medium margin-top-15 display-block" th:utext="#{screen.mfa.sms.login.text2(${mobile})}">
+    Pour sécuriser vos données, votre administrateur a demandé la validation en deux étapes. Veuillez saisir le code
+    envoyé par SMS au <strong>06 XX XX XX 52</strong>.
+  </div>
+
+  <div class="Text-medium row margin-top-5 Grey-600">
+    <div th:text="#{screen.mfa.sms.login.resetcode1}">
+      Rien reçu ?
+    </div>
+    &nbsp;
+    <form id="resendCodeForm" method="post">
+      <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+      <input type="hidden" name="_eventId" value="resend"/>
+      <input type="hidden" name="token" value="ignored"/>
+      <a href="javascript:void(0)"
+         onclick="$('#resendCodeForm').submit();"
+         th:text="#{screen.mfa.sms.login.resetcode2}">
+        Envoyer un nouveau code
+      </a>
+    </form>
   </div>
 
   <form method="post" id="main-form" th:object="${credential}" class="margin-top-20">
@@ -29,14 +48,14 @@
              tabindex="1"
              th:size="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"
              th:maxlength="${@environment.getProperty('cas.authn.mfa.simple.token.core.token-length')}"/>
-      <label for="token" th:text="#{cas.authentication.password.placeholder}">
-        Token *
+      <label for="token" th:text="#{screen.mfa.sms.login.placeholder}">
+        Code de vérification *
       </label>
     </div>
-    <div class="form-line Text-medium Grey-600">
+    <div class="Text-medium Grey-600 margin-top-5">
               <span
-                th:text="#{screen.mfa.sms.login.countdown(${@environment.getProperty('cas.authn.mfa.simple.token.core.time-to-kill-in-seconds')})}">
-                Vous avez {0} secondes pour saisir votre code SMS...
+                th:utext="#{screen.mfa.sms.login.countdown(${@environment.getProperty('cas.authn.mfa.simple.token.core.time-to-kill-in-seconds')})}">
+                Votre code est encore valide&nbsp;<strong>{0} secondes...</strong>
               </span>
     </div>
     <div class="warning Caption" th:if="${#fields.hasErrors('*')}">
@@ -54,28 +73,13 @@
     </div>
   </form>
 
-  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.login.text3}">
-    Ce n'est pas votre numÃ©ro de tÃ©lÃ©phone ? Contactez votre administrateur
-  </div>
-
-  <div class="Text-medium row margin-top-10">
-    <div th:text="#{screen.mfa.sms.login.resetcode1}">
-      Vous n'avez pas reÃ§u de code par SMS ?&nbsp;
-    </div>
-    <form id="resendCodeForm" method="post">
-      <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-      <input type="hidden" name="_eventId" value="resend"/>
-      <input type="hidden" name="token" value="ignored"/>
-      <a href="javascript:void(0)"
-         onclick="$('#resendCodeForm').submit();"
-         th:text="#{screen.mfa.sms.login.resetcode2(${mobile})}">
-        RENVOYER UN NOUVEAU CODE AU {0}.
-      </a>
-    </form>
-  </div>
+    <script>
+        $(document).ready(function () {
+            $("#submit-main-form").css("display", "flex");
+        });
+    </script>
 
 </div>
-
 
 </body>
 </html>

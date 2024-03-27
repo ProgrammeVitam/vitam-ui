@@ -103,7 +103,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             viewLoginFormState.getEntryActionList().add(setPrincipalAction);
 
             // CUSTO: instead of CasWebflowConstants.STATE_ID_REAL_SUBMIT, send to intermediateSubmit
-            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_SUBMIT, "intemediateSubmit",
+            createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_SUBMIT, "intermediateSubmit",
                 Map.of("bind", Boolean.TRUE, "validate", Boolean.TRUE));
 
             createTransitionForState(viewLoginFormState, CasWebflowConstants.TRANSITION_ID_RESEND,
