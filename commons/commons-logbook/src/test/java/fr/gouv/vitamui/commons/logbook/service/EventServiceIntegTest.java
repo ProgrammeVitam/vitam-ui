@@ -3,6 +3,7 @@ package fr.gouv.vitamui.commons.logbook.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -15,8 +16,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.sun.jna.platform.win32.Guid.GUID;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.model.StatusCode;
@@ -55,7 +54,7 @@ public class EventServiceIntegTest {
 
     @Test
     public void createLogbook() {
-        String evIdReq = GUID.newGuid().toString();
+        String evIdReq = UUID.randomUUID().toString();
         InternalHttpContext context = new InternalHttpContext(10, "", "", "", "x-application-id", "identity", evIdReq,
                 "");
         service.logCreate(context, "AC-000002", 10, "obId", "TEST", EventType.EXT_VITAMUI_CREATE_USER, "data");
