@@ -38,7 +38,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -70,6 +70,8 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
+  private destroy$: Subject<void> = new Subject<void>();
 
   // tslint:disable-next-line:variable-name
   private _searchText: string;
@@ -136,6 +138,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
       debounceTime(FILTER_DEBOUNCE_TIME_MS),
+      takeUntil(this.destroy$),
     );
 
     searchCriteriaChange.subscribe(() => {
@@ -143,6 +146,8 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+
+    this.replaceUpdatedContext();
   }
 
   buildContextCriteriaFromSearch() {
@@ -160,6 +165,8 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.updatedData.unsubscribe();
   }
 
@@ -180,5 +187,14 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   onFilterChange(key: string, values: any[]) {
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
+  }
+
+  private replaceUpdatedContext(): void {
+    this.contextService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedContext: Context) => {
+      const index = this.dataSource.findIndex((item: Context) => item.id === updatedContext.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedContext;
+      }
+    });
   }
 }

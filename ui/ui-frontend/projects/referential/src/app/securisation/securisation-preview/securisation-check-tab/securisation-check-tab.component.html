@@ -1,18 +1,9 @@
 <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
-  <button
-    mat-button
-    class="btn btn-secondary button-maring"
-    (click)="checkTraceability()"
-    [disabled]="!accessContractId || (events && events.length > 0)"
-  >
-    Vérifier la sécurisation
+  <button class="btn secondary ml-1 mt-4" (click)="checkTraceability()" [disabled]="!accessContractId || (events && events.length > 0)">
+    {{ 'SECURE.TAB.CHECK.CHECK_SECURITY' | translate }}
   </button>
 
-  <vitamui-common-collapse
-    *ngIf="display && events && events.length > 0"
-    collapseTitle="Etapes de vérification"
-    i18n-collapseTitle="@@historySectionTitleUnit"
-  >
+  <vitamui-common-collapse *ngIf="display && events && events.length > 0" [collapseTitle]="'SECURE.TAB.CHECK.CHECK_STEPS' | translate">
     <vitamui-common-history-events [events]="events"></vitamui-common-history-events>
   </vitamui-common-collapse>
 </ng-container>

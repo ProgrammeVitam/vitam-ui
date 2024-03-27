@@ -61,6 +61,9 @@ export class IngestContractSignatureTabComponent {
     this.updated.emit(false);
   }
 
+  @Input()
+  readOnly: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,

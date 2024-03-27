@@ -39,6 +39,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -72,6 +74,8 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   declarations: [
     AccessContractPreviewComponent,

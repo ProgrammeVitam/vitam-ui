@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -57,6 +56,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -94,6 +94,12 @@ public class UserExternalController implements CrudController<UserDto> {
     @Autowired
     public UserExternalController(final UserExternalService userService) {
         userExternalService = userService;
+    }
+
+    @GetMapping(CommonConstants.PATH_EXPORT)
+    public Resource exportUsers(final Optional<String> criteria) {
+        LOGGER.debug("Export all users to xlsx file");
+        return userExternalService.exportUsers(criteria);
     }
 
     @Secured(ServicesData.ROLE_GET_USERS)

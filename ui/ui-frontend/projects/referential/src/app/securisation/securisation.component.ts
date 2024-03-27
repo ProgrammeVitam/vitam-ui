@@ -34,40 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Event } from 'projects/vitamui-library/src/public-api';
-import { GlobalEventService, Option, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
 
 import { SecurisationListComponent } from './securisation-list/securisation-list.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-securisation',
   templateUrl: './securisation.component.html',
   styleUrls: ['./securisation.component.scss'],
 })
-export class SecurisationComponent extends SidenavPage<Event> implements OnInit {
+export class SecurisationComponent extends SidenavPage<Event> {
   search: string;
   dateRangeFilterForm: FormGroup;
   filters: any = {};
-
-  traceabilityTypes: Option[] = [
-    { key: 'STP_OP_SECURISATION', label: 'Opérations' },
-    { key: 'LOGBOOK_UNIT_LFC_TRACEABILITY', label: 'Cycle de vie des unité archivistiques' },
-    { key: 'LOGBOOK_OBJECTGROUP_LFC_TRACEABILITY', label: "Cycle de vie des groupes d'objets" },
-    { key: 'STP_STORAGE_SECURISATION', label: 'Journal des écritures' },
-  ];
 
   @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
   @ViewChild(SecurisationListComponent, { static: true }) securisationListComponent: SecurisationListComponent;
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
+    public route: ActivatedRoute,
+    public globalEventService: GlobalEventService,
     private formBuilder: FormBuilder,
   ) {
     super(route, globalEventService);
@@ -79,48 +72,33 @@ export class SecurisationComponent extends SidenavPage<Event> implements OnInit 
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters.startDate = value;
-      this.securisationListComponent.filters = this.filters;
+      this.filters = { ...this.filters, startDate: value };
     });
+
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
-      if (value) {
-        value.setDate(value.getDate() + 1);
-      }
-      this.filters.endDate = value;
-      this.securisationListComponent.filters = this.filters;
+      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
     });
+
     this.dateRangeFilterForm.controls.types.valueChanges.subscribe((value) => {
       this.filters.types = value;
       this.securisationListComponent.filters = this.filters;
     });
   }
 
-  onSearchSubmit(search: string) {
+  public onSearchSubmit(search: string): void {
     this.search = search || '';
   }
 
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-    } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-    } else {
-      console.error('clearDate() error: unknown date ' + date);
+  public clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
+    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
+      this.dateRangeFilterForm.get(dateToClear).reset();
     }
+
+    input.value = null;
+    $event.stopPropagation();
   }
 
-  resetFilters() {
-    this.dateRangeFilterForm.reset();
-    this.searchBar.reset();
-  }
-
-  ngOnInit() {}
-
-  showSecurisation(item: Event) {
+  public showSecurisation(item: Event): void {
     this.openPanel(item);
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 }

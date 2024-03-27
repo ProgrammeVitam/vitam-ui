@@ -24,9 +24,9 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { isEmpty } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isEmpty } from 'underscore';
 import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, PagedResult, ResultFacet, SearchCriteriaDto } from '../models';
 import { FacetsUtils } from '../models/criteria/search-criteria.utils';
 import { LeavesTreeApiService } from './leaves-tree-api.service';

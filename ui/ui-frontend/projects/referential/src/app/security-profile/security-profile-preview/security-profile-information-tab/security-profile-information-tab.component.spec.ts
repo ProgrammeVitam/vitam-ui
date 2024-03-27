@@ -38,6 +38,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { SecurityProfile } from 'ui-frontend-common';
 import { SecurityProfileService } from '../../security-profile.service';
@@ -68,6 +69,7 @@ describe('SecurityProfileInformationTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [SecurityProfileInformationTabComponent],
       providers: [FormBuilder, { provide: SecurityProfileService, useValue: securityProfileServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],

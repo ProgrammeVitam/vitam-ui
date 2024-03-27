@@ -1,82 +1,83 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <table class="vitamui-table">
-    <thead>
-      <tr>
-        <th><i class="vitamui-icon vitamui-icon-operation vitamui-row-icon"></i></th>
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="traceability id column header@@traceabilityListIdHeader">Identifiant</span>
-            <vitamui-common-order-by-button
-              orderByKey="#id"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-
-        <th>Catégorie</th>
-
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="traceability date column header@@traceabilityListDateHeader">Date de création</span>
-            <vitamui-common-order-by-button
-              orderByKey="evDateTime"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-        <th>Statut</th>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let securisation of dataSource; let index = index">
-        <tr class="vitamui-table-row">
-          <td>
-            <i
-              class="vitamui-icon vitamui-icon-operation vitamui-row-icon status-badge"
-              [ngClass]="{
-                'status-badge-green': securisationStatus(securisation) == 'OK',
-                'status-badge-grey': securisationStatus(securisation) == 'STARTED',
-                'status-badge-orange': securisationStatus(securisation) == 'WARNING',
-                'status-badge-red': securisationStatus(securisation) == 'KO' || securisationStatus(securisation) == 'FATAL'
-              }"
-            ></i>
-          </td>
-          <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.id }}</td>
-          <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.type }}</td>
-          <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.dateTime | dateTime: 'dd/MM/yyyy' }}</td>
-          <td
-            class="clickable"
-            (click)="securisationClick.emit(securisation)"
-            [ngClass]="{
-              'text-green': securisationStatus(securisation) == 'OK',
-              'text-grey': securisationStatus(securisation) == 'STARTED',
-              'text-orange': securisationStatus(securisation) == 'WARNING',
-              'text-red': securisationStatus(securisation) == 'KO' || securisationStatus(securisation) == 'FATAL'
-            }"
-          >
-            {{ securisationStatus(securisation) }}
-          </td>
-          <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisationMessage(securisation) }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-
-  <div class="vitamui-table-footer">
-    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-    <button
-      *ngIf="!pending && infiniteScrollDisabled && securisationService.canLoadMore"
-      (click)="loadMore()"
-      class="btn"
-      i18n="Show more results@@tableMoreResultButton"
-    >
-      Afficher plus de résultats...
-    </button>
-    <span *ngIf="!pending && !securisationService.canLoadMore">Fin des résultats</span>
+<div class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table-head">
+    <div class="col-1"><i class="vitamui-icon vitamui-icon-operation"></i></div>
+    <div class="col-2 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.IDENTIFIER' | translate }}
+      <vitamui-common-order-by-button
+        orderByKey="#id"
+        [(orderBy)]="orderBy"
+        [(direction)]="direction"
+        (orderChange)="emitOrderChange()"
+      ></vitamui-common-order-by-button>
+    </div>
+    <div class="col-3 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.CATEGORY' | translate }}
+      <button
+        class="vitamui-filter-button"
+        [vitamuiCommonTableFilter]="traceabilityFilterTemplate"
+        #categoryFilterTrigger="vitamuiCommonTableFilter"
+        [class.active]="currentFilters?.types?.length > 0"
+      >
+        <i class="material-icons vitamui-row-icon">filter_list</i>
+      </button>
+    </div>
+    <div class="col-2 d-flex align-items-center justify-content-between">
+      {{ 'SECURE.HOME.ARRAY.CREATION_DATE' | translate }}
+      <vitamui-common-order-by-button
+        orderByKey="evDateTime"
+        [(orderBy)]="orderBy"
+        [(direction)]="direction"
+        (orderChange)="emitOrderChange()"
+      ></vitamui-common-order-by-button>
+    </div>
+    <div class="col-1">{{ 'SECURE.HOME.ARRAY.STATUS' | translate }}</div>
+    <div class="col-3">{{ 'SECURE.HOME.ARRAY.MESSAGE' | translate }}</div>
   </div>
-</table>
+
+  <div class="vitamui-table-body">
+    <div class="vitamui-table-rows" *ngFor="let secu of dataSource" (click)="securisationClick.emit(secu)">
+      <div class="vitamui-row d-flex align-items-center clickable">
+        <div class="col-1">
+          <i class="vitamui-icon vitamui-icon-operation" [ngClass]="secu | eventTypeBadgeClass"></i>
+        </div>
+        <div class="col-2 d-flex align-items-center text break" vitamuiCommonEllipsis>{{ secu.id }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ secu?.type }}</div>
+        <div class="col-2" vitamuiCommonEllipsis>{{ secu.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+        <div class="col-1" vitamuiCommonEllipsis [ngClass]="secu | eventTypeColorClass">
+          {{ (secu | lastEvent)?.outcome }}
+        </div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ (secu | lastEvent)?.outMessage }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && securisationService.canLoadMore && !pending; then loadMore"></div>
+</div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="securisationService.loadMore()">
+    <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #traceabilityFilterTemplate>
+  <vitamui-common-table-filter [(filter)]="currentFilters.types" (filterChange)="onFilterChange($event)">
+    <ng-container *ngFor="let type of traceabilityTypes">
+      <vitamui-common-table-filter-option value="{{ type }}">
+        {{ 'SECURE.HOME.ARRAY.TRACEABILITY_TYPES.' + type | translate }}
+      </vitamui-common-table-filter-option>
+    </ng-container>
+  </vitamui-common-table-filter>
+</ng-template>

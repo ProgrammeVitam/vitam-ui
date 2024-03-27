@@ -77,6 +77,10 @@ export class SecurityProfilePermissionsTabComponent {
   @Input()
   // tslint:disable-next-line:no-shadowed-variable
   set SecurityProfile(SecurityProfile: SecurityProfile) {
+    if (!SecurityProfile.permissions) {
+      SecurityProfile.permissions = [];
+    }
+
     this._SecurityProfile = SecurityProfile;
     this.resetForm(this.SecurityProfile);
   }

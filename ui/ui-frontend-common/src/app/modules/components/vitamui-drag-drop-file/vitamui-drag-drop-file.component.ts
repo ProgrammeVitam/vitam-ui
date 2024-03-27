@@ -36,6 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-drag-drop-file',
@@ -92,22 +93,22 @@ export class VitamuiDragDropFileComponent implements OnInit {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
-  constructor() {}
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit() {}
 
-  public onImageDropped(files: FileList): void {
+  public onImageDropped(files: File[]): void {
     this.hasDropZoneOver = false;
     this.handleImage(files);
   }
 
-  private handleImage(files: FileList): void {
+  private handleImage(files: File[]): void {
     this.hasError = false;
     this.lastImageUploaded = this.imageToUpload;
     this.message = null;
-    this.imageToUpload = files.item(0);
+    this.imageToUpload = files[0];
     if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
-      this.message = "Le fichier que vous essayez de déposer n'est pas une image";
+      this.message = this.translateService.instant('DRAG_AND_DROP_FILE.FILE_IS_NOT_AN_IMAGE');
       this.hasError = true;
       return;
     }
@@ -120,7 +121,10 @@ export class VitamuiDragDropFileComponent implements OnInit {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
           // tslint:disable-next-line: max-line-length
-          this.message = `Les dimensions du fichier que vous essayez de déposer sont supérieures à ${this.logoSize.width}px * ${this.logoSize.height}px`;
+          this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
+            width: this.logoSize.width,
+            height: this.logoSize.height,
+          });
           this.hasError = true;
         } else {
           this.imageUrl = logoUrl as string;
@@ -149,6 +153,38 @@ export class VitamuiDragDropFileComponent implements OnInit {
   }
 
   public handleFileInput(files: FileList): void {
-    this.handleImage(files);
+    this.handleImageList(files);
+  }
+
+  private handleImageList(files: FileList): void {
+    this.hasError = false;
+    this.lastImageUploaded = this.imageToUpload;
+    this.message = null;
+    this.imageToUpload = files.item(0);
+    if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
+      this.message = this.translateService.instant('DRAG_AND_DROP_FILE.FILE_IS_NOT_AN_IMAGE');
+      this.hasError = true;
+      return;
+    }
+    const reader = new FileReader();
+    const logoImage = new Image();
+    reader.onload = () => {
+      const logoUrl = reader.result;
+      logoImage.src = logoUrl as string;
+      logoImage.onload = () => {
+        if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
+          this.imageToUpload = this.lastImageUploaded;
+          // tslint:disable-next-line: max-line-length
+          this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
+            width: this.logoSize.width,
+            height: this.logoSize.height,
+          });
+          this.hasError = true;
+        } else {
+          this.imageUrl = logoUrl as string;
+        }
+      };
+    };
+    reader.readAsDataURL(this.imageToUpload);
   }
 }

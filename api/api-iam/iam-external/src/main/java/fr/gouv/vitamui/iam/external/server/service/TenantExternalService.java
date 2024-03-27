@@ -153,10 +153,8 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
      * @return true if the action is allowed, false otherwise.
      */
     protected boolean canAccessToCustomer(final String customerId) {
-        if (!externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) && !customerId.equals(externalSecurityService.getCustomerId())) {
-            return false;
-        }
-        return true;
+        return externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS)
+             || customerId.equals(externalSecurityService.getCustomerId());
     }
 
     /**
@@ -188,7 +186,9 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
         final List<String> restrictedKeys = new ArrayList<>();
         if (!externalSecurityService.hasRole(ServicesData.ROLE_GET_ALL_TENANTS)) {
             restrictedKeys.add(CUSTOMER_ID_KEY);
-            restrictedKeys.add("identifier");
+            if (!externalSecurityService.hasRole(ServicesData.ROLE_GET_TENANTS_MY_CUSTOMER)) {
+                restrictedKeys.add("identifier");
+            }
         }
         return restrictedKeys;
     }
@@ -261,11 +261,8 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
 
     public void checkLogbookRight(final String id) {
         final boolean hasRoleGetTenant = externalSecurityService.hasRole(ServicesData.ROLE_GET_TENANTS);
-        if (!hasRoleGetTenant) {
-            if (!StringUtils.equals(externalSecurityService.getCurrentTenantDto().getId(), id)) {
-                throw new ForbiddenException(String.format("Unable to access tenant with id: %s", id));
-            }
-
+        if (!hasRoleGetTenant && !StringUtils.equals(externalSecurityService.getCurrentTenantDto().getId(), id)) {
+            throw new ForbiddenException(String.format("Unable to access tenant with id: %s", id));
         }
         final TenantDto tenantDto = super.getOne(id);
         if (tenantDto == null) {

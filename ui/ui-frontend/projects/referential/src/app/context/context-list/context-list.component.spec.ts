@@ -29,13 +29,13 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
 import { VitamUISnackBar } from 'projects/ingest/src/app/shared/vitamui-snack-bar';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ContextService } from '../context.service';
@@ -56,6 +56,7 @@ describe('ContextListComponent', () => {
 
   const contextServiceMock = {
     search: () => of([]),
+    updated: EMPTY,
   };
 
   beforeEach(waitForAsync(() => {
@@ -94,7 +95,7 @@ describe('ContextListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Search criteria should exists when we have some status as criteria', () => {
+  it('Search criteria should exists when we have some status as criteria', fakeAsync(() => {
     // Given
     const filterMap: { [key: string]: any[] } = {
       status: ['ACTIVE', 'INACTIVE'],
@@ -104,12 +105,13 @@ describe('ContextListComponent', () => {
     // When
     component.filterMap = filterMap;
     component.searchText = searchText;
+    let criteria = component.buildContextCriteriaFromSearch();
+    tick(400);
 
     // Then
-    expect(component.buildContextCriteriaFromSearch()).toBeDefined();
-    expect(component.buildContextCriteriaFromSearch()).not.toBeNull();
-    expect(component.buildContextCriteriaFromSearch().Name).toEqual(searchText);
-    expect(component.buildContextCriteriaFromSearch().Identifier).toEqual(searchText);
-    expect(component.buildContextCriteriaFromSearch().Status).toEqual(['ACTIVE', 'INACTIVE']);
-  });
+    expect(criteria).not.toBeNull();
+    expect(criteria.Name).toEqual(searchText);
+    expect(criteria.Identifier).toEqual(searchText);
+    expect(criteria.Status).toEqual(['ACTIVE', 'INACTIVE']);
+  }));
 });

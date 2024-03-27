@@ -7,6 +7,9 @@
   &.event-error {
     .history-event-date,
     .history-event-outcome,
+    .history-event-title,
+    .history-event-outmessage,
+    .history-event-details,
     .history-event-type {
       color: #ea0101;
     }
@@ -15,6 +18,9 @@
   &.event-warning {
     .history-event-date,
     .history-event-outcome,
+    .history-event-title,
+    .history-event-outmessage,
+    .history-event-details,
     .history-event-type {
       color: #ffa610;
     }

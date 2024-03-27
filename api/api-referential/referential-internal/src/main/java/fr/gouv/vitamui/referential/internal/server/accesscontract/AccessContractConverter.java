@@ -36,12 +36,17 @@
  */
 package fr.gouv.vitamui.referential.internal.server.accesscontract;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AccessContractConverter {
@@ -67,4 +72,9 @@ public class AccessContractConverter {
         return accessContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
 
+    JsonNode convertToUpperCaseFields(Map<String, Object> partialDto) {
+        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+        partialDto.forEach((fieldName, value) -> propertiesToUpdate.putPOJO(StringUtils.capitalize(fieldName), value));
+        return propertiesToUpdate;
+    }
 }

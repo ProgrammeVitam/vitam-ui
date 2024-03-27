@@ -49,6 +49,7 @@ import { AuthService } from './auth.service';
 import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
+import { VitamUIAutocompleteModule, VitamUIAutocompleteMultiSelectModule } from './components/autocomplete';
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { CollapseModule } from './components/collapse/collapse.module';
@@ -74,7 +75,6 @@ import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
 import { UserAlertCardModule } from './components/user-alerts/user-alerts-card';
-import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
 import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
@@ -184,6 +184,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ScrollTopModule,
     SearchBarModule,
     SearchBarWithSiblingButtonModule,
+    VitamUIAutocompleteMultiSelectModule,
     SecurityModule,
     SelectTenantDialogModule,
     SlideToggleModule,
@@ -279,6 +280,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamuiTreeNodeModule,
+    VitamUIAutocompleteMultiSelectModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

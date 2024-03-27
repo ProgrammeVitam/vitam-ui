@@ -204,6 +204,7 @@ spring:
               /referential-api/ontology/**,
               /referential-api/profile/**,
               /referential-api/search/**,
+              /referential-api/static/**,
               /referential-api/rules/**,
               /referential-api/rule/**,
 
@@ -228,6 +229,7 @@ spring:
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api/rule/(?<segment>.*),/referential/v1/rules/$\{segment}
+            - RewritePath=/referential-api/static(?<segment>.*),$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
             # Archive Search Referential API

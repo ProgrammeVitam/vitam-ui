@@ -1,77 +1,81 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-ontologie vitamui-row-icon"></i></th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Ontology name column header@@ontologyListOntologyNameHeader">Nom</span>
-          <vitamui-common-order-by-button
-            orderByKey="ShortName"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Ontology id column header@@ontologyListIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button
-            orderByKey="Identifier"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th i18n="Ontology desc column header@@ontologyListOntologyDescriptionHeader">Description</th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Ontology creation date column header@@ontologyListCompanyCreationDateHeader">Date de création</span>
-          <vitamui-common-order-by-button
-            orderByKey="CreationDate"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let ontology of dataSource; let index = index">
-      <tr class="vitamui-table-row">
-        <td>
-          <i class="vitamui-icon vitamui-icon-ontologie vitamui-row-icon vitamui-row-icon"></i>
-        </td>
-        <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.shortName }}</td>
-        <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.identifier }}</td>
-        <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.description }}</td>
-        <td class="clickable" (click)="ontologyClick.emit(ontology)">
-          {{ ontology?.creationDate | dateTime: 'dd/MM/yyyy' }}
-        </td>
-        <td>
-          <div class="actions" *ngIf="ontology.origin == 'EXTERNAL'">
-            <button class="btn-circle primary" (click)="deleteOntologyDialog(ontology)">
-              <i class="vitamui-icon vitamui-icon-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1"></div>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && ontologyService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !ontologyService.canLoadMore">Fin des résultats</span>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <div>{{ 'ONTOLOGY.HOME.ARRAY.IDENTIFIER' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <div>{{ 'ONTOLOGY.HOME.ARRAY.NAME' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="ShortName"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <div>{{ 'ONTOLOGY.HOME.ARRAY.DESCRIPTION' | translate }}</div>
+      </div>
+
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <div>{{ 'ONTOLOGY.HOME.ARRAY.CREATION_DATE' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="CreationDate"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+      <div class="col-1"></div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let ontology of dataSource; let index = index" (click)="ontologyClick.emit(ontology)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1"><i class="vitamui-icon vitamui-icon-ontologie vitamui-row-icon vitamui-row-icon"></i></div>
+          <div class="col-3">{{ ontology?.identifier }}</div>
+          <div class="col-2">{{ ontology?.shortName }}</div>
+          <div class="col-3">{{ ontology?.description }}</div>
+          <div class="col-2">{{ ontology?.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-1 actions">
+            <div *ngIf="ontology.origin == 'EXTERNAL'">
+              <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deleteOntologyDialog(ontology)">
+                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && ontologyService.canLoadMore && !pending; then loadMore"></div>
+  </div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="ontologyService.loadMore()">
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

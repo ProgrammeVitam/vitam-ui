@@ -44,6 +44,7 @@ import { InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { OntologyComponent } from './ontology.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-ontology-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
@@ -66,6 +67,7 @@ describe('OntologyComponent', () => {
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
+        TranslateModule.forRoot(),
         InjectorModule,
         LoggerModule.forRoot(),
         NoopAnimationsModule,

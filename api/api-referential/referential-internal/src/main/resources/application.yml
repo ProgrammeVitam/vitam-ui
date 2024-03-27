@@ -31,3 +31,7 @@ metrics:
   reporterInterval: 1
   reporterIntervalUnit: MINUTES
   index: metrics-vitam-jvm
+
+
+# internal ontology file path
+internal_ontology_file_path: "src/main/resources/internal-ontology/internal_ontology_fields.json"

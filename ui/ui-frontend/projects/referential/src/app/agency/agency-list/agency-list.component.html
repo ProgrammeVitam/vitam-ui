@@ -1,68 +1,75 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-agent vitamui-row-icon"></i></th>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center">
+        <i class="vitamui-icon vitamui-icon-agent vitamui-row-icon"></i>
+      </div>
 
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Agency name column header@@agencyListAgencyNameHeader">Nom</span>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Agency id column header@@agencyListIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button
-            orderByKey="Identifier"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="Agency desc column header@@agencyListAgencyDescriptionHeader">Description</span>
-        </div>
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let agency of dataSource; let index = index">
-      <tr class="vitamui-table-row">
-        <td><i class="vitamui-icon vitamui-icon-agent vitamui-row-icon status-badge status-badge-green"></i></td>
-        <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.name }}</td>
-        <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.identifier }}</td>
-        <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.description }}</td>
-        <td>
-          <div class="actions">
-            <button
-              class="btn-circle primary"
-              (click)="deleteAgencyDialog(agency)"
-              *vitamuiCommonHasRole="{
-                appId: 'AGENCIES_APP',
-                tenantIdentifier: +this.genericUserRole.tenantIdentifier,
-                role: 'ROLE_DELETE_AGENCIES'
-              }"
-            >
-              <i class="vitamui-icon vitamui-icon-trash"></i>
-            </button>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <span>{{ 'AGENCY.HOME.ARRAY.IDENTIFIER' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="orderChange.next()"
+        >
+        </vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-3 d-flex align-items-center">
+        <span>{{ 'AGENCY.HOME.ARRAY.NAME' | translate }}</span>
+      </div>
+
+      <div class="col-5 d-flex align-items-center">
+        <span>{{ 'AGENCY.HOME.ARRAY.DESCRIPTION' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let agency of dataSource" (click)="agencyClick.emit(agency)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1 d-flex align-items-center">
+            <i class="vitamui-icon vitamui-icon-agent"></i>
           </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+          <div class="col-3" vitamuiCommonEllipsis>{{ agency.identifier }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ agency.name }}</div>
+          <div class="col-5 actions">
+            <span vitamuiCommonEllipsis>{{ agency.description }}</span>
+            <div>
+              <button
+                class="btn btn-circle primary"
+                [disabled]="!hasDeleteRole"
+                (click)="$event.stopPropagation(); deleteAgencyDialog(agency)"
+              >
+                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && agencyService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !agencyService.canLoadMore">Fin des résultats</span>
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
 </div>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #confirmDeleteDialog>
+  <vitamui-common-confirm-dialog
+    dialogTitle="{{ 'AGENCY.HOME.DELETE_CONFIM_DIALOG.TITLE' | translate }}"
+    confirmLabel="{{ 'COMMON.CONFIRM' | translate }}"
+    cancelLabel="{{ 'COMMON.CANCEL' | translate }}"
+  >
+    {{ 'AGENCY.HOME.DELETE_CONFIM_DIALOG.MESSAGE' | translate: { name: agencyToDelete?.name } }}
+  </vitamui-common-confirm-dialog>
+</ng-template>

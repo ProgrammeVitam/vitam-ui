@@ -1,7 +1,7 @@
 {
   "GATEWAY_ENABLED": true,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202/referential",
-  "VERSION_RELEASE": "6.4",
+  "VERSION_RELEASE": "7.1.0-SNAPSHOT",
   "PLATFORM_NAME": "VITAM-UI",
   "INGEST_URL": "https://dev.vitamui.com:4208/ingest",
   "PORTAL_TITLE": "Portail des applications de l'archivage",

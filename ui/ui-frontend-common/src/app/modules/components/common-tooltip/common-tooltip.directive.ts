@@ -134,7 +134,7 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('mouseout')
+  @HostListener('mouseleave')
   @HostListener('mousedown')
   @HostListener('blur')
   hide() {

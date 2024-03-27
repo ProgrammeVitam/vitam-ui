@@ -1,0 +1,107 @@
+@import '../../../../../sass/variables/colors';
+@import '../../../../../sass/mixins/elevation';
+
+$animation-time: 150ms;
+
+:host {
+  &.ng-invalid:not(.ng-untouched) {
+    .vitamui-autocomplete {
+      border: 1px solid $red;
+    }
+    input:focus {
+      outline: none;
+      border: none;
+    }
+  }
+}
+
+.mat-drawer,
+.mat-dialog-container {
+  .vitamui-autocomplete {
+    > input {
+      @include dialog-elevation-dark;
+    }
+  }
+}
+
+.vitamui-autocomplete {
+  position: relative;
+
+  > input {
+    background: $white;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: $white;
+    border: none;
+    height: 60px;
+    width: 100%;
+    padding: 10px 40px 10px 29px;
+    transition: padding $animation-time ease-out;
+    margin-top: 0px;
+    @include input-elevation-dark;
+    &:focus {
+      outline: none;
+      border: solid 1px var(--vitamui-primary);
+      border: solid 1px var(--vitamui-primary);
+    }
+  }
+
+  &.disabled {
+    > input {
+      background: var(--vitamui-grey-300);
+
+      box-shadow: none !important;
+    }
+
+    > i {
+      color: var(--vitamui-grey-700);
+    }
+  }
+
+  > i {
+    font-size: 24px;
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    pointer-events: none;
+    color: var(--vitamui-primary);
+  }
+
+  .input-label {
+    font-size: 14px;
+    font-weight: 700;
+    align-items: center;
+    letter-spacing: 0.1px;
+    line-height: 10px;
+    position: absolute;
+    left: 30px;
+    top: 26px;
+    pointer-events: none;
+    transform-origin: left;
+    color: var(--vitamui-primary);
+    transition:
+      transform $animation-time ease-out,
+      top $animation-time ease-out;
+
+    > .required-marker {
+      color: $red;
+    }
+  }
+
+  &.label-up {
+    .input-label {
+      transform: scale((12/14)) translateY(-15px);
+    }
+
+    > input {
+      padding-top: 30px;
+
+      font-size: 16px;
+      color: var(--vitamui-grey-900);
+    }
+  }
+}
+
+.vitamui-input-errors {
+  min-height: 23px;
+}

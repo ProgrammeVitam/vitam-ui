@@ -1,3 +1,22 @@
+.vitamui-date {
+  width: 250px;
+
+  .vitamui-icon-close {
+    position: absolute;
+    right: 0px;
+    font-size: 14px;
+    bottom: 9px;
+    color: rgba(0, 0, 0, 0.54);
+    cursor: pointer;
+  }
+}
+
+.asterix {
+  color: $red;
+  font-weight: bold;
+}
+
+/** DEPREACATED : CLEAR AT THE END OF THE REDESIGN **/
 .vitamui-form vitamui-slide-toggle {
   margin-bottom: 20px;
 }

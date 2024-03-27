@@ -247,4 +247,14 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public SchemaClient schemaClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getSchemaClient();
     }
+
+    @Bean
+    public AccessContractInternalWebClient accessContractInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
+        return referentialInternalWebClientFactory.getAccessContractInternalWebClient();
+    }
+
+    @Bean
+    public IngestContractInternalWebClient ingestContractInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
+        return referentialInternalWebClientFactory.getIngestContractInternalWebClient();
+    }
 }

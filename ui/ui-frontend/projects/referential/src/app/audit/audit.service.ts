@@ -51,6 +51,7 @@ import {
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -61,6 +62,7 @@ export class AuditService extends SearchService<Event> {
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
     private snackBarService: VitamUISnackBarService,
+    private translateService: TranslateService,
   ) {
     super(operationApiService, 'ALL');
   }
@@ -74,17 +76,15 @@ export class AuditService extends SearchService<Event> {
     return this.operationApiService.runAudit(audit, headers).pipe(
       tap(
         () => {
-          console.log('Audit: ', audit);
           this.snackBarService.open({
             message: 'SNACKBAR.AUDIT_RUN',
             translateParams: {
-              id: audit.identifier,
+              type: this.translateService.instant('AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + audit.auditActions),
             },
             icon: 'vitamui-icon-audit',
           });
         },
         (error: any) => {
-          console.log('error: ', error);
           if (!error || !error.error) {
             return;
           }

@@ -80,21 +80,11 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.check(agency, this.headers);
   }
 
-  create(agency: FileFormat) {
-    return this.fileFormatApiService.create(agency, this.headers).pipe(
+  create(fileFormat: FileFormat) {
+    return this.fileFormatApiService.create(fileFormat, this.headers).pipe(
       tap(
-        (response: FileFormat) => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED',
-            translateParams: {
-              name: response.puid,
-            },
-            icon: 'vitamui-icon-admin-key',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
+        () => this.snackBarService.open({ message: 'SNACKBAR.FILE_FORMAT_CONTRACT_CREATED', icon: 'vitamui-icon-fichiers' }),
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),
     );
   }
@@ -103,18 +93,12 @@ export class FileFormatService extends SearchService<FileFormat> {
     return this.fileFormatApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
+        () =>
           this.snackBarService.open({
             message: 'SNACKBAR.FILE_FORMAT_CONTRACT_UPDATED',
-            translateParams: {
-              name: response.puid,
-            },
-            icon: 'vitamui-icon-admin-key',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
+            icon: 'vitamui-icon-fichiers',
+          }),
+        (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),
     );
   }
@@ -125,10 +109,7 @@ export class FileFormatService extends SearchService<FileFormat> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.FILE_FORMAT_CONTRACT_DELETED',
-            translateParams: {
-              name: fileFormat.puid,
-            },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-fichiers',
           });
         },
         (error) => {

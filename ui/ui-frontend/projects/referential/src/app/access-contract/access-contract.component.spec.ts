@@ -47,6 +47,8 @@ import { AccessContractComponent } from './access-contract.component';
 import { AccessContractService } from './access-contract.service';
 
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix
@@ -79,8 +81,10 @@ describe('AccessContractComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
+        MatSnackBarModule,
         MatDialogModule,
       ],
       providers: [

@@ -6,6 +6,7 @@ import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { OntologyService } from '../../ontology.service';
+import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -48,6 +49,10 @@ export class OntologyInformationTabComponent implements OnInit {
       this._inputOntology.description = '';
     }
 
+    if (!ontology.collections) {
+      this._inputOntology.collections = [];
+    }
+
     this.resetForm(this.inputOntology);
     this.updated.emit(false);
   }
@@ -79,27 +84,18 @@ export class OntologyInformationTabComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
-      shortName: [null, Validators.required],
+      shortName: [{ value: null, disabled: true }, Validators.required],
       type: [null, Validators.required],
-      collections: [null, Validators.required],
-      description: [null, Validators.required],
+      collections: [null],
+      description: [null],
+      creationDate: [{ value: null, disabled: true }],
     });
-    this.form.disable({ emitEvent: false });
   }
 
   ngOnInit(): void {
     if (this._inputOntology.origin === 'EXTERNAL') {
       this.form.enable({ emitEvent: false });
     }
-  }
-
-  isInvalid(): boolean {
-    // TODO
-    return false;
-    /*     return this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('description').invalid || this.form.get('description').pending ||
-      this.form.get('status').invalid || this.form.get('status').pending ||
-      this.form.get('archiveProfiles').invalid || this.form.get('archiveProfiles').pending; */
   }
 
   unchanged(): boolean {
@@ -123,6 +119,7 @@ export class OntologyInformationTabComponent implements OnInit {
         this.ontologyService.get(this._inputOntology.identifier).subscribe((response) => {
           this.submited = false;
           this.inputOntology = response;
+          this.ontologyService.updated.next(this.inputOntology);
         });
       },
       () => {
@@ -134,4 +131,6 @@ export class OntologyInformationTabComponent implements OnInit {
   resetForm(ontology: Ontology) {
     this.form.reset(ontology, { emitEvent: false });
   }
+
+  protected readonly RULE_TYPES = RULE_TYPES;
 }

@@ -35,56 +35,46 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import '@angular/localize/init';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
-import { EMPTY, Subscription } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
+import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
   AccessionRegisterSummary,
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
   StartupService,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditAction, AuditType } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-audit-create',
   templateUrl: './audit-create.component.html',
   styleUrls: ['./audit-create.component.scss'],
 })
-export class AuditCreateComponent implements OnInit {
-  AuditAction = AuditAction;
+export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;
 
-  FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
+  public AuditAction = AuditAction;
+  public form: FormGroup;
+  public stepIndex = 0;
+  public stepCount = 2;
+  public allProducerServices = new FormControl(true);
+  public allNodes = new FormControl(true);
+  public selectedNodes = new FormControl({ included: [], excluded: [] });
+  public accessContractId: string = null;
+  public accessionRegisterSummaries: AccessionRegisterSummary[];
+  public isDisabledButton = false;
+  public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
-  form: FormGroup;
-  stepIndex = 0;
-
-  allProducerServices = new FormControl(true);
-  allNodes = new FormControl(true);
-  selectedNodes = new FormControl({ included: [], excluded: [] });
-
-  accessContractId: string = null;
-  accessionRegisterSummaries: AccessionRegisterSummary[];
-  isDisabledButton = false;
-
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
-  private subscriptions = new Subscription();
+  private destroyer$ = new Subject();
 
   constructor(
     public dialogRef: MatDialogRef<AuditCreateComponent>,
@@ -96,10 +86,18 @@ export class AuditCreateComponent implements OnInit {
     protected accessContractService: AccessContractService,
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      auditActions: [AuditAction.AUDIT_FILE_EXISTING, Validators.required],
+      auditType: ['tenant', Validators.required],
+      evidenceAudit: [null, null, this.auditCreateValidator.checkEvidenceAuditId()],
+      objectId: [this.startupService.getTenantIdentifier()],
+      query: [this.getRootQuery(null)],
+    });
+
     this.externalParameterService
       .getUserExternalParameters()
       .pipe(switchMap((params: Map<string, string>) => this.extractAccesContractIdAndGetAccessionRegisterSummaries(params)))
@@ -109,42 +107,67 @@ export class AuditCreateComponent implements OnInit {
         this.accessionRegisterSummaries = accessContractAndRegisterSummary.accessionRegisterSummaries;
       });
 
-    this.form = this.formBuilder.group({
-      auditActions: [null, Validators.required],
-      auditType: ['tenant', Validators.required],
-      evidenceAudit: [null, null, this.auditCreateValidator.checkEvidenceAuditId()],
-      objectId: [this.startupService.getTenantIdentifier(), Validators.required],
-      query: [this.getRootQuery(null)],
+    this.confirmDialogService
+      .listenToEscapeKeyPress(this.dialogRef)
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe(() => this.onCancel());
+
+    this.form.controls.auditActions.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions));
+
+    this.allProducerServices.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((value) => this.updateFieldsOnAllProducerServicesChange(value));
+
+    this.selectedNodes.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => this.changeQueryOnNodesSelection(value));
+
+    this.form.controls.evidenceAudit.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
+      if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
+        this.form.controls.objectId.setValue(value);
+      }
     });
+  }
 
-    this.subscriptions.add(
-      this.form.controls.auditActions.valueChanges.subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions)),
-    );
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
 
-    this.subscriptions.add(this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel()));
+  public getAuditActions(): String[] {
+    return Object.keys(AuditAction);
+  }
 
-    this.subscriptions.add(this.allProducerServices.valueChanges.subscribe((value) => this.updateFieldsOnAllProducerServicesChange(value)));
+  public showProducerToggle(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction === AuditAction.AUDIT_FILE_EXISTING || selectedAuditAction === AuditAction.AUDIT_FILE_INTEGRITY;
+  }
 
-    this.subscriptions.add(this.selectedNodes.valueChanges.subscribe((value) => this.changeQueryOnNodesSelection(value)));
+  public showAllNodesToggle(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction === AuditAction.AUDIT_FILE_CONSISTENCY;
+  }
 
-    this.subscriptions.add(this.form.controls.evidenceAudit.valueChanges.subscribe((value) => this.form.controls.objectId.setValue(value)));
+  public showProducerSelection(): boolean {
+    return this.showProducerToggle() && this.allProducerServices.value === false;
+  }
 
-    this.subscriptions.add(this.allNodes.valueChanges.subscribe((value) => (this.stepCount = value ? 1 : 2)));
+  public showEvidenceAuditInput(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction === AuditAction.AUDIT_FILE_RECTIFICATION;
+  }
+
+  public getStepCount(): number {
+    return this.allNodes.value ? 1 : 2;
   }
 
   private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
     const accessContractId = params.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
     if (!accessContractId || accessContractId.length < 1) {
-      this.snackBar.open(
-        $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
-        null,
-        {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        },
-      );
+      this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       return EMPTY;
     }
+
     return this.auditService
       .getAllAccessionRegister(accessContractId)
       .pipe(map((accessionRegisterSummaries) => ({ accessContractId, accessionRegisterSummaries })));
@@ -158,7 +181,12 @@ export class AuditCreateComponent implements OnInit {
     } else {
       this.allProducerServices.setValue(true);
       this.form.get('evidenceAudit').clearValidators();
+      this.form.get('evidenceAudit').setValue(null);
+      this.form.get('evidenceAudit').markAsUntouched();
     }
+
+    this.allNodes.setValue(true);
+    this.form.get('evidenceAudit').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
 
@@ -188,11 +216,11 @@ export class AuditCreateComponent implements OnInit {
   }
 
   /**
-   * Add or remove the required validator on the filed 'objectId'
+   * Add or remove the required validator on the field 'objectId'
    */
   private updateObjectIdValidators() {
     if (
-      this.allProducerServices.value &&
+      !this.allProducerServices.value &&
       this.accessionRegisterSummaries &&
       (this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING ||
         this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
@@ -221,10 +249,6 @@ export class AuditCreateComponent implements OnInit {
     return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
   }
 
-  ngOnDestroy = () => {
-    this.subscriptions.unsubscribe();
-  };
-
   onCancel() {
     if (this.form.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
@@ -245,15 +269,10 @@ export class AuditCreateComponent implements OnInit {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
       },
-      (error: any) => {
+      () => {
         this.dialogRef.close({ success: false, action: 'none' });
-        console.error(error);
       },
     );
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
   getRootQuery(includedRoots: string[]) {

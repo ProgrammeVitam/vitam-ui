@@ -59,27 +59,23 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
+  @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
-  private _searchText: string;
+  @Output() accessContractClick = new EventEmitter<AccessContract>();
 
-  @Output()
-  accessContractClick = new EventEmitter<AccessContract>();
-
-  orderBy = 'Name';
-  direction = Direction.ASCENDANT;
-  filterMap: { [key: string]: any[] } = {
-    status: ['ACTIVE', 'INACTIVE'],
-  };
+  public orderBy = 'Name';
+  public direction = Direction.ASCENDANT;
+  public filterMap: { [key: string]: any[] } = { status: ['ACTIVE', 'INACTIVE'] };
+  public readonly orderChange = new Subject<string>();
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+
+  // tslint:disable-next-line:variable-name
+  private _searchText: string;
 
   private readonly destroyer$ = new Subject();
 
@@ -90,7 +86,6 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   ngOnInit() {
     this.pending = true;
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
     this.accessContractService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe(
       (data: AccessContract[]) => {
         this.dataSource = data;
@@ -102,24 +97,37 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildAccessContractCriteriaFromSearch();
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
-
       this.search(pageRequest);
     });
+
     this.replaceUpdatedAccessContract();
   }
 
-  private replaceUpdatedAccessContract() {
-    this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe({
-      next: (updatedAccessContract: AccessContract) => {
-        const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
-        if (index !== -1) {
-          this.dataSource[index] = updatedAccessContract;
-        }
-      },
+  ngOnDestroy() {
+    this.updatedData.unsubscribe();
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  public searchAccessContractOrdered(): void {
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
+  }
+
+  public onFilterChange(key: string, values: any[]) {
+    this.filterMap[key] = values;
+    this.filterChange.next(this.filterMap);
+  }
+
+  private replaceUpdatedAccessContract(): void {
+    this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAccessContract: AccessContract) => {
+      const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
+      if (index !== -1) {
+        this.dataSource[index] = updatedAccessContract;
+      }
     });
   }
 
-  buildAccessContractCriteriaFromSearch() {
+  private buildAccessContractCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText.length > 0) {
       criteria.Name = this._searchText;
@@ -133,22 +141,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
     return criteria;
   }
 
-  searchAccessContractOrdered() {
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
-  }
-
   emitOrderChange() {
     this.orderChange.next();
-  }
-
-  onFilterChange(key: string, values: any[]) {
-    this.filterMap[key] = values;
-    this.filterChange.next(this.filterMap);
-  }
-
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
-    this.destroyer$.next();
-    this.destroyer$.complete();
   }
 }

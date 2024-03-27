@@ -40,8 +40,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, IngestContract } from 'ui-frontend-common';
+import { BASE_URL, ExternalParameters, ExternalParametersService, IngestContract, LoggerModule } from 'ui-frontend-common';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
@@ -87,8 +89,9 @@ describe('IngestContractAttachmentTabComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [IngestContractAttachmentTabComponent],
-      imports: [MatSnackBarModule],
+      imports: [MatSnackBarModule, TranslateModule.forRoot(), HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: {} },
         { provide: SearchUnitApiService, useValue: unitValueMock },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

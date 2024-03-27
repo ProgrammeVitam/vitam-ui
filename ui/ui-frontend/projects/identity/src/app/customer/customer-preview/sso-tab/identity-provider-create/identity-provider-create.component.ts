@@ -115,6 +115,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       maximumAuthenticationLifetime: [null, Validators.pattern('^[0-9]*$')],
       wantsAssertionsSigned: [true],
       authnRequestSigned: [true],
+      propagateLogout: [false],
     });
   }
 
@@ -129,6 +130,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       useState: [true],
       useNonce: [true],
       usePkce: [false],
+      propagateLogout: [false],
     });
   }
   initializeCommonControls() {

@@ -1,106 +1,83 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <div class="col-12 form-control">
-      <mat-form-field class="vitamui-mat-select">
-        <mat-select
-          formControlName="ruleType"
-          placeholder="{{ getRuleTypeLabel() }}"
-          panelclass="vitamui-mat-select"
-          required="required"
-          [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-        >
-        </mat-select>
-        <div class="select-arrow">
-          <i class="material-icons">keyboard_arrow_up</i>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-      </mat-form-field>
-    </div>
-
-    <div class="col-12 form-control">
-      <vitamui-common-input
-        formControlName="ruleValue"
-        minlength="2"
-        required
-        placeholder="Intitulé de la règle"
-        i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
-        [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-      >
-        <ng-container *ngIf="form.get('ruleValue')?.touched">
-          <vitamui-common-input-error
-            *ngIf="!!form.get('ruleValue')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField"
-            >Champ requis</vitamui-common-input-error
-          >
-        </ng-container>
-      </vitamui-common-input>
-    </div>
-
-    <div class="col-12 form-control">
-      <vitamui-common-input
-        class="field-ruleDuration"
-        formControlName="ruleDuration"
-        pattern="[0-9]*"
-        maxlenght="3"
-        required
-        placeholder="Durée"
-        i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
-        [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-      >
-        <ng-container *ngIf="form.get('ruleDuration')?.touched">
-          <vitamui-common-input-error
-            *ngIf="!!form.get('ruleDuration')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField"
-            >Champ requis</vitamui-common-input-error
-          >
-        </ng-container>
-      </vitamui-common-input>
-      <mat-form-field class="vitamui-mat-select">
-        <mat-select
-          formControlName="ruleMeasurement"
-          placeholder="{{ getRuleMeasurementLabel() }}"
-          panelclass="vitamui-mat-select"
-          required="required"
-          i18n-placeholder="Identifier@@rulePreviewRuleMeasurementPlaceholder"
-          [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-        >
-          <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
-            {{ ruleMeasurement.label }}</mat-option
-          >
-        </mat-select>
-        <div class="select-arrow">
-          <i class="material-icons">keyboard_arrow_up</i>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-      </mat-form-field>
-    </div>
-
-    <div class="col-12 form-control">
-      <vitamui-common-textarea
-        formControlName="ruleDescription"
-        [disabled]="(hasUpdateAgencyRole$ | async) !== true"
-        required="required"
-        placeholder="Description"
-        [rows]="2"
-      >
-        <ng-container *ngIf="form.get('ruleDescription')?.touched">
-          <vitamui-common-input-error
-            *ngIf="!!form.get('ruleDescription')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField"
-            >Champ requis</vitamui-common-input-error
-          >
-        </ng-container>
-      </vitamui-common-textarea>
-    </div>
+  <div class="d-flex">
+    <mat-form-field class="vitamui-mat-select w-100">
+      <mat-select formControlName="ruleType" [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate" required [disabled]="true">
+        <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">{{ ruleType.label }}</mat-option>
+      </mat-select>
+      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+    </mat-form-field>
   </div>
 
-  <div class="form-group bottom">
-    <button
-      type="submit"
-      class="btn secondary"
-      [disabled]="isInvalid() || unchanged() || submited || (hasUpdateAgencyRole$ | async) !== true"
+  <div class="d-flex mt-4">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="ruleValue"
+      minlength="2"
+      required
+      [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
     >
-      Enregistrer
+      <ng-container *ngIf="form.get('ruleValue')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
+  </div>
+
+  <div class="d-flex">
+    <vitamui-common-input
+      class="w-100"
+      formControlName="ruleDuration"
+      pattern="[0-9]*"
+      required
+      [placeholder]="'RULES_APP.TAB.INFORMATION.PERIOD' | translate"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
+    >
+      <ng-container *ngIf="form.get('ruleDuration')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
+  </div>
+
+  <div class="d-flex">
+    <mat-form-field class="vitamui-mat-select w-100">
+      <mat-select
+        formControlName="ruleMeasurement"
+        [placeholder]="'RULES_APP.TAB.INFORMATION.UNIT_MEASURE' | translate"
+        required
+        [disabled]="(hasUpdateRuleRole$ | async) !== true"
+      >
+        <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
+          {{ ruleMeasurement.label }}
+        </mat-option>
+      </mat-select>
+      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex mt-4">
+    <vitamui-common-textarea
+      class="w-100"
+      required
+      formControlName="ruleDescription"
+      [disabled]="(hasUpdateRuleRole$ | async) !== true"
+      [placeholder]="'RULES_APP.TAB.INFORMATION.DESCRIPTION' | translate"
+      [rows]="2"
+    >
+      <ng-container *ngIf="form.get('ruleDescription')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-textarea>
+  </div>
+
+  <div class="actions mt-5">
+    <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">
+      {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
 </form>

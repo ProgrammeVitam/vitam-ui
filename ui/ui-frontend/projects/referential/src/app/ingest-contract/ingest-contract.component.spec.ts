@@ -45,6 +45,9 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { IngestContractService } from './ingest-contract.service';
+import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 
 describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
@@ -62,7 +65,14 @@ describe('IngestContractComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        TranslateModule.forRoot(),
+        RouterTestingModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+      ],
       declarations: [IngestContractComponent],
       providers: [
         GlobalEventService,
@@ -72,6 +82,8 @@ describe('IngestContractComponent', () => {
         { provide: MatDialog, useValue: {} },
         { provide: BASE_URL, useValue: '' },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: IngestContractService, useValue: {} },
+        { provide: DownloadSnackBarService, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

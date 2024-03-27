@@ -267,7 +267,7 @@ function flattenChildEvents(acc: Event[], current: Event): Event[] {
   return acc.concat(current.events);
 }
 
-function sortEventByDate(ev1: Event, ev2: Event): number {
+export function sortEventByDate(ev1: Event, ev2: Event): number {
   const ev1Date = getEffectiveDate(ev1);
   const ev2Date = getEffectiveDate(ev2);
 
@@ -281,10 +281,8 @@ function sortEventByDate(ev1: Event, ev2: Event): number {
 }
 
 function getEffectiveDate(event: Event): Date {
-  const operationDate = event.parsedData ? event.parsedData["Date d'opération"] : null;
-
-  if (operationDate) {
-    return new Date(operationDate);
+  if (event.parsedData && event.parsedData["Date d'opération"]) {
+    return new Date(event.parsedData["Date d'opération"]);
   }
 
   return event.dateTime;

@@ -51,6 +51,7 @@ import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
+import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { OntologyComponent } from './ontology.component';
     OntologyRoutingModule,
     OntologyCreateModule,
     OntologyPreviewModule,
+    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

@@ -40,8 +40,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { RULE_MEASUREMENTS } from '../../rules.constants';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;
@@ -87,6 +87,7 @@ describe('RuleInformationTabComponent', () => {
       data: of({ appId: 'RULES_APP' }),
     };
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [RuleInformationTabComponent],
       providers: [
         FormBuilder,
@@ -110,22 +111,5 @@ describe('RuleInformationTabComponent', () => {
 
   it('Component should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should return empty as ruleMeasurement default value', () => {
-    // Given
-    component.ruleMeasurements = RULE_MEASUREMENTS;
-    const returnValue = '';
-
-    // Then
-    expect(component.getRuleMeasurementLabel()).toEqual(returnValue);
-  });
-
-  it('should return Durée d’utilité administrative as ruleType when type selected is AppraisalRule', () => {
-    // Given
-    const returnValue = 'Durée d’utilité administrative';
-
-    // Then
-    expect(component.getRuleTypeLabel()).toEqual(returnValue);
   });
 });

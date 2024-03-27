@@ -35,6 +35,7 @@ import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { DescriptionLevel, FileType, Unit, UnitType } from 'ui-frontend-common';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { Node } from '../../models/node.interface';
+
 import { getKeywordValue } from '../../utils/keyword.util';
 
 export enum ExpandLevel {
@@ -65,42 +66,20 @@ export class FilingPlanService {
     return this._pending > 0;
   }
 
-  private cache: {
-    [id: string]: {
-      value: Observable<Unit[]>;
-    };
-  } = {};
-
-  getCachedValue(accessContractId: string): Observable<Unit[]> {
-    const item = this.cache[accessContractId];
-    if (!item) {
-      return null;
-    }
-    return item.value;
-  }
-
-  setCachedValue(value: Observable<Unit[]>, accessContractId: string) {
-    this.cache[accessContractId] = { value };
-  }
-
-  public loadTree(tenantIdentifier: number, idPrefix: string): Observable<Node[]> {
-    const tenantId = tenantIdentifier.toString();
-    let units$ = this.getCachedValue(tenantId);
-    if (!units$) {
-      this._pending++;
-      const headers = new HttpHeaders({
-        'X-Tenant-Id': tenantId,
-      });
-      units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
-        catchError(() => {
-          return of({ $hits: null, $results: [] });
-        }),
-        map((response) => response.$results),
-        tap(() => this._pending--),
-        shareReplay(1),
-      );
-      this.setCachedValue(units$, tenantId);
-    }
+  public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
+    this._pending++;
+    const headers = new HttpHeaders({
+      'X-Tenant-Id': tenantIdentifier.toString(),
+      'X-Access-Contract-Id': accessContractId,
+    });
+    const units$ = this.searchUnitApi.getFilingPlan(headers).pipe(
+      catchError(() => {
+        return of({ $hits: null, $results: [] });
+      }),
+      map((response) => response.$results),
+      tap(() => this._pending--),
+      shareReplay(1),
+    );
     return units$.pipe(
       map((results) => {
         return this.getNestedChildren(results, idPrefix);
@@ -141,7 +120,6 @@ export class FilingPlanService {
           vitamId: unit['#id'],
           parents: parentNode ? [parentNode] : [],
           checked: false,
-          // OriginatingAgencyArchiveUnitIdentifier: [unit.OriginatingAgencyArchiveUnitIdentifier]
         };
         outNode.children = this.getNestedChildren(arr, idPrefix, outNode);
         out.push(outNode);

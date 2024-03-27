@@ -46,7 +46,10 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class AccessContractApiService extends BaseHttpClient<AccessContract> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(
+    http: HttpClient,
+    @Inject(BASE_URL) public baseUrl: string,
+  ) {
     super(http, baseUrl + '/accesscontract');
   }
 
@@ -80,5 +83,19 @@ export class AccessContractApiService extends BaseHttpClient<AccessContract> {
 
   patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAccessContract, headers);
+  }
+
+  public getImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.baseUrl + '/static/import-access-contracts-model.csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+
+  public exportAccessContracts(): Observable<HttpResponse<Blob>> {
+    return this.http.get(super.getApiUrl() + '/export-csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 }

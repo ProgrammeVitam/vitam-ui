@@ -37,11 +37,13 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IngestContract } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.component';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestContractObjectTabComponent', () => {
   let component: IngestContractObjectTabComponent;
@@ -76,7 +78,7 @@ describe('IngestContractObjectTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [ReactiveFormsModule, FormsModule, VitamUICommonTestModule, MatSelectModule, NoopAnimationsModule],
       declarations: [IngestContractObjectTabComponent],
       providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],

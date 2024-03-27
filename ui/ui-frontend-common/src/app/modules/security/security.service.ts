@@ -53,7 +53,7 @@ export class SecurityService {
   hasAnyRole(appId: string, tenantIdentifier: number, ...roles: string[]): Observable<boolean> {
     return this.authService.user$.pipe(
       switchMap((user: AuthUser) => {
-        if (user.profileGroup.profiles) {
+        if (user?.profileGroup?.profiles) {
           const appProfiles = user.profileGroup.profiles.filter((profile) => profile.applicationName === appId);
           const tenantProfiles = appProfiles.filter((profile) => profile.tenantIdentifier === tenantIdentifier);
           const rolesByTenant = tenantProfiles.map((profile) => profile.roles);

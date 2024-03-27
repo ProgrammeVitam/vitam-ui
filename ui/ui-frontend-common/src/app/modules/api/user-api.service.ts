@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { BASE_URL } from '../injection-tokens';
-import { Analytics } from '../models/user/analytics.interface';
 import { AlertAnalytics } from '../models/user/user-alerts.interface';
 import { User } from '../models/user/user.interface';
 
@@ -58,7 +56,12 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public analytics(data: { applicationId?: string; lastTenantIdentifier?: number; alerts?: AlertAnalytics[] }): Observable<User> {
+  public analytics(data: {
+    applicationId?: string;
+    lastTenantIdentifier?: number;
+    alerts?: AlertAnalytics[];
+    lastHeaderExtraSelection?: string;
+  }): Observable<User> {
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });
   }

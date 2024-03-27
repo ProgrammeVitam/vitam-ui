@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -126,5 +126,13 @@ export class IngestContractService extends SearchService<IngestContract> {
         },
       ),
     );
+  }
+
+  public downloadImportFileModel(): Observable<HttpResponse<Blob>> {
+    return this.ingestContractApi.getImportFileModel();
+  }
+
+  public exportIngestContracts(): Observable<HttpResponse<Blob>> {
+    return this.ingestContractApi.exportIngestContracts();
   }
 }

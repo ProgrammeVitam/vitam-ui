@@ -1,97 +1,79 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <div class="d-flex justify-content-end">
-      <button class="btn link cancel" (click)="emitClose()">
-        <i class="vitamui-icon vitamui-icon-close"></i>
-      </button>
-    </div>
-
-    <div class="title">
-      <span class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
-        <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon status-badge"></i>
-      </span>
-      <div matTooltipClass="vitamui-tooltip" matTooltip="{{ event?.id }}">
-        <h5 class="m-0 text-primary">{{ event?.id | truncate: 30 }}</h5>
+<vitamui-common-sidenav-header
+  [title]="event?.id | truncate: 30"
+  (onclose)="emitClose()"
+  [badge]="event | eventTypeBadgeClass | slice: 13"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="event?.id"
+  [toolTipTitleDuration]="300"
+  [actionsBelowTitle]="true"
+>
+  <button class="btn primary ml-1" *ngIf="showDownloadButton" (click)="downloadReports()" [disabled]="disableDownloadButton">
+    {{ downloadButtonTitle | translate }}
+  </button>
+  <button class="btn primary ml-2" *ngIf="hasATRDownloadable()" (click)="downloadATR()">
+    {{ 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_ATR' | translate }}
+  </button>
+</vitamui-common-sidenav-header>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab [label]="'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.TITLE' | translate">
+      <div class="read-only-field">
+        <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.OPERATION_CATEGORY' | translate }}</label>
+        <div class="word-break">
+          <vitamui-common-event-type-label [key]="event?.typeProc"></vitamui-common-event-type-label>
+        </div>
       </div>
-    </div>
-    <button
-      mat-button
-      class="btn btn-primary button-maring"
-      *ngIf="showDownloadButton"
-      (click)="downloadReports()"
-      [disabled]="disableDownloadButton"
-    >
-      {{ downloadButtonTitle }}
-    </button>
-    <button mat-button class="btn btn-primary button-maring" *ngIf="hasATRDownloadable()" (click)="downloadATR()">
-      {{ 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_ATR' | translate }}
-    </button>
-  </div>
 
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">
+      <div class="d-flex">
+        <div class="read-only-field mr-5">
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate }}</label>
+          <div class="word-break">{{ event?.agIdExt }}</div>
+        </div>
         <div class="read-only-field">
-          <label i18n="Operation category@@logbookOperationCategory">Catégorie d'opération</label>
-          <div class="word-break">
-            <vitamui-common-event-type-label [key]="event?.typeProc"></vitamui-common-event-type-label>
-          </div>
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate }}</label>
+          <div class="word-break">{{ event?.rightsStatementIdentifier }}</div>
         </div>
+      </div>
 
-        <div class="panel-row">
-          <div class="read-only-field">
-            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents externes</label>
-            <div class="word-break">{{ event?.agIdExt }}</div>
-          </div>
-          <div class="read-only-field">
-            <label i18n="Associated Contract@@logbookOperationContract">Contrat associé</label>
-            <div class="word-break">{{ event?.rightsStatementIdentifier }}</div>
-          </div>
+      <div class="d-flex">
+        <div class="read-only-field mr-5">
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate }}</label>
+          <div class="word-break">{{ event?.agIdApp }}</div>
         </div>
-
-        <div class="panel-row">
-          <div class="read-only-field">
-            <label i18n="Application Identifier@@logbookOperationApplicationId">Identifiant de l'application</label>
-            <div class="word-break">{{ event?.agIdApp }}</div>
-          </div>
-          <div class="read-only-field">
-            <label i18n="Transaction number@@logbookOperationTransactionNumber">Numéro de transaction</label>
-            <div class="word-break">{{ event?.idRequest }}</div>
-          </div>
-        </div>
-
-        <div class="panel-row">
-          <div class="read-only-field">
-            <label i18n="Operation Identifier@@logbookOperationOPI">Identification de l'opération</label>
-            <div class="word-break">{{ event?.objectId }}</div>
-          </div>
-          <div class="read-only-field">
-            <label i18n="Agency identifier@@logbookOperationAgId">Acteur(s) interne(s)</label>
-            <div class="word-break">{{ event?.agId }}</div>
-          </div>
-        </div>
-
         <div class="read-only-field">
-          <label i18n="Report@@logbookOperationReport">Rapport</label>
-          <div>{{ reportFileName }}</div>
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate }}</label>
+          <div class="word-break">{{ event?.idRequest }}</div>
         </div>
+      </div>
 
-        <div class="read-only-field">
-          <label i18n="Additionnal Infos@@logbookOperationAddInfos">Informations complémentaires sur l'opération</label>
-          <div class="word-break">{{ event?.data }}</div>
+      <div class="d-flex">
+        <div class="read-only-field mr-5">
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate }}</label>
+          <div class="word-break">{{ event?.objectId }}</div>
         </div>
+        <div class="read-only-field">
+          <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.INTERNAL_ACTORS' | translate }}</label>
+          <div class="word-break">{{ event?.agId }}</div>
+        </div>
+      </div>
 
-        <div class="read-only-field">
-          <label i18n="Message@@logbookOperationMessage">Message</label>
-          <div>{{ (event | lastEvent)?.outMessage }}</div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Détails" i18n-label="Details tab@@eventDetailTabDetails">
-        <vitamui-common-history-events [events]="event?.events"></vitamui-common-history-events>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-  <div class="vitamui-sidepanel-loading-overlay" *ngIf="loading" @fadeInOutAnimation>
-    <mat-spinner color="accent" diameter="40"></mat-spinner>
-  </div>
+      <div class="read-only-field">
+        <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.REPORT' | translate }}</label>
+        <div>{{ reportFileName }}</div>
+      </div>
+
+      <div class="read-only-field">
+        <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.ADDITIONAL_OPERATION_INFORMATIONS' | translate }}</label>
+        <div class="word-break">{{ event?.data }}</div>
+      </div>
+
+      <div class="read-only-field">
+        <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.MESSAGE' | translate }}</label>
+        <div>{{ (event | lastEvent)?.outMessage }}</div>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'LOGBOOK_OPERATION_DETAIL.TAB.DETAILS.TITLE' | translate">
+      <vitamui-common-history-events [events]="event?.events"></vitamui-common-history-events>
+    </mat-tab>
+  </mat-tab-group>
 </div>

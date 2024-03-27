@@ -39,11 +39,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { ActivatedRoute } from '@angular/router';
 import { FileFormatService } from '../../file-format.service';
-import { ApplicationId, Role, SecurityService } from 'ui-frontend-common';
+import { ApplicationId, diff, Role, SecurityService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-file-format-information-tab',
@@ -59,7 +58,7 @@ export class FileFormatInformationTabComponent {
 
   ruleFilter = new FormControl();
 
-  hasUpdatetRole = new Observable<boolean>();
+  hasUpdatetRole: Observable<boolean>;
 
   // tslint:disable-next-line:variable-name
   private _fileFormat: FileFormat;
@@ -152,7 +151,7 @@ export class FileFormatInformationTabComponent {
         if (formData.extensions) {
           // The extensions property must be an array of string, not a string
           formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
-        } else if (isEmpty(formData.extensions)) {
+        } else if (formData.extensions === '') {
           formData.extensions = [];
         }
         return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)));
@@ -171,6 +170,7 @@ export class FileFormatInformationTabComponent {
         this.fileFormatService.get(this._fileFormat.puid).subscribe((response) => {
           this.submited = false;
           this.fileFormat = response;
+          this.fileFormatService.updated.next(this.fileFormat);
         });
       },
       () => {

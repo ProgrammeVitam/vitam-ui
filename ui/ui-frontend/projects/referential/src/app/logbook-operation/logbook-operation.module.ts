@@ -37,9 +37,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -48,26 +50,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { PipesModule } from '../shared/pipes/pipes.module';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
-import { EventTypeBadgeClassPipe } from './logbook-operation-list/event-type-badge-class.pipe';
-import { EventTypeColorClassPipe } from './logbook-operation-list/event-type-color-class.pipe';
-import { LastEventPipe } from './logbook-operation-list/last-event.pipe';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 import { LogbookOperationRoutingModule } from './logbook-operation-routing.module';
 import { LogbookOperationComponent } from './logbook-operation.component';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
-  declarations: [
-    LogbookOperationComponent,
-
-    LogbookOperationListComponent,
-    LogbookOperationDetailComponent,
-    LogbookOperationPopupComponent,
-    LastEventPipe,
-    EventTypeColorClassPipe,
-    EventTypeBadgeClassPipe,
-  ],
+  declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -80,10 +73,14 @@ import { LogbookOperationComponent } from './logbook-operation.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     LogbookOperationRoutingModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     MatSelectModule,
     TableFilterModule,
     MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    PipesModule,
   ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })
 export class LogbookOperationModule {}

@@ -1,81 +1,73 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <table class="vitamui-table">
-    <thead>
-      <tr>
-        <th><i class="vitamui-icon vitamui-icon-probativeValue vitamui-row-icon"></i></th>
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="probativeValue Identifier column header@@probativeValueListIdentifierHeader">Identifiant</span>
-            <vitamui-common-order-by-button
-              orderByKey="#id"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
-        <th>
-          <div class="vitamui-table-header">
-            <span i18n="probativeValue CreatedDate column header@@probativeValueListCreatedDateHeader">Date de création</span>
-            <vitamui-common-order-by-button
-              orderByKey="evDateTime"
-              [(orderBy)]="orderBy"
-              [(direction)]="direction"
-              (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
-          </div>
-        </th>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center">
+        <i class="vitamui-icon vitamui-icon-releve"></i>
+      </div>
 
-        <th>Statut</th>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let probativeValue of dataSource; let index = index">
-        <tr class="vitamui-table-row">
-          <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">
-            <i
-              class="vitamui-icon vitamui-icon-probativeValue vitamui-row-icon status-badge"
-              [ngClass]="{
-                'status-badge-green': probativeValueStatus(probativeValue) == 'OK',
-                'status-badge-grey': probativeValueStatus(probativeValue) == 'STARTED',
-                'status-badge-orange': probativeValueStatus(probativeValue) == 'WARNING',
-                'status-badge-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL'
-              }"
-            ></i>
-          </td>
-          <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.id }}</td>
-          <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">
-            {{ probativeValue?.dateTime | dateTime: 'dd/MM/yyyy' }}
-          </td>
-          <td
-            class="clickable"
-            (click)="probativeValueClick.emit(probativeValue)"
-            [ngClass]="{
-              'text-green': probativeValueStatus(probativeValue) == 'OK',
-              'text-grey': probativeValueStatus(probativeValue) == 'STARTED',
-              'text-orange': probativeValueStatus(probativeValue) == 'WARNING',
-              'text-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL'
-            }"
-          >
-            {{ probativeValueStatus(probativeValue) }}
-          </td>
-          <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValueMessage(probativeValue) }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.IDENTIFIER' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="#id"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
 
-  <div class="vitamui-table-footer">
-    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-    <button
-      *ngIf="!pending && infiniteScrollDisabled && probativeValueService.canLoadMore"
-      (click)="loadMore()"
-      class="btn"
-      i18n="Show more results@@tableMoreResultButton"
-    >
-      Afficher plus de résultats...
-    </button>
-    <span *ngIf="!pending && !probativeValueService.canLoadMore">Fin des résultats</span>
+      <div class="col-2 d-flex align-items-center justify-content-between">
+        <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.CREATION_DATE' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="evDateTime"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2">
+        <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.STATUS' | translate }}</div>
+      </div>
+
+      <div class="col-4">
+        <div>{{ 'PROBATIVE_VALUE.HOME.ARRAY.MESSAGE' | translate }}</div>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let value of dataSource" (click)="probativeValueClick.emit(value)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-releve" [ngClass]="value | eventTypeBadgeClass"></i>
+          </div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ value.id }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ value.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-2" vitamuiCommonEllipsis [ngClass]="value | eventTypeColorClass">
+            {{ (value | lastEvent).outcome }}
+          </div>
+          <div class="col-4" vitamuiCommonEllipsis>{{ (value | lastEvent).outMessage }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && probativeValueService.canLoadMore && !pending; then loadMore"></div>
   </div>
-</table>
+</div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="probativeValueService.loadMore()">
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

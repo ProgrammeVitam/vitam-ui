@@ -37,8 +37,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VitamUISnackBarService } from 'ui-frontend-common';
-import { ReferentialImportService } from './referential-import.service';
-import { Referential } from './referential.enum';
+import { ReferentialTypes } from '../import-dialog/import-dialog-param.interface';
+import { ReferentialImportService } from '../import-dialog/referential-import.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -58,14 +58,14 @@ export class VitamUIImportDialogComponent implements OnInit {
   fileToUpload: File = null;
   isfileFormatValid = false;
   isImportInProgress = false;
-  referentialEnum = Referential;
-  referential: Referential;
+  referentialEnum = ReferentialTypes;
+  referential: ReferentialTypes;
 
   constructor(
     private referentialImportService: ReferentialImportService,
     private snackBarService: VitamUISnackBarService,
     public dialogRef: MatDialogRef<VitamUIImportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Referential,
+    @Inject(MAT_DIALOG_DATA) public data: ReferentialTypes,
   ) {}
 
   ngOnInit() {
@@ -86,10 +86,10 @@ export class VitamUIImportDialogComponent implements OnInit {
 
     // Check the file format according to the provided referential
     if (
-      (this.referential === Referential.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
-      (this.referential === Referential.RULE && this.isCsvFile(this.fileToUpload.type)) ||
-      (this.referential === Referential.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
-      (this.referential === Referential.ONTOLOGY && this.fileToUpload.type === 'application/json')
+      (this.referential === ReferentialTypes.AGENCY && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === ReferentialTypes.RULE && this.isCsvFile(this.fileToUpload.type)) ||
+      (this.referential === ReferentialTypes.FILE_FORMAT && this.fileToUpload.type === 'text/xml') ||
+      (this.referential === ReferentialTypes.ONTOLOGY && this.fileToUpload.type === 'application/json')
     ) {
       this.isfileFormatValid = true;
     } else {

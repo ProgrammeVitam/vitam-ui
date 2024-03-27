@@ -34,52 +34,69 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AccessContract, ApplicationService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
+import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
+
+import { Subject, Subscription } from 'rxjs';
+import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
+import { AccessContractService } from './access-contract.service';
 
 @Component({
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
   styleUrls: ['./access-contract.component.scss'],
 })
-export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit {
-  search = '';
-  tenantId: number;
-  isSlaveMode: boolean;
+export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
+  public search = '';
+  public tenantIdentifier: number;
+  public isSlaveMode = false;
 
   @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
+  private readonly destroyer$ = new Subject();
+
   constructor(
-    public dialog: MatDialog,
+    public globalEventService: GlobalEventService,
+    private dialog: MatDialog,
     private route: ActivatedRoute,
-    private router: Router,
-    globalEventService: GlobalEventService,
+    private readonly accessContractService: AccessContractService,
     private applicationService: ApplicationService,
+    private translateService: TranslateService,
+    private downloadSnackBarService: DownloadSnackBarService,
   ) {
     super(route, globalEventService);
-    globalEventService.tenantEvent.subscribe(() => {
+  }
+
+  ngOnInit() {
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
       this.updateSlaveMode();
     });
 
-    this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.tenantId = params.tenantIdentifier;
-      }
-    });
+    this.updateSlaveMode();
   }
 
-  openCreateAccesscontractDialog() {
-    const dialogRef = this.dialog.open(AccessContractCreateComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-    });
-    dialogRef.componentInstance.tenantIdentifier = this.tenantId;
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  public openCreateAccesscontractDialog() {
+    const dialogRef = this.dialog.open(AccessContractCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    dialogRef.componentInstance.tenantIdentifier = this.tenantIdentifier;
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         this.refreshList();
@@ -87,33 +104,63 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     });
   }
 
+  public openImport(): void {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.ACCESS_CONTRACT_SUBTITLE'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
+      allowedFiles: [FileTypes.CSV],
+      referential: ReferentialTypes.ACCESS_CONTRACT,
+      successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',
+      iconMessage: 'vitamui-icon-user',
+    };
+
+    this.dialog
+      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
+  }
+
+  public export(): void {
+    this.downloadSnackBarService.openDownloadBar();
+    const request: Subscription = this.accessContractService.exportAccessContracts().subscribe(
+      (response: HttpResponse<Blob>) => {
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_access_contracts.csv');
+        this.downloadSnackBarService.close();
+      },
+      () => this.downloadSnackBarService.close(),
+    );
+
+    this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
+  }
+
+  public downloadModel(): void {
+    this.accessContractService
+      .downloadImportAccessContractFileModel()
+      .subscribe((response: HttpResponse<Blob>) =>
+        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_access_contrat_template.csv'),
+      );
+  }
+
+  public onSearchSubmit(search: string) {
+    this.search = search || '';
+  }
+
   private refreshList() {
     if (!this.accessContractListComponent) {
       return;
     }
+
     this.accessContractListComponent.searchAccessContractOrdered();
   }
 
-  changeTenant(tenantIdentifier: number) {
-    this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
-  }
-
-  updateSlaveMode() {
+  private updateSlaveMode() {
     this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').subscribe((value) => {
       this.isSlaveMode = value;
     });
-  }
-
-  onSearchSubmit(search: string) {
-    this.search = search || '';
-  }
-
-  ngOnInit() {
-    this.updateSlaveMode();
-  }
-
-  showAccessContract(item: AccessContract) {
-    this.openPanel(item);
   }
 }

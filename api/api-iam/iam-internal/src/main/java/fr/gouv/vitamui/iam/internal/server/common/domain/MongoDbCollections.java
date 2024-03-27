@@ -69,6 +69,9 @@ public final class MongoDbCollections {
 
     public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
 
+    public static final String CONNECTION_HISTORY = "connectionHistory";
+
+
     private MongoDbCollections() {
         // do nothing
     }

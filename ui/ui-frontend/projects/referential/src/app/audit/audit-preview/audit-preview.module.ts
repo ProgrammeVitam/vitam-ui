@@ -50,6 +50,7 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
 import { AuditPreviewComponent } from './audit-preview.component';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [AuditPreviewComponent, AuditInformationTabComponent],
@@ -68,6 +69,7 @@ import { AuditPreviewComponent } from './audit-preview.component';
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    PipesModule,
   ],
   exports: [AuditPreviewComponent],
 })

@@ -39,6 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { RuleService } from 'ui-frontend-common';
 import { RulePreviewComponent } from './rule-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RulePreviewComponent', () => {
   let component: RulePreviewComponent;
@@ -46,6 +47,7 @@ describe('RulePreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [RulePreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

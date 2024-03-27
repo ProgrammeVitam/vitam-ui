@@ -154,6 +154,11 @@
           {{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}
         </vitamui-common-slide-toggle>
       </div>
+      <div class="col-6">
+        <vitamui-common-slide-toggle formControlName="propagateLogout">
+          {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
+        </vitamui-common-slide-toggle>
+      </div>
     </div>
   </div>
   <div *ngIf="form.value.protocoleType === 'OIDC' && displayOIDCSAMLBLOCKS">
@@ -217,6 +222,11 @@
       <div class="col-4">
         <vitamui-common-slide-toggle formControlName="useNonce">{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</vitamui-common-slide-toggle>
       </div>
+    </div>
+    <div class="col-6 padding0">
+      <vitamui-common-slide-toggle formControlName="propagateLogout">
+        {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
+      </vitamui-common-slide-toggle>
     </div>
   </div>
 </form>

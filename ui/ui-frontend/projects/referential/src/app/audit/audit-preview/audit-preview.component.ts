@@ -35,9 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Event } from 'projects/vitamui-library/src/public-api';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { Event, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
 import { AuditService } from '../audit.service';
 
 @Component({
@@ -54,7 +52,7 @@ export class AuditPreviewComponent implements OnInit {
   constructor(
     private auditService: AuditService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
@@ -63,14 +61,9 @@ export class AuditPreviewComponent implements OnInit {
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          },
-        );
+        this.vitamUISnackBarService.open({
+          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
+        });
       }
     });
   }

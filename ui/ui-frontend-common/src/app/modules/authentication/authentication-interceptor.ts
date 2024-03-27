@@ -38,16 +38,14 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
-import { catchError, first, switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { ConfigService } from '../config.service';
-import { Logger } from '../logger/logger';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
   constructor(
     private authStorage: OAuthStorage,
     private configService: ConfigService,
-    private logger: Logger,
   ) {}
 
   private checkUrl(url: string): boolean {
@@ -88,10 +86,6 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           req = req.clone({ headers });
         }
 
-        return next.handle(req);
-      }),
-      catchError((err) => {
-        this.logger.error(this, err);
         return next.handle(req);
       }),
     );

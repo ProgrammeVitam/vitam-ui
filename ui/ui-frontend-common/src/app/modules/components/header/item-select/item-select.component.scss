@@ -78,7 +78,6 @@
     .mat-select .mat-select-value {
       color: var(--vitamui-grey-900);
       font-size: 16px;
-      font-weight: 700;
     }
 
     .select-arrow {
@@ -88,27 +87,57 @@
     }
   }
   .mat-form-field-flex {
-    background-color: white;
+    background-color: var(--vitamui-grey-300);
+  }
+}
+
+.mat-form-field:not(.mat-form-field-disabled) {
+  @include input-elevation-dark;
+
+  .mat-form-field-label {
+    color: var(--vitamui-grey-600);
   }
 
-  mat-select {
+  &.mat-focused {
+    border: solid 1px var(--vitamui-primary);
+
+    .mat-form-field-label {
+      color: var(--vitamui-grey-600);
+    }
+  }
+  .mat-select .mat-select-value {
     color: var(--vitamui-grey-900);
     font-size: 16px;
+    font-weight: 700;
   }
 
-  .mat-option-text {
-    color: var(--vitamui-grey-900);
+  .select-arrow {
+    i {
+      color: var(--vitamui-primary);
+    }
   }
+}
+.mat-form-field-flex {
+  background-color: white;
+}
 
-  .mat-option {
-    color: var(--vitamui-grey-900);
-  }
+mat-select {
+  color: var(--vitamui-grey-900);
+  font-size: 16px;
+}
 
-  .mat-option.mat-selected:not(.mat-option-disabled) {
-    color: var(--vitamui-primary);
-  }
+.mat-option-text {
+  color: var(--vitamui-grey-900);
+}
 
-  span.mat-select-placeholder {
-    margin-top: 0.4rem;
-  }
+.mat-option {
+  color: var(--vitamui-grey-900);
+}
+
+.mat-option.mat-selected:not(.mat-option-disabled) {
+  color: var(--vitamui-primary);
+}
+
+span.mat-select-placeholder {
+  margin-top: 0.4rem;
 }

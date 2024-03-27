@@ -80,13 +80,10 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   create(profile: SecurityProfile) {
     return this.securityProfileApiService.create(profile, this.headers).pipe(
       tap(
-        (response: SecurityProfile) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.SECURITY_CREATED',
-            translateParams: {
-              name: response.identifier,
-            },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-securite',
           });
         },
         (error) => {
@@ -100,13 +97,10 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
     return this.securityProfileApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.SECURITY_UPDATED',
-            translateParams: {
-              name: response.identifier,
-            },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-securite',
           });
         },
         (error) => {
@@ -122,10 +116,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.SECURITY_DELETED',
-            translateParams: {
-              name: profile.identifier,
-            },
-            icon: 'vitamui-icon-admin-key',
+            icon: 'vitamui-icon-securite',
           });
         },
         (error) => {

@@ -63,7 +63,7 @@ export class RuleInformationTabComponent implements OnInit {
   ruleMeasurements = RULE_MEASUREMENTS;
 
   tenantIdentifier: number;
-  hasUpdateAgencyRole$: Observable<boolean>;
+  hasUpdateRuleRole$: Observable<boolean>;
 
   private oldRule: Rule;
 
@@ -108,7 +108,7 @@ export class RuleInformationTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hasUpdateAgencyRole$ = this.route.params.pipe(
+    this.hasUpdateRuleRole$ = this.route.params.pipe(
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
         return this.securityService.hasRole(RULES_APP, this.tenantIdentifier, VitamuiRoles.ROLE_UPDATE_RULES);
@@ -169,27 +169,5 @@ export class RuleInformationTabComponent implements OnInit {
 
   resetForm(rule: Rule) {
     this.form.reset(rule, { emitEvent: false });
-  }
-
-  getRuleTypeLabel(): string {
-    const formControl = this.form.get('ruleType');
-    if (formControl) {
-      const ruleType = this.ruleTypes.find((item) => item.key === formControl.value);
-      if (ruleType) {
-        return ruleType.label;
-      }
-    }
-    return '';
-  }
-
-  getRuleMeasurementLabel(): string {
-    const formControl = this.form.get('ruleMeasurement');
-    if (formControl) {
-      const ruleMeasurement = this.ruleMeasurements.find((item) => item.key === formControl.value);
-      if (ruleMeasurement) {
-        return ruleMeasurement.label;
-      }
-    }
-    return '';
   }
 }

@@ -180,7 +180,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
-        for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
+        for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
             QualifiersDto qualifierFound = got.getQualifiers().stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)

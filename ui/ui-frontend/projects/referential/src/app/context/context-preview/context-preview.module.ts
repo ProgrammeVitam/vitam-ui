@@ -54,6 +54,8 @@ import { ContextEditPermissionModule } from '../context-create/context-edit-perm
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
 import { ContextPreviewComponent } from './context-preview.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -74,6 +76,8 @@ import { ContextPreviewComponent } from './context-preview.component';
     MatOptionModule,
     MatTabsModule,
     MatDividerModule,
+    MatDatepickerModule,
+    MatInputModule,
   ],
   declarations: [ContextPreviewComponent, ContextInformationTabComponent, ContextPermissionTabComponent],
   exports: [ContextPreviewComponent],

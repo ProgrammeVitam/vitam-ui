@@ -73,6 +73,14 @@ public class ReferentialInternalWebClientFactory extends BaseWebClientFactory  {
         return new RuleInternalWebClient(getWebClient(), getBaseUrl());
     }
 
+    public AccessContractInternalWebClient getAccessContractInternalWebClient() {
+        return new AccessContractInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    public IngestContractInternalWebClient getIngestContractInternalWebClient() {
+        return new IngestContractInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
     @Override
     public String getBaseUrl() {
         return super.getBaseUrl();

@@ -64,7 +64,7 @@ public class UserRepositoryTest {
         repository.save(userVitamUI);
         repository.save(userOuidou);
 
-        final User user = repository.findByEmail(emailVitamUIMoctar);
+        final User user = repository.findByEmailIgnoreCase(emailVitamUIMoctar);
 
         assertNotNull(user);
         assertEquals(user.getEmail(), emailVitamUIMoctar);

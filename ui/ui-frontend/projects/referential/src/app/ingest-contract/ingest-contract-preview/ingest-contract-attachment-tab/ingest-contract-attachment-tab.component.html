@@ -1,26 +1,20 @@
-<div class="row">
-  <div class="col-12 form-control">
-    <button class="btn secondary mb-20" (click)="openUpdateSelectedNodes()" [disabled]="!accessContractId || readOnly">
-      <div i18n="accessContract nodes tab edit@@AccessContractNodesTabEditButton">Modifier</div>
-    </button>
-  </div>
+<button class="btn primary mb-3" (click)="openUpdateSelectedNodes()" [disabled]="!accessContractId || readOnly">
+  {{ 'COMMON.EDIT' | translate }}
+</button>
+
+<div class="mt-3">
+  <div class="text normal bold">{{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.POSITION' | translate }}</div>
+  <ul *ngIf="linkParentIdTitle">
+    <li>{{ linkParentIdTitle }}</li>
+  </ul>
 </div>
 
-<div class="row c-padding-top">
-  <div class="col-10">
-    <span>Position de rattachement</span> :
-    <ul *ngIf="getTitle(ingestContract.linkParentId)">
-      <li>{{ getTitle(ingestContract.linkParentId) }}</li>
-    </ul>
-  </div>
-
-  <div class="col-10">
-    <span>Contrôle des rattachements</span> :
-    <span *ngIf="ingestContract.checkParentLink === 'AUTHORIZED'">Autorisé</span>
-    <span *ngIf="ingestContract.checkParentLink === 'REQUIRED'">Obligatoire</span>
-    <span *ngIf="ingestContract.checkParentLink === 'UNAUTHORIZED'">Interdit</span>
-    <ul>
-      <li *ngFor="let unitId of ingestContract.checkParentId">{{ getTitle(unitId) }}</li>
-    </ul>
-  </div>
+<div class="mt-3">
+  <div class="text normal bold">{{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.TITLE' | translate }}</div>
+  <ul>
+    <li *ngIf="ingestContract.checkParentLink">
+      {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.' + ingestContract.checkParentLink | translate }}
+    </li>
+    <li *ngFor="let checkParentIdTitle of checkParentIdTitles">{{ checkParentIdTitle }}</li>
+  </ul>
 </div>

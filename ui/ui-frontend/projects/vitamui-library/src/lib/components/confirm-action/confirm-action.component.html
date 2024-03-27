@@ -1,23 +1,17 @@
 <vitamui-common-confirm-dialog
   *ngIf="dialogType === 'delete'"
-  dialogTitle="Suppression {{ objectGender === 'M' ? 'd\'un' : 'd\'une' }} {{ objectType }}"
-  i18n-dialogTitle="@@closePopupConfirmDialogTitle"
-  confirmLabel="Valider"
-  i18n-confirmLabel="@@confirmActionConfirmDialogConfirmLabel"
-  cancelLabel="Annuler"
-  i18n-cancelLabel="@@confirmActionCancelDialogCancelLabel"
+  dialogTitle="{{ 'CONFIRM_DIALOG.DELETE_TITLE' | translate: { objectType: objectType } }}"
+  confirmLabel="{{ 'COMMON.CONFIRM' | translate }}"
+  cancelLabel="{{ 'COMMON.CANCEL' | translate }}"
 >
-  Confirmez-vous la suppression {{ objectGender === 'M' ? 'du' : 'de la' }} {{ objectType }} "{{ objectName }}" ?
+  {{ 'CONFIRM_DIALOG.DELETE' | translate: { objectType: objectType, objectName: objectName } }}
 </vitamui-common-confirm-dialog>
 
 <vitamui-common-confirm-dialog
   *ngIf="dialogType === 'changeTab'"
-  dialogTitle="modifications non sauvegardées"
-  i18n-dialogTitle="@@closePopupConfirmDialogTitle"
-  confirmLabel="Oui"
-  i18n-confirmLabel="@@confirmActionConfirmDialogConfirmLabel"
-  cancelLabel="Non"
-  i18n-cancelLabel="@@confirmActionCancelDialogCancelLabel"
+  dialogTitle="{{ 'CONFIRM_DIALOG.UNSAVED_CHANGES_TITLE' | translate }}"
+  confirmLabel="{{ 'COMMON.YES' | translate }}"
+  cancelLabel="{{ 'COMMON.NO' | translate }}"
 >
-  Voulez-vous sauvegarder les modifications ?
+  {{ 'CONFIRM_DIALOG.SAVE' | translate }}
 </vitamui-common-confirm-dialog>

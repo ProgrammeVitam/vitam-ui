@@ -6,6 +6,10 @@
   visibility: hidden !important;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .underline {
   text-decoration: underline;
 }
@@ -35,4 +39,8 @@ $vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
       color: var(--#{$color}-#{$i * 100});
     }
   }
+}
+
+.align-middle {
+  vertical-align: middle;
 }

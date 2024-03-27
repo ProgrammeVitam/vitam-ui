@@ -39,6 +39,8 @@ package fr.gouv.vitamui.iam.internal.server.application.dao;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
 
+import java.util.List;
+
 /**
  * MongoDB repository for the application.
  *
@@ -46,4 +48,5 @@ import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
  */
 public interface ApplicationRepository extends VitamUIRepository<Application, String> {
 
+    List<Application> findAllByIdentifierIn(List<String> identifiers);
 }

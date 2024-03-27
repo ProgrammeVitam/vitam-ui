@@ -75,12 +75,9 @@ export class OntologyService extends SearchService<Ontology> {
   create(ontology: Ontology) {
     return this.ontologyApiService.create(ontology, this.headers).pipe(
       tap(
-        (response: Ontology) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.ONTOLOGY_CREATED',
-            translateParams: {
-              name: response.identifier,
-            },
             icon: 'vitamui-icon-ontologie',
           });
         },
@@ -95,12 +92,9 @@ export class OntologyService extends SearchService<Ontology> {
     return this.ontologyApiService.patch(data).pipe(
       tap((response) => this.updated.next(response)),
       tap(
-        (response) => {
+        () => {
           this.snackBarService.open({
             message: 'SNACKBAR.ONTOLOGY_UPDATED',
-            translateParams: {
-              name: response.identifier,
-            },
             icon: 'vitamui-icon-ontologie',
           });
         },
@@ -117,9 +111,6 @@ export class OntologyService extends SearchService<Ontology> {
         () => {
           this.snackBarService.open({
             message: 'SNACKBAR.ONTOLOGY_DELETED',
-            translateParams: {
-              name: ontology.identifier,
-            },
             icon: 'vitamui-icon-ontologie',
           });
         },

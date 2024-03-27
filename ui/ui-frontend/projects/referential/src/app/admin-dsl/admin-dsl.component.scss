@@ -1,112 +1,20 @@
-.form_padding {
-  padding-left: 20px;
-}
-.form_size {
-  width: 45%;
-}
+@import '~ui-frontend-common/sass/mixins/elevation';
 
-.full_size {
-  width: 100%;
-}
+.request {
+  display: flex;
+  height: 55vh;
 
-::ng-deep .vitamui-mat-select.mat-form-field.mat-form-field-type-mat-select .mat-form-field-flex {
-  background-color: #ffffff;
-}
-
-.vitamui-container {
-  padding-bottom: 0;
-}
-
-.row {
-  &:first-child {
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-
-  &:nth-child(2) {
-    margin-left: 0;
-    margin-right: 0;
+  > div {
+    height: 88%;
   }
 }
 
-.form_textarea {
-  label {
-    font-weight: 500;
-    margin-bottom: 10px;
-    color: #474d4a;
-  }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  &:first-child {
-    margin-left: 5%;
-    margin-right: 2.5%;
-    width: 42.5%;
-  }
-
-  &:nth-child(2) {
-    margin-left: 2.5%;
-    margin-right: 5%;
-    width: 42.5%;
-  }
-
-  .textarea {
-    white-space: pre;
-    background: #ffffff;
-    padding: 10px;
-    box-shadow:
-      0px 11px 15px rgba(0, 0, 0, 0.1),
-      0px 9px 46px rgba(0, 0, 0, 0.06),
-      0px 24px 38px rgba(0, 0, 0, 0.07);
-    border-radius: 10px;
-    border: none;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 500px;
-    margin-bottom: 30px;
-    resize: none;
-
-    &__resultat {
-      background: #f0f0f0;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: #f5f5f5;
-      border-radius: 10px;
-    }
-
-    &::-webkit-scrollbar {
-      width: 5px;
-      background-color: #ffffff;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      background-color: #5cbaa9;
-    }
-
-    &::-webkit-resizer {
-      background-color: transparent;
-    }
-  }
-
-  .actions {
+  > div {
     display: flex;
-    flex-direction: row;
-    .btn {
-      background-color: transparent;
-      color: var(--vitamui-secondary);
-      border-color: var(--vitamui-secondary) !important;
-      &:first-child {
-        margin-right: 20px;
-      }
-    }
-  }
-
-  .right {
-    float: right;
-    .btn {
-      &:first-child {
-        margin-right: 20px;
-      }
-    }
   }
 }

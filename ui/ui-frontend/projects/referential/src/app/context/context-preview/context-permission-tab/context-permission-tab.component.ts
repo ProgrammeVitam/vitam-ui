@@ -59,7 +59,6 @@ export class ContextPermissionTabComponent implements OnInit {
   submited = false;
   unchanged = true;
   dataLoaded = false;
-  isPermissionsOnMultipleOrganisations = false;
 
   private _context: Context;
   private updatedPermissions: ContextPermission[] = new Array();
@@ -68,9 +67,6 @@ export class ContextPermissionTabComponent implements OnInit {
   organisations: Map<string, Customer> = new Map();
   accessContracts: Map<string, AccessContract> = new Map();
   ingestContracts: Map<string, IngestContract> = new Map();
-
-  @Input()
-  readOnly: boolean;
 
   @Input()
   set context(context: Context) {
@@ -169,6 +165,10 @@ export class ContextPermissionTabComponent implements OnInit {
 
       this.dataLoaded = true;
     });
+
+    this.contextService.updated.subscribe((updatedContext: Context) => {
+      this.context = updatedContext;
+    });
   }
 
   sameArray(a: string[], b: string[]): boolean {
@@ -233,11 +233,14 @@ export class ContextPermissionTabComponent implements OnInit {
     this.submited = true;
     this.prepareSubmit().subscribe(
       () => {
-        this.contextService.get(this._context.identifier).subscribe((response) => {
-          this.submited = false;
-          this.context = response;
-          this.hasChanged();
-        });
+        this.contextService
+          .get(this._context.identifier)
+          .pipe(tap((response) => this.contextService.updated.next(response)))
+          .subscribe((response) => {
+            this.submited = false;
+            this.context = response;
+            this.hasChanged();
+          });
       },
       () => {
         this.submited = false;
@@ -263,6 +266,9 @@ export class ContextPermissionTabComponent implements OnInit {
         this.updatedPermissions = result.permissions;
         // Check if the permissions have been modified
         this.hasChanged();
+        if (!this.unchanged || !this.submited) {
+          this.onSubmit();
+        }
       }
     });
   }

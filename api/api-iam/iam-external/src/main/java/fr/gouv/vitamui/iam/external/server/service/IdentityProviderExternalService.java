@@ -96,7 +96,7 @@ public class IdentityProviderExternalService
         IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
         final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
             dto.getPatterns(), Objects.nonNull(keystore)?new ByteArrayResource(keystore.getBytes()):null, dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getMaximumAuthenticationLifetime(), dto.getAuthnRequestBinding(), dto.getWantsAssertionsSigned(), dto.getAuthnRequestSigned(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
+            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getMaximumAuthenticationLifetime(), dto.getAuthnRequestBinding(), dto.getWantsAssertionsSigned(), dto.getAuthnRequestSigned(), dto.isPropagateLogout(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
             dto.getClientSecret(),dto.getDiscoveryUrl(), dto.getScope(),dto.getPreferredJwsAlgorithm(),dto.getCustomParams(),dto.getUseState(),dto.getUseNonce(),dto.getUsePkce(), dto.getProtocoleType());
         return builder.build();
     }

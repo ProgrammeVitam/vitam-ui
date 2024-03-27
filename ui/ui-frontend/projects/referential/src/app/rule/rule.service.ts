@@ -96,7 +96,7 @@ export class RuleService extends SearchService<Rule> {
       tap(
         (success) => {
           const message = success ? 'SNACKBAR.RULE_UPDATE_SUCCESS' : 'SNACKBAR.RULE_UPDATE_FAILED';
-          this.snackBarService.open({ message, translateParams: { name: data.id }, icon: 'vitamui-icon-admin-rules' });
+          this.snackBarService.open({ message, translateParams: { name: data.id }, icon: 'vitamui-icon-rules' });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),
@@ -108,7 +108,7 @@ export class RuleService extends SearchService<Rule> {
       tap(
         (success) => {
           const message = success ? 'SNACKBAR.RULE_DELETE_SUCCESS' : 'SNACKBAR.RULE_DELETE_FAILED';
-          this.snackBarService.open({ message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-admin-rules' });
+          this.snackBarService.open({ message, translateParams: { name: rule.ruleId }, icon: 'vitamui-icon-rules' });
         },
         (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
       ),

@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ContextPermission } from 'ui-frontend-common';
@@ -98,4 +99,22 @@ export class ContextCreateValidators {
 
     return null;
   }
+
+  allowedName = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors => {
+      if (!control.value) {
+        return of({ incorrectName: true });
+      }
+      return control.value.match('^[a-zA-Z0-9+=@_-]*$') ? of(null) : of({ incorrectName: true });
+    };
+  };
+
+  allowedIdentifier = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors => {
+      if (!control.value) {
+        return of({ incorrectIdentifier: true });
+      }
+      return control.value.match('^[a-zA-Z0-9+=@_-]*$') ? of(null) : of({ incorrectIdentifier: true });
+    };
+  };
 }

@@ -42,12 +42,13 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'ui-frontend-common';
+import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
-import { EventTypeBadgeClassPipe } from '../logbook-operation-list/event-type-badge-class.pipe';
-import { LastEventPipe } from '../logbook-operation-list/last-event.pipe';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -72,6 +73,7 @@ describe('LogbookOperationDetailComponent', () => {
         MatSnackBarModule,
         InjectorModule,
         RouterTestingModule,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
@@ -81,6 +83,7 @@ describe('LogbookOperationDetailComponent', () => {
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },

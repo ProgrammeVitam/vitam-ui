@@ -36,33 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.group.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -72,6 +46,7 @@ import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
@@ -80,6 +55,9 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
@@ -98,6 +76,25 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_GROUP;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_GROUP;
 
 @Getter
 @Setter
@@ -123,11 +120,13 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
     private LogbookService logbookService;
 
+    private final GroupExportService groupExportService;
+
     @Autowired
     public GroupInternalService(final SequenceGeneratorService sequenceGeneratorService, final GroupRepository groupRepository,
             final CustomerRepository customerRepository, final ProfileInternalService internalProfileService, final UserRepository userRepository,
             final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository, final IamLogbookService iamLogbookService,
-            final GroupConverter groupConverter, final LogbookService logbookService) {
+            final GroupConverter groupConverter, final LogbookService logbookService, final GroupExportService groupExportService) {
         super(sequenceGeneratorService);
         this.groupRepository = groupRepository;
         this.customerRepository = customerRepository;
@@ -138,6 +137,7 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         this.iamLogbookService = iamLogbookService;
         this.groupConverter = groupConverter;
         this.logbookService = logbookService;
+        this.groupExportService = groupExportService;
     }
 
     /**
@@ -548,4 +548,38 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         return internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
     }
 
+    public Resource exportProfileGroups(final Optional<String> criteriaJsonString) {
+        final List<GroupDto> groupsDto = this.getAll(criteriaJsonString, Optional.of("ALL"));
+        final List<ProfileDto> profilesDto = internalProfileService.getAll(criteriaJsonString, Optional.empty());
+
+        if (CollectionUtils.isEmpty(groupsDto)) {
+            throw new UnexpectedDataException("Profile groups list is empty");
+        }
+
+        return groupExportService.exportProfileGroups(groupsDto, profilesDto, loadGroupHistoryGroupedByEventType(groupsDto));
+    }
+
+    private Map<String, List<LogbookEventDto>> loadGroupHistoryGroupedByEventType(List<GroupDto> groupsDto){
+
+        if (CollectionUtils.isEmpty(groupsDto)) {
+            return Map.of();
+        }
+
+        var groupsIds = groupsDto.stream().map(GroupDto::getIdentifier).filter(Objects::nonNull).collect(Collectors.toList());
+        var types = List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name());
+
+        var operationRequest = logbookService.findEvents(
+            groupsIds,
+            MongoDbCollections.GROUPS,
+            getVitamContext());
+
+        return VitamRestUtils.responseMapping(operationRequest.toJsonNode(), LogbookOperationsResponseDto.class)
+            .getResults().stream()
+            .flatMap(op -> op.getEvents().stream())
+            .filter(
+                evt -> evt.getObIdReq().equals(MongoDbCollections.GROUPS)
+                && types.contains(evt.getEvType())
+                && groupsIds.contains(evt.getObId())
+            ).collect(Collectors.groupingBy(LogbookEventDto::getEvType));
+    }
 }

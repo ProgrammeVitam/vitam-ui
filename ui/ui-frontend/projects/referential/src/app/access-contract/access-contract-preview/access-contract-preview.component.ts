@@ -51,31 +51,25 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
   styleUrls: ['./access-contract-preview.component.scss'],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;
 
-  isPopup: boolean;
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   // tab indexes: info = 0; usage = 1; write = 2; node = 3; history = 4;
-  tabUpdated: boolean[] = [false, false, false, false, false];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  private tabUpdated: boolean[] = [false, false, false, false, false];
+  private tabValid: boolean[] = [false, false, true, true, true];
+  private tabLinks: Array<any> = [];
 
-  tabLinks: Array<
-    AccessContractInformationTabComponent | AccessContractUsageAndServicesTabComponent | AccessContractWriteAccessTabComponent
-  > = [];
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
   @ViewChild('usageTab', { static: false }) usageTab: AccessContractUsageAndServicesTabComponent;
   @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
 
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      event.preventDefault();
-      this.checkBeforeExit();
-      return '';
-    }
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private accessContractService: AccessContractService,
+  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -84,12 +78,23 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     this.tabLinks[2] = this.writeTab;
   }
 
-  constructor(
-    private matDialog: MatDialog,
-    private accessContractService: AccessContractService,
-  ) {}
+  @HostListener('window:beforeunload', ['$event']) beforeunloadHandler(event: any) {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+      event.preventDefault();
+      this.checkBeforeExit();
+      return '';
+    }
+  }
 
-  filterEvents(event: any): boolean {
+  public async emitClose() {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+      await this.checkBeforeExit();
+    }
+
+    this.previewClose.emit();
+  }
+
+  public filterEvents(event: any): boolean {
     return (
       event.outDetail &&
       (event.outDetail.includes('STP_UPDATE_ACCESS_CONTRACT') ||
@@ -98,11 +103,15 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     );
   }
 
-  updatedChange(updated: boolean, index: number) {
+  public updatedChange(updated: boolean, index: number) {
     this.tabUpdated[index] = updated;
   }
 
-  async checkBeforeExit() {
+  public formTabValidityChange(updated: boolean, index: number) {
+    this.tabValid[index] = updated;
+  }
+
+  private async checkBeforeExit() {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<AccessContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
@@ -116,8 +125,8 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     }
   }
 
-  async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+  private async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
+    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();
     }
 
@@ -125,16 +134,13 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
   }
 
-  async confirmAction(): Promise<boolean> {
+  private async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
 
-  async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
-    this.previewClose.emit();
+  updatedAccessContract(accessContract: AccessContract) {
+    this.accessContract = accessContract;
   }
 }

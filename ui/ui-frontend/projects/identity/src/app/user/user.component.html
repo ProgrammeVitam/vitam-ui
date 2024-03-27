@@ -16,11 +16,13 @@
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-        <div *ngIf="groups">
-          <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-            <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
-          </button>
-        </div>
+        <button class="btn primary mr-3" *ngIf="groups" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
+          <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
+        </button>
+
+        <button class="btn secondary" (click)="export()" [disabled]="exportLoading">
+          <span>{{ 'USER.HOME.EXPORT' | translate }}</span>
+        </button>
       </vitamui-common-banner>
     </div>
 

@@ -2,129 +2,96 @@
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"> </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"> </vitamui-common-navbar>
+    <div class="vitamui-heading mb-1">
+      <vitamui-common-title-breadcrumb>{{ 'DSL.HOME.TITLE' | translate }}</vitamui-common-title-breadcrumb>
 
-        <div class="vitamui-heading">
-          <vitamui-common-title-breadcrumb>
-            {{ 'APPLICATION.DSL_APP.NAME' | translate }}
-          </vitamui-common-title-breadcrumb>
+      <form [formGroup]="form" (ngSubmit)="search()" class="d-flex align-item-center justify-content-between mx-2">
+        <mat-form-field class="vitamui-mat-select w-100">
+          <mat-select
+            formControlName="dslQueryType"
+            placeholder="{{ 'DSL.HOME.SEARCH_CATEGORY' | translate }}"
+            panelClass="vitamui-mat-select"
+          >
+            <mat-option *ngFor="let dslQuery of dslQueryTypeEnum | keyvalue" [value]="dslQuery.value">
+              {{ 'DSL.HOME.' + dslQuery.value | translate }}
+            </mat-option>
+          </mat-select>
+
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+
+        <vitamui-common-input
+          class="w-100 mx-3"
+          maxlength="36"
+          formControlName="id"
+          placeholder="{{ 'DSL.HOME.IDENTIFIER' | translate }}"
+          [required]="isUnitIdRequired()"
+        >
+          <ng-container *ngIf="form.get('id')?.touched">
+            <vitamui-common-input-error *ngIf="!!form.get('id')?.errors?.required">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </vitamui-common-input-error>
+
+            <vitamui-common-input-error *ngIf="!!form.get('id')?.errors?.minlength || !!form.get('id')?.errors?.maxlength">
+              {{ 'DSL.HOME.IDIENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id').errors.minlength.requiredLength } }}
+            </vitamui-common-input-error>
+
+            <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit">
+              {{ 'DSL.HOME.UNKOWN_UNIT' | translate }}
+            </vitamui-common-input-error>
+          </ng-container>
+        </vitamui-common-input>
+
+        <mat-form-field class="vitamui-mat-select w-100">
+          <mat-select
+            formControlName="accessContract"
+            placeholder="{{ 'DSL.HOME.ACCESS_CONTRACT' | translate }}"
+            panelClass="vitamui-mat-select"
+          >
+            <mat-option *ngFor="let accessContract of accessContracts" [value]="accessContract.key">
+              {{ accessContract.label }}
+            </mat-option>
+          </mat-select>
+
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="vitamui-content">
+      <form [formGroup]="form" class="request">
+        <div class="w-100 mr-3">
+          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST' | translate }}</div>
+          <vitamui-common-textarea formControlName="dsl"></vitamui-common-textarea>
+        </div>
+
+        <div class="w-100">
+          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST_RESULT' | translate }}</div>
+          <vitamui-common-textarea formControlName="response" disabled #responseText></vitamui-common-textarea>
+        </div>
+      </form>
+
+      <div class="actions">
+        <div>
+          <button class="btn primary mr-3" (click)="search()" [disabled]="form.pending || form.invalid">
+            {{ 'COMMON.SEARCH' | translate }}
+          </button>
+          <button class="btn secondary" (click)="checkDsl()">{{ 'DSL.HOME.VALIDATE_JSON' | translate }}</button>
+        </div>
+        <div>
+          <button class="btn outline outline-primary mr-3" (click)="copyToClipbord(responseText.value)">
+            {{ 'COMMON.COPY' | translate }}
+          </button>
+
+          <button class="btn outline outline-primary" (click)="clear()">{{ 'COMMON.DELETE' | translate }}</button>
         </div>
       </div>
     </div>
-
-    <form [formGroup]="form" (ngSubmit)="search()">
-      <div class="row">
-        <mat-form-field class="vitamui-mat-select">
-          <mat-select
-            formControlName="dslQueryType"
-            placeholder="Catégorie de recherche"
-            required="required"
-            i18n-placeholder="dsl query category placeholder@@dslQueryTypeFormApplicationPlaceholder"
-            panelclass="vitamui-mat-select"
-            class="full_size"
-          >
-            <mat-option [value]="dslQueryTypeEnum.ARCHIVE_UNIT">
-              <span i18n="archive unit dsl query category label@@archiveUnitDslQueryCategoryLabel"> Unité d'archive </span>
-            </mat-option>
-            <mat-option [value]="dslQueryTypeEnum.TECHNICAL_OBJECT_GROUP">
-              <span i18n="technical object group unit dsl query category label@@technicalObjectGroupnit dsl query category label">
-                Groupe d'objet technique
-              </span>
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
-        <div class="form_size form_padding">
-          <vitamui-common-input
-            formControlName="id"
-            minlength="36"
-            maxlength="36"
-            placeholder="Identifiant"
-            i18n-placeholder="Name@@profileGroupCreateNamePlaceholder"
-            [required]="isUnitIdRequired()"
-            class="full_size"
-          >
-            <ng-container *ngIf="form.get('id')?.touched">
-              <vitamui-common-input-error
-                *ngIf="!!form.get('id')?.errors?.required"
-                i18n="Required field error hint@@formErrorRequiredField"
-                >Champ requis
-              </vitamui-common-input-error>
-              <vitamui-common-input-error
-                *ngIf="!!form.get('id')?.errors?.minlength || !!form.get('id')?.errors?.maxlength"
-                i18n="Required field error hint@@formErrorUnitIdLenght"
-              >
-                L'identfiant d'une unité doit contenir {{ form.get('id').errors.minlength.requiredLength }}
-                caractères
-              </vitamui-common-input-error>
-
-              <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit" i18n="Name exists error hint@@formErrorUnknownUnit"
-                >Unité inconnue
-              </vitamui-common-input-error>
-            </ng-container>
-          </vitamui-common-input>
-        </div>
-        <mat-form-field class="vitamui-mat-select form_padding">
-          <mat-select
-            formControlName="accessContract"
-            placeholder="Sélectionnez un contrat d'accès"
-            required="required"
-            i18n-placeholder="Application@@accessContractFormApplicationPlaceholder"
-            panelclass="vitamui-mat-select"
-            class="full_size"
-          >
-            <mat-option *ngFor="let accessContract of accessContracts" [value]="accessContract.key"> {{ accessContract.label }}</mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <div class="form_textarea">
-          <label for="dsl">Requête DSL (Format JSON)</label>
-          <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
-          <div class="actions btn-container">
-            <button
-              type="submit"
-              [disabled]="form.pending || form.invalid"
-              class="btn secondary"
-              [disabled]="form.pending || form.invalid"
-              class="btn secondary"
-              [disabled]="form.pending || form.invalid"
-              i18n="Launch adminDsl button@@AdminDslLaunchButton"
-            >
-              Recherche
-            </button>
-
-            <button type="button" class="btn" (click)="checkDsl()" i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
-          </div>
-        </div>
-        <div class="form_textarea">
-          <label for="response">Résultat de la requête DSL</label>
-          <textarea
-            class="textarea textarea__resultat"
-            readonly="readonly"
-            id="response"
-            #responseText
-            formControlName="response"
-          ></textarea>
-          <div class="actions right btn-container">
-            <button type="button" class="btn" (click)="copyToClipbord(responseText)" i18n="Copy adminDsl button@@AdminDslCopyButton">
-              Copier
-            </button>
-
-            <button type="button" class="btn" (click)="clear()" i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">
-              Effacer
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
   </mat-sidenav-content>
 </mat-sidenav-container>

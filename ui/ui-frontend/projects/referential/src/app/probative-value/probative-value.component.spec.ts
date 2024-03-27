@@ -38,6 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -59,6 +60,7 @@ describe('ProbativeValueComponent', () => {
     };
     TestBed.configureTestingModule({
       imports: [
+        MatInputModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         NoopAnimationsModule,

@@ -36,10 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Event } from 'projects/vitamui-library/src/public-api';
-
-import '@angular/localize/init';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
 import { SecurisationService } from '../securisation.service';
 
 @Component({
@@ -56,7 +53,7 @@ export class SecurisationPreviewComponent implements OnInit {
   constructor(
     private securisationService: SecurisationService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
@@ -65,14 +62,9 @@ export class SecurisationPreviewComponent implements OnInit {
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          },
-        );
+        this.vitamUISnackBarService.open({
+          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
+        });
       }
     });
   }

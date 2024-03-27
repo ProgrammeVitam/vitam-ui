@@ -269,9 +269,9 @@
       "NAME": "Etiquettes",
       "TOOLTIP": "Gestion des etiquettes"
     },
-    "PHYSICAL_CUSTOMERS_APP": {
-      "NAME": "Organisations physiques",
-      "TOOLTIP": "Paramétrer les organisations physiques"
+    "CUSTOMERS_ADVANCED_PARAM_APP": {
+      "NAME": "Paramétrage avancé des organisations",
+      "TOOLTIP": "Définir le paramétrage avancé des organisations et des coffres"
     },
     "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
       "NAME": "Profils APP Dépôt par bordereau",
@@ -359,6 +359,14 @@
       "NAME": "Profils documentaires",
       "TITLE": "Référentiel des profils documentaires",
       "TOOLTIP": "Consulter, créer et modifier des profils d'archivage et/ou des profils d'unité archivistique"
+    },
+    "BNPP_UNITS_APP": {
+      "NAME": "Unités BNPP",
+      "TOOLTIP": "Paramétrer les unités d'appartenance BNPP"
+    },
+    "CUSTOMERS_SUPERVISION_APP": {
+      "NAME": "Supervision des organisations",
+      "TOOLTIP": "Superviser les versements de toutes les organisations"
     }
   },
   "FOOTER": {
@@ -391,7 +399,9 @@
     "supervision_and_audits": "Supervision & Audits",
     "security_and_application_rights": "Sécurité & droits applicatifs",
     "organization_and_user_rights": "Organisation & droits utilisateurs",
-    "USER_ALERTS": "Mes actions"
+    "USER_ALERTS": "Mes actions",
+    "movements": "Mouvements",
+    "tools": "Outils"
   },
   "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Entrée pour lancer l'application"
@@ -452,7 +462,7 @@
       "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
       "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
     },
-    "FILE_TRANSFER": "Transfert en cours"
+    "DOWNLOAD_FILE": "Téléchargement en cours"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"
@@ -464,6 +474,16 @@
   "MULTIPLE_EMAILS_INPUT": {
     "PLACEHOLDER": "nom@domaine.xyz",
     "ERROR": "Vous devez saisir au moins une adresse email"
+  },
+  "MULTIPLE_SELECT_AUTOCOMPLETE": {
+    "COMPLETE_SELECTION": "Compléter la sélection",
+    "EMPTY_SELECTION": "Vider la sélection",
+    "CONSULT_SELECTION": "Consulter la sélection",
+    "SELECT_ALL": "Tout sélectionner",
+    "SELECTED_ELEMENT": {
+      "SINGULAR": "élément sélectionné",
+      "PLURAL": "éléments sélectionnés"
+    }
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Défaut)"
@@ -494,6 +514,7 @@
       "STORAGE_AFFECTATION": "affectation",
       "REMOVAL_AFFECTATION": "affectation",
       "VALIDATION": "validation",
+      "DOUBLE_VALIDATION": "validation",
       "ITEM_SIGNATURE": "signature",
       "DISPOSAL": "élimination",
       "ITEM_CONSOLIDATION": "validation des archives",
@@ -502,10 +523,12 @@
       "AFFECTATION": "affectation",
       "TRANSFER_REQUEST_VALIDATION": "acceptation de la demande",
       "DISPOSAL_CONFIRMATION": "validation des archives consolidées",
-      "PHYSICAL_DOCUMENTS_INDEXATION": "indexation"
+      "PHYSICAL_DOCUMENTS_INDEXATION": "indexation",
+      "INDEX_ITEM_REFUSE": "correction"
     },
     "STATUS": {
-      "BLOCKED": "à faire"
+      "BLOCKED": "à faire",
+      "REFUSED": "à faire"
     },
     "SEE_MORE": "Voir plus"
   },
@@ -3886,6 +3909,12 @@
     "UNIT_METADATA_STORAGE.FATAL": "Erreur technique lors de l'enregistrement des métadonnées des unités archivistiques",
     "UNIT_METADATA_STORAGE.KO": "Échec de l'enregistrement des métadonnées des unités archivistiques",
     "UNIT_METADATA_STORAGE.OK": "Succès de l'enregistrement des métadonnées des unités archivistiques",
+    "BUILD_OG_LFC_TRACEABILITY.OK": "Succès de la sécurisation des journaux du cycle de vie des groupes d'objets",
+    "PROBATIVE_VALUE_CHECK_MERKLE_TREE.FATAL": "Erreur technique lors de la vérification de l'arbre de MERKLE",
+    "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.OK": "Succès du processus de récupération des données dans la base de données",
+    "CHECK_OBJECT_SIZE.CHECK_SIZE": "Vérification de la taille d'un fichier binaire",
+    "AUDIT_CHECK_OBJECT": "Audit de la vérification des objets",
+    "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.WARNING": "Avertissement lors du processus de création du tampon d'horodatage de l'ensemble des journaux du cycle de vie des groupes d'objets",
     "UNIT_METADATA_STORAGE": "Enregistrement des métadonnées des unités archivistiques sur l'offre de stockage",
     "UNIT_METADATA_UPDATE.FATAL": "Erreur technique lors de la mise à jour des métadonnées des unités archivistiques",
     "UNIT_METADATA_UPDATE.KO": "Échec de la mise à jour des métadonnées des unités archivistiques",
@@ -4069,7 +4098,6 @@
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.KO": "Échec du processus de création du tampon d'horodatage de l'ensemble des journaux du cycle de vie des groupes d'objets",
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.OK": "Succès du processus de création du tampon d'horodatage de l'ensemble des journaux du cycle de vie des groupes d'objets",
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.STARTED": "Début de l'horodatage des journaux du cycle de vie des groupes d'objets",
-    "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.WARNING": "Avertissement lors du processus de création du tampon d'horodatage de l'ensemble des journaux du cycle de vie des groupes d'objets",
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP": "Horodatage des journaux du cycle de vie des groupes d'objets",
     "FINALIZE_UNIT_LFC_TRACEABILITY.FINALIZE_UNIT_LFC_TRACEABILITY.FATAL": "Erreur technique lors de la finalisation de la sécurisation des journaux du cycle de vie des unités archivistiques",
     "FINALIZE_UNIT_LFC_TRACEABILITY.FINALIZE_UNIT_LFC_TRACEABILITY.KO": "Échec de la finalisation de la sécurisation des journaux du cycle de vie des unités archivistiques",
@@ -4095,7 +4123,6 @@
     "LFC.CHECK_UNIT_SCHEMA.RULE_DATE_FORMAT.WARNING": "Avertissement lors de la vérification de la cohérence de la date déclarée dans les règles de gestion",
     "LFC.CHECK_UNIT_SCHEMA.RULE_DATE_FORMAT": "Vérification de la cohérence de la date déclarée dans les règles de gestion",
     "OBJ_STORAGEOBJ_STORAGE": "Écriture des objets et des groupes d'objets sur l'offre de stockage",
-    "PROBATIVE_VALUE_CHECK_MERKLE_TREE.FATAL": "Erreur technique lors de la vérification de l'arbre de MERKLE",
     "PROBATIVE_VALUE_CHECK_MERKLE_TREE.KO": "Échec de la vérification de l'arbre de MERKLE",
     "PROBATIVE_VALUE_CHECK_MERKLE_TREE.OK": "Succès de la vérification de l'arbre de MERKLE",
     "PROBATIVE_VALUE_CHECK_MERKLE_TREE.STARTED": "Début de la vérification de l'arbre de MERKLE",
@@ -4141,7 +4168,6 @@
     "STP_PROBATIVE_VALUE_CHECK_MERKLE_TREE": "Processus de vérification de l'arbre de MERKLE",
     "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.FATAL": "Erreur technique lors du processus de récupération des données dans la base de données",
     "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.KO": "Échec du processus de récupération des données dans la base de données",
-    "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.OK": "Succès du processus de récupération des données dans la base de données",
     "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.STARTED.OK": "Succès du début du processus de récupération des données dans la base de données",
     "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.STARTED": "Début du processus de récupération des données dans la base de données",
     "STP_PROBATIVE_VALUE_CHECK_OBJECT_GROUP.WARNING": "Avertissement lors du processus de récupération des données dans la base de données",
@@ -5575,5 +5601,9 @@
   "REPEATABLE_INPUT": {
     "ADD_TOOLTIP": "Ajouter une valeur",
     "REMOVE_TOOLTIP": "Supprimer la valeur"
+  },
+  "DRAG_AND_DROP_FILE": {
+    "FILE_IS_NOT_AN_IMAGE": "Le fichier que vous essayez de déposer n'est pas une image",
+    "WRONG_FILE_SIZE": "Les dimensions du fichier que vous essayez de déposer sont supérieures à {{width}} * {{height}}px"
   }
 }

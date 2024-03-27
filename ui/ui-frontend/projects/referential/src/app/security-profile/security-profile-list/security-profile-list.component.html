@@ -1,61 +1,57 @@
-<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-securite vitamui-row-icon"></i></th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="SecurityProfile name column header@@contextListSecurityProfileNameHeader">Nom</span>
-          <vitamui-common-order-by-button
-            orderByKey="Name"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="SecurityProfile id column header@@contextListIdHeader">Identifiant</span>
-          <vitamui-common-order-by-button
-            orderByKey="Identifier"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
-          ></vitamui-common-order-by-button>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <!--tbody vitamuiCommonCollapseContainer-->
-  <tbody>
-    <ng-container *ngFor="let profile of dataSource; let index = index">
-      <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center"></div>
 
-      <tr class="vitamui-table-row">
-        <td><i class="vitamui-icon vitamui-icon-securite vitamui-row-icon status-badge status-badge-green"></i></td>
-        <td class="clickable" (click)="contextClick.emit(profile)">{{ profile?.name }}</td>
-        <td class="clickable" (click)="contextClick.emit(profile)">{{ profile?.identifier }}</td>
-        <!--   <td>
-        <div class="actions">
-          <button class="btn-circle primary" (click)="deleteSecurityProfileDialog(profile)">
-            <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
-          </button>
-        </div>
-      </td> -->
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+      <div class="col-6 d-flex align-items-center justify-content-between">
+        <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.IDENTIFIER' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="Identifier"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button
-    *ngIf="!pending && infiniteScrollDisabled && securityProfileService.canLoadMore"
-    (click)="loadMore()"
-    class="btn"
-    i18n="Show more results@@tableMoreResultButton"
-  >
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !securityProfileService.canLoadMore">Fin des résultats</span>
+      <div class="col-5 d-flex align-items-center justify-content-between">
+        <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.NAME' | translate }}</div>
+        <vitamui-common-order-by-button
+          orderByKey="Name"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        ></vitamui-common-order-by-button>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource; let index = index" (click)="contextClick.emit(profile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1"><i class="vitamui-icon vitamui-icon-security-profile vitamui-row-icon"></i></div>
+          <div class="col-6">{{ profile?.identifier }}</div>
+          <div class="col-5">{{ profile?.name }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && securityProfileService.canLoadMore && !pending; then loadMore"></div>
+  </div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="securityProfileService.loadMore()">
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

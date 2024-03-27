@@ -50,10 +50,10 @@ import {
   Role,
   Rule,
   RuleService,
-  User,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { TranslateService } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -70,19 +70,18 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.searchChange.next(searchText);
   }
 
-  @Input('filters')
-  set filters(filters: string) {
-    this._filters = filters;
-    this.filterChange.next(filters);
-  }
-
   // tslint:disable-next-line:variable-name
   private _searchText: string;
+
+  ruleTypes = RULE_TYPES;
+
+  filterMap: { [key: string]: any[] } = {
+    ruleType: this.ruleTypes.map((value) => value.label),
+  };
 
   // tslint:disable-next-line:variable-name
   private _filters: string;
 
-  ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
 
   @Output() ruleClick = new EventEmitter<Rule>();
@@ -96,8 +95,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{ id: string; group: any }> = [];
-  private readonly filterChange = new Subject<string>();
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
@@ -116,6 +114,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     public ruleService: RuleService,
     private authService: AuthService,
     private matDialog: MatDialog,
+    private translateService: TranslateService,
     private snackBarService: VitamUISnackBarService,
   ) {
     super(ruleService);
@@ -147,7 +146,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       criteria.RuleId = this._searchText;
     }
 
-    if (this._filters && this._filters.length > 0) {
+    if (this._filters?.length > 0) {
       criteria.RuleType = this._filters;
     }
 
@@ -156,11 +155,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   ngOnDestroy() {
     this.updatedData.unsubscribe();
-  }
-
-  getGroup(user: User) {
-    const userGroup = this.groups.find((group) => group.id === user.groupId);
-    return userGroup ? userGroup.group : undefined;
   }
 
   searchRuleOrdered() {
@@ -191,8 +185,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   deleteRuleDialog(rule: Rule) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
-    dialog.componentInstance.objectGender = 'F';
-    dialog.componentInstance.objectType = 'règle de gestion';
+
+    dialog.componentInstance.objectType = this.translateService.instant('RULES_APP.HOME.RULE_MANAGEMENT');
     dialog.componentInstance.objectName = rule.ruleId;
 
     dialog
@@ -207,5 +201,12 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
         this.ruleService.delete(rule).subscribe(() => this.searchRuleOrdered());
       });
+  }
+
+  onFilterChange(key: string, values: string[]) {
+    this.filterMap[key] = values;
+    // TODO: remplacer les checkbox par des radio button ou gérer plusieurs ruleTypes?
+    this._filters = values[0];
+    this.filterChange.next(this.filterMap);
   }
 }

@@ -81,8 +81,11 @@
       "SUBROGATION_UNAVAILABLE": "Subrogation for this user is temporarily impossible",
       "ACCOUNT_UPDATE": "Information has been updated",
       "OIDC_UPDATE": "For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place",
+      "SAML_UPDATE_ERROR": "For the SAML protocol, these fields must be filled in: IDP Name, Patterns, Keystore of CAS and IDP Metadata for the modification to take place",
       "USER_ALREADY_DELETED": "User already deleted",
-      "USER_TO_DELETE": "One or several inactif user in your organization need to clean personal info"
+      "USER_TO_DELETE": "One or several inactif user in your organization need to clean personal info",
+      "USER_EXPORT_SUCCESS": "Users exported successfully.",
+      "GROUP_EXPORT_SUCCESS": "Export of profile groups successfully completed."
     }
   },
   "CUSTOMER": {
@@ -192,7 +195,8 @@
       "AUTO_PROVISIONING": "Automatic user update",
       "MAXIMUM_AUTHENTICATION_LIFETIME": "Maximum authentication lifetime",
       "WANTS_ASSERTION_SIGNED": "Wants assertion signed",
-      "AUTHN_REQUEST_SIGNED": "Authentication request signed"
+      "AUTHN_REQUEST_SIGNED": "Authentication request signed",
+      "PROPAGATE_LOGOUT": "Propagate logout"
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Personalized graphic identity",
@@ -275,6 +279,7 @@
     "HOME": {
       "TITLE_PLACEHOLDER": "Lastname, Firstname, Id, Email",
       "ACTION_BUTTON": "Create a user",
+      "EXPORT": "Export",
       "RESULTS_TABLE": {
         "NAME": "Lastname / Firstname",
         "LAST_CONNEXION": "Last connexion",
@@ -310,7 +315,7 @@
         "MOBILE": "Phone number",
         "FIX": "Home phone number"
       },
-      "CENTER_CODE": "Center code",
+      "CENTER_CODES": "Center codes",
       "SITE_CODE": "Site code",
       "INTERNAL_CODE": "Internal code",
       "DEFAULT_LANGUAGE": "Interface language",
@@ -408,6 +413,7 @@
     "HOME": {
       "TITLE_PLACEHOLDER": "Group name, Id, Description, Membership unit",
       "ACTION_BUTTON": "Create a Group",
+      "EXPORT": "Export",
       "RESULTS_TABLE": {
         "NAME": "Group name",
         "DESCRIPTION": "Description",

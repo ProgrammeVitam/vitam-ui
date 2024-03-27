@@ -14,6 +14,7 @@
   },
   "ARRAY": {
     "BASIC_TITLE": "Basic array",
+    "BASIC_WITH_DOUBLE_LINES_TITLE": "Basic array with double lines",
     "FILTER_TITLE": "Array with filters",
     "SUBTABLE_TITLE": "Array with subtable",
     "DIALOG_TITLE": "Dialog array"
@@ -33,6 +34,28 @@
     "DISABLED_CONTRAST": "Contrast disabled",
     "DISABLED_CONTRAST_OUTLINE": "Contrast outline disabled",
     "CANCEL": "Cancel"
+  },
+  "INPUT": {
+    "SIMPLE_INPUT": "Simple input",
+    "EDITABLE_INPUT_DISABLED": "Editable input disabled",
+    "EDITABLE_INPUT": "Editable input",
+    "EDITABLE_EMAIL": "Editable email",
+    "EDITABLE_EMAIL_DISABLED": "Editable email disabled",
+    "EDITABLE_EMAIL_MULTIPLE": "Editable multiple email",
+    "EDITABLE_EMAIL_MULTIPLE_DISABLED": "Editable multiple email disabled",
+    "MULTI_SELECT": "Multi select",
+    "LIST": "List",
+    "EDITABLE_LIST": "Editable list",
+    "EDITABLE_LIST_DISABLED": "Editable list disabled",
+    "AUTOCOMPLETE": "Auto-complete",
+    "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete multi select",
+    "SEARCH_PLACEHOLDER": "Search in countries",
+    "TEXTAREA": "Textarea",
+    "EDITABLE_TEXTAREA": "Editable textarea",
+    "EDITABLE_TEXTAREA_DISABLED": "Editable textarea disabled",
+    "LEVEL": "Level",
+    "EDITABLE_LEVEL": "Editable level",
+    "EDITABLE_LEVEL_DISABLED": "Editable level disabled"
   },
   "SAMPLE_DIALOG": {
     "Open": "Open the sample dialog",

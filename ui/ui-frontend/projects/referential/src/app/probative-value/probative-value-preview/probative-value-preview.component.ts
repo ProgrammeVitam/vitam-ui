@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import '@angular/localize/init';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({
@@ -53,12 +52,11 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Input() probativeValue: any;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  accessContracts: AccessContract[];
-  hasAccessContract: boolean;
+  public hasAccessContract: boolean;
 
-  accessContractSub: Subscription;
-  errorMessageSub: Subscription;
-  accessContract: string;
+  private accessContract: string;
+
+  private destroyer$ = new Subject();
 
   constructor(
     private probativeValueService: ProbativeValueService,
@@ -68,35 +66,6 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
   ) {}
 
-  findUserAccessContract() {
-    this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessConctractId) {
-        this.accessContract = accessConctractId;
-        this.hasAccessContract = true;
-      } else {
-        this.errorMessageSub = this.translateService
-          .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
-          .pipe(
-            map((message) => {
-              this.snackBar.open(message, null, {
-                panelClass: 'vitamui-snack-bar',
-                duration: 10000,
-              });
-            }),
-          )
-          .subscribe();
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.accessContractSub.unsubscribe();
-    if (this.errorMessageSub) {
-      this.errorMessageSub.unsubscribe();
-    }
-  }
-
   ngOnInit() {
     this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
@@ -105,11 +74,42 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  emitClose() {
+  private findUserAccessContract(): void {
+    this.externalParameterService
+      .getUserExternalParameters()
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((parameters) => {
+        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+        if (accessContractId) {
+          this.accessContract = accessContractId;
+          this.hasAccessContract = true;
+        } else {
+          this.translateService
+            .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
+            .pipe(takeUntil(this.destroyer$))
+            .pipe(
+              map((message) => {
+                this.snackBar.open(message, null, {
+                  panelClass: 'vitamui-snack-bar',
+                  duration: 10000,
+                });
+              }),
+            )
+            .subscribe();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  public closePanel() {
     this.previewClose.emit();
   }
 
-  downloadReport() {
+  public downloadReport() {
     this.probativeValueService.export(this.probativeValue.id, this.accessContract);
   }
 }

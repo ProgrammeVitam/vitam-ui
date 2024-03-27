@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FileFormat } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
-import { AuthService, BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'ui-frontend-common';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
 
@@ -48,21 +47,17 @@ describe('FileFormatListComponent', () => {
   let component: FileFormatListComponent;
   let fixture: ComponentFixture<FileFormatListComponent>;
 
-  const fileFormatServiceMock = {
-    // tslint:disable-next-line:variable-name
-    delete: (_fileFormat: FileFormat) => of(null),
-    search: () => of(null),
-  };
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
       declarations: [FileFormatListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
-        { provide: FileFormatService, useValue: fileFormatServiceMock },
+        FileFormatService,
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
         { provide: VitamUISnackBarService, useValue: {} },
         { provide: MatDialog, useValue: {} },
+        { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -1,10 +1,14 @@
-<form [formGroup]="selectNodesForm" class="side-form" (keydown.enter)="$event.preventDefault()">
+<div class="header">
+  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
+</div>
+
+<form [formGroup]="selectNodesForm" (ngSubmit)="updateIngestContractNodes()" (keydown.enter)="$event.preventDefault()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
-      <div class="content">
-        <h2 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification des positions de rattachement SIP</h2>
+      <div class="content mt-3">
+        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_SIP' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate }}</div>
 
-        <h2>Position de rattachement</h2>
         <vitamui-library-filing-plan
           [formControl]="linkParentIdControl"
           [tenantIdentifier]="tenantIdentifier"
@@ -13,36 +17,40 @@
         ></vitamui-library-filing-plan>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext>
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button type="button" class="btn cancel" (click)="onCancel()">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
         </div>
       </div>
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <h2 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification des positions de rattachement AU</h2>
-        <h2>Contrôle des rattachements</h2>
+      <div class="content mt-3">
+        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_AU' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}</div>
 
-        <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <vitamui-radio-group formControlName="checkParentLink">
-                <vitamui-radio label="Autorisé" value="AUTHORIZED" [checked]="true"></vitamui-radio>
-                <vitamui-radio label="Obligatoire" value="REQUIRED"></vitamui-radio>
-                <vitamui-radio label="Interdit" value="UNAUTHORIZED"></vitamui-radio>
-              </vitamui-radio-group>
-            </div>
-            <div class="col">
-              <i
-                class="material-icons field-tooltip radio-tooltip"
-                style="top: 20px"
-                matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
-                matTooltipClass="vitamui-tooltip"
-                >info</i
-              >
-            </div>
-          </div>
+        <div class="d-flex align-items-center mb-3">
+          <mat-button-toggle-group [formControl]="checkParentLinkControl" class="vitamui-button-toggle-group">
+            <mat-button-toggle [value]="'AUTHORIZED'">
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.AUTHORIZED' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'REQUIRED'">
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.REQUIRED' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'UNAUTHORIZED'">
+              {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.UNAUTHORIZED' | translate }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+
+          <i
+            class="vitamui-icon vitamui-icon-info text large primary ml-3"
+            vitamuiCommonToolTip="{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.ATTACHEMENT_CONTROL_INFO' | translate }}"
+            vitamuiCommonToolTipPosition="BOTTOM"
+          >
+          </i>
         </div>
 
         <vitamui-library-filing-plan
@@ -53,19 +61,17 @@
         ></vitamui-library-filing-plan>
 
         <div class="actions">
-          <button
-            type="button"
-            class="btn primary"
-            i18n="Update accessContract nodes@@updateAccessContractNodesButton"
-            (click)="updateIngestContractNodes()"
-          >
-            Valider
+          <button type="submit" class="btn primary">
+            {{ 'COMMON.VALIDATE' | translate }}
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
         </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+
+        <button type="button" class="btn link" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
       </div>
     </cdk-step>

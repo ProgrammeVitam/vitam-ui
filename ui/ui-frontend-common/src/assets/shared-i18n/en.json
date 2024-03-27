@@ -138,11 +138,11 @@
     },
     "INGEST_APP": {
       "NAME": "Ingest contracts",
-      "TOOLTIP": "Consult, create and modify ingest contracts"
+      "TOOLTIP": "Access, create and update ingest contracts"
     },
     "ACCESS_APP": {
       "NAME": "Access contracts",
-      "TOOLTIP": "Consult, create and modify access contracts"
+      "TOOLTIP": "Access, create and update access contracts"
     },
     "HIERARCHY_PROFILE_APP": {
       "NAME": "Profile hierarchy",
@@ -231,6 +231,10 @@
     "BARCODES_APP": {
       "NAME": "Barcode",
       "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
+    },
+    "CUSTOMERS_ADVANCED_PARAM_APP": {
+      "NAME": "Advanced parameters of customers",
+      "TOOLTIP": "Define the advanced parameters of customers and tenants"
     },
     "PHYSICAL_CUSTOMERS_APP": {
       "NAME": "Physical archives Services",
@@ -350,6 +354,14 @@
     "PASTIS_APP": {
       "NAME": "Documentary profiles",
       "TOOLTIP": "Access, create, edit, or delete archive profiles and unit profiles"
+    },
+    "BNPP_UNITS_APP": {
+      "NAME": "BNPP units",
+      "TOOLTIP": "Configure BNPP's membership units"
+    },
+    "CUSTOMERS_SUPERVISION_APP": {
+      "NAME": "Customers supervision",
+      "TOOLTIP": "Oversee ingests for all customers"
     }
   },
   "FOOTER": {
@@ -443,6 +455,7 @@
       "SINGULAR": "on {{ total }} (1 element not downloaded)",
       "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
     },
+    "DOWNLOAD_FILE": "Downloading file",
     "FILE_TRANSFER": "Transferring file"
   },
   "EDITABLE_SELECT": {
@@ -455,6 +468,16 @@
   "MULTIPLE_EMAILS_INPUT": {
     "PLACEHOLDER": "name@domain.xyz",
     "ERROR": "You must enter at least one email address"
+  },
+  "MULTIPLE_SELECT_AUTOCOMPLETE": {
+    "COMPLETE_SELECTION": "Complete the selection",
+    "EMPTY_SELECTION": "Empty the selection",
+    "CONSULT_SELECTION": "Consult the selection",
+    "SELECT_ALL": "Select all",
+    "SELECTED_ELEMENT": {
+      "SINGULAR": "selected element",
+      "PLURAL": "selected elements"
+    }
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
@@ -485,6 +508,7 @@
       "STORAGE_ASSIGNMENT": "assignment",
       "REMOVAL_ASSIGNMENT": "assignment",
       "VALIDATION": "validation",
+      "DOUBLE_VALIDATION": "validation",
       "ITEM_SIGNATURE": "signature",
       "DISPOSAL": "disposal",
       "ITEM_CONSOLIDATION": "archive validation",
@@ -493,10 +517,12 @@
       "ASSIGNMENT": "assignment",
       "PHYSICAL_DOCUMENTS_INDEXATION": "indexing",
       "DISPOSAL_CONFIRMATION": "consolidated archives validation",
-      "TRANSFER_REQUEST_VALIDATION": "acceptance of the request"
+      "TRANSFER_REQUEST_VALIDATION": "acceptance of the request",
+      "INDEX_ITEM_REFUSE": "correction"
     },
     "STATUS": {
-      "BLOCKED": "to do"
+      "BLOCKED": "to do",
+      "REFUSED": "to do"
     },
     "SEE_MORE": "See more"
   },
@@ -4727,5 +4753,9 @@
   "REPEATABLE_INPUT": {
     "ADD_TOOLTIP": "Add a value",
     "REMOVE_TOOLTIP": "Remove a value"
+  },
+  "DRAG_AND_DROP_FILE": {
+    "FILE_IS_NOT_AN_IMAGE": "The file you are trying to upload is not an image",
+    "WRONG_FILE_SIZE": "The dimensions of the file you are trying to upload are larger than {{width}} * {{height}}px"
   }
 }

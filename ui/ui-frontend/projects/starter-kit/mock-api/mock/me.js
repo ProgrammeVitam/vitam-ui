@@ -2542,7 +2542,7 @@ module.exports = {
         name: "Physical Customer Profile",
         description: "Physical Customer Profile",
         enabled: true,
-        applicationName: "PHYSICAL_CUSTOMERS_APP",
+        applicationName: "CUSTOMERS_ADVANCED_PARAM_APP",
         roles: [
           {
             name: "ROLE_GET_CUSTOMERS"
@@ -3472,7 +3472,7 @@ module.exports = {
       ]
     },
     {
-      name: "PHYSICAL_CUSTOMERS_APP",
+      name: "CUSTOMERS_ADVANCED_PARAM_APP",
       tenants: [
         {
           id: "system_tenant",

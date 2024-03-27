@@ -19,6 +19,10 @@
       </vitamui-common-user-alerts-menu>
     </div>
 
+    <div class="d-flex align-items-center" *ngIf="hasSiteSelection">
+      <vitamui-common-select-site></vitamui-common-select-site>
+    </div>
+
     <div class="d-flex align-items-center" *ngIf="hasLangSelection">
       <vitamui-common-select-language [displayMode]="'select'"></vitamui-common-select-language>
     </div>
@@ -51,7 +55,7 @@
       <vitamui-common-user-photo class="mr-2" [photo]="currentUser?.photo"></vitamui-common-user-photo>
       <div class="mx-2">
         <div class="text caption bold">{{ 'HEADER.PROFILE' | translate }}</div>
-        <div class="text normal bold">{{ currentUser?.firstname }} {{ currentUser.lastname }}</div>
+        <div class="text normal">{{ currentUser?.firstname }} {{ currentUser.lastname }}</div>
       </div>
 
       <div class="ml-3">

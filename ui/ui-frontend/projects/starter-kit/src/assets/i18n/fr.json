@@ -14,6 +14,7 @@
   },
   "ARRAY": {
     "BASIC_TITLE": "Tableau simple",
+    "BASIC_WITH_DOUBLE_LINES_TITLE": "Tableau simple avec double lignes",
     "FILTER_TITLE": "Tableau avec filtres",
     "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
     "DIALOG_TITLE": "Tableau avec détail"
@@ -33,6 +34,28 @@
     "DISABLED_CONTRAST": "Contraste désactivé",
     "DISABLED_CONTRAST_OUTLINE": "Contour contrasté désactivé",
     "CANCEL": "Annuler"
+  },
+  "INPUT": {
+    "SIMPLE_INPUT": "Input simple",
+    "EDITABLE_INPUT_DISABLED": "Input éditable désactivé",
+    "EDITABLE_INPUT": "Input éditable",
+    "EDITABLE_EMAIL": "Email éditable",
+    "EDITABLE_EMAIL_DISABLED": "Email éditable désactivé",
+    "EDITABLE_EMAIL_MULTIPLE": "Email à sélection multiple éditable",
+    "EDITABLE_EMAIL_MULTIPLE_DISABLED": "Email à sélection multiple éditable désactivé",
+    "MULTI_SELECT": "Sélection multiple",
+    "LIST": "Liste",
+    "EDITABLE_LIST": "Liste éditable",
+    "EDITABLE_LIST_DISABLED": "Liste éditable désactivée",
+    "AUTOCOMPLETE": "Auto-complete",
+    "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete à sélection multiple",
+    "SEARCH_PLACEHOLDER": "Rechercher dans les pays",
+    "TEXTAREA": "Zone de texte",
+    "EDITABLE_TEXTAREA": "Zone de texte éditable",
+    "EDITABLE_TEXTAREA_DISABLED": "Zone de texte éditable désactivée",
+    "LEVEL": "Niveau",
+    "EDITABLE_LEVEL": "Niveau éditable",
+    "EDITABLE_LEVEL_DISABLED": "Niveau éditable désactivé"
   },
   "SAMPLE_DIALOG": {
     "OPEN": "Ouvrir la popup d'exemple",

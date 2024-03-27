@@ -1,21 +1,20 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="loaded">
-  <div>
-    <table class="dlab-table">
-      <thead class="permissionHeader">
-        <tr class="ng-tns-c10-3">
-          <th [class]="small ? 'smallServiceCol' : 'serviceCol'">Service</th>
-          <th [class]="small ? 'smallToggleCol' : 'toggleCol'">Lecture</th>
-          <th [class]="small ? 'smallToggleCol' : 'toggleCol'">Ecriture</th>
-          <th [class]="small ? 'smallToggleCol' : 'toggleCol'">Suppression</th>
-        </tr>
-      </thead>
-      <tbody class="permissionTable">
-        <tr class="dlab-table-row ng-tns-c10-3 ng-star-inserted no-hover" *ngFor="let permission of permissions.apiPermissions">
-          <td [class]="small ? 'smallServiceCol' : 'serviceCol'">{{ permission.name }}</td>
-          <td
-            [class]="small ? 'smallToggleCol' : 'toggleCol'"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltip]="permission.readPermission && permission.readPermission.description"
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-3 d-flex align-items-center">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.ARRAY.SERVICE' | translate }}</div>
+      <div class="col-3 d-flex align-items-center">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.ARRAY.READ' | translate }}</div>
+      <div class="col-3 d-flex align-items-center">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.ARRAY.WRITE' | translate }}</div>
+      <div class="col-3 d-flex align-items-center">{{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.PERMISSION.ARRAY.DELETE' | translate }}</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let permission of permissions.apiPermissions">
+        <div class="vitamui-row d-flex align-items-center">
+          <div class="col-3 d-flex align-items-center">{{ permission.name }}</div>
+
+          <div
+            class="col-3 d-flex align-items-center"
+            [vitamuiCommonToolTip]="permission.readPermission && permission.readPermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.readPermission"
@@ -25,11 +24,11 @@
               (change)="onSubmit()"
             >
             </vitamui-common-slide-toggle>
-          </td>
-          <td
-            [class]="small ? 'smallToggleCol' : 'toggleCol'"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltip]="permission.writePermission && permission.writePermission.description"
+          </div>
+
+          <div
+            class="col-3 d-flex align-items-center"
+            [vitamuiCommonToolTip]="permission.writePermission && permission.writePermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.writePermission"
@@ -39,11 +38,11 @@
               (change)="onSubmit()"
             >
             </vitamui-common-slide-toggle>
-          </td>
-          <td
-            [class]="small ? 'smallToggleCol' : 'toggleCol'"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltip]="permission.deletePermission && permission.deletePermission.description"
+          </div>
+
+          <div
+            class="col-3 d-flex align-items-center"
+            [vitamuiCommonToolTip]="permission.deletePermission && permission.deletePermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.deletePermission"
@@ -53,9 +52,9 @@
               (change)="onSubmit()"
             >
             </vitamui-common-slide-toggle>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </form>

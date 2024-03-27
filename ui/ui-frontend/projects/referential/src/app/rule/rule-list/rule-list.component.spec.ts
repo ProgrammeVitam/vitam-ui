@@ -40,6 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBarService } from 'ui-frontend-common';
 import { RuleListComponent } from './rule-list.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RuleListComponent', () => {
   let component: RuleListComponent;
@@ -53,6 +54,7 @@ describe('RuleListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [RuleListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },

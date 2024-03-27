@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.logbook.config;
 
 import fr.gouv.vitamui.iam.internal.server.config.Converters;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,8 +51,8 @@ public class LogbookConfiguration {
 
     @Bean
     public IamLogbookService IamLogbookService(final EventService eventService, final InternalSecurityService internalSecurityService,
-            final Converters converters, final TenantRepository tenantRepository) {
-        return new IamLogbookService(eventService, internalSecurityService, converters, tenantRepository);
+            final Converters converters, final TenantRepository tenantRepository, final ConnectionHistoryService connectionHistoryService) {
+        return new IamLogbookService(eventService, internalSecurityService, converters, tenantRepository, connectionHistoryService);
     }
 
 }

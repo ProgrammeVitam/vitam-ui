@@ -36,20 +36,18 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.hibernate.validator.constraints.Length;
-
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The DTO v1 for an identity provider.
@@ -97,6 +95,7 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private boolean autoProvisioningEnabled;
 
+    private boolean propagateLogout;
 
     // SAML provider data
     private String keystoreBase64;

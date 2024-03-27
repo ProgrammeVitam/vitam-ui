@@ -41,6 +41,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, ExternalParametersService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
@@ -76,6 +77,7 @@ describe('ProbativeValueCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: ProbativeValueService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        { provide: TranslateService, useValue: { instant: (key: string) => key } },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

@@ -50,9 +50,12 @@ public class ApplicationInternalServiceTest {
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
+    private final ExternalIdentifierConfiguration externalIdentifierConfiguration = mock(ExternalIdentifierConfiguration.class);
+
     @Before
     public void setup() {
-        applicationService = new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter, internalSecurityService);
+        applicationService = new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter,
+            internalSecurityService, externalIdentifierConfiguration);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 

@@ -83,7 +83,7 @@ Once you made the desired modifications, you can generate the font by clicking `
 
 Automatic Method :
 Go to commons project's directory: `cd ui/ui-frontend-common`
-Run the import script: `./import-icons.sh path/to/exported/icomoon-folder`
+Run the import script: `./import-icon.sh path/to/exported/icomoon-folder`
 
 Manual Method :
 Now extract the archive you just downloaded and copy the content of the `fonts` folder and put it in the `src/sass/icons/fonts` folder of the project.

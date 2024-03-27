@@ -1,35 +1,27 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-common-slide-toggle formControlName="everyFormatType">Tous les formats de fichiers </vitamui-common-slide-toggle>
-      <div class="form-group" *ngIf="form?.get('everyFormatType')?.value === false">
-        <mat-form-field class="vitamui-mat-select">
-          <mat-select
-            formControlName="formatType"
-            placeholder="Sélectionnez les formats de fichiers"
-            panelclass="vitamui-mat-select"
-            required
-            multiple
-          >
-            <mat-option *ngFor="let fileFormat of formatTypeList" [value]="fileFormat.puid">{{ fileFormat.name }}</mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
-      </div>
-    </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-slide-toggle formControlName="everyFormatType" class="w-100 p-0">
+    <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALL_FORMAT' | translate }}</span>
+  </vitamui-common-slide-toggle>
+
+  <div *ngIf="!form?.get('everyFormatType')?.value && formatOptions" class="py-3">
+    <vitamui-common-autocomplete-multi-select
+      formControlName="formatType"
+      class="mb-3"
+      [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
+      [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
+      [multiSelectOptions]="formatOptions"
+    >
+      <vitamui-common-input-error *ngIf="form.get('formatType').errors?.required">
+        {{ 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' | translate }}
+      </vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select>
   </div>
 
-  <div class="row">
-    <div class="col-10 form-control">
-      <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized"
-        >Autoriser les formats non identifiés
-      </vitamui-common-slide-toggle>
-    </div>
-  </div>
+  <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized" class="w-100 p-0">
+    <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALLOW_FORMAT' | translate }}</span>
+  </vitamui-common-slide-toggle>
 
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
-  </div>
+  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

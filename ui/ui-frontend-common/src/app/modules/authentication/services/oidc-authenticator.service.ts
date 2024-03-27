@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { OAuthService } from 'angular-oauth2-oidc';
-import { from, Observable } from 'rxjs';
+import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
+import { from, Observable, zip } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
+import { map, skipWhile, take, tap } from 'rxjs/operators';
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
@@ -50,7 +51,16 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     if (isSubrogation) {
       return from(this.surrogateUser(url.searchParams.get('username')));
     }
-    return from(this.oAuthService.loadDiscoveryDocumentAndLogin());
+
+    const urlCleaner = this.oAuthService.events.pipe(
+      skipWhile((type) => !(type instanceof OAuthSuccessEvent)),
+      take(1),
+      tap(() => this.cleanUrlAfterLogin()),
+      map(() => true),
+    );
+    return zip(from(this.oAuthService.loadDiscoveryDocumentAndLogin()), urlCleaner).pipe(
+      map(([authenticated, urlCleaned]) => authenticated && urlCleaned),
+    );
   }
 
   private surrogateUser(username: string): Promise<boolean> {
@@ -86,5 +96,22 @@ export class OidcAuthenticatorService implements AuthenticatorService {
       return '';
     }
     return questionMarkIndex > -1 ? '&' : '?';
+  }
+
+  private cleanUrlAfterLogin() {
+    let url =
+      this.location.origin +
+      this.location.pathname +
+      this.location.search
+        .replace(/nonce=[^&\$]*/, '')
+        .replace(/client_id=[^&\$]*/, '')
+        .replace(/isSubrogation=[^&\$]*/, '')
+        .replace(/^\?&/, '?')
+        .replace(/&$/, '')
+        .replace(/^\?$/, '')
+        .replace(/&+/g, '&')
+        .replace(/\?&/, '?')
+        .replace(/\?$/, '');
+    history.replaceState(null, window.name, url);
   }
 }

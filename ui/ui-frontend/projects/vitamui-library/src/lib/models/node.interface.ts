@@ -1,4 +1,5 @@
-import { FileType, Id } from 'ui-frontend-common';
+import { Id } from 'ui-frontend-common';
+import { FileType } from './file-type.enum';
 
 export interface Node extends Id {
   label: string;

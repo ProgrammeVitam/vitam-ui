@@ -34,23 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
 })
 export class EllipsisDirective implements OnInit, AfterViewInit {
   @Input() isToolTipOnMouseEnter = false;
+  @Input() vitamuiCommonEllipsisLines = 1;
+
   domElement: any;
 
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
     this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
-  }
-  ngOnInit(): void {
     this.setToolTip();
   }
 
@@ -61,7 +63,7 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   setToolTip() {
-    this.domElement.offsetWidth < this.domElement.scrollWidth
+    this.domElement.offsetHeight < this.domElement.scrollHeight
       ? this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent)
       : this.renderer.removeAttribute(this.domElement, 'title');
   }
@@ -71,5 +73,10 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
     if (this.isToolTipOnMouseEnter) {
       this.setToolTip();
     }
+  }
+
+  @HostBinding('style.-webkit-line-clamp')
+  get lineClamp() {
+    return this.vitamuiCommonEllipsisLines > 1 ? this.vitamuiCommonEllipsisLines : null;
   }
 }

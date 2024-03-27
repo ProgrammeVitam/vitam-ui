@@ -275,14 +275,19 @@ public class OntologyInternalService {
         }
     }
 
-    public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
-        try {
-            return ontologyService.importOntologies(context, fileName, file).toJsonNode();
-        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
-            LOGGER.error("Unable to ontology file {}: {}", fileName, e.getMessage());
-            throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
-        }
+  public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
+    try {
+      final RequestResponse<?> requestResponse =
+          ontologyService.importOntologies(context, fileName, file);
+      VitamRestUtils.checkResponse(requestResponse, 200, 204);
+      return requestResponse.toJsonNode();
+    } catch (InvalidParseOperationException
+        | AccessExternalClientException
+        | VitamClientException
+        | IOException e) {
+      throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
     }
+  }
 
     /**
      * Read internal ontology fields list from a file

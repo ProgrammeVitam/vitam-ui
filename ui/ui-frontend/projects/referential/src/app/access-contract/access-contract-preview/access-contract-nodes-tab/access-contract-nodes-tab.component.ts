@@ -36,13 +36,11 @@
  */
 
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import '@angular/localize/init';
+import { Component, Input } from '@angular/core';
 import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { AccessContract, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({
@@ -50,56 +48,104 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
   templateUrl: './access-contract-nodes-tab.component.html',
   styleUrls: ['./access-contract-nodes-tab.component.scss'],
 })
-export class AccessContractNodesTabComponent implements OnInit {
-  @Input() accessContract: AccessContract;
+export class AccessContractNodesTabComponent {
   @Input() tenantIdentifier: number;
+  @Input() set accessContract(accessContract: AccessContract) {
+    if (!accessContract.rootUnits) {
+      accessContract.rootUnits = [];
+    }
 
-  titles: any = {};
+    if (!accessContract.excludedRootUnits) {
+      accessContract.excludedRootUnits = [];
+    }
 
-  searchAccessContractId: string;
+    this._accessContract = accessContract;
+    this.initSearchAccessContractIdAndTitles();
+  }
+
+  get accessContract(): AccessContract {
+    return this._accessContract;
+  }
+
+  public searchAccessContractId: string;
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+  rootUnitsTitles: string[] = [];
+  excludedRootUnitsTitles: string[] = [];
 
   constructor(
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
-  ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.searchAccessContractId = accessContratId;
-        this.initTitles();
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utilisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          },
-        );
-      }
-    });
+  get isAllRootUnitsSelected(): boolean {
+    return !this._accessContract.rootUnits || this._accessContract.rootUnits.length === 0;
   }
 
-  initTitles() {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.searchAccessContractId);
-    this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
-      if (response.httpCode === 200) {
-        this.titles = {};
-        response.$results.forEach((result: any) => {
-          this.titles[result['#id']] = result.Title;
+  public openUpdateSelectedNodes() {
+    if (!this.searchAccessContractId) {
+      return;
+    }
+
+    this.dialog
+      .open(AccessContractNodeUpdateComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: {
+          accessContract: this._accessContract,
+          searchAccessContractId: this.searchAccessContractId,
+          tenantIdentifier: this.tenantIdentifier,
+        },
+      })
+      .afterClosed()
+      .subscribe((updatedAccessContract: AccessContract) => {
+        if (updatedAccessContract) {
+          this.accessContract = updatedAccessContract;
+        }
+      });
+  }
+
+  private initSearchAccessContractIdAndTitles(): void {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
+      const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessContractId && accessContractId.length > 0) {
+        this.searchAccessContractId = accessContractId;
+        this.initTitles();
+      } else {
+        this.vitamUISnackBarService.open({
+          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
         });
       }
     });
   }
 
-  getDslForRootNodes(): any {
-    const excludedRoots: string[] = this.accessContract.excludedRootUnits ? this.accessContract.excludedRootUnits : [];
-    const rootUnits: string[] = this.accessContract.rootUnits ? this.accessContract.rootUnits : [];
+  private initTitles(): void {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', this.searchAccessContractId);
+    this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
+      if (response.httpCode === 200) {
+        this.rootUnitsTitles = [];
+        this.excludedRootUnitsTitles = [];
+        response.$results.forEach((result: any) => {
+          if (this.accessContract.rootUnits.includes(result['#id'])) {
+            this.rootUnitsTitles.push(result.Title);
+          }
+          if (this.accessContract.excludedRootUnits.includes(result['#id'])) {
+            this.excludedRootUnitsTitles.push(result.Title);
+          }
+        });
+        this.rootUnitsTitles.sort();
+        this.excludedRootUnitsTitles.sort();
+      }
+    });
+  }
+
+  private getDslForRootNodes(): any {
+    const excludedRoots: string[] = this._accessContract.excludedRootUnits ? this._accessContract.excludedRootUnits : [];
+    const rootUnits: string[] = this._accessContract.rootUnits ? this._accessContract.rootUnits : [];
 
     return {
       $roots: [],
@@ -121,29 +167,5 @@ export class AccessContractNodesTabComponent implements OnInit {
         },
       },
     };
-  }
-
-  openUpdateSelectedNodes() {
-    if (!this.searchAccessContractId) {
-      return;
-    }
-    this.dialog.open(AccessContractNodeUpdateComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: {
-        accessContract: this.accessContract,
-        searchAccessContractId: this.searchAccessContractId,
-        tenantIdentifier: this.tenantIdentifier,
-      },
-    });
-  }
-
-  getTitle(id: string) {
-    return this.titles[id] || id;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    console.log(readOnly);
   }
 }

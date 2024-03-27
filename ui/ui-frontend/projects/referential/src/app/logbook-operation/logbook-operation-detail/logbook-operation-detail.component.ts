@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -47,16 +46,17 @@ import {
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
+  VitamUISnackBarService,
 } from 'ui-frontend-common';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 
 const msgForDownload: { [key: string]: string } = {
-  EXPORT_DIP: 'Télécharger le DIP',
-  ARCHIVE_TRANSFER: 'Télécharger le DIP de transfert',
+  EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
+  ARCHIVE_TRANSFER: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP_TRANSFER',
 };
 
-const DOWNLOAD_REPORT = 'Télécharger le rapport';
+const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
 
 @Component({
   selector: 'app-logbook-operation-detail',
@@ -71,17 +71,15 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
 
   @Output() closePanel = new EventEmitter();
 
-  event: Event;
+  public event: Event;
+  private accessContractId: string;
+  private hasAccessContractId = false;
+  private accessContractLogbookIdentifier: string;
 
-  loading: boolean;
-  reportFileName: string;
-  accessContractId: string;
-  hasAccessContractId = false;
-  accessContractLogbookIdentifier: string;
-
-  downloadButtonTitle: string;
-  showDownloadButton = false;
-  disableDownloadButton = true;
+  public reportFileName: string;
+  public downloadButtonTitle: string;
+  public showDownloadButton = false;
+  public disableDownloadButton = true;
 
   private subscriptions = new Subscription();
 
@@ -91,7 +89,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     private route: ActivatedRoute,
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
+    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
@@ -112,7 +110,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     this.refreshLogbookOperation();
   }
 
-  setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
+  private setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
     const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.eventId);
     if (logbookOperationUpdated) {
       this.event = logbookOperationUpdated;
@@ -127,14 +125,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       this.accessContractId = accessContratId;
       this.hasAccessContractId = true;
     } else {
-      this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utilisateur`, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000,
+      this.vitamUISnackBarService.open({
+        message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
       });
     }
   }
 
-  emitClose() {
+  public emitClose() {
     this.closePanel.emit();
   }
 
@@ -142,7 +139,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId;
   }
 
-  downloadReports() {
+  public downloadReports() {
     if (this.doesNotHaveTenant()) {
       return;
     }
@@ -150,7 +147,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   private updateDownloadButton() {
-    this.downloadButtonTitle = msgForDownload[this.event.typeProc] ?? DOWNLOAD_REPORT;
+    this.downloadButtonTitle = msgForDownload[this.event.typeProc] ?? defaultDownloadButtonLabel;
     const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
     this.showDownloadButton =
       logbookOperationReportState === LogbookOperationReportState.IN_PROGRESS ||
@@ -187,27 +184,25 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       return;
     }
     this.setAccessContractLogbookIdentifier();
-    this.loading = true;
     this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
       this.logbookDownloadService.logbookOperationsReloaded.next([event]);
-      this.loading = false;
     });
   }
 
-  hasATRDownloadable(): boolean {
+  public hasATRDownloadable(): boolean {
     if (!this.event) {
       return false;
     }
     return this.event.typeProc === LogbookOperationTypeProc.INGEST_TEST && this.ingestIsFinish();
   }
 
-  ingestIsFinish(): boolean {
+  private ingestIsFinish(): boolean {
     const eventStatus = this.eventStatus(this.event);
     return eventStatus !== IngestStatus.STARTED && eventStatus !== IngestStatus.IN_PROGRESS;
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  eventStatus(ingest: Event): IngestStatus {
+  private eventStatus(ingest: Event): IngestStatus {
     const lastEvent: Event = this.eventLastEvent(ingest);
     if (ingest.type === lastEvent.type) {
       return lastEvent.outcome as IngestStatus;
@@ -216,7 +211,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  eventLastEvent(ingest: Event): Event {
+  private eventLastEvent(ingest: Event): Event {
     if (!this.eventHasEvents(ingest)) {
       return ingest;
     }
@@ -224,11 +219,11 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  eventHasEvents(ingest: Event): boolean {
+  private eventHasEvents(ingest: Event): boolean {
     return ingest.events !== undefined && ingest.events.length > 0;
   }
 
-  downloadATR() {
+  public downloadATR() {
     this.logbookService.downloadATR(this.event.objectId);
   }
 }

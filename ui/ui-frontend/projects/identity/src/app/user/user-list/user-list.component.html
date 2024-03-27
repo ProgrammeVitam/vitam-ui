@@ -173,6 +173,7 @@
 
   <div *ngIf="!dataSource || pending || !groups; then loadingSpinner"></div>
 </div>
+
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>

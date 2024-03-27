@@ -39,11 +39,19 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { AuthService, BASE_URL } from 'ui-frontend-common';
 import { OntologyService } from '../ontology.service';
 import { OntologyListComponent } from './ontology-list.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+const translations: any = { TEST: 'Mock translate test' };
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
+}
 describe('OntologyListComponent', () => {
   let component: OntologyListComponent;
   let fixture: ComponentFixture<OntologyListComponent>;
@@ -52,11 +60,17 @@ describe('OntologyListComponent', () => {
     // tslint:disable-next-line:variable-name
     delete: (_item: Ontology) => of(null),
     search: () => of(null),
+    updated: EMPTY,
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OntologyListComponent],
+      imports: [
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
+        }),
+      ],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },

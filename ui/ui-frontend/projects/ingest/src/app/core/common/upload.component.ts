@@ -103,12 +103,32 @@ export class UploadComponent implements OnInit {
     this.hasDropZoneOver = inDropZone;
   }
 
-  onDropped(files: FileList) {
+  onDropped(files: File[]) {
     this.hasDropZoneOver = false;
     this.handleFile(files);
   }
 
-  handleFile(files: FileList) {
+  handleFile(files: File[]) {
+    this.isDisabled = false;
+    this.hasError = false;
+    this.message = null;
+    this.fileToUpload = files[0];
+
+    this.fileName = this.fileToUpload.name;
+    this.fileSize = this.fileToUpload.size;
+
+    const transformer = new BytesPipe(this.logger);
+    this.fileSizeString = transformer.transform(this.fileSize);
+
+    if (!this.checkFileExtension(this.fileName)) {
+      this.message = "Le fichier déposé n'est pas au bon format";
+      this.hasError = true;
+      return;
+    }
+    this.stepIndex = LAST_STEP_INDEX;
+  }
+
+  handleFileList(files: FileList) {
     this.isDisabled = false;
     this.hasError = false;
     this.message = null;
@@ -133,7 +153,7 @@ export class UploadComponent implements OnInit {
   }
 
   handleFileInput(files: FileList) {
-    this.handleFile(files);
+    this.handleFileList(files);
   }
 
   upload() {

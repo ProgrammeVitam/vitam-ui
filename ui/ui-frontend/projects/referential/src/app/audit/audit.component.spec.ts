@@ -47,6 +47,8 @@ import { of } from 'rxjs';
 import { GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { AuditComponent } from './audit.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
@@ -68,6 +70,8 @@ describe('AuditComponent', () => {
         MatSelectModule,
         InjectorModule,
         MatSidenavModule,
+        MatFormFieldModule,
+        MatInputModule,
         LoggerModule.forRoot(),
       ],
       declarations: [AuditComponent],
