@@ -43,7 +43,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
-import { ProfileValidators } from '../profile.validators';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { ProfileDetailComponent } from './profile-detail.component';
 import { ProfilePopupComponent } from './profile-popup.component';
@@ -61,6 +60,5 @@ import { ProfilePopupComponent } from './profile-popup.component';
   ],
   declarations: [ProfilePopupComponent, ProfileDetailComponent, InformationTabComponent],
   exports: [ProfileDetailComponent],
-  providers: [ProfileValidators],
 })
 export class ProfileDetailModule {}

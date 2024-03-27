@@ -63,6 +63,5 @@ import { SubrogationRoutingModule } from './subrogation-routing.module';
     SubrogationRoutingModule,
   ],
   declarations: [SubrogateUserListComponent, SubrogateUserComponent],
-  providers: [],
 })
 export class SubrogationModule {}

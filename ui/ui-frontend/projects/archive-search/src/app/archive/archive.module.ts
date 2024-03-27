@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,11 +55,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { TranslateService } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
-import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -92,27 +89,17 @@ import { SearchDisseminationRulesFacetsComponent } from './archive-search/archiv
 import { SearchReuseRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
 import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
-import { RuleValidator } from './archive-search/rule.validator';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
-import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
 import { TransferAcknowledgmentComponent } from './archive-search/transfer-acknowledgment/transfer-acknowledgment.component';
 import { ArchiveComponent } from './archive.component';
-import { ArchiveFacetsService } from './common-services/archive-facets.service';
-import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
-import { ArchiveUnitDipService } from './common-services/archive-unit-dip.service';
-import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
-import { ComputeInheritedRulesService } from './common-services/compute-inherited-rules.service';
-import { UpdateUnitManagementRuleService } from './common-services/update-unit-management-rule.service';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { SharedModule } from './shared/shared.module';
-import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
-import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
 @NgModule({
   imports: [
@@ -143,22 +130,6 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     MatTabsModule,
     MatRadioModule,
     CommonModule,
-  ],
-  providers: [
-    ArchiveSharedDataService,
-    DatePipe,
-    TranslateService,
-    SearchCriteriaSaverService,
-    RuleValidator,
-    ManagementRulesSharedDataService,
-    ManagementRulesValidatorService,
-    ArchiveUnitValidatorService,
-    ArchiveSearchHelperService,
-    UpdateUnitManagementRuleService,
-    ComputeInheritedRulesService,
-    ArchiveUnitDipService,
-    ArchiveUnitEliminationService,
-    ArchiveFacetsService,
   ],
   declarations: [
     ArchiveComponent,

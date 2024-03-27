@@ -39,7 +39,9 @@ import { ArchiveSearchHelperService } from './archive-search-helper.service';
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ArchiveUnitEliminationService {
   constructor(
     private archiveService: ArchiveService,

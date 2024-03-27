@@ -45,7 +45,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -75,9 +74,6 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
-import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
-import { RuleValidator } from './archive-search-criteria/services/rule.validator';
-import { SearchCriteriaSaverService } from './archive-search-criteria/services/search-criteria-saver.service';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 @NgModule({
@@ -96,7 +92,6 @@ import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-un
     ConfirmActionModule,
     MatTreeModule,
   ],
-  providers: [ArchiveSearchHelperService, ArchiveSharedDataService, RuleValidator, SearchCriteriaSaverService],
   declarations: [
     ArchiveSearchCollectComponent,
     TitleAndDescriptionCriteriaSearchCollectComponent,

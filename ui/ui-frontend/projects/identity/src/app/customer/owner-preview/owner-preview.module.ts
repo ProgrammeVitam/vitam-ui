@@ -39,17 +39,16 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
-import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { InformationTabComponent } from './information-tab/information-tab.component';
+import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 import { OwnerPopupComponent } from './owner-popup.component';
 import { OwnerPreviewComponent } from './owner-preview.component';
-
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 
 @NgModule({
   imports: [
@@ -64,6 +63,5 @@ import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab
   ],
   declarations: [OwnerPopupComponent, OwnerPreviewComponent, InformationTabComponent, OwnerOperationHistoryTabComponent],
   exports: [OwnerPopupComponent, OwnerPreviewComponent],
-  providers: [TenantFormValidators],
 })
 export class OwnerPreviewModule {}

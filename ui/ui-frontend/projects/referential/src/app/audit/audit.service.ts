@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
@@ -61,9 +61,8 @@ export class AuditService extends SearchService<Event> {
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, operationApiService, 'ALL');
+    super(operationApiService, 'ALL');
   }
 
   create(audit: any, headers: HttpHeaders) {

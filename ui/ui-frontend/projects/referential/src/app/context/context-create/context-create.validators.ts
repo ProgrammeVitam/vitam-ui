@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { ContextPermission } from 'ui-frontend-common';
 import { ContextService } from '../context.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ContextCreateValidators {
   private debounceTime = 400;
 

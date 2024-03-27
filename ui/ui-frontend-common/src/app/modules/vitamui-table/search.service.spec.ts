@@ -46,8 +46,8 @@ import { SearchService } from './search.service';
 
 @Injectable()
 class TestSearchService extends SearchService<any> {
-  constructor(http: HttpClient) {
-    super(http, { getAllPaginated: () => EMPTY }, 'EMBEDDED');
+  constructor() {
+    super({ getAllPaginated: () => EMPTY }, 'EMBEDDED');
   }
 }
 

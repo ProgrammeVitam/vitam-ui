@@ -40,7 +40,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { SecurityProfileService } from '../security-profile.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SecurityProfileCreateValidators {
   private debounceTime = 400;
 

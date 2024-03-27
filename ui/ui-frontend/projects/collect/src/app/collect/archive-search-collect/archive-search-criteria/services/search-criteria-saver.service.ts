@@ -33,7 +33,6 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
@@ -43,12 +42,10 @@ import { ProjectsApiService } from '../../../core/api/project-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaSaverService extends SearchService<any> {
-  constructor(
-    private projectsApiService: ProjectsApiService,
-    http: HttpClient,
-  ) {
-    super(http, projectsApiService, 'ALL');
+  constructor(private projectsApiService: ProjectsApiService) {
+    super(projectsApiService, 'ALL');
   }
+
   saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.projectsApiService.saveSearchCriteriaHistory(searchCriteriaHistory);
   }

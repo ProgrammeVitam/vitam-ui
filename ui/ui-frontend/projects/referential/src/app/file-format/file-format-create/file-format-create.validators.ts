@@ -41,7 +41,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { FileFormatService } from '../file-format.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FileFormatCreateValidators {
   private debounceTime = 400;
 

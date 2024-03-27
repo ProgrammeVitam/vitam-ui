@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,7 +53,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { TranslateService } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { AuthenticationModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { CoreModule } from '../core/core.module';
@@ -100,7 +99,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
     MatIconModule,
     MatTabsModule,
   ],
-  providers: [DatePipe, TranslateService],
   declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

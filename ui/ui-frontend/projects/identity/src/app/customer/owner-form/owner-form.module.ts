@@ -41,14 +41,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { OwnerFormComponent } from './owner-form.component';
-import { OwnerFormValidators } from './owner-form.validators';
 
 @NgModule({
   imports: [CommonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [OwnerFormComponent],
   exports: [OwnerFormComponent],
-  providers: [OwnerFormValidators, TenantFormValidators],
 })
 export class OwnerFormModule {}

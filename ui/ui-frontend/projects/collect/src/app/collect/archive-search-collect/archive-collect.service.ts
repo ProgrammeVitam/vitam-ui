@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
@@ -69,12 +69,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     private projectsApiService: ProjectsApiService,
     private transactionApiService: TransactionApiService,
     private searchUnitApiService: SearchUnitApiService,
-    http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private accessContractApiService: AccessContractApiService,
   ) {
-    super(http, projectsApiService, 'ALL');
+    super(projectsApiService, 'ALL');
   }
 
   projectId: string;

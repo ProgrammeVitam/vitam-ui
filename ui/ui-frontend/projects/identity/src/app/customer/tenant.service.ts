@@ -43,7 +43,9 @@ import { Injectable } from '@angular/core';
 
 import { TenantApiService } from './tenant-api.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TenantService {
   updated = new Subject<Tenant>();
 

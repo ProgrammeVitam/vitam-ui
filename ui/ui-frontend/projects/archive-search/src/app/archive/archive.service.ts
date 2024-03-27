@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
@@ -75,13 +75,12 @@ import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 export class ArchiveService extends SearchService<any> implements SearchArchiveUnitsInterface {
   constructor(
     private archiveApiService: ArchiveApiService,
-    http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
     private accessContractApiService: AccessContractApiService,
   ) {
-    super(http, archiveApiService, 'ALL');
+    super(archiveApiService, 'ALL');
   }
 
   headers = new HttpHeaders();

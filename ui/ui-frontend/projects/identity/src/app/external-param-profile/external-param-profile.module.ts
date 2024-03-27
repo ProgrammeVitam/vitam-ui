@@ -45,7 +45,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
-import { ProfileValidators } from '../profile/profile.validators';
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
@@ -55,8 +54,6 @@ import { ThresholdsTabComponent } from './external-param-profile-detail/threshol
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileRoutingModule } from './external-param-profile-routing.module';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
-import { ExternalParamProfileValidators } from './external-param-profile.validators';
-import { SharedService } from './shared.service';
 
 @NgModule({
   imports: [
@@ -84,6 +81,5 @@ import { SharedService } from './shared.service';
     InformationTabComponent,
     ThresholdsTabComponent,
   ],
-  providers: [ExternalParamProfileValidators, ProfileValidators, SharedService],
 })
 export class ExternalParamProfileModule {}

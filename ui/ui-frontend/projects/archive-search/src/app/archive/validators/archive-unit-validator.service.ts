@@ -44,7 +44,9 @@ import { SearchCriteriaDto } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ArchiveUnitValidatorService {
   constructor(
     private archiveService: ArchiveService,

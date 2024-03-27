@@ -45,7 +45,6 @@ import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
-import { GroupValidators } from '../group.validators';
 import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupPopupComponent } from './group-popup.component';
 import { GroupPreviewComponent } from './group-preview.component';
@@ -76,7 +75,6 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     UnitsEditComponent,
   ],
   exports: [GroupPreviewComponent],
-  providers: [GroupValidators],
   entryComponents: [ProfilesEditComponent],
 })
 export class GroupPreviewModule {}

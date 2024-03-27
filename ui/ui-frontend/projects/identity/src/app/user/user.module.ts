@@ -34,26 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamUICommonModule } from 'ui-frontend-common';
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { GroupService } from './../group/group.service';
-import { ProfileService } from './../profile/profile.service';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from './group-attribution/group-attribution.module';
 import { UserCreateModule } from './user-create';
 import { UserListModule } from './user-list';
 import { UserPreviewModule } from './user-preview';
-import { UserResolver } from './user-resolver.service';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
-import { UserService } from './user.service';
 
 @NgModule({
   imports: [
@@ -71,6 +66,5 @@ import { UserService } from './user.service';
     UserRoutingModule,
   ],
   declarations: [UserComponent],
-  providers: [UserResolver, UserService, ProfileService, GroupService],
 })
 export class UserModule {}

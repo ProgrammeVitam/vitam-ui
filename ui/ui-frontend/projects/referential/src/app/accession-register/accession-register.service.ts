@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
@@ -74,13 +74,12 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   constructor(
     private accessionRegisterApiService: AccessionRegisterDetailApiService,
-    http: HttpClient,
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
     private bytesPipe: BytesPipe,
     private snackBarService: VitamUISnackBarService,
   ) {
-    super(http, accessionRegisterApiService, 'ALL');
+    super(accessionRegisterApiService, 'ALL');
   }
 
   getAccessionRegisterStatus(locale: string) {

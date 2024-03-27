@@ -46,10 +46,8 @@ import { SharedModule } from '../shared/shared.module';
 import { GroupCreateModule } from './group-create';
 import { GroupListModule } from './group-list';
 import { GroupPreviewModule } from './group-preview';
-import { GroupResolver } from './group-resolver.service';
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
-import { GroupService } from './group.service';
 
 @NgModule({
   imports: [
@@ -66,6 +64,5 @@ import { GroupService } from './group.service';
     GroupRoutingModule,
   ],
   declarations: [GroupComponent],
-  providers: [GroupResolver, GroupService],
 })
 export class GroupModule {}

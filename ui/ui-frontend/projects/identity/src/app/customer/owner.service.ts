@@ -41,7 +41,9 @@ import { Criterion, Operators, Owner, SearchQuery, VitamUISnackBarService } from
 import { Injectable } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OwnerService {
   updated = new Subject<Owner>();
 

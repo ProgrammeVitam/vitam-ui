@@ -40,7 +40,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ExternalParamProfileValidators {
   private debounceTime = 400;
 

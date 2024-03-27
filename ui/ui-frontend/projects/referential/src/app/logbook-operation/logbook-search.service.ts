@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Event, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'ui-frontend-common';
-
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LogbookSearchService extends SearchService<Event> {
-  constructor(http: HttpClient, logbookApi: LogbookApiService) {
-    super(http, logbookApi);
+  constructor(logbookApi: LogbookApiService) {
+    super(logbookApi);
   }
 
   static buildVitamQuery(pageRequest: PageRequest, criteria: any): VitamSelectQuery {

@@ -66,6 +66,5 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     UploadTrackingModule,
   ],
   declarations: [HoldingFillingSchemeComponent],
-  providers: [],
 })
 export class HoldingFillingSchemeModule {}

@@ -37,8 +37,14 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Event, LogbookApiService, LogbookOperationReportState, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
-import { DownloadUtils } from 'ui-frontend-common';
+import {
+  DownloadUtils,
+  Event,
+  LogbookApiService,
+  LogbookOperationReportState,
+  SearchService,
+  VitamUISnackBarService,
+} from 'ui-frontend-common';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';
@@ -71,9 +77,9 @@ export class LogbookDownloadService extends SearchService<Event> {
   constructor(
     private logbookApiService: LogbookApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
+    private http: HttpClient,
   ) {
-    super(http, logbookApiService);
+    super(logbookApiService);
   }
 
   isOperationInProgress(event: Event): boolean {

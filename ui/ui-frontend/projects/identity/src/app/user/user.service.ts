@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -48,13 +49,12 @@ import {
   VitamUISnackBarService,
 } from 'ui-frontend-common';
 
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService extends SearchService<User> {
   userUpdated = new Subject<User>();
 
@@ -62,9 +62,8 @@ export class UserService extends SearchService<User> {
     private userApi: UserApiService,
     private snackBarService: VitamUISnackBarService,
     private rngProfileService: ProfileService,
-    http: HttpClient,
   ) {
-    super(http, userApi, '');
+    super(userApi, '');
   }
 
   create(user: User) {

@@ -49,7 +49,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { EventDisplayHelperService } from './event-display-helper.service';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
@@ -81,7 +80,6 @@ import { IngestPreviewComponent } from './ingest-preview.component';
     MatTreeModule,
   ],
   exports: [IngestPreviewComponent, IngestInformationTabComponent, IngestEventDetailComponent, EventDisplayComponent],
-  providers: [EventDisplayHelperService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class IngestPreviewModule {}

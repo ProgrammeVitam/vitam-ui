@@ -48,7 +48,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { FileFormatCreateComponent } from './file-format-create.component';
-import { FileFormatCreateValidators } from './file-format-create.validators';
 
 @NgModule({
   imports: [
@@ -66,6 +65,5 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
   ],
   declarations: [FileFormatCreateComponent],
   entryComponents: [FileFormatCreateComponent],
-  providers: [FileFormatCreateValidators],
 })
 export class FileFormatCreateModule {}

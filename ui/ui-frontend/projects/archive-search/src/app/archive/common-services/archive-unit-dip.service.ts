@@ -36,7 +36,9 @@ import { ArchiveSearchComponent } from '../archive-search/archive-search.compone
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ArchiveUnitDipService {
   constructor(
     private translateService: TranslateService,

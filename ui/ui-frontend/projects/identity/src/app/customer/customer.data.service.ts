@@ -39,7 +39,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Tenant } from 'ui-frontend-common';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CustomerDataService {
   private tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
 

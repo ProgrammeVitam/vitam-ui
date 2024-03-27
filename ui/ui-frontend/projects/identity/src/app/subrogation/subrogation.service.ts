@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Criterion,
@@ -46,9 +48,6 @@ import {
   SubrogationUser,
 } from 'ui-frontend-common';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { UserGenericApiService } from './user-generic-api.service';
 
 @Injectable({
@@ -56,11 +55,10 @@ import { UserGenericApiService } from './user-generic-api.service';
 })
 export class SubrogationService extends SearchService<SubrogationUser> {
   constructor(
-    http: HttpClient,
     userGenericApi: UserGenericApiService,
     private subrogationApiService: SubrogationApiService,
   ) {
-    super(http, userGenericApi);
+    super(userGenericApi);
   }
 
   getGroupById(id: string): Observable<Group> {

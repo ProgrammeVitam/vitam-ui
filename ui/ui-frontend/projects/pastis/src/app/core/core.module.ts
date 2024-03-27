@@ -82,7 +82,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   ],
 
   exports: [VitamUICommonModule, NgxUiLoaderModule],
-  providers: [],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

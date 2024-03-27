@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { UploadComponent } from './upload.component';
-import { UploadService } from './upload.service';
 
 @NgModule({
   imports: [
@@ -65,6 +64,5 @@ import { UploadService } from './upload.service';
   ],
   declarations: [UploadComponent],
   entryComponents: [UploadComponent],
-  providers: [UploadService],
 })
 export class UploadModule {}

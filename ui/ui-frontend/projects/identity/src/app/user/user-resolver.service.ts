@@ -42,7 +42,9 @@ import { map, take } from 'rxjs/operators';
 import { User } from 'ui-frontend-common';
 import { UserService } from './user.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserResolver implements Resolve<User> {
   constructor(
     private userService: UserService,

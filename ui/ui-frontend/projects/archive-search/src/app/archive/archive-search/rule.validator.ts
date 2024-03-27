@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RuleValidator {
   private debounceTime = 400;
   ruleCategorySelected: string;

@@ -45,7 +45,9 @@ import { CustomerService } from '../../core/customer.service';
 export const CUSTOMER_CODE_MAX_LENGTH = 15;
 export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CustomerCreateValidators {
   private debounceTime = 400;
 

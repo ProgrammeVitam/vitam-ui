@@ -50,6 +50,5 @@ import { CssComponent } from './css/css.component';
 @NgModule({
   imports: [CommonModule, VitamUICommonModule, RouterModule, FormsModule, MatTabsModule, MatProgressSpinnerModule, MatDialogModule],
   declarations: [ComponentDemoComponent, CssComponent, ComponentsComponent],
-  providers: [],
 })
 export class ComponentDemoModule {}

@@ -42,7 +42,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
-import { ProfileValidators } from '../profile.validators';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
 import { HierarchyPopupComponent } from './hierarchy-popup.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
@@ -51,6 +50,5 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
   imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, MatTooltipModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [HierarchyPopupComponent, HierarchyDetailComponent, InformationTabComponent],
   exports: [HierarchyDetailComponent],
-  providers: [ProfileValidators],
 })
 export class HierarchyDetailModule {}

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from 'projects/vitamui-library/src/public-api';
 import { tap } from 'rxjs/operators';
@@ -48,9 +48,8 @@ export class ProbativeValueService extends SearchService<Event> {
   constructor(
     private operationApiService: OperationApiService,
     private snackBarService: VitamUISnackBarService,
-    http: HttpClient,
   ) {
-    super(http, operationApiService, 'ALL');
+    super(operationApiService, 'ALL');
   }
 
   create(probativeValueRequest: any, headers: HttpHeaders) {

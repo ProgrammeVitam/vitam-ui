@@ -41,7 +41,9 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AgencyService } from '../agency.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AgencyCreateValidators {
   private debounceTime = 400;
 

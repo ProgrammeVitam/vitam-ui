@@ -48,7 +48,9 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
 const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ArchiveSearchHelperService {
   constructor(
     private archiveExchangeDataService: ArchiveSharedDataService,

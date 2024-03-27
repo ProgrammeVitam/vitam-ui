@@ -42,7 +42,9 @@ import { map, take } from 'rxjs/operators';
 import { Tenant } from 'ui-frontend-common';
 import { TenantService } from './tenant.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TenantResolver implements Resolve<Tenant> {
   constructor(
     private tenantService: TenantService,

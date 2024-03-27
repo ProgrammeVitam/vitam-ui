@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SearchService } from 'ui-frontend-common';
@@ -45,11 +45,8 @@ import { LogbookOperation } from '../models/logbook-event.interface';
   providedIn: 'root',
 })
 export class IngestService extends SearchService<any> {
-  constructor(
-    private ingestApiService: IngestApiService,
-    http: HttpClient,
-  ) {
-    super(http, ingestApiService, 'ALL');
+  constructor(private ingestApiService: IngestApiService) {
+    super(ingestApiService, 'ALL');
   }
 
   logbookOperationsReloaded = new Subject<LogbookOperation[]>();

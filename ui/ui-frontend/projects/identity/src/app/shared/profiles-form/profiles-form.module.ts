@@ -41,13 +41,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ProfileService, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { ProfilesFormComponent } from './profiles-form.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, MatTooltipModule, VitamUICommonModule],
   declarations: [ProfilesFormComponent],
   exports: [ProfilesFormComponent],
-  providers: [ProfileService],
 })
 export class ProfilesFormModule {}

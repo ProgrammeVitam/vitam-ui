@@ -43,7 +43,9 @@ import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ManagementRulesValidatorService {
   constructor(
     private managementRulesSharedDataService: ManagementRulesSharedDataService,

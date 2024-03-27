@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -46,11 +45,8 @@ import { CustomerApiService } from '../../core/api/customer-api.service';
   providedIn: 'root',
 })
 export class CustomerListService extends SearchService<Customer> {
-  constructor(
-    http: HttpClient,
-    private customerApi: CustomerApiService,
-  ) {
-    super(http, customerApi, 'OWNER,TENANT');
+  constructor(private customerApi: CustomerApiService) {
+    super(customerApi, 'OWNER,TENANT');
   }
 
   search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'code', Direction.ASCENDANT)): Observable<Customer[]> {

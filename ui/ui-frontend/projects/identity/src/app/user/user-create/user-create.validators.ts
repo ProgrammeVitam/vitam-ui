@@ -41,7 +41,9 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { UserService } from '../user.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserCreateValidators {
   private debounceTime = 400;
 
