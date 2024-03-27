@@ -27,18 +27,16 @@
 
 package fr.gouv.vitamui.archives.search.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.JsonPatchDto;
-import fr.gouv.vitamui.archives.search.common.dto.MultiJsonPatchDto;
 import fr.gouv.vitamui.archives.search.common.dto.OperationIdDto;
 import fr.gouv.vitamui.archives.search.common.dto.UpdateArchiveUnitDto;
 import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.archives.search.common.service.ArchiveUnitService;
-import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.URISyntaxException;
 import java.util.Set;
 
 @Service

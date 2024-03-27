@@ -34,7 +34,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
-import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
@@ -66,7 +65,6 @@ import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -309,22 +307,6 @@ public class ArchivesSearchController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
         return archivesSearchService.reclassification(reclassificationCriteriaDto, buildUiHttpContext()).getBody();
-    }
-
-    @ApiOperation(value = "Update the Archive Unit descriptive metadata")
-    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + PATH_ID)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
-        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
-        ParameterChecker
-            .checkParameter("The Unit Descriptive Metadata Dto sould not be empty: ", unitDescriptiveMetadataDto);
-        SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(unitDescriptiveMetadataDto);
-        LOGGER.debug("Update the Archive Unit with id {}", id);
-        LOGGER.debug("Update the Archive Unit update query {}", unitDescriptiveMetadataDto);
-        return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Transfer Acknowledgment", consumes = APPLICATION_OCTET_STREAM_VALUE)

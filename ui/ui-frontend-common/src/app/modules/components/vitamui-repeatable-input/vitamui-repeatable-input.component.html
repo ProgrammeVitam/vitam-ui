@@ -14,6 +14,7 @@
       (focus)="onFocus(i)"
       [ngModel]="item.value"
       (ngModelChange)="onValueChange($event, i)"
+      [disabled]="disabled"
     />
     <div *ngIf="textarea" class="grow-wrap" [attr.data-replicated-value]="item.value">
       <textarea
@@ -23,10 +24,11 @@
         [ngModel]="item.value"
         (ngModelChange)="onValueChange($event, i)"
         onInput="this.parentNode.dataset.replicatedValue = this.value"
+        [disabled]="disabled"
       ></textarea>
     </div>
 
-    <div [class.hgap-5]="!textarea" [class.gap-5]="textarea">
+    <div *ngIf="!disabled" [class.hgap-5]="!textarea" [class.gap-5]="textarea">
       <button
         *ngIf="items.length > 1"
         type="button"

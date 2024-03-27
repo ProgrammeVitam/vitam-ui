@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.archives.search.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import fr.gouv.vitamui.archives.search.common.model.OperationId;
 import lombok.Data;
 import lombok.experimental.Accessors;

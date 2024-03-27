@@ -25,21 +25,35 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.collect.common.dto;
 
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
-@Accessors(chain = true)
-public class JsonPatchDto {
-    @NonNull private String id;
-    @NonNull private JsonPatch jsonPatch;
+@AllArgsConstructor
+public class UpdateArchiveUnitDto {
+    @NonNull
+    @JsonProperty("#id")
+    private String id;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperties(String key, Object value) {
+        additionalProperties.put(key, value);
+    }
 }

@@ -4000,10 +4000,6 @@
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
-      "ACTIONS": {
-        "SHOW_MORE_DETAILS": "Show all metadata",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
-      },
       "FIELDS": {
         "ALGORITHM": "Footprint - ",
         "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH",
@@ -4547,7 +4543,8 @@
           "CANCEL": "RETURN TO INPUT"
         },
         "MESSAGES": {
-          "SUCCESS": "The request to modify the archival unit has been successfully sent"
+          "IN_PROGRESS": "The request to modify the archival unit has been successfully sent. In the meantime, you can follow its progress in the operations log.",
+          "SUCCESS": "The request to modify the archival unit has been successfully performed"
         }
       },
       "CANCEL": {

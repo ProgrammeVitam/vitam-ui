@@ -71,45 +71,58 @@
   <h4>Repeatable</h4>
   <div class="d-flex flex-column">
     <div class="row m-0 pl-3 pr-3 mt-4">
-      <div class="col-4">
+      <div class="col-3">
         <vitamui-common-repeatable-input
           [formControl]="repeatableEmpty"
           [placeholder]="'Couverture juridictionnelle'"
         ></vitamui-common-repeatable-input>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <vitamui-common-repeatable-input
           [formControl]="repeatableOneValue"
           [placeholder]="'Couverture juridictionnelle'"
         ></vitamui-common-repeatable-input>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <vitamui-common-repeatable-input
           [formControl]="repeatableThreeValues"
+          [placeholder]="'Couverture juridictionnelle'"
+        ></vitamui-common-repeatable-input>
+      </div>
+      <div class="col-3">
+        <vitamui-common-repeatable-input
+          [formControl]="repeatableDisabled"
           [placeholder]="'Couverture juridictionnelle'"
         ></vitamui-common-repeatable-input>
       </div>
     </div>
     <div class="d-flex flex-column">
       <div class="row m-0 pl-3 pr-3 mt-4">
-        <div class="col-4">
+        <div class="col-3">
           <vitamui-common-repeatable-input
             [textarea]="true"
             [formControl]="repeatableTextareaEmpty"
             [placeholder]="'Couverture juridictionnelle'"
           ></vitamui-common-repeatable-input>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <vitamui-common-repeatable-input
             [textarea]="true"
             [formControl]="repeatableTextareaOneValue"
             [placeholder]="'Couverture juridictionnelle'"
           ></vitamui-common-repeatable-input>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <vitamui-common-repeatable-input
             [textarea]="true"
             [formControl]="repeatableTextareaTwoValues"
+            [placeholder]="'Couverture juridictionnelle'"
+          ></vitamui-common-repeatable-input>
+        </div>
+        <div class="col-3">
+          <vitamui-common-repeatable-input
+            [textarea]="true"
+            [formControl]="repeatableTextareaDisabled"
             [placeholder]="'Couverture juridictionnelle'"
           ></vitamui-common-repeatable-input>
         </div>

@@ -27,6 +27,7 @@
 
 package fr.gouv.vitamui.collect.external.server.config;
 
+import fr.gouv.vitamui.collect.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClientFactory;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
@@ -171,4 +172,9 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
         return factory.getUpdateUnitsMetadataInternalRestClient();
     }
 
+    @Bean
+    public ArchiveUnitClient getArchiveUnitClient(
+        final CollectInternalRestClientFactory collectInternalRestClientFactory) {
+        return collectInternalRestClientFactory.getArchiveUnitClient();
+    }
 }

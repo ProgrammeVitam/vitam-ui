@@ -27,54 +27,60 @@
  *
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient } from '../base-http-client';
-import { BASE_URL } from '../injection-tokens';
-import { Ontology } from '../models';
-import { ArchiveUnit } from './models/archive-unit';
-import { JsonPatchDto, MultiJsonPatchDto } from './models/json-patch';
+import { ArchiveUnitApiService } from './archive-unit-api.service';
+import { JsonPatchDto, MultiJsonPatchDto, ArchiveUnit } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveUnitApiService extends BaseHttpClient<Ontology> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl);
-  }
+export class ArchiveUnitService {
+  constructor(private archiveUnitApiService: ArchiveUnitApiService) {}
 
   /**
    * Updates many archive units asynchronously in one Vitam operation.
    * Can perform only add or replace operations on current archive units.
    *
+   * @param transactionId transaction ID
    * @param archiveUnits archive units to update.
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[], headers?: HttpHeaders): Observable<{ operationId: String }> {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units`, archiveUnits, { headers });
+  asyncPartialUpdateArchiveUnits(
+    transactionId: string,
+    archiveUnits: ArchiveUnit[],
+    headers?: HttpHeaders,
+  ): Observable<{ operationId: String }> {
+    return this.archiveUnitApiService.asyncPartialUpdateArchiveUnits(transactionId, archiveUnits, headers);
   }
 
   /**
    * Updates one archive unit asynchronously by using a jsonPatch in one Vitam operation.
    *
+   * @param transactionId transaction ID
    * @param jsonPatchDto a jsonPatchDto.
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto, headers?: HttpHeaders): Observable<{ operationId: String }> {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units/update/single`, jsonPatchDto, { headers });
+  asyncPartialUpdateArchiveUnitByCommands(
+    transactionId: string,
+    jsonPatchDto: JsonPatchDto,
+    headers?: HttpHeaders,
+  ): Observable<{ operationId: String }> {
+    return this.archiveUnitApiService.asyncPartialUpdateArchiveUnitByCommands(transactionId, jsonPatchDto, headers);
   }
 
   /**
    * Updates many archive unit asynchronously by using jsonPatches in one Vitam operation.
    *
+   * @param transactionId transaction ID
    * @param multiJsonPatchDto a list of jsonPatchDto.
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto, headers?: HttpHeaders) {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units/update/multiple`, multiJsonPatchDto, { headers });
+  asyncPartialUpdateArchiveUnitsByCommands(transactionId: string, multiJsonPatchDto: MultiJsonPatchDto, headers?: HttpHeaders) {
+    return this.archiveUnitApiService.asyncPartialUpdateArchiveUnitsByCommands(transactionId, multiJsonPatchDto, headers);
   }
 }
