@@ -59,9 +59,9 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
@@ -103,14 +103,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.missing;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -152,7 +152,6 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.crea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.getBasicQuery;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class TransactionArchiveUnitInternalService {
     public static final String DSL_QUERY_FACETS = "$facets";
@@ -248,20 +247,31 @@ public class TransactionArchiveUnitInternalService {
         }
     }
 
-    private static String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
+    private String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
+        return getArchiveUnitI18nAttribute(archiveUnit, ResultsDto::getTitle, ResultsDto::getTitle_);
+    }
+
+    private String getArchiveUnitDescription(ArchiveUnit archiveUnit) {
+        return getArchiveUnitI18nAttribute(archiveUnit, ResultsDto::getDescription, ResultsDto::getDescription_);
+    }
+
+    private String getArchiveUnitI18nAttribute(ArchiveUnit archiveUnit, Function<ArchiveUnit, String> attributeExtractor, Function<ArchiveUnit, Map<String, String>> i18nAttributeExtractor) {
         if (archiveUnit == null) {
             return null;
         }
-        if (isNotBlank(archiveUnit.getTitle())) {
-            return archiveUnit.getTitle();
+        final String attribute = attributeExtractor.apply(archiveUnit);
+        if (StringUtils.isNotBlank(attribute)) {
+            return attribute;
         }
-        if (archiveUnit.getTitle_() != null) {
-            return isNotBlank(archiveUnit.getTitle_().getFr()) ?
-                archiveUnit.getTitle_().getFr() :
-                archiveUnit.getTitle_().getEn();
-        }
-        LOGGER.debug("Archive unit Title and Title_ are empty!");
-        return null;
+        final Map<String, String> attribute_ = i18nAttributeExtractor.apply(archiveUnit);
+        return Stream.of("fr", "en")
+            .map(lang -> attribute_.entrySet().stream().filter(e -> lang.equalsIgnoreCase(e.getKey())).findFirst())
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .map(Map.Entry::getValue)
+            .or(() -> attribute_.values().stream().findFirst())
+            .orElse(null);
     }
 
     private String getArchiveUnitType(ArchiveUnit archiveUnit, String language) {
@@ -827,8 +837,7 @@ public class TransactionArchiveUnitInternalService {
         }
         ArchiveUnitCsv archiveUnitCsv = new ArchiveUnitCsv();
         BeanUtils.copyProperties(archiveUnit, archiveUnitCsv);
-        archiveUnitCsv.setDescription(
-            archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null);
+        archiveUnitCsv.setDescription(cleanString(getArchiveUnitDescription(archiveUnit)));
         archiveUnitCsv.setDescriptionLevel(
             archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null);
         archiveUnitCsv.setArchiveUnitType(getArchiveUnitType(archiveUnit, language));

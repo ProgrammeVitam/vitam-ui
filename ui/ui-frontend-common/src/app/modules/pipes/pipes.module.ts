@@ -48,34 +48,27 @@ import { PluralPipe } from './plural.pipe';
 import { SafeStylePipe } from './safe-style.pipe';
 import { StrongifyPipe } from './strongify.pipe';
 import { TruncatePipe } from './truncate.pipe';
+import { UnitI18nPipe } from './unitI18n.pipe';
 import { YesNoPipe } from './yes-no.pipe';
+
+const pipes = [
+  BytesPipe,
+  DateTimePipe,
+  EmptyPipe,
+  FileSizePipe,
+  HighlightPipe,
+  PluralPipe,
+  SafeStylePipe,
+  StrongifyPipe,
+  TruncatePipe,
+  UnitI18nPipe,
+  YesNoPipe,
+];
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [
-    BytesPipe,
-    HighlightPipe,
-    StrongifyPipe,
-    TruncatePipe,
-    SafeStylePipe,
-    EmptyPipe,
-    YesNoPipe,
-    DateTimePipe,
-    FileSizePipe,
-    PluralPipe,
-  ],
-  exports: [
-    BytesPipe,
-    HighlightPipe,
-    StrongifyPipe,
-    TruncatePipe,
-    SafeStylePipe,
-    EmptyPipe,
-    YesNoPipe,
-    DateTimePipe,
-    FileSizePipe,
-    PluralPipe,
-  ],
+  declarations: pipes,
+  exports: pipes,
   providers: [DatePipe],
 })
 export class PipesModule {}
