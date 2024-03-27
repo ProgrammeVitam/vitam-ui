@@ -4,6 +4,7 @@
     marker: "          <!-- {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI LINKS -->"
     insertafter: <!-- Vitam UI - Liens -->
     block: "{{ lookup('template', 'index_links.html.j2') }}"
+  notify: "merge_index_apache - reload apache"
 
 - name: Add debug information and Browser link
   blockinfile:
@@ -11,22 +12,24 @@
     marker: "          <!-- {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI DEBUG -->"
     insertafter: <!-- Vitam UI - Debug -->
     block: "{{ lookup('template', 'index_debug.html.j2') }}"
+  notify: "merge_index_apache - reload apache"
 
 - name: Set apache settings for CentOS
   set_fact:
-    apache_service: "httpd"
-    apache_conf_dir: "conf.d"
+    apache_service: httpd
+    apache_conf_dir: conf.d
   when: ansible_os_family == "RedHat"
 
 - name: Set apache settings for Debian
   set_fact:
-    apache_service: "apache2"
-    apache_conf_dir: "sites-available"
+    apache_service: apache2
+    apache_conf_dir: sites-available
   when: ansible_os_family == "Debian"
 
 - name: Add proxypass in httpd configuration
   blockinfile:
     path: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitam_reverse_external_dns }}.conf"
-    marker: "          # {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI PROXYPASS -->"
+    marker: "          # {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI PROXYPASS"
     insertbefore: </VirtualHost>
     block: "{{ lookup('template', 'proxy_pass.conf.j2') }}"
+  notify: "merge_index_apache - reload apache"
