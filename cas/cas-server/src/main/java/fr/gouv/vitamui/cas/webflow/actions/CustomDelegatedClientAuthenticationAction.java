@@ -42,7 +42,9 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -59,6 +61,7 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static fr.gouv.vitamui.cas.authentication.UserPrincipalResolver.EMAIL_VALID_REGEXP;
@@ -84,6 +87,8 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final TicketRegistry ticketRegistry;
 
+    private final CasExternalRestClient casExternalRestClient;
+
     private final String vitamuiPortalUrl;
 
     public CustomDelegatedClientAuthenticationAction(
@@ -94,12 +99,14 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         final ProvidersService providersService,
         final Utils utils,
         final TicketRegistry ticketRegistry,
+        final CasExternalRestClient casExternalRestClient,
         final String vitamuiPortalUrl) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
+        this.casExternalRestClient = casExternalRestClient;
         this.vitamuiPortalUrl = vitamuiPortalUrl;
     }
 
@@ -151,6 +158,17 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 credential.setSurrogateUsername(surrogateEmail);
                 WebUtils.putCredential(context, credential);
 
+                CustomerDto surrogateCustomer =
+                    casExternalRestClient.getCustomersByIds(utils.buildContext(surrogateEmail),
+                            List.of(surrogateCustomerId))
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException(
+                            "Invalid surrogateCustomerId: '" + surrogateCustomerId + "'"));
+
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getCompanyName());
+
             } else if (StringUtils.isNotBlank(username)) {
                 validateEmail(username);
                 WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
@@ -163,7 +181,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
 
-                // FIXME : IDP vs subrogation vs login. What about customerId
+                // FIXME LGH : IDP vs subrogation vs login. What about customerId
 
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
@@ -197,7 +215,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private void validateEmail(String email) {
         if (email == null) {
-            // FIXME
             throw new IllegalArgumentException("Null email");
         }
         if (!Pattern.matches(EMAIL_VALID_REGEXP, email)) {

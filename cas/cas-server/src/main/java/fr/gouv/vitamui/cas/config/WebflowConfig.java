@@ -302,7 +302,7 @@ public class WebflowConfig {
                 () -> new CustomDelegatedClientAuthenticationAction(delegatedClientAuthenticationConfigurationContext,
                     delegatedClientWebflowManager, delegatedClientAuthenticationFailureEvaluator,
                     identityProviderHelper,
-                    providersService, utils, ticketRegistry, vitamuiPortalUrl))
+                    providersService, utils, ticketRegistry, casRestClient, vitamuiPortalUrl))
             .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION)
             .build()
             .get();

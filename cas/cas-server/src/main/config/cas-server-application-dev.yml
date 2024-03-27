@@ -206,8 +206,7 @@ logging:
     org.springframework.amqp: 'OFF'
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
-    org.apereo.inspektr.audit.support: 'INFO'
-    org.apereo.cas: 'DEBUG'
+    org.apereo.inspektr.audit.support: 'OFF'
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
@@ -294,6 +293,7 @@ cas.http-web-request.cors.allow-origins:
   - "https://dev.vitamui.com:4209"
   - "https://dev.vitamui.com:4210"
   - "https://dev.vitamui.com:4251"
+  - "https://dev.vitamui.com"
   - "https://localhost:4200"
   - "https://localhost:4201"
   - "https://localhost:4202"

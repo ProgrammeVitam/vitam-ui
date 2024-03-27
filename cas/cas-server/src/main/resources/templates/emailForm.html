@@ -70,7 +70,7 @@
 
           <div class="form-line">
           <div class="Text-medium-bold" th:text="#{screen.welcome.label.surrogate}">Subrogé :</div>&nbsp;
-          <div class="Text-medium" th:text="${surrogateEmail}">admin@programmevitam.fr</div>
+          <div class="Text-medium" th:text="${surrogateEmail + ' (' + surrogateCustomerCode + ' - ' + surrogateCustomerName + ')' }">admin@programmevitam.fr (code - nom d'orga)</div>
         </div>
         <div class="form-line">
           <div class="Text-medium-bold" th:text="#{screen.welcome.label.superuser}">Super utilisateur :</div>&nbsp;

@@ -6,7 +6,9 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
@@ -23,10 +25,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,6 +50,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
     private static final String CUSTOMER_ID_2 = "customer2";
     private static final String BAD_EMAIL = "ééééàààà@vitamui.com";
     private static final String BAD_CUSTOMER_ID = "ééééàààà";
+    private static final String CODE = "code";
+    private static final String COMPANY = "company";
 
     private CustomDelegatedClientAuthenticationAction action;
 
@@ -56,10 +64,19 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(
             mock(DelegatedClientIdentityProviderConfigurationProducer.class));
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
+
+        CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
+        CustomerDto surrogateCustomerDto = new CustomerDto();
+        surrogateCustomerDto.setCode(CODE);
+        surrogateCustomerDto.setCompanyName(COMPANY);
+        surrogateCustomerDto.setId(CUSTOMER_ID_2);
+        doReturn(List.of(surrogateCustomerDto))
+            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+
         action = new CustomDelegatedClientAuthenticationAction(configContext,
             mock(DelegatedClientAuthenticationWebflowManager.class),
             mock(DelegatedClientAuthenticationFailureEvaluator.class), mock(IdentityProviderHelper.class),
-            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "");
+            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), casExternalRestClient, "");
     }
 
     @Test
@@ -104,6 +121,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_1);
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL)).isEqualTo(EMAIL2);
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_2);
+        assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_CODE)).isEqualTo(CODE);
+        assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_NAME)).isEqualTo(COMPANY);
 
         assertNull(flowParameters.get(Constants.PROVIDED_USERNAME));
     }
