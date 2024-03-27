@@ -9,4 +9,4 @@ reverse: nginx #or apache
 vitam_reverse_external_protocol: https
 reverse_proxy_port: 443
 
-url_prefix: "{{ vitam_reverse_external_protocol | default('https') }}://{{ vitam_reverse_external_dns }}"
+url_prefix: "{{ vitam_reverse_external_protocol | default('https') }}://{{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}"
