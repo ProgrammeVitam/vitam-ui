@@ -186,7 +186,7 @@ function generateHostCertAndStorePassphrase {
     # sed "1 d" : remove the first line
     for SERVER in $(ansible -i ${ENVIRONNEMENT_FILE} --list-hosts ${HOSTS_GROUP} ${ANSIBLE_VAULT_PASSWD}| sed "1 d"); do
         if [ "${COMPONENT}" == "reverse" ]; then
-            REVERSE_SAN=$(read_ansible_var "vitam_reverse_external_dns" ${SERVER})
+            REVERSE_SAN=$(read_ansible_var "vitamui_reverse_external_dns" ${SERVER})
         fi
         local SERVER_CERTIFICATE_PATH=$(getHostCertificatePath "server" ${SERVER})
         if [ ! -f "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then

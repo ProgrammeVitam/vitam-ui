@@ -26,7 +26,7 @@
 
 - name: Add proxypass in httpd configuration
   blockinfile:
-    path: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitam_site_name }}.conf"
+    path: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitam_reverse_external_dns }}.conf"
     marker: "          # {mark} ANSIBLE MANAGED BLOCK FOR VITAM UI PROXYPASS -->"
     insertbefore: </VirtualHost>
     block: "{{ lookup('template', 'proxy_pass.conf.j2') }}"

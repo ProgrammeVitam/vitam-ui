@@ -49,7 +49,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-            - "https://{{ vitam_reverse_external_dns }}"
+            - "{{ url_prefix }}"
             - "http://localhost"
             allowedMethods: "*"
             allowedHeaders: "*"
