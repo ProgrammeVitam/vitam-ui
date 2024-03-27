@@ -49,7 +49,7 @@
       "NONE": "Aucune",
       "YES": "Oui",
       "NO": "Non",
-      "SELECT_MANAGEMENT_CONTRACT": "Sélectionnez un contrat de gestion"
+      "SELECT_MANAGEMENT_CONTRACT": "Aucun"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Identifiant du contrat",
