@@ -67,7 +67,6 @@ import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
-import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
@@ -367,12 +366,6 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.archiveApiService.reclassification(criteriaDto, headers);
-  }
-
-  updateUnit(id: string, tenantIdentifier: number, unitMDDDto: UnitDescriptiveMetadataDto): Observable<string> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Tenant-Id', '' + tenantIdentifier);
-    return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
   }
 
   transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob, fileName: string): Observable<string> {

@@ -43,7 +43,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
-import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -72,7 +71,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -302,19 +300,6 @@ public class ArchiveSearchInternalController {
             externalParametersService.buildVitamContextFromExternalParam());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    public String updateUnitById(final @PathVariable("id") String unitId,
-        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY, unitId);
-        ParameterChecker.checkParameter("The request body is mandatory: ", unitDescriptiveMetadataDto);
-        SanityChecker.checkSecureParameter(unitId);
-        LOGGER.debug("update archiveUnit id  {}", unitId);
-        return archiveInternalService.updateUnitById(unitId, unitDescriptiveMetadataDto,
-            externalParametersService.buildVitamContextFromExternalParam());
-    }
-
 
     @ApiOperation(value = "Upload an ATR for transfer acknowledgment operation", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)

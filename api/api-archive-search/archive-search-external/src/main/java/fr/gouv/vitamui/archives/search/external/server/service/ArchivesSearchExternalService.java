@@ -31,13 +31,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
-import fr.gouv.vitam.common.model.objectgroup.VersionsModel;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
-import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
@@ -53,27 +51,21 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MimeType;
 import reactor.core.publisher.Mono;
 
-import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
-import static fr.gouv.vitamui.commons.rest.util.RestUtils.CONTENT_DISPOSITION;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static java.util.Optional.empty;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -295,10 +287,6 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
             reclassificationCriteriaDto.getSearchCriteriaDto().setThreshold(thresholdOpt.get());
         }
         return archiveInternalRestClient.reclassification(reclassificationCriteriaDto, getInternalHttpContext());
-    }
-
-    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
-        return archiveInternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, getInternalHttpContext());
     }
 
     public String transferAcknowledgment(InputStream atrInputStream, final String originalFileName) {
