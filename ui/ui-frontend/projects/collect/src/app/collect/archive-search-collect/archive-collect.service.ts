@@ -292,7 +292,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     let headers = new HttpHeaders();
     headers = headers.append('X-Tenant-Id', tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
-    headers = headers.append('fileName', fileName);
+    headers = headers.append('X-Original-Filename', fileName);
 
     return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
   }
