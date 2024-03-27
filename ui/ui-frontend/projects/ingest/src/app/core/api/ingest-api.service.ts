@@ -56,7 +56,6 @@ export class IngestApiService extends BaseHttpClient<any> {
     headers = headers.set('reportProgress', 'true');
     headers = headers.set('X-Original-Filename', fileName);
     headers = headers.set('ngsw-bypass', 'true');
-    headers = headers.set('fileName', fileName);
 
     const options = {
       headers,
