@@ -37,17 +37,18 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  diff,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  diff,
 } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
@@ -129,7 +130,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     private ruleValidator: RuleValidator,
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
-      appraisalRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
+      appraisalRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
       appraisalRuleTitle: ['', []],
       appraisalRuleStartDate: ['', []],
       appraisalRuleEndDate: ['', []],

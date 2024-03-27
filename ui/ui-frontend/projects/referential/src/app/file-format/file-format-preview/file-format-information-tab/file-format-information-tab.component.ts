@@ -36,13 +36,13 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/public-api';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { ApplicationId, Role, SecurityService, diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { ActivatedRoute } from '@angular/router';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
-import { ApplicationId, diff, Role, SecurityService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-file-format-information-tab',

@@ -39,9 +39,9 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FileFormat } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
 import { WINDOW_LOCATION } from 'ui-frontend-common';
+import { FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
 import { TranslateModule } from '@ngx-translate/core';

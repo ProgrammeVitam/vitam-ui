@@ -46,8 +46,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { ConfirmActionModule, VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { ConfirmActionModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { SecurityProfileEditPermissionModule } from '../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.module';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';

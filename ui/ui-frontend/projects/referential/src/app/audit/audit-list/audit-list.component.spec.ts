@@ -36,8 +36,8 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Event } from 'projects/vitamui-library/src/lib/models/event';
 import { of } from 'rxjs';
+import { Event } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';

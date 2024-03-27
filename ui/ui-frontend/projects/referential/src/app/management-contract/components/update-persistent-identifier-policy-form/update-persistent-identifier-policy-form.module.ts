@@ -37,8 +37,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { UpdatePersistentIdentifierPolicyFormComponent } from './update-persistent-identifier-policy-form.component';
 
 @NgModule({

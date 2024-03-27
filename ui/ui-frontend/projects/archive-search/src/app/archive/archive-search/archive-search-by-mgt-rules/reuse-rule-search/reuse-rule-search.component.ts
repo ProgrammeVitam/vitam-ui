@@ -38,17 +38,18 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  diff,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  diff,
 } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleValidator } from '../../rule.validator';
@@ -112,7 +113,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
     private ruleValidator: RuleValidator,
   ) {
     this.reuseRuleCriteriaForm = this.formBuilder.group({
-      reuseRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
+      reuseRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
       reuseRuleTitle: ['', []],
       reuseRuleStartDate: ['', []],
       reuseRuleEndDate: ['', []],

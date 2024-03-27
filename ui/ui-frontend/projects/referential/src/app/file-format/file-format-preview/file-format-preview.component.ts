@@ -37,9 +37,8 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
+import { ConfirmActionComponent, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
 

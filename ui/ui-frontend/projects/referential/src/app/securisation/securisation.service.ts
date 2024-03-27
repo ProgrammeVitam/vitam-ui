@@ -36,8 +36,8 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { download, Event } from 'projects/vitamui-library/src/public-api';
 import { SearchService } from 'ui-frontend-common';
+import { Event, download } from 'vitamui-library';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 

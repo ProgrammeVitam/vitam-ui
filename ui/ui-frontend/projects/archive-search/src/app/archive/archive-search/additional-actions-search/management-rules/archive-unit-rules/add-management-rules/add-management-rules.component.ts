@@ -40,9 +40,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -126,7 +127,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.ruleDetailsForm = this.formBuilder.group({
       rule: [
         null,
-        [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+        [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniqueRuleId(this.ruleCategory), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       name: [{ value: null, disabled: true }, Validators.required],

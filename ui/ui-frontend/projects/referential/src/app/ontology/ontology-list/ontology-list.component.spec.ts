@@ -38,12 +38,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
 import { AuthService, BASE_URL } from 'ui-frontend-common';
+import { Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyListComponent } from './ontology-list.component';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const translations: any = { TEST: 'Mock translate test' };
 

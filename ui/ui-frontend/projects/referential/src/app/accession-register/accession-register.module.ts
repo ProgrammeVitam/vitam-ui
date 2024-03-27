@@ -52,8 +52,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 import { SharedModule } from '../shared/shared.module';
 // tslint:disable-next-line:max-line-length
@@ -61,10 +61,7 @@ import { AccessionRegisterAdvancedSearchComponent } from './accession-register-a
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
 import { AccessionRegisterDetailComponent } from './accession-register-preview/accession-register-detail/accession-register-detail.component';
-import {
-  AccessionRegisterOperationComponent,
-  // tslint:disable-next-line:max-line-length
-} from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
+import { AccessionRegisterOperationComponent } from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
 import { AccessionRegisterOperationsListComponent } from './accession-register-preview/accession-register-operations-list/accession-register-operations-list.component';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview/accession-register-preview.component';
 import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
