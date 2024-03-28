@@ -100,7 +100,7 @@
       }
     },
     "BANNER": {
-      "MESSAGE": "Subrogation of user {{email}} until {{endDate}}",
+      "MESSAGE": "Subrogation of user {{email}} of company {{surrogateCustomerName}} ({{surrogateCustomerCode}}) until {{endDate}}",
       "STOP_LABEL": "Stop the subrogation"
     }
   },
