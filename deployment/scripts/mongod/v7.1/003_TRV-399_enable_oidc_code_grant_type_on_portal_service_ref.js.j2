@@ -1,4 +1,3 @@
-{% if gateway.enabled | default(False) is sameas true %}
 
 db = db.getSiblingDB("cas");
 
@@ -31,5 +30,3 @@ db.services.insertOne({
 });
 
 print("END 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
-
-{% endif %}

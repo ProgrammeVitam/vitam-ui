@@ -1,6 +1,6 @@
 #jinja2: lstrip_blocks: True
 {
-  "GATEWAY_ENABLED": {{ gateway.enabled | default(False) | lower }},
+  "GATEWAY_ENABLED": true,
   {% if authorization_header_name is defined and authorization_header_name | length %}
   "AUTHORIZATION_HEADER_NAME": "{{ authorization_header_name }}",
   {% endif %}
