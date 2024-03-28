@@ -154,9 +154,9 @@
       group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
       mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
     with_items:
-      - "01-logstash-vitam-filter.conf"
+      - "01-logstash-vitam-input.conf"
       - "02-logstash-vitam-filter.conf"
-      - "03-logstash-vitam-filter.conf"
+      - "03-logstash-vitam-output.conf"
     notify:
       - restart logstash
 
@@ -169,13 +169,13 @@
       path: "{{ logstash_conf_dir }}/{{ item }}"
       state: absent
     with_items:
-      - "01-logstash-vitam-filter.conf"
+      - "01-logstash-vitam-input.conf"
       - "02-logstash-vitam-filter.conf"
-      - "03-logstash-vitam-filter.conf"
+      - "03-logstash-vitam-output.conf"
 
   - name: configure logstash parser when filebeat
     template:
-      src: "filebeat-to-logstash.conf.j2"
+      src: "conf.d/filebeat-to-logstash.conf.j2"
       dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
       owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
       group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
