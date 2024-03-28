@@ -1,28 +1,28 @@
-<VirtualHost *:{{ reverse_proxy_port }}>
+<VirtualHost *:{{ reverse_proxy_port | default(443) }}>
 
-{% if vitam_reverse_external_protocol | default('https') | lower == 'https' %}
+{% if vitamui_reverse_external_protocol | default('https') | lower == 'https' %}
     SSLEngine on
     SSLCertificateFile /etc/{{apache_service}}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{apache_service}}/certs/reverse.key
     ServerName reverse.service.{{ consul_domain }}
-    ServerAlias {{ vitamui_reverse_external_dns }}
+    ServerAlias {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}
     ServerAlias {{ ip_service }}
 {% else %}
-    ServerName {{ vitamui_reverse_external_dns }}
+    ServerName {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}
 {% endif %}
 
-    #DocumentRoot "/var/www/html-{{ vitam_site_name }}"
+    #DocumentRoot "/var/www/html-{{ vitamui_site_name }}"
     ProxyPreserveHost off
     AllowEncodedSlashes NoDecode
 
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
-    CustomLog logs/{{ vitam_site_name }}_log combined
-    ErrorLog logs/{{ vitam_site_name }}_error
+    CustomLog logs/{{ vitamui_site_name }}_log combined
+    ErrorLog logs/{{ vitamui_site_name }}_error
 
     # Enable SSL for the Reverse proxy
     SSLProxyEngine on
     # Client CA path
-    SSLProxyCACertificatePath /etc/{{ apache_service }}/ca/{{ vitam_site_name }}
+    SSLProxyCACertificatePath /etc/{{ apache_service }}/ca/{{ vitamui_site_name }}
     # Don't check the CN of the server's certificate
     SSLProxyCheckPeerCN off
     # Don't check the hostname of the server
