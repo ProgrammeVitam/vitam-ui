@@ -83,6 +83,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     private static final String ROLE_NAME = "role1";
 
     private static final String PROVIDER_ID = "providerId";
+    public static final String CERTIFICATE_PROTOCOL_TYPE = "CERTIFICAT";
 
     private UserPrincipalResolver resolver;
 
@@ -134,6 +135,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
         provider.setCustomerId(CUSTOMER_ID);
+        provider.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
         provider.setPatterns(List.of(".*@test.com"));
         when(identityProviderHelper.
             findAllByUserIdentifier(providersService.getProviders(), USERNAME)

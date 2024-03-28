@@ -51,16 +51,6 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import java.security.cert.CertificateParsingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
@@ -102,7 +92,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_ID_ATTRIBUTE;
@@ -225,11 +214,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 .collect(Collectors.toList());
 
             if (certProviders.isEmpty()) {
-                LOGGER.warn("Cert authentication failed - No valid certificate identity provider found for: {}", userDomain);
+                LOGGER.warn("Cert authentication failed - No valid certificate identity provider found for: {}",
+                    userDomain);
                 return NullPrincipal.getInstance();
             }
             if (certProviders.size() > 1) {
-                LOGGER.warn("Cert authentication failed - Too many certificate identity providers found for: {}", userDomain);
+                LOGGER.warn("Cert authentication failed - Too many certificate identity providers found for: {}",
+                    userDomain);
                 return NullPrincipal.getInstance();
             }
 

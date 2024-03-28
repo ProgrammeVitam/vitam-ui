@@ -102,8 +102,13 @@ pipeline {
                 sh 'npmrc default'
 
                 sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' -DskipTests  -DskipAllFrontend
+                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
                 '''
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
 

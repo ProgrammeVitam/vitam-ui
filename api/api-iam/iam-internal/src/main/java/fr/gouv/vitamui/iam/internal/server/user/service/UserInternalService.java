@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
-import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,11 +48,13 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -101,14 +100,6 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -128,6 +119,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,10 +135,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_BLOCK_USER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_USER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_USER_INFO;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_PASSWORD_CHANGE;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_PASSWORD_INIT;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_PASSWORD_REVOCATION;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_USER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_USER_INFO;
 
 /**
  * The service to read, create, update and delete the users.
@@ -164,7 +166,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         EXT_VITAMUI_PASSWORD_CHANGE,
         EXT_VITAMUI_CREATE_USER_INFO,
         EXT_VITAMUI_UPDATE_USER_INFO
-        );
+    );
 
     private UserRepository userRepository;
 
@@ -224,7 +226,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService,
         final AddressService addressService,
         final ApplicationInternalService applicationInternalService, final PasswordConfiguration passwordConfiguration,
-                               final UserExportService userExportService, final UserInfoInternalService userInfoInternalService, final ConnectionHistoryService connectionHistoryService) {
+        final UserExportService userExportService, final UserInfoInternalService userInfoInternalService,
+        final ConnectionHistoryService connectionHistoryService) {
         super(sequenceGeneratorService);
         this.userRepository = userRepository;
         this.groupInternalService = groupInternalService;
@@ -266,7 +269,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public List<UserDto> findUsersByEmail(final String email) {
-        List<User> users = getRepository().findAllByEmail(email);
+        List<User> users = getRepository().findAllByEmailIgnoreCase(email);
         return users.stream()
             .map(this::convertFromEntityToDto)
             .collect(Collectors.toList());
@@ -318,7 +321,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final List<LogbookEventDto> userEvents = mapToEvents(userOperations, userInfoOperations);
             final List<LogbookEventDto> filteredUserEvents = filterUserEvents(userEvents, userIds);
 
-            userExportService.createXlsxFile(usersDto, filteredUserEvents, buildUsersInfoLangMap(userInfoIds), buildUsersGroupNamesMap(userGroupIds), xlsOutputStream);
+            userExportService.createXlsxFile(usersDto, filteredUserEvents, buildUsersInfoLangMap(userInfoIds),
+                buildUsersGroupNamesMap(userGroupIds), xlsOutputStream);
 
             return new ByteArrayResource(xlsOutputStream.toByteArray());
         } catch (final IOException exception) {
@@ -328,7 +332,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private List<LogbookEventDto> filterUserEvents(final List<LogbookEventDto> userEvents, final List<String> userIds) {
         return userEvents.stream()
-            .filter(logbookEventDto -> USER_OPERATIONS_EVENT_TYPES.contains(EventType.valueOf(logbookEventDto.getEvType())))
+            .filter(
+                logbookEventDto -> USER_OPERATIONS_EVENT_TYPES.contains(EventType.valueOf(logbookEventDto.getEvType())))
             .filter(logbookEventDto -> userIds.contains(logbookEventDto.getObId()))
             .collect(Collectors.toList());
     }
@@ -337,36 +342,45 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         return usersDto.stream().map(UserDto::getIdentifier).collect(Collectors.toList());
     }
 
-    private List<LogbookEventDto> mapToEvents(LogbookOperationsResponseDto userOperations, LogbookOperationsResponseDto userInfoOperations) {
-        final Stream<LogbookOperationDto> mergedOperations = Stream.concat(userOperations.getResults().stream(), userInfoOperations.getResults().stream());
+    private List<LogbookEventDto> mapToEvents(LogbookOperationsResponseDto userOperations,
+        LogbookOperationsResponseDto userInfoOperations) {
+        final Stream<LogbookOperationDto> mergedOperations =
+            Stream.concat(userOperations.getResults().stream(), userInfoOperations.getResults().stream());
 
         return mergedOperations
             .map(operation -> {
-                operation.getEvents().forEach(logbookEventDto -> logbookEventDto.setEvIdAppSession(operation.getEvIdAppSession()));
+                operation.getEvents()
+                    .forEach(logbookEventDto -> logbookEventDto.setEvIdAppSession(operation.getEvIdAppSession()));
                 return operation.getEvents();
             })
             .flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     private LogbookOperationsResponseDto getUserOperations(List<String> userIdentifiers) {
-        VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
         ObjectNode usersQuery = logbookService.buildQuery(userIdentifiers, MongoDbCollections.USERS);
 
         try {
-            RequestResponse<LogbookOperation> usersLogbookOperations = logbookService.selectOperations(usersQuery, vitamContext);
-            return VitamRestUtils.responseMapping(usersLogbookOperations.toJsonNode(), LogbookOperationsResponseDto.class);
+            RequestResponse<LogbookOperation> usersLogbookOperations =
+                logbookService.selectOperations(usersQuery, vitamContext);
+            return VitamRestUtils.responseMapping(usersLogbookOperations.toJsonNode(),
+                LogbookOperationsResponseDto.class);
         } catch (VitamClientException exception) {
             throw new InternalServerException("An error occurred while fetching user operations", exception);
         }
     }
 
     private LogbookOperationsResponseDto getUserInfoOperations(List<String> userIdentifiers) {
-        VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
         ObjectNode userInfoQuery = logbookService.buildQuery(userIdentifiers, MongoDbCollections.USER_INFOS);
 
         try {
-            RequestResponse<LogbookOperation> userInfoLogbookOperations = logbookService.selectOperations(userInfoQuery, vitamContext);
-            return VitamRestUtils.responseMapping(userInfoLogbookOperations.toJsonNode(), LogbookOperationsResponseDto.class);
+            RequestResponse<LogbookOperation> userInfoLogbookOperations =
+                logbookService.selectOperations(userInfoQuery, vitamContext);
+            return VitamRestUtils.responseMapping(userInfoLogbookOperations.toJsonNode(),
+                LogbookOperationsResponseDto.class);
         } catch (VitamClientException exception) {
             throw new InternalServerException("An error occurred while fetching user operations", exception);
         }
@@ -518,7 +532,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         return updatedUser;
     }
 
-    public void saveCurrentPasswordInOldPasswords(final User user, final String newPassword, final Integer maxOldPassword) {
+    public void saveCurrentPasswordInOldPasswords(final User user, final String newPassword,
+        final Integer maxOldPassword) {
 
         if (StringUtils.isNotBlank(newPassword)) {
             List<String> oldPasswords = user.getOldPasswords();
@@ -823,7 +838,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         Assert.notNull(email, "email : " + email + " format is not allowed");
         Assert.isTrue(Pattern.matches(IamUtils.EMAIL_VALID_REGEXP, email),
             "email : " + email + " format is not allowed");
-        Assert.isNull(getRepository().findByEmailIgnoreCaseAndCustomerId(email, customerId), message + ": mail already exists");
+        Assert.isNull(getRepository().findByEmailIgnoreCaseAndCustomerId(email, customerId),
+            message + ": mail already exists");
         if (email.matches(ADMIN_EMAIL_PATTERN + ".*")) {
             final Query query = new Query();
             query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));
@@ -1113,7 +1129,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     patchLastTenantIdentifier(user, CastUtils.toInteger(value));
                     break;
                 case "alerts":
-                    finalObjectMapper objectMapper = new ObjectMapper();
+                    final ObjectMapper objectMapper = new ObjectMapper();
                     final List<AlertAnalytics> alertAnalytics =
                         objectMapper.convertValue(CastUtils.toList(value), new TypeReference<>() {
                         });
@@ -1172,11 +1188,13 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private Map<String, String> buildUsersInfoLangMap(final List<String> userInfoIds) {
-        return userInfoInternalService.getMany(userInfoIds).stream().collect(Collectors.toMap(IdDto::getId, UserInfoDto::getLanguage));
+        return userInfoInternalService.getMany(userInfoIds).stream()
+            .collect(Collectors.toMap(IdDto::getId, UserInfoDto::getLanguage));
     }
 
     private Map<String, String> buildUsersGroupNamesMap(final List<String> userGroupIds) {
-        return groupInternalService.getMany(userGroupIds).stream().collect(Collectors.toMap(IdDto::getId, GroupDto::getName));
+        return groupInternalService.getMany(userGroupIds).stream()
+            .collect(Collectors.toMap(IdDto::getId, GroupDto::getName));
     }
 
     @Override
@@ -1184,7 +1202,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         return super.groupFields(criteriaJsonString, fields);
     }
 
-    public List<User> findByCustomerId(String customerId){
+    public List<User> findByCustomerId(String customerId) {
         return this.userRepository.findByCustomerId(customerId);
     }
 }

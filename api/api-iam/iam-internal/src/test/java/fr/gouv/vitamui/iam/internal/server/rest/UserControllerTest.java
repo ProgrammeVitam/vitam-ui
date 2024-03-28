@@ -160,7 +160,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (unknownCustomerId): customer does not exist", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (unknownCustomerId): customer does not exist",
+                e.getMessage());
         }
     }
 
@@ -211,7 +212,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null",
+                e.getMessage());
         }
     }
 
@@ -224,7 +226,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userDto.setIdentifier(null);
 
         prepareServices();
-        when(userRepository.findByEmailIgnoreCaseAndCustomerId(IamServerUtilsTest.USER_MAIL, IamServerUtilsTest.CUSTOMER_ID))
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(IamServerUtilsTest.USER_MAIL,
+            IamServerUtilsTest.CUSTOMER_ID))
             .thenReturn(buildUser());
 
         try {
@@ -245,9 +248,11 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         User someOtherUser = new User();
         prepareServices();
-        when(userRepository.findByEmailAndCustomerId(any(), Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(),
+            Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
             null);
-        when(userRepository.findByEmailAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(someOtherUser);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(
+            someOtherUser);
 
         userController.create(userDto);
     }
@@ -282,7 +287,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null", e.getMessage());
+            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null",
+                e.getMessage());
         }
     }
 
@@ -366,9 +372,11 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
 
-        when(userRepository.findByEmailAndCustomerId(any(), Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(),
+            Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
             null);
-        when(userRepository.findByEmailAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(someOtherUser);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(
+            someOtherUser);
         userController.update(userDto.getId(), userDto);
 
 

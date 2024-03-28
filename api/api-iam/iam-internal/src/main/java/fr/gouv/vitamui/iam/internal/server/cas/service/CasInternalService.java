@@ -269,7 +269,7 @@ public class CasInternalService {
     }
 
     public User findUserByEmailAndCustomerId(final String email, String customerId) {
-        final User user = userRepository.findByEmailAndCustomerId(email, customerId);
+        final User user = userRepository.findByEmailIgnoreCaseAndCustomerId(email, customerId);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
