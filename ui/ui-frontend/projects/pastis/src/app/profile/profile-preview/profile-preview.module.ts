@@ -12,7 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfilePreviewComponent } from './profile-preview.component';
 

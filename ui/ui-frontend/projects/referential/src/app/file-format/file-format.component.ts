@@ -38,15 +38,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { FileFormat, FileTypes } from 'vitamui-library';
+import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
+import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { Observable, Subscription } from 'rxjs';
-import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
-import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
-import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format',

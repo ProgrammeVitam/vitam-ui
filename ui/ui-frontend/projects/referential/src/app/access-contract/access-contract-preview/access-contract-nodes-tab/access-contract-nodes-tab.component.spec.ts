@@ -36,15 +36,15 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SearchUnitApiService, Status } from 'projects/vitamui-library/src/public-api';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule } from 'ui-frontend-common';
+import { SearchUnitApiService, Status } from 'vitamui-library';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;

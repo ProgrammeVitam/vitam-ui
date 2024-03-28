@@ -46,8 +46,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
 import { FileFormatPreviewComponent } from './file-format-preview.component';

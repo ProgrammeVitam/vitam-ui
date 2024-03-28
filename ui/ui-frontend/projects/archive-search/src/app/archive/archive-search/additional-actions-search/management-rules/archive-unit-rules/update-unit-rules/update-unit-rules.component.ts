@@ -40,9 +40,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -62,14 +63,10 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
-  @Input()
-  accessContract: string;
-  @Input()
-  selectedItem: number;
-  @Input()
-  ruleCategory: string;
-  @Input()
-  hasExactCount: boolean;
+  @Input() accessContract: string;
+  @Input() selectedItem: number;
+  @Input() ruleCategory: string;
+  @Input() hasExactCount: boolean;
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
   isStartDateDisabled = true;
@@ -141,13 +138,13 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.ruleDetailsForm = this.formBuilder.group({
       oldRule: [
         null,
-        [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+        [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       oldRuleName: [{ value: null, disabled: true }],
       newRule: [
         null,
-        [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+        [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       newRuleName: [{ value: null, disabled: true }],
@@ -189,6 +186,17 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
       });
+  }
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
+    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
+    this.getOldRuleSuscription?.unsubscribe();
+    this.getNewRuleSuscription?.unsubscribe();
+    this.criteriaSearchDSLQuerySuscription?.unsubscribe();
+    this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
 
   isEmpty(formData: any): boolean {
@@ -249,16 +257,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     return true;
   }
-  ngOnDestroy() {
-    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
-    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
-    this.getOldRuleSuscription?.unsubscribe();
-    this.getNewRuleSuscription?.unsubscribe();
-    this.criteriaSearchDSLQuerySuscription?.unsubscribe();
-    this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
-  }
 
-  ngOnInit() {}
   submit() {
     this.disabledControl = true;
     this.showText = true;
@@ -328,12 +327,12 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   isValidFormFunction(): boolean {
     if (!this.ruleDetailsForm.get('ruleUpdated').value && !this.ruleDetailsForm.get('startDateUpdated').value) {
       return false;
-    } else {
-      return (
-        (this.ruleDetailsForm.get('ruleUpdated').value ? !this.ruleDetailsForm.get('newRule').invalid : true) &&
-        (this.ruleDetailsForm.get('startDateUpdated').value ? !this.ruleDetailsForm.get('startDate').invalid : true)
-      );
     }
+
+    return (
+      (this.ruleDetailsForm.get('ruleUpdated').value ? !this.ruleDetailsForm.get('newRule').invalid : true) &&
+      (this.ruleDetailsForm.get('startDateUpdated').value ? !this.ruleDetailsForm.get('startDate').invalid : true)
+    );
   }
 
   addStartDate() {
@@ -355,9 +354,9 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       }
 
       const endDate =
-        this.getDay(new Date(startDateSelected).getDate()) +
+        this.prependZero(new Date(startDateSelected).getDate()) +
         '/' +
-        this.getMonth(new Date(startDateSelected).getMonth() + 1) +
+        this.prependZero(new Date(startDateSelected).getMonth() + 1) +
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
@@ -423,19 +422,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getMonth(num: number): string {
-    if (num > 9) {
-      return num.toString();
-    } else {
-      return '0' + num.toString();
-    }
-  }
-
-  private getDay(day: number): string {
-    if (day > 9) {
-      return day.toString();
-    } else {
-      return '0' + day.toString();
-    }
+  private prependZero(num: number): string {
+    return `${num < 10 ? '0' : ''}${num}`;
   }
 }

@@ -38,11 +38,11 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Event } from 'projects/vitamui-library/src/public-api';
 import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { Event } from 'vitamui-library';
 
-import { SecurisationListComponent } from './securisation-list/securisation-list.component';
 import * as moment from 'moment';
+import { SecurisationListComponent } from './securisation-list/securisation-list.component';
 
 @Component({
   selector: 'app-securisation',
