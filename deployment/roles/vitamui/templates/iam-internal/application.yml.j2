@@ -144,19 +144,3 @@ password:
 address:
   max-street-length: {{ vitamui_platform_informations.address.max_street_length }}
 
-#FIXME to remove after tests
-provisioning-client:
-  identity-providers:
-    - idp-identifier: keycloak-idp
-      uri: https://5.196.26.165:8031/users
-      client:
-        secure: false
-        ssl-configuration:
-          keystore:
-            key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-            key-password: {{ password_keystore }}
-            type: JKS
-          truststore:
-            key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-            key-password: {{ password_truststore }}
-          hostname-verification: false

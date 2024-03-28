@@ -48,24 +48,24 @@ import java.util.Optional;
 
 /**
  * MongoDB repository for the users.
- *
- *
  */
 public interface UserRepository extends VitamUIRepository<User, String> {
 
     Optional<User> findByIdAndCustomerId(String id, String customerId);
 
     User findByEmailIgnoreCaseAndCustomerId(String email, String customerId);
+
     List<User> findAllByEmailIgnoreCase(String email);
 
-    boolean existsByEmailAndCustomerId(String email, String customerId);
+    boolean existsByEmailIgnoreCaseAndCustomerId(String email, String customerId);
 
     long countByGroupId(String profileGroupId);
 
     long countByGroupIdIn(List<String> groupIds);
 
-    Page<User> findByCustomerIdAndSubrogeableAndTypeAndStatus(String customerId, boolean subrogeable, UserTypeEnum type, UserStatusEnum status,
-            Pageable pageable);
+    Page<User> findByCustomerIdAndSubrogeableAndTypeAndStatus(String customerId, boolean subrogeable, UserTypeEnum type,
+        UserStatusEnum status,
+        Pageable pageable);
 
     List<User> findByCustomerId(String customerId);
 

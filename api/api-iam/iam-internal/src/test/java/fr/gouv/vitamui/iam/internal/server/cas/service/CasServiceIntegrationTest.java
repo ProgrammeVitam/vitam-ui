@@ -165,7 +165,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         subro.setSurrogateCustomerId(surrogateCustomerId);
         Mockito.when(subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
             superUser, superUserCustomerId, surrogate, surrogateCustomerId)).thenReturn(Optional.of(subro));
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(surrogate, surrogateCustomerId)).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(surrogate, surrogateCustomerId))
+            .thenReturn(new User());
         Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUser, superUserCustomerId))
             .thenReturn(new User());
         casService.deleteSubrogationBySuperUserAndSurrogate(superUser, superUserCustomerId,
@@ -225,9 +226,16 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         Mockito.when(internalUserService.findUsersByEmail(email))
             .thenReturn(List.of(user));
         Mockito.when(internalUserService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
-        Mockito.when(subrogationRepository.findOneBySurrogate(ArgumentMatchers.anyString())).thenReturn(subro);
-        Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
-        casService.getUserByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
+        Mockito.when(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(email, customerId))
+            .thenReturn(subro);
+        Mockito.when(userRepository.findAllByEmailIgnoreCase(email))
+            .thenReturn(List.of(new User()));
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, customerId))
+            .thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId("superuser@vitamui.com", "customer_system"))
+            .thenReturn(new User());
+        casService.getUsersByEmail(email,
+            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER);
         return subro;
     }
 

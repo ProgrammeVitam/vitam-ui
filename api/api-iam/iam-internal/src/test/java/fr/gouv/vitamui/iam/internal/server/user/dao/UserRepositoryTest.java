@@ -32,11 +32,10 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 
 @RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
+@Import({TestMongoConfig.class})
 @EnableMongoRepositories(basePackageClasses = UserRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class UserRepositoryTest {
 
@@ -85,7 +84,7 @@ public class UserRepositoryTest {
         repository.save(user1bis);
         repository.save(user2);
 
-        final List<User> user = repository.findAllByEmail(email1);
+        final List<User> user = repository.findAllByEmailIgnoreCase(email1);
         assertNotNull(user);
         assertThat(user).hasSize(2);
         assertThat(user).extracting(User::getEmail, User::getCustomerId)
@@ -119,12 +118,14 @@ public class UserRepositoryTest {
         final User probe = new User();
         probe.setEmail(email);
         Example<User> example = Example.of(probe,
-                ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
+            ExampleMatcher.matching().withIgnoreNullValues()
+                .withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
         boolean exist = repository.exists(example);
         assertThat(exist).isTrue();
 
         probe.setEmail(StringUtils.EMPTY);
-        example = Example.of(probe, ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
+        example = Example.of(probe, ExampleMatcher.matching().withIgnoreNullValues()
+            .withIgnorePaths("otp", "subrogeable", "canLogin", "nbFailedAttempts"));
         exist = repository.exists(example);
         assertThat(exist).isFalse();
     }
@@ -139,24 +140,30 @@ public class UserRepositoryTest {
         userVitamUI.setType(UserTypeEnum.NOMINATIVE);
         repository.save(userVitamUI);
 
-        Page<User> users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED,
+        Page<User> users =
+            repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE,
+                UserStatusEnum.ENABLED,
                 PageRequest.of(0, 20));
         assertThat(users).isNotEmpty();
         assertThat(users.getContent().size()).isEqualTo(1);
 
-        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.GENERIC, UserStatusEnum.ENABLED,
-                PageRequest.of(0, 20));
+        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.GENERIC,
+            UserStatusEnum.ENABLED,
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
-        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE, UserStatusEnum.DISABLED,
-                PageRequest.of(0, 20));
+        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, true, UserTypeEnum.NOMINATIVE,
+            UserStatusEnum.DISABLED,
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
-        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, false, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED,
-                PageRequest.of(0, 20));
+        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus(CUSTOMER_ID, false, UserTypeEnum.NOMINATIVE,
+            UserStatusEnum.ENABLED,
+            PageRequest.of(0, 20));
         assertThat(users).isEmpty();
 
-        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus("toto", true, UserTypeEnum.NOMINATIVE, UserStatusEnum.ENABLED, PageRequest.of(0, 20));
+        users = repository.findByCustomerIdAndSubrogeableAndTypeAndStatus("toto", true, UserTypeEnum.NOMINATIVE,
+            UserStatusEnum.ENABLED, PageRequest.of(0, 20));
         assertThat(users).isEmpty();
     }
 
@@ -177,7 +184,8 @@ public class UserRepositoryTest {
 
         Query query = Query.query(Criteria.where("customerId").is(CUSTOMER_ID).and("type").is(UserTypeEnum.GENERIC));
 
-        PaginatedValuesDto<User> users = repository.getPaginatedValues(0, 20, Optional.of(query), Optional.empty(), Optional.empty());
+        PaginatedValuesDto<User> users =
+            repository.getPaginatedValues(0, 20, Optional.of(query), Optional.empty(), Optional.empty());
         assertThat(users.getValues()).isNotEmpty();
         assertThat(users.getValues().size()).isEqualTo(1);
 

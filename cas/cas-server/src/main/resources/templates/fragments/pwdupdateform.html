@@ -54,6 +54,9 @@
                 Confirmer le nouveau mot de passe *
             </label>
         </div>
+        <div id="invalid-character-error" class="error-field" style="display: none">
+            <span th:text="#{screen.pm.init.security.policy}"></span>
+        </div>
         <div id="capslock-on" class="warning Text-normal-bold" style="display: none;">
             <i class="vitamui-icon vitamui-icon-anomalie"></i>
             <span th:text="#{screen.capslock.on}">CAPSLOCK ON</span>

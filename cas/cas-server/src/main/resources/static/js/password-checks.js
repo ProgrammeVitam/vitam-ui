@@ -37,6 +37,7 @@ function checkValidity(password) {
   var policyPatternRegex = new RegExp(policyPattern);
   var valid = policyPatternRegex.test(password);
   onConditionAddClassValid(valid, "#passwords-strongness");
+  checkInvalidCharacter(password);
 }
 
 function checkPasswordsEquality(password, confirmPassword) {
@@ -48,4 +49,21 @@ function checkRules() {
   var confirmPassword = $("#confirmedPassword").val();
   checkValidity(password);
   checkPasswordsEquality(password, confirmPassword);
+}
+
+
+function checkInvalidCharacter(password) {
+  const invalidCharacterElement = document.getElementById(
+    "invalid-character-error"
+  );
+  if (invalidCharacterElement) {
+    const isValid = /^[\s\da-zA-Z!"#$%&£'()*+,-./:;<=>?@\]\[^_`{|}~]*$/.test(
+      password
+    );
+    if (isValid) {
+      invalidCharacterElement.style.display = "none";
+    } else {
+      invalidCharacterElement.style.display = "block";
+    }
+  }
 }
