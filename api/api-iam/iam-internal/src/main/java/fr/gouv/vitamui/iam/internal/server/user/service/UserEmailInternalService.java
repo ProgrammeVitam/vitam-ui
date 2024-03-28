@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
@@ -57,11 +49,15 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Send user email service.
- *
- *
  */
 @Getter
 @Setter
@@ -90,13 +86,18 @@ public class UserEmailInternalService {
     }
 
     public void sendCreationEmail(final UserDto userDto) {
-        if (userDto != null && userDto.getStatus() == UserStatusEnum.ENABLED && userDto.getType() == UserTypeEnum.NOMINATIVE) {
-            final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
-            if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail())) {
+        if (userDto != null && userDto.getStatus() == UserStatusEnum.ENABLED &&
+            userDto.getType() == UserTypeEnum.NOMINATIVE) {
+            final List<IdentityProviderDto> providers =
+                internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
+            if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail(),
+                userDto.getCustomerId())) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
-                restClientFactory.getRestTemplate().getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class, userDto.getEmail(),
-                        userDto.getFirstname(), userDto.getLastname(), LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
+                restClientFactory.getRestTemplate()
+                    .getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class,
+                        userDto.getEmail(), userDto.getFirstname(), userDto.getLastname(),
+                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(), userDto.getCustomerId());
             }
         }
     }

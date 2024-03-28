@@ -36,8 +36,14 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
@@ -50,6 +56,7 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -63,11 +70,16 @@ import org.apereo.cas.pm.impl.BasePasswordManagementService;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -75,8 +87,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
 /**
  * Specific password management service based on the IAM API.
- *
- *
  */
 @Getter
 @Setter
@@ -102,6 +112,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static Integer maxOldPassword;
 
+    private final ObjectMapper objectMapper;
+
     public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
         final String issuer,
@@ -124,6 +136,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.passwordValidator = passwordValidator;
         this.passwordConfiguration = passwordConfiguration;
         this.maxOldPassword = passwordConfiguration.getMaxOldPassword();
+        this.objectMapper = new ObjectMapper();
     }
 
     protected RequestContext blockIfSubrogation() {
@@ -131,10 +144,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
             // login/pwd subrogation
-            String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(), SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
+            String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(),
+                SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
             if (superUsername == null) {
                 // authn delegation subrogation
-                superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(), SUPER_USER_ATTRIBUTE);
+                superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(),
+                    SUPER_USER_ATTRIBUTE);
             }
             LOGGER.debug("is it currently a superUser: {}", superUsername);
             Assert.isNull(superUsername, "cannot use password management with subrogation");
@@ -144,9 +159,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     @Override
-    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean) throws InvalidPasswordException {
+    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean)
+        throws InvalidPasswordException {
         val requestContext = blockIfSubrogation();
         val flowScope = requestContext.getFlowScope();
+
         if (flowScope != null) {
             flowScope.put("passwordHasBeenChanged", true);
         }
@@ -163,51 +180,116 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val username = upc.getUsername();
 
         LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
+        Assert.notNull(username, "username can not be null");
+        UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
-        if((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
-            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
-            String userLastName = findUserLastName(username);
+        final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(userLogin.getUserEmail()),
+            userLogin.getUserEmail(), userLogin.getCustomerId(), Optional.empty());
+        if (user == null) {
+            LOGGER.debug("User not found with login: {}", userLogin.getUserEmail());
+            throw new InvalidPasswordException();
+        }
+        if (user.getStatus() != UserStatusEnum.ENABLED) {
+            LOGGER.debug("User cannot login: {} - User {}", userLogin.getUserEmail(), user.toString());
+            throw new InvalidPasswordException();
+        }
+
+        if ((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
+            passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
+            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
+                passwordConfiguration.isCheckOccurrence() &&
+                passwordConfiguration.getOccurrencesCharsNumber() != null &&
+                passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
+            String userLastName = user.getLastname();
             Assert.notNull(userLastName, "user last name can not be null");
-            if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(), passwordConfiguration.getOccurrencesCharsNumber())) {
+            if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(),
+                passwordConfiguration.getOccurrencesCharsNumber())) {
                 throw new PasswordContainsUserDictionaryException(
                     "Invalid password containing an occurence of user name !");
             }
         }
 
-        Assert.notNull(username, "username can not be null");
-        // username to lowercase
-        val usernameLowercase = username.toLowerCase().trim();
-        LOGGER.debug("username: {}", usernameLowercase);
         val identityProvider =
-            identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
+            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(),
+                userLogin.getUserEmail(), userLogin.getCustomerId());
         Assert.isTrue(identityProvider.isPresent(),
-            "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
+            "only a user [" + userLogin.getUserEmail() +
+                "] linked to an identity provider can change his password");
         Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
-                "only an internal user [" + usernameLowercase + "] can change his password");
+            "only an internal user [" + userLogin.getUserEmail() + "] can change his password");
 
         try {
-            casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
+            casExternalRestClient.changePassword(utils.buildContext(userLogin.getUserEmail()),
+                userLogin.getUserEmail(), userLogin.getCustomerId(), bean.getPassword());
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
-        }  catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot change password", e);
             return false;
         }
     }
 
+    @NotNull
+    private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
+        UserLoginModel userLoginNode;
+        String userCustomerIdFromScope = null;
+        if (flowScope != null) {
+            userCustomerIdFromScope = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+        }
+
+        try {
+            userLoginNode = objectMapper.readValue(username, new TypeReference<>() {
+            });
+
+            if (StringUtils.isBlank(userLoginNode.getUserEmail())) {
+                LOGGER.error("Could not find the user email for password changing ");
+                throw new UsernameNotFoundException("Could not find the user email for password changing ");
+            }
+            if (StringUtils.isBlank(userLoginNode.getCustomerId()) && StringUtils.isBlank(userCustomerIdFromScope)) {
+                LOGGER.error("Could not find the user customer Id for password changing ");
+                throw new InsufficientAuthenticationException(
+                    "Could not find the user customer Id  for password changing ");
+            }
+
+            if (StringUtils.isBlank(userLoginNode.getCustomerId())) {
+                userLoginNode.setCustomerId(userCustomerIdFromScope);
+            }
+            userLoginNode.setUserEmail(userLoginNode.getUserEmail().toLowerCase().trim());
+        } catch (JacksonException e) {
+            //in this case, it's not a json data sent from the token builder, but from password expired flow
+            userLoginNode = new UserLoginModel();
+            userLoginNode.setCustomerId(userCustomerIdFromScope);
+            userLoginNode.setUserEmail(username);
+        }
+        return userLoginNode;
+    }
+
     @Override
     public String findEmail(final PasswordManagementQuery query) {
         val username = query.getUsername();
+        // FIXME !
+        String customerId = null;
+        if (query.getRecord().containsKey("customerId")) {
+            Object customerIdValue = query.getRecord().getFirst("customerId");
+            customerId = (String) customerIdValue;
+        }
+
         String email = null;
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
-            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
+            UserDto user =
+                casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase,
+                    customerId, Optional.empty());
+            if (user == null) {
+                LOGGER.error("User not found");
+                return null;
+            }
+            if (UserStatusEnum.ENABLED.equals(user.getStatus())) {
                 email = user.getEmail();
             }
-        }
-        catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
         }
         return email;
@@ -232,20 +314,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
-    public String findUserLastName(final String userMail) {
-        String userLastName = null;
-        val usernameWithLowercase = userMail.toLowerCase().trim();
-        try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
-            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
-                return user.getLastname();
-            }
-        }
-        catch (final VitamUIException e) {
-            LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
-        }
-        return userLastName;
-    }
 
     protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
 
@@ -261,6 +329,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
+
     protected static class PasswordConfirmException extends InvalidPasswordException {
 
         private static final long serialVersionUID = -8981663363751187076L;
@@ -275,6 +344,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
+
     protected static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
 
         private static final long serialVersionUID = -8981663363751187075L;
@@ -286,6 +356,21 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         @Override
         public String getMessage() {
             return "Invalid password containing an occurence of user name !";
+        }
+    }
+
+
+    protected static class UserNotFoundException extends InvalidPasswordException {
+
+        private static final long serialVersionUID = -8981663363751187075L;
+
+        public UserNotFoundException(String message) {
+            super(".invalidPwdDictionary", message, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "User not found !";
         }
     }
 }

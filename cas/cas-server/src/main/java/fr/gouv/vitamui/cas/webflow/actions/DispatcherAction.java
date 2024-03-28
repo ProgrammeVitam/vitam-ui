@@ -40,21 +40,21 @@ import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.apache.commons.lang.StringUtils;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.action.AbstractAction;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -63,18 +63,18 @@ import java.util.Optional;
 
 /**
  * This class can dispatch the user:
- * - either to the password page
+ * - either to customer selection page (if user have multiple accounts for different customers)
+ * - or to the password page
  * - or to an external IdP (authentication delegation)
  * - or to the bad configuration page if the user is not linked to any identity provider
  * - or to the disabled account page if the user is disabled.
- *
- *
  */
 @RequiredArgsConstructor
 public class DispatcherAction extends AbstractAction {
 
     public static final String DISABLED = "disabled";
     public static final String BAD_CONFIGURATION = "badConfiguration";
+    public static final String TRANSITION_SELECT_CUSTOMER = "selectCustomer";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DispatcherAction.class);
 
@@ -84,8 +84,6 @@ public class DispatcherAction extends AbstractAction {
 
     private final CasExternalRestClient casExternalRestClient;
 
-    private final String surrogationSeparator;
-
     private final Utils utils;
 
     private final SessionStore sessionStore;
@@ -93,71 +91,115 @@ public class DispatcherAction extends AbstractAction {
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
 
-        val credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
-        val username = credential.getUsername().toLowerCase().trim();
-        String dispatchedUser = username;
-        String surrogate = null;
-        if (username.contains(surrogationSeparator)) {
-            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator).trim();
-            if (username.startsWith(surrogationSeparator)) {
-                WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
-            } else {
-                surrogate = StringUtils.substringBefore(username, surrogationSeparator).trim();
-            }
-        }
-        LOGGER.debug("Dispatched user: {} / surrogate: {}", dispatchedUser, surrogate);
+        val flowScope = requestContext.getFlowScope();
 
-        // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
-        try {
-            val dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
-            if (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED) {
-                return userDisabled(dispatchedUser);
-            }
-        } catch (final InvalidFormatException e) {
-            return userDisabled(dispatchedUser);
-        } catch (final NotFoundException e) {
-        }
-        if (surrogate != null) {
-            try {
-                val surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
-                if (surrogateDto != null && surrogateDto.getStatus() != UserStatusEnum.ENABLED) {
-                    LOGGER.error("Bad status for surrogate: {}", surrogate);
-                    return userDisabled(surrogate);
-                }
-            } catch (final InvalidFormatException e) {
-                return userDisabled(surrogate);
-            } catch (final NotFoundException e) {
-            }
-        }
-
-        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        boolean isInternal;
-        val provider = (Pac4jClientIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
-        if (provider != null) {
-            isInternal = provider.getInternal();
+        if (isSubrogationMode(flowScope)) {
+            return processSubrogationRequest(requestContext, flowScope);
         } else {
-            return new Event(this, BAD_CONFIGURATION);
-        }
-        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val webContext = new JEEContext(request, response);
-        if (isInternal) {
-            sessionStore.set(webContext, Constants.SURROGATE, null);
-            LOGGER.debug("Redirect the user to the password page...");
-            return success();
-        } else {
-
-            // save the surrogate in the session to be retrieved by the UserPrincipalResolver and DelegatedSurrogateAuthenticationPostProcessor
-            if (surrogate != null) {
-                LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
-                sessionStore.set(webContext, Constants.SURROGATE, surrogate);
-            }
-
-            return utils.performClientRedirection(this, provider.getClient(), requestContext);
+            return processLoginRequest(requestContext, flowScope);
         }
     }
 
-    private Event userDisabled(final String emailUser) {
-        LOGGER.error("Bad status for user: {}", emailUser);
+    private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
+        throws IOException {
+
+        // We came from subrogation validation
+        String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
+        String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
+        String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+
+        LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+            surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+
+        ParameterChecker.checkParameter("Missing subrogation params",
+            surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+
+        if (isUserLocked(superUserEmail, superUserCustomerId)) {
+            return handleUserDisabled(superUserEmail, superUserCustomerId);
+        }
+        if (isUserLocked(surrogateEmail, surrogateCustomerId)) {
+            return handleUserDisabled(superUserEmail, surrogateCustomerId);
+        }
+
+        return dispatchUser(requestContext, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
+    }
+
+    private Event processLoginRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
+        throws IOException {
+
+        String userEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
+        String customerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+
+        LOGGER.debug("Login request of '{}' (customerId '{}')", userEmail, customerId);
+
+        ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
+
+        if (isUserLocked(userEmail, customerId)) {
+            return handleUserDisabled(userEmail, customerId);
+        }
+
+        return dispatchUser(requestContext, userEmail, customerId, null, null);
+    }
+
+    private Event dispatchUser(RequestContext requestContext, String loginEmail,
+        String loginCustomerId, String surrogateEmail, String surrogateCustomerId) throws IOException {
+
+        Optional<IdentityProviderDto> providerOpt =
+            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(), loginEmail,
+                loginCustomerId);
+        if (providerOpt.isEmpty()) {
+            LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
+            return new Event(this, BAD_CONFIGURATION);
+        }
+        var identityProviderDto = providerOpt.get();
+
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        val webContext = new JEEContext(request, response);
+
+        if (identityProviderDto.getInternal()) {
+
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, null);
+
+            LOGGER.debug("Redirect the user to the password page...");
+            return success();
+
+        } else {
+
+            LOGGER.debug("Saving surrogate for after authentication delegation: loginEmail : {}, " +
+                    "loginCustomerId : {}, surrogateEmail : {}, surrogateCustomerId : {}",
+                loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, loginEmail);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, loginCustomerId);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
+
+            return utils.performClientRedirection(this,
+                ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(), requestContext);
+        }
+    }
+
+    private boolean isUserLocked(String email, String customerId) {
+        UserDto userDto =
+            this.casExternalRestClient.getUserByEmail(utils.buildContext(email), email, customerId, Optional.empty());
+        if (userDto == null) {
+            // To avoid account existence disclosure, unknown users are silently ignored.
+            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
+            return false;
+        }
+        return (userDto.getStatus() != UserStatusEnum.ENABLED);
+    }
+
+    private Event handleUserDisabled(final String emailUser, String customerId) {
+        LOGGER.error("Bad status for user: {} ({})", emailUser, customerId);
         return new Event(this, DISABLED);
+    }
+
+    private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
+        return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
     }
 }

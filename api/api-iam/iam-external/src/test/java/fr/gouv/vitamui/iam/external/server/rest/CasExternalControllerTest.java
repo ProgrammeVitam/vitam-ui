@@ -41,7 +41,8 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
     public void test_login_isOK() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
-        loginRequestDto.setUsername("user");
+        loginRequestDto.setLoginEmail("user");
+        loginRequestDto.setLoginCustomerId("customerId");
 
         ResultActions result = this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto), status().isOk());
         result.andExpect(handler().methodCall(casExternalController.login(null)));
@@ -52,7 +53,7 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
     public void test_login_withMissingUsername() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
-        loginRequestDto.setUsername(null);
+        loginRequestDto.setLoginEmail(null);
 
         ResultActions result = this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto),
                 status().is(HttpStatus.BAD_REQUEST.value()));

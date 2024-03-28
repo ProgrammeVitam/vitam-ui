@@ -37,10 +37,12 @@ public class CasExternalRestClientTest extends AbstractServerIdentityBuilder {
         Mockito.when(restTemplate.exchange(argumentCaptor.capture(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(Class.class)))
                 .thenReturn(new ResponseEntity<>(HttpStatus.OK));
 
-        final String superUser = "julien@vitamui.com";
+        final String superUser = "super-user@vitamui.com";
+        final String superUserCustomerId = "superCustomerId";
         final String authToken = "TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu";
-        client.logout(header, authToken, superUser);
-        final String path = RestApi.CAS_LOGOUT_PATH + "?authToken=" + authToken + "&superUser=" + superUser;
+        client.logout(header, authToken, superUser, superUserCustomerId);
+        final String path = RestApi.CAS_LOGOUT_PATH + "?authToken=" + authToken + "&superUser=" + superUser +
+            "&superUserCustomerId=" + superUserCustomerId;
         assertThat(argumentCaptor.getValue().toString()).endsWith(path.replaceAll(CommonConstants.EMAIL_SEPARATOR, "%40"));
     }
 }

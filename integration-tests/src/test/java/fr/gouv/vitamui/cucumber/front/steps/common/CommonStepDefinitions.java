@@ -2,6 +2,7 @@ package fr.gouv.vitamui.cucumber.front.steps.common;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -89,6 +90,10 @@ public class CommonStepDefinitions extends CommonSteps {
         return getEmailByUser(context.getCurrentUser());
     }
 
+    protected String getCurrentUserCustomerId() {
+        throw new NotImplementedException("integration tests are broken");
+    }
+
     protected void saveCurrentUser(final UserEnum user) {
         context.setCurrentUser(user);
     }
@@ -103,7 +108,7 @@ public class CommonStepDefinitions extends CommonSteps {
                 TestConstants.TOKEN_USER_CAS);
         final UserDto basicUserDto = getCasRestClient(false, new Integer[] { casTenantIdentifier },
                 new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(extneralHttpContext, getCurrentUserEmail(),
-                        Optional.empty());
+                         getCurrentUserCustomerId(), Optional.empty());
         return basicUserDto;
     }
 

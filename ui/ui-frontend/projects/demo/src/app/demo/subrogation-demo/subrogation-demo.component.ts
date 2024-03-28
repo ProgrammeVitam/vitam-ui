@@ -45,6 +45,7 @@ import { Subrogation, SubrogationModalService } from 'ui-frontend-common';
 })
 export class SubrogationDemoComponent implements OnInit {
   surrogateUser = 'julien@vitamui.com';
+  surrogateCustomerId = 'customer_id';
   subrogation: Subrogation;
 
   constructor(private subrogationModalService: SubrogationModalService) {}
@@ -58,9 +59,9 @@ export class SubrogationDemoComponent implements OnInit {
         firstname: 'Jean Michel',
         lastname: 'Good Enough',
       };
-      this.subrogationModalService.open(['vitamui.com', 'vitamui.fr'], user);
+      this.subrogationModalService.open(['vitamui.com', 'vitamui.fr'], this.surrogateCustomerId, user);
     } else {
-      this.subrogationModalService.open(['vitamui.com', 'vitamui.fr']);
+      this.subrogationModalService.open(['vitamui.com', 'vitamui.fr'], this.surrogateCustomerId);
     }
   }
 }

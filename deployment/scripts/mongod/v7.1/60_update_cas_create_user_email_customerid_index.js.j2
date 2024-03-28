@@ -1,0 +1,16 @@
+print("START 60_update_cas_create_user_email_customerid_index");
+
+db = db.getSiblingDB('iam');
+
+db.users.createIndex(
+    {
+        "email": 1,
+        "customerId": 1
+    },
+    {
+        "unique": true,
+        "name": "idx_user_email_customerid"
+    }
+)
+
+print("END 60_update_cas_create_user_email_customerid_index");

@@ -51,7 +51,7 @@ cas-client:
       type: JKS
     hostname-verification: false
 
-cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
 
 login:
   url: http://dev.vitamui.com:8080/cas/login
@@ -109,6 +109,20 @@ provisioning-client:
           hostname-verification: false
     - idp-identifier: 2
       uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+    - idp-identifier: keycloak-idp
+      uri: https://localhost:8090/users
       client:
         secure: true
         ssl-configuration:

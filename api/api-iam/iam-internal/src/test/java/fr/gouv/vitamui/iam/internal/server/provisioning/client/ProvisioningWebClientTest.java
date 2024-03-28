@@ -38,14 +38,8 @@
 package fr.gouv.vitamui.iam.internal.server.provisioning.client;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
-import java.net.URI;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -55,10 +49,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProvisioningWebClientTest {
@@ -89,7 +87,7 @@ class ProvisioningWebClientTest {
         ArgumentCaptor<URI> URICaptor = ArgumentCaptor.forClass(URI.class);
 
         // Do
-        provisioningWebClient.getProvidedUser(httpContextMock,email,null,null,null, null);
+        provisioningWebClient.getProvidedUser(httpContextMock, email, null, null, null, null);
 
         // Verify
         verify(requestHeadersUriSpecMock, times(1)).uri(URICaptor.capture());

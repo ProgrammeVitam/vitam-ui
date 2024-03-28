@@ -105,9 +105,11 @@ public class IamCommonSteps extends CommonSteps {
         subrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
         testContext.savedSubrogationDto = subrogationDto;
         testContext.authUserDto =
-                (AuthUserDto) getCasRestClient(false, new Integer[]{TestConstants.CAS_TENANT_IDENTIFIER}, new String[]{ServicesData.ROLE_CAS_USERS})
-                        .getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), subrogationDto.getSurrogate(),
-                                Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+            (AuthUserDto) getCasRestClient(false, new Integer[] {TestConstants.CAS_TENANT_IDENTIFIER},
+                new String[] {ServicesData.ROLE_CAS_USERS})
+                .getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+                    subrogationDto.getSurrogate(), subrogationDto.getSurrogateCustomerId(),
+                    Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
     @Given("^on demande à ce que le subrogateur soit le user de test$")

@@ -56,12 +56,14 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
@@ -76,10 +78,11 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +107,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Specific CAS service.
@@ -113,6 +117,7 @@ import java.util.Set;
 public class CasInternalService {
 
     private static final String USER_NOT_FOUND_MESSAGE = "User not found: ";
+    private static final String USER_CONFLICT = "Could not select the right user: ";
 
     private static final String ID = "_id";
 
@@ -147,6 +152,9 @@ public class CasInternalService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerInternalService customerInternalService;
 
     @Autowired
     private TenantInternalService internalTenantService;
@@ -200,10 +208,19 @@ public class CasInternalService {
     }
 
     @Transactional
-    public void updatePassword(final String email, final String rawPassword) {
-        final User user = checkUserInformations(email);
-        final Optional<Customer> optCustomer = customerRepository.findById(user.getCustomerId());
-        final Customer customer = optCustomer.orElseThrow(() -> new ApplicationServerException("Unable to update password : customer not found"));
+    public void updatePassword(final String email, final String rawPassword, final String customerId) {
+
+        Optional<Customer> optCustomer = customerRepository.findById(customerId);
+        if (!optCustomer.isPresent()) {
+            throw new ApplicationServerException("Unable to update password : customer not found");
+        }
+        User user = findUserByEmailAndCustomerId(email, customerId);
+        if (UserTypeEnum.NOMINATIVE != user.getType()) {
+            throw new InvalidAuthenticationException("User unavailable: " + email);
+        }
+        checkStatus(user.getStatus(), user.getEmail());
+        final Customer customer = optCustomer.orElseThrow(
+            () -> new ApplicationServerException("Unable to update password : customer not found"));
 
         final List<String> oldPasswords = user.getOldPasswords();
         if (oldPasswords != null && !oldPasswords.isEmpty()) {
@@ -215,12 +232,16 @@ public class CasInternalService {
         }
 
         final String encodedPassword = passwordEncoder.encode(rawPassword);
-        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword, (passwordConfiguration !=null && passwordConfiguration.getMaxOldPassword() != null)  ? passwordConfiguration.getMaxOldPassword() : UserInternalService.MAX_OLD_PASSWORDS);
+        internalUserService.saveCurrentPasswordInOldPasswords(user, encodedPassword,
+            (passwordConfiguration != null && passwordConfiguration.getMaxOldPassword() != null) ?
+                passwordConfiguration.getMaxOldPassword() :
+                UserInternalService.MAX_OLD_PASSWORDS);
 
         final String existingPassword = user.getPassword();
 
         user.setPassword(encodedPassword);
-        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
+        final OffsetDateTime nowPlusPasswordRevocationDelay =
+            OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
         user.setPasswordExpirationDate(nowPlusPasswordRevocationDelay);
 
         userRepository.save(user);
@@ -233,10 +254,13 @@ public class CasInternalService {
     }
 
     @Transactional
-    public void updateNbFailedAttempsPlusLastConnectionAndStatus(final User user, final int nbFailedAttempts, final UserStatusEnum oldStatus) {
+    public void updateNbFailedAttempsPlusLastConnectionAndStatus(final User user, final int nbFailedAttempts,
+        final UserStatusEnum oldStatus) {
         final UserStatusEnum newStatus = user.getStatus();
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
-        final Update update = Update.update(NB_FAILED_ATTEMPTS, nbFailedAttempts).set(LAST_CONNECTION, OffsetDateTime.now()).set(STATUS, newStatus);
+        final Update update =
+            Update.update(NB_FAILED_ATTEMPTS, nbFailedAttempts).set(LAST_CONNECTION, OffsetDateTime.now())
+                .set(STATUS, newStatus);
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
 
         if (newStatus == UserStatusEnum.BLOCKED) {
@@ -244,12 +268,8 @@ public class CasInternalService {
         }
     }
 
-    public User findEntityByEmail(final String email) {
-        return checkUserInformations(email);
-    }
-
-    private User checkUserInformations(final String email) {
-        final User user = userRepository.findByEmailIgnoreCase(email);
+    public User findUserByEmailAndCustomerId(final String email, String customerId) {
+        final User user = userRepository.findByEmailIgnoreCaseAndCustomerId(email, customerId);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
@@ -267,71 +287,104 @@ public class CasInternalService {
     }
 
     @Transactional
-    public UserDto getUserByEmail(final String email, final Optional<String> optEmbedded) {
-        boolean loadFullProfile = false;
-        boolean isSubrogation = false;
-        boolean isApi = false;
-        if (optEmbedded.isPresent()) {
-            final String embedded = optEmbedded.get();
-            final Set<String> values = splitIntoValues(embedded);
-            if (values.contains(CommonConstants.AUTH_TOKEN_PARAMETER)) {
-                loadFullProfile = true;
-            }
-            if (values.contains(CommonConstants.SURROGATION_PARAMETER)) {
-                isSubrogation = true;
-            }
-            if (values.contains(CommonConstants.API_PARAMETER)) {
-                isApi = true;
-            }
-        }
+    public List<UserDto> getUsersByEmail(final String email, final String optEmbedded) {
 
-        final UserDto userDto = internalUserService.findUserByEmail(email);
+        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
+        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
+        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
+
+        final List<UserDto> usersDto = internalUserService.findUsersByEmail(email);
+
+        // FIXME: LGH ...
+        // if (userDto == null) {
+        //     throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
+        // }
+        // checkStatus(userDto.getStatus(), userDto.getEmail());
+
+        return usersDto.stream()
+            .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public UserDto getUserByEmailAndCustomerId(final String email, final String customerId,
+        final String optEmbedded) {
+
+        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
+        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
+        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
+
+        UserDto userDto = internalUserService.findUserByEmailAndCustomerId(email, customerId);
         if (userDto == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
-        if (loadFullProfile) {
-            final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
-            internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
-            internalUserService.addTenantsByAppInformation(authUserDto);
-            generateAndAddAuthToken(authUserDto, isSubrogation, isApi);
-            createEventsSubrogation(userDto, isSubrogation);
-            return authUserDto;
 
-        } else {
-            return userDto;
+        return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+    }
+
+    private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
+        if (optEmbedded == null) {
+            return false;
         }
+        final Set<String> values = splitIntoValues(optEmbedded);
+        return values.contains(authTokenParameter);
+    }
+
+    private UserDto loadFullUserProfileIfRequired(UserDto user, boolean loadFullProfile, boolean subrogation,
+        boolean api) {
+        if (!loadFullProfile) {
+            return user;
+        }
+        final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(user);
+        internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
+        internalUserService.addTenantsByAppInformation(authUserDto);
+        generateAndAddAuthToken(authUserDto, subrogation, api);
+        createEventsSubrogation(user, subrogation);
+        return authUserDto;
     }
 
     /**
-     * Method to retrieve the user informations
-     * @param email email of the user
+     * Method to retrieve the user information
+     *
+     * @param loginEmail email of the user
+     * @param loginCustomerId The customerId of the user
      * @param idp can be null
      * @param userIdentifier can be null
      * @param optEmbedded
      * @return
      */
     @Transactional
-    public UserDto getUser(String email, final String idp, final String userIdentifier, final String optEmbedded) {
+    public UserDto getUser(String loginEmail, final String loginCustomerId, final String idp,
+        final String userIdentifier, final String optEmbedded) {
+
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
-            Optional<ProvidedUserDto> providedUser = this.provisionUser(email, idp, userIdentifier);
-            if (email.isBlank() && providedUser.isPresent()) {
-                email = providedUser.get().getEmail();
+            Optional<ProvidedUserDto> providedUser =
+                this.provisionUser(loginEmail, loginCustomerId, idp, userIdentifier);
+            if (loginEmail.isBlank() && providedUser.isPresent()) {
+                loginEmail = providedUser.get().getEmail();
             }
         }
 
-        return getUserByEmail(email, Optional.ofNullable(optEmbedded));
+        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId, optEmbedded);
     }
 
     /**
      * Method to perform auto provisioning
-     * @param email
+     *
+     * @param loginEmail
+     * @param loginCustomerId
      * @param idp
      * @param userIdentifier
      */
-    public Optional<ProvidedUserDto> provisionUser(String email, final String idp, final String userIdentifier) {
+    public Optional<ProvidedUserDto> provisionUser(String loginEmail, String loginCustomerId, final String idp,
+        final String userIdentifier) {
         final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
+
+        Assert.isTrue(loginCustomerId.equals(identityProvider.getCustomerId()),
+            "CustomerId mismatch. LoginCustomerId : " + loginCustomerId
+                + ", IDP customerId: " + identityProvider.getCustomerId());
 
         // Do nothing is autoProvisioning is disabled
         if (!identityProvider.isAutoProvisioningEnabled()) {
@@ -340,36 +393,44 @@ public class CasInternalService {
 
         Optional<ProvidedUserDto> providedUser = Optional.empty();
 
-        if (StringUtils.isBlank(email)) {
-            providedUser = Optional.of(getProvidedUser(email, idp, userIdentifier, null, identityProvider.getCustomerId()));
-            email = providedUser.get().getEmail();
+        if (StringUtils.isBlank(loginEmail)) {
+            providedUser =
+                Optional.of(getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null));
+            loginEmail = providedUser.get().getEmail();
         }
 
-        final boolean userExist = userRepository.existsByEmailIgnoreCase(email);
+        final boolean userExist = userRepository.existsByEmailIgnoreCaseAndCustomerId(loginEmail, loginCustomerId);
         // Try to update user
-        if(userExist) {
-            final UserDto user = internalUserService.findUserByEmail(email);
+        if (userExist) {
+            final UserDto user = internalUserService.findUserByEmailAndCustomerId(loginEmail, loginCustomerId);
             if (user.isAutoProvisioningEnabled()) {
-                updateUser(user, getProvidedUser(email, idp, userIdentifier, user.getGroupId(), identityProvider.getCustomerId()));
+                updateUser(user,
+                    getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, user.getGroupId()));
             }
         }
         // Try to create a new user
         else {
             if (providedUser.isEmpty()) {
-                providedUser = Optional.of(getProvidedUser(email, idp, userIdentifier, null, identityProvider.getCustomerId()));
+                providedUser =
+                    Optional.of(
+                        getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null));
             }
-            createNewUser(email, providedUser.get());
+            createNewUser(loginEmail, providedUser.get());
         }
 
         return providedUser;
     }
 
-    private ProvidedUserDto getProvidedUser(String email, String idp, String userIdentifier, String groupId, String customerId) {
+    private ProvidedUserDto getProvidedUser(String email, String loginCustomerId, String idp, String userIdentifier,
+        String groupId) {
         ProvidedUserDto userProvidedInfo;
-        userProvidedInfo = provisioningInternalService.getUserInformation(idp, email, groupId, null, userIdentifier, customerId);
+        userProvidedInfo =
+            provisioningInternalService.getUserInformation(idp, email, loginCustomerId, groupId, null, userIdentifier);
 
         if (Objects.isNull(userProvidedInfo)) {
-            throw new NotFoundException(String.format("The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s", email, userIdentifier, groupId, idp, customerId));
+            throw new NotFoundException(String.format(
+                "The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s",
+                email, userIdentifier, groupId, idp, loginCustomerId));
         }
 
         return userProvidedInfo;
@@ -423,8 +484,10 @@ public class CasInternalService {
         }
     }
 
-    private void updateUserOptionalInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
-        if (userInfo.getInternalCode() != null && !StringUtils.equals(userInfo.getInternalCode(), userDto.getInternalCode())) {
+    private void updateUserOptionalInformation(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
+        if (userInfo.getInternalCode() != null &&
+            !StringUtils.equals(userInfo.getInternalCode(), userDto.getInternalCode())) {
             userUpdate.put("internalCode", userInfo.getInternalCode());
         }
         if (userInfo.getSiteCode() != null && !StringUtils.equals(userInfo.getSiteCode(), userDto.getSiteCode())) {
@@ -433,7 +496,8 @@ public class CasInternalService {
         updateUserAddress(userDto, userInfo, userUpdate);
     }
 
-    private void updateUserMandatoryInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserMandatoryInformation(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         if (!StringUtils.equals(userDto.getFirstname(), userInfo.getFirstname())) {
             userUpdate.put("firstname", userInfo.getFirstname());
         }
@@ -443,7 +507,8 @@ public class CasInternalService {
         updateUserGroup(userDto, userInfo, userUpdate);
     }
 
-    private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
         final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
         Assert.notEmpty(groups, String.format("No group found for the given unit : %s", userInfo.getUnit()));
@@ -452,24 +517,25 @@ public class CasInternalService {
         }
     }
 
-    private void updateUserAddress(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+    private void updateUserAddress(final UserDto userDto, final ProvidedUserDto userInfo,
+        final Map<String, Object> userUpdate) {
         if (userInfo.getAddress() != null) {
             final Map<String, Object> updatedAddress = new HashMap<>();
             if (userInfo.getAddress().getStreet() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
+                || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
                 updatedAddress.put("street", userInfo.getAddress().getStreet());
             }
             if (userInfo.getAddress().getZipCode() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
+                || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
                 updatedAddress.put("zipCode", userInfo.getAddress().getZipCode());
             }
             if (userInfo.getAddress().getCity() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
                 updatedAddress.put("city", userInfo.getAddress().getCity());
             }
 
             if (userInfo.getAddress().getCountry() != null && (userDto.getAddress() == null
-                    || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
+                || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
                 updatedAddress.put("country", userInfo.getAddress().getCountry());
             }
 
@@ -481,7 +547,8 @@ public class CasInternalService {
 
     private void createEventsSubrogation(final UserDto surrogate, final boolean isSubrogation) {
         if (isSubrogation) {
-            final Subrogation subro = subrogationRepository.findOneBySurrogate(surrogate.getEmail());
+            final Subrogation subro = subrogationRepository.
+                findOneBySurrogateAndSurrogateCustomerId(surrogate.getEmail(), surrogate.getCustomerId());
             final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
@@ -539,8 +606,9 @@ public class CasInternalService {
         return user;
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser) {
-        final List<Subrogation> subrogations = subrogationRepository.findBySuperUser(superUser);
+    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
+        final List<Subrogation> subrogations =
+            subrogationRepository.findBySuperUserAndSuperUserCustomerId(superUser, superUserCustomerId);
         final List<SubrogationDto> dtos = new ArrayList<>();
         subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
         return dtos;
@@ -555,11 +623,14 @@ public class CasInternalService {
     }
 
     @Transactional
-    public void deleteSubrogationBySuperUserAndSurrogate(final String superUser, final String surrogate) {
-        if (StringUtils.isBlank(superUser) || StringUtils.isBlank(surrogate)) {
+    public void deleteSubrogationBySuperUserAndSurrogate(final String superUser, final String superUserCustomerId,
+        final String surrogate, final String surrogateCustomerId) {
+        if (StringUtils.isAnyBlank(superUser, superUserCustomerId, surrogate, surrogateCustomerId)) {
             throw ApiErrorGenerator.getBadRequestException("superUser and surrogate must be filled");
         }
-        final Optional<Subrogation> subro = subrogationRepository.findBySuperUserAndSurrogate(superUser, surrogate);
+        final Optional<Subrogation> subro = subrogationRepository
+            .findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(superUser, superUserCustomerId,
+                surrogate, surrogateCustomerId);
         if (subro.isPresent()) {
             final Subrogation subrogation = subro.get();
             iamLogbookService.subrogation(subrogation, EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
@@ -567,7 +638,7 @@ public class CasInternalService {
         }
     }
 
-    public String removeTokenAndGetUsername(final String authToken) {
+    public PrincipalFromToken removeTokenAndGetPrincipal(final String authToken) {
         final Optional<Token> optToken = tokenRepository.findById(authToken);
         if (optToken.isPresent()) {
             tokenRepository.deleteById(authToken);
@@ -575,10 +646,20 @@ public class CasInternalService {
             final String userId = token.getRefId();
             final Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
-                return optionalUser.get().getEmail();
+                return new PrincipalFromToken(optionalUser.get().getEmail(), optionalUser.get().getCustomerId());
             }
         }
         return null;
     }
 
+    public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
+        return customerInternalService.getAllById(customerIds);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PrincipalFromToken {
+        private final String email;
+        private final String customerId;
+    }
 }

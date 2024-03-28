@@ -53,6 +53,8 @@ export class SubrogationBannerComponent implements OnInit {
   show = false;
   hidden = false;
   endDate: Date;
+  surrogateCustomerCode: String;
+  surrogateCustomerName: String;
   subrogation: Subrogation;
   subrogationTTL = 1800000; // default TTL
 
@@ -72,6 +74,8 @@ export class SubrogationBannerComponent implements OnInit {
             this.show = true;
             this.endDate = moment(this.subrogation.date).toDate();
             this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
+            this.surrogateCustomerCode = this.subrogation.surrogateCustomerCode;
+            this.surrogateCustomerName = this.subrogation.surrogateCustomerName;
             setTimeout(() => this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser), this.subrogationTTL);
           }
         });

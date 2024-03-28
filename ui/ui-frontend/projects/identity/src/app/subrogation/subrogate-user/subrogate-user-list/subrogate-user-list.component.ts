@@ -149,7 +149,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   }
 
   openUserSubrogationDialog(subrogateUser: SubrogationUser): void {
-    this.subrogationModalService.open(this.emailDomains, subrogateUser);
+    this.subrogationModalService.open(this.emailDomains, subrogateUser.customerId, subrogateUser);
   }
 
   getGroup(subrogateUser: SubrogationUser): any {
