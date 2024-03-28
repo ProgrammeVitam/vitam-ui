@@ -29,7 +29,7 @@ Il faudra renseigner pour chacun des groupes de service Vitam-UI les VMs associ�
 > * Suivez les balises `# EDIT`, elles précisent si les groupes sont Mandatory ou Optionnal.
 > * Si vous utilisez le `reverse: nginx`, vous pouvez multi-instancier les composants `[zone_vitamui_ui]` et `[zone_vitamui_admin]`.
 > * Si vous configurez un cluster consul dédié à la zone Vitam-UI (groupe `[hosts_vitamui_consul_server]`), vous devrez renseigner la valeur `vitamui_site_name` différente de `vitam_site_name`.
-> * `vitam_reverse_external_dns` doit être défini pour la configuration du reverse proxy d'accès aux composants UI. Cette valeur défini l'url d'accès à la plateforme.
+> * `vitamui_reverse_external_dns` doit être défini pour la configuration du reverse proxy d'accès aux composants UI. Cette valeur défini l'url d'accès à la plateforme.
 
 ---
 

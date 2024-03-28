@@ -7,7 +7,7 @@
               <p class="row" style="vertical-align: middle">
                 <div class="col-md-3">Métier</div>
                 <div class="col-md-9">
-                  <a href="https://{{ vitam_reverse_external_dns }}" class="btn btn-primary btn-xs" target="_blank">Vitam UI</a>
+                  <a href="{{ url_prefix }}" class="btn btn-primary btn-xs" target="_blank">Vitam UI</a>
                 </div>
               </p>
               {% if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 %}
