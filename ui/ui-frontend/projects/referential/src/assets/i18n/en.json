@@ -31,7 +31,7 @@
       "SUBMIT": "Confirm",
       "MANAGEMENT_CONTRACT_CREATED": "Management contract created successfully",
       "MANAGEMENT_CONTRACT_UPDATED": "The management contract is successfully updated",
-      "SELECT_MANAGEMENT_CONTRACT": "Select a management contract"
+      "SELECT_MANAGEMENT_CONTRACT": "None"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Contract identifier",

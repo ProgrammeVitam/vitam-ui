@@ -31,7 +31,7 @@
       "SUBMIT": "Confirmer",
       "MANAGEMENT_CONTRACT_CREATED": "Le contrat de gestion est bien créé",
       "MANAGEMENT_CONTRACT_UPDATED": "Le contrat de gestion est bien mis à jour",
-      "SELECT_MANAGEMENT_CONTRACT": "Sélectionnez un contrat de gestion"
+      "SELECT_MANAGEMENT_CONTRACT": "Aucun"
     },
     "CONTRACT_LIST": {
       "IDENTIFIER": "Identifiant du contrat",
