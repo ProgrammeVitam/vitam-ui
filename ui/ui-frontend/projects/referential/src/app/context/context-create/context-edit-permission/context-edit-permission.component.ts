@@ -197,7 +197,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     if (value) {
       this.permissions = value;
     } else {
-      this.permissions = [{ tenant: null, accessContracts: [], ingestContracts: [] }];
+      this.permissions = [];
     }
     if (this.onChange) {
       this.onChange(this.permissions);
