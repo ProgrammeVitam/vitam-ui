@@ -545,7 +545,9 @@
       "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
       "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
       "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
-      "UA_WITH_NO_PREVENT_RULES": "Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
+      "UA_WITH_NO_PREVENT_RULES": "Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
+      "SAME_TARGET_RULE": "Régle cible identique: {{ value }}",
+      "REQUIRED_RULE_OR_START_DATE": "Nécessite au moins une régle ou une date de début pour la mise à jour"
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

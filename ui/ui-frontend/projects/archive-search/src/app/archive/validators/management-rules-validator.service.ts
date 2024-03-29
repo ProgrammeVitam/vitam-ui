@@ -140,6 +140,8 @@ export class ManagementRulesValidatorService {
       const existField: any = {};
       existField[existTag] = true;
 
+      if (!control.value) return of(null);
+
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
         take(1),

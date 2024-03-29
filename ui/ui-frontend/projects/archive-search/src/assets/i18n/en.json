@@ -141,7 +141,9 @@
       "UA_TO_UPDATE": "UA selected will be taken into account during the update",
       "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
       "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored",
-      "UA_WITH_NO_PREVENT_RULES": "This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored."
+      "UA_WITH_NO_PREVENT_RULES": "This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored.",
+      "SAME_TARGET_RULE": "Identical target rule: {{ value }}",
+      "REQUIRED_RULE_OR_START_DATE": "Require at least a rule or a start date for update"
     },
     "FINAL_ACTION": {
       "TITLE": "Final action",

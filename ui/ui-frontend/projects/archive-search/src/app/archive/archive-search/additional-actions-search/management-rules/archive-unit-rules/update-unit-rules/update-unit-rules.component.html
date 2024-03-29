@@ -31,8 +31,9 @@
       >
         <vitamui-common-input-error
           *ngIf="ruleDetailsForm?.get('oldRuleName')?.touched && ruleDetailsForm?.get('oldRuleName')?.hasError('required')"
-          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
         >
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
       </vitamui-common-input>
     </div>
 
@@ -55,12 +56,14 @@
         [asyncValidator]="ruleDetailsForm?.get('newRule')?.asyncValidator"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="ruleIdPattern"
-          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
+        <vitamui-common-field-error errorKey="ruleIdPattern">
+          {{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
         </vitamui-common-field-error>
-
-        <vitamui-common-field-error errorKey="ruleIdExists"
-          >{{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+        <vitamui-common-field-error errorKey="ruleIdExists">
+          {{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="forbiddenTargetRule">
+          {{ 'RULES.APRAISAL_RULES.FORBIDDEN_TARGET_RULE' | translate }}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
 
@@ -137,8 +140,30 @@
 
     <div *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
 
+    <vitamui-common-input-error
+      *ngIf="ruleDetailsForm.dirty && ruleDetailsForm.errors?.sameTargetRule"
+      class="vitamui-input-errors d-flex row"
+    >
+      <div class="d-flex col align-items-center">
+        <i class="material-icons">error</i>
+        <span class="ml-1">
+          {{ 'RULES.APRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.sameTargetRule?.value } }}</span
+        >
+      </div>
+    </vitamui-common-input-error>
+
+    <vitamui-common-input-error
+      *ngIf="ruleDetailsForm.dirty && ruleDetailsForm.errors?.mustUpdateRuleOrStartDate"
+      class="vitamui-input-errors d-flex row"
+    >
+      <div class="d-flex col align-items-center">
+        <i class="material-icons">error</i>
+        <span class="ml-1">{{ 'RULES.APRAISAL_RULES.REQUIRED_RULE_OR_START_DATE' | translate }}</span>
+      </div>
+    </vitamui-common-input-error>
+
     <div class="d-flex mt-4 padding-btm-style">
-      <button type="submit" class="btn primary mr-4" [disabled]="!isValidRule || !isValidForm || disabledControl" (click)="submit()">
+      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl || !ruleDetailsForm.valid" (click)="submit()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
@@ -167,13 +192,11 @@
 <ng-template #confirmDeleteUpdateRuleDialog>
   <mat-dialog-content>
     <br />
-
     <div class="text large bold">{{ 'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate }}</div>
   </mat-dialog-content>
   <br />
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
-
     <button matDialogClose class="btn cancel">{{ 'RULES.COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
