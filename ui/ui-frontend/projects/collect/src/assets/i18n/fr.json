@@ -116,7 +116,7 @@
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
-        "SHOW_TRANSACTIONS": "Accéder à la liste des versements du project",
+        "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",
         "VALIDATE": "Valider"
       },
       "STATUS": {
