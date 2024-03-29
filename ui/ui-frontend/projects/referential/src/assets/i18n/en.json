@@ -976,6 +976,8 @@
       "SEARCH_PLACEHOLDER": "Statement ID, UA ID...",
       "START_DATE": "Start date",
       "END_DATE": "End date",
+      "ELECTRONICALLY_SIGNED_DOCUMENT": "Electronically signed document",
+      "WARNING_ELECTRONICALLY_SIGNED_DOCUMENT": "Your document is not declared as an electronically signed document.\nIf you continue the operation, no context elements will be added.",
       "ARRAY": {
         "IDENTIFIER": "Identifier",
         "CREATION_DATE": "Creation date",

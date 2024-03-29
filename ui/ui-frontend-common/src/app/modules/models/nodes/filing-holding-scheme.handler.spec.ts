@@ -53,6 +53,7 @@ export function newTreeNode(currentId: string, count: number, currentChildren: F
 
 export function newUnit(currentId: string, parentId?: string): Unit {
   return {
+    SigningInformation: undefined,
     '#id': currentId,
     '#unitups': [parentId],
     '#allunitups': [parentId],
@@ -65,6 +66,7 @@ export function newUnit(currentId: string, parentId?: string): Unit {
 
 export function newAttachmentUnit(currentId: string, parentId?: string): Unit {
   return {
+    SigningInformation: undefined,
     '#id': currentId,
     '#unitups': [parentId],
     '#allunitups': [parentId],

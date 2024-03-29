@@ -976,6 +976,8 @@
       "SEARCH_PLACEHOLDER": "Identifiant de relevé, identifiant d'UA...",
       "START_DATE": "Date de début",
       "END_DATE": "Date de fin",
+      "ELECTRONICALLY_SIGNED_DOCUMENT": "Document signé électroniquement",
+      "WARNING_ELECTRONICALLY_SIGNED_DOCUMENT": "Votre document n'est pas déclaré comme un document signé électroniquement.\nSi vous poursuivez l'opération, aucun élément de contexte ne sera ajouté.",
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
         "CREATION_DATE": "Date de création",

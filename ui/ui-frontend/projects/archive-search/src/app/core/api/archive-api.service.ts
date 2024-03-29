@@ -107,8 +107,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
+  findArchiveUnit(id: string, headers?: HttpHeaders): Observable<Unit> {
+    return this.http.get<Unit>(`${this.apiUrl}/archiveunit/${id}`, { headers });
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {

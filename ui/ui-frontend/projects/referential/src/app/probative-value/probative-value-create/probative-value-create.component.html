@@ -1,4 +1,6 @@
-<div class="content mt-3">
+<div class="header"></div>
+
+<div class="content">
   <div class="text medium light">{{ 'PROBATIVE_VALUE.CREATE_DIALOG.TITLE' | translate }}</div>
   <div class="text large bold">{{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBTITLE' | translate }}</div>
 
@@ -50,6 +52,22 @@
           }}</vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <div class="text-medium-normal mr-2">{{ 'PROBATIVE_VALUE.HOME.ELECTRONICALLY_SIGNED_DOCUMENT' | translate }} :</div>
+      <mat-button-toggle-group formControlName="includeDetachedSigningInformation" class="vitamui-button-toggle-group">
+        <mat-button-toggle [value]="true" (click)="complianceCheck()">
+          {{ 'COMMON.COMMON_YES' | translate }}
+        </mat-button-toggle>
+        <mat-button-toggle [value]="false" (click)="showWarningMessage = false">
+          {{ 'COMMON.COMMON_NO' | translate }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div *ngIf="showWarningMessage">
+      <p [innerText]="'PROBATIVE_VALUE.HOME.WARNING_ELECTRONICALLY_SIGNED_DOCUMENT' | translate" class="text bold warningRow"></p>
     </div>
 
     <div class="actions">
