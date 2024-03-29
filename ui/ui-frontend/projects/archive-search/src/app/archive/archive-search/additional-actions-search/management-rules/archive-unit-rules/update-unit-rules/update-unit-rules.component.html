@@ -146,7 +146,9 @@
     >
       <div class="d-flex col align-items-center">
         <i class="material-icons">error</i>
-        <span class="ml-1"> {{ 'Régle cible identique: ' + ruleDetailsForm.errors?.sameTargetRule?.value | translate }}</span>
+        <span class="ml-1">
+          {{ 'RULES.APRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.sameTargetRule?.value } }}</span
+        >
       </div>
     </vitamui-common-input-error>
 
@@ -156,7 +158,7 @@
     >
       <div class="d-flex col align-items-center">
         <i class="material-icons">error</i>
-        <span class="ml-1">{{ 'Nécessite au moins une régle ou une date de début à pour la mise à jour' | translate }}</span>
+        <span class="ml-1">{{ 'RULES.APRAISAL_RULES.REQUIRED_RULE_OR_START_DATE' | translate }}</span>
       </div>
     </vitamui-common-input-error>
 
