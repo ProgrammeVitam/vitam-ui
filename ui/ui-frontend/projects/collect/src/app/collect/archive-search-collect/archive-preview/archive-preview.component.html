@@ -1,9 +1,9 @@
 <vitamui-common-sidenav-header
   [extended]="isPanelextended"
-  [title]="(archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en) | truncate: 29"
+  [title]="archiveUnit | unitI18n: 'Title' | truncate: 29"
   [icon]="getArchiveUnitIcon(archiveUnit)"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
+  [toolTipTitleText]="archiveUnit | unitI18n: 'Title'"
   [toolTipTitleDuration]="300"
   (onclose)="emitClose()"
 >

@@ -26,6 +26,7 @@
  *
  */
 import { isEmpty } from 'lodash';
+import { getUnitI18nAttribute } from '../../pipes/unitI18n.pipe';
 import { ResultFacet } from '../criteria';
 import { DescriptionLevel, Unit } from '../units';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
@@ -340,7 +341,7 @@ export class FilingHoldingSchemeHandler {
   public static convertUnitToNode(unit: Unit): FilingHoldingSchemeNode {
     return {
       id: unit['#id'],
-      title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
+      title: getUnitI18nAttribute(unit, 'Title'),
       unitType: unit['#unitType'],
       descriptionLevel: unit.DescriptionLevel,
       children: [],
