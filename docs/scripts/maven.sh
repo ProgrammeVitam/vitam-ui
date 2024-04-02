@@ -1,8 +1,8 @@
 #!/bin/bash
 set -vx
-MAVEN_ARCHIVE="apache-maven-3.5.2-bin.tar.gz"
-MAVEN_DIR="apache-maven-3.5.2"
-MAVEN_URL="http://archive.apache.org/dist/maven/maven-3/3.5.2/binaries/$MAVEN_ARCHIVE"
+MAVEN_ARCHIVE="apache-maven-3.6.3-bin.tar.gz"
+MAVEN_DIR="apache-maven-3.6.3"
+MAVEN_URL="http://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/$MAVEN_ARCHIVE"
 
 
 #### MAVEN ####

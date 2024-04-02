@@ -82,7 +82,7 @@ public final class ServerIdentityConfiguration {
      *
      * @return a new instance of ServerIdentityConfiguration
      */
-    public static final ServerIdentityConfiguration getInstance() {
+    public static ServerIdentityConfiguration getInstance() {
         if (StringUtils.isEmpty(serverIdentityConfiguration.getIdentityName())
                 || StringUtils.isEmpty(serverIdentityConfiguration.getIdentityRole())) {
             throw new InternalServerException("ServerIdentityConfiguration is undefined.");

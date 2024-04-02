@@ -24,7 +24,7 @@ public class PreLoginPage extends AbstractPage {
     }
 
     public void waitForMenuToAppear() {
-        waitFor(find(By.tagName("vitamui-menu-tile")).getWrappedElement());
+        waitFor(find(By.tagName("vitamui-menu-tile")).getElement());
     }
 
     public WebElementFacade getApplicationElement(String applicationId) {

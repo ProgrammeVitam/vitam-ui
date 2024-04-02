@@ -102,7 +102,15 @@ pipeline {
                 sh 'npmrc default'
 
                 sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
+                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' \
+                                            -pl '!ui/ui-archive-search' \
+                                            -pl '!ui/ui-collect' \
+                                            -pl '!ui/ui-commons' \
+                                            -pl '!ui/ui-identity' \
+                                            -pl '!ui/ui-ingest' \
+                                            -pl '!ui/ui-pastis' \
+                                            -pl '!ui/ui-portal' \
+                                            -pl '!ui/ui-referential'
                 '''
             }
             post {

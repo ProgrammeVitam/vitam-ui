@@ -220,17 +220,15 @@
         <dependency>
             <groupId>javax.xml.parsers</groupId>
             <artifactId>jaxp-api</artifactId>
-            <version>${jaxp-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>jackson-xml-databind</artifactId>
-            <version>${jackson-xml-databind.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.thaiopensource</groupId>
+            <groupId>org.relaxng</groupId>
             <artifactId>jing</artifactId>
             <version>${thaiopensource.jing.version}</version>
             <exclusions>
@@ -250,29 +248,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.thaiopensource</groupId>
+            <groupId>org.relaxng</groupId>
             <artifactId>trang</artifactId>
-            <version>${thaiopensource.trang.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.sf.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xerces</groupId>
-                    <artifactId>xercesImpl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.opengis.cite.xerces</groupId>
             <artifactId>xercesImpl-xsd11</artifactId>
-            <version>${xercesImpl-xsd11.version}</version>
         </dependency>
 
         <dependency>
