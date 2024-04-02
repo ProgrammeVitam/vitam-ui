@@ -61,7 +61,7 @@ export class ContextPermissionTabComponent implements OnInit {
   dataLoaded = false;
 
   private _context: Context;
-  private updatedPermissions: ContextPermission[] = new Array();
+  private updatedPermissions: ContextPermission[] = [];
 
   tenants: Map<string, Tenant> = new Map();
   organisations: Map<string, Customer> = new Map();
@@ -259,7 +259,7 @@ export class ContextPermissionTabComponent implements OnInit {
     const dialogRef = this.dialog.open(ContextEditComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: this.updatedPermissions,
+      data: { permissions: this.updatedPermissions, enableControl: this._context.enableControl },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.permissions) {

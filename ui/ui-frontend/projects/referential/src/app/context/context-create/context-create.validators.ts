@@ -77,11 +77,11 @@ export class ContextCreateValidators {
     return (control: AbstractControl) => {
       switch (this.checkTenantsValid(control.value)) {
         case 'tenant':
-          return of({ permissionsTenant: true });
+          return { permissionsTenant: true };
         case 'empty':
-          return of({ noPermissions: true });
+          return { noPermissions: true };
         default:
-          return of(null);
+          return null;
       }
     };
   }

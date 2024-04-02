@@ -93,7 +93,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       ],
       securityProfile: [null, Validators.required],
       enableControl: [false],
-      permissions: [[{ tenant: null, accessContracts: [], ingestContracts: [] }], null, null],
+      permissions: [[]],
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -103,15 +103,15 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     // Add or remove controls on the permissions
     this.form.controls.enableControl.valueChanges.subscribe((value) => {
       if (value) {
-        this.form.controls.permissions.setAsyncValidators([this.contextCreateValidators.permissionInvalid()]);
+        this.form.controls.permissions.setValidators([this.contextCreateValidators.permissionInvalid()]);
       } else {
-        this.form.controls.permissions.clearAsyncValidators();
+        this.form.controls.permissions.clearValidators();
       }
       this.form.controls.permissions.updateValueAndValidity(this.form.controls.permissions.value);
     });

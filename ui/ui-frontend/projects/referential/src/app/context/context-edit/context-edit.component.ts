@@ -42,8 +42,6 @@ import { Subscription } from 'rxjs';
 import { ConfirmDialogService, ContextPermission } from 'ui-frontend-common';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
@@ -56,25 +54,20 @@ export class ContextEditComponent implements OnInit, OnDestroy {
   message: string;
   isPermissionsOnMultipleOrganisations = false;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
   private keyPressSubscription: Subscription;
 
   private permissions: ContextPermission[];
 
   constructor(
     public dialogRef: MatDialogRef<ContextEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ContextPermission[],
+    @Inject(MAT_DIALOG_DATA) public data: { permissions: ContextPermission[]; enableControl: boolean },
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private contextCreateValidators: ContextCreateValidators,
   ) {
-    this.permissions = data;
+    this.permissions = data.permissions;
 
-    let permissions: any[] = new Array();
+    let permissions: any[] = [];
     if (this.permissions) {
       permissions = this.permissions.map((permission) => {
         return {
@@ -86,8 +79,11 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     }
 
     this.form = this.formBuilder.group({
-      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()],
+      permissions: [permissions],
     });
+    if (data.enableControl) {
+      this.form.controls.permissions.setValidators([this.contextCreateValidators.permissionInvalid()]);
+    }
   }
 
   ngOnInit() {
@@ -138,9 +134,5 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     );
 
     this.dialogRef.close({ permissions: this.permissions });
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }

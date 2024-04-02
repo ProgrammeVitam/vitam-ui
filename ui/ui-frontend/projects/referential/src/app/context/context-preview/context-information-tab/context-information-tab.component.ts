@@ -129,9 +129,6 @@ export class ContextInformationTabComponent {
 
   prepareSubmit(): Observable<Context> {
     const diffValue = diff(this.form.getRawValue(), this.previousValue());
-    if (!diffValue.enableControl) {
-      diffValue.permissions = [];
-    }
 
     return of(diffValue).pipe(
       filter((formData) => !isEmpty(formData)),
