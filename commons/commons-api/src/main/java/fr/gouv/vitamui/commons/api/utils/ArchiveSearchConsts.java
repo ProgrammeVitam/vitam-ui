@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ArchiveSearchConsts {
+
     public static final String RULE_NAME_FIELD = "RuleValue";
     public static final String RULE_IDENTIFIER_FIELD = "AppraisalRuleIdentifier";
     public static final String RULE_ID_FIELD = "RuleId";
@@ -91,7 +92,6 @@ public class ArchiveSearchConsts {
     public enum RuleOrigin {
         INHERITED, SCOPED
     }
-
 
 
     public enum RuleOriginValues {
@@ -219,10 +219,8 @@ public class ArchiveSearchConsts {
     public static final int FACET_SIZE_MILTIPLIER = 100;
 
 
-
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";
-    public static final String UNIT_TYPE = "#unitType";
     public static final String PRODUCER_SERVICE = "#originating_agency";
     public static final String GUID = "#id";
     public static final String ALL_UNIT_UPS = "#allunitups";
@@ -274,7 +272,6 @@ public class ArchiveSearchConsts {
     public static final String RULE_TITLE_FIELD = "AppraisalRuleTitle";
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
     public static final String ACCESS_RULE_TYPE = "AccessRule";
-
 
 
     public final static String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
