@@ -10,6 +10,10 @@
   display: flex;
   flex-direction: column;
 
+  &.disabled {
+    background-color: var(--vitamui-grey-300);
+  }
+
   &.textarea {
     .vitamui-input {
       height: 100% !important;

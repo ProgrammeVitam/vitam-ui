@@ -28,9 +28,12 @@ package fr.gouv.vitamui.collect.internal.server.config;
 
 import fr.gouv.vitamui.collect.internal.server.service.converters.SearchCriteriaHistoryConverter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("fr.gouv.vitamui.collect.common.dto.converter")
+@ComponentScan("fr.gouv.vitamui.commons.api.converter")
 public class ConverterConfig {
 
 

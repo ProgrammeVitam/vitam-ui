@@ -3,11 +3,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, throwError } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, Logger, StartupService } from 'ui-frontend-common';
+import { Subscription } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, StartupService } from 'ui-frontend-common';
 import { EditObject } from 'ui-frontend-common/app/modules/object-editor/models/edit-object.model';
+import { SpinnerOverlayService } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({
   selector: 'app-archive-unit-description-tab',
@@ -42,6 +44,8 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     private startupService: StartupService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
+    private archiveUnitService: ArchiveUnitService,
+    private spinnerOverlayService: SpinnerOverlayService,
   ) {}
 
   ngOnDestroy(): void {
@@ -68,11 +72,12 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         .open(this.cancelDialog, this.dialogConfig)
         .afterClosed()
         .pipe(
-          switchMap((result) => {
-            if (result) return this.archiveUnitEditor.update();
-
-            return throwError(result);
+          map((result) => {
+            if (result) return this.archiveUnitEditor.getJsonPatch();
+            throw new Error(result);
           }),
+          tap(() => this.spinnerOverlayService.open()),
+          switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
         )
         .subscribe(
           ({ operationId }) => this.handleUpdateSuccess({ operationId }),
@@ -88,9 +93,14 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         .afterClosed()
         .pipe(
           filter((result) => !!result),
-          switchMap(() => this.archiveUnitEditor.update()),
+          map(() => this.archiveUnitEditor.getJsonPatch()),
+          tap(() => this.spinnerOverlayService.open()),
+          switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
         )
-        .subscribe(({ operationId }) => this.handleUpdateSuccess({ operationId })),
+        .subscribe(
+          ({ operationId }) => this.handleUpdateSuccess({ operationId }),
+          () => this.spinnerOverlayService.close(),
+        ),
     );
   }
 
@@ -101,7 +111,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     if (!tenantId) return this.logger.error(this, 'Tenant id is mandatory to build logbook operation link');
 
     const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${tenantId}?guid=${operationId}`;
-    const translationKey = 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.SUCCESS';
+    const translationKey = 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.IN_PROGRESS';
     const message = this.translateService.instant(translationKey);
 
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
@@ -112,11 +122,29 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         serviceUrl,
       },
     });
-    this.editObject.control.markAsPristine();
+
+    this.patchUnit(this.archiveUnit, this.archiveUnitEditor.getJsonPatch().jsonPatch);
+
+    this.backToDisplayMode();
+  }
+
+  private patchUnit(archiveUnit: ArchiveUnit, jsonPatch: JsonPatch) {
+    jsonPatch.forEach((patch) => {
+      const key = patch.path;
+      switch (patch.op) {
+        case 'add':
+        case 'replace':
+          archiveUnit[key] = patch.value;
+          break;
+        case 'remove':
+          delete archiveUnit[key];
+          break;
+      }
+    });
   }
 
   private backToDisplayMode(): void {
-    this.archiveUnit = { ...this.archiveUnit };
+    this.spinnerOverlayService.close();
     this.editMode = false;
     this.editModeChange.emit(this.editMode);
   }

@@ -25,28 +25,14 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto.converter;
+package fr.gouv.vitamui.collect.common.dto;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
-import fr.gouv.vitamui.archives.search.common.dto.BulkCommandDto;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitamui.collect.common.model.OperationId;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-@Service
-public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateMultiQuery>, BulkCommandDto> {
-    @Override
-    public BulkCommandDto convert(Set<UpdateMultiQuery> source) {
-        final List<ObjectNode> finalUpdateMultiQueries =
-            source.stream()
-                .map(UpdateMultiQuery::getFinalUpdate)
-                .peek(objectNode -> objectNode.remove("$roots"))
-                .peek(objectNode -> objectNode.remove("$filter"))
-                .collect(Collectors.toList());
-        return new BulkCommandDto(finalUpdateMultiQueries);
-    }
+@Data
+@Accessors(chain = true)
+public class OperationIdDto {
+    private OperationId operationId;
 }

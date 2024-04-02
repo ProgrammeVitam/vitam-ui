@@ -55,7 +55,6 @@ import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
-import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -181,13 +180,6 @@ export class ArchiveApiService extends BaseHttpClient<any> {
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
     return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
-  }
-
-  updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
-    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, {
-      headers,
-      responseType: 'text' as 'json',
-    });
   }
 
   transferAcknowledgment(file: Blob, headers: HttpHeaders): Observable<string> {

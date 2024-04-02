@@ -27,8 +27,6 @@
  *
  */
 
-export * from './archive-unit-api.service';
-export * from './archive-unit.service';
 export * from './archive.module';
 export * from './components/archive-unit-editor/archive-unit-editor.component';
 export * from './components/archive-unit-editor/components/editor-banner/editor-banner.component';

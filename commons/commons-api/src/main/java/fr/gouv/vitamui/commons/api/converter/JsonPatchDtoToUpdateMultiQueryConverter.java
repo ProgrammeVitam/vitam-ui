@@ -25,15 +25,14 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto.converter;
+package fr.gouv.vitamui.commons.api.converter;
 
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.query.action.Action;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
-import fr.gouv.vitamui.archives.search.common.dto.JsonPatchDto;
-import fr.gouv.vitamui.archives.search.common.exception.DslQueryCreateException;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

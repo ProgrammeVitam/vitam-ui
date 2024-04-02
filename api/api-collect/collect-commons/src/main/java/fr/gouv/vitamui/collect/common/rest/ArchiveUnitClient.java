@@ -25,20 +25,26 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.exception;
+package fr.gouv.vitamui.collect.common.rest;
 
+import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
+import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+import java.util.Set;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+public interface ArchiveUnitClient {
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
+        String transactionId, final Set<UpdateArchiveUnitDto> updateOperationDtoSet);
 
-@ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to create dsl query")
-public class DslQueryCreateException extends RuntimeException {
-    public DslQueryCreateException(Throwable e) {
-        super(e);
-    }
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, String transactionId, final String id,
+        final JsonPatch jsonPatch);
 
-    public DslQueryCreateException(String e) {
-        super(e);
-    }
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, String transactionId, final JsonPatchDto jsonPatchDto);
+
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
+        String transactionId, final MultiJsonPatchDto multiJsonPatchDto);
 }

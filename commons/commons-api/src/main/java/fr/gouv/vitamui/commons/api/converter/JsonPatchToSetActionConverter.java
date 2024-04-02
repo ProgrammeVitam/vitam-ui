@@ -25,15 +25,15 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto.converter;
+package fr.gouv.vitamui.commons.api.converter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.action.SetAction;
 import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.archives.search.common.exception.DslQueryCreateException;
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
-import fr.gouv.vitamui.archives.search.common.model.PatchCommand;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
+import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
+import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.archives.search.common.model.PatchOperation.ADD;
-import static fr.gouv.vitamui.archives.search.common.model.PatchOperation.REPLACE;
+import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.ADD;
+import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.REPLACE;
 
 @Service
 public class JsonPatchToSetActionConverter implements Converter<JsonPatch, SetAction> {

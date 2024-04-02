@@ -25,27 +25,19 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.collect.common.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import lombok.Data;
-import lombok.NonNull;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.constraints.Size;
-import java.util.Collection;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+@ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to update archive unit")
+public class ArchiveUnitUpdateException extends RuntimeException {
+    public ArchiveUnitUpdateException(Throwable e) {
+        super(e);
+    }
 
-@Data
-@JsonInclude(NON_NULL)
-public class BulkCommandDto {
-    @NonNull
-    @Size(min = 1, message = "Requires at least one command to play a bulk operation")
-    @JsonProperty("queries")
-    private Collection<ObjectNode> commands;
-
-    private Integer threshold;
+    public ArchiveUnitUpdateException(String message) {
+        super(message);
+    }
 }

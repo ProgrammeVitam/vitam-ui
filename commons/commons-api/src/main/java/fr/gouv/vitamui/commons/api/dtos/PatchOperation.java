@@ -25,14 +25,23 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.ArrayList;
+public enum PatchOperation {
+    ADD("add"),
+    REMOVE("remove"),
+    REPLACE("replace");
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class MultiJsonPatchDto extends ArrayList<JsonPatchDto> {
+    final private String value;
+
+    PatchOperation(final String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
 }

@@ -40,7 +40,6 @@ package fr.gouv.vitamui.archive.internal.server.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -52,7 +51,6 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
-import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
@@ -235,127 +233,6 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest1() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023", Arrays.asList("StartDate"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_1.json"));
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest2() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",
-                Arrays.asList("StartDate", "Description"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_2.json"));
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest3() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,
-                Arrays.asList("StartDate", "EndDate"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_3.json"));
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest4() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, null,
-                Arrays.asList("StartDate", "EndDate", "Description"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_4.json"));
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest5() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,
-                Arrays.asList("StartDate", "EndDate", "Description"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_5.json"));
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest6() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildFullUnitDescriptiveMetadataDto(
-                "french title", "english title", "french description", "english description", "Item", null, null,
-                Arrays.asList("StartDate", "EndDate"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_6.json"));
-
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
-    public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest7() throws Exception {
-        // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(responseFromFile(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
-
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildFullUnitDescriptiveMetadataDto(
-                null, "english title", "french description", null, "Item", null, null,
-                Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
-
-        //When //Then
-        ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
-
-        JsonNode fromFile = JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/updateUnits/query_7.json"));
-
-        assertThat(expectingQuery.toPrettyString()).isEqualTo(fromFile.toPrettyString());
-    }
-
-    @Test
     void getFinalFillingHoldingSchemeQueryWithProjection() throws Exception {
         // Given
         JsonNode expectedQuery =
@@ -513,35 +390,4 @@ public class ArchiveSearchInternalServiceTest {
             .hasMessage("exception thrown by client");
         verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
     }
-
-    private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto
-        (String title, String description, String descriptionLevel, String startDate, String endDate,
-            List<String> unsetAction) {
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
-        unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
-        unitDescriptiveMetadataDto.setTitle(title);
-        unitDescriptiveMetadataDto.setDescription(description);
-        unitDescriptiveMetadataDto.setDescriptionLevel(descriptionLevel);
-        unitDescriptiveMetadataDto.setStartDate(startDate);
-        unitDescriptiveMetadataDto.setEndDate(endDate);
-        unitDescriptiveMetadataDto.setUnsetAction(unsetAction);
-        return unitDescriptiveMetadataDto;
-    }
-
-    private UnitDescriptiveMetadataDto buildFullUnitDescriptiveMetadataDto
-        (String title_fr, String title_en, String description_fr, String description_en, String descriptionLevel,
-            String startDate, String endDate, List<String> unsetAction) {
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
-        unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
-        unitDescriptiveMetadataDto.setTitle_fr(title_fr);
-        unitDescriptiveMetadataDto.setTitle_en(title_en);
-        unitDescriptiveMetadataDto.setDescription_fr(description_fr);
-        unitDescriptiveMetadataDto.setDescription_en(description_en);
-        unitDescriptiveMetadataDto.setDescriptionLevel(descriptionLevel);
-        unitDescriptiveMetadataDto.setStartDate(startDate);
-        unitDescriptiveMetadataDto.setEndDate(endDate);
-        unitDescriptiveMetadataDto.setUnsetAction(unsetAction);
-        return unitDescriptiveMetadataDto;
-    }
-
 }

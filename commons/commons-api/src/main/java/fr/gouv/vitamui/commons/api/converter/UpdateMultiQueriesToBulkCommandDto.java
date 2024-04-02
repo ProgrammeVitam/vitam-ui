@@ -25,19 +25,28 @@
  * accept its terms.
  */
 
-export interface ArchiveUnit extends ManagementMetadata, SystemMetadata, DescriptiveMetadata {
-  [key: string]: any;
-}
+package fr.gouv.vitamui.commons.api.converter;
 
-export interface ManagementMetadata {
-  '#management'?: any;
-}
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
+import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Service;
 
-export interface SystemMetadata {
-  '#id': String;
-}
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-export interface DescriptiveMetadata {
-  Title?: string;
-  Description?: string;
+@Service
+public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateMultiQuery>, BulkCommandDto> {
+    @Override
+    public BulkCommandDto convert(Set<UpdateMultiQuery> source) {
+        final List<ObjectNode> finalUpdateMultiQueries =
+            source.stream()
+                .map(UpdateMultiQuery::getFinalUpdate)
+                .peek(objectNode -> objectNode.remove("$roots"))
+                .peek(objectNode -> objectNode.remove("$filter"))
+                .collect(Collectors.toList());
+        return new BulkCommandDto(finalUpdateMultiQueries);
+    }
 }

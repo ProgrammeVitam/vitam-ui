@@ -25,21 +25,17 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.model;
+package fr.gouv.vitamui.collect.common.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitamui.archives.search.common.model.PatchOperation;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
+import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
+import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
-@Data
-@Accessors(chain = true)
-public class PatchCommand {
-    @NotNull private PatchOperation op;
-    @NotBlank private String path;
-    @NotNull private JsonNode value;
+public interface ArchiveUnitService {
+    OperationIdDto update(String transactionId, Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet);
+    OperationIdDto update(String transactionId, JsonPatchDto jsonPatchDto);
+    OperationIdDto update(String transactionId, MultiJsonPatchDto multiJsonPatchDto);
 }

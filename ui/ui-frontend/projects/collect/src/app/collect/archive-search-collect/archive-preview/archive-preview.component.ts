@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
@@ -45,33 +45,23 @@ import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnInit, OnChanges {
-  @Input()
-  archiveUnit: Unit;
+export class ArchivePreviewComponent implements OnChanges {
+  @Input() archiveUnit: Unit;
+  @Input() isPopup: boolean;
+  @Input() accessContractAllowUpdating: boolean;
+  @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;
+  @Input() transactionId: string;
 
-  @Output()
-  backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
-  @Output()
-  showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Input()
-  isPopup: boolean;
+  @Output() backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Output() showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
+
   isPanelextended = false;
   selectedIndex = 0;
-
   updateStarted = false;
-
-  @Input()
-  accessContractAllowUpdating: boolean;
-
-  @Input()
-  hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
 
   constructor(private translateService: TranslateService) {}
-
-  ngOnInit() {}
 
   emitClose() {
     this.previewClose.emit();
@@ -100,11 +90,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.selectedTabChangeEvent({ index: this.selectedIndex, tab: null });
   }
 
-  showExtendedPanel() {
-    this.selectedTabChangeEvent({ index: 1, tab: null });
-  }
-
   updateMetadataDesc() {
+    this.selectedIndex = 1; // Move to description tab
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
     this.updateStarted = true;

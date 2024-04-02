@@ -54,7 +54,6 @@ import {
   WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
-import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 
 @Pipe({ name: 'dateTime' })
@@ -172,188 +171,12 @@ describe('ArchiveUnitInformationTabComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a french title', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-
-    component.hasTitle = false;
-    component.hasFrTitle = false;
-    component.hasEnTitle = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnTitle).toBeFalsy();
-    expect(component.hasFrTitle).toBeTruthy();
-    expect(component.hasTitle).toBeFalsy();
-  });
-
-  it('should have a french Description', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-
-    component.hasDescription = false;
-    component.hasFrDescription = false;
-    component.hasEnDescription = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnDescription).toBeFalsy();
-    expect(component.hasFrDescription).toBeTruthy();
-    expect(component.hasDescription).toBeFalsy();
-  });
-
-  it('should have a english title', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Title_: { en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-    component.hasTitle = false;
-    component.hasFrTitle = false;
-    component.hasEnTitle = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnTitle).toBeTruthy();
-    expect(component.hasFrTitle).toBeFalsy();
-    expect(component.hasTitle).toBeFalsy();
-  });
-
-  it('should have a english Description', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Title_: { en: 'Test' },
-      Description_: { en: 'DescriptionEn' },
-    };
-    component.hasDescription = false;
-    component.hasFrDescription = false;
-    component.hasEnDescription = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnDescription).toBeTruthy();
-    expect(component.hasFrDescription).toBeFalsy();
-    expect(component.hasDescription).toBeFalsy();
-  });
-
-  it('should have a title', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Title: 'test tets',
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-    component.hasTitle = false;
-    component.hasFrTitle = false;
-    component.hasEnTitle = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnTitle).toBeFalsy();
-    expect(component.hasFrTitle).toBeFalsy();
-    expect(component.hasTitle).toBeTruthy();
-  });
-
   it('fullPath should be true ', () => {
     // When
     component.showArchiveUniteFullPath();
 
     // Then
     expect(component.fullPath).toBeTruthy();
-  });
-
-  it('should have a Description', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      Description: 'test tets',
-      Title_: { fr: 'testFr', en: 'TestEn' },
-    };
-    component.hasDescription = false;
-    component.hasFrDescription = false;
-    component.hasEnDescription = false;
-
-    // When
-    component.initTitleAndDescriptionsFlagValues(unit);
-
-    // Then
-    expect(component.hasEnDescription).toBeFalsy();
-    expect(component.hasFrDescription).toBeFalsy();
-    expect(component.hasDescription).toBeTruthy();
-  });
-
-  it('should not call updateUnit of archiveService when exportDIPform is invalid', () => {
-    // Given
-    const unitMetadata: UnitDescriptiveMetadataDto = {
-      id: 'dfd',
-      Title: 'string',
-      Description: 'string',
-      'Title_.fr': 'string',
-      'Title_.en': 'string',
-      'Description_.fr': 'string',
-      'Description_.en': 'string',
-      DescriptionLevel: 'string',
-      StartDate: 'string',
-      EndDate: 'string',
-      unsetAction: [],
-    };
-    spyOn(archiveServiceMock, 'updateUnit').and.callThrough();
-
-    // When
-    component.updateUnit(component.archiveUnit, unitMetadata);
-
-    // Then
-    expect(archiveServiceMock.updateUnit).toHaveBeenCalled();
   });
 
   it('should call downloadObjectFromUnit of archiveService ', () => {
@@ -375,32 +198,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
     // Then
     expect(archiveServiceMock.downloadObjectFromUnit).toHaveBeenCalled();
-  });
-
-  it('unsetAction should have two items  ', () => {
-    // Given
-    const unit: Unit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      StartDate: new Date(),
-      EndDate: new Date(),
-      Title: 'test tets',
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-
-    // When
-    component.archiveUnit = unit;
-    component.clearDate('startDate');
-    component.clearDate('endDate');
-
-    // Then
-    expect(component.unsetAction.length).toEqual(2);
-    expect(component.unsetAction[0]).toEqual('StartDate');
-    expect(component.unsetAction[1]).toEqual('EndDate');
   });
 
   describe('DOM', () => {

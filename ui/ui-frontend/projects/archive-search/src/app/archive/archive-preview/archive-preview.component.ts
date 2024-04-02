@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,7 +46,7 @@ import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnInit, OnChanges {
+export class ArchivePreviewComponent implements OnChanges {
   @Input() archiveUnit: Unit;
   @Input() accessContract: string;
   @Input() isPopup: boolean;
@@ -61,7 +61,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   selectedIndex = 0;
   tenantIdentifier: number;
   updateStarted = false;
-  hasAccessContractManagementPermissionsMessage = '';
+  hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
 
   constructor(
     private route: ActivatedRoute,
@@ -70,10 +70,6 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
-  }
-
-  ngOnInit() {
-    this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
   }
 
   emitClose() {
@@ -90,9 +86,6 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
         this.backToNormalLateralPanel.emit();
         break;
       case 1:
-        this.isPanelextended = true;
-        this.showExtendedLateralPanel.emit();
-        break;
       case 2:
         this.isPanelextended = true;
         this.showExtendedLateralPanel.emit();
@@ -106,11 +99,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.selectedTabChangeEvent({ index: this.selectedIndex, tab: null });
   }
 
-  showExtendedPanel() {
-    this.selectedTabChangeEvent({ index: 1, tab: null });
-  }
-
   updateMetadataDesc() {
+    this.selectedIndex = 1; // Move to description tab
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
     this.updateStarted = true;
@@ -119,12 +109,6 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
       this.showNormalPanel();
-    }
-  }
-
-  getArchiveUnitType(archiveUnit: Unit) {
-    if (archiveUnit) {
-      return archiveUnit['#unitType'];
     }
   }
 

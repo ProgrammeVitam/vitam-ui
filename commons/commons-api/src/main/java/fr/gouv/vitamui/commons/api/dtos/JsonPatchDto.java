@@ -25,39 +25,17 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto.converter;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import fr.gouv.vitam.common.database.builder.query.action.UnsetAction;
-import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitamui.archives.search.common.exception.DslQueryCreateException;
-import fr.gouv.vitamui.archives.search.common.model.JsonPatch;
-import fr.gouv.vitamui.archives.search.common.model.PatchCommand;
-import fr.gouv.vitamui.archives.search.common.model.PatchOperation;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Service;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.experimental.Accessors;
 
-@Service
-public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
-
-    @Override
-    public UnsetAction convert(JsonPatch source) {
-        try {
-            final String[] paths = source.stream()
-                .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
-                .map(PatchCommand::getPath)
-                .toArray(String[]::new);
-            if (paths.length > 0) {
-                return UpdateActionHelper.unset(paths);
-            }
-        } catch (InvalidCreateOperationException e) {
-            log.error("{}", e);
-            throw new DslQueryCreateException(e);
-        }
-        return null;
-    }
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+public class JsonPatchDto {
+    @NonNull private String id;
+    @NonNull private JsonPatch jsonPatch;
 }
