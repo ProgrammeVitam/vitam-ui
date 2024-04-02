@@ -36,6 +36,16 @@
  */
 package fr.gouv.vitamui.iam.internal.server.security;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -46,14 +56,6 @@ import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
-
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 
 /**
  * External authentication service
@@ -108,7 +110,7 @@ public class IamAuthentificationService {
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
             final LocalDate currentTokenExpirationLocalDate = convertToLocalDate(currentTokenExpirationDate);
-            if (currentTokenExpirationLocalDate.isAfter(LocalDate.of(2018, 10, 1)) && currentTokenExpirationDate.before(newTokenExpirationDate) && newTokenExpirationDate.before(tokenMaxExpirationDate)) {
+            if (currentTokenExpirationDate.before(newTokenExpirationDate) && newTokenExpirationDate.before(tokenMaxExpirationDate)) {
                 token.setUpdatedDate(newTokenExpirationDate);
                 tokenRepository.save(token);
             }
@@ -118,10 +120,13 @@ public class IamAuthentificationService {
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
             final String surrogateEmail = userDto.getEmail();
-            final Subrogation subrogation = subrogationRepository.findOneBySurrogate(surrogateEmail);
+            final Subrogation subrogation = subrogationRepository
+                .findOneBySurrogateAndSurrogateCustomerId(surrogateEmail, userDto.getCustomerId());
             final String superUserEmail = subrogation.getSuperUser();
             authUserDto.setSuperUser(superUserEmail);
-            final UserDto superUserDto = internalUserService.findUserByEmail(superUserEmail);
+            authUserDto.setSuperUserCustomerId(subrogation.getSuperUserCustomerId());
+            final UserDto superUserDto =
+                internalUserService.findUserByEmailAndCustomerId(superUserEmail, subrogation.getSuperUserCustomerId());
             authUserDto.setSuperUserIdentifier(superUserDto.getIdentifier());
         }
         internalUserService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);

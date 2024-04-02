@@ -2,18 +2,25 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-    <title th:text="#{screen.accountlocked.heading}">Account Locked View</title>
+  <title th:text="#{screen.accountlocked.heading}">Account Locked View</title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
-    <div>
-        <h4 th:text="#{screen.accountlocked.heading}">This account has been locked.</h4>
-        <div class="text large marging-top-form margin-bottom-form" th:text="#{screen.accountlocked.message}">Please contact the system administrator to regain access.</div>
-    </div>
+
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold"
+       th:text="#{screen.accountlocked.heading}">This account has been locked.
+  </div>
+  <div class="Text-medium margin-top-10"
+       th:text="#{screen.accountlocked.message}">Please contact the system administrator to regain
+    access.
+  </div>
 </div>
+
+
 </body>
 </html>

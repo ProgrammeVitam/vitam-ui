@@ -43,14 +43,23 @@ package fr.gouv.vitamui.cas.util;
  */
 public abstract class Constants {
 
-    public static final String USERNAME = "username";
-
     public static final String PROVIDED_USERNAME = "providedUsername";
+    public static final String SHOW_SURROGATE_CUSTOMER_NAME = "surrogateCustomerName";
+    public static final String SHOW_SURROGATE_CUSTOMER_CODE = "surrogateCustomerCode";
 
-    // surrogation:
-    public static final String SURROGATE = "surrogate";
+    public static final String LOGIN_USER_EMAIL_PARAM = "username";
+    public static final String LOGIN_SURROGATE_EMAIL_PARAM = "surrogateEmail";
+    public static final String LOGIN_SURROGATE_CUSTOMER_ID_PARAM = "surrogateCustomerId";
+    public static final String LOGIN_SUPER_USER_EMAIL_PARAM = "superUserEmail";
+    public static final String LOGIN_SUPER_USER_CUSTOMER_ID_PARAM = "superUserCustomerId";
 
-    public static final String SUPER_USER = "superUser";
+    public static final String SELECT_CUSTOMER_ID_PARAM = "customerId";
+
+    public static final String FLOW_SURROGATE_EMAIL = "surrogateEmail";
+    public static final String FLOW_SURROGATE_CUSTOMER_ID = "surrogateCustomerId";
+    public static final String FLOW_LOGIN_EMAIL = "loginEmail";
+    public static final String FLOW_LOGIN_CUSTOMER_ID = "loginCustomerId";
+    public static final String FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST = "availableCustomerList";
 
     // web:
     public static final String PORTAL_URL = "portalUrl";

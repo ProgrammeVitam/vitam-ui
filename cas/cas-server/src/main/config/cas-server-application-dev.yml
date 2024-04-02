@@ -185,9 +185,9 @@ theme:
   #  vitamui-platform-name: VITAM-UI
   #  vitamui-favicon: /absolute/path/to/favicon.ico
   #  vitamui-logo-large: /absolute/path/to/logo.png
-  primary: '#702382'
-  secondary: '#241f63'
-  background: '#FFFFFF'
+  primary: '#9C31B5'
+  secondary: '#7FA1D4'
+  background: '#F6F3FB'
 
 # Jaeger
 opentracing:
@@ -206,7 +206,7 @@ logging:
     org.springframework.amqp: 'OFF'
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
-    org.apereo.inspektr.audit.support: 'OFF'
+    org.apereo.inspektr.audit.support: 'INFO'
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
@@ -293,6 +293,7 @@ cas.http-web-request.cors.allow-origins:
   - "https://dev.vitamui.com:4209"
   - "https://dev.vitamui.com:4210"
   - "https://dev.vitamui.com:4251"
+  - "https://dev.vitamui.com"
   - "https://localhost:4200"
   - "https://localhost:4201"
   - "https://localhost:4202"

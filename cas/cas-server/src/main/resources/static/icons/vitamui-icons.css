@@ -1,0 +1,1063 @@
+@font-face {
+    font-family: 'vitamui-icon';
+    src: url('fonts/vitamui-icon.eot');
+    src: url('fonts/vitamui-icon.eot#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf') format('truetype'),
+    url('fonts/vitamui-icon.woff') format('woff'),
+    url('fonts/vitamui-icon.svg#vitamui-icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+i.vitamui-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'vitamui-icon' !important;
+    speak: never;
+    line-height: 1;
+    font-style: normal;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.vitamui-icon-ontologie:before {
+    content: "\e964";
+    color: #757575;
+}
+
+.vitamui-icon-fichiers:before {
+    content: "\e965";
+    color: #757575;
+}
+
+.vitamui-icon-agent:before {
+    content: "\e966";
+    color: #757575;
+}
+
+.vitamui-icon-releve:before {
+    content: "\e967";
+    color: #757575;
+}
+
+.vitamui-icon-dsl:before {
+    content: "\e968";
+    color: #757575;
+}
+
+.vitamui-icon-operation:before {
+    content: "\e969";
+    color: #757575;
+}
+
+.vitamui-icon-contrat:before {
+    content: "\e96a";
+    color: #757575;
+}
+
+.vitamui-icon-securite:before {
+    content: "\e96b";
+    color: #757575;
+}
+
+.vitamui-icon-audit:before {
+    content: "\e96c";
+    color: #757575;
+}
+
+.vitamui-icon-trash:before {
+    content: "\e963";
+    color: #474d4a;
+}
+
+.vitamui-icon-import-csv:before {
+    content: "\e962";
+    color: #757575;
+}
+
+.vitamui-icon-icone-arbre:before {
+    content: "\e961";
+    color: #616161;
+}
+
+.vitamui-icon-ic24-user-transfer:before {
+    content: "\e95e";
+    color: #757575;
+}
+
+.vitamui-icon-ic24-limination:before {
+    content: "\e95f";
+    color: #757575;
+}
+
+.vitamui-icon-ic24-prservation:before {
+    content: "\e960";
+    color: #757575;
+}
+
+.vitamui-icon-filing-plan:before {
+    content: "\ea77";
+}
+
+.vitamui-icon-add-basket:before {
+    content: "\ea74";
+}
+
+.vitamui-icon-export-result:before {
+    content: "\ea75";
+}
+
+.vitamui-icon-download-basic:before {
+    content: "\ea76";
+}
+
+.vitamui-icon-mobile:before {
+    content: "\ea72";
+}
+
+.vitamui-icon-gestion-de-profil:before {
+    content: "\ea73";
+}
+
+.vitamui-icon-app_unknown .path1:before {
+    content: "\ea4d";
+    color: rgb(226, 226, 225);
+}
+
+.vitamui-icon-app_unknown .path2:before {
+    content: "\ea56";
+    margin-left: -1.3505859375em;
+    color: rgb(154, 154, 154);
+}
+
+.vitamui-icon-app_unknown .path3:before {
+    content: "\ea57";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path4:before {
+    content: "\ea58";
+    margin-left: -1.3505859375em;
+    color: rgb(239, 239, 239);
+}
+
+.vitamui-icon-app_unknown .path5:before {
+    content: "\ea5a";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path6:before {
+    content: "\ea5b";
+    margin-left: -1.3505859375em;
+    color: rgb(154, 154, 154);
+}
+
+.vitamui-icon-app_unknown .path7:before {
+    content: "\ea5c";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path8:before {
+    content: "\ea5d";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path9:before {
+    content: "\ea5e";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path10:before {
+    content: "\ea5f";
+    margin-left: -1.3505859375em;
+    color: rgb(239, 239, 239);
+}
+
+.vitamui-icon-app_unknown .path11:before {
+    content: "\ea60";
+    margin-left: -1.3505859375em;
+    color: rgb(197, 197, 197);
+}
+
+.vitamui-icon-app_unknown .path12:before {
+    content: "\ea61";
+    margin-left: -1.3505859375em;
+    color: rgb(154, 154, 154);
+}
+
+.vitamui-icon-app_unknown .path13:before {
+    content: "\ea62";
+    margin-left: -1.3505859375em;
+    color: rgb(133, 133, 133);
+}
+
+.vitamui-icon-app_unknown .path14:before {
+    content: "\ea63";
+    margin-left: -1.3505859375em;
+    color: rgb(133, 133, 133);
+}
+
+.vitamui-icon-app_unknown .path15:before {
+    content: "\ea64";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path16:before {
+    content: "\ea65";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path17:before {
+    content: "\ea66";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path18:before {
+    content: "\ea67";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path19:before {
+    content: "\ea68";
+    margin-left: -1.3505859375em;
+    color: rgb(0, 0, 0);
+}
+
+.vitamui-icon-app_unknown .path20:before {
+    content: "\ea69";
+    margin-left: -1.3505859375em;
+    color: rgb(51, 176, 153);
+}
+
+.vitamui-icon-app_unknown .path21:before {
+    content: "\ea6a";
+    margin-left: -1.3505859375em;
+    color: rgb(156, 210, 206);
+}
+
+.vitamui-icon-app_unknown .path22:before {
+    content: "\ea6b";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path23:before {
+    content: "\ea6c";
+    margin-left: -1.3505859375em;
+    color: rgb(51, 176, 153);
+}
+
+.vitamui-icon-app_unknown .path24:before {
+    content: "\ea6d";
+    margin-left: -1.3505859375em;
+    color: rgb(18, 123, 102);
+}
+
+.vitamui-icon-app_unknown .path25:before {
+    content: "\ea6f";
+    margin-left: -1.3505859375em;
+    color: rgb(240, 240, 240);
+}
+
+.vitamui-icon-app_unknown .path26:before {
+    content: "\ea70";
+    margin-left: -1.3505859375em;
+    color: rgb(240, 240, 240);
+}
+
+.vitamui-icon-app_unknown .path27:before {
+    content: "\ea71";
+    margin-left: -1.3505859375em;
+    color: rgb(255, 255, 255);
+}
+
+.vitamui-icon-add:before {
+    content: "\ea4b";
+}
+
+.vitamui-icon-anomalie:before {
+    content: "\ea4c";
+}
+
+.vitamui-icon-arrow-back:before {
+    content: "\ea4e";
+}
+
+.vitamui-icon-attribution-liste .path1:before {
+    content: "\ea4f";
+    color: none;
+}
+
+.vitamui-icon-attribution-liste .path2:before {
+    content: "\ea50";
+    margin-left: -1em;
+    color: none;
+}
+
+.vitamui-icon-attribution-liste .path3:before {
+    content: "\ea51";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+
+.vitamui-icon-attribution-liste .path4:before {
+    content: "\ea52";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-attribution-liste .path5:before {
+    content: "\ea53";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-attribution-liste .path6:before {
+    content: "\ea54";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-attribution-liste .path7:before {
+    content: "\ea55";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-bordereau:before {
+    content: "\ea59";
+}
+
+.vitamui-icon-calendar:before {
+    content: "\ea6e";
+}
+
+.vitamui-icon-chevron-down:before {
+    content: "\ea7b";
+}
+
+.vitamui-icon-chevron-down-1:before {
+    content: "\ea7c";
+}
+
+.vitamui-icon-chevron-left:before {
+    content: "\ea7d";
+}
+
+.vitamui-icon-chevron-up:before {
+    content: "\ea7e";
+}
+
+.vitamui-icon-chevron-up-1:before {
+    content: "\ea7f";
+}
+
+.vitamui-icon-client-proprietaire:before {
+    content: "\ea82";
+}
+
+.vitamui-icon-close:before {
+    content: "\ea83";
+}
+
+.vitamui-icon-comment:before {
+    content: "\ea86";
+}
+
+.vitamui-icon-consultation-produit:before {
+    content: "\ea87";
+}
+
+.vitamui-icon-content-copy:before {
+    content: "\ea88";
+}
+
+.vitamui-icon-delete:before {
+    content: "\ea8a";
+}
+
+.vitamui-icon-desktop:before {
+    content: "\ea8c";
+}
+
+.vitamui-icon-document-seriel:before {
+    content: "\ea8d";
+}
+
+.vitamui-icon-done:before {
+    content: "\ea95";
+}
+
+.vitamui-icon-dossier-fichier:before {
+    content: "\ea98";
+}
+
+.vitamui-icon-dossier-solidaire:before {
+    content: "\ea9e";
+}
+
+.vitamui-icon-edit:before {
+    content: "\ea9f";
+}
+
+.vitamui-icon-Edition:before {
+    content: "\eaa0";
+}
+
+.vitamui-icon-edit-off:before {
+    content: "\eaa1";
+}
+
+.vitamui-icon-entree:before {
+    content: "\eaa2";
+}
+
+.vitamui-icon-filter-list:before {
+    content: "\eaa6";
+}
+
+.vitamui-icon-flux-industriel-refus .path1:before {
+    content: "\eab0";
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-flux-industriel-refus .path2:before {
+    content: "\eab1";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-flux-industriel-refus .path3:before {
+    content: "\eab2";
+    margin-left: -1em;
+    color: rgb(97, 97, 97);
+}
+
+.vitamui-icon-flux-industriel-refus .path4:before {
+    content: "\eab3";
+    margin-left: -1em;
+    color: none;
+}
+
+.vitamui-icon-flux-industriel-refus .path5:before {
+    content: "\eab4";
+    margin-left: -1em;
+    color: none;
+}
+
+.vitamui-icon-flux-manuel-refus .path1:before {
+    content: "\eaba";
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-flux-manuel-refus .path2:before {
+    content: "\eabb";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-flux-manuel-refus .path3:before {
+    content: "\eabc";
+    margin-left: -1em;
+    color: rgb(117, 117, 117);
+}
+
+.vitamui-icon-flux-manuel-refus .path4:before {
+    content: "\eabd";
+    margin-left: -1em;
+    color: rgb(97, 97, 97);
+}
+
+.vitamui-icon-flux-manuel-refus .path5:before {
+    content: "\eabe";
+    margin-left: -1em;
+    color: none;
+}
+
+.vitamui-icon-flux-manuel-refus .path6:before {
+    content: "\eabf";
+    margin-left: -1em;
+    color: none;
+}
+
+.vitamui-icon-gele:before {
+    content: "\eac1";
+}
+
+.vitamui-icon-gestion-profil:before {
+    content: "\eac2";
+}
+
+.vitamui-icon-home:before {
+    content: "\eac4";
+}
+
+.vitamui-icon-home-add:before {
+    content: "\eac5";
+}
+
+.vitamui-icon-import-export:before {
+    content: "\eaca";
+}
+
+.vitamui-icon-info:before {
+    content: "\eacb";
+}
+
+.vitamui-icon-lock-open:before {
+    content: "\eacc";
+}
+
+.vitamui-icon-more-horiz:before {
+    content: "\eacd";
+}
+
+.vitamui-icon-more-vert:before {
+    content: "\eace";
+}
+
+.vitamui-icon-notifications:before {
+    content: "\eacf";
+}
+
+.vitamui-icon-pause:before {
+    content: "\ead1";
+}
+
+.vitamui-icon-phone:before {
+    content: "\ead8";
+}
+
+.vitamui-icon-picking:before {
+    content: "\ead9";
+}
+
+.vitamui-icon-plan-classement:before {
+    content: "\eada";
+}
+
+.vitamui-icon-position:before {
+    content: "\eadc";
+}
+
+.vitamui-icon-print:before {
+    content: "\eadf";
+}
+
+.vitamui-icon-Rangement-Dplacement:before {
+    content: "\eae3";
+}
+
+.vitamui-icon-recherche-postee:before {
+    content: "\eae4";
+}
+
+.vitamui-icon-Regroupement:before {
+    content: "\eae5";
+}
+
+.vitamui-icon-remove:before {
+    content: "\eae6";
+}
+
+.vitamui-icon-repeat:before {
+    content: "\eae7";
+}
+
+.vitamui-icon-salle:before {
+    content: "\eae8";
+}
+
+.vitamui-icon-scanner:before {
+    content: "\eaec";
+}
+
+.vitamui-icon-search:before {
+    content: "\eaed";
+}
+
+.vitamui-icon-serie:before {
+    content: "\eaee";
+}
+
+.vitamui-icon-settings:before {
+    content: "\eaf2";
+}
+
+.vitamui-icon-share:before {
+    content: "\eaf3";
+}
+
+.vitamui-icon-site:before {
+    content: "\eaf4";
+}
+
+.vitamui-icon-Sortie-massive:before {
+    content: "\eaf5";
+}
+
+.vitamui-icon-telecharger:before {
+    content: "\eaf9";
+}
+
+.vitamui-icon-tenant-add:before {
+    content: "\eafb";
+}
+
+.vitamui-icon-tenant-proprietaire:before {
+    content: "\eb02";
+}
+
+.vitamui-icon-transfert:before {
+    content: "\eb03";
+}
+
+.vitamui-icon-Transfert-intersite:before {
+    content: "\eb04";
+}
+
+.vitamui-icon-type-archives:before {
+    content: "\eb09";
+}
+
+.vitamui-icon-unfold-more:before {
+    content: "\eb19";
+}
+
+.vitamui-icon-Utilisateur-attribuer:before {
+    content: "\eb1a";
+}
+
+.vitamui-icon-Vrification-de-contenu:before {
+    content: "\eb1f";
+}
+
+.vitamui-icon-versement:before {
+    content: "\eb20";
+}
+
+.vitamui-icon-visibility:before {
+    content: "\eb24";
+}
+
+.vitamui-icon-workflow:before {
+    content: "\eb25";
+}
+
+.vitamui-icon-apps-colored .path1:before {
+    content: "\e955";
+    color: rgb(0, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path2:before {
+    content: "\e956";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path3:before {
+    content: "\e957";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path4:before {
+    content: "\e958";
+    margin-left: -1em;
+    color: rgb(255, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path5:before {
+    content: "\e959";
+    margin-left: -1em;
+    color: rgb(255, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path6:before {
+    content: "\e95a";
+    margin-left: -1em;
+    color: rgb(255, 0, 0);
+}
+
+.vitamui-icon-apps-colored .path7:before {
+    content: "\e95b";
+    margin-left: -1em;
+    color: rgb(255, 192, 203);
+}
+
+.vitamui-icon-apps-colored .path8:before {
+    content: "\e95c";
+    margin-left: -1em;
+    color: rgb(255, 192, 203);
+}
+
+.vitamui-icon-apps-colored .path9:before {
+    content: "\e95d";
+    margin-left: -1em;
+    color: rgb(255, 192, 203);
+}
+
+.vitamui-icon-barcode:before {
+    content: "\e954";
+}
+
+.vitamui-icon-rack:before {
+    content: "\e952";
+}
+
+.vitamui-icon-room:before {
+    content: "\e953";
+}
+
+.vitamui-icon-folder-full:before {
+    content: "\e94f";
+}
+
+.vitamui-icon-folder-with-file:before {
+    content: "\e950";
+}
+
+.vitamui-icon-document-layers:before {
+    content: "\e94c";
+}
+
+.vitamui-icon-file-cog-middle:before {
+    content: "\e94d";
+}
+
+.vitamui-icon-file-cog-up:before {
+    content: "\e94e";
+}
+
+.vitamui-icon-api-supervision:before {
+    content: "\e94b";
+}
+
+.vitamui-icon-truck:before {
+    content: "\e94a";
+}
+
+.vitamui-icon-physical-big-box:before {
+    content: "\e948";
+}
+
+.vitamui-icon-physical-big-box-content:before {
+    content: "\e947";
+}
+
+.vitamui-icon-physical-small-box:before {
+    content: "\e949";
+}
+
+.vitamui-icon-physical-small-box-content:before {
+    content: "\e940";
+}
+
+.vitamui-icon-folder:before {
+    content: "\e925";
+}
+
+.vitamui-icon-folder-content:before {
+    content: "\e946";
+}
+
+.vitamui-icon-archive-ingest:before {
+    content: "\e945";
+}
+
+.vitamui-icon-tree-arrow:before {
+    content: "\e944";
+}
+
+.vitamui-icon-tree-plus:before {
+    content: "\e942";
+}
+
+.vitamui-icon-tree-minus:before {
+    content: "\e943";
+}
+
+.vitamui-icon-item:before {
+    content: "\e941";
+}
+
+.vitamui-icon-circle-chevron:before {
+    content: "\e93f";
+}
+
+.vitamui-icon-checklist-pen:before {
+    content: "\e93e";
+}
+
+.vitamui-icon-gear:before {
+    content: "\e93d";
+}
+
+.vitamui-icon-electronic-folder:before {
+    content: "\e93c";
+}
+
+.vitamui-icon-electronic-file:before {
+    content: "\e93b";
+}
+
+.vitamui-icon-support-check-list:before {
+    content: "\e938";
+}
+
+.vitamui-icon-admin-check-list:before {
+    content: "\e939";
+}
+
+.vitamui-icon-user-board:before {
+    content: "\e93a";
+}
+
+.vitamui-icon-layer:before {
+    content: "\e935";
+}
+
+.vitamui-icon-layers:before {
+    content: "\e936";
+}
+
+.vitamui-icon-info-circle:before {
+    content: "\e937";
+}
+
+.vitamui-icon-danger:before {
+    content: "\e932";
+}
+
+.vitamui-icon-lock:before {
+    content: "\e933";
+}
+
+.vitamui-icon-refresh:before {
+    content: "\e934";
+}
+
+.vitamui-icon-cycle-gear:before {
+    content: "\e931";
+}
+
+.vitamui-icon-docuware-logo:before {
+    content: "\e92f";
+}
+
+.vitamui-icon-alfresco-logo:before {
+    content: "\e930";
+}
+
+.vitamui-icon-plus:before {
+    content: "\e92e";
+}
+
+.vitamui-icon-chevron-right:before {
+    content: "\e92c";
+}
+
+.vitamui-icon-chevron-right-plus:before {
+    content: "\e92d";
+}
+
+.vitamui-icon-user-key-plus:before {
+    content: "\e92a";
+}
+
+.vitamui-icon-user-key:before {
+    content: "\e92b";
+}
+
+.vitamui-icon-exclamation-point:before {
+    content: "\e922";
+}
+
+.vitamui-icon-file:before {
+    content: "\e926";
+}
+
+.vitamui-icon-download:before {
+    content: "\e929";
+}
+
+.vitamui-icon-safe-key-plus:before {
+    content: "\e905";
+}
+
+.vitamui-icon-admin-key-plus:before {
+    content: "\e91b";
+}
+
+.vitamui-icon-keys-plus:before {
+    content: "\e921";
+}
+
+.vitamui-icon-filing:before {
+    content: "\e923";
+}
+
+.vitamui-icon-basket:before {
+    content: "\e924";
+}
+
+.vitamui-icon-support-box:before {
+    content: "\e927";
+}
+
+.vitamui-icon-admin-box:before {
+    content: "\e928";
+}
+
+.vitamui-icon-triangle:before {
+    content: "\e920";
+}
+
+.vitamui-icon-box:before {
+    content: "\e91f";
+}
+
+.vitamui-icon-box-arrow:before {
+    content: "\e91a";
+}
+
+.vitamui-icon-box-hand:before {
+    content: "\e91d";
+}
+
+.vitamui-icon-box-plus:before {
+    content: "\e91e";
+}
+
+.vitamui-icon-user:before {
+    content: "\e90b";
+}
+
+.vitamui-icon-user-plus:before {
+    content: "\e919";
+}
+
+.vitamui-icon-pin:before {
+    content: "\e90f";
+}
+
+.vitamui-icon-bank-plus:before {
+    content: "\e911";
+}
+
+.vitamui-icon-key-plus:before {
+    content: "\e918";
+}
+
+.vitamui-icon-safe-plus:before {
+    content: "\e913";
+}
+
+.vitamui-icon-key:before {
+    content: "\e914";
+}
+
+.vitamui-icon-safe:before {
+    content: "\e915";
+}
+
+.vitamui-icon-safe-gear:before {
+    content: "\e917";
+}
+
+.vitamui-icon-light-bulb:before {
+    content: "\e90e";
+}
+
+.vitamui-icon-link:before {
+    content: "\e901";
+}
+
+.vitamui-icon-box-gear:before {
+    content: "\e902";
+}
+
+.vitamui-icon-safe-key:before {
+    content: "\e906";
+}
+
+.vitamui-icon-board:before {
+    content: "\e907";
+}
+
+.vitamui-icon-deposit:before {
+    content: "\e908";
+}
+
+.vitamui-icon-box-check:before {
+    content: "\e90a";
+}
+
+.vitamui-icon-question-mark:before {
+    content: "\e90c";
+}
+
+.vitamui-icon-user-keys:before {
+    content: "\e900";
+}
+
+.vitamui-icon-admin-key:before {
+    content: "\e903";
+}
+
+.vitamui-icon-bank:before {
+    content: "\e904";
+}
+
+.vitamui-icon-keys:before {
+    content: "\e909";
+}
+
+.vitamui-icon-link-key:before {
+    content: "\e90d";
+}
+
+.vitamui-icon-return-box:before {
+    content: "\e910";
+}
+
+.vitamui-icon-safe-search:before {
+    content: "\e912";
+}
+
+.vitamui-icon-search-safe:before {
+    content: "\e916";
+}
+
+.vitamui-icon-support-keys:before {
+    content: "\e91c";
+}
+
+.vitamui-icon-cross:before {
+    content: "\ea0f";
+}
+
+.vitamui-icon-archive-room:before {
+    content: "\e951";
+}
+
+.vitamui-icon-loop2:before {
+    content: "\ea2e";
+}
+
+.vitamui-icon-radio-checked:before {
+    content: "\ea78";
+}

@@ -49,7 +49,18 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     const url = new URL(this.location.href);
     const isSubrogation = !!url.searchParams.get('isSubrogation');
     if (isSubrogation) {
-      return from(this.surrogateUser(url.searchParams.get('username')));
+      return from(
+        this.surrogateUser(
+          url.searchParams.get('superUserEmail'),
+          url.searchParams.get('superUserCustomerId'),
+          url.searchParams.get('surrogateEmail'),
+          url.searchParams.get('surrogateCustomerId'),
+        ),
+      );
+    }
+    const hasUsername = !!url.searchParams.get('username');
+    if (hasUsername) {
+      return from(this.initLoginWithUserName(url.searchParams.get('username')));
     }
 
     const urlCleaner = this.oAuthService.events.pipe(
@@ -63,7 +74,23 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     );
   }
 
-  private surrogateUser(username: string): Promise<boolean> {
+  private surrogateUser(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): Promise<boolean> {
+    return this.oAuthService.loadDiscoveryDocument().then(() => {
+      const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
+      const redirectUri = postLogoutUri + this.getUrlSeparator(postLogoutUri);
+      this.oAuthService.redirectUri = redirectUri;
+      this.oAuthService.initCodeFlow('', {
+        superUserEmail: superUser,
+        superUserCustomerId,
+        surrogateEmail: surrogate,
+        surrogateCustomerId,
+        redirect_uri: redirectUri,
+      });
+      return true;
+    });
+  }
+
+  private initLoginWithUserName(username: string): Promise<boolean> {
     return this.oAuthService.loadDiscoveryDocument().then(() => {
       const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
       const redirectUri = postLogoutUri + this.getUrlSeparator(postLogoutUri);
@@ -77,10 +104,27 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  public initSubrogationFlow(username: string) {
+  public logoutSubrogationAndRedirectToLoginPage(username: string) {
     const oldPostLogoutRedirectUri = this.oAuthService.postLogoutRedirectUri;
     const separator = this.getUrlSeparator(oldPostLogoutRedirectUri);
-    const subrogationPayload = 'isSubrogation=true&username=' + username;
+    const usernamePayload = 'username=' + username;
+    this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + usernamePayload;
+    this.oAuthService.revokeTokenAndLogout();
+  }
+
+  public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string) {
+    const oldPostLogoutRedirectUri = this.oAuthService.postLogoutRedirectUri;
+    const separator = this.getUrlSeparator(oldPostLogoutRedirectUri);
+    const subrogationPayload =
+      'isSubrogation=true' +
+      '&superUserEmail=' +
+      superUser +
+      '&superUserCustomerId=' +
+      superUserCustomerId +
+      '&surrogateEmail=' +
+      surrogate +
+      '&surrogateCustomerId=' +
+      surrogateCustomerId;
     this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + subrogationPayload;
     this.oAuthService.revokeTokenAndLogout();
   }

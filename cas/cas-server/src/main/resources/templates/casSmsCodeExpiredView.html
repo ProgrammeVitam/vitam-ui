@@ -2,24 +2,34 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <title th:text="#{screen.mfa.sms.expired.pagetitle}"></title>
+  <title th:text="#{screen.mfa.sms.expired.pagetitle}"></title>
 </head>
 
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
-<div layout:fragment="content">
 
-    <div class="mfa-expired">
 
-        <p class="text1" th:text="#{screen.mfa.sms.expired.text1}"/>
 
-        <form method="post" id="resendCodeForm">
-            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-            <input type="hidden" name="_eventId" value="resend"/>
-            <a class="button" th:text="#{screen.mfa.sms.expired.resend(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
-        </form>
-
+<div layout:fragment="content" class="col">
+  <div class="Text-medium Grey-600 row margin-top-5">
+    <div th:text="#{screen.mfa.sms.expired.text1}">
+      Votre code a expiré ?&nbsp;
     </div>
-
+    <form method="post" id="resendCodeForm">
+      <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+      <input type="hidden" name="_eventId" value="resend"/>
+      <div>
+        <a class="Button"
+           onclick="$('#resendCodeForm').submit();"
+           th:text="#{screen.mfa.sms.expired.resend(${mobile})}">
+          Envoyer un nouveau code au {0}
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
+
+
+
+
 </body>
 </html>

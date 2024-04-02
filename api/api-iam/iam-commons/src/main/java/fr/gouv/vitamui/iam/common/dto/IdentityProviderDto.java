@@ -135,5 +135,6 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private Boolean usePkce;
 
+    // FIXME : Convert to enum
     private String protocoleType;
 }

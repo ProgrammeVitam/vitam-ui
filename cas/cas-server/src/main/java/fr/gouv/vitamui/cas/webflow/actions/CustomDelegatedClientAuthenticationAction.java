@@ -42,9 +42,12 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.ticket.TicketGrantingTicket;
@@ -58,18 +61,23 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static fr.gouv.vitamui.cas.authentication.UserPrincipalResolver.EMAIL_VALID_REGEXP;
 
 /**
  * Custom authentication delegation:
  * - automatic delegation given the provided IdP
  * - extraction of the username/surrogate passed as a request parameter
  * - save the portalUrl in the webflow.
- *
- *
  */
 public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
+    public static final Pattern CUSTOMER_ID_VALIDATION_PATTER = Pattern.compile("^[_a-z0-9]+$");
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
 
     private final IdentityProviderHelper identityProviderHelper;
 
@@ -79,26 +87,27 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final TicketRegistry ticketRegistry;
 
+    private final CasExternalRestClient casExternalRestClient;
+
     private final String vitamuiPortalUrl;
 
-    private final String surrogationSeparator;
-
-    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext configContext,
-                                                     final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
-                                                     final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
-                                                     final IdentityProviderHelper identityProviderHelper,
-                                                     final ProvidersService providersService,
-                                                     final Utils utils,
-                                                     final TicketRegistry ticketRegistry,
-                                                     final String vitamuiPortalUrl,
-                                                     final String surrogationSeparator) {
+    public CustomDelegatedClientAuthenticationAction(
+        final DelegatedClientAuthenticationConfigurationContext configContext,
+        final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
+        final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final CasExternalRestClient casExternalRestClient,
+        final String vitamuiPortalUrl) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
+        this.casExternalRestClient = casExternalRestClient;
         this.vitamuiPortalUrl = vitamuiPortalUrl;
-        this.surrogationSeparator = surrogationSeparator;
     }
 
     @Override
@@ -117,24 +126,53 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         val event = super.doExecute(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
 
-            // extract and parse the request username if provided
-            String username = context.getRequestParameters().get(Constants.USERNAME);
-            if (username != null) {
+            // extract and parse username
+            String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
 
-                username = username.toLowerCase();
-                LOGGER.debug("Provided username: {}", username);
-                if (username.startsWith(surrogationSeparator)) {
-                    username = org.apache.commons.lang.StringUtils.substringAfter(username, surrogationSeparator);
-                }
+            // extract and parse subrogation information
+            String surrogateEmail = context.getRequestParameters().get(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
+            String surrogateCustomerId =
+                context.getRequestParameters().get(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
 
+            String superUserEmail = context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
+            String superUserCustomerId =
+                context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
+
+            if (StringUtils.isNoneBlank(surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId)) {
+
+                validateEmail(surrogateEmail);
+                validateEmail(superUserEmail);
+                validateCustomerId(surrogateCustomerId);
+                validateCustomerId(superUserCustomerId);
+
+                LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+                    surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+
+                flowScope.put(Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
+                flowScope.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
+                flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
+                flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
+
+                SurrogateUsernamePasswordCredential credential = new SurrogateUsernamePasswordCredential();
+                credential.setUsername(superUserEmail);
+                credential.setSurrogateUsername(surrogateEmail);
+                WebUtils.putCredential(context, credential);
+
+                CustomerDto surrogateCustomer =
+                    casExternalRestClient.getCustomersByIds(utils.buildContext(surrogateEmail),
+                            List.of(surrogateCustomerId))
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException(
+                            "Invalid surrogateCustomerId: '" + surrogateCustomerId + "'"));
+
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getCompanyName());
+
+            } else if (StringUtils.isNotBlank(username)) {
+                validateEmail(username);
                 WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
                 flowScope.put(Constants.PROVIDED_USERNAME, username);
-
-                if (username.contains(surrogationSeparator)) {
-                    final String[] parts = username.split("\\" + surrogationSeparator);
-                    flowScope.put(Constants.SURROGATE, parts[0]);
-                    flowScope.put(Constants.SUPER_USER, parts[1]);
-                }
             }
 
             // get the idp if it exists
@@ -142,6 +180,8 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             val idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
+
+                // FIXME LGH : IDP vs subrogation vs login. What about customerId
 
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
@@ -171,5 +211,23 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         }
 
         return event;
+    }
+
+    private void validateEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Null email");
+        }
+        if (!Pattern.matches(EMAIL_VALID_REGEXP, email)) {
+            throw new IllegalArgumentException("email : '" + email + "' format is not allowed");
+        }
+    }
+
+    private void validateCustomerId(String customerId) {
+        if (customerId == null) {
+            throw new IllegalArgumentException("Null customerId");
+        }
+        if (!CUSTOMER_ID_VALIDATION_PATTER.matcher(customerId).matches()) {
+            throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
+        }
     }
 }

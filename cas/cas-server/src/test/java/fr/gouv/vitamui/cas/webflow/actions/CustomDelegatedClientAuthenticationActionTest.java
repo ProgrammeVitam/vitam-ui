@@ -3,11 +3,14 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -22,28 +25,33 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link CustomDelegatedClientAuthenticationAction}.
- *
- *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class CustomDelegatedClientAuthenticationActionTest extends BaseWebflowActionTest {
 
-    private static final String EMAIL1 = "julien@vitamui.com";
-
-    private static final String EMAIL2 = "pierre@vitamui.com";
+    private static final String EMAIL1 = "user1@vitamui.com";
+    private static final String CUSTOMER_ID_1 = "customer1";
+    private static final String EMAIL2 = "user2@vitamui.fr";
+    private static final String CUSTOMER_ID_2 = "customer2";
+    private static final String BAD_EMAIL = "ééééàààà@vitamui.com";
+    private static final String BAD_CUSTOMER_ID = "ééééàààà";
+    private static final String CODE = "code";
+    private static final String COMPANY = "company";
 
     private CustomDelegatedClientAuthenticationAction action;
 
@@ -53,53 +61,107 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         super.setUp();
 
         val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
-        when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(mock(DelegatedClientIdentityProviderConfigurationProducer.class));
+        when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(
+            mock(DelegatedClientIdentityProviderConfigurationProducer.class));
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
-        action = new CustomDelegatedClientAuthenticationAction(configContext, mock(DelegatedClientAuthenticationWebflowManager.class),
+
+        CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
+        CustomerDto surrogateCustomerDto = new CustomerDto();
+        surrogateCustomerDto.setCode(CODE);
+        surrogateCustomerDto.setCompanyName(COMPANY);
+        surrogateCustomerDto.setId(CUSTOMER_ID_2);
+        doReturn(List.of(surrogateCustomerDto))
+            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+
+        action = new CustomDelegatedClientAuthenticationAction(configContext,
+            mock(DelegatedClientAuthenticationWebflowManager.class),
             mock(DelegatedClientAuthenticationFailureEvaluator.class), mock(IdentityProviderHelper.class),
-            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
+            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), casExternalRestClient, "");
     }
 
     @Test
-    public void testUsernameNoSubrogation() {
+    public void testPreProvidedUsername() {
         requestParameters.put("username", EMAIL1);
 
         action.doExecute(context);
 
-        assertEquals(EMAIL1, ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
-        assertNull(flowParameters.get("surrogate"));
-        assertNull(flowParameters.get("superUser"));
+        assertThat(flowParameters.get(Constants.PROVIDED_USERNAME)).isEqualTo(EMAIL1);
+
+        assertNull(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL));
+        assertNull(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID));
+        assertNull(flowParameters.get(Constants.FLOW_LOGIN_EMAIL));
+        assertNull(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID));
     }
 
     @Test
-    public void testUsernameRequestedSubrogation() {
-        requestParameters.put("username", "," + EMAIL2);
+    public void testInvalidPreProvidedUsername() {
+        requestParameters.put("username", BAD_EMAIL);
 
-        action.doExecute(context);
-
-        assertEquals(EMAIL2, ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
-        assertNull(flowParameters.get("surrogate"));
-        assertNull(flowParameters.get("superUser"));
+        assertThatThrownBy(() -> action.doExecute(context))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("format is not allowed");
     }
 
     @Test
-    public void testUsernameWithSubrogation() {
-        requestParameters.put("username", EMAIL1 + "," + EMAIL2);
+    public void testSubrogation() {
+        requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, EMAIL1);
+        requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
+        requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
+        requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, CUSTOMER_ID_2);
 
         action.doExecute(context);
 
-        assertEquals(EMAIL1 + "," + EMAIL2,
-                ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
-        assertEquals(EMAIL1, flowParameters.get("surrogate"));
-        assertEquals(EMAIL2, flowParameters.get("superUser"));
+        assertThat(flowParameters.get("credential")).isOfAnyClassIn(SurrogateUsernamePasswordCredential.class);
+        SurrogateUsernamePasswordCredential credential =
+            ((SurrogateUsernamePasswordCredential) flowParameters.get("credential"));
+        assertThat(credential.getUsername()).isEqualTo(EMAIL1);
+        assertThat(credential.getSurrogateUsername()).isEqualTo(EMAIL2);
+
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_1);
+        assertThat(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL)).isEqualTo(EMAIL2);
+        assertThat(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_2);
+        assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_CODE)).isEqualTo(CODE);
+        assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_NAME)).isEqualTo(COMPANY);
+
+        assertNull(flowParameters.get(Constants.PROVIDED_USERNAME));
     }
 
     @Test
-    public void testNoUsername() {
+    public void testInvalidSubrogationEmail() {
+
+        requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, BAD_EMAIL);
+        requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
+        requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
+        requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, CUSTOMER_ID_2);
+
+        assertThatThrownBy(() -> action.doExecute(context))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("format is not allowed");
+    }
+
+    @Test
+    public void testInvalidSubrogationCustomerId() {
+
+        requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, EMAIL1);
+        requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
+        requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
+        requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, BAD_CUSTOMER_ID);
+
+        assertThatThrownBy(() -> action.doExecute(context))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid customerId");
+    }
+
+    @Test
+    public void testNoUsernameAndNoSubrogation() {
         action.doExecute(context);
 
-        assertNull(flowParameters.get("credential"));
-        assertNull(flowParameters.get("surrogate"));
-        assertNull(flowParameters.get("superUser"));
+        assertNull(flowParameters.get(Constants.PROVIDED_USERNAME));
+
+        assertNull(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL));
+        assertNull(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID));
+        assertNull(flowParameters.get(Constants.FLOW_LOGIN_EMAIL));
+        assertNull(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID));
     }
 }

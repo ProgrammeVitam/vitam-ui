@@ -50,8 +50,6 @@ import java.util.Map;
 
 /**
  * Build an identity provider.
- *
- *
  */
 public class IdentityProviderBuilder {
 
@@ -113,11 +111,15 @@ public class IdentityProviderBuilder {
     private Boolean usePkce;
 
     private String protocoleType;
+
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
-                                   final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
-                                   final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-                                   final boolean readonly, final String mailAttribute, final String identifierAttribute, final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding, final boolean wantsAssertionsSigned, final boolean authnRequestSigned, final boolean propagateLogout, final boolean autoProvisioningEnabled,
-                                   String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
+        final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
+        final String privateKeyPassword, final Resource idpMetadata, final String customerId,
+        final Boolean readonly, final String mailAttribute, final String identifierAttribute,
+        final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding,
+        final Boolean wantsAssertionsSigned, final Boolean authnRequestSigned, final boolean propagateLogout, final Boolean autoProvisioningEnabled,
+        String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm,
+        Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -132,21 +134,21 @@ public class IdentityProviderBuilder {
         this.mailAttribute = mailAttribute;
         this.identifierAttribute = identifierAttribute;
         this.maximumAuthenticationLifetime = maximumAuthenticationLifetime;
-        this.authnRequestBinding =  authnRequestBinding;
+        this.authnRequestBinding = authnRequestBinding;
         this.wantsAssertionsSigned = wantsAssertionsSigned;
         this.authnRequestSigned = authnRequestSigned;
         this.propagateLogout = propagateLogout;
         this.autoProvisioningEnabled = autoProvisioningEnabled;
-        this.clientId=clientId;
-        this.clientSecret=clientSecret;
-        this.discoveryUrl=discoveryUrl;
-        this.scope=scope;
-        this.preferredJwsAlgorithm=preferredJwsAlgorithm;
-        this.customParams=customParams;
-        this.useNonce=useNonce;
-        this.usePkce=usePkce;
-        this.useState=useState;
-        this.protocoleType= protocoleType;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.discoveryUrl = discoveryUrl;
+        this.scope = scope;
+        this.preferredJwsAlgorithm = preferredJwsAlgorithm;
+        this.customParams = customParams;
+        this.useNonce = useNonce;
+        this.usePkce = usePkce;
+        this.useState = useState;
+        this.protocoleType = protocoleType;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -194,7 +196,7 @@ public class IdentityProviderBuilder {
     }
 
     public static void extractIdpMetadata(final IdentityProviderDto idp, final Resource idpMetadata)
-            throws IOException {
+        throws IOException {
         if (idpMetadata != null) {
             try (final InputStream isIdpMeta = idpMetadata.getInputStream()) {
                 final String idpMeta = IOUtils.toString(isIdpMeta, "UTF-8");
@@ -204,7 +206,7 @@ public class IdentityProviderBuilder {
     }
 
     public static void extractKeystore(final IdentityProviderDto idp, final Resource keystore)
-            throws IOException, UnsupportedEncodingException {
+        throws IOException, UnsupportedEncodingException {
         if (keystore != null) {
             try (final InputStream isKeystore = keystore.getInputStream()) {
                 final byte[] keystoreArray = IOUtils.toByteArray(isKeystore);

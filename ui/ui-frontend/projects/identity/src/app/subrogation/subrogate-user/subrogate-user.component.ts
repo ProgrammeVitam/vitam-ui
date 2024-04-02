@@ -108,7 +108,7 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
   }
 
   public openUserSubrogationDialog(): void {
-    this.subrogationModalService.open(this.customer.emailDomains);
+    this.subrogationModalService.open(this.customer.emailDomains, this.customer.id);
   }
 
   public onSearchSubmit(search: string): void {

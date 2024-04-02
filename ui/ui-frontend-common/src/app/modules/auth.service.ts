@@ -103,14 +103,14 @@ export class AuthService implements OnDestroy {
     this.authenticatorService.logout();
   }
 
-  public logoutForSubrogation(superUser: string, surrogate: string) {
-    const email = surrogate + ',' + superUser;
-    this.logoutAndRedirectToUiForUser(email);
+  public logoutForSubrogation(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string) {
+    this.user = null;
+    this.authenticatorService.initSubrogationFlow(superUser, superUserCustomerId, surrogate, surrogateCustomerId);
   }
 
-  public logoutAndRedirectToUiForUser(email: string) {
+  public logoutAndRedirectToUiForUser(superUser: string) {
     this.user = null;
-    this.authenticatorService.initSubrogationFlow(email);
+    this.authenticatorService.logoutSubrogationAndRedirectToLoginPage(superUser);
   }
 
   public redirectToLoginPage(): void {

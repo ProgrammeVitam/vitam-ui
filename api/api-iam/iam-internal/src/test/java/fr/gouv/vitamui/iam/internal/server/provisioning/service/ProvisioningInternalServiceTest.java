@@ -38,6 +38,7 @@
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
 
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -45,8 +46,6 @@ import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebCl
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-
-import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import org.junit.Assert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -56,8 +55,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
@@ -136,7 +135,8 @@ class ProvisioningInternalServiceTest {
         Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy)
             .buildWebClient(ArgumentMatchers.any());
         Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any()))
             .thenReturn(providedUserDtoStub);
 
         // Do
@@ -146,7 +146,8 @@ class ProvisioningInternalServiceTest {
 
         // Verify
         Mockito.verify(provisioningWebClient, Mockito.times(1)).getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+            ArgumentMatchers.any());
         assertEquals(providedUserDtoStub, providedUserDto);
     }
 
@@ -156,16 +157,19 @@ class ProvisioningInternalServiceTest {
         var provisioningWebClient = Mockito.mock(ProvisioningWebClient.class);
         var providedUserDtoStub = new ProvidedUserDto();
         providedUserDtoStub.setFirstname("youyou");
-        AddressDto addressDto =  new AddressDto();
+        AddressDto addressDto = new AddressDto();
         addressDto.setStreet("57 Avenue de Grandes Armées");
         addressDto.setCity("Paris");
         providedUserDtoStub.setAddress(addressDto);
         ReflectionTestUtils.setField(provisioningInternalServiceSpy, "maxStreetLength", 20);
 
-        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy).getProvisioningClientConfiguration(ArgumentMatchers.any());
-        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy).buildWebClient(ArgumentMatchers.any());
+        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy)
+            .getProvisioningClientConfiguration(ArgumentMatchers.any());
+        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy)
+            .buildWebClient(ArgumentMatchers.any());
         Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(providedUserDtoStub);
+            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+            ArgumentMatchers.any())).thenReturn(providedUserDtoStub);
 
         ProvidedUserDto providedUserDto =
             provisioningInternalServiceSpy
