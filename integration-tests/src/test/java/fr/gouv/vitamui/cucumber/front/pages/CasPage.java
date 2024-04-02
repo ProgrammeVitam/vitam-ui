@@ -31,7 +31,7 @@ public class CasPage extends AbstractPage {
     }
 
     public void waitForErrorDisplayed() {
-        waitFor(getErrorElement().getWrappedElement());
+        waitFor(getErrorElement().getElement());
     }
     public boolean hasErrorDispalyed() {
         return getErrorElement().isDisplayed();
@@ -42,11 +42,11 @@ public class CasPage extends AbstractPage {
     }
 
     public void waitForEmailInputToBeVisible() {
-        waitFor(find(By.id("username")).getWrappedElement());
+        waitFor(find(By.id("username")).getElement());
     }
 
     public void waitForPasswordInputToBeVisible() {
-        waitFor(find(By.id("password")).getWrappedElement());
+        waitFor(find(By.id("password")).getElement());
     }
 
     public void waitForTitleToAppear() {
@@ -54,6 +54,6 @@ public class CasPage extends AbstractPage {
     }
 
     public void waitForButtonBack() {
-        waitFor(find(By.className("back")).getWrappedElement());
+        waitFor(find(By.className("back")).getElement());
     }
 }

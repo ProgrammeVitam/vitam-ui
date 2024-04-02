@@ -215,7 +215,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.thaiopensource</groupId>
+            <groupId>org.relaxng</groupId>
             <artifactId>jing</artifactId>
             <version>${thaiopensource.jing.version}</version>
             <exclusions>
@@ -235,7 +235,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.thaiopensource</groupId>
+            <groupId>org.relaxng</groupId>
             <artifactId>trang</artifactId>
             <version>${thaiopensource.trang.version}</version>
             <exclusions>
