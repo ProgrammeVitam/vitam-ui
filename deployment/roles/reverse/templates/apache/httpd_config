@@ -5,10 +5,10 @@
     SSLCertificateFile /etc/{{apache_service}}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{apache_service}}/certs/reverse.key
     ServerName reverse.service.{{ consul_domain }}
-    ServerAlias {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}
+    ServerAlias {{ vitamui_reverse_external_dns }}
     ServerAlias {{ ip_service }}
 {% else %}
-    ServerName {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}
+    ServerName {{ vitamui_reverse_external_dns }}
 {% endif %}
 
     #DocumentRoot "/var/www/html-{{ vitamui_site_name }}"

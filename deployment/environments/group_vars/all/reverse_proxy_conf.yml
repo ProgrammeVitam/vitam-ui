@@ -1,4 +1,4 @@
 ---
 # Reverse configuration
 
-url_prefix: "{{ vitamui_reverse_external_protocol | default('https') }}://{{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}"
+url_prefix: "{{ vitamui_reverse_external_protocol | default('https') }}://{{ vitamui_reverse_external_dns }}"

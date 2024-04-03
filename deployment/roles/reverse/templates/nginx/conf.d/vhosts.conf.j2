@@ -7,7 +7,7 @@ server {
   listen {{ ip_service }}:443 ssl;
   include {{ nginx_ssl_conf }}/ssl.conf;
 
-  server_name {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }};
+  server_name {{ vitamui_reverse_external_dns }};
 
   location = /favicon.ico {
     alias {{ root_path }}/assets/favicon.ico;

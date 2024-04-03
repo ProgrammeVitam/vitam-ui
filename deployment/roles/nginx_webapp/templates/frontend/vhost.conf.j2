@@ -1,7 +1,7 @@
 #jinja2: lstrip_blocks: True
 server {
   listen              {{ vitamui_struct.port_service}} ssl;
-  server_name         {{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }};
+  server_name         {{ vitamui_reverse_external_dns }};
   include {{ nginx_ssl_dir }}/ssl.conf;
 
   root   {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};

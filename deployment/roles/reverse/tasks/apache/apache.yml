@@ -111,7 +111,7 @@
   with_items:
     - "crt"
     - "key"
-  when: vitamui_reverse_external_protocol | default(vitam_reverse_external_protocol) | lower == 'https'
+  when: vitamui_reverse_external_protocol | lower == 'https'
 
 - name: Copy the CA
   copy:
@@ -125,7 +125,7 @@
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"
-    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitamui_reverse_external_dns | default(vitam_reverse_external_dns) }}.conf"
+    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitamui_reverse_external_dns }}.conf"
     owner: "root"
     mode: 0644
   tags:

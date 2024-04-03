@@ -22,7 +22,7 @@ hosts_vitamui_reverseproxy
 
 [hosts_vitamui_reverseproxy]
 # EDIT: Mandatory
-# WARNING: Do not colocate with [hosts_browse] and [reverse] from Vitam when using reverse: nginx
+# WARNING: Do not collocate with [hosts_browse] and [reverse] from Vitam
 
 
 ################################################################################
@@ -206,7 +206,10 @@ reverse
 
 [reverse]
 # EDIT: Optionnal
-# Only if you want to apply merge_index to provide VitamUI links on reverse's Vitam (Apache)
+# This group need vitam_reverse_external_dns variable to be configured
+# WARNING: Do not use in production environment
+# WARNING: Do not collocate with [hosts_vitamui_reverseproxy]
+# This group is used only to apply merge_index role to provide VitamUI links on Vitam's reverse (Apache)
 
 
 ################################################################################
