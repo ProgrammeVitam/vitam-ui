@@ -1,0 +1,34 @@
+# Module: apache
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/7.17/filebeat-module-apache.html
+
+- module: apache
+  # Access logs
+  access:
+    enabled: {{ filebeat.cots.apache.enable_access | bool | lower }}
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+    input:
+      fields:
+        kind: access
+        vitam_component: apache
+        source: vitamui
+      processors:
+      - dissect:
+          tokenizer: '%{client_ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code} %{response_size} "%{referer}" "%{user_agent}"'
+          field: "message"
+          target: ""
+
+  # Error logs
+  error:
+    enabled: {{ filebeat.cots.apache.enable_log | bool | lower }}
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+    input:
+      fields:
+      kind: error
+      vitam_component: apache
+      source: vitamui

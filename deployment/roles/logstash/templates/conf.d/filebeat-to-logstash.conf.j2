@@ -11,12 +11,28 @@ input
 
 output
 {
-    elasticsearch
+    if [event][module] =~ "system"
     {
-
-        index => "logstash-vitam-%{+YYYY.MM.dd}"
-
-        hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
-
+        elasticsearch
+        {
+            index => "logstash-system-%{+YYYY.MM.dd}"
+            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+        }
+    }
+    else if [fields][kind] =~ "access" or [fields][kind] =~ "management"
+    {
+        elasticsearch
+        {
+            index => "logstash-access-%{+YYYY.MM.dd}"
+            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+        }
+    }
+    else
+    {
+        elasticsearch
+        {
+            index => "logstash-vitam-%{+YYYY.MM.dd}"
+            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+        }
     }
 }

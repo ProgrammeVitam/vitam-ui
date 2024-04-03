@@ -1,36 +1,94 @@
 #jinja2: lstrip_blocks: True
-
 {% for vitamui_service in vitamui_service_list %}
-
 #
-# VITAMUI SERVICE : "{{ vitamui_service  }}"
+# VITAMUI SERVICE : "{{ vitamui_service }}"
 #
+  {% if filebeat.services[vitamui_service].enable_access | default(true) | bool %}
 - type: filestream
-  id: "{{ vitam_site_name }}-{{ vitamui_service }}-access"
+  id: {{ vitam_site_name }}-{{ vitamui_service }}-access
+  enabled: {{ {'vitamui_iam_internal': filebeat.services.vitamui_iam_internal.enable_access,
+    'vitamui_ingest_internal': filebeat.services.vitamui_ingest_internal.enable_access,
+    'vitamui_referential_internal': filebeat.services.vitamui_referential_internal.enable_access,
+    'vitamui_archive_search_internal': filebeat.services.vitamui_archive_search_internal.enable_access,
+    'vitamui_security_internal': filebeat.services.vitamui_security_internal.enable_access,
+    'vitamui_collect_internal': filebeat.services.vitamui_collect_internal.enable_access,
+    'cas_server': filebeat.services.cas_server.enable_access,
+    'vitamui_iam_external': filebeat.services.vitamui_iam_external.enable_access,
+    'vitamui_ingest_external': filebeat.services.vitamui_ingest_external.enable_access,
+    'vitamui_referential_external': filebeat.services.vitamui_referential_external.enable_access,
+    'vitamui_archive_search_external': filebeat.services.vitamui_archive_search_external.enable_access,
+    'vitamui_collect_external': filebeat.services.vitamui_collect_external.enable_access,
+    'vitamui_pastis_external': filebeat.services.vitamui_pastis_external.enable_access,
+    'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_access} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/accesslog-{{ vitamui_service }}.*.log"
   fields:
     kind: access
     vitam_component: {{ vitamui_service }}
     source: vitamui
+    type: application
+  processors:
+    - dissect:
+        tokenizer: '%{client_ip} - - [%{[date_time]}] "%{[http_method]} %{[request_path]} HTTP/%{[http_version]}" %{[http_status_code]} %{[response_size]}'
+        field: "message"
+        target: ""
+  {% endif %}
 
+  {% if filebeat.services[vitamui_service].enable_management | default(true) | bool %}
 - type: filestream
-  id: "{{ vitam_site_name }}-{{ vitamui_service }}-security"
+  id: {{ vitam_site_name }}-{{ vitamui_service }}-management
+  enabled: {{ {'vitamui_iam_internal': filebeat.services.vitamui_iam_internal.enable_management,
+    'vitamui_ingest_internal': filebeat.services.vitamui_ingest_internal.enable_management,
+    'vitamui_referential_internal': filebeat.services.vitamui_referential_internal.enable_management,
+    'vitamui_archive_search_internal': filebeat.services.vitamui_archive_search_internal.enable_management,
+    'vitamui_security_internal': filebeat.services.vitamui_security_internal.enable_management,
+    'vitamui_collect_internal': filebeat.services.vitamui_collect_internal.enable_management,
+    'cas_server': filebeat.services.cas_server.enable_management,
+    'vitamui_iam_external': filebeat.services.vitamui_iam_external.enable_management,
+    'vitamui_ingest_external': filebeat.services.vitamui_ingest_external.enable_management,
+    'vitamui_referential_external': filebeat.services.vitamui_referential_external.enable_management,
+    'vitamui_archive_search_external': filebeat.services.vitamui_archive_search_external.enable_management,
+    'vitamui_collect_external': filebeat.services.vitamui_collect_external.enable_management,
+    'vitamui_pastis_external': filebeat.services.vitamui_pastis_external.enable_management,
+    'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_management} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/management_accesslog-{{ vitamui_service }}.*.log"
   fields:
     kind: management
     vitam_component: {{ vitamui_service }}
     source: vitamui
+    type: application
+  processors:
+    - dissect:
+        tokenizer: '%{client_ip} - - [%{[date_time]}] "%{[http_method]} %{[request_path]} HTTP/%{[http_version]}" %{[http_status_code]} %{[response_size]}'
+        field: "message"
+        target: ""
+  {% endif %}
 
+  {% if filebeat.services[vitamui_service].enable_log | default(true) | bool %}
 - type: filestream
-  id: "{{ vitam_site_name }}-{{ vitamui_service }}-error"
+  id: {{ vitam_site_name }}-{{ vitamui_service }}-log
+  enabled: {{ {'vitamui_iam_internal': filebeat.services.vitamui_iam_internal.enable_log,
+    'vitamui_ingest_internal': filebeat.services.vitamui_ingest_internal.enable_log,
+    'vitamui_referential_internal': filebeat.services.vitamui_referential_internal.enable_log,
+    'vitamui_archive_search_internal': filebeat.services.vitamui_archive_search_internal.enable_log,
+    'vitamui_security_internal': filebeat.services.vitamui_security_internal.enable_log,
+    'vitamui_collect_internal': filebeat.services.vitamui_collect_internal.enable_log,
+    'cas_server': filebeat.services.cas_server.enable_log,
+    'vitamui_iam_external': filebeat.services.vitamui_iam_external.enable_log,
+    'vitamui_ingest_external': filebeat.services.vitamui_ingest_external.enable_log,
+    'vitamui_referential_external': filebeat.services.vitamui_referential_external.enable_log,
+    'vitamui_archive_search_external': filebeat.services.vitamui_archive_search_external.enable_log,
+    'vitamui_collect_external': filebeat.services.vitamui_collect_external.enable_log,
+    'vitamui_pastis_external': filebeat.services.vitamui_pastis_external.enable_log,
+    'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_log} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}.*.log"
   fields:
     kind: log
     vitam_component: {{ vitamui_service }}
     source: vitamui
+    type: application
   processors:
     - dissect:
         tokenizer: '%{timestamp} [%{thread}] [] %{loglevel} %{logger} - %{message}'
@@ -48,5 +106,5 @@
         pattern: '^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3}'
         negate: true
         match: after
-
+  {% endif %}
 {% endfor %}

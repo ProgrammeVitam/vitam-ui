@@ -1,16 +1,16 @@
 ---
 
-- name: Add nginx filebeat module
-  copy:
-    src: modules/nginx.yml
-    dest: /etc/filebeat/modules.d/nginx.yml
+- name: Add reverse filebeat module
+  template:
+    src: modules/{{ reverse | default('nginx') | lower }}.yml.j2
+    dest: /etc/filebeat/modules.d/{{ reverse | default('nginx') | lower }}.yml
     mode: 0644
   when: inventory_hostname in groups['hosts_vitamui_reverseproxy']
   notify: "filebeat - restart service"
 
 - name: Add logstash filebeat module
   template:
-    src: modules/logstash.yml
+    src: modules/logstash.yml.j2
     dest: /etc/filebeat/modules.d/logstash.yml
     mode: 0644
   when:
@@ -19,7 +19,7 @@
 
 - name: Add mongodb filebeat module
   template:
-    src: modules/mongodb.yml
+    src: modules/mongodb.yml.j2
     dest: /etc/filebeat/modules.d/mongodb.yml
     mode: 0644
   when:
@@ -27,8 +27,8 @@
   notify: "filebeat - restart service"
 
 - name: Add system filebeat module
-  copy:
-    src: modules/system.yml
+  template:
+    src: modules/system.yml.j2
     dest: /etc/filebeat/modules.d/system.yml
     mode: 0644
   notify: "filebeat - restart service"
