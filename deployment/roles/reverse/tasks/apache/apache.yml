@@ -78,7 +78,7 @@
 
 - name: create DocumentRoot directory
   file:
-    path: "/var/www/html-{{ vitam_site_name }}"
+    path: "/var/www/html-{{ vitamui_site_name }}"
     state: directory
     owner: root
     mode: 0755
@@ -95,7 +95,7 @@
 
 - name: create ca directory
   file:
-    path: "/etc/{{ apache_service }}/ca/{{ vitam_site_name }}"
+    path: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}"
     state: directory
     owner: "root"
     group: "{{ apache_group }}"
@@ -111,12 +111,12 @@
   with_items:
     - "crt"
     - "key"
-  when: (vitam_reverse_external_protocol is defined) and (vitam_reverse_external_protocol == 'https')
+  when: vitamui_reverse_external_protocol | lower == 'https'
 
 - name: Copy the CA
   copy:
     src: "{{ item }}"
-    dest: "/etc/{{ apache_service }}/ca/{{ vitam_site_name }}/{{ item | basename }}"
+    dest: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}/{{ item | basename }}"
     owner: "root"
     mode: 0400
   with_fileglob:
@@ -125,7 +125,7 @@
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"
-    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitam_reverse_external_dns }}.conf"
+    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitamui_reverse_external_dns }}.conf"
     owner: "root"
     mode: 0644
   tags:
@@ -183,7 +183,7 @@
     owner: "root"
     state: link
   with_items:
-    - "zz_{{ vitam_reverse_external_dns }}.conf"
+    - "zz_{{ vitamui_reverse_external_dns }}.conf"
     - "security.conf"
   when:  ansible_os_family == "Debian"
   tags:

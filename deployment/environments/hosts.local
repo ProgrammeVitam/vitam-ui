@@ -240,7 +240,7 @@ vitam_site_name=local
 vitamui_site_name="{{ vitam_site_name }}-ui"
 
 consul_domain=consul
-vitam_reverse_external_dns=reverse.service.consul
+vitamui_reverse_external_dns=reverse-ui.service.consul
 
 ansible_become=true
 ansible_connection=local

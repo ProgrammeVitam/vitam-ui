@@ -1,7 +1,7 @@
 ---
 
 - import_tasks: apache/apache.yml
-  when: reverse|lower == 'apache'
+  when: reverse | default('nginx') | lower == 'apache'
 
 - import_tasks: nginx/nginx.yml
-  when: reverse|lower == 'nginx'
+  when: reverse | default('nginx') | lower == 'nginx'

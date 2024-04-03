@@ -1,0 +1,6 @@
+---
+
+- name: "merge_index_apache - reload apache"
+  service:
+    name: "{{ apache_service }}"
+    state: "reloaded"

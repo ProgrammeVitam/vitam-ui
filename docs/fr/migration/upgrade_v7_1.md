@@ -4,7 +4,14 @@
 
 ## Adaptation des sources de déploiement ansible
 
-N/A
+### Nouvelle variable vitamui_reverse_external_dns
+
+L'objectif est de différencier le nom du domaine VitamUI de celui de Vitam car ils peuvent être hébergés sur des reverses distincts.
+
+Cette distinction permet notamment d'appliquer le rôle `merge_index` sur le groupe [reverse] afin de fournir les liens d'accès à mongo-express-mongo-vitamui et aux browsers si ils sont déployés.
+> Attention, à ne pas déployer en production !
+
+Il est maintenant indispensable de rajouter à votre fichier d'inventaire la variable `vitamui_reverse_external_dns` pointant vers le nom de domaine externe d'appel à VitamUI.
 
 ---
 

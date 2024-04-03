@@ -48,9 +48,5 @@ vitam_repositories:
 # To avoid installation of internet repositories (like epel for example)
 disable_internet_repositories_install: true # default value if unset: false
 
-###
-# reverse_proxy_conf.yml
-reverse: apache
-
 opentracing:
   enable: false

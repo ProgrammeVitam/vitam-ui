@@ -7,7 +7,7 @@ server {
   listen {{ ip_service }}:443 ssl;
   include {{ nginx_ssl_conf }}/ssl.conf;
 
-  server_name {{ vitam_reverse_external_dns }};
+  server_name {{ vitamui_reverse_external_dns }};
 
   location = /favicon.ico {
     alias {{ root_path }}/assets/favicon.ico;
@@ -23,7 +23,7 @@ server {
     proxy_pass https://IDENTITY_ADMIN/identity-admin;
     {% endif %}
 
-    sub_filter '/identity/' 'https://{{ vitam_reverse_external_dns }}/identity-admin/';
+    sub_filter '/identity/' '{{ url_prefix }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
     proxy_set_header Accept-Encoding "";
