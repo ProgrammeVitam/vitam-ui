@@ -59,6 +59,7 @@ describe('AgencyListComponent', () => {
     };
     const agencyServiceMock = {
       search: () => of([]),
+      updated: of(),
     };
 
     TestBed.configureTestingModule({

@@ -36,10 +36,11 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ConfirmActionComponent } from './confirm-action.component';
 
-describe('ClosePopupDialogComponent', () => {
+describe('ConfirmActionComponent', () => {
   let component: ConfirmActionComponent;
   let fixture: ComponentFixture<ConfirmActionComponent>;
 
@@ -47,6 +48,7 @@ describe('ClosePopupDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ConfirmActionComponent],
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
