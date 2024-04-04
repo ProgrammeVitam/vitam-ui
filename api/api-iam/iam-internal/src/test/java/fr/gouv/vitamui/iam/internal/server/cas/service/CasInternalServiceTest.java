@@ -132,9 +132,6 @@ class CasInternalServiceTest {
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
             .thenReturn(buildAuthUser(true));
-        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
-            .thenReturn(buildAuthUser(true));
-
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
         verify(userInternalService, times(1)).patch(any());
@@ -148,8 +145,6 @@ class CasInternalServiceTest {
             .thenReturn(buildIDP(true));
 
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
-        when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
-            .thenReturn(buildAuthUser(false));
         when(userInternalService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID))
             .thenReturn(buildAuthUser(false));
 

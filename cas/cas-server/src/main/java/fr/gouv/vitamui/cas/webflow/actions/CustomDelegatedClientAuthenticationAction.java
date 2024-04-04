@@ -74,7 +74,7 @@ import static fr.gouv.vitamui.cas.authentication.UserPrincipalResolver.EMAIL_VAL
  */
 public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
-    public static final Pattern CUSTOMER_ID_VALIDATION_PATTER = Pattern.compile("^[_a-z0-9]+$");
+    public static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[_a-z0-9]+$");
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
@@ -181,8 +181,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
 
-                // FIXME LGH : IDP vs subrogation vs login. What about customerId
-
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
@@ -217,7 +215,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         if (email == null) {
             throw new IllegalArgumentException("Null email");
         }
-        if (!Pattern.matches(EMAIL_VALID_REGEXP, email)) {
+        if (!EMAIL_VALID_REGEXP.matcher(email).matches()) {
             throw new IllegalArgumentException("email : '" + email + "' format is not allowed");
         }
     }
@@ -226,7 +224,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         if (customerId == null) {
             throw new IllegalArgumentException("Null customerId");
         }
-        if (!CUSTOMER_ID_VALIDATION_PATTER.matcher(customerId).matches()) {
+        if (!CUSTOMER_ID_VALIDATION_PATTERN.matcher(customerId).matches()) {
             throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
         }
     }

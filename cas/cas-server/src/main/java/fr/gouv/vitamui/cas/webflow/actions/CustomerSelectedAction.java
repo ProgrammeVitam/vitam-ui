@@ -75,9 +75,8 @@ public class CustomerSelectedAction extends AbstractAction {
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Invalid customerId '" + customerId + "'"));
 
-        LOGGER.debug("Valid customer selected: {}", customerModel);
+        LOGGER.debug("Valid customer selected: {} for user: {}", customerModel, loginEmail);
 
-        flowScope.put(Constants.FLOW_LOGIN_EMAIL, loginEmail);
         flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, customerId);
         flowScope.remove(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST);
 

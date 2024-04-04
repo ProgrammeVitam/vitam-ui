@@ -27,7 +27,7 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_LOGOUT_fait_un_logout_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_LOGOUT() {
         createSubrogationByUserStatus(false);
         surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
-            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmail(
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmailAndCustomerId(
             getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
             surrogateUser.getEmail(), surrogateUser.getCustomerId(),
             Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
@@ -64,7 +64,7 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
     public void cet_utilisateur_fait_un_logout() {
         createSubrogationByUserStatus(false);
         surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
-            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmail(
+            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmailAndCustomerId(
             getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
             surrogateUser.getEmail(), surrogateUser.getCustomerId(),
             Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));

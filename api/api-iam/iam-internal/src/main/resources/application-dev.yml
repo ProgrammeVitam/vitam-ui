@@ -43,7 +43,7 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: src/main/resources/dev/keystore_iam-internal.jks
+      key-path: src/main/resources/dev/truststore_server.jks
       key-password: changeme
     keystore:
       key-path: src/main/resources/dev/keystore_iam-internal.jks

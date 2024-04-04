@@ -109,18 +109,16 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
     }
 
     public UserDto getUser(final InternalHttpContext context, final String loginEmail, final String loginCustomerId,
-        final String idp, final Optional<String> userIdentifier, final String optEmbedded) {
+        final String idp, final Optional<String> userIdentifier, final Optional<String> embedded) {
         LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
-            loginEmail, loginCustomerId, idp, userIdentifier, optEmbedded);
+            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
         uriBuilder.queryParam("loginEmail", loginEmail);
         uriBuilder.queryParam("loginCustomerId", loginCustomerId);
         uriBuilder.queryParam("idp", idp);
         userIdentifier.ifPresent(s -> uriBuilder.queryParam("userIdentifier", s));
-        if (optEmbedded != null) {
-            uriBuilder.queryParam("embedded", optEmbedded);
-        }
+        embedded.ifPresent(s -> uriBuilder.queryParam("embedded", s));
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
             request, AuthUserDto.class);
@@ -133,7 +131,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
         uriBuilder.queryParam("id", id);
 
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<UserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
             request, UserDto.class);
         checkResponse(response);
@@ -144,10 +142,11 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         final String superUserEmail, final String superUserCustomerId) {
         LOGGER.debug("getMySubrogationAsSuperuser {} / {}", superUserEmail, superUserCustomerId);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final URIBuilder uriBuilder = getUriBuilderFromPath(getUrl() + RestApi.CAS_SUBROGATIONS_PATH);
+        uriBuilder.addParameter("superUserEmail", superUserEmail);
+        uriBuilder.addParameter("superUserCustomerId", superUserCustomerId);
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail +
-                "&superUserCustomerId=" + superUserCustomerId, HttpMethod.GET, request,
-            getSubrogationDtoListClass());
+            buildUriBuilder(uriBuilder).toString(), HttpMethod.GET, request, getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -155,7 +154,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
     public List<SubrogationDto> getSubrogationsBySuperUserId(final InternalHttpContext context,
         final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
-        final HttpEntity request = new HttpEntity(buildHeaders(context));
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
             getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId, HttpMethod.GET, request,
             getSubrogationDtoListClass());
@@ -173,7 +172,7 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         uriBuilder.addParameter("superUserCustomerId", superUserCustomerId);
         final URI uri = buildUriBuilder(uriBuilder);
         LOGGER.debug("uri {}", uri.toString());
-        final HttpEntity request = new HttpEntity(headers);
+        final HttpEntity<Void> request = new HttpEntity<>(headers);
         final ResponseEntity<Void> response = restTemplate.exchange(uri, HttpMethod.GET, request, Void.class);
         checkResponse(response);
     }

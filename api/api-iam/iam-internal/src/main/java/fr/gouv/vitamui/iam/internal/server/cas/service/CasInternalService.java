@@ -211,7 +211,7 @@ public class CasInternalService {
     public void updatePassword(final String email, final String rawPassword, final String customerId) {
 
         Optional<Customer> optCustomer = customerRepository.findById(customerId);
-        if (!optCustomer.isPresent()) {
+        if (optCustomer.isEmpty()) {
             throw new ApplicationServerException("Unable to update password : customer not found");
         }
         User user = findUserByEmailAndCustomerId(email, customerId);
@@ -219,8 +219,7 @@ public class CasInternalService {
             throw new InvalidAuthenticationException("User unavailable: " + email);
         }
         checkStatus(user.getStatus(), user.getEmail());
-        final Customer customer = optCustomer.orElseThrow(
-            () -> new ApplicationServerException("Unable to update password : customer not found"));
+        final Customer customer = optCustomer.get();
 
         final List<String> oldPasswords = user.getOldPasswords();
         if (oldPasswords != null && !oldPasswords.isEmpty()) {
@@ -295,11 +294,6 @@ public class CasInternalService {
 
         final List<UserDto> usersDto = internalUserService.findUsersByEmail(email);
 
-        // FIXME: LGH ...
-        // if (userDto == null) {
-        //     throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        // }
-        // checkStatus(userDto.getStatus(), userDto.getEmail());
 
         return usersDto.stream()
             .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
@@ -626,7 +620,8 @@ public class CasInternalService {
     public void deleteSubrogationBySuperUserAndSurrogate(final String superUser, final String superUserCustomerId,
         final String surrogate, final String surrogateCustomerId) {
         if (StringUtils.isAnyBlank(superUser, superUserCustomerId, surrogate, surrogateCustomerId)) {
-            throw ApiErrorGenerator.getBadRequestException("superUser and surrogate must be filled");
+            throw ApiErrorGenerator.getBadRequestException(
+                "superUser, superUserCustomerId, surrogate and surrogateCustomerId must be filled");
         }
         final Optional<Subrogation> subro = subrogationRepository
             .findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(superUser, superUserCustomerId,

@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.pm.PmMessageToSend;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -71,7 +72,7 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * Send reset password emails with i18n messages.
@@ -80,7 +81,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
-    public static final String CUSTOMER_ID = "customerId";
 
     private final HierarchicalMessageSource messageSource;
 
@@ -127,21 +127,13 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
 
         val query = buildPasswordManagementQuery(requestContext);
-        if (StringUtils.isBlank(query.getUsername())) {
-            return getErrorEvent("username.required", "No username is provided", requestContext);
-        }
 
         val email = passwordManagementService.findEmail(query);
         val service = WebUtils.getService(requestContext);
-        List<Object> customerIdValues = query.getRecord().get(CUSTOMER_ID);
-        String customerId = customerIdValues.stream()
-            .filter(value -> value instanceof String)
-            .map(value -> (String) value)
-            .findFirst()
-            .orElse(null);
+        final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
 
         // CUSTO: only retrieve email (and not phone) and force success event (instead of error) when failure
-        if (StringUtils.isBlank(email)) {
+        if (StringUtils.isBlank(email) || customerId == null) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
         } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(),
@@ -151,8 +143,10 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             return success();
         }
 
+        // Hack: Encode loginEmail+loginCustomerId pair into a json-serialized UserLoginModel as we are not able to
+        //       persist 2 separate fields.
         UserLoginModel userLoginModel = new UserLoginModel();
-        userLoginModel.setUserEmail(query.getUsername());
+        userLoginModel.setUserEmail(email);
         userLoginModel.setCustomerId(customerId);
         String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
 
@@ -164,7 +158,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", url,
                 duration);
             // CUSTO: only send email (and not SMS)
-            val sendEmail = sendPasswordResetEmailToAccount(query.getUsername(), email, url, requestContext);
+            val sendEmail = sendPasswordResetEmailToAccount(email, url);
             if (sendEmail.isSuccess()) {
                 return success(url);
             }
@@ -179,38 +173,35 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     @Override
     protected PasswordManagementQuery buildPasswordManagementQuery(final RequestContext requestContext) {
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
         // CUSTO: try to get the username from the credentials also (after a password expiration)
         String username = request.getParameter(REQUEST_PARAMETER_USERNAME);
-        final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
-        final String customerId = (String) flowScope.get("loginCustomerId");
-        LinkedMultiValueMap<String, Object> records = new LinkedMultiValueMap<>();
-        if (!StringUtils.isBlank(customerId)) {
-            records.put(CUSTOMER_ID, List.of(customerId));
-        }
         if (StringUtils.isBlank(username)) {
-
             final Object credential = flowScope.get("credential");
             if (credential instanceof UsernamePasswordCredential) {
                 final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
                 username = usernamePasswordCredential.getUsername();
             }
         }
-        //
-
-        val builder = PasswordManagementQuery.builder();
-        if (StringUtils.isBlank(username)) {
-            LOGGER.warn("No username parameter is provided");
+        final String loginEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
+        final String loginCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+        if (StringUtils.isAnyBlank(loginEmail, loginCustomerId)) {
+            throw new IllegalStateException("Missing loginEmail or loginCustomer");
+        }
+        if (!Objects.equals(loginEmail, username)) {
+            throw new IllegalStateException("Missing loginCustomerId (" + loginCustomerId + ") " +
+                "mismatches username (" + username + ")");
         }
 
+        LinkedMultiValueMap<String, Object> records = new LinkedMultiValueMap<>();
+        records.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, loginCustomerId);
+
+        val builder = PasswordManagementQuery.builder();
         return builder.username(username).record(records).build();
     }
 
-    @Override
-    protected EmailCommunicationResult sendPasswordResetEmailToAccount(
-        final String username,
-        final String to,
-        final URL url,
-        final RequestContext requestContext) {
+    private EmailCommunicationResult sendPasswordResetEmailToAccount(
+        final String to, final URL url) {
         val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
 
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",

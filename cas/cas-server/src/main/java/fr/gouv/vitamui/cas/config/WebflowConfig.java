@@ -43,6 +43,7 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.cas.webflow.actions.CheckMfaTokenAction;
+import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedAuthenticationClientLogoutAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedClientAuthenticationAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomerSelectedAction;
@@ -82,6 +83,8 @@ import org.apereo.cas.ticket.factory.DefaultTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
+import org.apereo.cas.util.spring.beans.BeanCondition;
+import org.apereo.cas.util.spring.beans.BeanSupplier;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -95,6 +98,7 @@ import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.impl.CasWebflowEventResolutionConfigurationContext;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
+import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -342,8 +346,7 @@ public class WebflowConfig {
         @Qualifier(PasswordManagementService.DEFAULT_BEAN_NAME)
         final PasswordManagementService passwordManagementService) {
         return new ResetPasswordController(casProperties, passwordManagementService, communicationsManager,
-            ticketRegistry,
-            messageSource, utils, pmTicketFactory(), passwordResetUrlBuilder, identityProviderHelper, providersService,
+            messageSource, utils, passwordResetUrlBuilder, identityProviderHelper, providersService,
             new ObjectMapper());
     }
 
@@ -394,18 +397,29 @@ public class WebflowConfig {
     }
 
     @Bean
-    @Lazy
-    @RefreshScope
-    public Action delegatedAuthenticationClientLogoutAction() {
-        return new ConsumerExecutionAction(ctx -> {
-        });
-    }
-
-    @Bean
-    @RefreshScope
-    public Action delegatedAuthenticationClientFinishLogoutAction() {
-        return new ConsumerExecutionAction(ctx -> {
-        });
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public Action delegatedAuthenticationClientLogoutAction(
+        final CasConfigurationProperties casProperties,
+        final ConfigurableApplicationContext applicationContext,
+        @Qualifier("builtClients")
+        final Clients builtClients,
+        @Qualifier("delegatedClientDistributedSessionStore")
+        final SessionStore delegatedClientDistributedSessionStore,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService) {
+        return BeanSupplier.of(Action.class)
+            .when(BeanCondition.on("cas.slo.disabled").isFalse().evenIfMissing()
+                .given(applicationContext.getEnvironment()))
+            .supply(() -> WebflowActionBeanSupplier.builder()
+                .withApplicationContext(applicationContext)
+                .withProperties(casProperties)
+                .withAction(() -> new CustomDelegatedAuthenticationClientLogoutAction(builtClients,
+                    delegatedClientDistributedSessionStore, providersService, identityProviderHelper))
+                .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_CLIENT_LOGOUT)
+                .build()
+                .get())
+            .otherwise(() -> ConsumerExecutionAction.NONE)
+            .get();
     }
 
     @Bean

@@ -14,7 +14,6 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
-import org.junit.Test;
 
 /**
  * Teste l'API subrogations dans IAM admin : opérations de création.
@@ -77,8 +76,8 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
             surrogate.setCustomerId(TestConstants.SYSTEM_CUSTOMER_ID);
             surrogate = getUserRestClient().create(getSystemTenantUserAdminContext(), surrogate);
             final SubrogationDto subrogationDto = IamDtoBuilder.buildSubrogationDto(null,
-                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.JULIEN_USER_CUSTOMER_ID,
+                TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.USER_1_CUSTOMER_ID,
                 TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
                 TestConstants.SYSTEM_CUSTOMER_ID);
             subrogationDto.setSurrogate(surrogate.getEmail());
@@ -118,8 +117,8 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_SUBROGATIONS_ajoute_une_nouvelle_subrogation_pour_un_subrogé_non_existant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_SUBROGATIONS() {
         try {
             final SubrogationDto subrogationDto = IamDtoBuilder.buildSubrogationDto(null,
-                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.JULIEN_USER_CUSTOMER_ID,
+                TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.USER_1_CUSTOMER_ID,
                 TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
                 TestConstants.SYSTEM_CUSTOMER_ID);
             subrogationDto.setSurrogate(TestConstants.FAKE_USER_EMAIL);

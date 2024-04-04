@@ -130,8 +130,8 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    public static final String EMAIL_VALID_REGEXP =
-        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+    public static final Pattern EMAIL_VALID_REGEXP =
+        Pattern.compile("^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$");
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -197,7 +197,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
             // If the certificate does not contain the user mail, then we use the default domain configured
             if (StringUtils.isBlank(emailFromCertificate) ||
-                !Pattern.matches(EMAIL_VALID_REGEXP, emailFromCertificate)) {
+                !EMAIL_VALID_REGEXP.matcher(emailFromCertificate).matches()) {
                 userDomain = String.format("@%s", x509DefaultDomain);
                 loginEmail = null;
             } else {
@@ -307,7 +307,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             Assert.isTrue(email.equals(loginEmailFromSession),
                 String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email));
 
-            if (surrogateEmailFromSession != null) {
+            if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
                 userProviderId = null;
                 technicalUserId = Optional.empty();
                 subrogationCall = true;

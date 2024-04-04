@@ -74,10 +74,10 @@ public abstract class CommonSteps extends BaseIntegration {
     protected String getOrInitializeDefaultSubrogationId() {
         if (!defaultSubrogationInitialized) {
             writeSubrogation(IamDtoBuilder.buildSubrogationDto("juliensurrogatespierre",
-                TestConstants.PIERRE_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.PIERRE_USER_CUSTOMER_ID,
-                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.JULIEN_USER_CUSTOMER_ID));
+                TestConstants.USER_2_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.USER_2_CUSTOMER_ID,
+                TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.USER_1_CUSTOMER_ID));
         }
 
         return "juliensurrogatespierre";
@@ -95,8 +95,9 @@ public abstract class CommonSteps extends BaseIntegration {
         final String adminEmail = "admin@" + customer.getDefaultEmailDomain();
         final String adminCustomerId = customer.getId();
         final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        adminEmail, adminCustomerId, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+            new String[] {ServicesData.ROLE_CAS_USERS})
+            .getUserByEmailAndCustomerId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), adminEmail,
+                adminCustomerId, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         final QueryDto criteria = QueryDto.criteria("name", ownerName, CriterionOperator.CONTAINSIGNORECASE);
 
@@ -125,8 +126,8 @@ public abstract class CommonSteps extends BaseIntegration {
         basicUserDto = getUserRestClient().create(customerAdminContext, basicUserDto);
         surrogateUser = new AuthUserDto(basicUserDto);
 
-        subrogationDto = IamDtoBuilder.buildSubrogationDto(null, TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-            TestConstants.JULIEN_USER_CUSTOMER_ID, TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain, TestConstants.SYSTEM_CUSTOMER_ID);
+        subrogationDto = IamDtoBuilder.buildSubrogationDto(null, TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+            TestConstants.USER_1_CUSTOMER_ID, TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain, TestConstants.SYSTEM_CUSTOMER_ID);
         subrogationDto.setSurrogateCustomerId(surrogateUser.getCustomerId());
         subrogationDto.setSuperUserCustomerId(customerId);
 
