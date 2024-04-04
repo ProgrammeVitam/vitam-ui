@@ -44,7 +44,7 @@
   roles:
     - mongodb_upgrade_package
   vars:
-    mongo_version: 7.0.6
+    mongo_version: 7.0.7
     mongo_primary: false
   serial: 1
 
@@ -53,7 +53,7 @@
   roles:
     - mongodb_upgrade_package
   vars:
-    mongo_version: 7.0.6
+    mongo_version: 7.0.7
     mongo_primary: true
   serial: 1
 
