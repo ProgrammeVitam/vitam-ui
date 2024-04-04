@@ -146,9 +146,9 @@ const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Title_.*',
+    Path: 'Title_',
     ui: {
-      Path: 'Generalities.Title_.*',
+      Path: 'Generalities.Title_',
       component: 'select+textfield',
       layout: { columns: 2, size: 'medium' },
     },
@@ -162,9 +162,9 @@ const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Description_.*',
+    Path: 'Description_',
     ui: {
-      Path: 'Generalities.Description_.*',
+      Path: 'Generalities.Description_',
       component: 'select+textarea',
       layout: { columns: 2, size: 'large' },
     },

@@ -41,6 +41,8 @@ import { DataStructureService } from './data-structure.service';
 import { DisplayRuleHelperService } from './display-rule-helper.service';
 import { TypeService } from './type.service';
 
+export const internationalizedKeys = ['Title_', 'Description_'];
+
 @Injectable()
 export class DisplayObjectHelperService {
   constructor(
@@ -139,7 +141,7 @@ export class DisplayObjectHelperService {
 
       template.push(current.displayRule);
 
-      if (current.children && current.children.length > 0) {
+      if (current.children && current.children.length > 0 && !internationalizedKeys.includes(current.key)) {
         for (let i = current.children.length - 1; i >= 0; i--) {
           stack.push(current.children[i]);
         }

@@ -103,9 +103,9 @@ export const customTemplate: DisplayRule[] = [
     },
   },
   {
-    Path: 'Description_.*',
+    Path: 'Description_',
     ui: {
-      Path: 'Generalities.Description_.*',
+      Path: 'Generalities.Description_',
       component: 'select+textarea',
       layout: {
         columns: 2,
