@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <title th:text="#{screen.error.page.title.requestunsupported}">Error - Unsupported Request</title>
 </head>
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
+<body>
 
 
 <div layout:fragment="content" class="col">
@@ -72,14 +68,11 @@
       <input type="hidden" name="_eventId" value="submit"/>
     </div>
   </form>
-
-    <script>
-        $(document).ready(function () {
-            $("#submit-main-form").css("display", "flex");
-        });
-    </script>
-
+  <script>
+    displayMainFormSubmitButton();
+  </script>
 </div>
+
 
 </body>
 </html>

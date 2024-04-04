@@ -41,8 +41,6 @@
         th:href="@{/icons/vitamui-icons.css}"/>
   <script type="text/javascript" src="../../../../../../../deployment/roles/reverse/files/apache/page/js/jquery.min.js"
           th:src="@{#{webjars.jquery.js}}"></script>
-  <script type="text/javascript"
-          th:src="@{#{webjars.jqueryui.js}}"></script>
   <script type="text/javascript" src="../../static/js/cas.js"
           th:src="@{#{/js/cas.js}}"></script>
   <meta http-equiv="refresh" th:attr="content=${'1; url=' + portalUrl}"/>
@@ -50,7 +48,7 @@
 
 <!-- loader -->
 <body style="--vitamui-primary:#9C31B5;--vitamui-secondary:#7FA1D4;--vitamui-background:#F6F3FB;"
-      th:st="${@environment.getProperty('theme.body.style')}">
+      th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div class="centered">
   <div class="logo">
     <img src="../../static/images/logo-vitam-colored.svg"

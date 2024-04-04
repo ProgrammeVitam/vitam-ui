@@ -98,5 +98,38 @@ function resourceLoadedSuccessfully() {
       console.log("jqueryReady not a function")
     }
   });
+}
 
+
+function displayMainFormSubmitButton() {
+  $(document).ready(function () {
+    $("#main-form-submit").css("display", "flex");
+  });
+}
+
+function disableMainFormSubmitButton() {
+  $("#main-form-submit").attr("disabled", "true");
+}
+
+function enableMainFormSubmitButton() {
+  $("#main-form-submit").removeAttr("disabled");
+}
+
+function hiddeMainFormReturnButton() {
+  $(document).ready(function () {
+    $("#main-form-return").hide();
+  });
+}
+
+function sanitizeUrl(inputUrl) {
+  let ESC_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+  return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
+    return ESC_MAP[c];
+  });
 }

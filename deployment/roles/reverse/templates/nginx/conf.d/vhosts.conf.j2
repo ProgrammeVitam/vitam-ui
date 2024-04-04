@@ -109,7 +109,7 @@ server {
     return 302 $scheme://$host/cas/login;
   }
 
-  location ~ ^/cas/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
+  location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
     proxy_pass https://CAS;
     include /etc/nginx/conf.d/proxy_params;
   }
