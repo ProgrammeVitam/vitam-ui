@@ -43,6 +43,7 @@ import { cloneDeep } from 'lodash';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'ui-frontend-common';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -84,7 +85,6 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   @Input() selectedItem: number;
   @Input() ruleCategory: string;
   @Input() hasExactCount: boolean;
-
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
   isStartDateDisabled = true;
@@ -155,15 +155,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       {
         oldRule: [
           null,
-          [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+          [Validators.required, ManagementRuleValidators.ruleIdPattern],
           [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
         ],
         oldRuleName: [{ value: null, disabled: true }],
-        newRule: [
-          null,
-          [this.managementRulesValidatorService.ruleIdPattern()],
-          [this.managementRulesValidatorService.checkRuleIdExistence()],
-        ],
+        newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
         newRuleName: [{ value: null, disabled: true }],
         startDate: [null],
         endDate: [{ value: null, disabled: true }],
@@ -363,9 +359,9 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       }
 
       const endDate =
-        this.getDay(new Date(startDateSelected).getDate()) +
+        this.prependZero(new Date(startDateSelected).getDate()) +
         '/' +
-        this.getMonth(new Date(startDateSelected).getMonth() + 1) +
+        this.prependZero(new Date(startDateSelected).getMonth() + 1) +
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
@@ -431,19 +427,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getMonth(num: number): string {
-    if (num > 9) {
-      return num.toString();
-    } else {
-      return '0' + num.toString();
-    }
-  }
-
-  private getDay(day: number): string {
-    if (day > 9) {
-      return day.toString();
-    } else {
-      return '0' + day.toString();
-    }
+  private prependZero(num: number): string {
+    return `${num < 10 ? '0' : ''}${num}`;
   }
 }

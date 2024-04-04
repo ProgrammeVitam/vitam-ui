@@ -45,8 +45,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';

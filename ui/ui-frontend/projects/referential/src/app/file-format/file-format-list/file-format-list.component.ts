@@ -37,9 +37,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/lib/models/file-format';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -51,6 +49,7 @@ import {
   User,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
+import { ConfirmActionComponent, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

@@ -34,36 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'vitamui-library';
-import { ContextEditPermissionComponent } from './context-edit-permission.component';
+import { TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ManagementRuleValidators } from './management-rule.validators';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-  ],
-  declarations: [ContextEditPermissionComponent],
-  exports: [ContextEditPermissionComponent],
-})
-export class ContextEditPermissionModule {}
+describe('ManagementRuleValidators', () => {
+  let formBuilder: FormBuilder;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
+    }).compileComponents();
+
+    formBuilder = TestBed.inject(FormBuilder);
+  });
+
+  describe('ruleIdPattern', () => {
+    it('should detect allowed rule id pattern', () => {
+      const formGroup = formBuilder.group({
+        id: ['azerty', ManagementRuleValidators.ruleIdPattern],
+      });
+
+      expect(formGroup.valid).toBeTruthy('Form group must be valid');
+      expect(formGroup.get('id').errors).toBeNull('Id control must not have errors');
+    });
+
+    it('should detect not allowed rule id pattern', () => {
+      const formGroup = formBuilder.group({
+        id: ['ÀÖØöøÿ ', ManagementRuleValidators.ruleIdPattern],
+      });
+
+      expect(formGroup.invalid).toBeTruthy('Form group must be invalid');
+      expect(formGroup.get('id').errors).toBeTruthy('Id control must have errors');
+    });
+  });
+});

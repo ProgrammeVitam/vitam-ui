@@ -35,11 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-
-import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Ontology } from 'vitamui-library';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 
 @Injectable({

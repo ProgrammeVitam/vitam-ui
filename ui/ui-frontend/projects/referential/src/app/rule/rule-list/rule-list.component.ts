@@ -36,8 +36,7 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -52,6 +51,7 @@ import {
   RuleService,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { TranslateService } from '@ngx-translate/core';
 

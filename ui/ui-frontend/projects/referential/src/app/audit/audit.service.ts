@@ -36,7 +36,6 @@
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Event } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -48,6 +47,7 @@ import {
   SearchService,
   VitamUISnackBarService,
 } from 'ui-frontend-common';
+import { Event } from 'vitamui-library';
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';

@@ -27,7 +27,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -47,7 +47,7 @@ import {
   Workflow,
 } from 'ui-frontend-common';
 
-import { FilingPlanMode, oneIncludedNodeRequired } from 'projects/vitamui-library/src/public-api';
+import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';

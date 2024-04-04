@@ -49,8 +49,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
 
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';

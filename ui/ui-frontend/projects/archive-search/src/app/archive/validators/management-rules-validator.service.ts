@@ -36,12 +36,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { of, timer } from 'rxjs';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { Observable, combineLatest, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
-import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
+import { RuleCategoryAction } from '../models/ruleAction.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -52,56 +52,41 @@ export class ManagementRulesValidatorService {
     private ruleService: RuleService,
   ) {}
   debounceTime = 400;
-  ruleActions: RuleCategoryAction;
-  managementRules: ManagementRules[];
   ruleCategorySelected: string;
 
-  filterRuleActions(ruleId: string): boolean {
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.managementRules = data;
-    });
-
-    this.managementRulesSharedDataService.getRuleCategory().subscribe((data) => {
-      this.ruleCategorySelected = data;
-    });
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategorySelected) !== -1) {
-      this.ruleActions = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategorySelected,
-      ).ruleCategoryAction;
-      if (this.ruleActions.rules) {
-        return this.ruleActions.rules?.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length !== 0 ? true : false;
-      }
-    }
-    return false;
+  private ruleCategoryAction(): Observable<RuleCategoryAction> {
+    return combineLatest([
+      this.managementRulesSharedDataService.getManagementRules(),
+      this.managementRulesSharedDataService.getRuleCategory(),
+    ]).pipe(map(([managementRules, ruleCategory]) => managementRules.find((mr) => mr.category === ruleCategory)?.ruleCategoryAction));
   }
 
-  filterPreventRulesId(ruleId: string): boolean {
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.managementRules = data;
-    });
+  filterRuleActions(ruleId: string): Observable<boolean> {
+    return this.ruleCategoryAction().pipe(
+      map((ruleCategoryAction) => {
+        if (!ruleCategoryAction) return false;
+        if (!ruleCategoryAction.rules) return false;
 
-    this.managementRulesSharedDataService.getRuleCategory().subscribe((data) => {
-      this.ruleCategorySelected = data;
-    });
+        return ruleCategoryAction.rules.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length > 0;
+      }),
+    );
+  }
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategorySelected) !== -1) {
-      this.ruleActions = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategorySelected,
-      ).ruleCategoryAction;
-      if (this.ruleActions.preventRulesIdToAdd) {
-        return this.ruleActions.preventRulesIdToAdd?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
-      }
-      if (this.ruleActions.preventRulesIdToRemove) {
-        return this.ruleActions.preventRulesIdToRemove?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
-      }
-    }
-    return false;
+  filterPreventRulesId(ruleId: string): Observable<boolean> {
+    return this.ruleCategoryAction().pipe(
+      map((ruleCategoryAction) => {
+        if (!ruleCategoryAction) return false;
+        if (!ruleCategoryAction.preventRulesIdToRemove) return false;
+
+        return ruleCategoryAction.preventRulesIdToRemove.filter((rule) => rule === ruleId).length > 0;
+      }),
+    );
   }
 
   uniquePreventRuleId(codeToIgnore?: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== codeToIgnore ? of(this.filterPreventRulesId(control.value)) : of(false))),
+        switchMap(() => (control.value !== codeToIgnore ? this.filterPreventRulesId(control.value) : of(false))),
         take(1),
         map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null)),
       );
@@ -111,42 +96,27 @@ export class ManagementRulesValidatorService {
   uniqueRuleId(codeToIgnore?: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== codeToIgnore ? of(this.filterRuleActions(control.value)) : of(false))),
+        switchMap(() => (control.value !== codeToIgnore ? this.filterRuleActions(control.value) : of(false))),
         take(1),
         map((exists: boolean) => (exists ? { uniqueRuleId: true } : null)),
       );
     };
   }
 
-  ruleIdPattern(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const regexp = /[À-ÖØ-öø-ÿ ]/;
-      return regexp.test(control.value) ? { ruleIdPattern: true } : null;
-    };
-  }
-
   checkRuleIdExistence(ruleIdToIgnore?: string): AsyncValidatorFn {
-    return this.existesRuleProperties('ruleId', 'ruleIdExists', ruleIdToIgnore);
-  }
+    return (control: AbstractControl) =>
+      timer(this.debounceTime).pipe(
+        switchMap(() => this.managementRulesSharedDataService.getRuleCategory()),
+        switchMap((ruleCategory) => {
+          const properties: any = {
+            ruleId: control.value,
+            ruleType: ruleCategory,
+          };
 
-  private existesRuleProperties(field: string, existTag: string, valueToIgnore?: string) {
-    this.managementRulesSharedDataService.getRuleCategory().subscribe((data) => {
-      this.ruleCategorySelected = data;
-    });
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value;
-      properties.ruleType = this.ruleCategorySelected;
-      const existField: any = {};
-      existField[existTag] = true;
-
-      if (!control.value) return of(null);
-
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
+          return control.value !== ruleIdToIgnore ? this.ruleService.existsProperties(properties) : of(false);
+        }),
         take(1),
-        map((exists: boolean) => (exists ? null : existField)),
+        map((exists: boolean) => (exists ? null : { ruleIdExists: true })),
       );
-    };
   }
 }

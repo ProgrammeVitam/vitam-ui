@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';

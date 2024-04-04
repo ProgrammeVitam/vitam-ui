@@ -40,9 +40,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { Agency } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { AgencyService } from '../agency.service';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 
 @Component({
   selector: 'app-agency-preview',

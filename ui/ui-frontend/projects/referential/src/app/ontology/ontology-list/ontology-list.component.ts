@@ -36,14 +36,14 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import { ConfirmActionComponent } from 'vitamui-library';
 
-import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
-import { OntologyService } from '../ontology.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Ontology } from 'vitamui-library';
+import { OntologyService } from '../ontology.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

@@ -39,7 +39,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -48,6 +48,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, RuleService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ManagementRuleValidators } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
 import { RuleCreateValidators } from './rule-create.validators';
@@ -92,10 +93,9 @@ describe('RuleCreateComponent', () => {
       create: of({}),
       existsProperties: of(false),
     });
-    const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
     const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
       uniqueRuleId: () => of(null),
-      ruleIdPattern: ruleCreateValidators.ruleIdPattern(),
+      ruleIdPattern: ManagementRuleValidators.ruleIdPattern,
     });
 
     TestBed.configureTestingModule({

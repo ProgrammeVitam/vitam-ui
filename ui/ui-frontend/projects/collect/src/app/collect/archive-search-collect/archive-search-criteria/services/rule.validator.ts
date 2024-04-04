@@ -34,7 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ArchiveSharedDataService } from './archive-shared-data.service';
@@ -54,13 +54,6 @@ export class RuleValidator {
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
-  }
-
-  ruleIdPattern(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const regexp = /[À-ÖØ-öø-ÿ ]/;
-      return regexp.test(control.value) ? { ruleIdPattern: true } : null;
-    };
   }
 
   private getRuleType(ruleSelected: string) {

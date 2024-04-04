@@ -39,8 +39,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/lib/api/search-unit-api.service';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -60,6 +59,7 @@ import {
   Transaction,
   Unit,
 } from 'ui-frontend-common';
+import { SearchUnitApiService } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 
