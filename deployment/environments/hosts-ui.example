@@ -72,6 +72,7 @@ hosts_ui_identity_admin
 
 [hosts_ui_identity_admin]
 # EDIT: Mandatory
+# Must be collocated on the same hosts as [hosts_ui_identity]
 
 
 ################################################################################
