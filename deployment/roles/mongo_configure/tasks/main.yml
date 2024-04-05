@@ -34,9 +34,9 @@
   tags: update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
-- name: "restart {{ mongodb.service_name | default('vitamui-mongod') }} service"
+- name: Restart vitamui-mongod service
   service:
-    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
+    name: vitamui-mongod
     enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
     state: restarted
   delegate_to: "{{ item }}"

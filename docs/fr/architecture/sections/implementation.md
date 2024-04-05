@@ -630,25 +630,6 @@ La version de logstash embarquee dans le package sera parametrable au niveau du 
     ...
 ```
 
-### vitamui-mongod
-
-Le package COTS vitamui-mongod installera le soft **mongo-org** par le biais d'une dependance RPM. Cette dependance ira chercher le binaire NGINX depuis les repository officiels mongo. Le package vitamui-mongod contiendra:
-
-* l'unit systemd vitamui-nginx
-* la configuration du logrotate de mongo dans le systeme de fichier vitamui
-
-La dependance vers mongod-org apportera sur le systeme les softs mongod, mongoc, mongos, mongodump, mongocli.
-
-**Mise a jour de la version de mongod:**
-
-La version mongo sera parametree au niveau du repository mongod installee sur le systeme. L'url de ce repository est renseignee dans le deploiement (var **mongo_repository_url**, https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongod_version }}/x86_64/)
-
-* mise a jour mineure de mongo: => yum update via le deploiement (non teste encore et mongo est installe en version latest sur le systeme).
-
-* mise a jour majeure de mongo: modifier dans le deplioement la variable **mongod_version** au niveau du fichier **environment/group_vars/all/mongod.yml**.
-    * pour un redeploiement from scratch, la version sera prise en compte au niveau de l'installation
-    * pour la mise a jour d'un environnement, suivre la procedure de mise a jour mongo
-
 ### vitamui-mongo-express
 
 Le package rpm vitamui-mongo-express est entierement repackage a partir de de l'installation via **npm**. Le package contient toutes les sources de mongo-express installee dans /vitamui/app/mongo-express et le ficher unit systemd de vitamui-mongo-express.
