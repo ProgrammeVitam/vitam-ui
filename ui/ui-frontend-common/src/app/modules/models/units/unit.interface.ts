@@ -45,6 +45,7 @@ export interface Unit {
   Description?: string;
   Description_?: { [key: string]: string };
   DescriptionLevel?: DescriptionLevel;
+  SigningInformation?: SigningInformation;
   CreatedDate?: Date;
   StartDate?: Date;
   EndDate?: Date;
@@ -71,6 +72,24 @@ export interface Unit {
   '#originating_agency'?: string;
 
   [key: string]: any;
+}
+
+export interface SigningInformation {
+  DetachedSigningRole: DetachedSigningRoleType[];
+  SigningRole: SigningRoleType[];
+}
+
+export enum DetachedSigningRoleType {
+  TIMESTAMP = 'Timestamp',
+  SIGNATURE = 'Signature',
+  ADDITIONAL_PROOF = 'AdditionalProof',
+}
+
+export enum SigningRoleType {
+  SIGNED_DOCUMENT = 'SignedDocument',
+  TIMESTAMP = 'Timestamp',
+  SIGNATURE = 'Signature',
+  ADDITIONAL_PROOF = 'AdditionalProof',
 }
 
 export interface InheritedRuleCategoryDto {

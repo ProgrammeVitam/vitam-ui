@@ -37,12 +37,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option, SigningRoleType, Unit } from 'ui-frontend-common';
+import { ArchiveApiService } from '../../core/api/archive-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({
@@ -63,6 +64,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   ];
 
   private accessContractId: string;
+  showWarningMessage = false;
 
   private destroyer$ = new Subject();
 
@@ -75,6 +77,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
+    private archiveApiService: ArchiveApiService,
   ) {}
 
   ngOnInit() {
@@ -95,12 +98,19 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       unitId: [null, Validators.required],
       usage: [null, Validators.required],
       version: [null, Validators.required],
+      includeDetachedSigningInformation: [false, Validators.required],
     });
 
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)
       .pipe(takeUntil(this.destroyer$))
       .subscribe(() => this.onCancel());
+
+    this.form.get('unitId').statusChanges.subscribe((unitId) => {
+      if (unitId === 'VALID' && this.form.get('includeDetachedSigningInformation').value) {
+        this.complianceCheck();
+      }
+    });
   }
 
   ngOnDestroy = () => {
@@ -156,6 +166,16 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       },
       usage: values.usage,
       version: values.version,
+      includeDetachedSigningInformation: values.includeDetachedSigningInformation,
     };
+  }
+
+  public complianceCheck(): void {
+    if (this.form.get('unitId').valid) {
+      this.archiveApiService.findArchiveUnit(this.form.get('unitId').value).subscribe((unitIdStatus: Unit) => {
+        this.showWarningMessage =
+          !unitIdStatus.SigningInformation || !unitIdStatus.SigningInformation.SigningRole.includes(SigningRoleType.SIGNED_DOCUMENT);
+      });
+    }
   }
 }

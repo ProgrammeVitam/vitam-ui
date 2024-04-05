@@ -85,6 +85,22 @@ const PROXY_CONFIG = [
     },
   },
   {
+    context: ['/referential-api/archive-search/'],
+    target: {
+      protocol: 'https:',
+      host: 'localhost',
+      port: 8089,
+      pfx: fs.readFileSync('../../dev-deployment/environments/certs/server/hosts/localhost/ui-archive-search.p12'),
+      passphrase: 'changeme',
+    },
+    changeOrigin: true,
+    secure: false,
+    logLevel: 'debug',
+    pathRewrite: {
+      '^/referential-api/archive-search': '/archives-search',
+    },
+  },
+  {
     context: ['/referential-api'],
     target: {
       protocol: 'https:',
