@@ -6,14 +6,11 @@
 
 # API GATEWAY
 
-{% if gateway.enabled | default(False) is sameas true %}
 upstream API-GATEWAY {
 {% for h in groups['hosts_vitamui_api_gateway'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.api_gateway.port_service }};
 {% endfor %}
 }
-
-{% endif %}
 
 # VITAMUI
 

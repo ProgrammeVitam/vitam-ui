@@ -26,20 +26,3 @@
     password_keystore: "{{ keystores_server_ingest_external }}"
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "ingest-external, api, external"
-
-# UI ingest calls ingest external
-
-- hosts: hosts_ui_ingest
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - role: vitamui
-      vars:
-        app_default_root_path: "/vitamui"
-        vitamui_struct: "{{ vitamui.ingest }}"
-        vitamui_certificate_type: "server"
-        password_keystore: "{{ keystores_server_ui_ingest }}"
-        password_truststore: "{{ truststores_server }}"
-        consul_tags: "ui-ingest, ui"
-      when: gateway.enabled | default(false) | bool  == false
-

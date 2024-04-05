@@ -23,14 +23,8 @@ server:
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
-  {% if gateway.enabled | default(False) is sameas true %}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
-  {% else %}
-    client-auth: need
-    enabled-protocols: {{ssl_setting.enabled_protocols}}
-    ciphers: {{ssl_setting.ciphers}}
-  {% endif %}
   error:
     path: /error
 
@@ -52,10 +46,8 @@ management:
     ssl:
       enabled: false
 
-{% if gateway.enabled | default(False) is sameas true %}
 gateway:
   enabled: true
-{% endif %}
 
 archive-search-external:
   security-client:
@@ -64,12 +56,6 @@ archive-search-external:
 {% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      {% if gateway.enabled | default(False) is sameas false %}
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password:  {{ password_truststore }}
@@ -81,12 +67,6 @@ archive-search-external:
 {% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      {% if gateway.enabled | default(False) is sameas false %}
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password:  {{ password_truststore }}
@@ -98,12 +78,6 @@ archive-search-external:
 {% if vitamui.archive_search_internal.secure | default(secure) | lower == "true" %}
     secure: {{ vitamui.archive_search_internal.secure | default(secure) | lower }}
     ssl-configuration:
-      {% if gateway.enabled | default(False) is sameas false %}
-      keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
-        type: JKS
-      {% endif %}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password:  {{ password_truststore }}
