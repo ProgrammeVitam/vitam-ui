@@ -89,32 +89,9 @@ pipeline {
             }
         }
 
-        stage('Check vulnerabilities and tests') {
+        stage('Build and tests') {
             when {
                 environment(name: 'DO_TEST', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-                NODE_OPTIONS="--max_old_space_size=12288"
-            }
-            steps {
-                sh 'node -v'
-                sh 'npmrc default'
-
-                sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'
-                '''
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                    junit '**/target/junit/*.xml'
-                }
-            }
-        }
-
-        stage('Generate front ressources') {
-            when {
                 environment(name: 'DO_GENERATE_FRONT_RSC', value: 'true')
             }
             environment {
@@ -122,12 +99,46 @@ pipeline {
                 NODE_OPTIONS="--max_old_space_size=12288"
             }
             steps {
+            parallel(
+            'Build Apis': {
+                sh 'node -v'
+                sh 'npmrc default'
+
+                sh '''
+                    $MVN_COMMAND clean verify -U -Pvitam \
+                    -pl  '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' \
+                    -pl '!ui/ui-archive-search' \
+                    -pl '!ui/ui-collect' \
+                    -pl '!ui/ui-commons' \
+                    -pl '!ui/ui-identity' \
+                    -pl '!ui/ui-ingest' \
+                    -pl '!ui/ui-pastis' \
+                    -pl '!ui/ui-portal' \
+                    -pl '!ui/ui-referential'
+                '''
+              },
+            'Build and Generate front ressources': {
                 sh 'node -v'
                 sh 'npmrc default'
 
                 sh '''
                 $MVN_COMMAND clean verify -Pvitam -pl 'ui/ui-frontend-common, ui/ui-frontend'
                 '''
+              },
+           'Build Cots': {
+                dir('cots/') {
+                    sh '''
+                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true
+                    '''
+                }
+            }
+            )
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                    junit '**/target/junit/*.xml'
+                }
             }
         }
 
@@ -174,19 +185,6 @@ pipeline {
                         -P standalone \
                         -pl 'api/api-pastis/pastis-standalone'
                 '''
-            }
-        }
-
-        stage('Build COTS') {
-            when {
-                environment(name: 'DO_BUILD', value: 'true')
-            }
-            steps {
-                dir('cots/') {
-                    sh '''
-                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true
-                    '''
-                }
             }
         }
 
