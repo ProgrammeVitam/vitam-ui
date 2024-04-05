@@ -630,17 +630,6 @@ La version de logstash embarquee dans le package sera parametrable au niveau du 
     ...
 ```
 
-### vitamui-nginx
-
-Le package COTS vitamui-nginx installera le soft **nginx** par le biais d'une dependance RPM. Cette dependance ira chercher le binaire NGINX depuis le repository **epel-release**. Le package vitamui-nginx contiendra:
-
-* l'unit systemd vitamui-nginx
-* la configuration du logrotate de NGINX dans le systeme de fichier vitamui
-
-**Mise a jour de la version de NGINX:**
-
-La version **latest** de NGINX sera installee sur le systeme. La mise a jour du softs s'effectuera a partir d'une update yum.
-
 ### vitamui-mongod
 
 Le package COTS vitamui-mongod installera le soft **mongo-org** par le biais d'une dependance RPM. Cette dependance ira chercher le binaire NGINX depuis les repository officiels mongo. Le package vitamui-mongod contiendra:

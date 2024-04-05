@@ -13,7 +13,6 @@
     </parent>
 
     <modules>
-        <module>vitamui-nginx</module>
         <module>vitamui-mongod</module>
         <module>vitamui-mongo-express</module>
 		<module>vitamui-logstash</module>
