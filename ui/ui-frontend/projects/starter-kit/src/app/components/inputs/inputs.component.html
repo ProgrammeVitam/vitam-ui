@@ -305,6 +305,8 @@
 
     <h4>Date</h4>
     <div class="d-flex">
+      <vitamui-common-datepicker [formControl]="datePickerControl" label="Common datepicker"></vitamui-common-datepicker>
+
       <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
         <input [matDatepicker]="pickerStart" matInput placeholder="Depuis" />
         <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>

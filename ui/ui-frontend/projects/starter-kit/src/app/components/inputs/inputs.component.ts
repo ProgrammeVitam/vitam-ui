@@ -53,6 +53,7 @@ export class InputsComponent implements OnInit, OnDestroy {
   public textarea = new FormControl('name\naddress\ncity', [Validators.maxLength(25)]);
   public level = new FormControl('LEVEL', [Validators.maxLength(10)]);
   public toggle = new FormControl('Value 3');
+  public datePickerControl = new FormControl();
   public duration = new FormControl({ days: 5, hours: 10, minutes: 5 });
   public file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 

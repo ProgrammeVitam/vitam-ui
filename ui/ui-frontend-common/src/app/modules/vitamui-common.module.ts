@@ -58,6 +58,7 @@ import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DataModule } from './components/data/data.module';
+import { DatepickerModule } from './components/datepicker/datepicker.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { FooterModule } from './components/footer/footer.module';
@@ -158,6 +159,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ConfirmDialogModule,
     CustomerSelectContentModule,
     DataModule,
+    DatepickerModule,
     DownloadSnackBarModule,
     DragAndDropModule,
     EditableFieldModule,
@@ -229,6 +231,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CommonTooltipModule,
     ConfirmDialogModule,
     DataModule,
+    DatepickerModule,
     DragAndDropModule,
     EditableFieldModule,
     EllipsisDirectiveModule,
