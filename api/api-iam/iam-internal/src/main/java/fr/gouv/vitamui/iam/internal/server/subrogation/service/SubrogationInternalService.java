@@ -157,7 +157,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
             convertFromEntityToDto(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
                 user.getEmail(), user.getCustomerId()));
         subrogationDto.setSurrogateCustomerCode(optionalCustomer.get().getCode());
-        subrogationDto.setSurrogateCustomerName(optionalCustomer.get().getCompanyName());
+        subrogationDto.setSurrogateCustomerName(optionalCustomer.get().getName());
         return subrogationDto;
     }
 

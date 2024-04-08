@@ -89,18 +89,18 @@
     "HOME": {
       "RESULTS_TABLE": {
         "MODAL": {
-          "IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
+          "IMPOSSIBLE_SUBROGATION": "Subrogation for this user is temporarily impossible",
           "DENIED_SUBROGATION": "Your subrogation request has been refused",
-          "CANCEL_SUBROGATION": "Your subragation request has been canceled",
+          "CANCEL_SUBROGATION": "Your subrogation request has been canceled",
           "ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user : {{ email }}",
           "WAITING_ACCEPTATION": "Waiting for user approval",
           "ACCEPT_SUBROGATION": "In order to help you the support has for the next 30 minutes the same rights as you",
-          "ASK_SUBROGATION": "You ask a user to subrogate"
+          "ASK_SUBROGATION": "You requested to subrogate the user"
         }
       }
     },
     "BANNER": {
-      "MESSAGE": "Subrogation of user {{email}} of company {{surrogateCustomerName}} ({{surrogateCustomerCode}}) until {{endDate}}",
+      "MESSAGE": "Subrogation of user {{email}} of the organization {{surrogateCustomerName}} ({{surrogateCustomerCode}}) until {{endDate}}",
       "STOP_LABEL": "Stop the subrogation"
     }
   },
@@ -258,10 +258,10 @@
     },
     "RULES_APP": {
       "NAME": "Management rules",
-      "TITLE": "Management rules referencial",
+      "TITLE": "Management rules referential",
       "TOOLTIP": "Consult, create and modify business rules",
       "MESSAGES": {
-        "RULE_CREATION_SUCCESS": "The Rule {{ name }} succussfully created.",
+        "RULE_CREATION_SUCCESS": "The Rule {{ name }} successfully created.",
         "RULE_CREATION_FAILED": "The Rule {{ name }} didn't created.",
         "DELETION": "rule deletion",
         "RULE_UPDATE_SUCCESS": "The rule {{ name }} successfully updated",
@@ -274,7 +274,7 @@
     },
     "FILE_FORMATS_APP": {
       "NAME": "Files formats",
-      "TITLE": "File format referencial",
+      "TITLE": "File format referential",
       "TOOLTIP": "Consult, create and edit file formats"
     },
     "HOLDING_FILLING_SCHEME_APP": {
@@ -291,7 +291,7 @@
     },
     "AGENCIES_APP": {
       "NAME": "Agent services",
-      "TITLE": "Agent services referencial",
+      "TITLE": "Agent services referential",
       "TOOLTIP": "Declare the producer services and the authorized uploading services in the archiving system"
     },
     "CONTEXTS_APP": {
@@ -340,7 +340,7 @@
     },
     "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Management contract",
-      "TITLE": "Management contracts referencial",
+      "TITLE": "Management contracts referential",
       "TOOLTIP": "Consult, create and modify management contracts"
     },
     "ARCHIVAL_PROFILE_APP": {
@@ -536,7 +536,7 @@
   },
   "ERROR_DIALOG": {
     "TITLE": "Internal server error (500)",
-    "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
+    "MESSAGE": "An internal error occurred. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
     "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Checking the blocking of reclassification of archival units by hold rules.",
@@ -936,7 +936,7 @@
     "CORRECTION_FINALIZE.FATAL": "a Technical Error occurred during the process of finalizing the signature corrections for each faulty object, group of objects or audited unit",
     "PRESERVATION.FATAL": "Technical error during the overall preservation process",
     "FILE_FORMAT_REPORT.WARNING": "Warning when generating the format repository import report",
-    "STP_DELETE_ACCESSION_REGISTER_DETAIL.FATAL": "Technical error during the process of deleting the Register of Funds (Fetails)",
+    "STP_DELETE_ACCESSION_REGISTER_DETAIL.FATAL": "Technical error during the process of deleting the Register of Funds (Details)",
     "STP_UPDATE_UNIT.KO": "Failed to update archival unit metadata",
     "PROBATIVE_VALUE_LIST_SECURED_FILES_TO_DOWNLOAD.OK": "Successful preparation of signature list in secure files",
     "FILINGSCHEME.OK": "Success of the filing plan entry process",
@@ -1460,7 +1460,7 @@
     "PROBATIVE_VALUE_CHECK_OBJECT_GROUP.KO": "Failed to retrieve data from the database",
     "STP_VERIFY_STAMP.WARNING": "Warning during the timestamp verification process",
     "UNIT_METADATA_UPDATE_CHECK_DT.WARNING": "Warning when checking the association with an archival unit profile",
-    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.STARTED": "Beginning of the deletion processn of the Register of Symbolic Funds ",
+    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.STARTED": "Beginning of the deletion process of the Register of Symbolic Funds ",
     "ELIMINATION_ACTION_DELETE_UNIT.KO": "Failure to permanently dispose of disposable archival units",
     "PROBATIVE_VALUE_LIST_OBJECT.OK": "Successful creation of the list of objects of the statement of probative value",
     "MASS_UPDATE_UNITS_RULES.OK": "Successful update of archival unit management metadata",
@@ -2230,7 +2230,7 @@
     "PROCESS_SIP_UNITARY_TEST.FATAL": "Technical error during the SIP blank entry process",
     "STP_ELIMINATION_ACTION_ACCESSION_REGISTER_PREPARATION.STARTED": "Beginning of the preparation process of the Register of Funds following the final elimination of archival units",
     "STORAGE_AVAILABILITY_CHECK.WARNING": "Warning when checking the availability of at least one storage offer: Impossibility of knowing the available space",
-    "ELIMINATION_ACTION_DETACH_OBJECT_GROUP.STARTED.OK": "Successful start of detachment of groups of technical objects from which some parent archival units are eliminatedées ",
+    "ELIMINATION_ACTION_DETACH_OBJECT_GROUP.STARTED.OK": "Successful start of detachment of groups of technical objects from which some parent archival units are eliminated ",
     "LFC.OBJ_STORAGE.OBJ_STORAGE_SUB_TASK.STARTED": "Beginning of writing the object to the storage offers",
     "STP_ELIMINATION_ACTION_ACCESSION_REGISTER_UPDATE.STARTED.OK": "Successful start of the process of updating the Register of Funds following the final elimination of archival units",
     "IMPORT_AGENCIES.OK": "Success of the agent services repository import process",
@@ -2559,7 +2559,7 @@
     "CHECK_UNIT_SCHEMA.EMPTY_REQUIRED_FIELD.KO": "Failure of the global verification of the archival unit: compulsory fields empty",
     "STORAGE_AVAILABILITY_CHECK.STORAGE_AVAILABILITY_CHECK.WARNING": "Storage offer availability check warning: Unable to know the available space",
     "STP_ELIMINATION_ACTION_PREPARATION.OK": "Success of the preparation process for the final disposal of archival units",
-    "STP_DELETE_ACCESSION_REGISTER_DETAIL.WARNING": "Warning during the process of deleting the Register of Funds (Fetails)",
+    "STP_DELETE_ACCESSION_REGISTER_DETAIL.WARNING": "Warning during the process of deleting the Register of Funds (Details)",
     "CHECK_DIGEST.ALREADY_EXECUTED": "Action already carried out: No verification of the object fingerprint",
     "LIST_OBJECTGROUP_ID.KO": "Failed to create the list of object groups to audit",
     "PROCESS_SIP_UNITARY_TEST.STARTED.OK": "Success of the start of the SIP blank entry process",
@@ -2656,7 +2656,7 @@
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.OK": "Successful process of creating timestamp buffer for all object group lifecycle logs",
     "STP_UPDATE_PROFILE_JSON.WARNING": "Warning during the archiving profile update process",
     "LOGBOOK_UNIT_LFC_TRACEABILITY.FATAL": "Technical error securing the lifecycle logs of archival units",
-    "UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to apply business rules and calculate due datesance: inconsistent inheritance exclusion ",
+    "UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to apply business rules and calculate due dates: inconsistent inheritance exclusion ",
     "CHECK_UNIT_SCHEMA.RULE_DATE_THRESHOLD.KO": "Failed to calculate due dates: the date cannot be managed",
     "CHECK_CONCURRENT_WORKFLOW_LOCK.FATAL": "Technical error while checking concurrent processes",
     "ELIMINATION_ACTION_ACCESSION_REGISTER_UPDATE.OK": "Successful update of the Register of Funds following the final elimination of archival units",
@@ -3555,11 +3555,11 @@
       },
       "FINAL_ACTION_VALUE": "Sort final",
       "HOLD_RULE_PROPERTIES": {
-        "HOLDENDDATE": "Date de fin de gel",
-        "HOLDOWNER": "Propriétaire",
-        "HOLDREASON": "Motif de la règle de gel",
-        "HOLDREASSESSINGDATE": "Date de réévaluation",
-        "PREVENTREARRANGEMENT": "Blocage de reclassement"
+        "HOLDENDDATE": "Hold end date",
+        "HOLDOWNER": "Owner",
+        "HOLDREASON": "Hold rule reason",
+        "HOLDREASSESSINGDATE": "Reassessing date",
+        "PREVENTREARRANGEMENT": "Prevent rearrangement"
       },
       "INHERITANCE_BLOCKED": "Category inheritance blocked",
       "PROPERTIES": "Properties",
@@ -3682,7 +3682,7 @@
     "MORE_THAN_THRESHOLD": "+ than 10 000",
     "NO_MORE_RESULTS": "No more results",
     "ONE_SELECTED": "selected",
-    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
+    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criteria",
     "RESULT": "Result",
     "RESULTS": "Results",
     "RETRIVE_EXACT_COUNT": "Load exact count",
@@ -3794,8 +3794,8 @@
         "FINAL_ACTION_TYPE": {
           "HAS_APPRAISAL_RULE": "Define appraisal final action ",
           "HAS_STORAGE_RULE": "Define storage final action ",
-          "INHERITE_APPRAISAL_RULE": "Inherite appraisal final action",
-          "INHERITE_STORAGE_RULE": "Inherite storage final action",
+          "INHERITE_APPRAISAL_RULE": "Inherit appraisal final action",
+          "INHERITE_STORAGE_RULE": "Inherit storage final action",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
           "SELECT_ALL_STORAGE_RULE": "Select all",
           "TITLE": "Archive unit"
@@ -3931,21 +3931,21 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria nemed  ",
+      "DELETED_WITH_SUCCESS_1": "Your search criteria named  ",
       "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
-      "NEW_SAVE_IN_POPUP": "Save your search criterias",
+      "NEW_SAVE_IN_POPUP": "Save your search criteria",
       "NEW_SAVE_LABEL": "Save as...",
       "NEW_SAVE_MENU": "New Criteria Save",
       "NEW_SAVE_REPLACE_LABEL": "Existant criteria save(replace the save)",
       "NO_RESULTS": "No save results found",
-      "OBJECT_TYPE": "Saved Criterias Searches",
+      "OBJECT_TYPE": "Saved Criteria Searches",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Character limit reached",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed. ",
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
-      "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criterias ?",
-      "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criterias:",
+      "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
+      "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE": "You have reached the limit on the number of saved searches. Please delete at least one of your searches from the home page.",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
@@ -3962,7 +3962,7 @@
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
     "NO_PHYSICAL_ARCHIVE_MSG": "No physical archive",
-    "NO_LITTERAL_FORMAT_MSG": "No litteral format",
+    "NO_LITTERAL_FORMAT_MSG": "No literal format",
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Binary master",
       "Dissemination": "Dissemination",
@@ -4075,11 +4075,11 @@
       },
       "FINAL_ACTION_VALUE": "Sort final",
       "HOLD_RULE_PROPERTIES": {
-        "HOLDENDDATE": "Date de fin de gel",
-        "HOLDOWNER": "Propriétaire",
-        "HOLDREASON": "Motif de la règle de gel",
-        "HOLDREASSESSINGDATE": "Date de réévaluation",
-        "PREVENTREARRANGEMENT": "Blocage de reclassement"
+        "HOLDENDDATE": "Hold end date",
+        "HOLDOWNER": "Owner",
+        "HOLDREASON": "Hold rule reason",
+        "HOLDREASSESSINGDATE": "Reassessing date",
+        "PREVENTREARRANGEMENT": "Prevent rearrangement"
       },
       "INHERITANCE_BLOCKED": "Category inheritance blocked",
       "PROPERTIES": "Properties",
@@ -4209,7 +4209,7 @@
     "ONE_SELECTED": "selected",
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
-        "EDIT_PROJECT": "Edir project",
+        "EDIT_PROJECT": "Edit project",
         "SHOW_MORE_DETAILS": "Show all metadata",
         "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
@@ -4247,7 +4247,7 @@
         "FLOW": "Application flow"
       }
     },
-    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
+    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criteria",
     "RESULT": "result",
     "RESULTS": "results",
     "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
@@ -4359,8 +4359,8 @@
         "FINAL_ACTION_TYPE": {
           "HAS_APPRAISAL_RULE": "Define appraisal final action ",
           "HAS_STORAGE_RULE": "Define storage final action ",
-          "INHERITE_APPRAISAL_RULE": "Inherite appraisal final action",
-          "INHERITE_STORAGE_RULE": "Inherite storage final action",
+          "INHERITE_APPRAISAL_RULE": "Inherit appraisal final action",
+          "INHERITE_STORAGE_RULE": "Inherit storage final action",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
           "SELECT_ALL_STORAGE_RULE": "Select all",
           "TITLE": "Archive unit"
@@ -4495,21 +4495,21 @@
     "SEARCH_CRITERIA_OR": "OU",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria nemed  ",
+      "DELETED_WITH_SUCCESS_1": "Your search criteria named  ",
       "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
-      "NEW_SAVE_IN_POPUP": "Save your search criterias",
+      "NEW_SAVE_IN_POPUP": "Save your search criteria",
       "NEW_SAVE_LABEL": "Save as...",
       "NEW_SAVE_MENU": "New Criteria Save",
       "NEW_SAVE_REPLACE_LABEL": "Existant criteria save(replace the save)",
       "NO_RESULTS": "No save results found",
-      "OBJECT_TYPE": "Saved Criterias Searches",
+      "OBJECT_TYPE": "Saved Criteria Searches",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Character limit reached",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed. ",
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
-      "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criterias ?",
-      "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criterias:",
+      "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
+      "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE": "You have reached the limit on the number of saved searches. Please delete at least one of your searches from the home page.",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
@@ -4557,7 +4557,7 @@
       },
       "REMOVE": {
         "TITLE": "Confirm deletion",
-        "CONTENT": "The current metadat bloc is not empty. Do you confirm the deletion ?",
+        "CONTENT": "The current metadata bloc is not empty. Do you confirm the deletion ?",
         "BUTTONS": {
           "CONFIRM": "CONFIRM",
           "CANCEL": "CANCEL"

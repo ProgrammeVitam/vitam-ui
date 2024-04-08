@@ -167,7 +167,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                             "Invalid surrogateCustomerId: '" + surrogateCustomerId + "'"));
 
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
-                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getCompanyName());
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
 
             } else if (StringUtils.isNotBlank(username)) {
                 validateEmail(username);
