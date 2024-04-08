@@ -4,7 +4,12 @@
       <div class="row col-1"><i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon"></i></div>
       <div class="col-5" i18n="ingest identifier column header@@ingestListIdentifierHeader">
         <span>{{ 'INGEST_LIST.ID' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
+        <vitamui-common-order-by-button
+          orderByKey="obIdIn.keyword"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2" i18n="ingest createdDate column header@@ingestListCreatedDateHeader">
