@@ -1015,7 +1015,7 @@
       }
     },
     "OPERATIONS_CATEGORIES": {
-      "PROCESS_AUDIT": "Integrité et Existence",
+      "PROCESS_AUDIT": "Intégrité et existence",
       "EVIDENCE_AUDIT": "Cohérence",
       "RECTIFICATION_AUDIT": "Correctif"
     },
