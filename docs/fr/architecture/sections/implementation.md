@@ -592,26 +592,6 @@ Le repackaging entier des COTS est la technique a priviligier pour les raisons s
 
 ## Packaging des cots VITAMUI
 
-### vitamui-logstash
-
-Le soft **logstash** sera entierement repackage dans vitamui-logstash a partir de **l'archive des sources Logstash**. Le package RPM contiendra:
-
-* les librairies Java et fichiers de logstash
-* les fichiers de configuration de logstash adapte au file system vitamui dans /vitamui/conf/logstash
-* l'unit systemd vitamui-logstash
-
-Les scripts d'installation RPM appliquerons les droits vitamuidb au package logstash (a corriger).
-
-**Mise a jour de la version de logstash:**
-
-La version de logstash embarquee dans le package sera parametrable au niveau du fichier pom.xml du cots vitamui-logstash (fichier **vitamui/cots/vitamui-logstash/pom.xml**). Ce nom de version sera transmis en parametre du Makefile qui telechargera l'archive de source logstash correspondant a la version choisie.
-
-```xml
-    ...
-<argument>LOGSTASH_VERSION=7.6.0</argument>
-    ...
-```
-
 ### vitamui-mongo-express
 
 Le package rpm vitamui-mongo-express est entierement repackage a partir de de l'installation via **npm**. Le package contient toutes les sources de mongo-express installee dans /vitamui/app/mongo-express et le ficher unit systemd de vitamui-mongo-express.
