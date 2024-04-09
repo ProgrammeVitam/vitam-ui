@@ -591,12 +591,12 @@
                                 <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
-                                <exclude>WEB-INF/lib/slf4j-api-1.8.0-beta4.jar</exclude>
-                                <exclude>WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar</exclude>
-                                <exclude>WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar</exclude>
-                                <exclude>WEB-INF/lib/jackson-core-2.8.10.jar</exclude>
-                                <exclude>WEB-INF/lib/jackson-databind-2.8.10.jar</exclude>
-                                <exclude>WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar</exclude>
+                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jcl-over-slf4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jul-to-slf4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-core-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-databind-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-dataformat-yaml-*.jar</exclude>
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
