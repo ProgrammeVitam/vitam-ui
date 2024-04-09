@@ -240,7 +240,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         CustomerDto customerDto = new CustomerDto();
         customerDto.setId(customerId);
         customerDto.setCode(code);
-        customerDto.setCompanyName(name);
+        customerDto.setName(name);
         return customerDto;
     }
 }

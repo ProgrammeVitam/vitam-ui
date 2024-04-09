@@ -234,7 +234,7 @@ public class ListCustomersAction extends AbstractAction {
                 customerDto -> new CustomerModel()
                     .setCustomerId(customerDto.getId())
                     .setCode(customerDto.getCode())
-                    .setName(customerDto.getCompanyName())
+                    .setName(customerDto.getName())
             )
             .sorted(Comparator.comparing(CustomerModel::getCode))
             .collect(Collectors.toList());

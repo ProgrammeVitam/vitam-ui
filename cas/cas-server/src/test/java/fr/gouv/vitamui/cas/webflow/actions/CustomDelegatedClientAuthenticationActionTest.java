@@ -68,7 +68,7 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
         CustomerDto surrogateCustomerDto = new CustomerDto();
         surrogateCustomerDto.setCode(CODE);
-        surrogateCustomerDto.setCompanyName(COMPANY);
+        surrogateCustomerDto.setName(COMPANY);
         surrogateCustomerDto.setId(CUSTOMER_ID_2);
         doReturn(List.of(surrogateCustomerDto))
             .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
