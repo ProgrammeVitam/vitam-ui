@@ -38,7 +38,7 @@ import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/ht
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
-import { Observable, of, throwError, TimeoutError } from 'rxjs';
+import { Observable, TimeoutError, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
@@ -48,7 +48,6 @@ import {
   CriteriaOperator,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
-  getUnitI18nAttribute,
   Ontology,
   PagedResult,
   SearchArchiveUnitsInterface,
@@ -60,9 +59,10 @@ import {
   SearchService,
   SecurityService,
   Unit,
+  getUnitI18nAttribute,
 } from 'ui-frontend-common';
-import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive/models/archive-unit';
-import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive/models/json-patch';
+import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive-unit/models/archive-unit';
+import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive-unit/models/json-patch';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';

@@ -301,7 +301,7 @@ export class SchemaElementToDisplayRuleService {
         ...baseDisplayRule.ui,
         Path: schemaElement.ApiPath,
         label: schemaElement.ShortName,
-        display: schemaElement.Category === 'DESCRIPTION',
+        display: schemaElement.Category === 'DESCRIPTION' || schemaElement.Origin === 'EXTERNAL',
       },
     };
   }

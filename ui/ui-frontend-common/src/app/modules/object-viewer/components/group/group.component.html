@@ -12,7 +12,7 @@
 </ng-container>
 
 <vitamui-common-accordion *ngIf="display === 'ACCORDION'" [opened]="displayObject.open">
-  <span class="title">{{ displayObject.displayRule.ui.label | empty }}</span>
+  <span class="title">{{ displayObject.displayRule.ui.label | translate | empty }}</span>
   <div *ngIf="favoriteEntry" class="title-extra v-col align-items-center favorite-entry">
     {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
   </div>

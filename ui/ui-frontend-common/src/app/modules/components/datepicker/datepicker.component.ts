@@ -49,6 +49,5 @@ export class DatepickerComponent implements ControlValueAccessor {
   onChange(value: Date): void {
     this.value = value.toISOString();
     this.propagateChange(this.value);
-    console.log({ value: this.value });
   }
 }

@@ -1,6 +1,7 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
+import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
-import { MockSchemaService } from '../../object-viewer/services/mock-schema.service';
+import { MockSchemaService } from '../../schema/mock-schema.service';
 import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';
 
@@ -8,7 +9,7 @@ describe('SchemaService', () => {
   let service: SchemaService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [MockSchemaService] });
+    TestBed.configureTestingModule({ imports: [LoggerModule.forRoot()], providers: [MockSchemaService] });
     service = TestBed.inject(SchemaService);
   });
 

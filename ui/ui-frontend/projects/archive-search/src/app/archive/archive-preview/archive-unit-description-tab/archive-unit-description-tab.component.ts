@@ -97,7 +97,10 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         .pipe(
           filter((result) => !!result),
           map(() => this.archiveUnitEditor.getJsonPatch()),
-          tap(() => this.spinnerOverlayService.open()),
+          tap(
+            () => this.spinnerOverlayService.open(),
+            (err) => this.logger.error(this, err),
+          ),
           switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
         )
         .subscribe(

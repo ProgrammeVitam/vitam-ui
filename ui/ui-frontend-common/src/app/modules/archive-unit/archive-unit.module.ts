@@ -79,4 +79,4 @@ import { PhysicalArchiveViewerComponent } from './components/physical-archive-vi
     EditorBannerComponent,
   ],
 })
-export class ArchiveModule {}
+export class ArchiveUnitModule {}
