@@ -242,6 +242,9 @@ public class TransactionArchiveUnitInternalService {
             return attribute;
         }
         final Map<String, String> attribute_ = i18nAttributeExtractor.apply(archiveUnit);
+        if (attribute_ == null) {
+            return null;
+        }
         return Stream.of("fr", "en")
             .map(lang -> attribute_.entrySet().stream().filter(e -> lang.equalsIgnoreCase(e.getKey())).findFirst())
             .filter(Optional::isPresent)
