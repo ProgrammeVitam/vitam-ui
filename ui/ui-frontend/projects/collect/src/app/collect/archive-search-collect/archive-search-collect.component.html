@@ -420,7 +420,7 @@
                     [checked]="isAllChecked"
                   />
                 </div>
-                <div class="col-1 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
+                <div class="col-1 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
                   <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
                     <ng-container *ngSwitchCase="UnitType.INGEST">
                       <span class="table-filter-icon">
@@ -440,19 +440,19 @@
                     </ng-container>
                   </span>
                 </div>
-                <div class="col-4 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
+                <div class="col-4 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
                   <p matTooltip="{{ archiveUnit | unitI18n: 'Description' }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                     <b> {{ archiveUnit | unitI18n: 'Title' }}</b> <br />
                     {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
                   </p>
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
+                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
                   {{ archiveUnit.StartDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
+                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
                   {{ archiveUnit.EndDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
+                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
                   <p
                     matTooltip="{{ archiveUnit['#originating_agency'] }}   ({{ archiveUnit['#originating_agencies'] }})"
                     matTooltipClass="vitamui-tooltip"

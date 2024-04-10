@@ -2,7 +2,7 @@
 
 <div *ngIf="editMode">
   <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.2' }" class="editor-banner">
-    <button (click)="onSave()" [disabled]="editObject?.control?.pristine" class="btn primary save">
+    <button (click)="onSave()" [disabled]="!isModified()" class="btn primary save">
       {{ 'COMMON.SAVE' | translate }}
     </button>
     <button (click)="onCancel()" class="btn primary cancel">

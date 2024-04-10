@@ -35,17 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
+import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnChanges {
+export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;
   @Input() accessContractAllowUpdating: boolean;
@@ -61,13 +62,27 @@ export class ArchivePreviewComponent implements OnChanges {
   updateStarted = false;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
 
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
+
   constructor(private translateService: TranslateService) {}
 
-  emitClose() {
+  ngAfterViewInit(): void {
+    this.tabs._handleClick = this.interceptTabChange.bind(this);
+  }
+
+  async emitClose() {
+    if (this.descriptionTab.isModified()) {
+      await this.checkBeforeExit();
+    }
     this.previewClose.emit();
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
+  }
+
+  async checkBeforeExit() {
+    await this.descriptionTab.onCancel();
   }
 
   selectedTabChangeEvent($event: MatTabChangeEvent) {
@@ -85,6 +100,22 @@ export class ArchivePreviewComponent implements OnChanges {
     this.selectedIndex = $event.index;
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  async beforeunloadHandler(event: any) {
+    if (this.descriptionTab.isModified()) {
+      event.preventDefault();
+      await this.checkBeforeExit();
+    }
+  }
+
+  private async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
+    if (this.descriptionTab.isModified()) {
+      await this.checkBeforeExit();
+    }
+    this.updateStarted = false;
+    return MatTabGroup.prototype._handleClick.apply(this.tabs, [tab, tabHeader, idx]);
+  }
+
   showNormalPanel() {
     this.updateStarted = false;
     this.selectedTabChangeEvent({ index: this.selectedIndex, tab: null });
@@ -97,8 +128,14 @@ export class ArchivePreviewComponent implements OnChanges {
     this.updateStarted = true;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes.archiveUnit) {
+      if (this.descriptionTab?.isModified()) {
+        this.archiveUnit = changes.archiveUnit.previousValue;
+        await this.checkBeforeExit().then(() => {
+          this.archiveUnit = changes.archiveUnit.currentValue;
+        });
+      }
       this.showNormalPanel();
     }
   }
