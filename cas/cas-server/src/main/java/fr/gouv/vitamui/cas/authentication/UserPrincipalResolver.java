@@ -304,6 +304,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String loginCustomerIdFromSession =
                 (String) sessionStore.get(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID).orElseThrow();
 
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, null);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
+            sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
+
             Assert.isTrue(email.equals(loginEmailFromSession),
                 String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email));
 

@@ -54,5 +54,5 @@ public interface CustomerRepository extends VitamUIRepository<Customer, String> 
 
     Optional<Customer> findByEmailDomainsContainsIgnoreCase(String email);
 
-    Optional<Customer> findByEmailDomainsIgnoreCase(String email);
+    Optional<Customer> findByIdAndEmailDomainsIgnoreCase(String customerId, String email);
 }

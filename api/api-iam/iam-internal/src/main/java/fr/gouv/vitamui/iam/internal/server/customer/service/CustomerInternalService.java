@@ -81,6 +81,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -88,10 +89,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the customers.
@@ -535,7 +539,11 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     private void checkEmailDomains(final List<String> emailDomains, final String message) {
         Assert.isTrue(emailDomains != null && emailDomains.size() > 0,
             message + ": a customer must have emails domains.");
-
+        Set<String> elements = new HashSet<>();
+        List<String> duplicatesDomains = emailDomains.stream()
+            .filter(n -> !elements.add(n))
+            .collect(Collectors.toList());
+        Assert.isTrue(CollectionUtils.isEmpty(duplicatesDomains), message + ":Duplicate email domain found " + String.join(",", duplicatesDomains));
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
         }
@@ -544,9 +552,20 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     private void checkEmailDomains(final List<String> emailDomains, final String customerId, final String message) {
         Assert.isTrue(emailDomains != null && emailDomains.size() > 0,
             message + ": a customer must have emails domains.");
+        Set<String> elements = new HashSet<>();
+        List<String> duplicatesDomains = emailDomains.stream()
+            .filter(n -> !elements.add(n))
+            .collect(Collectors.toList());
+        Assert.isTrue(CollectionUtils.isEmpty(duplicatesDomains), message + ":Duplicate email domain found " + String.join(",", duplicatesDomains));
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
+            Optional<Customer> customerOpt =
+                customerRepository.findByIdAndEmailDomainsIgnoreCase(customerId, domain);
+            if (customerOpt.isPresent()) {
+                Assert.isTrue(StringUtils.equals(customerOpt.get().getId(), customerId),
+                    message + ": The customer has already the email domain " + domain);
+            }
         }
     }
 
