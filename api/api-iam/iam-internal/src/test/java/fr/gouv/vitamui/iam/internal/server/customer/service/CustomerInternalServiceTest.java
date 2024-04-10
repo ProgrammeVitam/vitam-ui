@@ -10,8 +10,10 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
@@ -49,10 +51,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
@@ -317,9 +322,32 @@ public class CustomerInternalServiceTest {
 
     @Test
     public void testCheckNotExistByDomainMail() {
-        when(customerRepository.findByEmailDomainsIgnoreCase(any())).thenReturn(null);
+        when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(),any())).thenReturn(null);
 
         final boolean result = internalCustomerService.checkExist(null);
         Assert.assertFalse("Customers shouldn't be found.", result);
+    }
+
+    @Test
+    public void testCreateFailsAsDuplicatePatterns() {
+
+
+        final CustomerDto customerDto = new CustomerDto();
+        customerDto.setName("name");
+        customerDto.setCode("0123456");
+        List<String> duplicatesDomains = List.of("@vitamui.com","@vitamui.com");
+        customerDto.setEmailDomains(duplicatesDomains);
+
+        CustomerCreationFormData customerCreationFormData = new CustomerCreationFormData(customerDto);
+        customerCreationFormData.setTenantName("Some tenant");
+        when(customerRepository.findByCode("0123456")).thenReturn(Optional.empty());
+
+        try {
+            internalCustomerService.create(customerCreationFormData);
+            fail("should fail");
+        }
+        catch (final IllegalArgumentException e) {
+            assertEquals("Duplicate email domain found @vitamui.com", e.getMessage());
+        }
     }
 }

@@ -543,7 +543,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         List<String> duplicatesDomains = emailDomains.stream()
             .filter(n -> !elements.add(n))
             .collect(Collectors.toList());
-        Assert.isTrue(CollectionUtils.isEmpty(duplicatesDomains), message + ":Duplicate email domain found " + String.join(",", duplicatesDomains));
+        Assert.isTrue(CollectionUtils.isEmpty(duplicatesDomains),  "Duplicate email domain found " + String.join(",", duplicatesDomains));
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
         }

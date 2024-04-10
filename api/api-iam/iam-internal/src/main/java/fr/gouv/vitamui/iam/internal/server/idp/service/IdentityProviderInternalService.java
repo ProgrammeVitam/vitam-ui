@@ -130,7 +130,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         checkAndComputeTechnicalName(dto, message);
         checkCustomer(dto.getCustomerId(), message);
         super.checkIdentifier(dto.getIdentifier(), message);
-
+        checkEmailPatterns(dto.getPatterns(),message);
         if (Boolean.TRUE.equals(dto.getInternal())) {
             checkIdendityProviderInternUniqueByCustomer(dto.getCustomerId(), message);
             checkAutoUpdateUsersDisabledForInternalProvider(dto.isAutoProvisioningEnabled());
@@ -138,6 +138,14 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
 
         dto.setIdentifier(getNextSequenceId(SequencesConstants.IDP_IDENTIFIER));
 
+    }
+
+    private void checkEmailPatterns(List<String> patterns, String message) {
+        Set<String> elements = new HashSet<>();
+        List<String> duplicatesDomains = patterns.stream()
+            .filter(n -> !elements.add(n))
+            .collect(Collectors.toList());
+        Assert.isTrue(org.springframework.util.CollectionUtils.isEmpty(duplicatesDomains), message + ":Duplicate pattern found " + String.join(",", duplicatesDomains));
     }
 
     /**
@@ -151,7 +159,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         checkIsReadonly(idp.isReadonly(), message);
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
-
+        checkEmailPatterns(dto.getPatterns(),message);
         if (Boolean.TRUE.equals(dto.getInternal())) {
             checkIdendityProviderInternUniqueByCustomer(dto.getCustomerId(), message);
             checkAutoUpdateUsersDisabledForInternalProvider(dto.isAutoProvisioningEnabled());

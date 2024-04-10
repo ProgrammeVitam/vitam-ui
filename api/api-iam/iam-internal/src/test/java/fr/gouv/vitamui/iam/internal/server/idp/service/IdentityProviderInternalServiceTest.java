@@ -137,6 +137,23 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     }
 
     @Test
+    public void testCreateFailsAsDuplicatePatterns() {
+        prepareServices();
+
+        final IdentityProviderDto dto = buildIdentityProviderDto();
+        dto.setId(null);
+        dto.setPatterns(List.of("somePattern","somePattern","anotherPattern"));
+
+        try {
+            service.create(dto);
+            fail("should fail");
+        }
+        catch (final IllegalArgumentException e) {
+            assertEquals("Unable to create identity provider " + dto.getName() + ":Duplicate pattern found " + String.join(",", List.of("somePattern")), e.getMessage());
+        }
+    }
+
+    @Test
     public void testCreateFailsAsSetReadonlyIsTrue() throws Exception {
         prepareServices();
 
