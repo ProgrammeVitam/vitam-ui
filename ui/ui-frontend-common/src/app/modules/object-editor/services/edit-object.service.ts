@@ -31,8 +31,6 @@ export class EditObjectService {
     let control: AbstractControl = this.formBuilder.control(data);
     let actions: { [key: string]: Action } = {};
 
-    if (data === null) return { ...baseEditObject, control, children } as EditObject;
-
     if (this.typeService.isList(data)) {
       if (baseEditObject.kind === 'object-array') {
         children = data.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema));
