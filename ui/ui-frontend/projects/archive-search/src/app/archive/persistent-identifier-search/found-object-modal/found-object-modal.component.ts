@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
-import { ApiUnitObject, TenantSelectionService } from 'ui-frontend-common';
+import { ApiUnitObject, QualifierDto, TenantSelectionService } from 'ui-frontend-common';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
 
@@ -25,9 +25,15 @@ export class FoundObjectModalComponent {
     private archiveService: ArchiveService,
     @Inject(MAT_DIALOG_DATA) data: { ark: string; object: ApiUnitObject },
   ) {
+    const qualifier: QualifierDto = data.object['#qualifiers'].find((qualifier) =>
+      qualifier.versions.find((version) =>
+        version.PersistentIdentifier.find((persistentId) => persistentId.PersistentIdentifierContent === data.ark),
+      ),
+    );
+
     this.ark = data.ark;
-    this.qualifier = data.object['#qualifiers'][0].qualifier;
-    this.qualifierVersion = Number.parseInt(data.object['#qualifiers'][0]['#nbc']);
+    this.qualifier = qualifier.qualifier;
+    this.qualifierVersion = Number.parseInt(qualifier['#nbc']);
     this.usageVersion = `${this.qualifier}_${this.qualifierVersion}`;
     this.unitId = data.object['#unitups'][0];
   }
@@ -44,8 +50,8 @@ export class FoundObjectModalComponent {
 
   async downloadObject() {
     this.downloading = true;
+
     return this.archiveService.downloadObjectFromUnit(this.unitId, this.qualifier, this.qualifierVersion);
-    this.downloading = false;
   }
 
   closeDialog() {
