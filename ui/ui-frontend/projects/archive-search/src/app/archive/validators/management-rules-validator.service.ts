@@ -37,7 +37,7 @@
 
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable, combineLatest, of, timer } from 'rxjs';
+import { combineLatest, Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -67,7 +67,7 @@ export class ManagementRulesValidatorService {
         if (!ruleCategoryAction) return false;
         if (!ruleCategoryAction.rules) return false;
 
-        return ruleCategoryAction.rules.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length > 0;
+        return ruleCategoryAction.rules.filter((action) => action.rule === ruleId).length > 0;
       }),
     );
   }
