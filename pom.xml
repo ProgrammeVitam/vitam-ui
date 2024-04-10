@@ -69,13 +69,11 @@
         <!-- Dependencies version -->
         <apache.commons.codec.version>1.16.1</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
-        <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <assertj.version>3.25.3</assertj.version>
         <bouncycastle.version>1.77</bouncycastle.version>
         <cas.version>6.6.12</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
-        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
         <commons.compress.version>1.26.1</commons.compress.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
@@ -86,7 +84,7 @@
         <easymock.version>4.2</easymock.version>
         <embedded.mongo.version>3.0.0</embedded.mongo.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
-        <font.awesome.version>5.11.2</font.awesome.version>
+        <font.awesome.version>6.5.1</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
         <gson.version>2.10.1</gson.version>
         <http.client.version>4.5.14</http.client.version>
