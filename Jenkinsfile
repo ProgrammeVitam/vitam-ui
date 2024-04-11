@@ -158,15 +158,7 @@ pipeline {
                 sh '''
                     $MVN_COMMAND install \
                         -D skipTests \
-                        -P vitam \
-                        -pl '!ui/ui-archive-search' \
-                        -pl '!ui/ui-collect' \
-                        -pl '!ui/ui-commons' \
-                        -pl '!ui/ui-identity' \
-                        -pl '!ui/ui-ingest' \
-                        -pl '!ui/ui-pastis' \
-                        -pl '!ui/ui-portal' \
-                        -pl '!ui/ui-referential'
+                        -P vitam
                 '''
                 sh '''
                     $MVN_COMMAND deploy \
