@@ -95,11 +95,12 @@
         <jackson.version>2.17.0</jackson.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.xml.binding.version>2.3.3</jakarta.xml.binding.version>
-        <javax.el.version.version>3.0.1-b06</javax.el.version.version>
+        <javax.el.version>3.0.1-b06</javax.el.version>
+        <jakarta.el.version>5.0.1</jakarta.el.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
         <hibernate.validatior.version>6.1.5.Final</hibernate.validatior.version>
-        <javassist.version>3.28.0-GA</javassist.version>
+        <javassist.version>3.30.2-GA</javassist.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
@@ -111,7 +112,7 @@
         <thaiopensource.trang.version>20220510</thaiopensource.trang.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
         <xml-resolver.version>1.2</xml-resolver.version>
-        <jlibs.version>2.2.3</jlibs.version>
+        <jlibs.version>3.0.1</jlibs.version>
         <junit.version>4.13.1</junit.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <junit.jupiter.platform.version>1.7.0</junit.jupiter.platform.version>
@@ -152,12 +153,12 @@
         <vitam.version>7.1.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
-        <xom.version>1.3.4</xom.version>
+        <xom.version>1.3.9</xom.version>
         <xdocreport.version>2.0.2</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
         <esapi.version>2.2.3.1</esapi.version>
         <antisamy.version>1.6.7</antisamy.version>
-        <json-sanitize.version>1.2.2</json-sanitize.version>
+        <json-sanitize.version>1.2.3</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <mongo.driver.sync.version>4.6.1</mongo.driver.sync.version>
         <snakeyaml.version>1.32</snakeyaml.version>
@@ -478,6 +479,44 @@
                 <version>${project.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.opengis.cite.xerces</groupId>
+                <artifactId>xercesImpl-xsd11</artifactId>
+                <version>${xercesImpl-xsd11.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>jackson-xml-databind</artifactId>
+                <version>${jackson-xml-databind.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.relaxng</groupId>
+                <artifactId>trang</artifactId>
+                <version>${thaiopensource.trang.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sf.saxon</groupId>
+                        <artifactId>saxon</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xerces</groupId>
+                        <artifactId>xercesImpl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.xml.parsers</groupId>
+                <artifactId>jaxp-api</artifactId>
+                <version>${jaxp-api.version}</version>
+            </dependency>
             <!-- spring-boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -678,6 +717,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.upgraded.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>pac4j-oidc</artifactId>
@@ -1053,8 +1098,15 @@
             <dependency>
                 <groupId>javax.el</groupId>
                 <artifactId>javax.el-api</artifactId>
-                <version>${javax.el.version.version}</version>
+                <version>${javax.el.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>jakarta.el</groupId>
+                <artifactId>jakarta.el-api</artifactId>
+                <version>${jakarta.el.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>commons-codec</groupId>
