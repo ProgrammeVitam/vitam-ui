@@ -36,6 +36,7 @@
  */
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DisplayObject } from '../../models';
+import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
 import { DisplayObjectType } from '../../types';
@@ -48,12 +49,13 @@ import { DisplayObjectType } from '../../types';
 export class GroupComponent implements OnChanges {
   @Input() displayObject: DisplayObject;
 
-  entries: [key: string, value: any][] = [];
   favoriteEntry: [key: string, value: any];
   favoritePath: string;
   rows: DisplayObject[][] = [[]];
+  display: 'ACCORDION' | 'KEY-VALUE-OBJECTS' | 'ROWS';
 
   readonly DisplayObjectType = DisplayObjectType;
+  readonly entries = Object.entries;
 
   constructor(
     private layoutService: LayoutService,
@@ -64,6 +66,12 @@ export class GroupComponent implements OnChanges {
     const { displayObject } = changes;
 
     if (displayObject) {
+      this.display = this.displayObject.key
+        ? internationalizedKeys.includes(this.displayObject.key)
+          ? 'KEY-VALUE-OBJECTS'
+          : 'ACCORDION'
+        : 'ROWS';
+
       this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.displayObject);
       this.favoritePath = this.favoriteEntryService.favoritePath(this.displayObject);
       this.rows = this.layoutService.compute(this.displayObject);
