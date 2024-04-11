@@ -216,7 +216,6 @@
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
         <!-- Put this properties to false sub-module when you want to use profile -->
         <rpm.skip>true</rpm.skip>
-        <rpm_rsc.skip>true</rpm_rsc.skip>
         <rpm.publication.env>dev</rpm.publication.env>
         <!-- Swagger doc generation -->
         <swagger.dir>.</swagger.dir>
@@ -2108,27 +2107,9 @@
                                     </arguments>
                                 </configuration>
                             </execution>
-                            <execution>
-                                <id>rpm-package-front</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>make</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm_rsc.skip}</skip>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
-                                        <argument>rpm</argument>
-                                        <argument>NAME=${project.artifactId}</argument>
-                                        <argument>VERSION=${project.version}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
@@ -2163,25 +2144,6 @@
                                         systemd),
                                         define them as a comma separated list of packages -->
                                         <argument>DEPENDENCIES=systemd</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>deb-package-front</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>make</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm_rsc.skip}</skip>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
-                                        <argument>deb</argument>
-                                        <argument>NAME=${project.artifactId}</argument>
-                                        <argument>VERSION=${project.version}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

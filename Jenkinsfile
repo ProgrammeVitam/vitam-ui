@@ -103,17 +103,7 @@ pipeline {
                     steps {
                         sh '''
                             $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects '!cots/vitamui-mongo-express' \
-                                --projects '!ui/ui-archive-search' \
-                                --projects '!ui/ui-collect' \
-                                --projects '!ui/ui-commons' \
-                                --projects '!ui/ui-frontend' \
-                                --projects '!ui/ui-frontend-common' \
-                                --projects '!ui/ui-identity' \
-                                --projects '!ui/ui-ingest' \
-                                --projects '!ui/ui-pastis' \
-                                --projects '!ui/ui-portal' \
-                                --projects '!ui/ui-referential'
+                                --projects '!cots/vitamui-mongo-express'
                         '''
                     }
                 }
@@ -125,6 +115,32 @@ pipeline {
                 }
             }
         }
+
+        stage('Package and push to repository') {
+           when {
+                   environment(name: 'DO_DEPLOY', value: 'true')
+           }
+            parallel {
+                stage('Package back packages') {
+                    steps {
+                        sh '''
+                           $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
+                       '''
+                    }
+                }
+                stage('Package Frontend') {
+                    steps {
+                         script {
+                                sh '''
+                                   POM_VERSION=$(xpath -e '/project/version/text()' pom.xml 2>/dev/null)
+                                  ./tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-starter-kit ${POM_VERSION}
+                                  '''
+                               }
+                    }
+                }
+            }
+        }
+
 
         stage('Deploy to Nexus') {
             when {
@@ -145,15 +161,7 @@ pipeline {
                 sh '''
                     $MVN_COMMAND install \
                         -D skipTests \
-                        -P vitam \
-                        --projects '!ui/ui-archive-search' \
-                        --projects '!ui/ui-collect' \
-                        --projects '!ui/ui-commons' \
-                        --projects '!ui/ui-identity' \
-                        --projects '!ui/ui-ingest' \
-                        --projects '!ui/ui-pastis' \
-                        --projects '!ui/ui-portal' \
-                        --projects '!ui/ui-referential'
+                        -P vitam
                 '''
                 sh '''
                     $MVN_COMMAND deploy \
