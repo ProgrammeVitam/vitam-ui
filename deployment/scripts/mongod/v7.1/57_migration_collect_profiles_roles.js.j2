@@ -3,10 +3,9 @@ dbSecurity = db.getSiblingDB('security')
 
 print("START 57_migration_collect_profiles_roles.js");
 
-// ---- le role ROLE_UPDATE_UNIT_DESC_METADATA sera ajouté pour le profil Collecte --- //
+// ---- ROLE_UPDATE_UNIT_DESC_METADATA will be added to profiles including COLLECT_APP --- //
 
 db.profiles.updateMany({
-   "name": "Collect Profile",
    "applicationName": "COLLECT_APP"
 },
 {
