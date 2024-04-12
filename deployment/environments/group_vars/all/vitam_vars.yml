@@ -8,16 +8,15 @@ vitam_defaults:
     folder_upload_permission: "0770"
     script_permission: "0750"
   users:
-    vitam: "vitam"
-    vitamdb: "vitamdb"
-    group: "vitam"
+    vitam: vitam
+    vitamdb: vitamdb
+    group: vitam
   services:
     at_boot: false
 
 # Mandatory Vitam services for VitamUI
 vitam_vars:
   functional_administration:
-    port_admin: 18004
     vitam_tenants_usage_external:
       - name: 0
         identifiers:
@@ -42,16 +41,10 @@ vitam_vars:
   collect_external:
     host: "collect-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8030
-    connect_timeout: 30
-    read_timeout: 240000
-    write_timeout: 240000
-  security_internal:
-    port_admin: 28005
-    port_service: 8005
 
 vitam_certs:
   vitamui:
-    filename: "keystore_vitamui.p12"
+    filename: keystore_vitamui.p12
     password: "{{ keystores_client_vitam_vitamui }}"
-    truststore_filename: "truststore_vitam.jks"
+    truststore_filename: truststore_vitam.jks
     password_truststore: "{{ truststores_client_vitam }}"

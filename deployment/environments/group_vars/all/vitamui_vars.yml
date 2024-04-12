@@ -54,90 +54,68 @@ vitamui_defaults:
 ################################################################################
 
 vitamui:
-  api_gateway:
-    host: "api-gateway.service.{{ consul_domain }}"
-    vitamui_component: "api-gateway"
-    vitamui_component_type: "internal"
-    port_service: 8090
-    port_admin: 7090
-
+  # UI
   identity:
-    host: "identity.service.{{ consul_domain }}"
-    vitamui_component: "ui-identity"
-    vitamui_component_type: "ui"
+    vitamui_component: ui-identity
     port_service: 8002
-    port_admin: 7002
-    # Custom directories linked to the module
-    dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
-
   identity_admin:
-    host: "identity-admin.service.{{ consul_domain }}"
-    vitamui_component: "ui-identity-admin"
-    vitamui_component_type: "ui"
+    vitamui_component: ui-identity-admin
     port_service: 8401
-    port_admin: 7401
-
   referential:
-    host: "referential.service.{{ consul_domain }}"
-    vitamui_component: "ui-referential"
-    vitamui_component_type: "ui"
+    vitamui_component: ui-referential
     port_service: 8005
-    port_admin: 7005
-    server_connection_timeout: 60000
-    # Custom directories linked to the module
-    dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
-
   portal:
-    host: "portal.service.{{ consul_domain }}"
-    vitamui_component: "ui-portal"
-    vitamui_component_type: "ui"
+    vitamui_component: ui-portal
     port_service: 8003
-    port_admin: 7003
     has_tenant_list: true
     has_lang_selection: true
     has_site_selection: false
+  ingest:
+    vitamui_component: ui-ingest
+    port_service: 8008
+  archive_search:
+    vitamui_component: ui-archive-search
+    port_service: 8009
+  collect:
+    vitamui_component: ui-collect
+    port_service: 8010
+  pastis:
+    vitamui_component: ui-pastis
+    port_service: 9015
+
+  # Applications
+  api_gateway:
+    host: "api-gateway.service.{{ consul_domain }}"
+    vitamui_component: api-gateway
+    port_service: 8090
+    port_admin: 7090
 
   referential_external:
     host: "vitamui-referential-external.service.{{ consul_domain }}"
-    vitamui_component: "referential-external"
-    vitamui_component_type: "external"
+    vitamui_component: referential-external
     port_service: 8105
     port_admin: 7105
     server_connection_timeout: 60000
-    connect_timeout: 30
-    read_timeout: 30
-    write_timeout: 30
 
   referential_internal:
     host: "vitamui-referential-internal.service.{{ consul_domain }}"
-    vitamui_component: "referential-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: referential-internal
     port_service: 8205
     port_admin: 7205
     server_connection_timeout: 60000
     connect_timeout: 30
     read_timeout: 30
     write_timeout: 30
-    # Custom directories linked to the module
-    dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
 
   iam_external:
     host: "vitamui-iam-external.service.{{ consul_domain }}"
-    vitamui_component: "iam-external"
-    vitamui_component_type: "external"
+    vitamui_component: iam-external
     port_service: 8101
     port_admin: 7101
-    connect_timeout: 30
-    read_timeout: 30
-    write_timeout: 30
 
   iam_internal:
     host: "vitamui-iam-internal.service.{{ consul_domain }}"
-    vitamui_component: "iam-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: iam-internal
     port_service: 8201
     port_admin: 7201
     connect_timeout: 30
@@ -146,90 +124,52 @@ vitamui:
 
   cas_server:
     host: "cas-server.service.{{ consul_domain }}"
-    vitamui_component: "cas-server"
-    vitamui_component_type: "ui"
+    vitamui_component: cas-server
     port_service: 8001
     port_admin: 7001
-    hostname_verification: true
-    theme:
-      vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"
-      vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo.png"
-      vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
-    reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
     cors:
       enabled: true
 
   security_internal:
     host: "vitamui-security-internal.service.{{ consul_domain }}"
-    vitamui_component: "security-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: security-internal
     port_service: 8203
     port_admin: 7203
 
-  ingest:
-    host: "ingest.service.{{ consul_domain }}"
-    vitamui_component: "ui-ingest"
-    vitamui_component_type: "ui"
-    port_service: 8008
-    port_admin: 7008
-
   ingest_external:
     host: "vitamui-ingest-external.service.{{ consul_domain }}"
-    vitamui_component: "ingest-external"
-    vitamui_component_type: "external"
+    vitamui_component: ingest-external
     port_service: 8108
     port_admin: 7108
 
   ingest_internal:
     host: "vitamui-ingest-internal.service.{{ consul_domain }}"
-    vitamui_component: "ingest-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: ingest-internal
     port_service: 8208
     port_admin: 7208
-    tmp_folder_path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp"
-
-  archive_search:
-    host: "archive-search.service.{{ consul_domain }}"
-    vitamui_component: "ui-archive-search"
-    vitamui_component_type: "ui"
-    port_service: 8009
-    port_admin: 7009
+    # tmp_folder_path: /vitamui/tmp
 
   archive_search_external:
     host: "vitamui-archive-search-external.service.{{ consul_domain }}"
-    vitamui_component: "archive-search-external"
-    vitamui_component_type: "external"
+    vitamui_component: archive-search-external
     port_service: 8109
     port_admin: 7109
 
   archive_search_internal:
     host: "vitamui-archive-search-internal.service.{{ consul_domain }}"
-    vitamui_component: "archive-search-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: archive-search-internal
     port_service: 8209
     port_admin: 7209
 
-  collect:
-    host: "collect.service.{{ consul_domain }}"
-    vitamui_component: "ui-collect"
-    vitamui_component_type: "ui"
-    port_service: 8010
-    port_admin: 7010
-
   collect_external:
     host: "vitamui-collect-external.service.{{ consul_domain }}"
-    vitamui_component: "collect-external"
-    vitamui_component_type: "external"
+    vitamui_component: collect-external
     port_service: 8110
     port_admin: 7110
-    connect_timeout: 30
-    read_timeout: 240000
-    write_timeout: 240000
 
   collect_internal:
     host: "vitamui-collect-internal.service.{{ consul_domain }}"
-    vitamui_component: "collect-internal"
-    vitamui_component_type: "internal"
+    vitamui_component: collect-internal
     port_service: 8210
     port_admin: 7210
     connect_timeout: 30
@@ -238,18 +178,10 @@ vitamui:
 
   pastis_external:
     host: "vitamui-pastis-external.service.{{ consul_domain }}"
-    vitamui_component: "pastis-external"
-    vitamui_component_type: "external"
+    vitamui_component: pastis-external
     port_service: 8015
     port_admin: 7115
     server_connection_timeout: 60000
-
-  pastis:
-    host: "pastis.service.{{ consul_domain }}"
-    vitamui_component: "ui-pastis"
-    vitamui_component_type: "ui"
-    port_service: 9015
-    port_admin: 7015
 
 ################################################################################
 
@@ -270,10 +202,13 @@ vitamui_platform_informations:
     max_street_length: 250
   proof_tenant: 1
   cas_tenant: -1
-  first_customer_tenant: 9
+  first_customer_tenant: 1 # The real first one will be +1 (= 2)
   portal_message: "Pour gérer vos archives, profitez d'un portail d'applications proposé par le Programme Vitam et ses contributeurs."
   portal_title: "Portail des applications Vitam"
   theme:
+    ## To define a path to provide your custom assets, default ones are provided by the role assets_copy
+    # custom_assets_path: "{{ inventory_dir }}/custom_assets"
+    ## Here you can custom the name of the provided files
     portal_logo: logo_PORTAL.png
     header_logo: logo_HEADER.png
     footer_logo: logo_FOOTER.png

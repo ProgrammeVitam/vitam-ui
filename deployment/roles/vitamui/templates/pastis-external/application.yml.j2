@@ -32,7 +32,6 @@ logging:
   level:
     fr.gouv.vitamui.pastis.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
-
 server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
@@ -103,19 +102,18 @@ pastis-external:
       hostname-verification: false
 {% endif %}
 
-
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
-
-
+{% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
     logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}

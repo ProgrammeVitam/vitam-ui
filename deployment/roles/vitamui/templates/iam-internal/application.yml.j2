@@ -69,7 +69,6 @@ login:
   url: {{ url_prefix }}/cas/login
 {% endif %}
 
-
 cas-client:
   server-host: {{ vitamui.cas_server.host }}
   server-port: {{ vitamui.cas_server.port_service }}
@@ -82,11 +81,7 @@ cas-client:
     hostname-verification: false
 {% endif %}
 
-{% if vitamui.cas_server.base_url is defined %}
-cas.reset.password.url: {{ vitamui.cas_server.reset_password_url }}
-{% else %}
-cas.reset.password.url: /cas{{ vitamui.cas_server.reset_password_url }}
-{% endif %}
+cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vitamui.cas_server.reset_password_url | default('/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day') }}
 
 login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure | default(5) }}
 login.attempts.time.interval: {{ vitamui_struct.login_interval|default(20) }}
@@ -107,12 +102,12 @@ instance.primary: true
 instance.primary: false
 {% endif %}
 
-{% if opentracing.enable is sameas true %}
+{% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
     logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
@@ -123,5 +118,4 @@ password:
   max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('12') }}
 
 address:
-  max-street-length: {{ vitamui_platform_informations.address.max_street_length }}
-
+  max-street-length: {{ vitamui_platform_informations.address.max_street_length | default(250) }}

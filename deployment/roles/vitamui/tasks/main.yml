@@ -76,20 +76,6 @@
   notify:
     - restart service
 
-- name: Create custom sub-directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  loop: "{{ vitamui_struct.dirs }}"
-  when:
-    - vitamui_struct.dirs is defined
-    - vitamui_struct.dirs|length > 0
-  notify:
-    - restart service
-
 - name: Deploy common configuration files in sysconfig subdir
   template:
     src: "{{ item }}.j2"
@@ -179,10 +165,6 @@
     - update_vitamui_certificates
   notify:
     - restart service
-
-- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}"
-  include_tasks: "{{ vitamui_struct.vitamui_component_type }}.yml"
-  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component_type }}.yml || echo nofile') == \"\" }}"
 
 - name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}"
   include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"

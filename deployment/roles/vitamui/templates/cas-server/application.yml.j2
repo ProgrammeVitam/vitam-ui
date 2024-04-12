@@ -197,21 +197,23 @@ server-identity:
 # Example to override theme colors, logo, favicon, platform name ...
 theme:
   vitamui-platform-name: {{ vitamui_platform_informations.platform_name }}
-  vitamui-favicon: {{ vitamui.cas_server.theme.vitamui_favicon }}
-  vitam-logo: {{ vitamui.cas_server.theme.vitam_logo }}
-  vitamui-logo-large: {{ vitamui.cas_server.theme.vitamui_logo_large }}
+  vitamui-favicon: {{ vitamui.cas_server.theme.vitamui_favicon | default(vitamui_defaults.folder.root_path + '/conf/assets/favicon.ico') }}
+  vitam-logo: {{ vitamui.cas_server.theme.vitam_logo | default(vitamui_defaults.folder.root_path + '/conf/assets/logo.png') }}
+  vitamui-logo-large: {{ vitamui.cas_server.theme.vitamui_logo_large | default(vitamui_defaults.folder.root_path + '/conf/assets/logo-large.png') }}
   primary: '{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}'
   secondary: '{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}'
   background: '{{ vitamui_platform_informations.theme.theme_colors.cas_background }}'
 
+{% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
     logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml

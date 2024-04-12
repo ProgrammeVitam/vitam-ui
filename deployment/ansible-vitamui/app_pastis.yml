@@ -5,9 +5,8 @@
   roles:
     - vitamui
   vars:
-    app_default_root_path: "/vitamui"
     vitamui_struct: "{{ vitamui.pastis_external }}"
-    vitamui_certificate_type: "external"
+    vitamui_certificate_type: external
     password_keystore: "{{ keystores_server_pastis_external }}"
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "pastis-external, api, external"

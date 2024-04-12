@@ -49,6 +49,7 @@
   gather_facts: no
   any_errors_fatal: true
   roles:
+    - assets_copy
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.cas_server }}"

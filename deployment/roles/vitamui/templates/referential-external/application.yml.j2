@@ -18,7 +18,6 @@ logging:
   level:
     fr.gouv.vitamui.referential.external.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
-
 server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
@@ -97,12 +96,12 @@ referential-external:
       hostname-verification: false
 {% endif %}
 
-{% if opentracing.enable is sameas true %}
+{% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
     logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
