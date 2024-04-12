@@ -26,6 +26,7 @@
     [selectedIndex]="selectedIndex"
     [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'"
     (selectedTabChange)="selectedTabChangeEvent($event)"
+    #tabs
   >
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
@@ -37,7 +38,11 @@
     </mat-tab>
 
     <mat-tab label="{{ 'TAB.DESCRIPTION' | translate }}">
-      <app-archive-unit-description-tab [archiveUnit]="archiveUnit" [(editMode)]="updateStarted"></app-archive-unit-description-tab>
+      <app-archive-unit-description-tab
+        [archiveUnit]="archiveUnit"
+        [(editMode)]="updateStarted"
+        #descriptionTab
+      ></app-archive-unit-description-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">

@@ -57,11 +57,15 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     }
   }
 
-  onCancel(): void {
-    if (this.editObject?.control?.pristine) return this.backToDisplayMode();
+  isModified(): boolean {
+    return this.editMode && !this.editObject?.control?.pristine;
+  }
 
-    this.subscriptions.add(
-      this.dialog
+  async onCancel() {
+    if (!this.isModified()) {
+      this.backToDisplayMode();
+    } else {
+      await this.dialog
         .open(this.cancelDialog, this.dialogConfig)
         .afterClosed()
         .pipe(
@@ -72,11 +76,10 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
           tap(() => this.spinnerOverlayService.open()),
           switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(this.transactionId, jsonPatchDto)),
         )
-        .subscribe(
-          () => this.handleUpdateSuccess(),
-          () => this.backToDisplayMode(),
-        ),
-    );
+        .toPromise()
+        .then(() => this.handleUpdateSuccess())
+        .catch(() => this.backToDisplayMode());
+    }
   }
 
   onSave(): void {
