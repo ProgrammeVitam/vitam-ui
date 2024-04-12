@@ -7,9 +7,10 @@ import { LayoutSize } from '../types';
   providedIn: 'root',
 })
 export class LayoutService {
-  MAX_COMLUMS = 2;
-  DEFAULT_COLUMNS = this.MAX_COMLUMS;
+  MAX_COLUMNS = 2;
+  DEFAULT_COLUMNS = this.MAX_COLUMNS;
   DEFAULT_SIZE: LayoutSize = 'medium';
+  COMPLETE_ROWS = true;
 
   constructor(private logger: Logger) {}
 
@@ -58,11 +59,19 @@ export class LayoutService {
 
         const lastRow = this.getLastRow(rows);
         const consumedColumns = lastRow.reduce((acc: number, cell: DisplayObject) => acc + cell.displayRule.ui.layout.columns, 0);
-        const canInsertInLastRow = consumedColumns + this.getLayout(child).columns <= this.MAX_COMLUMS;
+        const canInsertInLastRow = consumedColumns + this.getLayout(child).columns <= this.MAX_COLUMNS;
 
         canInsertInLastRow ? lastRow.push(child) : rows.push([child]);
 
         return rows;
-      }, []);
+      }, [] as DisplayObject[][])
+      .map((row) => {
+        const consumedColumns = row.reduce((acc: number, cell: DisplayObject) => acc + cell.displayRule.ui.layout.columns, 0);
+        const canInsertColumn = consumedColumns < this.MAX_COLUMNS;
+
+        if (this.COMPLETE_ROWS && canInsertColumn) row.push(null);
+
+        return row;
+      });
   }
 }

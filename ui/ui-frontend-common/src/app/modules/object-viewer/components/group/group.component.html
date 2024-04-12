@@ -24,13 +24,16 @@
 <ng-template #content>
   <div *ngFor="let column of rows" class="v-row">
     <div *ngFor="let childDisplayObject of column" class="v-col">
-      <ng-container [ngSwitch]="childDisplayObject.type">
-        <vitamui-common-group *ngSwitchCase="DisplayObjectType.GROUP" [displayObject]="childDisplayObject"></vitamui-common-group>
-        <vitamui-common-list *ngSwitchCase="DisplayObjectType.LIST" [displayObject]="childDisplayObject"></vitamui-common-list>
-        <vitamui-common-primitive
-          *ngSwitchCase="DisplayObjectType.PRIMITIVE"
-          [displayObject]="childDisplayObject"
-        ></vitamui-common-primitive>
+      <div *ngIf="!childDisplayObject"></div>
+      <ng-container *ngIf="childDisplayObject">
+        <ng-container #displayObject [ngSwitch]="childDisplayObject.type">
+          <vitamui-common-group *ngSwitchCase="DisplayObjectType.GROUP" [displayObject]="childDisplayObject"></vitamui-common-group>
+          <vitamui-common-list *ngSwitchCase="DisplayObjectType.LIST" [displayObject]="childDisplayObject"></vitamui-common-list>
+          <vitamui-common-primitive
+            *ngSwitchCase="DisplayObjectType.PRIMITIVE"
+            [displayObject]="childDisplayObject"
+          ></vitamui-common-primitive>
+        </ng-container>
       </ng-container>
     </div>
   </div>

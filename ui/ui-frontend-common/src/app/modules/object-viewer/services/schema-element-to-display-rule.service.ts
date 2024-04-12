@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DisplayRule, SchemaElement } from '../models';
+import { LayoutSize } from '../types';
 
 type ComponentName =
   | 'balise-n1'
@@ -29,10 +30,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select+textfield',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'attribut-multi': {
@@ -40,10 +37,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select+textarea',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'attribut-short-mono': {
@@ -51,10 +44,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select+textfield',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'attribut-short-multi': {
@@ -62,10 +51,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select+textarea',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'balise-n1': {
@@ -73,10 +58,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'group',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'balise-n2': {
@@ -84,10 +65,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'group',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'balise-n3': {
@@ -95,10 +72,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'group',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'balise-n4': {
@@ -106,10 +79,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'group',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'datepicker-date': {
@@ -117,10 +86,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'datepicker',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'datepicker-datetime': {
@@ -128,10 +93,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'datetime',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'select-mono': {
@@ -139,10 +100,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'select-multi': {
@@ -150,10 +107,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'select',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'textfield-large-mono': {
@@ -161,10 +114,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textfield',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'textfield-large-multi': {
@@ -172,10 +121,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textarea',
-        layout: {
-          columns: 2,
-          size: 'large',
-        },
       },
     },
     'textfield-medium-mono': {
@@ -183,10 +128,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textfield',
-        layout: {
-          columns: 2,
-          size: 'medium',
-        },
       },
     },
     'textfield-medium-multi': {
@@ -194,10 +135,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textarea',
-        layout: {
-          columns: 2,
-          size: 'medium',
-        },
       },
     },
     'textfield-short-mono': {
@@ -205,10 +142,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textfield',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
     'textfield-short-multi': {
@@ -216,10 +149,6 @@ export class SchemaElementToDisplayRuleService {
       ui: {
         Path: null,
         component: 'textarea',
-        layout: {
-          columns: 1,
-          size: 'small',
-        },
       },
     },
   };
@@ -294,11 +223,16 @@ export class SchemaElementToDisplayRuleService {
     const component: ComponentName = this.mapSchemaElementToComponent(schemaElement);
     const baseDisplayRule = this.schemaElementComponentTypeToDisplayRule[component];
 
+    const size = { SHORT: 'small', MEDIUM: 'medium', LARGE: 'large' }[schemaElement.StringSize || 'MEDIUM'] as LayoutSize;
     return {
       ...baseDisplayRule,
       Path: schemaElement.Path,
       ui: {
         ...baseDisplayRule.ui,
+        layout: {
+          size: size,
+          columns: size === 'small' ? 1 : 2,
+        },
         Path: schemaElement.ApiPath,
         label: schemaElement.ShortName,
         display: schemaElement.Category === 'DESCRIPTION' || schemaElement.Origin === 'EXTERNAL',
