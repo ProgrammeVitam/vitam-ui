@@ -21,6 +21,7 @@
       <scope>provided</scope>
       <type>pom</type>
       <version>${project.version}</version>
+
     </dependency>
   </dependencies>
 
@@ -28,6 +29,7 @@
     <skipTests>false</skipTests>
     <skipAllFrontend>false</skipAllFrontend>
     <skipAllFrontendTests>false</skipAllFrontendTests>
+    <rpm.skip>false</rpm.skip>
   </properties>
 
   <build>
@@ -141,4 +143,72 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>rpm</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>rpm-package-portal</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>make</executable>
+                  <workingDirectory>target</workingDirectory>
+                  <skip>${rpm.skip}</skip>
+                  <arguments>
+                    <argument>-f</argument>
+                    <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
+                    <argument>rpm</argument>
+                    <argument>NAME=ui-portal</argument>
+                    <argument>VERSION=${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>deb</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>deb-package-admin</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>make</executable>
+                  <workingDirectory>target</workingDirectory>
+                  <skip>${rpm.skip}</skip>
+                  <arguments>
+                    <argument>-f</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/tools/packaging/-fronts
+                    </argument>
+                    <argument>deb</argument>
+                    <argument>NAME=ui-portal</argument>
+                    <argument>VERSION=${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
