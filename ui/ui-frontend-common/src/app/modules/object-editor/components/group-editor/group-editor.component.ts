@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
+import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { Action, EditObject } from '../../models/edit-object.model';
 
@@ -28,6 +29,7 @@ export class GroupEditorComponent implements OnChanges {
   constructor(
     private layoutService: LayoutService,
     private favoriteEntryService: FavoriteEntryService,
+    private typeService: TypeService,
     private matDialog: MatDialog,
   ) {}
 
@@ -44,7 +46,7 @@ export class GroupEditorComponent implements OnChanges {
         if (removeAction) {
           const removeHandler = removeAction.handler;
           const removeActionWithValidationStep = () => {
-            if (this.editObject.control.pristine) return removeHandler();
+            if (!this.typeService.isConsistent(this.editObject.control.value)) return removeHandler();
 
             const subscription = this.matDialog
               .open(this.removeDialog)
