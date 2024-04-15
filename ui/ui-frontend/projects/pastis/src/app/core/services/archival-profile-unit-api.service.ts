@@ -67,7 +67,7 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
   }
 
   updateProfilePua(archivalUnitProfile: ArchivalProfileUnit, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
-    return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.identifier, archivalUnitProfile, { headers });
+    return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.id, archivalUnitProfile, { headers });
   }
 
   patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
