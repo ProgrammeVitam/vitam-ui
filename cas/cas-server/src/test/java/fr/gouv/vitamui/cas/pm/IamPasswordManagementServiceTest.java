@@ -56,6 +56,7 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.DefaultAuthentication;
+import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -84,6 +85,7 @@ import java.util.Optional;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -358,7 +360,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenThrow(new BadRequestException("error"));
 
-        assertNull(service.findEmail(getPasswordManagementQuery()));
+        assertThatThrownBy(() -> service.findEmail(getPasswordManagementQuery()))
+            .isInstanceOf(PreventedException.class);
     }
 
     @Test
