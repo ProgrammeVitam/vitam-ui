@@ -1,5 +1,6 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { DisplayRuleHelperService } from '../../object-viewer/services/display-rule-helper.service';
@@ -16,7 +17,7 @@ describe('EditObjectService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, LoggerModule.forRoot()],
       providers: [TypeService, MockSchemaService, SchemaElementToDisplayRuleService, DisplayRuleHelperService],
     });
     service = TestBed.inject(EditObjectService);

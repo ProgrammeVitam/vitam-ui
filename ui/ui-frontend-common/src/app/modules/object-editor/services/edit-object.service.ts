@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 
 import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import { orderedFields } from '../../archive/archive-unit-fields';
+import { Logger } from '../../logger/logger';
 import { Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
 import { ComponentType, DisplayObjectType } from '../../object-viewer/types';
 import { Action, EditObject } from '../models/edit-object.model';
+import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';
 
 const ADD_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.ADD';
@@ -20,7 +23,9 @@ export class EditObjectService {
     private schemaService: SchemaService,
     private typeService: TypeService,
     private dataService: DataStructureService,
+    private pathService: PathService,
     private formBuilder: FormBuilder,
+    private logger: Logger,
   ) {}
 
   public editObject(path: string, data: any, template: DisplayRule[], schema: Schema): EditObject {
@@ -77,24 +82,12 @@ export class EditObjectService {
       }
     }
 
-    children.sort((eo1: EditObject, eo2: EditObject) => {
-      // TODO: Check why some EditObject have not DisplayRule defined
-      if (!eo1.displayRule && !eo2.displayRule) return 0;
-      if (!eo1.displayRule) return -1;
-      if (!eo2.displayRule) return 1;
-
-      const index1 = template.findIndex((rule: DisplayRule) => rule.ui.Path === eo1.displayRule.ui.Path);
-      const index2 = template.findIndex((rule: DisplayRule) => rule.ui.Path === eo2.displayRule.ui.Path);
-
-      if (index1 < index2) return -1;
-      if (index1 > index2) return 1;
-
-      return 0;
-    });
-
     if (baseEditObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
 
-    return { ...baseEditObject, control, children, actions } as EditObject;
+    const editObject = { ...baseEditObject, control, children, actions } as EditObject;
+    this.sort(editObject, orderedFields);
+
+    return editObject;
   }
 
   public kind(data: any): 'object' | 'object-array' | 'primitive-array' | 'primitive' | 'unknown' {
@@ -167,6 +160,34 @@ export class EditObjectService {
       default:
         return DisplayObjectType.PRIMITIVE;
     }
+  }
+
+  public sort(editObject: EditObject, ordenedFields: string[]): void {
+    editObject?.children?.forEach((child) => this.sort(child, ordenedFields));
+
+    if (editObject.kind !== 'object') return;
+
+    const ordenedChildPaths = this.pathService.children(this.schemaService.normalize(editObject.path), ordenedFields);
+    const ordenedChildren = ordenedChildPaths.reduce((acc, childPath) => {
+      const child = editObject.children.find((child) => this.schemaService.normalize(child.path) === childPath);
+
+      if (child) return acc.concat([child]);
+
+      this.logger.log(this, `Child path '${childPath}' not found in editObject children`, editObject);
+
+      return acc;
+    }, []);
+    const unmatchedChildren = editObject.children.filter(
+      (child) =>
+        !ordenedChildren.some(
+          (ordenedChild) => this.schemaService.normalize(ordenedChild.path) === this.schemaService.normalize(child.path),
+        ),
+    );
+    const sortedChildren = ordenedChildren.concat(unmatchedChildren);
+
+    // Ici, on met à jour la référence car ça nous évite de recalculer les actions pour chaque editObject.
+    editObject.children.splice(0, editObject.children.length);
+    sortedChildren.forEach((item) => editObject.children.push(item));
   }
 
   private baseEditObject(
