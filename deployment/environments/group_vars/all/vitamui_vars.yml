@@ -155,7 +155,7 @@ vitamui:
       vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"
       vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo.png"
       vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
-    reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+    reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
     cors:
       enabled: true
 
