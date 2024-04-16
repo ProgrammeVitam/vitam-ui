@@ -108,11 +108,7 @@ describe('ArchiveUnitCountComponent', () => {
 
   it('should not allow exact count loading if the previous exact count load is over the threshold', async () => {
     const fakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return of(1000001);
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => of(1000001),
     };
 
     component.search = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
@@ -149,11 +145,8 @@ describe('ArchiveUnitCountComponent', () => {
 
   it('should allow exact count loading if the previous exact count load has failed', async () => {
     const fakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return throwError(new Error('Track Total Hits loading failure'));
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> =>
+        throwError(new Error('Track Total Hits loading failure')),
     };
 
     component.search = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
@@ -190,11 +183,7 @@ describe('ArchiveUnitCountComponent', () => {
 
   it('should allow exact count loading again when the search query has changed', async () => {
     const fakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return of(1000001);
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => of(1000001),
     };
     const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
 
@@ -232,11 +221,7 @@ describe('ArchiveUnitCountComponent', () => {
     // Update component with a second search query
 
     const otherFakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return of(25000);
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => of(25000),
     };
     const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
 
@@ -254,11 +239,7 @@ describe('ArchiveUnitCountComponent', () => {
 
   it('should not allow exact count loading again when the search query has changed and exact count was reloaded', async () => {
     const fakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return of(1000001);
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => of(1000001),
     };
     const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
 
@@ -296,11 +277,7 @@ describe('ArchiveUnitCountComponent', () => {
     // Update component with a second search query
 
     const otherFakeSearchService = {
-      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => {
-        console.log('getTotalTrackHitsByCriteria called');
-
-        return of(25000);
-      },
+      getTotalTrackHitsByCriteria: (searchCriterias: any[]): Observable<number> => of(25000),
     };
     const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria([{}, {}]);
 

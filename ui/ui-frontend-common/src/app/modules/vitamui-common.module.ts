@@ -44,7 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
-import { ArchiveModule } from './archive/archive.module';
+import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
 import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
@@ -149,7 +149,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     AccountModule,
     ApplicationCardModule,
     ApplicationSelectContentModule,
-    ArchiveModule,
+    ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
     CancelledSnackBarModule,
     CollapseDirectiveModule,
@@ -220,7 +220,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     AccountModule,
     ApplicationCardModule,
     ApplicationSelectContentModule,
-    ArchiveModule,
+    ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
     BlankComponent,
     CollapseDirectiveModule,

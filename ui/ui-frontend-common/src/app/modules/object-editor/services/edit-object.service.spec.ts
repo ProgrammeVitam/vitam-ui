@@ -4,9 +4,9 @@ import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { DisplayRuleHelperService } from '../../object-viewer/services/display-rule-helper.service';
-import { MockSchemaService } from '../../object-viewer/services/mock-schema.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
 import { TypeService } from '../../object-viewer/services/type.service';
+import { MockSchemaService } from '../../schema/mock-schema.service';
 import { EditObject } from '../models/edit-object.model';
 import { EditObjectService } from './edit-object.service';
 import { SchemaService } from './schema.service';
@@ -156,7 +156,7 @@ describe('EditObjectService', () => {
             ];
             const projectedData = templetaService.toProjected(originalData, template);
             const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-            const templatedSchema = service.createaTemplateSchema(template, subschema);
+            const templatedSchema = service.createTemplateSchema(template, subschema);
             const editObject = service.editObject(path, projectedData, template, templatedSchema);
 
             expect(editObject).toBeTruthy();
@@ -223,7 +223,7 @@ describe('EditObjectService', () => {
             ];
             const projectedData = templetaService.toProjected(originalData, template);
             const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-            const templatedSchema = service.createaTemplateSchema(template, subschema);
+            const templatedSchema = service.createTemplateSchema(template, subschema);
             const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
             expect(editObject).toBeTruthy();
@@ -300,7 +300,7 @@ describe('EditObjectService', () => {
             ];
             const projectedData = templetaService.toProjected(originalData, template);
             const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-            const templatedSchema = service.createaTemplateSchema(template, subschema);
+            const templatedSchema = service.createTemplateSchema(template, subschema);
             const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
             expect(editObject).toBeTruthy();
@@ -377,7 +377,7 @@ describe('EditObjectService', () => {
             ];
             const projectedData = templetaService.toProjected(originalData, template);
             const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-            const templatedSchema = service.createaTemplateSchema(template, subschema);
+            const templatedSchema = service.createTemplateSchema(template, subschema);
             const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
             expect(editObject).toBeTruthy();
@@ -457,7 +457,7 @@ describe('EditObjectService', () => {
             const template: DisplayRule[] = [];
             const projectedData = templetaService.toProjected(originalData, template);
             const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-            const templatedSchema = service.createaTemplateSchema(template, subschema);
+            const templatedSchema = service.createTemplateSchema(template, subschema);
             const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
             expect(editObject).toBeTruthy();
@@ -526,7 +526,7 @@ describe('EditObjectService', () => {
     it('should create template schema without template and schema', () => {
       const template = [];
       const schema = [];
-      const output = service.createaTemplateSchema(template, schema);
+      const output = service.createTemplateSchema(template, schema);
       const expected = [];
 
       expect(output).toEqual(expected);
@@ -551,7 +551,7 @@ describe('EditObjectService', () => {
           Category: 'DESCRIPTION',
         },
       ];
-      const ouput = service.createaTemplateSchema(template, schema);
+      const ouput = service.createTemplateSchema(template, schema);
       const expected: Schema = [
         {
           Path: '',
@@ -585,7 +585,7 @@ describe('EditObjectService', () => {
         },
       ];
       const schema: Schema = [];
-      const ouput = service.createaTemplateSchema(template, schema);
+      const ouput = service.createTemplateSchema(template, schema);
       const expected: Schema = [];
 
       expect(ouput).toEqual(expected);
@@ -604,7 +604,7 @@ describe('EditObjectService', () => {
 
             return 0;
           });
-        const templatedSchema = service.createaTemplateSchema(template, subschema).sort((a, b) => {
+        const templatedSchema = service.createTemplateSchema(template, subschema).sort((a, b) => {
           if (a.ApiPath < b.ApiPath) return -1;
           if (a.ApiPath > b.ApiPath) return 1;
 
@@ -626,7 +626,7 @@ describe('EditObjectService', () => {
           { Path: 'Title', ui: { Path: 'Generalities.Title', component: 'textfield' } },
         ];
         const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-        const templatedSchema = service.createaTemplateSchema(template, subschema);
+        const templatedSchema = service.createTemplateSchema(template, subschema);
 
         expect(templatedSchema).toBeTruthy();
         expect(templatedSchema.length).toEqual(subschema.length + 1);
@@ -648,7 +648,7 @@ describe('EditObjectService', () => {
           { Path: 'Addressee', ui: { Path: 'Generalities.Addressee', component: 'group' } },
         ];
         const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-        const templatedSchema = service.createaTemplateSchema(template, subschema);
+        const templatedSchema = service.createTemplateSchema(template, subschema);
         const nodeCount = subschema.reduce((acc, cur) => (cur.ApiPath.startsWith('Addressee') ? acc + 1 : acc), 0);
 
         expect(nodeCount).toEqual(30);

@@ -8,7 +8,7 @@
 
 <vitamui-common-data
   *ngIf="isPrimitiveList"
-  [label]="displayObject.displayRule.ui.label"
-  [value]="childrenValues.length === 1 ? childrenValues[0] : childrenValues"
+  [label]="displayObject.displayRule.ui.label | translate"
+  [value]="displayObject.value.length === 1 ? displayObject.value[0] : displayObject.value"
 >
 </vitamui-common-data>

@@ -68,38 +68,14 @@ export class DisplayRuleHelperService {
     });
   }
 
-  public prioritizeAndMergeDisplayRules(sourceRules: DisplayRule[], targetRules: DisplayRule[]): DisplayRule[] {
-    const sourceUiPathMap = new Map<string, DisplayRule>();
-
-    // Indexe les règles d'affichage de source par chemin
-    sourceRules.forEach((rule) => {
-      sourceUiPathMap.set(rule.ui.Path, rule);
-    });
-
-    const displayRules: DisplayRule[] = [];
-
-    // Parcourt les règles de target et traite chaque règle
-    targetRules.forEach((targetRule) => {
-      const sourceRule = sourceUiPathMap.get(targetRule.ui.Path);
-
-      // Si une règle correspondante existe dans source, fusionne les valeurs
-      if (sourceRule) {
-        // Fusionne les valeurs de sourceRule et targetRule (utilisez votre propre logique de fusion)
-        const mergedRule = this.mergeDisplayRules(sourceRule, targetRule);
-        displayRules.push(mergedRule);
-      } else {
-        // Si aucune règle correspondante n'existe dans source, ajoute simplement la règle de target
-        displayRules.push(targetRule);
-      }
-    });
-
-    return displayRules;
+  public prioritizeAndMergeDisplayRules(sourceRuleMap: { [key: string]: DisplayRule }, targetRules: DisplayRule[]): DisplayRule[] {
+    return targetRules.map((targetRule) =>
+      sourceRuleMap[targetRule.Path] ? this.mergeDisplayRules(sourceRuleMap[targetRule.Path], targetRule) : targetRule,
+    );
   }
 
   private mergeDisplayRules(sourceRule: DisplayRule, targetRule: DisplayRule): DisplayRule {
-    if (sourceRule.ui.Path !== targetRule.ui.Path) {
-      throw new Error("Les règles n'ont pas le même chemin et ne peuvent pas être fusionnées.");
-    }
+    if (sourceRule.Path !== targetRule.Path) throw new Error('Rules with different paths cannot by merged');
 
     const ui: Ui = Array.from(new Set(Object.keys(sourceRule.ui).concat(Object.keys(targetRule.ui)))).reduce(
       (acc, key: string) => {

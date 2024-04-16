@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Collection } from '../../models';
-import { SchemaElement } from '../models';
+import { Collection } from '../models';
+import { SchemaElement } from '../object-viewer/models';
 
 @Injectable()
 export class MockSchemaService {

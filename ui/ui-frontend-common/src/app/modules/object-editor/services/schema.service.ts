@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '../../logger/logger';
 import { Collection, Schema } from '../../models';
 import { SchemaElement } from '../../object-viewer/models';
+import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../object-viewer/types';
 import { PathService } from './path.service';
 
@@ -10,9 +12,17 @@ export interface SchemaOptions {
   pathKey: string;
 }
 
+interface SchemaError {
+  readonly element: SchemaElement;
+  readonly messages: string[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class SchemaService {
-  constructor(private pathService: PathService) {}
+  constructor(
+    private pathService: PathService,
+    private logger: Logger,
+  ) {}
 
   public subschema(schema: Schema, options: SchemaOptions = { collection: null, versions: null, pathKey: 'ApiPath' }): Schema {
     let subschema = schema.slice();
@@ -84,28 +94,44 @@ export class SchemaService {
     return 'unknown';
   }
 
-  public validate(schema: Schema, messages = []) {
+  public validate(schema: Schema, options = { passive: false }) {
+    const errorMessages: string[] = [];
     const paths = schema.map((element) => element.Path);
 
     if (paths.length > new Set(paths).size) {
-      messages.push(`Schema seems have duplicates elements`);
+      errorMessages.push(`Schema seems have duplicates elements`);
     }
 
-    schema.forEach((element) => this.collectErrors(element, schema, paths, messages));
+    const schemaErrors = schema.map((element) => this.collectSchemaElementErrors(element, schema, paths));
 
-    if (messages.length) {
-      throw new Error(JSON.stringify(messages, null, 2));
+    schemaErrors.forEach((schemaError) => schemaError.messages.forEach((message) => errorMessages.push(message)));
+
+    if (errorMessages.length) {
+      const content = errorMessages.reduce((acc, cur, i) => `${acc}${i + 1}. ${cur}\n`, '');
+      const errorReport = `Validation found ${errorMessages.length} errors in provided schema.\n\n${content}`;
+
+      if (options.passive) {
+        this.logger.warn(this, errorReport);
+      } else {
+        throw new Error(errorReport);
+      }
     }
   }
 
-  private collectErrors(element: SchemaElement, schema: Schema, paths: string[], messages: string[]): void {
+  public collectSchemaElementErrors(element: SchemaElement, schema: Schema, paths: string[]): SchemaError {
+    const messages = [];
     const childrenPaths = this.pathService.children(element.Path, paths);
+    const children = schema.filter((e) => childrenPaths.includes(e.Path));
+
+    if (internationalizedKeys.includes(element.ApiField)) {
+      this.logger.warn(this, `Element ${element.ApiPath} excluded from validation`);
+
+      return { element, messages };
+    }
 
     if (childrenPaths.length > new Set(childrenPaths).size) {
       messages.push(`Element '${element.Path}' seems have duplicates elements in its children '${childrenPaths}'`);
     }
-
-    const children = schema.filter((e) => childrenPaths.includes(e.Path));
 
     if (element.Type !== 'OBJECT' && children.length) {
       messages.push(`Element '${element.Path}' is a leaf and seems have children '${childrenPaths}'`);
@@ -115,7 +141,7 @@ export class SchemaService {
       messages.push(`Element '${element.Path}' is a group and seems not have children`);
     }
 
-    children.forEach((child) => this.collectErrors(child, schema, paths, messages));
+    return { element, messages };
   }
 
   private isArray(element: SchemaElement): boolean {

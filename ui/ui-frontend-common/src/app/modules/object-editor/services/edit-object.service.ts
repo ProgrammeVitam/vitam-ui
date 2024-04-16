@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
-import { orderedFields } from '../../archive/archive-unit-fields';
+import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
 import { Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
@@ -99,7 +99,7 @@ export class EditObjectService {
     return 'unknown';
   }
 
-  public createaTemplateSchema(template: DisplayRule[], schema: Schema, options: SchemaOptions = { pathKey: 'ApiPath' }): Schema {
+  public createTemplateSchema(template: DisplayRule[], schema: Schema, options: SchemaOptions = { pathKey: 'ApiPath' }): Schema {
     const next: Schema = JSON.parse(JSON.stringify(schema));
 
     template.forEach((rule) => {
@@ -127,7 +127,12 @@ export class EditObjectService {
       }
 
       next
-        .filter((element) => (element[options.pathKey] as string).startsWith(rule.Path))
+        .filter(
+          (element) =>
+            (element[options.pathKey] as string).startsWith(rule.Path + '.') ||
+            (element[options.pathKey] as string).startsWith(rule.Path + '[') ||
+            (element[options.pathKey] as string) === rule.Path,
+        )
         .forEach((element) => {
           element[options.pathKey] = element[options.pathKey].replace(rule.Path, rule.ui.Path);
         });

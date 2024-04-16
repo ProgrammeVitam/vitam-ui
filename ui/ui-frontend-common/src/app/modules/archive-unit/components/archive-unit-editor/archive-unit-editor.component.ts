@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { EditObject } from '../../../object-editor/models/edit-object.model';
 import { DisplayRule } from '../../../object-viewer/models';
@@ -10,8 +10,8 @@ import { ArchiveUnitEditorService } from './archive-unit-editor.service';
 
 @Component({
   selector: 'vitamui-common-archive-unit-editor',
-  template: `<vitamui-common-object-editor [editObject]="editObject$ | async"></vitamui-common-object-editor>`,
-  styles: [],
+  templateUrl: './archive-unit-editor.component.html',
+  styleUrls: ['./archive-unit-editor.component.scss'],
   providers: [ArchiveUnitEditorService],
 })
 export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy {

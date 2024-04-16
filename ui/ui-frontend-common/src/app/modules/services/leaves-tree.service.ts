@@ -110,7 +110,6 @@ export class LeavesTreeService {
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
-        console.log(JSON.stringify(tocheck));
         this.compareAddedNodeWithKnownFacets(tocheck);
         return pagedResult;
       }),
