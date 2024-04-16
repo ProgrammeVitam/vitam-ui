@@ -67,39 +67,39 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Dependencies version -->
-        <apache.commons.codec.version>1.15</apache.commons.codec.version>
-        <apache.pdfbox.version>2.0.24</apache.pdfbox.version>
+        <apache.commons.codec.version>1.16.1</apache.commons.codec.version>
+        <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
-        <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
-        <assertj.version>3.15.0</assertj.version>
-        <bouncycastle.version>1.68</bouncycastle.version>
+        <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
+        <assertj.version>3.25.3</assertj.version>
+        <bouncycastle.version>1.77</bouncycastle.version>
         <cas.version>6.6.12</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
-        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
-        <commons.compress.version>1.21</commons.compress.version>
+        <commons.compress.version>1.26.1</commons.compress.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
-        <commons.io.version>2.7</commons.io.version>
-        <commons.lang3.version>3.9</commons.lang3.version>
-        <commons.text.version>1.10.0</commons.text.version>
+        <commons.io.version>2.16.0</commons.io.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <commons.text.version>1.11.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
         <embedded.mongo.version>3.0.0</embedded.mongo.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <font.awesome.version>5.11.2</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
-        <gson.version>2.8.9</gson.version>
-        <http.client.version>4.5.13</http.client.version>
-        <http.core.version>4.4.14</http.core.version>
+        <gson.version>2.10.1</gson.version>
+        <http.client.version>4.5.14</http.client.version>
+        <http.core.version>4.4.16</http.core.version>
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
-        <jackson.version>2.14.1</jackson.version>
-        <jaeger.tracing.version>3.2.2</jaeger.tracing.version>
-        <jakarta.xml.binding.version>2.3.2</jakarta.xml.binding.version>
-        <javax.el.version.version>3.0.1-b06</javax.el.version.version>
+        <jackson.version>2.17.0</jackson.version>
+        <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
+        <jakarta.xml.binding.version>2.3.3</jakarta.xml.binding.version>
+        <javax.el.version>3.0.1-b06</javax.el.version>
+        <jakarta.el.version>5.0.1</jakarta.el.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
-        <hibernate.validatior.version>6.1.5.Final</hibernate.validatior.version>
-        <javassist.version>3.28.0-GA</javassist.version>
+        <hibernate.validatior.version>6.1.7.Final</hibernate.validatior.version>
+        <javassist.version>3.30.2-GA</javassist.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
@@ -107,11 +107,11 @@
         <json.version>20180813</json.version>
         <jaxp-api.version>1.4.5</jaxp-api.version>
         <jackson-xml-databind.version>0.6.2</jackson-xml-databind.version>
-        <thaiopensource.jing.version>20091111</thaiopensource.jing.version>
-        <thaiopensource.trang.version>20091111</thaiopensource.trang.version>
+        <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
+        <thaiopensource.trang.version>20220510</thaiopensource.trang.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
         <xml-resolver.version>1.2</xml-resolver.version>
-        <jlibs.version>2.2.3</jlibs.version>
+        <jlibs.version>3.0.1</jlibs.version>
         <junit.version>4.13.1</junit.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <junit.jupiter.platform.version>1.7.0</junit.jupiter.platform.version>
@@ -125,19 +125,19 @@
         <jquery.ui.version>1.13.2</jquery.ui.version>
         <micrometer.version>1.7.3</micrometer.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
-        <mockito.version>3.12.1</mockito.version>
+        <mockito.version>4.11.0</mockito.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
         <pac4j.version>5.4.6</pac4j.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.5</poi.version>
         <org.odftoolkit.version>0.8.7</org.odftoolkit.version>
         <org.apache.odftoolkit.version>0.8.2-incubating</org.apache.odftoolkit.version>
         <powermock.version>2.0.9</powermock.version>
         <selma.version>1.0</selma.version>
         <fop.version>2.4</fop.version>
-        <serenity.cucumber.version>2.2.2</serenity.cucumber.version>
+        <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
         <serenity.maven.plugin>2.2.2</serenity.maven.plugin>
-        <serenity.spring.version>2.2.2</serenity.spring.version>
-        <serenity.version>2.2.2</serenity.version>
+        <serenity.spring.version>2.2.6</serenity.spring.version>
+        <serenity.version>2.2.6</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.boot.version>2.5.15</spring.boot.version>
         <reactor.version>3.4.18</reactor.version>
@@ -152,15 +152,15 @@
         <vitam.version>7.1.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
-        <xom.version>1.3.4</xom.version>
+        <xom.version>1.3.9</xom.version>
         <xdocreport.version>2.0.2</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
         <esapi.version>2.2.3.1</esapi.version>
         <antisamy.version>1.6.7</antisamy.version>
-        <json-sanitize.version>1.2.2</json-sanitize.version>
+        <json-sanitize.version>1.2.3</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <mongo.driver.sync.version>4.6.1</mongo.driver.sync.version>
-
+        <snakeyaml.version>1.32</snakeyaml.version>
 
         <!-- Web Pack -->
         <node.version>v14.15.1</node.version>
@@ -226,7 +226,6 @@
         <skipAllFrontendTests>true</skipAllFrontendTests>
 
         <itCoverageAgent></itCoverageAgent>
-        <opencsv.version>5.4</opencsv.version>
     </properties>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -479,6 +478,44 @@
                 <version>${project.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.opengis.cite.xerces</groupId>
+                <artifactId>xercesImpl-xsd11</artifactId>
+                <version>${xercesImpl-xsd11.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>jackson-xml-databind</artifactId>
+                <version>${jackson-xml-databind.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.relaxng</groupId>
+                <artifactId>trang</artifactId>
+                <version>${thaiopensource.trang.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>net.sf.saxon</groupId>
+                        <artifactId>saxon</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xerces</groupId>
+                        <artifactId>xercesImpl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.xml.parsers</groupId>
+                <artifactId>jaxp-api</artifactId>
+                <version>${jaxp-api.version}</version>
+            </dependency>
             <!-- spring-boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -489,6 +526,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.projectreactor</groupId>
@@ -591,6 +634,11 @@
             </dependency>
 
             <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${http.client.version}</version>
@@ -668,6 +716,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.upgraded.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>pac4j-oidc</artifactId>
@@ -1043,8 +1097,15 @@
             <dependency>
                 <groupId>javax.el</groupId>
                 <artifactId>javax.el-api</artifactId>
-                <version>${javax.el.version.version}</version>
+                <version>${javax.el.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>jakarta.el</groupId>
+                <artifactId>jakarta.el-api</artifactId>
+                <version>${jakarta.el.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -1157,7 +1218,7 @@
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
+                <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
             <!-- convert relaxng to xsd -->
@@ -1177,7 +1238,7 @@
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>fop</artifactId>
-                <version>2.4</version>
+                <version>${fop.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>javax.media</groupId>
