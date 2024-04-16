@@ -62,3 +62,12 @@ h5 {
 .vitamui-mat-select {
   padding-bottom: 0;
 }
+
+.select-area-custom {
+  width: 100%;
+  mat-label {
+    color: var(--vitamui-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
