@@ -115,10 +115,10 @@ public class DispatcherAction extends AbstractAction {
         ParameterChecker.checkParameter("Missing subrogation params",
             surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
 
-        if (isUserLocked(superUserEmail, superUserCustomerId)) {
+        if (ensureUserIsEnabled(superUserEmail, superUserCustomerId)) {
             return handleUserDisabled(superUserEmail, superUserCustomerId);
         }
-        if (isUserLocked(surrogateEmail, surrogateCustomerId)) {
+        if (ensureUserIsEnabled(surrogateEmail, surrogateCustomerId)) {
             return handleUserDisabled(superUserEmail, surrogateCustomerId);
         }
 
@@ -135,7 +135,7 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
-        if (isUserLocked(userEmail, customerId)) {
+        if (ensureUserIsEnabled(userEmail, customerId)) {
             return handleUserDisabled(userEmail, customerId);
         }
 
@@ -183,9 +183,9 @@ public class DispatcherAction extends AbstractAction {
         }
     }
 
-    private boolean isUserLocked(String email, String customerId) {
+    private boolean ensureUserIsEnabled(String email, String customerId) {
         UserDto userDto =
-            this.casExternalRestClient.getUserByEmail(utils.buildContext(email), email, customerId, Optional.empty());
+            this.casExternalRestClient.getUserByEmailAndCustomerId(utils.buildContext(email), email, customerId, Optional.empty());
         if (userDto == null) {
             // To avoid account existence disclosure, unknown users are silently ignored.
             // Once they enter their credentials, they will get a generic "login or password invalid" error message.

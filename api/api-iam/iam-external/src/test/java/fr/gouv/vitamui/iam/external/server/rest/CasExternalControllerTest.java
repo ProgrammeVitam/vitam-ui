@@ -1,12 +1,12 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.CasExternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -18,13 +18,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.CasExternalService;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { CasExternalController.class })
@@ -50,13 +49,30 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Test
-    public void test_login_withMissingUsername() throws Exception {
+    public void test_login_withMissingLoginEmail() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
         loginRequestDto.setLoginEmail(null);
+        loginRequestDto.setLoginCustomerId("customerId");
 
         ResultActions result = this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto),
                 status().is(HttpStatus.BAD_REQUEST.value()));
+        Map<String, Object> expectedResult = new HashMap<>();
+        expectedResult.put("exception", "fr.gouv.vitamui.commons.api.exception.BadRequestException");
+        expectedResult.put("error", "apierror.badrequest");
+        expectedResult.put("status", HttpStatus.BAD_REQUEST.value());
+        result.andExpect(content().json(asJsonString(expectedResult), false));
+    }
+
+    @Test
+    public void test_login_withMissingCustomerId() throws Exception {
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        loginRequestDto.setPassword("1234");
+        loginRequestDto.setLoginEmail("user@email.com");
+        loginRequestDto.setLoginCustomerId(null);
+
+        ResultActions result = this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto),
+            status().is(HttpStatus.BAD_REQUEST.value()));
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("exception", "fr.gouv.vitamui.commons.api.exception.BadRequestException");
         expectedResult.put("error", "apierror.badrequest");

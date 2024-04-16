@@ -155,7 +155,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
                     final ExternalHttpContext externalHttpContext;
                     if (StringUtils.isNotBlank(superUserCustomerId)) {
-                        externalHttpContext = utils.buildContext(superUserCustomerId);
+                        externalHttpContext = utils.buildContext(superUserEmail);
                     } else {
                         externalHttpContext = utils.buildContext(principalEmail);
                     }

@@ -122,7 +122,7 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
         @RequestParam final String idp, @RequestParam final Optional<String> userIdentifier,
-        @RequestParam(required = false) String embedded) {
+        @RequestParam Optional<String> embedded) {
         LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, user identifier : {}, embedded: {}",
             loginEmail, loginCustomerId, idp, userIdentifier, embedded);
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
@@ -174,7 +174,7 @@ public class CasExternalController {
     public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
         LOGGER.debug("get all customers by ids={}", customerIds);
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
-        SanityChecker.checkSecureParameter(customerIds.toArray(customerIds.toArray(new String[0])));
+        SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
     }
 }

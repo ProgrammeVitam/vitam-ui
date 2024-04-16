@@ -6,7 +6,7 @@ db.customers.insertOne({
 	"_id": "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9",
 	"identifier": "11",
 	"code": "654852",
-	"name": "Client1 ",
+	"name": "Client1",
 	"companyName": "Client1",
 	"enabled": true,
 	"language": "FRENCH",

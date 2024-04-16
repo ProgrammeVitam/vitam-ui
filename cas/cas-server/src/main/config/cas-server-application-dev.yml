@@ -126,9 +126,8 @@ cas.authn.mfa.triggers.principal.global-principal-attribute-name-triggers: compu
 cas.authn.mfa.triggers.principal.global-principal-attribute-value-regex: 'true'
 cas.authn.mfa.simple.mail.text: xxx
 
-
 spring.mail.host: localhost
-spring.mail.port: 2525
+spring.mail.port: 1025
 spring.mail.username: no-reply@vitamui.com
 spring.mail.password: password
 spring.mail.testConnection: false

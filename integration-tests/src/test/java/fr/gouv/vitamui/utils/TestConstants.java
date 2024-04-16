@@ -11,10 +11,10 @@ public class TestConstants {
 
     public static final String SYSTEM_USER_PREFIX_EMAIL = "admin";
 
-    public static final String JULIEN_USER_PREFIX_EMAIL = "julien";
-    public static final String JULIEN_USER_CUSTOMER_ID = "customer_1";
+    public static final String USER_1_PREFIX_EMAIL = "user1";
+    public static final String USER_1_CUSTOMER_ID = "customer_1";
 
-    public static final String JULIEN_USER_ID = "vitamuijulien";
+    public static final String USER_1_ID = "vitamuiuser1";
 
     public static final String SYSTEM_CUSTOMER_ID = "system_customer";
 
@@ -94,8 +94,8 @@ public class TestConstants {
 
     public static final String EVENT_DATE_TIME_KEY = "Date d'opération";
 
-    public static final String PIERRE_USER_PREFIX_EMAIL = "pierre";
-    public static final String PIERRE_USER_CUSTOMER_ID = "customer_2";
+    public static final String USER_2_PREFIX_EMAIL = "user2";
+    public static final String USER_2_CUSTOMER_ID = "customer_2";
 
     public static final String CONTEXT_ID = "CONTEXT_ID";
 

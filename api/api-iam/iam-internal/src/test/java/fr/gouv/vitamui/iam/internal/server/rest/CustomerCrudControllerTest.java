@@ -207,7 +207,7 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.empty());
         when(customerRepository.findById(customerDto.getId())).thenReturn(Optional.of(buildCustomer()));
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString())).thenReturn(Optional.empty());
-        when(customerRepository.findByEmailDomainsIgnoreCase(anyString())).thenReturn(Optional.empty());
+        when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(),anyString())).thenReturn(Optional.empty());
 
         when(internalOwnerService.findByCustomerId(customerDto.getId())).thenReturn(Arrays.asList(new OwnerDto()));
         when(internalOwnerService.create(any())).thenReturn(new OwnerDto());
@@ -498,7 +498,7 @@ public final class CustomerCrudControllerTest {
         customerDto.setId(null);
 
         prepareServices();
-        when(customerRepository.findByEmailDomainsIgnoreCase(anyString()))
+        when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(),anyString()))
             .thenReturn(Optional.of(buildCustomer()));
 
         controller.create(buildCustomerData(customerDto));

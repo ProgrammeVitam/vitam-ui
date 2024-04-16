@@ -56,6 +56,7 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.DefaultAuthentication;
+import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -84,13 +85,14 @@ import java.util.Optional;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -156,7 +158,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMIN");
         userDto.setCustomerId(CUSTOMER_ID);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class),
             eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
         val utils = new Utils(null, 0, null, null, "");
         service =
@@ -227,8 +229,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             UserDto userDto = new UserDto();
             userDto.setType(UserTypeEnum.GENERIC);
             userDto.setCustomerId(CUSTOMER_ID);
-            when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
-                any(Optional.class))).thenReturn(userDto);
+            when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(EMAIL),
+                eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
             assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
                 new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
             fail("should fail");
@@ -241,7 +243,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     public void testChangePasswordOKWhenUsernameLengthIsLowerThanCheckOccurrenceCharNumber() {
         UserDto userDto = new UserDto();
         userDto.setLastname("ADMI");
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class),
             eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
         assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD),
             new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)));
@@ -252,7 +254,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         try {
             UserDto userDto = new UserDto();
             userDto.setLastname("ADMIN");
-            when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
+            when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class),
                 eq(EMAIL), eq(CUSTOMER_ID), any(Optional.class))).thenReturn(userDto);
             assertTrue(service.change(new UsernamePasswordCredential(EMAIL,
                     PASSWORD_CONTAINS_DICTIONARY),
@@ -338,8 +340,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testFindEmailOk() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
-            eq(Optional.empty())))
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(EMAIL),
+            eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 
         assertEquals(EMAIL, service.findEmail(getPasswordManagementQuery()));
@@ -347,24 +349,25 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private static PasswordManagementQuery getPasswordManagementQuery() {
         LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
-        customerIdMapElt.add(ResetPasswordController.CUSTOMER_ID, CUSTOMER_ID);
+        customerIdMapElt.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, CUSTOMER_ID);
         return PasswordManagementQuery.builder().username(EMAIL).record(customerIdMapElt).build();
     }
 
 
     @Test
     public void testFindEmailErrorThrown() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
-            eq(Optional.empty())))
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(EMAIL),
+            eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenThrow(new BadRequestException("error"));
 
-        assertNull(service.findEmail(getPasswordManagementQuery()));
+        assertThatThrownBy(() -> service.findEmail(getPasswordManagementQuery()))
+            .isInstanceOf(PreventedException.class);
     }
 
     @Test
     public void testFindEmailUserNull() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
-            eq(Optional.empty())))
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(EMAIL),
+            eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenReturn(null);
 
         assertNull(service.findEmail(getPasswordManagementQuery()));
@@ -372,8 +375,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testFindEmailUserDisabled() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(CUSTOMER_ID),
-            eq(Optional.empty())))
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(EMAIL),
+            eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.DISABLED));
 
         assertNull(service.findEmail(getPasswordManagementQuery()));
@@ -381,7 +384,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetSecurityQuestionsOk() {
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class),
             eq(EMAIL), eq(CUSTOMER_ID), eq(Optional.empty())))
             .thenReturn(user(UserStatusEnum.ENABLED));
 

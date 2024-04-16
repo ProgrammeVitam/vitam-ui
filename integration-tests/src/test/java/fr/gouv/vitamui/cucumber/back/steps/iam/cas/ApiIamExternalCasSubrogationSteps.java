@@ -28,8 +28,8 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
         getOrInitializeDefaultSubrogationId();
         subrogationDtos = getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
                 .getSubrogationsBySuperUserEmailAndCustomerId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                    TestConstants.JULIEN_USER_CUSTOMER_ID);
+                        TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                    TestConstants.USER_1_CUSTOMER_ID);
     }
 
     @Then("^le serveur retourne la bonne subrogation$")
@@ -52,8 +52,8 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
             getCasRestClient(testContext.fullAccess, testContext.certificateTenants,
                 testContext.certificateRoles).getSubrogationsBySuperUserEmailAndCustomerId(
                 getContext(testContext.tenantIHMContext, testContext.tokenUser),
-                TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.JULIEN_USER_CUSTOMER_ID);
+                TestConstants.USER_1_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+                TestConstants.USER_1_CUSTOMER_ID);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -67,7 +67,7 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
         // Get or Initialize defaultSubrogation before requesting superUser
         getOrInitializeDefaultSubrogationId();
         subrogationDtos = getCasRestClient(false, tenants, roles)
-                .getSubrogationsBySuperUserId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), TestConstants.JULIEN_USER_ID);
+                .getSubrogationsBySuperUserId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), TestConstants.USER_1_ID);
     }
 
     @Given("^deux tenants et un rôle par défaut pour chercher une subrogation par l'identifiant de son superuser$")
@@ -79,7 +79,7 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
     public void cet_utilisateur_cherche_une_subrogation_par_l_identifiant_de_son_superuser() {
         try {
             getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
-                    .getSubrogationsBySuperUserId(getContext(testContext.tenantIHMContext, testContext.tokenUser), TestConstants.JULIEN_USER_ID);
+                    .getSubrogationsBySuperUserId(getContext(testContext.tenantIHMContext, testContext.tokenUser), TestConstants.USER_1_ID);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;

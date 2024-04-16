@@ -54,7 +54,7 @@ public final class UserEmailInternalServiceTest {
     private UserInfoInternalService userInfoInternalService;
 
     private final String casResetPasswordUrl =
-        "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day";
+        "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day";
 
     @Before
     public void setUp() {
@@ -93,7 +93,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(null);
 
         verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr");
+            LASTNAME, "fr", CUSTOMER_ID);
     }
 
     @Test
@@ -104,7 +104,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(user);
 
         verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr");
+            LASTNAME, "fr", CUSTOMER_ID);
     }
 
     @Test
@@ -115,7 +115,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(user);
 
         Mockito.verify(restTemplate, times(0))
-            .getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr");
+            .getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr", CUSTOMER_ID);
     }
 
     @Test
@@ -127,7 +127,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(user);
 
         verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr");
+            LASTNAME, "fr", CUSTOMER_ID);
     }
 
     @Test
@@ -138,7 +138,7 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService.sendCreationEmail(user);
 
         verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr");
+            LASTNAME, "fr", CUSTOMER_ID);
     }
 
     private UserDto buildUser() {

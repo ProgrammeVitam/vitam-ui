@@ -8,13 +8,11 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -118,7 +116,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
             eq(Optional.empty())))
             .thenReturn(userDto);
 
@@ -150,7 +148,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
             eq(Optional.empty()))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
@@ -168,7 +166,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
             eq(Optional.empty()))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
@@ -201,7 +199,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
             eq(Optional.empty()))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
@@ -234,7 +232,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
             eq(Optional.empty()))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
@@ -253,7 +251,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
+        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
             eq(Optional.empty()))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);

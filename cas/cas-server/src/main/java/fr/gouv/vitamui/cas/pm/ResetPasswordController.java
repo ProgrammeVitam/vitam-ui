@@ -39,6 +39,7 @@ package fr.gouv.vitamui.cas.pm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -76,7 +77,6 @@ import java.util.Locale;
 public class ResetPasswordController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ResetPasswordController.class);
-    public static final String CUSTOMER_ID = "customerId";
 
     private final CasConfigurationProperties casProperties;
 
@@ -84,13 +84,9 @@ public class ResetPasswordController {
 
     private final CommunicationsManager communicationsManager;
 
-    private final TicketRegistry ticketRegistry;
-
     private final HierarchicalMessageSource messageSource;
 
     private final Utils utils;
-
-    private final DefaultTransientSessionTicketFactory pmTicketFactory;
 
     private final PasswordResetUrlBuilder passwordResetUrlBuilder;
 
@@ -126,8 +122,11 @@ public class ResetPasswordController {
 
         val usernameLower = username.toLowerCase().trim();
         LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
-        customerIdMapElt.add(CUSTOMER_ID, customerId);
-        val query = PasswordManagementQuery.builder().record(customerIdMapElt).username(usernameLower).build();
+        customerIdMapElt.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, customerId);
+        val query = PasswordManagementQuery.builder()
+            .username(usernameLower)
+            .record(customerIdMapElt)
+            .build();
 
         val email = passwordManagementService.findEmail(query);
         if (StringUtils.isBlank(email)) {
@@ -147,7 +146,7 @@ public class ResetPasswordController {
             expMinutes);
         try {
 
-            UserLoginModel userLoginModel = new UserLoginModel();
+            var userLoginModel = new UserLoginModel();
             userLoginModel.setUserEmail(query.getUsername());
             userLoginModel.setCustomerId(customerId);
             String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);

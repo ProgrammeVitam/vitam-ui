@@ -193,14 +193,20 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
 
     private void checkSubrogationWithSuperUserAlreadyExist(final String superUser, final String customerId) {
         final Subrogation subro = subrogationRepository.findOneBySuperUserAndSuperUserCustomerId(superUser, customerId);
-        Assert.isTrue(subro == null, (subro != null ? subro.getSuperUser() : "") + " is already subrogating " +
-            (subro != null ? subro.getSurrogate() : ""));
+        if(subro != null) {
+            throw new IllegalArgumentException(
+                subro.getSuperUser() + "(" + subro.getSuperUserCustomerId() + ") is already subrogating " +
+                    subro.getSurrogate() + "(" + subro.getSurrogateCustomerId() + ")");
+        }
     }
 
     private void checkSubrogationAlreadyExist(final String email, final String customerId) {
         final Subrogation subro = subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(email, customerId);
-        Assert.isTrue(subro == null,
-            email + " is already subrogated by " + (subro != null ? subro.getSuperUser() : ""));
+        if(subro != null) {
+            throw new IllegalArgumentException(
+                subro.getSurrogate() + "(" + subro.getSurrogateCustomerId() + ")" + " is already subrogated by "
+                    + subro.getSuperUser() + "(" + subro.getSuperUserCustomerId() + ")");
+        }
     }
 
     @Override
@@ -213,9 +219,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
         final User surrogate =
-            userRepository.findByEmailIgnoreCaseAndCustomerId(dto.getSurrogate(), dto.getSurrogateCustomerId());
+            userRepository.findByEmailIgnoreCaseAndCustomerId(emailSurrogate, dto.getSurrogateCustomerId());
         final User superUser =
-            userRepository.findByEmailIgnoreCaseAndCustomerId(dto.getSuperUser(), dto.getSuperUserCustomerId());
+            userRepository.findByEmailIgnoreCaseAndCustomerId(emailSuperUser, dto.getSuperUserCustomerId());
         Assert.isTrue(surrogate != null, "No surrogate found with email : " + emailSurrogate);
         dto.setSurrogateCustomerId(surrogate.getCustomerId());
 

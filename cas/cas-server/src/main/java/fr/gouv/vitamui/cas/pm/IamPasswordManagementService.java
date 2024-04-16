@@ -59,6 +59,7 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.Credential;
+import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
@@ -79,8 +80,8 @@ import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
@@ -93,6 +94,8 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 public class IamPasswordManagementService extends BasePasswordManagementService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamPasswordManagementService.class);
+
+    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final CasExternalRestClient casExternalRestClient;
 
@@ -112,7 +115,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static Integer maxOldPassword;
 
-    private final ObjectMapper objectMapper;
 
     public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
@@ -136,7 +138,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.passwordValidator = passwordValidator;
         this.passwordConfiguration = passwordConfiguration;
         this.maxOldPassword = passwordConfiguration.getMaxOldPassword();
-        this.objectMapper = new ObjectMapper();
     }
 
     protected RequestContext blockIfSubrogation() {
@@ -183,8 +184,9 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         Assert.notNull(username, "username can not be null");
         UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
-        final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(userLogin.getUserEmail()),
-            userLogin.getUserEmail(), userLogin.getCustomerId(), Optional.empty());
+        final UserDto user = casExternalRestClient.getUserByEmailAndCustomerId(
+            utils.buildContext(userLogin.getUserEmail()), userLogin.getUserEmail(), userLogin.getCustomerId(),
+            Optional.empty());
         if (user == null) {
             LOGGER.debug("User not found with login: {}", userLogin.getUserEmail());
             throw new InvalidPasswordException();
@@ -233,66 +235,73 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     @NotNull
     private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
-        UserLoginModel userLoginNode;
-        String userCustomerIdFromScope = null;
+
+        // IMPORTANT: 2 possible workflows :
+        // -> If we came from password expiration workflow ==> We already have the username/customerId from flow scope
+        // -> If we came from password reset link by email ==> We use a dirty hack to encode a username+password pair as
+        //    a json-serialized UserLoginModel encoded into the `username` field.
+
+        String loginEmailFromFlowScope = null;
+        String loginCustomerIdFromFlowScope = null;
         if (flowScope != null) {
-            userCustomerIdFromScope = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+            loginEmailFromFlowScope = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
+            loginCustomerIdFromFlowScope = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+        }
+        if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginEmailFromFlowScope)) {
+            // User customerId already in the scope ==> We came from password expired flow
+            Assert.isTrue(Objects.equals(loginEmailFromFlowScope, username),
+                "Email does not match login email from flow");
+            UserLoginModel userLoginNode = new UserLoginModel();
+            userLoginNode.setCustomerId(loginCustomerIdFromFlowScope);
+            userLoginNode.setUserEmail(username);
+            return userLoginNode;
         }
 
         try {
-            userLoginNode = objectMapper.readValue(username, new TypeReference<>() {
+            UserLoginModel userLoginNode = OBJECT_MAPPER.readValue(username, new TypeReference<>() {
             });
 
             if (StringUtils.isBlank(userLoginNode.getUserEmail())) {
                 LOGGER.error("Could not find the user email for password changing ");
                 throw new UsernameNotFoundException("Could not find the user email for password changing ");
             }
-            if (StringUtils.isBlank(userLoginNode.getCustomerId()) && StringUtils.isBlank(userCustomerIdFromScope)) {
+            if (StringUtils.isBlank(userLoginNode.getCustomerId())) {
                 LOGGER.error("Could not find the user customer Id for password changing ");
                 throw new InsufficientAuthenticationException(
                     "Could not find the user customer Id  for password changing ");
             }
 
-            if (StringUtils.isBlank(userLoginNode.getCustomerId())) {
-                userLoginNode.setCustomerId(userCustomerIdFromScope);
-            }
             userLoginNode.setUserEmail(userLoginNode.getUserEmail().toLowerCase().trim());
+            return userLoginNode;
         } catch (JacksonException e) {
-            //in this case, it's not a json data sent from the token builder, but from password expired flow
-            userLoginNode = new UserLoginModel();
-            userLoginNode.setCustomerId(userCustomerIdFromScope);
-            userLoginNode.setUserEmail(username);
+            throw new IllegalStateException(
+                "Cannot deserialize username field into a " + UserLoginModel.class.getSimpleName() + " instance. " +
+                    "Field value: '" + username + "'", e);
         }
-        return userLoginNode;
     }
 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
         val username = query.getUsername();
-        // FIXME !
-        String customerId = null;
-        if (query.getRecord().containsKey("customerId")) {
-            Object customerIdValue = query.getRecord().getFirst("customerId");
-            customerId = (String) customerIdValue;
-        }
+        String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
 
-        String email = null;
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
             UserDto user =
-                casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase,
-                    customerId, Optional.empty());
+                casExternalRestClient.getUserByEmailAndCustomerId(utils.buildContext(usernameWithLowercase),
+                    usernameWithLowercase, customerId, Optional.empty());
             if (user == null) {
                 LOGGER.error("User not found");
                 return null;
             }
             if (UserStatusEnum.ENABLED.equals(user.getStatus())) {
-                email = user.getEmail();
+                return user.getEmail();
             }
+            return null;
         } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
+            throw new PreventedException(e);
         }
-        return email;
     }
 
     @Override
@@ -356,21 +365,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         @Override
         public String getMessage() {
             return "Invalid password containing an occurence of user name !";
-        }
-    }
-
-
-    protected static class UserNotFoundException extends InvalidPasswordException {
-
-        private static final long serialVersionUID = -8981663363751187075L;
-
-        public UserNotFoundException(String message) {
-            super(".invalidPwdDictionary", message, null);
-        }
-
-        @Override
-        public String getMessage() {
-            return "User not found !";
         }
     }
 }

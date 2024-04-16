@@ -53,6 +53,7 @@ public abstract class Constants {
     public static final String LOGIN_SUPER_USER_EMAIL_PARAM = "superUserEmail";
     public static final String LOGIN_SUPER_USER_CUSTOMER_ID_PARAM = "superUserCustomerId";
 
+    public static final String RESET_PWD_CUSTOMER_ID_ATTR = "customerIdAttr";
     public static final String SELECT_CUSTOMER_ID_PARAM = "customerId";
 
     public static final String FLOW_SURROGATE_EMAIL = "surrogateEmail";

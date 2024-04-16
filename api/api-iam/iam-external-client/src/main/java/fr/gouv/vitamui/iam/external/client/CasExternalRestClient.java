@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import com.google.common.annotations.VisibleForTesting;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -47,7 +46,6 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -100,16 +98,15 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         headers.put("username", Collections.singletonList(username));
         headers.put("password", Collections.singletonList(password));
         headers.put("customerId", Collections.singletonList(customerId));
-        final HttpEntity request = new HttpEntity(headers);
+        final HttpEntity<Void> request = new HttpEntity<>(headers);
         final ResponseEntity<Boolean> response =
             restTemplate.exchange(getUrl() + RestApi.CAS_CHANGE_PASSWORD_PATH, HttpMethod.POST, request, Boolean.class);
         checkResponse(response);
     }
 
     // FIXME :  getUserByEmail vs getUser
-    @VisibleForTesting
-    public UserDto getUserByEmail(final ExternalHttpContext context, final String email, final String customerId,
-        final Optional<String> embedded) {
+    public UserDto getUserByEmailAndCustomerId(final ExternalHttpContext context, final String email,
+        final String customerId, final Optional<String> embedded) {
         List<UserDto> users = getUsersByEmail(context, email, embedded);
         return users.stream()
             .filter(user -> user.getCustomerId().equals(customerId))
@@ -129,13 +126,8 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
                 });
         checkResponse(response);
         final List<AuthUserDto> authUsersDto = response.getBody();
-        return authUsersDto.stream().map(user -> {
-            if (user.getProfileGroup() != null) {
-                return user;
-            } else {
-                return user.newBasicUserDto();
-            }
-        }).collect(Collectors.toList());
+        return authUsersDto.stream().map(
+            user -> (user.getProfileGroup() != null) ? user : user.newBasicUserDto()).collect(Collectors.toList());
     }
 
     public UserDto getUser(final ExternalHttpContext context, final String loginEmail, final String loginCustomerId,
@@ -178,10 +170,13 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
     public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(final ExternalHttpContext context,
         final String superUserEmail, final String superUserCustomerId) {
         LOGGER.debug("getMySubrogationAsSuperuser {} / {}", superUserEmail, superUserCustomerId);
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_SUBROGATIONS_PATH);
+        uriBuilder.queryParam("superUserEmail", superUserEmail);
+        uriBuilder.queryParam("superUserCustomerId", superUserCustomerId);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<List<SubrogationDto>> response = restTemplate.exchange(
-            getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserEmail=" + superUserEmail +
-            "&superUserCustomerId=" + superUserCustomerId, HttpMethod.GET, request,
+            uriBuilder.toUriString(), HttpMethod.GET, request,
             getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
@@ -191,9 +186,11 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId {}", superUserId);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_SUBROGATIONS_PATH);
+        uriBuilder.queryParam("superUserId", superUserId);
         final ResponseEntity<List<SubrogationDto>> response =
-            restTemplate.exchange(getUrl() + RestApi.CAS_SUBROGATIONS_PATH + "?superUserId=" + superUserId,
-                HttpMethod.GET, request, getSubrogationDtoListClass());
+            restTemplate.exchange( uriBuilder.toUriString(), HttpMethod.GET, request, getSubrogationDtoListClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -227,7 +224,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
     }
 
     protected ParameterizedTypeReference<List<SubrogationDto>> getSubrogationDtoListClass() {
-        return new ParameterizedTypeReference<List<SubrogationDto>>() {
+        return new ParameterizedTypeReference<>() {
         };
     }
 

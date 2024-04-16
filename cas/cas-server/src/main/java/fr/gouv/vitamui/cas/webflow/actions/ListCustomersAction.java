@@ -145,6 +145,8 @@ public class ListCustomersAction extends AbstractAction {
         if (existingUsersList.size() == 1) {
             return processSingleUserForInputEmail(flowScope, username, existingUsersList.get(0));
         } else if (existingUsersList.isEmpty()) {
+            // To avoid account existence disclosure, unknown users are silently ignored.
+            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
             return processNoUserFoundMatchingInputEmail(flowScope, username);
         } else {
             return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
@@ -153,7 +155,7 @@ public class ListCustomersAction extends AbstractAction {
 
     private Event processSingleUserForInputEmail(MutableAttributeMap<Object> flowScope, String username, UserDto user) {
 
-        // Ensure it's not disabled & persist its customerId in
+        // Ensure user has a proper Identity Provided configured, and redirect to dispatcher...
         LOGGER.debug("A single user matched provided login of '{}': {}", username, user);
 
         String customerId = user.getCustomerId();
@@ -247,18 +249,8 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     private List<UserDto> getUsers(String email) {
-        try {
             return casExternalRestClient.getUsersByEmail(utils.buildContext(email),
                 email, Optional.empty());
-        } catch (final NotFoundException ignored) {
-            // To avoid account existence disclosure, unknown users are silently ignored.
-            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
-            return Collections.emptyList();
-        }
-    }
-
-    private static boolean isUserDisabled(UserDto dispatcherUserDto) {
-        return (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED);
     }
 
     private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
