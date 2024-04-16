@@ -67,7 +67,7 @@ describe('ErrorResponseModalComponent', () => {
               '#storage': {},
               '#nbobjects': {},
               FileInfo: {},
-              '#qualifiers': [{ qualifier: '', '#nbc': 0 }],
+              '#qualifiers': [{ qualifier: '', '#nbc': 0, versions: [] }],
               '#approximate_creation_date': '',
               '#approximate_update_date': '',
             },
