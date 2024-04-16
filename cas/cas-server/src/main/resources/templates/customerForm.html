@@ -41,14 +41,12 @@
         th:href="@{/icons/vitamui-icons.css}"/>
   <script type="text/javascript" src="../../../../../../deployment/roles/reverse/files/apache/page/js/jquery.min.js"
           th:src="@{#{webjars.jquery.js}}"></script>
-  <script type="text/javascript"
-          th:src="@{#{webjars.jqueryui.js}}"></script>
   <script type="text/javascript" src="../static/js/cas.js"
           th:src="@{#{/js/cas.js}}"></script>
 </head>
 
 <body style="--vitamui-primary:#9C31B5;--vitamui-secondary:#7FA1D4;--vitamui-background:#F6F3FB;"
-      th:st="${@environment.getProperty('theme.body.style')}">
+      th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div class="centered">
   <div class="logo">
     <img src="../static/images/logo-vitam-colored.svg" alt="logo"
@@ -71,6 +69,9 @@
             <option th:each="c : ${availableCustomerList}" th:value="${c.customerId}" th:text="${c.code} + ' - ' + ${c.name}">
               00001 - Orga 1
             </option>
+            <option th:remove="all">
+              00002 - Orga 2
+            </option>
           </select>
           <label for="customerId">Organisation *</label>
           <i class="select-arrow vitamui-icon vitamui-icon-unfold-more"></i>
@@ -85,7 +86,7 @@
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
         <span th:text="#{cas.welcome.button.back}">RETOUR</span>
       </button>
-      <button id="submit-main-form" class="Button" type="submit" form="main-form">VALIDER</button>
+      <button id="main-form-submit" class="Button" type="submit" form="main-form">VALIDER</button>
     </div>
 
   </div>
@@ -94,19 +95,6 @@
 
 <script>
   resourceLoadedSuccessfully();
-
-  function sanitizeUrl(inputUrl) {
-    let ESC_MAP = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    };
-    return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
-      return ESC_MAP[c];
-    });
-  }
 </script>
 </body>
 </html>

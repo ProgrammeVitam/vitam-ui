@@ -33,37 +33,44 @@ function onConditionAddClassValid(valid, tagId) {
   }
 }
 
-function checkValidity(password) {
-  var policyPatternRegex = new RegExp(policyPattern);
-  var valid = policyPatternRegex.test(password);
+function checkRegex(password) {
+  const policyPatternRegex = new RegExp(policyPattern);
+  return policyPatternRegex.test(password);
+}
+
+
+function checkInvalidCharacter(password) {
+  const isValid = /^[\s\da-zA-Z!"#$%&£'()*+,-./:;<=>?@\]\[^_`{|}~]*$/.test(password);
+  if (isValid) {
+    $('#invalid-character-error').css('display', 'none');
+  } else {
+    $('#invalid-character-error').css('display', 'block');
+  }
+  return isValid
+}
+
+function checkPasswordStrongness(password) {
+  const regexValid = checkRegex(password);
+  const characterValid = checkInvalidCharacter(password);
+  const valid = regexValid && characterValid;
   onConditionAddClassValid(valid, "#passwords-strongness");
-  checkInvalidCharacter(password);
+  return valid;
 }
 
 function checkPasswordsEquality(password, confirmPassword) {
-  onConditionAddClassValid(password === confirmPassword && password.length > 0, "#passwords-equality");
+  const valid = password === confirmPassword && password.length > 0;
+  onConditionAddClassValid(valid, "#passwords-equality");
+  return valid;
 }
 
 function checkRules() {
   var password = $("#password").val();
   var confirmPassword = $("#confirmedPassword").val();
-  checkValidity(password);
-  checkPasswordsEquality(password, confirmPassword);
-}
-
-
-function checkInvalidCharacter(password) {
-  const invalidCharacterElement = document.getElementById(
-    "invalid-character-error"
-  );
-  if (invalidCharacterElement) {
-    const isValid = /^[\s\da-zA-Z!"#$%&£'()*+,-./:;<=>?@\]\[^_`{|}~]*$/.test(
-      password
-    );
-    if (isValid) {
-      invalidCharacterElement.style.display = "none";
-    } else {
-      invalidCharacterElement.style.display = "block";
-    }
+  const valid = checkPasswordStrongness(password)
+  const equal = checkPasswordsEquality(password, confirmPassword);
+  if (valid && equal) {
+    enableMainFormSubmitButton();
+  } else {
+    disableMainFormSubmitButton();
   }
 }

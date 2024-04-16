@@ -18,6 +18,18 @@ npm install -g sass
 sass --watch src/main/config/sass/cas.scss src/main/resources/static/css/cas.css
 ```
 
+### Pour les parcours utilisant l'envois de mail :
+lancez dans un conteneur votre webmail Mailhog.
+```shell
+docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
+```
+Et dans `cas-server-application-dev.yml` passez les parametres suivant:
+```shell
+spring.mail.host: localhost
+spring.mail.port: 1025
+```
+et rendez-vous sur l'url http://localhost:8025/
+
 # SAML metadata generation
 
 1) Retrieval of the IdP metadata, IdP metadata are ignored, so test metdata can be used instead

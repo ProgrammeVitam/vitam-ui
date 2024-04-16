@@ -50,6 +50,7 @@ import java.util.Map;
 public class PasswordConfiguration {
     public static String ANSSI = "anssi";
     public static String CUSTOM = "custom";
+
     // default profile is anssi, custom otherwise
     private String profile = "anssi";
     private Integer length = 12;
@@ -57,7 +58,6 @@ public class PasswordConfiguration {
     private Integer occurrencesCharsNumber = 3;
     private Integer maxOldPassword = 12;
     private PasswordConstraints constraints;
-
 
     @Data
     public static class PasswordConstraints {

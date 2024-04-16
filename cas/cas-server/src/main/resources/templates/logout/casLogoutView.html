@@ -1,20 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-  <meta charset="UTF-8"/>
   <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
-
-  <link rel="icon" type="image/x-icon"
-        th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}">
-  <link rel="stylesheet" type="text/css" href="../static/css/cas.css"
-        th:href="@{/css/cas.css}"/>
-  <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
-  <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
 </head>
-
-<body th:styleappend="${@environment.getProperty('theme.body.style')}">
+<body>
 
 
 <div layout:fragment="content" class="col">

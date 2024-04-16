@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
-
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-  <title th:text="#{screen.unavailable.header(${@environment.getProperty('theme.vitamui-platform-name')})}">VITAMUI
-    Error</title>
+  <title th:text="#{screen.unavailable.header(${@environment.getProperty('theme.vitamui-platform-name')})}">
+    VITAMUI Error
+  </title>
 </head>
-
-<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
+<body>
 
 
 <div layout:fragment="content" class="col">

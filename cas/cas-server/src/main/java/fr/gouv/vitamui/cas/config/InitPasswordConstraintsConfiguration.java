@@ -94,9 +94,9 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
     }
 
     private void validateAnssiPasswordConstraints(PasswordConfiguration passwordConfiguration) throws ServletException {
-        if(passwordConfiguration.getProfile().equalsIgnoreCase("anssi")) {
-            if(passwordConfiguration.getMaxOldPassword() < 12 || passwordConfiguration.getLength() < 12
-            || (!passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() < 3)) {
+        if (passwordConfiguration.getProfile().equalsIgnoreCase("anssi")) {
+            if (passwordConfiguration.getMaxOldPassword() < 12 || passwordConfiguration.getLength() < 12
+                || (!passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() < 3)) {
                 throw new ServletException(
                     "Some ANSSI security standards for password complexity are violated with the given configurations !");
             }
@@ -115,7 +115,6 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
     }
 
     private void putAnssiConfigurations(ServletContext servletContext, PasswordConfiguration passwordConfiguration) {
-
         if (passwordConfiguration.getConstraints().getDefaults() != null) {
             LOGGER.debug("PASSWORD_ANSSI_CONSTRAINTS = {}",
                 passwordConfiguration.getConstraints().getDefaults().toString());
@@ -125,4 +124,5 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
             servletContext.setAttribute(Constants.PASSWORD_DEFAULT_CONSTRAINTS, null);
         }
     }
+
 }
