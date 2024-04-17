@@ -77,6 +77,7 @@ const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 
 const STATIC_ATTACHEMENT = 'STATIC_ATTACHEMENT';
+const DYNAMIC_ATTACHEMENT = 'DYNAMIC_ATTACHEMENT_';
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -496,8 +497,17 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     return unit.Title === STATIC_ATTACHEMENT;
   };
 
+  ofDynamicAttachementUnit = (unit: Unit) => {
+    return unit.Title.startsWith(DYNAMIC_ATTACHEMENT);
+  };
+
   private filterAttachementUnit() {
-    const result: number = this.archiveUnits.findIndex(this.ofStaticAttachementUnit);
+    let result: number = this.archiveUnits.findIndex(this.ofStaticAttachementUnit);
+    if (result > 0) {
+      this.archiveUnits.splice(result, 1);
+      this.totalResults -= 1;
+    }
+    result = this.archiveUnits.findIndex(this.ofDynamicAttachementUnit);
     if (result > 0) {
       this.archiveUnits.splice(result, 1);
       this.totalResults -= 1;
