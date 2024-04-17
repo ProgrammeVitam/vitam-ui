@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
@@ -25,6 +25,7 @@ export class GroupEditorComponent implements OnChanges {
   actionList: Action[] = [];
 
   readonly DisplayObjectType = DisplayObjectType;
+  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px' };
 
   constructor(
     private layoutService: LayoutService,
@@ -49,7 +50,7 @@ export class GroupEditorComponent implements OnChanges {
             if (!this.typeService.isConsistent(this.editObject.control.value)) return removeHandler();
 
             const subscription = this.matDialog
-              .open(this.removeDialog)
+              .open(this.removeDialog, this.dialogConfig)
               .afterClosed()
               .pipe(
                 filter((value) => value),
