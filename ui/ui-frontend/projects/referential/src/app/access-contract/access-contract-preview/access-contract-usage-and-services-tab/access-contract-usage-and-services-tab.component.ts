@@ -154,6 +154,8 @@ export class AccessContractUsageAndServicesTabComponent {
         this.form.controls.originatingAgencies.setValue(accessContract.originatingAgencies);
         this.form.controls.dataObjectVersion.setValue(accessContract.dataObjectVersion);
       });
+
+    this.resetForm(this._accessContract);
   }
 
   private initForm(): void {
