@@ -28,7 +28,7 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
     this.archiveUnitEditorService.setTemplate(this.template);
     this.archiveUnitEditorService.setData(this.data);
 
-    this.archiveUnitEditorService.editObject$.subscribe(this.editObject$);
+    this.subscriptions.add(this.archiveUnitEditorService.editObject$.subscribe(this.editObject$));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

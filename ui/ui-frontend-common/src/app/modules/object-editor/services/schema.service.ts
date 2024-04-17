@@ -94,6 +94,10 @@ export class SchemaService {
     return 'unknown';
   }
 
+  public find(path: string, schema: Schema, options: SchemaOptions = { pathKey: 'ApiPath' }): SchemaElement {
+    return schema.find((element) => element[options.pathKey] === path);
+  }
+
   public validate(schema: Schema, options = { passive: false }) {
     const errorMessages: string[] = [];
     const paths = schema.map((element) => element.Path);

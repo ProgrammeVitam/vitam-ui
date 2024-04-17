@@ -1,5 +1,5 @@
 <vitamui-common-accordion *ngIf="editObject?.key; else content" [opened]="editObject.open">
-  <span class="title">{{ editObject.displayRule.ui.label | translate | empty }}</span>
+  <span class="title">{{ editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required }}</span>
   <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
     <span *ngIf="favoriteEntry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
     <vitamui-common-menu-button
@@ -58,3 +58,7 @@
   </mat-dialog-actions>
   <br />
 </ng-template>
+
+<vitamui-common-input-error *ngIf="editObject?.key && editObject.control.invalid" class="vitamui-input-errors">
+  {{ editObject.displayRule.ui.label | translate | empty }}: {{ 'COMMON.INCORRECT_VALUE' | translate }}
+</vitamui-common-input-error>
