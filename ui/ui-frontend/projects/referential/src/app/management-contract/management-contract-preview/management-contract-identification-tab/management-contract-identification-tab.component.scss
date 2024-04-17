@@ -63,6 +63,18 @@ h5 {
   padding-bottom: 0;
 }
 
+.select-area-custom {
+  width: 100%;
+  mat-label {
+    color: var(--vitamui-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  mat-select {
+    margin-top: 3px;
+  }
+}
+
 .error {
   padding-top: 0.5rem;
   color: var(#c10000) !important;

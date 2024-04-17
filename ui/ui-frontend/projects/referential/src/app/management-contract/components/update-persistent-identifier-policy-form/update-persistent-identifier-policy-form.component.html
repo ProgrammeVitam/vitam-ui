@@ -64,17 +64,19 @@
               <div class="row">
                 <div class="col-10">
                   <mat-form-field class="vitamui-mat-select w-100">
-                    <mat-label>{{ ('CONTRACT_MANAGEMENT.FORM_UPDATE.TARGET_USAGE' | translate) + i }}</mat-label>
-                    <mat-select placeholder="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.FORMAT' | translate }}" formControlName="objectUsage">
-                      <mat-option
-                        *ngFor="let objectUsageOption of objectUsageOptions"
-                        [value]="objectUsageOption.value"
-                        [disabled]="isObjectUsageOptionDisabled(objectUsageOption.value)"
-                        panelclass="vitamui-mat-select"
-                      >
-                        {{ objectUsageOption.label | translate }}
-                      </mat-option>
-                    </mat-select>
+                    <div class="select-area-custom">
+                      <mat-label>{{ ('CONTRACT_MANAGEMENT.FORM_UPDATE.TARGET_USAGE' | translate) + (i + 1) }}</mat-label>
+                      <mat-select placeholder="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.FORMAT' | translate }}" formControlName="objectUsage">
+                        <mat-option
+                          *ngFor="let objectUsageOption of objectUsageOptions"
+                          [value]="objectUsageOption.value"
+                          [disabled]="isObjectUsageOptionDisabled(objectUsageOption.value)"
+                          panelclass="vitamui-mat-select"
+                        >
+                          {{ objectUsageOption.label | translate }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
                     <div class="select-arrow">
                       <i class="material-icons">keyboard_arrow_up</i>
                       <i class="material-icons">keyboard_arrow_down</i>

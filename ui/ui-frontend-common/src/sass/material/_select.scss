@@ -20,10 +20,6 @@ mat-select-trigger.vitamui-mat-select {
   font-weight: 500;
   width: 240px;
 
-  font-size: 16px;
-  font-weight: 500;
-  width: 240px;
-
   .mat-form-field-subscript-wrapper {
     padding-left: 30px;
     top: 50px;
@@ -197,7 +193,7 @@ mat-select-trigger.vitamui-mat-select {
     height: 60px;
     align-items: center;
 
-    padding: 0 30px;
+    padding: 0 15px;
     border: none;
 
     @include input-elevation-dark;
@@ -206,7 +202,7 @@ mat-select-trigger.vitamui-mat-select {
       border-top-width: 0;
       display: flex;
       align-items: center;
-      width: 100%;
+      justify-content: space-between;
     }
 
     .mat-select .mat-select-arrow-wrapper {
@@ -228,7 +224,6 @@ mat-select-trigger.vitamui-mat-select {
   :not(.mat-form-field-disabled).mat-form-field-flex {
     .mat-select .mat-select-value {
       color: var(--vitamui-grey-900);
-      font-weight: 700;
     }
 
     .select-arrow {
