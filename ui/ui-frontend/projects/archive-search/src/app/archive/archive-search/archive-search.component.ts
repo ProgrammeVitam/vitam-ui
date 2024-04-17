@@ -623,7 +623,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       (pagedResult: PagedResult) => {
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
-
           this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
           this.pendingComputeFacets = false;
           this.rulesFacetsComputed = true;
