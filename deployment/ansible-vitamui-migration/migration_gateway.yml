@@ -72,7 +72,3 @@
         with_items:
           - /etc/httpd/
           - /var/log/httpd
-
-- hosts: hosts_vitamui_mongod
-  roles:
-    - reinit_services_contexts_and_certs

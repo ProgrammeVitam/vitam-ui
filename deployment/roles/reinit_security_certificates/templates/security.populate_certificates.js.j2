@@ -1,0 +1,40 @@
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START security.populate_certificates.js");
+
+db.certificates.deleteMany({});
+
+{% macro insertCertificate(pemFile, contextId, host) -%}
+db.certificates.insertOne({
+    "_id": "{{ host+'_' if (host is defined and host != '') else '' }}{{ pemFile | basename | replace('.pem','_cert') }}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+{%- endmacro %}
+
+{% macro process(keyPath, contextId, groupName) -%}
+    {% if groupName is defined and groupName != '' %}
+        {% for host in groups[groupName] %}
+            {{ insertCertificate(keyPath | replace('%host%', host), contextId, host) }}
+        {% endfor %}
+    {% else %}
+        {{ insertCertificate(keyPath, contextId) }}
+    {% endif %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/iam-internal.pem', 'iam_internal_context', 'hosts_vitamui_iam_internal') }}
+
+{{ process('{{ pki_dir }}/client-external/clients/ui-portal/ui-portal.pem', 'ui_portal_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-identity/ui-identity.pem', 'ui_identity_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-referential/ui-referential.pem', 'ui_referential_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-archive-search/ui-archive-search.pem', 'ui_archive_search_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-ingest/ui-ingest.pem', 'ui_ingest_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-pastis/ui-pastis.pem', 'ui_pastis_context') }}
+{{ process('{{ pki_dir }}/client-external/clients/ui-collect/ui-collect.pem', 'ui_collect_context') }}
+
+print("END security.populate_certificates.js");
