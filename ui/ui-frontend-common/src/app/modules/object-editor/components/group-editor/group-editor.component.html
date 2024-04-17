@@ -24,10 +24,16 @@
 <ng-template #content>
   <div *ngFor="let column of rows" class="v-row">
     <div *ngFor="let child of column" class="v-col">
-      <ng-container [ngSwitch]="child.type">
-        <vitamui-common-group-editor *ngSwitchCase="DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
-        <vitamui-common-list-editor *ngSwitchCase="DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
-        <vitamui-common-primitive-editor *ngSwitchCase="DisplayObjectType.PRIMITIVE" [editObject]="child"></vitamui-common-primitive-editor>
+      <div *ngIf="!child"></div>
+      <ng-container *ngIf="child">
+        <ng-container [ngSwitch]="child.type">
+          <vitamui-common-group-editor *ngSwitchCase="DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
+          <vitamui-common-list-editor *ngSwitchCase="DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
+          <vitamui-common-primitive-editor
+            *ngSwitchCase="DisplayObjectType.PRIMITIVE"
+            [editObject]="child"
+          ></vitamui-common-primitive-editor>
+        </ng-container>
       </ng-container>
     </div>
   </div>
