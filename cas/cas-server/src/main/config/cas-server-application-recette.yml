@@ -111,6 +111,8 @@ cas.authn.throttle.failure.range-seconds: 3
 
 
 cas:
+  tgc:
+    same-site-policy: LAX
   logout:
     follow-service-redirects: true
     redirect-parameter: next
@@ -185,24 +187,34 @@ password:
     defaults:
       fr:
         messages:
-          - minimum ${password.length} caractères
+          - Avoir une taille d'au moins ${password.length} caractères
         special-chars:
-          title: 'minimum 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes :'
+          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
           messages:
-            - minuscules (a-z)
-            - majuscules (A-Z)
-            - numériques (0-9)
-            - caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Minuscules (a-z)
+            - Majuscules (A-Z)
+            - Numériques (0-9)
+            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
       en:
         messages:
-          - minimum ${password.length} characters
+          - Have a size of at least ${password.length} characters
         special-chars:
-          title: 'minimum 2 characters from each category, for at least 3 of the following categories :'
+          title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
           messages:
-            - lowercases (a-z)
-            - uppercases (A-Z)
-            - digital (0-9)
-            - special characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Uppercases (a-z)
+            - Lowercases (A-Z)
+            - Digital (0-9)
+            - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        messages:
+          - Mindestens ${password.length} Zeichen lang sein
+        special-chars:
+          title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+          messages:
+            - Großbuchstaben (a-z)
+            - Kleinbuchstaben (A-Z)
+            - Digital (0-9)
+            - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
     customs:
       fr:
         title: 'Pour des raisons de sécurité, votre mot de passe doit:'
@@ -216,3 +228,9 @@ password:
           - At least ${password.length} characters
           - Lowercase and uppercase
           - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+        messages:
+          - Mindestens ${password.length} Zeichen
+          - Klein- und Großbuchstaben
+          - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
