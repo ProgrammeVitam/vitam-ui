@@ -1,6 +1,6 @@
 ---
 
-- name: "Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}"
+- name: "Install static ressources for {{ vitamui_struct.vitamui_component }}"
   package:
     name: "{{ vitamui_struct.package_name | default(package_name) }}"
     state: latest
@@ -12,47 +12,58 @@
   when: vitamui_struct.vitamui_component != "ui-identity-admin"
   notify: reload nginx
 
-- name: 'Frontend-app > install.yml | Install static ressources for ui-identity-admin - Copy folder'
+- name: Install static ressources for ui-identity-admin - Copy folder
   copy:
     src: "{{ frontend_data_dir }}/identity/"
     dest: "{{ frontend_data_dir }}/identity-admin"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
     remote_src: yes
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
-- name: 'Frontend-app > install.yml | Get package facts'
+- name: Get package facts
   package_facts:
   register: package_facts_result
   no_log: "{{ hide_passwords_during_deploy }}"
 
-- name: 'Frontend-app > install.yml | Get application version from package'
+- name: Get application version from package
   set_fact:
     frontend_application_version: "{{ package_facts_result.ansible_facts.packages[ vitamui_struct.package_name | default(package_name) ][0].version }}"
   when: vitamui_struct.vitamui_component != "ui-identity-admin"
 
-- name: 'Frontend-app > install.yml | Get application version from package'
+- name: Get application version from package
   set_fact:
     frontend_application_version: "{{ package_facts_result.ansible_facts.packages['vitamui-ui-identity-rsc'][0].version }}"
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
-- name: 'Frontend-app > install.yml | Add config.json file'
+- name: Configure upsteam for API GW
   template:
-    src: "frontend/config.json.j2"
+    src: frontend/upstream_gw.j2
+    dest: "{{ nginx_conf_dir }}/upstream_gw"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
+  notify: reload nginx
+
+- name: Add config.json file
+  template:
+    src: frontend/config.json.j2
     dest: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: 'Frontend-app > install.yml | Add vhost.conf file'
+- name: "Configure vhost for {{ vitamui_struct.vitamui_component }}"
   template:
-    src: "frontend/vhost.conf.j2"
-    dest: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
+    src: frontend/vhost.conf.j2
+    dest: "{{ nginx_conf_dir }}/{{ vitamui_struct.vitamui_component }}.conf"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: 'Frontend-app > install.yml | Add UI certificate to reverse'
+- name: "Add UI certificate to reverse for {{ vitamui_struct.vitamui_component }}"
   copy:
     src: "{{ item }}"
     dest: "{{ nginx_ssl_dir }}"
@@ -67,29 +78,35 @@
 - block:
 
 # TODO: Will not work in production, we don't have a local vault_cert_pass_file...
-  - name: 'Frontend-app > install.yml | Decrypt vault-certs'
+  - name: Decrypt vault-certs
     command: "ansible-vault decrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
 
-  - name: 'Frontend-app > install.yml | Read certificate key from vault file'
+  - name: Read certificate key from vault file
     include_vars:
       file: "{{ vault_cert_file }}"
       name: ui_keys
     no_log: "{{ hide_passwords_during_deploy }}"
 
-  - name: 'Frontend-app > install.yml | Encrypt back vault-certs'
+  - name: Encrypt back vault-certs
     command: "ansible-vault encrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
 
   delegate_to: localhost
 
-- name: "Frontend-app > install.yml | Selected key for {{ vitamui_struct.vitamui_component }}"
+- name: "Selected key for {{ vitamui_struct.vitamui_component }}"
   set_fact:
     selected_key: "{{ ui_keys['client_client_external_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
   no_log: "{{ hide_passwords_during_deploy }}"
 
-- name: 'Frontend-app > install.yml | Add keypass'
+- name: "Add keypass for {{ vitamui_struct.vitamui_component }}"
   template:
-    src: "certificate.key_pass.j2"
+    src: certificate.key_pass.j2
     dest: "{{ nginx_ssl_dir }}/{{vitamui_struct.vitamui_component}}.key_pass"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   notify: reload nginx
+
+- name: Ensure nginx is started
+  systemd:
+    name: nginx
+    state: started

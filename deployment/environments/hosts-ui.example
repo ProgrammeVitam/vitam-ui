@@ -28,7 +28,6 @@ hosts_vitamui_reverseproxy
 ################################################################################
 # ZONE UI
 ################################################################################
-# INFO: All the components from the UI zone must be collocated on the same hosts as [hosts_vitamui_reverseproxy]
 [zone_vitamui_ui:children]
 hosts_ui_identity
 hosts_ui_portal
@@ -66,7 +65,6 @@ hosts_ui_pastis
 ################################################################################
 # ZONE ADMIN
 ################################################################################
-# INFO: Multi-instanciation of hosts on [zone_vitamui_admin] are properly managed only with reverse: nginx
 [zone_vitamui_admin:children]
 hosts_ui_identity_admin
 

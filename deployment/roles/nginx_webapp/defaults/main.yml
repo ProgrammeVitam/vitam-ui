@@ -8,7 +8,8 @@ frontend_group: "{{ vitamui_defaults.users.group }}"
 # Supported goals: install, uninstall
 frontend_role_goal: install
 
-nginx_ssl_dir: '/etc/nginx/conf.d/ssl'
+nginx_conf_dir: /etc/nginx/conf.d
+nginx_ssl_dir: /etc/nginx/conf.d/ssl
 
 vault_cert_file: "{{ inventory_dir }}/certs/vault-certs.yml"
 vault_cert_pass_file: "../vault_pki.pass"

@@ -1,0 +1,49 @@
+---
+
+- name: Install nginx packages
+  package:
+    name:
+      - nginx
+      - "{{ 'libnginx-mod-stream' if ansible_os_family == 'Debian' else 'nginx-mod-stream' }}"
+    state: latest
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+
+- name: Create nginx folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  with_items:
+    - "{{ nginx_ssl_dir }}"
+    - "{{ nginx_conf_dir }}"
+    - "{{ nginx_tmp_dir }}"
+    - "{{ nginx_log_dir }}"
+
+- name: Configure nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  notify: reload nginx
+
+- name: Configure proxy_params
+  template:
+    src: proxy_params.j2
+    dest: "{{ nginx_conf_dir }}/proxy_params"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  notify: reload nginx
+
+- name: Ensure nginx is started and at boot
+  systemd:
+    name: nginx
+    enabled: "{{ reverse.at_boot | default(reverse_at_boot) }}"
+    state: started

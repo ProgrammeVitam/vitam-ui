@@ -1,0 +1,8 @@
+# API GATEWAY
+
+upstream API-GATEWAY {
+  ip_hash;
+{% for h in groups['hosts_vitamui_api_gateway'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.api_gateway.port_service }};
+{% endfor %}
+}

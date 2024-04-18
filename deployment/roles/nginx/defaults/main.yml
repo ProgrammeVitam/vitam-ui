@@ -1,0 +1,11 @@
+---
+
+nginx_conf_dir: /etc/nginx/conf.d
+nginx_ssl_dir: /etc/nginx/conf.d/ssl
+nginx_log_dir: /var/log/nginx
+nginx_tmp_dir: /etc/nginx/tmp
+
+reverse_user: "{{ vitamui_defaults.users.vitamui }}"
+reverse_group: "{{ vitamui_defaults.users.group }}"
+
+reverse_at_boot: "{{ vitamui_defaults.services.at_boot }}"

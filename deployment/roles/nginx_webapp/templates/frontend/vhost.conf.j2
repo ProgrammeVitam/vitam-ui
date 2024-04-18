@@ -1,7 +1,6 @@
 #jinja2: lstrip_blocks: True
 server {
-  listen  {{ ip_service }}:{{ vitamui_struct.port_service }} ssl;
-  include {{ nginx_ssl_dir }}/ssl.conf;
+  listen  {{ ip_service }}:{{ vitamui_struct.port_service }};
 
   root    {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
 
