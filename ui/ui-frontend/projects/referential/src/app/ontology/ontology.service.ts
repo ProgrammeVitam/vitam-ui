@@ -109,7 +109,7 @@ export class OntologyService extends SearchService<Ontology> {
       tap(
         () => {
           this.snackBarService.open({
-            message: 'SNACKBAR.ONTOLOGY_DELETED',
+            message: 'SNACKBAR.VOCABULARY_DELETED',
             icon: 'vitamui-icon-ontologie',
           });
         },

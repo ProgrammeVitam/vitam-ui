@@ -1083,6 +1083,7 @@
     "ONTOLOGY_CREATED": "L'ontologie a bien été créé",
     "ONTOLOGY_UPDATED": "L'ontologie a bien été mis à jour",
     "ONTOLOGY_DELETED": "L'ontologie a bien été supprimé",
+    "VOCABULARY_DELETED": "Le vocabulaire a été supprimé avec succès",
     "AUDIT_RUN": "L'audit \"{{type}}\" a bien été lancé",
     "PROBATIVE_VALUE_RUN": "Le relevé de valeur probante a été lancé",
     "FORMAT_INVALID": "Format de la requête invalide",

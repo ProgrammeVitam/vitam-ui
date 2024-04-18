@@ -1083,6 +1083,7 @@
     "ONTOLOGY_CREATED": "The ontology has been successfully created",
     "ONTOLOGY_UPDATED": "The ontology has been updated successfully",
     "ONTOLOGY_DELETED": "Ontology has been successfully deleted",
+    "VOCABULARY_DELETED": "Vocabulary has been successfully deleted",
     "AUDIT_RUN": "The audit \"{{type}}\" has been launched",
     "PROBATIVE_VALUE_RUN": "The probative value statement has been launched",
     "FORMAT_INVALID": "Invalid request format",
