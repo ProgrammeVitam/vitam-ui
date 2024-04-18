@@ -18,6 +18,7 @@ logging:
     fr.gouv.vitamui.iam.internal.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
 server:
+  address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
@@ -41,6 +42,7 @@ gdpr_alert_readonly: {{ vitamui_struct.gdpr_alert_readonly | default(true) }}
 
 management:
   server:
+    address: {{ ip_admin }}
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false

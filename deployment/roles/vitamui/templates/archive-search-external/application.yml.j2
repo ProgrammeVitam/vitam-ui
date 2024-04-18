@@ -15,6 +15,7 @@ server-identity:
   identityServerId: 1
 
 server:
+  address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
@@ -27,7 +28,6 @@ server:
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
   error:
     path: /error
-
 {% endif %}
 
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
@@ -42,6 +42,7 @@ server:
 
 management:
   server:
+    address: {{ ip_admin }}
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
@@ -58,7 +59,7 @@ archive-search-external:
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
   iam-internal-client:
@@ -69,7 +70,7 @@ archive-search-external:
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
   archive-search-internal-client:

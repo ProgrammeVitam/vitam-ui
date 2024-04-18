@@ -1,4 +1,5 @@
 server:
+  address: {{ ip_service }}
   port: {{ vitamui_struct.server_port | default('8090') }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
@@ -25,6 +26,7 @@ management:
       exposure:
         include: "*"
   server:
+    address: {{ ip_admin }}
     port: {{ vitamui_struct.port_admin | default('7090') }}
     ssl:
       enabled: false
