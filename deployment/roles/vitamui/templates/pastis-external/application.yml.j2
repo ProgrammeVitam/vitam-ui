@@ -33,6 +33,7 @@ logging:
     fr.gouv.vitamui.pastis.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
 server:
+  address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
@@ -58,6 +59,7 @@ server:
 
 management:
   server:
+    address: {{ ip_admin }}
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
