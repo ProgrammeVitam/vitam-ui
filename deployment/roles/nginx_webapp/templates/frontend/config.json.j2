@@ -9,7 +9,7 @@
   "PLATFORM_NAME": "{{ vitamui_platform_informations.platform_name }}",
   "INGEST_URL": "{{ vitamui.ingest.base_url | default(url_prefix+'/ingest') }}",
   "PORTAL_TITLE": "{{ vitamui_platform_informations.portal_title }}",
-  "MAX_STREET_LENGTH": {{ vitamui_platform_informations.address.max_street_length }},
+  "MAX_STREET_LENGTH": {{ vitamui_platform_informations.address.max_street_length | default(250) }},
   "THEME_COLORS": {
     "vitamui-primary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}",
     "vitamui-secondary": "{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}",
@@ -20,18 +20,13 @@
   "PORTAL_MESSAGE": "{{ vitamui_platform_informations.portal_message }}",
   {% if vitamui_struct.vitamui_component == 'ui-portal' %}
   "UI_URL": "{{ vitamui.portal.base_url | default(url_prefix+'/') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-identity' %}
-  "UI_URL": "{{ vitamui.identity.base_url | default(url_prefix+'/identity') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-identity-admin' %}
-  "UI_URL": "{{ vitamui.identity_admin.base_url | default(url_prefix+'/identity_admin') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-referential' %}
-  "UI_URL": "{{ vitamui.referential.base_url | default(url_prefix+'/referential') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-archive-search' %}
-  "UI_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-pastis' %}
-  "UI_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
-  {% elif vitamui_struct.vitamui_component == 'ui-collect' %}
-  "UI_URL": "{{ vitamui.collect.base_url | default(url_prefix+'/collect') }}",
+  "UI": {
+    "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list | default(true) | bool == true else "false" }},
+    "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection | default(true) | bool == true else "false" }},
+    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection | default(false) | bool == true else "false" }}
+  },
+  {% else %}
+  "UI_URL": "{{ vitamui_struct.base_url | default(url_prefix+vitamui_struct.vitamui_component | regex_replace('^ui-', '')) }}",
   {% endif %}
   "ARCHIVES_SEARCH_URL": "{{ vitamui.archive_search.base_url | default(url_prefix+'/archive-search') }}",
   "PASTIS_URL": "{{ vitamui.pastis.base_url | default(url_prefix+'/pastis') }}",
@@ -54,13 +49,6 @@
   "HEADER_LOGO": "{{ vitamui_struct.header_logo | default(vitamui_platform_informations.theme.header_logo) }}",
   "FOOTER_LOGO": "{{ vitamui_struct.footer_logo | default(vitamui_platform_informations.theme.footer_logo) }}",
   "USER_LOGO": "{{ vitamui_struct.user_logo | default(vitamui_platform_informations.theme.user_logo) }}",
-  {% if vitamui_struct.vitamui_component == "ui-portal" %}
-  "UI": {
-    "hasTenantList": {{ "true" if vitamui.portal.has_tenant_list | default(false) | bool == true else "false" }},
-    "hasLangSelection": {{ "true" if vitamui.portal.has_lang_selection | default(false) | bool == true else "false" }},
-    "hasSiteSelection" : {{ "true" if vitamui.portal.has_site_selection | default(false) | bool == true else "false" }}
-  },
-  {% endif %}
   "CATEGORY_CONFIGURATION": [
     {% for id, category in vitamui_defaults.portal_categories.items() %}
     {

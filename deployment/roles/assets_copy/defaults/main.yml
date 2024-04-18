@@ -1,7 +1,6 @@
 ---
 
-asset_path: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
-asset_user: "{{ vitamui_defaults.users.vitamui }}"
-asset_group: "{{ vitamui_defaults.users.group }}"
-asset_default_files: "../files/*"
-
+assets_path: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+assets_user: "{{ vitamui_defaults.users.vitamui }}"
+assets_group: "{{ vitamui_defaults.users.group }}"
+assets_default_files: "{{ vitamui_platform_informations.theme.custom_assets_path | default(role_path + '/files') }}/*"

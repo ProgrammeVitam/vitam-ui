@@ -6,82 +6,9 @@
   roles:
     - vitamui
   vars:
-    app_default_root_path: "/vitamui"
     vitamui_struct: "{{ vitamui.api_gateway }}"
-    vitamui_certificate_type: "external"
+    vitamui_certificate_type: external
     password_keystore: "{{ keystores_server_api_gateway }}"
     password_truststore: "{{ truststores_client_external }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "api-gateway, api, internal"
-
-- hosts: hosts_ui_portal
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.portal }}"
-
-- hosts: hosts_ui_identity
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.identity }}"
-
-- hosts: hosts_ui_identity_admin
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.identity_admin }}"
-
-- hosts: hosts_ui_referential
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.referential }}"
-
-- hosts: hosts_ui_archive_search
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.archive_search }}"
-
-- hosts: hosts_ui_pastis
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.pastis }}"
-
-- hosts: hosts_ui_collect
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.collect }}"
-
-- hosts: hosts_ui_ingest
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - assets_copy
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ingest }}"

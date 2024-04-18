@@ -1,6 +1,6 @@
 ---
 
-- name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}'
+- name: "Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }}"
   package:
     name: "{{ vitamui_struct.package_name | default(package_name) }}"
     state: latest
@@ -12,7 +12,7 @@
   when: vitamui_struct.vitamui_component != "ui-identity-admin"
   notify: reload nginx
 
-- name: 'Frontend-app > install.yml | Install static ressources for {{ vitamui_struct.vitamui_component }} - Copy folder'
+- name: 'Frontend-app > install.yml | Install static ressources for ui-identity-admin - Copy folder'
   copy:
     src: "{{ frontend_data_dir }}/identity/"
     dest: "{{ frontend_data_dir }}/identity-admin"
@@ -40,6 +40,7 @@
     dest: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
 - name: 'Frontend-app > install.yml | Add vhost.conf file'
@@ -48,6 +49,7 @@
     dest: "/etc/nginx/conf.d/{{ vitamui_struct.vitamui_component }}.conf"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
 - name: 'Frontend-app > install.yml | Add UI certificate to reverse'
@@ -56,12 +58,15 @@
     dest: "{{ nginx_ssl_dir }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
   with_fileglob:
-    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}*"
+    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
+    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
   notify: reload nginx
 
 - block:
 
+# TODO: Will not work in production, we don't have a local vault_cert_pass_file...
   - name: 'Frontend-app > install.yml | Decrypt vault-certs'
     command: "ansible-vault decrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
 
@@ -76,9 +81,9 @@
 
   delegate_to: localhost
 
-- name:  'Frontend-app > install.yml |  Selected key for {{ vitamui_struct.vitamui_component }}'
+- name: "Frontend-app > install.yml | Selected key for {{ vitamui_struct.vitamui_component }}"
   set_fact:
-    selected_key: "{{ ui_keys['server_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
+    selected_key: "{{ ui_keys['client_client_external_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
   no_log: "{{ hide_passwords_during_deploy }}"
 
 - name: 'Frontend-app > install.yml | Add keypass'

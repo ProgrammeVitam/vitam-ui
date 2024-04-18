@@ -1,3 +1,4 @@
 ---
 
 service_name: "vitamui-{{ vitamui_struct.vitamui_component | default('unknown') }}"
+etat: started

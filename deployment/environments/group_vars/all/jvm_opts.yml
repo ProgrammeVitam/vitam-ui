@@ -9,26 +9,6 @@
 #       java: ""
 
 vitamui:
-  identity:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
-  identity_admin:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
-  referential:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
-  portal:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
   referential_external:
     jvm_opts:
       # memory: "-Xms128m -Xmx512m"
@@ -59,11 +39,6 @@ vitamui:
       # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
-  ingest:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
   ingest_external:
     jvm_opts:
       # memory: "-Xms128m -Xmx512m"
@@ -74,22 +49,12 @@ vitamui:
       # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
-  archive_search:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
   archive_search_external:
     jvm_opts:
       # memory: "-Xms128m -Xmx512m"
       # gc: ""
       # java: ""
   archive_search_internal:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
-  collect:
     jvm_opts:
       # memory: "-Xms128m -Xmx512m"
       # gc: ""
@@ -105,11 +70,6 @@ vitamui:
       # gc: ""
       # java: ""
   pastis_external:
-    jvm_opts:
-      # memory: "-Xms128m -Xmx512m"
-      # gc: ""
-      # java: ""
-  pastis:
     jvm_opts:
       # memory: "-Xms128m -Xmx512m"
       # gc: ""

@@ -1,8 +1,10 @@
 ---
-- name: Wait for logstash service domain to be resolved
+
+- name: "Wait for service port to be {{ etat }}"
   wait_for:
-    host: "{{ adresse_ip }}"
+    host: "{{ ip_service }}"
     port: "{{ vitamui_struct.port_service }}"
-    connect_timeout: "{{ svc_connect_timeout }}"
+    connect_timeout: "{{ vitamui_defaults.services.connect_timeout | default(10) }}"
     delay: 5
-    timeout: "{{ svc_up_timeout }}"
+    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+    state: "{{ etat }}"

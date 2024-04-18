@@ -1,0 +1,32 @@
+---
+
+- name: Compute list of mongo nodes
+  set_fact:
+    mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':'+ mongodb.mongod_port | string ] }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
+
+- name: Set Mongo URI and credentials
+  set_fact:
+    mongod_uri: "{{ mongo_nodes | join(',') }}"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
+  no_log: "{{ hide_passwords_during_deploy }}"
+
+- name: Compute security.populate_certificates script
+  template:
+    src: security.populate_certificates.js.j2
+    dest: "{{ bootstrap_temp_dir }}/security.populate_certificates.js"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
+
+- name: Execute security.populate_certificates script
+  shell: "mongosh mongodb://{{ mongod_uri }}/admin {{ mongo_credentials }} --file {{ bootstrap_temp_dir }}/security.populate_certificates.js"
+  no_log: "{{ hide_passwords_during_deploy }}"
+
+- name: Delete security.populate_certificates script
+  file:
+    path: "{{ bootstrap_temp_dir }}/security.populate_certificates.js"
+    state: absent
+
+# Restart the associated services: security-internal & cas-server

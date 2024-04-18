@@ -1,0 +1,3 @@
+---
+
+bootstrap_temp_dir: "{{ vitamui_defaults.folder.root_path }}/tmp/mongod/"

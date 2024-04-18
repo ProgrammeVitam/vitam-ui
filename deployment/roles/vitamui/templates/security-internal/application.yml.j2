@@ -12,7 +12,6 @@ spring:
     mongodb:
       uri: "mongodb://{{ mongodb.security.user }}:{{ mongodb.security.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.security.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 
-
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
@@ -20,7 +19,6 @@ server-identity:
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
-
 
 server:
   port: {{ vitamui_struct.port_service }}
@@ -48,12 +46,12 @@ management:
     ssl:
       enabled: false
 
-{% if opentracing.enable is sameas true %}
+{% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
     logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
     udp-sender:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
