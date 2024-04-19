@@ -1,21 +1,21 @@
 ---
 
-- name: "Ensure {{ vitamui_defaults.users.group | default('vitamui') }} group exists"
+- name: "Ensure {{ vitamui_group }} group exists"
   group:
-    name: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    name: "{{ vitamui_group }}"
     state: present
 
-
-- name: "Ensure {{ vitamui_defaults.users.vitamui | default('vitamui') }} user exists"
+- name: "Ensure {{ vitamui_user }} user exists"
   user:
-    name: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    name: "{{ vitamui_user }}"
+    group: "{{ vitamui_group }}"
     state: present
     shell: /bin/bash
 
-- name: "Ensure {{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }} user exists"
+- name: "Ensure {{ vitamuidb_user }} user exists"
   user:
-    name: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    name: "{{ vitamuidb_user }}"
+    group: "{{ vitamui_group }}"
     state: present
     shell: /bin/bash
+  when: inventory_hostname in groups['hosts_vitamui_mongod']

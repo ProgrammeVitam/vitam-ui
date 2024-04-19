@@ -5,9 +5,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-User=__USER__
-Group=__GROUP__
-ExecStart=/usr/bin/mongod -f /vitamui/conf/__NAME__/mongod.conf
+User={{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}
+Group={{ vitamui_defaults.users.group | default('vitamui') }}
+ExecStart=/usr/bin/mongod --config {{ vitamui_defaults.folder.root_path }}/conf/mongod/mongod.conf
 # file size
 LimitFSIZE=infinity
 # cpu time

@@ -1,11 +1,12 @@
 ---
 
-- name: reload consul configuration for mongo
-  service:
+- name: "mongo - restart service"
+  systemd:
+    name: vitamui-mongod
+    state: restarted
+    daemon_reload: yes
+
+- name: "mongo - reload consul configuration"
+  systemd:
     name: "{{ consul.service_name | default('vitam-consul') }}"
     state: reloaded
-
-- name: restart mongod
-  service:
-    name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
-    state: restarted

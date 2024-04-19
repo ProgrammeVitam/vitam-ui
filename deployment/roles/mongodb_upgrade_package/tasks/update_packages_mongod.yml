@@ -44,7 +44,7 @@
 
   - name: Workaround to manually force shutdown as services are set to Restart=always
     systemd:
-      name: "{{ mongodb.service_name | default('vitamui-mongod') }}"
+      name: vitamui-mongod
       state: stopped
 
   # Upgrade the package
