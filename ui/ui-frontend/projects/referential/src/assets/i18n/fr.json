@@ -677,6 +677,9 @@
       },
       "HISTORY": {
         "TITLE": "Historique"
+      },
+      "ERROR": {
+        "INTEGER_REQUIRED": "La durée doit être un nombre entier"
       }
     }
   },
