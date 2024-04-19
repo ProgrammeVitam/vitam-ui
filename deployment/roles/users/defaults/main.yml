@@ -1,0 +1,5 @@
+---
+
+vitamui_user: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+vitamuidb_user: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+vitamui_group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
