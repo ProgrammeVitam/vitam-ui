@@ -1,7 +1,11 @@
 ---
-# Probably some of these parameters are useless... need to be cleaned.
+
 logstash:
-  vitamui_component: "logstash"
+  service_name: logstash
   host: "{{ 'vitamui-' if groups['hosts_vitamui_logstash'] | default([]) | length > 0 else '' }}logstash.service.{{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 and groups['hosts_vitamui_logstash'] | default([]) | length > 0 else vitam_site_name }}.{{ consul_domain }}"
   port: 10514
   rest_port: 20514
+  ## logstash xms & xmx in Megabytes
+  # jvm_xms: 256 # default to memory_size/8
+  # jvm_xmx: 1024 # default to memory_size/4
+  # workers_number: 4 # default to cores*threads

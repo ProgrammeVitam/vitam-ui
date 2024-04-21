@@ -1,143 +1,54 @@
 ---
 
-- name: Install java (prerequisite for other components) when RedHat
-  yum:
-    name: java-11-openjdk-headless
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when: ansible_os_family == "RedHat"
-
-- name: "install openjdk from {{ ansible_distribution_release }}-backports only when Debian"
-  apt:
-    name: openjdk-11-jre-headless
-    state: latest
-    default_release: "{{ ansible_distribution_release }}-backports"
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - disable_internet_repositories_install | default(false) | bool == false
-    - ansible_distribution_version | int < 12
-
-- name: "install openjdk only when Debian"
-  apt:
-    name: openjdk-11-jre-headless
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - disable_internet_repositories_install | default(false) | bool == true
-    - ansible_distribution_version | int < 12
-
-- name: "install openjdk 17 only when Debian 12"
-  apt:
-    name: openjdk-17-jre-headless
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - disable_internet_repositories_install | default(false) | bool == true
-    - ansible_distribution_version | int == 12
-
-- name: "Install {{ package_name }} package"
+- name: "Install {{ logstash_package }} package"
   package:
-    name: "{{ package_name }}"
-    state: latest
+    name: "{{ logstash_package }}"
+    state: present
   register: result
-  retries: "{{ packages_install_retries_number | default(2) }}"
+  retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
-  delay: "{{ packages_install_retries_delay | default(10) }}"
-  notify: restart logstash
-  when: force_vitamui_version is not defined
-
-# Force a specific version to install (even downgrade)
-- block:
-
-  - name: "Install {{ package_name }} package"
-    apt:
-      name: "{{ package_name }}={{ force_vitamui_version }}"
-      force: yes
-      state: present
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
-    notify: restart logstash
-    when: ansible_os_family == "Debian"
-
-  - name: "Install {{ package_name }} package"
-    yum:
-      name: "{{ package_name }}-{{ force_vitamui_version }}"
-      allow_downgrade : yes
-      state: present
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
-    notify: restart logstash
-    when: ansible_os_family == "RedHat"
-
-  when: force_vitamui_version is defined
+  delay: "{{ packages_install_retries_delay }}"
+  notify: "logstash - restart service"
 
 ## Logstash configuration
 
 - name: Ensure logstash directories exist
   file:
-    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/logstash"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    path: "{{ vitamui_defaults.folder.root_path }}/{{ item }}/logstash"
+    owner: "{{ logstash_user }}"
+    group: "{{ vitamui_defaults.users.group }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
   with_items:
     - data
     - log
     - conf
     - lib
     - tmp
-  notify:
-    - restart logstash
+  notify: "logstash - restart service"
 
 - name: ensure json conf extra directory exists
   file:
     path: "{{ logstash_confextra_dir }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    owner: "{{ logstash_user }}"
+    group: "{{ vitamui_defaults.users.group }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  notify:
-    - restart logstash
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  notify: "logstash - restart service"
 
 - name: apply configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "/{{ vitamui_defaults.folder.root_path | default('/vitamui')}}/conf/logstash/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    dest: "/etc/logstash/{{ item }}"
+    owner: "{{ logstash_user }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_items:
-    - "jvm.options"
-    - "log4j2.properties"
-    - "logstash.yml"
-  notify:
-    - restart logstash
-
-- name: Ensure conf.d subdir exists
-  file:
-    path: "{{ logstash_conf_dir }}/conf.d/"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    - jvm.options
+    - log4j2.properties
+    - startup.options
+    - logstash.yml
+  notify: "logstash - restart service"
 
 - block:
 
@@ -145,22 +56,30 @@
     file:
       path: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
       state: absent
+    notify: "logstash - restart service"
 
   - name: configure logstash parser
     template:
-      src: "conf.d/{{ item }}.j2"
+      src: "{{ item }}.j2"
       dest: "{{ logstash_conf_dir }}/{{ item }}"
-      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-      mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+      owner: "{{ logstash_user }}"
+      group: "{{ vitamui_defaults.users.group }}"
+      mode: "{{ vitamui_defaults.folder.conf_permission }}"
     with_items:
-      - "01-logstash-vitam-filter.conf"
-      - "02-logstash-vitam-filter.conf"
-      - "03-logstash-vitam-filter.conf"
-    notify:
-      - restart logstash
+      - 01-logstash-vitam-input.conf
+      - 02-logstash-vitam-filter.conf
+      - 03-logstash-vitam-output.conf
+    notify: "logstash - restart service"
 
-  when:  syslog.name | default('filebeat') != 'filebeat'
+- name: add vitam patterns conf
+  template:
+    src: vitam-patterns.j2
+    dest: "/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/logstash-patterns-core-{{ logstash_patterns_core_version }}/patterns/vitam"
+    owner: "{{ logstash_user }}"
+    group: "{{ vitamui_defaults.users.group }}"
+  notify: "logstash - restart service"
+
+  when: syslog.name | default('filebeat') != 'filebeat'
 
 - block:
 
@@ -169,41 +88,30 @@
       path: "{{ logstash_conf_dir }}/{{ item }}"
       state: absent
     with_items:
-      - "01-logstash-vitam-filter.conf"
-      - "02-logstash-vitam-filter.conf"
-      - "03-logstash-vitam-filter.conf"
+      - 01-logstash-vitam-input.conf
+      - 02-logstash-vitam-filter.conf
+      - 03-logstash-vitam-output.conf
+    notify: "logstash - restart service"
 
   - name: configure logstash parser when filebeat
     template:
-      src: "filebeat-to-logstash.conf.j2"
+      src: filebeat-to-logstash.conf.j2
       dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
-      owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-      group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-      mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-    notify:
-      - restart logstash
+      owner: "{{ logstash_user }}"
+      group: "{{ vitamui_defaults.users.group }}"
+      mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    notify: "logstash - restart service"
 
-  when:  syslog.name | default('filebeat') == 'filebeat'
-
-- name: Ensure conf.d subdir exists
-  file:
-    path: "{{ logstash_conf_dir }}/conf.d/extra"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  when: syslog.name | default('filebeat') == 'filebeat'
 
 - name: configure extra parser configuration
   template:
-    src: "conf.d/extra/{{ item }}.j2"
-    dest: "{{ logstash_conf_dir }}/conf.d/extra/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    src: elasticsearch-template.json.j2
+    dest: "{{ logstash_confextra_dir }}/elasticsearch-template.json"
+    owner: "{{ logstash_user }}"
+    group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
-  with_items:
-    - "elasticsearch-template.json"
-  notify:
-    - restart logstash
+  notify: "logstash - restart service"
 
 #### Consul configuration ####
 
@@ -213,34 +121,34 @@
     state: directory
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
   tags: consul_conf
 
 - name: Deploy consul agent service declaration
   template:
-    src: "service-logstash.json.j2"
+    src: service-logstash.json.j2
     dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-logstash.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitam_defaults.users.group }}"
-    mode: "{{ vitam_defaults.folder.conf_permission }}"
+    mode: "{{ '0644' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
   tags: consul_conf
-  notify: reload consul configuration for logstash
+  notify: "logstash - reload consul configuration"
 
-- meta: flush_handlers
-  tags: consul_conf
+- name: Flush handlers
+  meta: flush_handlers
 
-- name: Ensure logstash service is started
+- name: Ensure logstash service is started at boot
   service:
-    name: "{{ logstash.service_name | default('vitamui-logstash') }}"
-    state: started
+    name: logstash
     enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
+    state: started
 
-- name: Wait for logstash to be available
-  wait_for:
-    sleep: 1
-    connect_timeout: 1
-    port: "{{ logstash.port }}"
-    delay: 5
-    timeout: 240
-    host: "{{ ip_admin }}"
-  tags: start
-
+- name: Check logstash service health in local consul agent
+  uri:
+    url: "http://{{ (inventory_hostname in groups['hosts_vitamui_consul_server']) | ternary(hostvars[inventory_hostname]['ip_admin'], '127.0.0.1') }}:8500/v1/agent/health/service/name/vitamui-logstash"
+  register: result
+  until:
+    - result.status is defined
+    - result.status == 200
+  retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
+  delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"

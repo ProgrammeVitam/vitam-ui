@@ -1,14 +1,14 @@
 {
   "service": {
-    "name": "{{ logstash.service_name | default('vitamui-logstash') }}",
+    "name": "vitamui-logstash",
     "port": {{ logstash.port }},
     "address": "{{ ip_admin }}",
     "enable_tag_override": false,
     "tags": ["logstash"],
     "checks": [
       {
-        "notes": "Syslog tcp port opened",
-        "tcp": "{{ ip_admin }}:{{ logstash.port }}",
+        "notes": "Logstash Input TCP port opened",
+        "tcp": "{{ ip_admin }}:{{ logstash.port | default(10514) }}",
         "interval": "{{ logstash.check_consul | default('10') }}s"
       }
     ]

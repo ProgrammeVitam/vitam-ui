@@ -1,9 +1,14 @@
 ---
 
-package_name: "{{ logstash.package_name | default('vitamui-logstash') }}"
-
 logstash_log_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/logstash"
 logstash_tmp_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/logstash"
 logstash_conf_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/logstash"
 logstash_confextra_dir: "{{ logstash_conf_dir }}/extra"
 logstash_data_dir: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/data/logstash"
+
+# ----------------------------------------------
+#to be adapted according to elastcisearch version
+logstash_patterns_core_version: '4.3.4'
+# ----------------------------------------------
+
+service_at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
