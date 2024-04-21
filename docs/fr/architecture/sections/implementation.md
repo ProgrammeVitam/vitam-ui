@@ -592,24 +592,6 @@ Le repackaging entier des COTS est la technique a priviligier pour les raisons s
 
 ## Packaging des cots VITAMUI
 
-### vitamui-consul
-
-Le soft **consul** sera entierement repackager dans vitamui-consul. Ce package contiendra
-
-* le binaire consul dans **/vitamui/bin/consul/consul**,
-* le fichier unit systemd vitamui-consul.service
-* la ligne de commande consul dans **/vitamui/conf/consul/sysconfig**
-
-**Mise a jour de la version de consul:**
-
-La version de consul embarquee dans le package sera parametrable au niveau du fichier pom.xml du cots vitamui-consul (fichier **vitamui/cots/vitamui-consul/pom.xml**). Ce nom de version sera transmis en parametre du makefile qui telechargera le binaire consul dans la bonne version
-
-```xml
-    ...
-<argument>CONSUL_VERSION=1.4.1</argument>
-    ...
-```
-
 ### vitamui-logstash
 
 Le soft **logstash** sera entierement repackage dans vitamui-logstash a partir de **l'archive des sources Logstash**. Le package RPM contiendra:

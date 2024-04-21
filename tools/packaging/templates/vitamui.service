@@ -2,7 +2,7 @@
 Description=vitamui-__NAME__ service
 After=network.target
 After=syslog.target
-After=vitamui-consul.service
+After=vitam-consul.service
 
 [Service]
 Type=simple
