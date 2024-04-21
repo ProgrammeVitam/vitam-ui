@@ -9,7 +9,6 @@
   until: package_installed is succeeded
   delay: "{{ packages_install_retries_delay }}"
   tags: update_package_vitamui
-  when: vitamui_struct.vitamui_component != "ui-identity-admin"
   notify: reload nginx
 
 - name: Install static ressources for ui-identity-admin - Copy folder
@@ -29,12 +28,6 @@
 - name: Get application version from package
   set_fact:
     frontend_application_version: "{{ package_facts_result.ansible_facts.packages[ vitamui_struct.package_name | default(package_name) ][0].version }}"
-  when: vitamui_struct.vitamui_component != "ui-identity-admin"
-
-- name: Get application version from package
-  set_fact:
-    frontend_application_version: "{{ package_facts_result.ansible_facts.packages['vitamui-ui-identity-rsc'][0].version }}"
-  when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
 - name: Configure upsteam for API GW
   template:
