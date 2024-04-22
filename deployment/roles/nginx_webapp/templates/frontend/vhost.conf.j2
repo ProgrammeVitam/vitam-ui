@@ -25,6 +25,12 @@ server {
   {% else %}
   location /{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api {
   {% endif %}
+    # Allow access only from reverseproxy addresses
+    {% for reverse in groups['hosts_vitamui_reverseproxy'] %}
+    allow {{ hostvars[reverse]['ip_service'] }};
+    {% endfor %}
+    deny all; # Deny access to all other IP addresses
+
     proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(true) | bool else 'http' }}://API-GATEWAY;
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
