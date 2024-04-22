@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'ui-frontend-common';
@@ -45,7 +45,7 @@ import { IngestContractService } from '../../ingest-contract.service';
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
 })
-export class IngestContractSignatureTabComponent {
+export class IngestContractSignatureTabComponent implements OnChanges {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -68,6 +68,18 @@ export class IngestContractSignatureTabComponent {
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,
   ) {}
+
+  ngOnChanges() {
+    const defaultSignaturePolicy: SignaturePolicy = {
+      signedDocument: SignedDocumentPolicyEnum.ALLOWED,
+      declaredSignature: false,
+      declaredTimestamp: false,
+      declaredAdditionalProof: false,
+    };
+    if (!this._ingestContract?.signaturePolicy) {
+      this._ingestContract.signaturePolicy = defaultSignaturePolicy;
+    }
+  }
 
   previousValue = (): SignaturePolicy => {
     return this._ingestContract.signaturePolicy;
