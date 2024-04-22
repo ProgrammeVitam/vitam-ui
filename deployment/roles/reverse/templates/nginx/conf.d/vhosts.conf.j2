@@ -12,8 +12,8 @@ server {
 
   # UI IDENTITY_ADMIN
   location /identity-admin {
-    rewrite /identity-admin/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.identity_admin.secure | default(true) | bool else 'http' }}://IDENTITY_ADMIN;
+    rewrite /identity-admin/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.identity_admin.secure | default(secure) | bool else 'http' }}://IDENTITY_ADMIN;
     sub_filter '/identity/' '{{ url_prefix }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
@@ -23,16 +23,16 @@ server {
 
   # UI IDENTITY
   location /identity {
-    rewrite /identity/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.identity.secure | default(true) | bool else 'http' }}://IDENTITY;
+    rewrite /identity/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.identity.secure | default(secure) | bool else 'http' }}://IDENTITY;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
 {% if groups['hosts_ui_referential']|length > 0 %}
   # UI REFERENTIAL
   location /referential {
-    rewrite /referential/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.referential.secure | default(true) | bool else 'http' }}://REFERENTIAL;
+    rewrite /referential/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.referential.secure | default(secure) | bool else 'http' }}://REFERENTIAL;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -41,8 +41,8 @@ server {
 {% if groups['hosts_ui_ingest']|length > 0 %}
   # UI INGEST
   location /ingest {
-    rewrite /ingest/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.ingest.secure | default(true) | bool else 'http' }}://INGEST;
+    rewrite /ingest/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.ingest.secure | default(secure) | bool else 'http' }}://INGEST;
 
     include {{ nginx_conf_dir }}/proxy_params;
 
@@ -62,8 +62,8 @@ server {
 {% if groups['hosts_ui_archive_search']|length > 0 %}
   # UI ARCHIVE_SEARCH
   location /archive-search {
-    rewrite /archive-search/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.archive_search.secure | default(true) | bool else 'http' }}://ARCHIVE_SEARCH;
+    rewrite /archive-search/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.archive_search.secure | default(secure) | bool else 'http' }}://ARCHIVE_SEARCH;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -72,8 +72,8 @@ server {
 {% if groups['hosts_ui_pastis']|length > 0 %}
   # UI PASTIS
   location /pastis {
-    rewrite /pastis/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.pastis.secure | default(true) | bool else 'http' }}://PASTIS;
+    rewrite /pastis/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.pastis.secure | default(secure) | bool else 'http' }}://PASTIS;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -82,8 +82,8 @@ server {
 {% if groups['hosts_ui_collect']|length > 0 %}
   # UI COLLECT
   location /collect {
-    rewrite /collect/(.*) /$1  break;
-    proxy_pass {{ 'https' if vitamui.collect.secure | default(true) | bool else 'http' }}://COLLECT;
+    rewrite /collect/(.*) /$1 break;
+    proxy_pass {{ 'https' if vitamui.collect.secure | default(secure) | bool else 'http' }}://COLLECT;
 
     include {{ nginx_conf_dir }}/proxy_params;
 
@@ -106,13 +106,13 @@ server {
   }
 
   location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
-    proxy_pass https://CAS;
+    proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://CAS;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
   # PORTAL
   location / {
-    proxy_pass {{ 'https' if vitamui.portal.secure | default(true) | bool else 'http' }}://PORTAL;
+    proxy_pass {{ 'https' if vitamui.portal.secure | default(secure) | bool else 'http' }}://PORTAL;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

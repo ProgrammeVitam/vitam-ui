@@ -25,7 +25,7 @@ logging:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
@@ -57,7 +57,7 @@ clients:
   iam-internal:
     server-host: {{ vitamui.iam_internal.host }}
     server-port: {{ vitamui.iam_internal.port_service }}
-{% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.iam_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:

@@ -18,7 +18,7 @@ server-identity:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
@@ -55,7 +55,7 @@ ingest-external:
   security-client:
     server-host: {{ vitamui.security_internal.host }}
     server-port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.security_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
@@ -66,7 +66,7 @@ ingest-external:
   iam-internal-client:
     server-host: {{ vitamui.iam_internal.host }}
     server-port: {{ vitamui.iam_internal.port_service }}
-{% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.iam_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
@@ -77,7 +77,7 @@ ingest-external:
   ingest-internal-client:
     server-host: {{ vitamui.ingest_internal.host }}
     server-port: {{ vitamui.ingest_internal.port_service }}
-{% if vitamui.ingest_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.ingest_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.ingest_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:

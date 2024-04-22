@@ -8,7 +8,7 @@ assets_path: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
 nginx_conf_dir: /etc/nginx/conf.d
 nginx_ssl_dir: /etc/nginx/conf.d/ssl
 
-secure: "{{ vitamui_default.services.secure | default('true') | lower }}"
+secure: "{{ vitamui_default.services.secure | default(true) | bool }}"
 
 reverse_group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
 reverse_user: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
