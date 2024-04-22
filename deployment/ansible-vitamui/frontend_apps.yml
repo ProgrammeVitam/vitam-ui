@@ -5,6 +5,7 @@
   any_errors_fatal: true
   roles:
     - assets_copy
+    - nginx
 
 - hosts: hosts_ui_portal
   gather_facts: no

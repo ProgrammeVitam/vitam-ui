@@ -1,10 +1,10 @@
+#jinja2: lstrip_blocks: True
 user    {{ reverse_user }} {{ reverse_group }};
 
 worker_processes auto;
 
 error_log {{ nginx_log_dir }}/master-error.log;
 pid       /run/nginx.pid;
-
 
 # Load dynamic modules. See /usr/share/nginx/README.dynamic.
 include /usr/share/nginx/modules/*.conf;
@@ -49,9 +49,10 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
+    include {{ nginx_conf_dir }}/upstream*;
+
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
     include {{ nginx_conf_dir }}/*.conf;
-
 }

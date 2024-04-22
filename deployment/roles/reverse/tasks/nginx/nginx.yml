@@ -1,5 +1,36 @@
 ---
 
-- import_tasks: prerequisites.yml
-- import_tasks: configure_nginx.yml
-- import_tasks: configure_vitamui_vhost.yml
+- include_role:
+    name: nginx
+
+- name: 'Tasks > Reverse > configure_vitamui_vhost.yml | Adding vitamui vhost configuration'
+  template:
+    src: "nginx/conf.d/{{ item }}.j2"
+    dest: "{{ nginx_conf_dir }}/{{ item }}"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  with_items:
+    - upstream
+    - vhosts.conf
+  notify: reload nginx
+
+- name: 'Tasks > reverse > configure_nginx.yml | Put ssl conf'
+  template:
+    src: "nginx/ssl/{{ item }}.j2"
+    dest: "{{ nginx_ssl_dir }}/{{ item  }}"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  with_items:
+    - ssl.conf
+    - reverse.key_pass
+    - reverse.crt
+    - reverse.key
+    - dhparam.pem
+  notify: reload nginx
+
+- name: Ensure nginx is started
+  systemd:
+    name: nginx
+    state: started

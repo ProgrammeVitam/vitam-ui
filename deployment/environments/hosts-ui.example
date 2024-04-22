@@ -22,13 +22,12 @@ hosts_vitamui_reverseproxy
 
 [hosts_vitamui_reverseproxy]
 # EDIT: Mandatory
-# WARNING: Do not collocate with [hosts_browse] and [reverse] from Vitam
+# WARNING: Do not collocate with [reverse] from Vitam
 
 
 ################################################################################
 # ZONE UI
 ################################################################################
-# INFO: All the components from the UI zone must be collocated on the same hosts as [hosts_vitamui_reverseproxy]
 [zone_vitamui_ui:children]
 hosts_ui_identity
 hosts_ui_portal
@@ -66,13 +65,11 @@ hosts_ui_pastis
 ################################################################################
 # ZONE ADMIN
 ################################################################################
-# INFO: Multi-instanciation of hosts on [zone_vitamui_admin] are properly managed only with reverse: nginx
 [zone_vitamui_admin:children]
 hosts_ui_identity_admin
 
 [hosts_ui_identity_admin]
 # EDIT: Mandatory
-# Must be collocated on the same hosts as [hosts_ui_identity]
 
 
 ################################################################################
@@ -208,7 +205,7 @@ reverse
 [reverse]
 # EDIT: Optionnal
 # This group need vitam_reverse_external_dns variable to be configured
-# WARNING: Do not use in production environment
+# WARNING: Do not use in production environments
 # WARNING: Do not collocate with [hosts_vitamui_reverseproxy]
 # This group is used only to apply merge_index role to provide VitamUI links on Vitam's reverse (Apache)
 
@@ -218,7 +215,7 @@ reverse
 ################################################################################
 [hosts_browse]
 # EDIT: Optionnal
-# WARNING: Do not collocate with [hosts_vitamui_reverseproxy] when using reverse: nginx
+# WARNING: Do not use in production environments
 
 
 ################################################################################

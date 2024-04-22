@@ -1,43 +1,40 @@
 #jinja2: lstrip_blocks: True
-
-include /etc/nginx/conf.d/upstream;
-
 server {
 
   listen {{ ip_service }}:443 ssl;
-  include {{ nginx_ssl_conf }}/ssl.conf;
+  include {{ nginx_ssl_dir }}/ssl.conf;
 
   server_name {{ vitamui_reverse_external_dns }};
 
   location = /favicon.ico {
-    alias {{ root_path }}/assets/favicon.ico;
+    alias {{ assets_path }}/favicon.ico;
   }
 
   # UI IDENTITY_ADMIN
   location /identity-admin {
     rewrite /identity-admin/(.*) /$1  break;
-    proxy_pass https://IDENTITY_ADMIN;
+    proxy_pass http://IDENTITY_ADMIN;
     sub_filter '/identity/' '{{ url_prefix }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
     proxy_set_header Accept-Encoding "";
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 
   # UI IDENTITY
   location /identity {
     rewrite /identity/(.*) /$1  break;
-    proxy_pass https://IDENTITY;
-    include /etc/nginx/conf.d/proxy_params;
+    proxy_pass http://IDENTITY;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 
 {% if groups['hosts_ui_referential']|length > 0 %}
   # UI REFERENTIAL
   location /referential {
     rewrite /referential/(.*) /$1  break;
-    proxy_pass https://REFERENTIAL;
+    proxy_pass http://REFERENTIAL;
 
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
 
@@ -45,9 +42,9 @@ server {
   # UI INGEST
   location /ingest {
     rewrite /ingest/(.*) /$1  break;
-    proxy_pass https://INGEST;
+    proxy_pass http://INGEST;
 
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
     # The request body is sent to the proxied server immediately as it is received.
@@ -66,9 +63,9 @@ server {
   # UI ARCHIVE_SEARCH
   location /archive-search {
     rewrite /archive-search/(.*) /$1  break;
-    proxy_pass https://ARCHIVE_SEARCH;
+    proxy_pass http://ARCHIVE_SEARCH;
 
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
 
@@ -76,20 +73,19 @@ server {
   # UI PASTIS
   location /pastis {
     rewrite /pastis/(.*) /$1  break;
-    proxy_pass https://PASTIS;
+    proxy_pass http://PASTIS;
 
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
-
 
 {% if groups['hosts_ui_collect']|length > 0 %}
   # UI COLLECT
   location /collect {
     rewrite /collect/(.*) /$1  break;
-    proxy_pass https://COLLECT;
+    proxy_pass http://COLLECT;
 
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
     # The request body is sent to the proxied server immediately as it is received.
@@ -111,13 +107,13 @@ server {
 
   location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
     proxy_pass https://CAS;
-    include /etc/nginx/conf.d/proxy_params;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 
   # PORTAL
   location / {
-    proxy_pass https://PORTAL;
-    include /etc/nginx/conf.d/proxy_params;
+    proxy_pass http://PORTAL;
+    include {{ nginx_conf_dir }}/proxy_params;
   }
 
 }
