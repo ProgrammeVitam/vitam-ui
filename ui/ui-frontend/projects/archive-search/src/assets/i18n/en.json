@@ -1,5 +1,8 @@
 {
   "ARCHIVE_SEARCH": {
+    "DIP": {
+      "EXPORT_LIMITS": "DIP export cannot be performed. Please restrict your selection to a maximum of 10,000 archival units"
+    },
     "ELIMINATION": {
       "ANALYSIS": "Launch elimination analysis",
       "ELIMINATION_LAUNCHED": "Your request for elimination has been taken into account",
