@@ -61,7 +61,7 @@ public class ExportDipInternalService {
         this.exportDipV2Service = exportDipV2Service;
     }
 
-    public JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest)
+    private JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest)
         throws VitamClientException {
         RequestResponse<JsonNode> response = exportDipV2Service.exportDip(vitamContext, dipRequest);
         return response.toJsonNode();
