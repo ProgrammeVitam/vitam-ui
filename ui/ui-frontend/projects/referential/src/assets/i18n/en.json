@@ -677,6 +677,9 @@
       },
       "HISTORY": {
         "TITLE": "History"
+      },
+      "ERROR": {
+        "INTEGER_REQUIRED": "Duration must be an integer"
       }
     }
   },
