@@ -72,8 +72,9 @@
     "Green": "Color green"
   },
   "ICONS": {
-    "Title": "Vitam-UI icons list",
-    "Colors": "Available colors"
+    "TITLE": "Vitam-UI icons list",
+    "COLORS": "Available colors",
+    "SELECT_COLOR": "Select a color:"
   },
   "ELEVATIONS": {
     "Title": "Shadows & Elevations",

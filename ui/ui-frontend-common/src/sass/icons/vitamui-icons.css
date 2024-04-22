@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?85tnub');
-  src:  url('fonts/vitamui-icon.eot?85tnub#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?85tnub') format('truetype'),
-    url('fonts/vitamui-icon.woff?85tnub') format('woff'),
-    url('fonts/vitamui-icon.svg?85tnub#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?4k5eq2');
+  src:  url('fonts/vitamui-icon.eot?4k5eq2#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?4k5eq2') format('truetype'),
+    url('fonts/vitamui-icon.woff?4k5eq2') format('woff'),
+    url('fonts/vitamui-icon.svg?4k5eq2#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,15 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-ic40-flux:before {
+  content: "\e977";
+}
+.vitamui-icon-ic40-flux-industriel:before {
+  content: "\e978";
+}
+.vitamui-icon-ic40-flux-manuel:before {
+  content: "\e979";
+}
 .vitamui-icon-anomalie-2:before {
   content: "\e975";
 }
@@ -259,36 +268,56 @@ i.vitamui-icon {
   content: "\ea4e";
 }
 .vitamui-icon-attribution-liste .path1:before {
-  content: "\ea4f";
-  color: none;
+  content: "\e97a";
+  color: rgb(117, 117, 117);
 }
 .vitamui-icon-attribution-liste .path2:before {
-  content: "\ea50";
+  content: "\e97b";
   margin-left: -1em;
-  color: none;
+  color: rgb(117, 117, 117);
 }
 .vitamui-icon-attribution-liste .path3:before {
-  content: "\ea51";
+  content: "\e97c";
   margin-left: -1em;
   color: rgb(255, 255, 255);
 }
 .vitamui-icon-attribution-liste .path4:before {
-  content: "\ea52";
+  content: "\e97d";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-attribution-liste .path5:before {
-  content: "\ea53";
+  content: "\e97e";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-attribution-liste .path6:before {
-  content: "\ea54";
+  content: "\e97f";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-attribution-liste .path7:before {
-  content: "\ea55";
+  content: "\e980";
+  margin-left: -1em;
+  color: rgb(117, 117, 117);
+}
+.vitamui-icon-attribution-liste .path8:before {
+  content: "\e981";
+  margin-left: -1em;
+  color: rgb(117, 117, 117);
+}
+.vitamui-icon-attribution-liste .path9:before {
+  content: "\e982";
+  margin-left: -1em;
+  color: rgb(117, 117, 117);
+}
+.vitamui-icon-attribution-liste .path10:before {
+  content: "\e983";
+  margin-left: -1em;
+  color: rgb(117, 117, 117);
+}
+.vitamui-icon-attribution-liste .path11:before {
+  content: "\e984";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
@@ -362,57 +391,57 @@ i.vitamui-icon {
   content: "\eaa6";
 }
 .vitamui-icon-flux-industriel-refus .path1:before {
-  content: "\eab0";
+  content: "\e985";
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-flux-industriel-refus .path2:before {
-  content: "\eab1";
+  content: "\e986";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-flux-industriel-refus .path3:before {
-  content: "\eab2";
+  content: "\e987";
   margin-left: -1em;
   color: rgb(97, 97, 97);
 }
 .vitamui-icon-flux-industriel-refus .path4:before {
-  content: "\eab3";
+  content: "\e988";
   margin-left: -1em;
-  color: none;
+  color: rgb(255, 255, 255);
 }
 .vitamui-icon-flux-industriel-refus .path5:before {
-  content: "\eab4";
+  content: "\e989";
   margin-left: -1em;
-  color: none;
+  color: rgb(255, 255, 255);
 }
 .vitamui-icon-flux-manuel-refus .path1:before {
-  content: "\eaba";
+  content: "\e98a";
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-flux-manuel-refus .path2:before {
-  content: "\eabb";
+  content: "\e98b";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-flux-manuel-refus .path3:before {
-  content: "\eabc";
+  content: "\e98c";
   margin-left: -1em;
   color: rgb(117, 117, 117);
 }
 .vitamui-icon-flux-manuel-refus .path4:before {
-  content: "\eabd";
+  content: "\e98d";
   margin-left: -1em;
   color: rgb(97, 97, 97);
 }
 .vitamui-icon-flux-manuel-refus .path5:before {
-  content: "\eabe";
+  content: "\e98e";
   margin-left: -1em;
-  color: none;
+  color: rgb(255, 255, 255);
 }
 .vitamui-icon-flux-manuel-refus .path6:before {
-  content: "\eabf";
+  content: "\e98f";
   margin-left: -1em;
-  color: none;
+  color: rgb(255, 255, 255);
 }
 .vitamui-icon-gele:before {
   content: "\eac1";
