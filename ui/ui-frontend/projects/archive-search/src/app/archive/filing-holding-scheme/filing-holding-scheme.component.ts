@@ -118,8 +118,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private subscribeOnFacetsChangesToResetCounts(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
+        this.requestResultFacets = facets;
         if (facets && facets.length > 0) {
-          this.requestResultFacets = facets;
           FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
           this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
         } else {
