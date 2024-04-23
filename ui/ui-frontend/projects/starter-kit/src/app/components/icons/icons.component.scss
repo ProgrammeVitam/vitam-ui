@@ -25,10 +25,14 @@ ul {
   width: 100px;
   height: 100px;
   padding-top: 10px;
-}
-span.text-container {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  text-align: center;
   letter-spacing: 0.4px;
   color: var(--vitamui-grey-800);
+}
+.color-select-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -73,7 +73,8 @@
   },
   "ICONS": {
     "TITLE": "Liste des icônes de Vitam-UI",
-    "Colors": "Couleurs disponibles"
+    "COLORS": "Couleurs disponibles",
+    "SELECT_COLOR": "Sélectionnez une couleur :"
   },
   "ELEVATIONS": {
     "TITLE": "Ombres & Elevations",

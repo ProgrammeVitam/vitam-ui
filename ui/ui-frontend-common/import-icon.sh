@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 if [ $# -lt 1 ]
 then
     echo "Usage: $0 <path-to-icomoon-folder>"
@@ -10,7 +12,7 @@ folder=$1
 
 if [ ! -d "$folder" ]
 then
-    echo "Directory \"$folder\" DOES NOT exists." 
+    echo "Directory \"$folder\" DOES NOT exists."
     exit 1
 fi
 
