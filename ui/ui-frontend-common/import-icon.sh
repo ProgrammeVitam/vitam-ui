@@ -26,4 +26,7 @@ cp "$folder/style.css" ./src/sass/icons/vitamui-icons.css &&
 sed -i 's/i {/i.vitamui-icon {/1' ./src/sass/icons/vitamui-icons.css &&
 echo "Updated vitamui-icon.css SUCCESS"
 
+cp -r ./src/sass/icons ../../cas/cas-server/src/main/resources/static &&
+echo "Copied icons to CAS"
+
 echo "DONE"

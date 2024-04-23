@@ -94,7 +94,7 @@ You also need to update the `vitamui-icons.css` file. Open the `style.css` from 
 
 > Attention: Do not override the first part of the file (from line `1` to line `25`)
 
-Please add each new icon to the icon category in the starter-kit project.
+Copy the `vitamui-icons.css` file and `fonts` directory to `cas-server/src/main/resources/static/icons`
 
 ## How to add application icons to the portal
 
@@ -107,8 +107,6 @@ Replace each static hex/rgb colors inside the svg file by the right css variable
 Replace each css class ids (for example .stXXX) and svgids (for example #SVGID_XX) by unique identifier compared to the others svg.
 
 > Attention: If an other application svg have the same class identifiers, your svg will not be displayed properly. **Also, do not forget to rename the css class & svgids usage in the whole file**.
-
-Please add each new icon to the icon category in the starter-kit project.
 
 ## Standalone Profile
 

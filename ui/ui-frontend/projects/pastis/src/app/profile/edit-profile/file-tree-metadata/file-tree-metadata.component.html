@@ -7,7 +7,7 @@
       <!-- Top left panel container -->
       <div class="pastis-metadata-option-entete-1">
         <h5>
-          <i class="vitamui-icon vitamui-icon-dossier-physique"></i>
+          <i class="vitamui-icon vitamui-icon-ic40-dossier-physique"></i>
           <ng-container *ngIf="this.profileService.profileMode === 'PUA'">
             {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' | translate }}
           </ng-container>
@@ -94,11 +94,6 @@
               matTooltipClass="pastis-matTooltipClass"
               placement="right"
             >
-              <i *ngIf="isElementComplex(element.nomDuChamp)" class="vitamui-icon vitamui-icon-complex-element-1-1">
-                <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span
-                ><span class="path5"></span>
-              </i>
-
               <span *ngIf="isElementEdit(element); else nonEdit">{{ element.nomDuChampEdit }}</span>
               <ng-template #nonEdit> {{ onResolveName(element.nomDuChamp) }}</ng-template>
 
@@ -254,11 +249,6 @@
                   *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
                   mat-menu-item
                 >
-                  <i
-                    class="vitamui-icon vitamui-icon-alternate_email_black_24dp"
-                    style="margin-right: 16px; vertical-align: middle; color: #757575; font-size: 1.77em"
-                  >
-                  </i>
                   <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
                 </button>
 

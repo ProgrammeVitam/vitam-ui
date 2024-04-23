@@ -26,7 +26,7 @@
  */
 
 export enum VitamuiIcons {
-  HOLDING_UNIT = 'vitamui-icon-icone-arbre',
+  HOLDING_UNIT = 'vitamui-icon-ic24-arborescence',
   FILING_UNIT = 'vitamui-icon-plan-classement',
   INGEST_WITHOUT_OBJECT = 'vitamui-icon-folder',
   INGEST_WITH_OBJECT = 'vitamui-icon-file',

@@ -12,7 +12,7 @@
     <div *ngFor="let item of addedItems; let i = index" style="display: inline-flex">
       <div class="selected-items-box">
         <span style="padding: 12px">
-          <i *ngIf="isElementComplex(item)" class="vitamui-icon vitamui-icon-arborescence"></i>
+          <i *ngIf="isElementComplex(item)" class="vitamui-icon vitamui-icon-ic24-arborescence"></i>
           <span class="item-text">{{ onResolveName(item) }}</span>
         </span>
         <mat-divider class="selected-items-separator" vertical></mat-divider>
@@ -34,11 +34,6 @@
     <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true" [ngModel]="addedItems" class="list-box">
       <mat-list *ngFor="let element of allowedChildren | filterByName: filterName : sedaLanguage" class="list-item">
         <span class="list-box-content">
-          <i *ngIf="isElementComplex(element)" class="vitamui-icon vitamui-icon-complex-element-1-1" id="pastis-ico-complex-element">
-            <span class="path1"></span><span class="path2"></span> <span class="path3"></span><span class="path4"></span>
-            <span class="path5"></span>
-          </i>
-
           <span
             [matTooltipShowDelay]="0"
             class="text medium"
