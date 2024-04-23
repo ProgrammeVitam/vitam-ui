@@ -76,6 +76,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 
+const STATIC_ATTACHEMENT = 'STATIC_ATTACHEMENT';
+const DYNAMIC_ATTACHEMENT = 'DYNAMIC_ATTACHEMENT_';
+
 @Component({
   selector: 'app-archive-search-collect',
   templateUrl: './archive-search-collect.component.html',
@@ -449,6 +452,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.totalResults = pagedResult.totalResults;
+          this.filterAttachementUnit();
           this.archiveExchangeDataService.emitTotalResults(this.totalResults);
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
@@ -478,6 +482,27 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       },
     );
+  }
+
+  ofStaticAttachementUnit = (unit: Unit) => {
+    return unit.Title === STATIC_ATTACHEMENT;
+  };
+
+  ofDynamicAttachementUnit = (unit: Unit) => {
+    return unit.Title.startsWith(DYNAMIC_ATTACHEMENT);
+  };
+
+  private filterAttachementUnit() {
+    let result: number = this.archiveUnits.findIndex(this.ofStaticAttachementUnit);
+    if (result > 0) {
+      this.archiveUnits.splice(result, 1);
+      this.totalResults -= 1;
+    }
+    result = this.archiveUnits.findIndex(this.ofDynamicAttachementUnit);
+    if (result > 0) {
+      this.archiveUnits.splice(result, 1);
+      this.totalResults -= 1;
+    }
   }
 
   onArchiveUnitCountChange(event: number) {
