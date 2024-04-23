@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -22,16 +22,19 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() label!: string;
-  @Input() value!: string;
-
-  propagateChange = (_: any) => {};
-  propagateTouched = (_: any) => {};
-
+  @Input() value: string;
   disabled = false;
 
+  propagateChange = (_: any) => {};
+
+  propagateTouched = (_: any) => {};
+
   writeValue(value: any): void {
-    if (value instanceof Date) this.value = value.toISOString();
-    else this.value = value;
+    if (value instanceof Date) {
+      this.value = value.toISOString();
+    } else {
+      this.value = value;
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -47,7 +50,7 @@ export class DatepickerComponent implements ControlValueAccessor {
   }
 
   onChange(value: Date): void {
-    this.value = value.toISOString();
+    this.value = value && value.toISOString();
     this.propagateChange(this.value);
   }
 }
