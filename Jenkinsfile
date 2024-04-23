@@ -81,7 +81,7 @@ pipeline {
             }
             steps {
                 sh 'sudo apt remove -y nodejs'
-                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems'
+                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
                 sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
@@ -100,6 +100,8 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'npmrc default'
+
+                sh './tools/check_icomoon.sh'
 
                 sh '''
                     $MVN_COMMAND clean verify -U -Pvitam -pl '!cots/vitamui-logstash,!cots/vitamui-mongo-express'
