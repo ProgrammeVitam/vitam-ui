@@ -41,17 +41,45 @@ setup.ilm.enabled: false
 setup.template.enabled: false
 setup.template.overwrite: true
 
+{% if (groups['hosts_vitamui_logstash'] | default([]) | length > 0) or (groups['hosts_logstash'] | default([]) | length > 0) %}
 #
 # Logstash
 #
 output.logstash:
   # The Logstash hosts
-  {% if hosts_vitamui_logstash is defined and hosts_vitamui_logstash|length > 0 %}
+{% if groups['hosts_vitamui_logstash'] | default([]) | length > 0 %}
   hosts: [{% for item in groups['hosts_vitamui_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
-  {% else %}
+{% else %}
   hosts: [{% for item in groups['hosts_logstash'] %}"{{ hostvars[item]['ip_admin'] }}:{{ logstash.port | default(10514) }}"{% if not loop.last %},{% endif %}{% endfor %}]
-  {% endif %}
+{% endif %}
+{% else %}
+#
+# Elasticsearch-log
+#
+# (Each node of es log should have a role 'ingest')
+#
+output.elasticsearch:
+  # The Elasticsearch hosts
+  hosts: [{% for item in groups['hosts_elasticsearch_log'] %}"{% if 'ingest' in hostvars[item]['elasticsearch_roles'] | default(['master', 'data', 'ingest']) %}{{ hostvars[item]['ip_admin'] }}:{{ elasticsearch.log.port_http | default(9201) }}"{% if not loop.last %},{% endif %}{% endif %}{% endfor %}]
+{% endif %}
   compression_level: {{ filebeat.compression_level | default(3) }}
+
+  indices:
+    - index: "logstash-access-%{+yyyy.MM.dd}"
+      when:
+        regexp:
+          fields.kind: "^(access,management)$"
+    - index: "logstash-system-%{+yyyy.MM.dd}"
+      when.equals:
+        event.module: system
+    - index: "logstash-vitam-%{+yyyy.MM.dd}"
+      when:
+        not:
+          or:
+            - equals:
+                event.module: system
+            - regexp:
+                fields.kind: "^(access,management)$"
 
 #
 # Processors

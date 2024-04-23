@@ -1,8 +1,10 @@
 #jinja2: lstrip_blocks: True
+# Module: logstash
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/7.17/filebeat-module-logstash.html
 
 - module: logstash
   log:
-    enabled: true
+    enabled: {{ filebeat.cots.logstash.enable_log | bool | lower }}
     var.paths:
       - "{{ vitam_defaults.folder.root_path }}/log/logstash/logstash-plain.log"
     input:
@@ -10,6 +12,6 @@
         kind: log
         vitam_component: logstash
         source: vitamui
-
+        type: cots
   slowlog:
     enabled: false

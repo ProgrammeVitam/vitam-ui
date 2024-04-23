@@ -4,26 +4,22 @@
 - module: system
   # Syslog
   syslog:
-    enabled: true
-
+    enabled: {{ filebeat.system.enable_log | bool | lower }}
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
       fields:
         kind: syslog
-        vitam_component: system
         source: vitamui
 
   # Authorization logs
   auth:
-    enabled: true
-
+    enabled: {{ filebeat.system.enable_auth | bool | lower }}
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
       fields:
         kind: auth
-        vitam_component: system
         source: vitamui

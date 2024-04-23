@@ -1,16 +1,19 @@
 #jinja2: lstrip_blocks: True
-
 #
 # Consul
 #
+# Disabled by default because of a bug with spring.cloud.consul when calling consul (too many error logs).
+{% if filebeat.cots.consul.enable_log | bool %}
 - type: filestream
-  id: "{{ vitam_site_name }}-consul"
+  id: {{ vitam_site_name }}-consul
+  enabled: {{ filebeat.cots.consul.enable_log | bool | lower }}
   paths:
     - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
   fields:
     kind: log
     vitam_component: consul
     source: vitamui
+    type: cots
   processors:
   - dissect:
       tokenizer: '%{timestamp} [%{loglevel}]  %{logger}: %{message}'
@@ -20,3 +23,4 @@
       fields:
         - from: dissect.loglevel
           to: loglevel
+{% endif %}

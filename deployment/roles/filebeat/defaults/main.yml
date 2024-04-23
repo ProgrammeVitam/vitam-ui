@@ -8,13 +8,10 @@ filebeat_processors:
     - add_docker_metadata: ~
 
 filebeat_log:
-  level: INFO
-  directory: "/vitamui/log/filebeat"
+  level: WARNING
+  directory: /vitam/log/filebeat
   filename: filebeat.log
-  keepfiles: 7
-
-#apache_log_path: "{{ '/var/log/apache2' if ansible_distribution == 'Debian' else '/var/log/httpd' }}"
-nginx_access_path: '/var/log/nginx'
+  keepfiles: 30
 
 items_to_exclude:
   - hosts
@@ -27,3 +24,21 @@ items_to_exclude:
   - zone_ui
   - zone_app
 
+filebeat:
+  system:
+    enable_log: false
+    enable_auth: false
+  cots:
+    consul:
+      enable_log: false
+    logstash:
+      enable_log: true
+    apache:
+      enable_access: true
+      enable_log: true
+    nginx:
+      enable_access: true
+      enable_error: true
+      enable_ingress: false
+    mongodb:
+      enable_log: true

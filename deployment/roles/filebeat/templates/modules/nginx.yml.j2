@@ -4,7 +4,7 @@
 - module: nginx
   # Access logs
   access:
-    enabled: true
+    enabled: {{ filebeat.cots.nginx.enable_access | bool | lower }}
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
@@ -14,10 +14,16 @@
         kind: access
         vitam_component: nginx
         source: vitamui
+        type: cots
+      processors:
+      - dissect:
+          tokenizer: '%{client_ip} - %{sender} [%{[date_time]}] "%{[http_method]} %{[request_path]} HTTP/%{[http_version]}" %{[http_status_code]} %{[response_size]} %{message}'
+          field: "message"
+          target: ""
 
   # Error logs
   error:
-    enabled: true
+    enabled: {{ filebeat.cots.nginx.enable_error | bool | lower }}
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
@@ -27,10 +33,11 @@
         kind: error
         vitam_component: nginx
         source: vitamui
+        type: cots
 
   # Ingress-nginx controller logs. This is disabled by default. It could be used in Kubernetes environments to parse ingress-nginx logs
   ingress_controller:
-    enabled: false
+    enabled: {{ filebeat.cots.nginx.enable_ingress | bool | lower }}
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
@@ -40,3 +47,4 @@
         kind: ingress
         vitam_component: nginx
         source: vitamui
+        type: cots
