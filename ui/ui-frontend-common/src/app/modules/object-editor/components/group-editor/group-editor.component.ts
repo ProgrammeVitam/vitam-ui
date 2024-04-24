@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { of } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
@@ -13,7 +13,7 @@ import { Action, EditObject } from '../../models/edit-object.model';
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
 })
-export class GroupEditorComponent implements OnChanges {
+export class GroupEditorComponent implements OnChanges, OnDestroy {
   @Input() editObject: EditObject;
 
   @ViewChild('removeDialog') removeDialog: TemplateRef<GroupEditorComponent>;
@@ -26,6 +26,7 @@ export class GroupEditorComponent implements OnChanges {
 
   readonly DisplayObjectType = DisplayObjectType;
   private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px' };
+  private subscription: Subscription;
 
   constructor(
     private layoutService: LayoutService,
@@ -34,36 +35,50 @@ export class GroupEditorComponent implements OnChanges {
     private matDialog: MatDialog,
   ) {}
 
+  ngOnInit(): void {
+    if (this.editObject?.childrenChange) this.subscription = this.editObject.childrenChange.subscribe(() => this.computeLayout());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;
 
     if (editObject) {
-      this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.editObject);
-      this.favoritePath = this.favoriteEntryService.favoritePath(this.editObject);
-      this.rows = this.layoutService.compute(this.editObject) as EditObject[][];
-      if (this.editObject.actions) {
-        const removeAction: Action = this.editObject.actions.remove;
+      if (this.editObject?.childrenChange && this.subscription) this.subscription.unsubscribe();
+      if (this.editObject?.childrenChange) this.subscription = this.editObject.childrenChange.subscribe(() => this.computeLayout());
+      this.computeLayout();
+    }
+  }
 
-        if (removeAction) {
-          const removeHandler = removeAction.handler;
-          const removeActionWithValidationStep = () => {
-            if (!this.typeService.isConsistent(this.editObject.control.value)) return removeHandler();
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-            const subscription = this.matDialog
-              .open(this.removeDialog, this.dialogConfig)
-              .afterClosed()
-              .pipe(
-                filter((value) => value),
-                switchMap(() => of(removeHandler())),
-              )
-              .subscribe(() => subscription.unsubscribe());
-          };
+  computeLayout() {
+    this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.editObject);
+    this.favoritePath = this.favoriteEntryService.favoritePath(this.editObject);
+    this.rows = this.layoutService.compute(this.editObject) as EditObject[][];
+    if (this.editObject.actions) {
+      const removeAction: Action = this.editObject.actions.remove;
 
-          removeAction.handler = removeActionWithValidationStep;
-        }
+      if (removeAction) {
+        const removeHandler = removeAction.handler;
+        const removeActionWithValidationStep = () => {
+          if (!this.typeService.isConsistent(this.editObject.control.value)) return removeHandler();
 
-        this.actionList = Object.values(this.editObject.actions);
+          const subscription = this.matDialog
+            .open(this.removeDialog, this.dialogConfig)
+            .afterClosed()
+            .pipe(
+              filter((value) => value),
+              switchMap(() => of(removeHandler())),
+            )
+            .subscribe(() => subscription.unsubscribe());
+        };
+
+        removeAction.handler = removeActionWithValidationStep;
       }
+
+      this.actionList = Object.values(this.editObject.actions);
     }
   }
 

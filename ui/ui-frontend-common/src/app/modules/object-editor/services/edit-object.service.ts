@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
 import { Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
+import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
 import { ComponentType, DisplayObjectType } from '../../object-viewer/types';
@@ -25,6 +28,7 @@ export class EditObjectService {
     private dataService: DataStructureService,
     private pathService: PathService,
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
     private logger: Logger,
   ) {}
 
@@ -32,46 +36,16 @@ export class EditObjectService {
     const schemaPath = this.schemaService.normalize(path);
     const defaultValue = this.schemaService.data(schemaPath, schema);
     const baseEditObject = this.baseEditObject(path, schemaPath, data, defaultValue, template, schema);
-    let children = [];
+    let children: EditObject[] = [];
     let control: AbstractControl = this.formBuilder.control(data);
     let actions: { [key: string]: Action } = {};
 
-    if (this.typeService.isList(data)) {
-      if (baseEditObject.kind === 'object-array') {
-        children = data.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema));
-        control = this.formBuilder.array(children.map((child) => child.control));
-
-        // Add action to current editObject
-        actions.add = {
-          label: ADD_ACTION_LABEL,
-          handler: (data = null) => {
-            const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
-            const editObject = this.editObject(`${path}[${children.length}]`, fullData, template, schema);
-
-            (control as FormArray).push(editObject.control);
-            children.push(editObject);
-            control.markAsDirty();
-
-            editObject.actions.add = actions.add;
-            editObject.actions.remove = {
-              label: REMOVE_ACTION_LABEL,
-              handler: () => this.remove({ ...baseEditObject, control, children })(editObject),
-            };
-          },
-        };
-
-        // Add actions to child of current object
-        children.forEach((child, index) => {
-          child.actions.add = actions.add;
-          child.actions.remove = {
-            label: REMOVE_ACTION_LABEL,
-            handler: () => this.remove({ ...baseEditObject, control, children })(child),
-          };
-        });
-      }
+    if (this.typeService.isList(data) && baseEditObject.kind === 'object-array') {
+      children = data.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema));
+      control = this.formBuilder.array(children.map((child) => child.control));
     }
 
-    if (this.typeService.isGroup(data)) {
+    if (this.typeService.isGroup(data) && baseEditObject.kind === 'object') {
       const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
 
       if (fullData) {
@@ -82,10 +56,25 @@ export class EditObjectService {
       }
     }
 
-    if (baseEditObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
-
     const editObject = { ...baseEditObject, control, children, actions } as EditObject;
+
+    editObject.childrenChange.next(children);
+
+    this.computeAddActions(
+      template,
+      schema,
+    )(editObject).forEach((action) => {
+      editObject.actions[action.name] = action;
+    });
+    this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
+      const child = editObject.children[i];
+
+      if (!child.required && !child.virtual) child.actions.remove = action;
+    });
     this.sort(editObject, orderedFields);
+
+    if (editObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
+    if (editObject.required) control.setValidators([Validators.required]);
 
     return editObject;
   }
@@ -210,6 +199,7 @@ export class EditObjectService {
     const displayRule = template.find((rule) => rule.ui.Path === schemaPath);
     const component: ComponentType =
       displayRule?.ui?.component || (['object', 'object-array', 'primitive-array'].includes(kind) ? 'group' : 'textfield');
+    const schemaElement = this.schemaService.find(schemaPath, schema);
 
     return {
       key,
@@ -222,6 +212,9 @@ export class EditObjectService {
       displayRule,
       open: true,
       favoriteKeys: [],
+      required: Boolean(schemaElement?.Cardinality.includes('REQUIRED')),
+      virtual: Boolean(schemaElement?.Origin === 'VIRTUAL'),
+      childrenChange: new BehaviorSubject<EditObject[]>([]),
     };
   }
 
@@ -229,16 +222,110 @@ export class EditObjectService {
     return /\[\d+\]/gm.test(path);
   }
 
-  private remove =
-    (parent: Partial<EditObject>) =>
-    (child: EditObject): void => {
-      const index = parent.children.findIndex((item) => item === child);
+  private computeChildrenRemoveActions = (editObject: Partial<EditObject>): Action[] => {
+    if (editObject.kind === 'object-array') {
+      return editObject.children.map((child) => ({
+        name: 'remove',
+        label: REMOVE_ACTION_LABEL,
+        handler: () => {
+          const index = editObject.children.findIndex((item) => item === child);
+          const canRemove =
+            Boolean(editObject.required && editObject.children.length > 1) ||
+            Boolean(!editObject.required && editObject.children.length > 0);
 
-      if (index < 0) throw new Error('Cannot removeAt negative index');
-      if (parent.kind !== 'object-array') throw new Error('Cannot removeAt on non object array');
+          if (index !== -1 && canRemove) {
+            (editObject.control as FormArray).removeAt(index);
+            (editObject.control as FormArray).markAsDirty();
+            editObject.children.splice(index, 1);
+            editObject.childrenChange.next(editObject.children);
+          }
+        },
+      }));
+    }
 
-      (parent.control as FormArray).removeAt(index);
-      parent.control.markAsDirty();
-      parent.children.splice(index, 1);
+    if (editObject.kind === 'object') {
+      return editObject.children.map((child) => ({
+        name: 'remove',
+        label: REMOVE_ACTION_LABEL,
+        handler: () => {
+          const index = editObject.children.findIndex((item) => item === child);
+
+          if (index !== -1) {
+            (editObject.control as FormGroup).removeControl(child.key);
+            (editObject.control as FormArray).markAsDirty();
+            editObject.children.splice(index, 1);
+            editObject.childrenChange.next(editObject.children);
+          }
+        },
+      }));
+    }
+
+    return [];
+  };
+
+  private computeAddActions =
+    (template: Template, schema: Schema) =>
+    (editObject: Partial<EditObject>): Action[] => {
+      if (editObject.kind === 'object-array') {
+        const add: Action = {
+          name: 'add',
+          label: ADD_ACTION_LABEL,
+          handler: (data = null) => {
+            const defaultValue = this.schemaService.data(this.schemaService.normalize(editObject.path), schema);
+            const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
+            const eo = this.editObject(`${editObject.path}[${editObject.children.length}]`, fullData, template, schema);
+
+            (editObject.control as FormArray).push(eo.control);
+            (editObject.control as FormArray).markAsDirty();
+            editObject.children.push(eo);
+            this.sort(editObject as EditObject, orderedFields);
+            editObject.childrenChange.next(editObject.children);
+
+            this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
+              editObject.children[i].actions.remove = action;
+            });
+
+            eo.actions.add = add;
+          },
+        };
+
+        editObject.children.forEach((child) => {
+          child.actions.add = add;
+        });
+
+        return [add];
+      }
+
+      if (editObject.kind === 'object') {
+        return editObject.children
+          .filter((child) => child.kind === 'object')
+          .filter((child) => !child.required)
+          .filter((child) => !child.virtual)
+          .map((child) => {
+            return {
+              name: `add-${child.key.toLowerCase()}`,
+              label: `${this.translateService.instant(ADD_ACTION_LABEL)}: ${child.key}`,
+              handler: (data = null) => {
+                if (editObject.children.some((item) => item.path === child.path)) return;
+
+                const defaultValue = this.schemaService.data(this.schemaService.normalize(child.path), schema);
+                const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
+                const eo = this.editObject(child.path, fullData, template, schema);
+
+                (editObject.control as FormGroup).addControl(eo.key, eo.control);
+                (editObject.control as FormGroup).markAsDirty();
+                editObject.children.push(eo);
+                this.sort(editObject as EditObject, orderedFields);
+                editObject.childrenChange.next(editObject.children);
+
+                this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
+                  editObject.children[i].actions.remove = action;
+                });
+              },
+            };
+          });
+      }
+
+      return [];
     };
 }

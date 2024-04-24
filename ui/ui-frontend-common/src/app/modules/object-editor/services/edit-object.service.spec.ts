@@ -1,5 +1,7 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
@@ -18,7 +20,13 @@ describe('EditObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, LoggerModule.forRoot()],
-      providers: [TypeService, MockSchemaService, SchemaElementToDisplayRuleService, DisplayRuleHelperService],
+      providers: [
+        TypeService,
+        MockSchemaService,
+        SchemaElementToDisplayRuleService,
+        DisplayRuleHelperService,
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+      ],
     });
     service = TestBed.inject(EditObjectService);
   });

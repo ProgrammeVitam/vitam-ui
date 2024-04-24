@@ -9,7 +9,7 @@
         <div class="v-row">
           <div class="v-col align-items-center">
             <i class="vitamui-icon icon vitamui-icon-chevron-right"></i>
-            <span class="object-name">{{ editObject.displayRule.ui.label | empty }}</span>
+            <span class="object-name">{{ editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required }}</span>
           </div>
           <div *ngIf="favoriteEntry" class="v-col align-items-center favorite-entry">
             {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
@@ -38,8 +38,12 @@
   </ng-container>
   <vitamui-common-repeatable-input
     *ngIf="editObject?.kind === 'primitive-array'"
-    [placeholder]="editObject.displayRule.ui.label | empty"
+    [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
     [textarea]="editObject.displayRule.ui.layout.size === 'large'"
     [formControl]="editObject.control"
   ></vitamui-common-repeatable-input>
 </ng-template>
+
+<vitamui-common-input-error *ngIf="editObject?.key && editObject.control.invalid" class="vitamui-input-errors">
+  {{ editObject.displayRule.ui.label | translate | empty }}: {{ 'COMMON.INCORRECT_VALUE' | translate }}
+</vitamui-common-input-error>

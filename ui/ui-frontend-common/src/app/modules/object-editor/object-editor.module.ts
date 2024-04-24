@@ -21,9 +21,10 @@ import { GroupEditorComponent } from './components/group-editor/group-editor.com
 import { ListEditorComponent } from './components/list-editor/list-editor.component';
 import { PrimitiveEditorComponent } from './components/primitive-editor/primitive-editor.component';
 import { ObjectEditorComponent } from './object-editor.component';
+import { AppendStarPipe } from './required.pipe';
 
 @NgModule({
-  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
+  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent, AppendStarPipe],
   providers: [{ provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService }],
   imports: [
     CommonModule,

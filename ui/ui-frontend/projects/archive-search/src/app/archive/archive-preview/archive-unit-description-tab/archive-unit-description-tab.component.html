@@ -2,7 +2,7 @@
 
 <div *ngIf="editMode">
   <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.2' }" class="editor-banner">
-    <button (click)="onSave()" [disabled]="!isModified()" class="btn primary save">
+    <button (click)="onSave()" [disabled]="!shouldSave()" class="btn primary save">
       {{ 'COMMON.SAVE' | translate }}
     </button>
     <button (click)="onCancel()" class="btn primary cancel">
@@ -23,7 +23,7 @@
   </mat-dialog-content>
   <br />
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+    <button [matDialogClose]="true" [disabled]="!shouldSave()" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CONFIRM' | translate }}
     </button>
     <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CANCEL' | translate }}</button>
@@ -42,7 +42,7 @@
   </mat-dialog-content>
   <br />
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+    <button [matDialogClose]="true" [disabled]="!shouldSave()" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CONFIRM' | translate }}
     </button>
     <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CANCEL' | translate }}</button>
