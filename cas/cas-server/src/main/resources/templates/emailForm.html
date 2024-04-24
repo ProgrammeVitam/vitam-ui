@@ -27,6 +27,14 @@
           <div class="Text-medium-bold" th:text="#{screen.welcome.label.superuser}">Super utilisateur :</div>&nbsp;
           <div class="Text-medium" th:text="${loginEmail}">superadmin@programmevitam.fr</div>
         </div>
+        <div class="warning Caption" th:if="${#fields.hasErrors('*')}">
+          <i class="vitamui-icon vitamui-icon-anomalie"></i>
+          <div class="col">
+            <div class="element" th:each="err : ${#fields.errors('*')}" th:text="${err}">
+              Exemple d'erreur
+            </div>
+          </div>
+        </div>
       </form>
     </div>
 
