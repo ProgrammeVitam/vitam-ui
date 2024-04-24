@@ -251,6 +251,7 @@ spring:
 
             # Collect Referential API
             - RewritePath=/collect-api/schemas,/schemas
+            - RewritePath=/collect-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
 
