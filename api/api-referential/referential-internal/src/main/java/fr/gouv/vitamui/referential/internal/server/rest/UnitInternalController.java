@@ -88,12 +88,10 @@ public class UnitInternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public JsonNode findUnitById(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final String id) throws VitamClientException, InvalidParseOperationException,
         PreconditionFailedException {
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        SanityChecker.checkSecureParameter(id, accessContractId);
         return unitInternalService.findUnitById(id, vitamContext);
     }
 

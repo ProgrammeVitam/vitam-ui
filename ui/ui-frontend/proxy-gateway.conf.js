@@ -288,7 +288,7 @@ const PROXY_CONFIG = [
   },
   {
     // collect to Referential External Backend
-    context: ['/collect-api/ontology', '/collect-api/search/filingplan', '/collect-api/schemas', '/collect-api/rules'],
+    context: ['/collect-api/ontology', '/collect-api/search', '/collect-api/schemas', '/collect-api/rules'],
     target: {
       protocol: 'https:',
       host: 'localhost',
@@ -301,6 +301,7 @@ const PROXY_CONFIG = [
     logLevel: 'debug',
     pathRewrite: {
       '^/collect-api/ontology': '/referential/v1/ontology',
+      '^/collect-api/search/units': '/units',
       '^/collect-api/search/filingplan': '/units/filingplan',
       '^/collect-api/schemas': '/schemas',
       '^/collect-api/rules': '/referential/v1/rules',

@@ -194,6 +194,7 @@ spring:
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
+            - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api/static(?<segment>.*), $\{segment}
