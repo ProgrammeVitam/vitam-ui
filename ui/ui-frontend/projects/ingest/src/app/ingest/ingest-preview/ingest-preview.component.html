@@ -1,4 +1,5 @@
 <vitamui-common-sidenav-header
+  *ngIf="ingest"
   [badge]="getIngestStatusColor()"
   [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"
   [icon]="'vitamui-icon-box vitamui-row-icon'"
