@@ -60,7 +60,7 @@
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  when: ansible_distribution_version == "10"
+  when: ansible_distribution_version | int == 10
 
 - name: installer docker & pip3
   apt:
@@ -70,7 +70,7 @@
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  when: ansible_distribution_version == "11" or ansible_distribution_version == "12"
+  when: ansible_distribution_version | int == 11 or ansible_distribution_version | int == 12
 
 - block:
 
