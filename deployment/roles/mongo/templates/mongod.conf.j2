@@ -5,11 +5,12 @@
 
 
 # where to write logging data.
+{% if install_mode != 'container' %}
 systemLog:
   destination: file
   logAppend: true
   path: {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/mongod/mongod.log
-
+{% endif %}
 
 # Where and how to store data.
 storage:

@@ -10,16 +10,18 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
   notify: "mongo - restart service"
+  when: install_mode != "container"
 
 - name: Disable mongod default service
   service:
     name: mongod
     state: stopped
     enabled: no
+  when: install_mode != "container"
 
 - name: Deploy systemd service file for vitamui-mongod
   template:
-    src: vitamui-mongod.service.j2
+    src: "vitamui-{{ 'container-' if install_mode == 'container' else '' }}mongod.service.j2"
     dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/vitamui-mongod.service"
     owner: root
     group: root
@@ -34,7 +36,7 @@
     state: directory
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
   with_items:
     - app
     - bin
@@ -53,8 +55,8 @@
     state: directory
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  notify: "mongo - restart service"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
+  notify: mongo - restart service
   tags: update_mongodb_configuration
 
 - name: Create the mongod configuration server file
@@ -63,8 +65,8 @@
     dest: "{{ mongo_config_path }}/mongod.conf"
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  notify: "mongo - restart service"
+    mode: "{{ '0444' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
+  notify: mongo - restart service
   tags: update_mongodb_configuration
 
 # TODO: Add logrotate
@@ -76,7 +78,7 @@
     path: "{{ consul.conf_folder | default('/vitam/conf/consul') }}"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
     state: directory
   tags:
     - consul_conf
@@ -88,7 +90,7 @@
     dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/service-mongod.json"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
   tags:
     - consul_conf
     - update_mongodb_configuration

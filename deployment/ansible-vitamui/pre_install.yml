@@ -5,3 +5,4 @@
     - checks
     - normalize
     - users
+    - { role: docker, when: install_mode | default('legacy') == "container" }

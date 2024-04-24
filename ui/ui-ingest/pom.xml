@@ -27,6 +27,7 @@
         <skipTests>false</skipTests>
         <skipAllFrontend>false</skipAllFrontend>
         <skipAllFrontendTests>false</skipAllFrontendTests>
+           <jib.skip>true</jib.skip>
     </properties>
 
 
@@ -163,6 +164,16 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ui-ingest</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

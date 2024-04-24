@@ -1,0 +1,27 @@
+[Unit]
+Description=Docker container service unit
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:latest
+ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitamui_component }} --user 1002:1003 \
+                              -e "JAVA_TOOL_OPTIONS={{ vitamui_struct.jvm_opts.gc | default(jvm_opts.gc) }} -XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0 -XX:+ExitOnOutOfMemoryError -Dlogback.configurationFile={{ vitamui_folder_conf }}/logback.xml -Dvitam.config.folder={{ vitamui_folder_conf }} -Dvitam.data.folder={{ vitamui_folder_data }} -Dvitam.tmp.folder={{ vitamui_folder_tmp }} -Dvitam.log.folder={{ vitamui_folder_log }} -Djava.security.properties={{ vitamui_folder_conf }}/java.security -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -XX:HeapDumpPath={{ vitamui_folder_log }}" \
+                              -e "SPRING_CONFIG_ADDITIONAL_LOCATION={{ vitamui_folder_conf }}/application.yml" \
+                              -e "SPRING_APPLICATION_NAME={{ vitamui_struct.vitamui_component }}" \
+                              -v "{{ vitamui_folder_conf }}:{{ vitamui_folder_conf }}:rw" \
+                              -v "{{ vitamui_folder_log }}:{{ vitamui_folder_log }}:rw" \
+                              -v "{{ vitamui_folder_data }}:{{ vitamui_folder_data }}:rw" \
+                              -v "{{ vitamui_folder_tmp }}:{{ vitamui_folder_tmp }}:rw" \
+                              -v "{{ vitamui_folder_lib }}:{{ vitamui_folder_lib }}:rw" \
+                              -v "/vitamui/conf/assets:/vitamui/conf/assets:rw" \
+                              {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:latest
+
+ExecStop=/usr/bin/docker stop -t 85 {{ vitamui_struct.vitamui_component }}
+ExecReload=/usr/bin/docker restart -t 85 {{ vitamui_struct.vitamui_component }}
+TimeoutStartSec=60
+TimeoutStopSec=30
+StartLimitBurst=6
+
+[Install]
+WantedBy=multi-user.target

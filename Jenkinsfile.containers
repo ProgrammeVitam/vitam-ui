@@ -1,0 +1,107 @@
+/* groovylint-disable LineLength */
+pipeline {
+    agent {
+        label 'java11'
+    }
+
+    environment {
+        MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
+        MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DdeployAtEnd=true "
+        M2_REPO = "${HOME}/.m2"
+        CI = credentials("app-jenkins")
+        SERVICE_SONAR_URL = credentials("service-sonar-java11-url")
+        SERVICE_NEXUS_URL = credentials("service-nexus-url")
+        SERVICE_REPO_SSHURL = credentials("repository-connection-string")
+        SERVICE_DOCKER_PULL_URL=credentials("SERVICE_DOCKER_PULL_URL")
+        SERVICE_DOCKER_PUSH_URL=credentials("SERVICE_DOCKER_PUSH_URL")
+        SERVICE_REPOSITORY_URL=credentials("service-repository-url")
+        GITHUB_ACCOUNT_TOKEN = credentials("vitam-prg-token")
+    }
+
+    stages {
+        stage('Build and create docker images'){
+            steps {
+                withCredentials([
+                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
+                string(credentialsId: "service-nexus-url", variable: 'SERVICE_NEXUS_URL')
+                ]) {
+                sh 'mvn --settings .ci/settings.xml install -Djib.skip=false -DskipTests=true --show-version --batch-mode --errors -fn -DinstallAtEnd=true -DdeployAtEnd=true package -Pvitam -Djacoco.skip=true -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -Djib.to.auth.username=$CI_USR -Djib.to.auth.password=$CI_PSW -pl "!cots/vitamui-logstash,!cots/vitamui-mongo-express" -Denv.SERVICE_NEXUS_URL=$SERVICE_NEXUS_URL -DsendCredentialsOverHttp=true'
+                }
+            }
+        }
+
+        stage('Set scanner prerequisites') {
+            steps {
+                // Install trivy
+                sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.47.0'
+                sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl > html.tpl'
+                withCredentials([
+                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
+                string(credentialsId: "service-nexus-url", variable: 'SERVICE_NEXUS_URL')
+                ]) {
+                    sh 'echo $CI_PSW | docker login $SERVICE_DOCKER_PUSH_URL -u $CI_USR --password-stdin'
+                }
+            }
+        }
+
+        stage('Scan containers') {
+            steps {
+                // Scan all vuln levels
+                sh 'mkdir -p reports'
+                script {
+                    def dockerImages = [
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/security-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/iam-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/referential-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/referential-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/pastis-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/api-gateway',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/cas-server',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-portal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-identity',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-ingest',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-archive-search',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-pastis',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-collect',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-referential'
+                        // Add more images as needed
+                    ]
+                    dockerImages.each { image ->
+                        def imageName = image.tokenize('/').last()
+
+                        // Pull the Docker image
+                        sh "docker pull $image"
+
+                        // Run Trivy scan
+                        sh "trivy image $image --ignore-unfixed --vuln-type os,library --format template --template '@html.tpl' -o reports/${imageName}-scan.html"
+
+                        // Publish HTML report
+                        publishHTML target: [
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'reports',
+                            reportFiles: "${imageName}-scan.html",
+                            reportName: "Trivy Scan ${imageName}",
+                            reportTitles: "Trivy Scan ${imageName}"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        // Clean after build
+        always {
+            sh 'docker system prune -a -f'
+            cleanWs()
+        }
+    }
+}

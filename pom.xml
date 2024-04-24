@@ -1628,6 +1628,43 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.4.2</version>
+                    <configuration>
+                        <from>
+                          <!--<image>gcr.io/distroless/java11-debian11</image>-->
+                          <image>gcr.io/distroless/java17</image>
+                        </from>
+                        <allowInsecureRegistries>true</allowInsecureRegistries>
+                        <container>
+                            <jvmFlags>
+                                <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
+                                <jvmFlag>-XX:MinRAMPercentage=50.0</jvmFlag>
+                                <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
+                            </jvmFlags>
+                            <labels>
+                            <!--  <git.commit.id>${git.commit.id}</git.commit.id>-->
+                                <mvn.build.version>${project.version}</mvn.build.version>
+                            </labels>
+                        </container>
+                        <ignoreErrors>
+                            <error>
+                                <errorCode>ERROR_UNKNOWN_BLOB</errorCode>
+                                <errorType>push</errorType>
+                            </error>
+                        </ignoreErrors>
+                    </configuration>
+                    <executions>
+                        <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven.source.plugin.version}</version>
                 </plugin>
@@ -1675,6 +1712,10 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven.jar.plugin.version}</version>
+                    <configuration>
+                     <!-- Supprimer l'option classifier -->
+                    <classifier></classifier>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1998,7 +2039,6 @@
                 </plugins>
             </build>
         </profile>
-
         <!-- This profile is used to build rpm package.-->
         <profile>
             <id>rpm</id>

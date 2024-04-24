@@ -22,6 +22,7 @@
         <sonar.sources>src/main/java</sonar.sources>
         <swagger.dir>ui</swagger.dir>
         <swagger.skip>false</swagger.skip>
+           <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
@@ -169,6 +170,16 @@
             </testResource>
         </testResources>
         <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ui-portal</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

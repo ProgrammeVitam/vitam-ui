@@ -9,3 +9,4 @@
   service:
     name: "{{ mongo_express.service_name | default('vitamui-mongo-express') }}"
     state: restarted
+    daemon_reload: yes

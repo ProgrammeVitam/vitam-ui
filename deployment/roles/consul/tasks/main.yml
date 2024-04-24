@@ -15,10 +15,11 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
   notify: "consul - restart service"
+  when: install_mode != "container"
 
 - name: Deploy systemd service file for vitam-consul
   template:
-    src: vitam-consul.service.j2
+    src: vitam-{{ 'container-' if install_mode == 'container' else '' }}consul.service.j2
     dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/vitam-consul.service"
     owner: root
     group: root
@@ -29,6 +30,7 @@
   user:
     name: vitam
     groups: vitam, {{ vitamui_defaults.users.group | default('vitamui') }}
+  when: install_mode != "container"
 
 #### Configuration ####
 
@@ -38,7 +40,7 @@
     state: directory
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
   with_items:
     - app
     - bin
@@ -57,6 +59,7 @@
     group: "{{ vitam_defaults.users.group }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: "consul - restart service"
+  when: install_mode != "container"
 
 - name: Deploy consul common configuration files
   template:
@@ -64,7 +67,7 @@
     dest: "{{ consul.conf_folder | default('/vitam/conf/consul') }}/consul.json"
     owner: "{{ vitam_defaults.users.vitam }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
   notify: "consul - restart service"
 
 # Ensure that the installation is complete and consul up before setting up the system-wide dns resolver...
@@ -134,3 +137,10 @@
     host: "127.0.0.1"
     port: 53
     state: "started"
+
+- name: Restart vitam-consul
+  service:
+    name: vitam-consul
+    enabled: "{{ consul.at_boot | default(service_at_boot) }}"
+    state: restarted
+  when: install_mode == "container"

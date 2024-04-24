@@ -87,6 +87,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <!-- Supprimer l'option classifier -->
+                        <classifier></classifier>
+                    </configuration>
                 <executions>
                     <execution>
                         <goals>
