@@ -113,7 +113,7 @@ export class SchemaElementToDisplayRuleService {
       Path: null,
       ui: {
         Path: null,
-        component: 'textfield',
+        component: 'textarea',
       },
     },
     'textfield-large-multi': {
