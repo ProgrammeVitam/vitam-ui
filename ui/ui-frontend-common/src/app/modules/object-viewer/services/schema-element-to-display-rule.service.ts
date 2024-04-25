@@ -156,16 +156,26 @@ export class SchemaElementToDisplayRuleService {
   public mapSchemaElementToComponent(schemaElement: SchemaElement): ComponentName {
     const defaultComponent: ComponentName = 'textfield-short-mono';
 
-    if (!schemaElement) return defaultComponent;
+    if (!schemaElement) {
+      return defaultComponent;
+    }
 
     switch (schemaElement.DataType) {
       case 'OBJECT':
         const computedDepth = schemaElement.Path.split('.').length - 1;
 
-        if (computedDepth === 0) return 'balise-n1';
-        if (computedDepth === 1) return 'balise-n2';
-        if (computedDepth === 2) return 'balise-n3';
-        if (computedDepth === 3) return 'balise-n4';
+        if (computedDepth === 0) {
+          return 'balise-n1';
+        }
+        if (computedDepth === 1) {
+          return 'balise-n2';
+        }
+        if (computedDepth === 2) {
+          return 'balise-n3';
+        }
+        if (computedDepth === 3) {
+          return 'balise-n4';
+        }
 
         return defaultComponent;
       case 'STRING':
@@ -174,20 +184,40 @@ export class SchemaElementToDisplayRuleService {
         const isSpecial = schemaElement.Path.includes('_.');
 
         if (isSpecial) {
-          if (isUnique && schemaElement.StringSize === 'SHORT') return 'attribut-short-mono';
-          if (isMultiple && schemaElement.StringSize === 'SHORT') return 'attribut-short-multi';
-          if (isUnique) return 'attribut-mono';
-          if (isMultiple) return 'attribut-multi';
+          if (isUnique && schemaElement.StringSize === 'SHORT') {
+            return 'attribut-short-mono';
+          }
+          if (isMultiple && schemaElement.StringSize === 'SHORT') {
+            return 'attribut-short-multi';
+          }
+          if (isUnique) {
+            return 'attribut-mono';
+          }
+          if (isMultiple) {
+            return 'attribut-multi';
+          }
 
           return defaultComponent;
         }
 
-        if (isUnique && schemaElement.StringSize === 'SHORT') return 'textfield-short-mono';
-        if (isUnique && schemaElement.StringSize === 'MEDIUM') return 'textfield-medium-mono';
-        if (isUnique && schemaElement.StringSize === 'LARGE') return 'textfield-large-mono';
-        if (isMultiple && schemaElement.StringSize === 'SHORT') return 'textfield-short-multi';
-        if (isMultiple && schemaElement.StringSize === 'MEDIUM') return 'textfield-medium-multi';
-        if (isMultiple && schemaElement.StringSize === 'LARGE') return 'textfield-large-multi';
+        if (isUnique && schemaElement.StringSize === 'SHORT') {
+          return 'textfield-short-mono';
+        }
+        if (isUnique && schemaElement.StringSize === 'MEDIUM') {
+          return 'textfield-medium-mono';
+        }
+        if (isUnique && schemaElement.StringSize === 'LARGE') {
+          return 'textfield-large-mono';
+        }
+        if (isMultiple && schemaElement.StringSize === 'SHORT') {
+          return 'textfield-short-multi';
+        }
+        if (isMultiple && schemaElement.StringSize === 'MEDIUM') {
+          return 'textfield-medium-multi';
+        }
+        if (isMultiple && schemaElement.StringSize === 'LARGE') {
+          return 'textfield-large-multi';
+        }
 
         // Rules for enums not represented in schemas
         // if (schemaElement.Type === 'TEXT') {
@@ -222,15 +252,14 @@ export class SchemaElementToDisplayRuleService {
   public mapSchemaElementToDisplayRule(schemaElement: SchemaElement): DisplayRule {
     const component: ComponentName = this.mapSchemaElementToComponent(schemaElement);
     const baseDisplayRule = this.schemaElementComponentTypeToDisplayRule[component];
-
-    const size = { SHORT: 'small', MEDIUM: 'medium', LARGE: 'large' }[schemaElement.StringSize || 'MEDIUM'] as LayoutSize;
+    const size = { SHORT: 'small', MEDIUM: 'medium', LARGE: 'large' }[schemaElement.StringSize || 'SHORT'] as LayoutSize;
     return {
       ...baseDisplayRule,
       Path: schemaElement.Path,
       ui: {
         ...baseDisplayRule.ui,
         layout: {
-          size: size,
+          size,
           columns: size === 'small' ? 1 : 2,
         },
         Path: schemaElement.ApiPath,
