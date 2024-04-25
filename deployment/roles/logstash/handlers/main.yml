@@ -1,11 +1,12 @@
 ---
 
-- name: restart logstash
-  service:
-    name: "{{ logstash.service_name | default('vitamui-logstash') }}"
+- name: "logstash - restart service"
+  systemd:
+    name: logstash
     state: restarted
+    daemon_reload: yes
 
-- name: reload consul configuration for logstash
-  service:
+- name: "logstash - reload consul configuration"
+  systemd:
     name: "{{ consul.service_name | default('vitam-consul') }}"
     state: reloaded

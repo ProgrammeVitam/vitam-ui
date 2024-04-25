@@ -1,0 +1,11 @@
+#jinja2: lstrip_blocks: True
+
+input
+{
+    syslog {
+        add_field => [ "input", "syslog" ]
+        host => "{{ ip_admin }}"
+        port => 10514
+        codec => plain { charset=>"UTF-8" }
+    }
+}

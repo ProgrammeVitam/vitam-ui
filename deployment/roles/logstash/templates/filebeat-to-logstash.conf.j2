@@ -16,7 +16,7 @@ output
         elasticsearch
         {
             index => "logstash-system-%{+YYYY.MM.dd}"
-            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+            hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
         }
     }
     else if [fields][kind] =~ "access" or [fields][kind] =~ "management"
@@ -24,7 +24,7 @@ output
         elasticsearch
         {
             index => "logstash-access-%{+YYYY.MM.dd}"
-            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+            hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
         }
     }
     else
@@ -32,7 +32,7 @@ output
         elasticsearch
         {
             index => "logstash-vitam-%{+YYYY.MM.dd}"
-            hosts =>  [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+            hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
         }
     }
 }

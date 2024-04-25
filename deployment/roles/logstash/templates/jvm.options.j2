@@ -3,8 +3,8 @@
 # Xms represents the initial size of total heap space
 # Xmx represents the maximum size of total heap space
 
--Xms{{ (ansible_memory_mb.real.total / 8) | int }}m
--Xmx{{ (ansible_memory_mb.real.total / 4) | int }}m
+-Xms{{ logstash.jvm_xms | default( (ansible_memory_mb.real.total / 8) | int ) }}m
+-Xmx{{ logstash.jvm_xmx | default( (ansible_memory_mb.real.total / 4) | int ) }}m
 
 ################################################################
 ## Expert settings
@@ -16,13 +16,15 @@
 ##
 ################################################################
 
+## GC configuration
+
 ## G1GC Configuration
 # NOTE: G1 GC is only supported on JDK version 10 or later
 -XX:+UseG1GC
 -XX:G1ReservePercent=25
 -XX:InitiatingHeapOccupancyPercent=30
 
-## Locale
+## locale
 # Set the locale language
 #-Duser.language=en
 
@@ -65,3 +67,6 @@
 
 # JDK 9+ GC logging
 -Xlog:gc*,gc+age=trace,safepoint:file={{ logstash_log_dir }}/gc.log:utctime,pid,tags:filecount=8,filesize=16m
+
+# Prevent from exploit in old log4j2 versions <2.17.1
+-Dlog4j2.formatMsgNoLookups=true

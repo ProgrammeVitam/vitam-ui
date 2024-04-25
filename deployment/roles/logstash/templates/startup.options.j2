@@ -26,12 +26,12 @@ LS_JAVA_OPTS=""
 LS_PIDFILE=/var/run/logstash.pid
 
 # user and group id to be invoked as
-LS_USER=vitamuidb
-LS_GROUP=vitamui
+LS_USER={{ logstash_user }}
+LS_GROUP={{ vitamui_defaults.users.group }}
 
 # Enable GC logging by uncommenting the appropriate lines in the GC logging
 # section in jvm.options
-LS_GC_LOG_FILE={{logstash_log_dir}}/gc.log
+LS_GC_LOG_FILE={{ logstash_log_dir }}/gc.log
 
 # Open file limit
 LS_OPEN_FILES=16384
