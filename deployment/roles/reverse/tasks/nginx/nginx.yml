@@ -18,7 +18,7 @@
 - name: 'Tasks > reverse > configure_nginx.yml | Put ssl conf'
   template:
     src: "nginx/ssl/{{ item }}.j2"
-    dest: "{{ nginx_ssl_dir }}/{{ item  }}"
+    dest: "{{ nginx_ssl_dir }}/{{ item }}"
     group: "{{ reverse_group }}"
     owner: "{{ reverse_user }}"
     mode: "{{ vitamui_defaults.folder.conf_permission }}"

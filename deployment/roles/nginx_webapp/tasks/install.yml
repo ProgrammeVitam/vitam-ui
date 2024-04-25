@@ -56,7 +56,7 @@
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: "Add UI certificate to reverse for {{ vitamui_struct.vitamui_component }}"
+- name: "Add UI certificates for {{ vitamui_struct.vitamui_component }}"
   copy:
     src: "{{ item }}"
     dest: "{{ nginx_ssl_dir }}"
@@ -64,8 +64,18 @@
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   with_fileglob:
-    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
-    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
+    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}.crt"
+    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}.key"
+  notify: reload nginx
+
+- name: Put ssl configuration when secure is enabled
+  template:
+    src: ssl-ui.conf.j2
+    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}-ssl.conf"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  when: vitamui_struct.secure | default(true) | bool
   notify: reload nginx
 
 - block:
@@ -87,13 +97,13 @@
 
 - name: "Selected key for {{ vitamui_struct.vitamui_component }}"
   set_fact:
-    selected_key: "{{ ui_keys['client_client_external_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
+    selected_key: "{{ ui_keys['server_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
   no_log: "{{ hide_passwords_during_deploy }}"
 
 - name: "Add keypass for {{ vitamui_struct.vitamui_component }}"
   template:
     src: certificate.key_pass.j2
-    dest: "{{ nginx_ssl_dir }}/{{vitamui_struct.vitamui_component}}.key_pass"
+    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitamui_defaults.folder.conf_permission }}"

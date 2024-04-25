@@ -13,7 +13,7 @@ server {
   # UI IDENTITY_ADMIN
   location /identity-admin {
     rewrite /identity-admin/(.*) /$1  break;
-    proxy_pass http://IDENTITY_ADMIN;
+    proxy_pass {{ 'https' if vitamui.identity_admin.secure | default(true) | bool else 'http' }}://IDENTITY_ADMIN;
     sub_filter '/identity/' '{{ url_prefix }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
@@ -24,7 +24,7 @@ server {
   # UI IDENTITY
   location /identity {
     rewrite /identity/(.*) /$1  break;
-    proxy_pass http://IDENTITY;
+    proxy_pass {{ 'https' if vitamui.identity.secure | default(true) | bool else 'http' }}://IDENTITY;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
@@ -32,7 +32,7 @@ server {
   # UI REFERENTIAL
   location /referential {
     rewrite /referential/(.*) /$1  break;
-    proxy_pass http://REFERENTIAL;
+    proxy_pass {{ 'https' if vitamui.referential.secure | default(true) | bool else 'http' }}://REFERENTIAL;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -42,7 +42,7 @@ server {
   # UI INGEST
   location /ingest {
     rewrite /ingest/(.*) /$1  break;
-    proxy_pass http://INGEST;
+    proxy_pass {{ 'https' if vitamui.ingest.secure | default(true) | bool else 'http' }}://INGEST;
 
     include {{ nginx_conf_dir }}/proxy_params;
 
@@ -63,7 +63,7 @@ server {
   # UI ARCHIVE_SEARCH
   location /archive-search {
     rewrite /archive-search/(.*) /$1  break;
-    proxy_pass http://ARCHIVE_SEARCH;
+    proxy_pass {{ 'https' if vitamui.archive_search.secure | default(true) | bool else 'http' }}://ARCHIVE_SEARCH;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -73,7 +73,7 @@ server {
   # UI PASTIS
   location /pastis {
     rewrite /pastis/(.*) /$1  break;
-    proxy_pass http://PASTIS;
+    proxy_pass {{ 'https' if vitamui.pastis.secure | default(true) | bool else 'http' }}://PASTIS;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }
@@ -83,7 +83,7 @@ server {
   # UI COLLECT
   location /collect {
     rewrite /collect/(.*) /$1  break;
-    proxy_pass http://COLLECT;
+    proxy_pass {{ 'https' if vitamui.collect.secure | default(true) | bool else 'http' }}://COLLECT;
 
     include {{ nginx_conf_dir }}/proxy_params;
 
@@ -112,7 +112,7 @@ server {
 
   # PORTAL
   location / {
-    proxy_pass http://PORTAL;
+    proxy_pass {{ 'https' if vitamui.portal.secure | default(true) | bool else 'http' }}://PORTAL;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

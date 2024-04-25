@@ -28,13 +28,13 @@ db.certificates.insertOne({
 {{ process('{{ pki_dir }}/server/hosts/%host%/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/iam-internal.pem', 'iam_internal_context', 'hosts_vitamui_iam_internal') }}
 
-{{ process('{{ pki_dir }}/client-external/clients/ui-portal/ui-portal.pem', 'ui_portal_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-identity/ui-identity.pem', 'ui_identity_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-referential/ui-referential.pem', 'ui_referential_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-archive-search/ui-archive-search.pem', 'ui_archive_search_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-ingest/ui-ingest.pem', 'ui_ingest_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-pastis/ui-pastis.pem', 'ui_pastis_context') }}
-{{ process('{{ pki_dir }}/client-external/clients/ui-collect/ui-collect.pem', 'ui_collect_context') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-portal.pem', 'ui_portal_context', 'hosts_ui_portal') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-identity.pem', 'ui_identity_context', 'hosts_ui_identity') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-identity-admin.pem', 'ui_admin_identity_context', 'hosts_ui_identity_admin') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-referential.pem', 'ui_referential_context', 'hosts_ui_referential') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive-search.pem', 'ui_archive_search_context', 'hosts_ui_archive_search') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-ingest.pem', 'ui_ingest_context', 'hosts_ui_ingest') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-pastis.pem', 'ui_pastis_context', 'hosts_ui_pastis') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-collect.pem', 'ui_collect_context', 'hosts_ui_collect') }}
 
 print("END security.populate_certificates.js");
