@@ -92,6 +92,7 @@ public class UnitInternalController {
         PreconditionFailedException {
         final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         return unitInternalService.findUnitById(id, vitamContext);
     }
 
