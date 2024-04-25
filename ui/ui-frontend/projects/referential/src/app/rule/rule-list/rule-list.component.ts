@@ -195,7 +195,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       .subscribe(() => {
         this.snackBarService.open({
           message: 'SNACKBAR.RULE_DELETION_START',
-          icon: 'vitamui-icon-admin-rules',
           translateParams: { name: rule.ruleId },
         });
 
