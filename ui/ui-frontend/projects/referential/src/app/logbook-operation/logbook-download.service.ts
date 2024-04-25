@@ -72,7 +72,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     'PRESERVATION',
     'INGEST_CLEANUP',
   ];
-  private evTypeProcAllowed = ['AUDIT', 'EXPORT_DIP', 'ARCHIVE_TRANSFER', 'TRANSFER_REPLY', 'INGEST', 'MASS_UPDATE'];
+  private evTypeProcAllowed = ['AUDIT', 'EXPORT_DIP', 'ARCHIVE_TRANSFER', 'TRANSFER_REPLY', 'INGEST', 'MASS_UPDATE', 'BULK_UPDATE'];
 
   constructor(
     private logbookApiService: LogbookApiService,
@@ -137,6 +137,7 @@ export class LogbookDownloadService extends SearchService<Event> {
       case 'ELIMINATION':
       case 'PRESERVATION':
       case 'MASS_UPDATE':
+      case 'BULK_UPDATE':
         return DOWNLOAD_TYPE_BATCH_REPORT;
       case 'INGEST':
         return DOWNLOAD_TYPE_OBJECT;
