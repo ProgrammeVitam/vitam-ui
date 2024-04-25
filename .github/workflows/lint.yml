@@ -1,0 +1,36 @@
+name: Lint
+run-name: Linting branch ${{ github.ref }}
+on: [push]
+jobs:
+  lint-frontend:
+    name: Lint Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14.15.1'
+      - name: Check missing icon in icomoon
+        run: ./tools/check_icomoon.sh
+      # Only install prettier globally (with same version as in package.json)
+      - name: Install Prettier
+        working-directory: ui/ui-frontend
+        run: npm i -g prettier@$(jq -r '.devDependencies.prettier' package.json)
+      - name: Lint ui-frontend-common
+        working-directory: ui/ui-frontend-common
+        run: npm run prettier:ci
+      - name: Lint ui-frontend
+        working-directory: ui/ui-frontend
+        run: npm run prettier:ci
+  lint-backend:
+    name: Lint Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+      - name: Lint Java
+        run: mvn -T1C spotless:check
