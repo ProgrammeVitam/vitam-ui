@@ -216,6 +216,7 @@
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
         <!-- Put this properties to false sub-module when you want to use profile -->
         <rpm.skip>true</rpm.skip>
+        <rpm-to-update.skip>true</rpm-to-update.skip>
         <rpm_rsc.skip>true</rpm_rsc.skip>
         <rpm.publication.env>dev</rpm.publication.env>
         <!-- Swagger doc generation -->
@@ -2093,7 +2094,7 @@
                                 <configuration>
                                     <executable>make</executable>
                                     <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm.skip}</skip>
+                                    <skip>${rpm-to-update.skip}</skip>
                                     <arguments>
                                         <argument>-f</argument>
                                         <argument>${main.basedir}/tools/packaging/Makefile</argument>
@@ -2122,7 +2123,7 @@
                                         <argument>-f</argument>
                                         <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
                                         <argument>rpm</argument>
-                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>MODULES=ui-portal,ui-archive-search,ui-pastis</argument>
                                         <argument>VERSION=${project.version}</argument>
                                     </arguments>
                                 </configuration>
