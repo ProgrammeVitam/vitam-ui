@@ -87,9 +87,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <classifier>tests</classifier>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
