@@ -43,7 +43,7 @@ export const REPEATABLE_INPUT_VALUE_ACCESSOR: any = {
   multi: true,
 };
 
-type InternalValue = { id: number; value: string };
+type InternalValue = { id: number; value: string | number | boolean };
 
 @Component({
   selector: 'vitamui-common-repeatable-input',
@@ -86,8 +86,8 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
 
   constructor(private elRef: ElementRef) {}
 
-  writeValue(values: string[]) {
-    this.items = (values && values.length ? values : ['']).map((v, i) => ({ id: i, value: v }));
+  writeValue(values: InternalValue['value'][]) {
+    this.items = (values && values.length ? values : ['']).map((v, i) => ({ id: i, value: v.toString() }));
   }
 
   addInput() {
@@ -128,8 +128,8 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  isEmpty(s: string): boolean {
-    return !s?.replace(/\s/g, '');
+  isEmpty(s: InternalValue['value']): boolean {
+    return !s?.toString().replace(/\s/g, '');
   }
 
   trackBy(_: number, item: InternalValue) {
