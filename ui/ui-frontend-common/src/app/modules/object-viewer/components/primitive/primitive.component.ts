@@ -60,7 +60,7 @@ export class PrimitiveComponent implements OnInit {
     switch (uiComponent) {
       case 'datepicker':
       case 'datetime':
-        const dateFormat = this.dateDisplayService.getFormat(uiComponent);
+        const dateFormat = this.dateDisplayService.getFormat('datepicker'); // 'datetime' format is not supported, see #12739, #12744
         this.value = this.datePipe.transform(this.displayObject.value, dateFormat);
         break;
       default:

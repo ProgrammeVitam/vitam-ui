@@ -6,7 +6,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   template: `
     <div class="vitamui-input" [ngClass]="{ filled: !!value }" (click)="picker.open()">
       <span class="search-date-label">{{ label }}</span>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="value" (ngModelChange)="onChange($event)" [disabled]="disabled" />
+      <input matInput [matDatepicker]="picker" [ngModel]="value" (ngModelChange)="onChange($event)" [disabled]="disabled" />
       <i class="vitamui-icon vitamui-icon-calendar primary"></i>
       <mat-datepicker #picker></mat-datepicker>
     </div>
@@ -23,6 +23,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() label!: string;
   @Input() value: string;
+  @Input() onlyDate = true;
   disabled = false;
 
   propagateChange = (_: any) => {};
@@ -49,8 +50,15 @@ export class DatepickerComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onChange(value: Date): void {
-    this.value = value && value.toISOString();
+  onChange(date: Date): void {
+    const isoDatetime = date?.toISOString();
+
+    if (this.onlyDate) {
+      this.value = isoDatetime && isoDatetime.split('T')[0];
+    } else {
+      this.value = isoDatetime;
+    }
+
     this.propagateChange(this.value);
   }
 }
