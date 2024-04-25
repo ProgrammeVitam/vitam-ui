@@ -268,7 +268,6 @@ spring:
             - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
             - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
-            - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
 
         - id: pastis-external-service
           uri: {{ 'https' if vitamui.pastis_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis_external.host }}:{{ vitamui.pastis_external.port_service }}

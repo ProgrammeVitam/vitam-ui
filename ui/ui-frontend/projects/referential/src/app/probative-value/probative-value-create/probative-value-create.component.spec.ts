@@ -47,8 +47,8 @@ import { ConfirmDialogService, ExternalParametersService } from 'ui-frontend-com
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ArchiveApiService } from '../../core/api/archive-api.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
 
@@ -79,7 +79,8 @@ describe('ProbativeValueCreateComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: ProbativeValueService, useValue: {} },
-        { provide: ArchiveApiService, useValue: {} },
+        { provide: SearchUnitApiService, useValue: {} },
+        { provide: MatSnackBar, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: TranslateService, useValue: { instant: (key: string) => key } },
       ],
