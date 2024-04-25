@@ -5345,7 +5345,7 @@
         "COPY": "Copier",
         "PHYSICAL_ID": "Identifiant de l'objet physique",
         "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES",
-        "PERSISTENT_IDENTIFIER": "Identifiants pérennes",
+        "PERSISTENT_IDENTIFIER": "Identifiant pérenne",
         "PERSISTENT_IDENTIFIER_CONTENT": "Identifiant"
       },
       "TABS": {
