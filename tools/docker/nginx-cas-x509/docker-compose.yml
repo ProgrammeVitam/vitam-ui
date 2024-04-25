@@ -1,0 +1,7 @@
+services:
+  nginx:
+    image: nginx:1.25.4
+    network_mode: host
+    volumes:
+      - ./reverse-nginx/:/etc/nginx/:ro
+    restart: always

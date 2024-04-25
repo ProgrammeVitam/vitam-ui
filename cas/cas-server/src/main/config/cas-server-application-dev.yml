@@ -127,7 +127,7 @@ cas.authn.mfa.simple.mail.text: xxx
 
 # set port to 1025 for local development with MailHog container
 spring.mail.host: localhost
-spring.mail.port: 1025
+spring.mail.port: 2025
 spring.mail.username: no-reply@vitamui.com
 spring.mail.password: password
 spring.mail.testConnection: false
