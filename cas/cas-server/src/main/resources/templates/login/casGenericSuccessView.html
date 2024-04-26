@@ -52,7 +52,7 @@
 <div class="centered">
   <div class="logo">
     <img src="../../static/images/logo-large.svg"
-         th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/logo-large.svg}">
+         th:src="${application.vitamuiLogoLarge} ? ${application.vitamuiLogoLarge} : @{/images/logo-large.svg}">
   </div>
 
   <img class="loader" src="../../static/images/spinner.svg" alt="loading..."
