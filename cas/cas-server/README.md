@@ -7,12 +7,157 @@ This component is the CAS server.
 
 ```shell
 mvn clean package
-java -Dspring.config.location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.jar
+java -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -Dspring.profiles.active=gateway -Xms128m -Xmx512m -jar target/cas-server.jar
 ```
 
-# Developpement 
+# Main features / workflows
 
-développement des pages html - en static grace à thymeleaf et avec sass :
+## Organizations, users and email-domains
+
+VitamUI comes with a system organization, to which the superuser belongs.
+It is used to manage customer organizations.
+The superuser (superadmin@<systemdomain>) account is used to create other customer organizations.
+
+Every customer organization comes with a generic admin account (admin@<maincustomerdomain>).
+The admin account can create users and their permissions within the organization.
+
+Organizations can have multiple email domains (ex mydomain.com, myotherdomain.fr...).
+The admin account can create users within their organization with email accounts matching organization email domains.
+The user email is used as a unique identifier.
+
+Since Vitam 7.1, email domains can be shared among multiple organizations; A user can have multiple "user accounts" with
+the same email address for multiple organizations.
+However, a single email address is unique within a specific organization.
+
+During CAS authentication workflow, the user if first asked to enter its email.
+If multiple accounts match the provided email, then the user if asked to select the target organization (customerId)
+that he wants to log into.
+
+## Subrogation / deleguated authentication
+
+The super-admin user can surrogate another user to help assist them to configure or troubleshoot their account.
+
+To do so, he needs to log into VitamUI, select target organization / user to surrogate, and emits a subrogation
+request.
+The superuser is first logged out from VitamUI/CAS, then he is redirected to CAS to a welcome / confirmation
+page, to re-authenticate.
+Once logged-in, the super-user will be authenticated in the name of the surrogate user, and will be acting on his
+behalf.
+
+If the surrogate user is a generic account (e.g. an organization admin account), the subrogation request is
+automatically accepted.
+However, if the user is a nominative account (non-generic), the user to surrogate must explicitly authorize the
+subrogation request.
+To do so, he needs to log in first into his account, and then "accept" the subrogation request.
+The superuser must wait for the subrogation request to be accepted before being redirected to CAS for re-authentication.
+
+The superuser can abort the subrogation session and is redirected to CAS to re-authenticate again as a regular
+superuser.
+
+**NB.** The surrogate user needs to have a "subrogable" flag enabled.
+
+## Providers configuration
+
+VitamUI/CAS support the configuration of multiple identity providers.
+
+- Built-in / internal provider (password, with optional SMS MFA)
+- OpenId Connect: delegate authentication to another Identity Provider using OIDC protocol.
+- SAML: delegate authentication to another Identity Provider using SAML protocol.
+- TLS / X509 certificate
+
+## Internally managed password authentication
+
+CAS supports a fully featured password authentication mode :
+- Configurable password pattern policy (min length, special characters...)
+- Previously used passwords
+- Password expiration
+- Locked account due to too many failed passwords
+
+Initial password creation is done using magic-link mail upon user creation.
+
+There is no dedicated "update password" workflow (enter old password + new password + confirm new password screen).
+However, the user can update its password using "I forgot my password" link, using a magic-link mail for password reset.
+
+If the user logs in with an expired password, he'll be requested to enter a new password.
+
+## Local mail tests (dev SMTP server)
+
+A test local SMTP server can be found in `tools/docker/mail`.
+This is useful to test account creation / reset password mails with existing or fake email domains, without requiring
+actual email accounts.
+
+Just run `./start.sh`, to pop a local SMTP dev docker server. Then browse http://localhost:3000/ to view sent emails.
+
+## Multi-factor authentication (MFA) by SMS
+
+When configuring an organization and/or for a specific user, an SMS-based MFA may be configured.
+
+Authentication provider must be configured to use CAS internal authentication password, and user must have a
+phone number configured in its user account.
+
+Current version of VitamUI only supports `smsmode` (an SMS gateway platform).
+
+For now, **NO** test mode is available yet.
+To test this MFA authentication locally, you would need to either temporarily alter the SmsModeSmsSender class, to mock
+the smsmode API, or to get a real test token from smsmode...
+
+## Certificate authentication
+
+CAS can be configured to use client x509 certificates to authenticate the user.
+
+Local test configuration is available in the `tools/docker/nginx-cas-x509` folder. It provides:
+- A set of test certificates generated using a test openssl PKI: root ca, intermediate ca, client & server cert
+- Client certificate has an identifier encoded in its Subject DN (`/CN=UserCN/C=FR`), and an email `user@domain.com`
+  encoded as a SUBJECT_ALTERNATE_NAME.
+- A nginx reverse proxy configured with client/server TLS authn. It can be started using a simple `docker compose up -d`
+  The nginx server forwards the client x509 certificate to CAS (https://localhost:8080) via the `x-ssl-cert` http
+  header (configurable).
+- We'll need to update CAS configuration as follows:
+
+```
+# Authent with x509 certificate
+###############################
+# Name of HTTP header (nginx is configured to forward TSL client cert in this header)
+cas.authn.x509.sslHeaderName: x-ssl-cert
+vitamui.authn.x509.enabled: true
+vitamui.authn.x509.mandatory: true
+# Extract user email (identifier) from the Certificate "subject alternate name"
+vitamui.authn.x509.emailAttribute: 'SUBJECT_ALTERNATE_NAME'
+vitamui.authn.x509.emailAttributeParsing: '.*RFC822Name=(.*)'
+vitamui.authn.x509.emailAttributeExpansion:
+# Extract user technical identifier (used for provisionning?!) using a regex
+# /!\ the regex pattern must contain a single group (in parentheses)
+vitamui.authn.x509.identifierAttribute: 'subject_dn'
+vitamui.authn.x509.identifierAttributeParsing: 'C=.*, CN=(.*)'
+vitamui.authn.x509.identifierAttributeExpansion:
+vitamui.authn.x509.defaultDomain: 'domain.com'
+```
+
+You might need to change CAS URL `login.url` to `http://dev.vitamui.com/cas/login` in iam-external configuration.
+
+Client certificate needs to be imported into local browser certificate store (password: `azerty`).
+
+Nginx reverse proxy may be accessed using https://dev.vitamui.com:443/cas/login (instead of direct CAS access via
+https://dev.vitamui.com:8080/cas/login).
+
+**Warnings:**
+- For now, the above configuration is only available locally. VitamUI Ansible configuration must be updated to support
+  these settings.
+- Certificate authentication does work NOT with subrogation (superuser cannot be authenticated with X509 certificate).
+- Only ONE organization may use x509 certificate authentication per email domain; CAS has no means to know to which
+  organization a certificate belongs.
+
+## OpenId Connect authentication delegation
+
+> TODO
+
+## SAML authentication delegation
+
+> TODO
+
+# Development
+
+Développement des pages html - en static grace à thymeleaf et avec sass :
 ```
 npm install -g sass
 sass --watch src/main/config/sass/cas.scss src/main/resources/static/css/cas.css
@@ -71,7 +216,25 @@ password reset link: jerome.leleu@vitamui.com
 julien@vitamui.com can surrogate pierre@vitamui.com
 
 
-# CAS server (v5.2.5) customizations
+# CAS server customizations
+
+CAS is deployed in as a war-overlay (the officially recommended deployment method) with many customizations.
+
+CAS implements standard workflows using spring WebFlow; an old yet flexible framework.
+
+CAS customizations include :
+- Overriding static resources
+- Rewriting new Spring services that override partially or completely core CAS behavior.
+- Overwriting authentication workflows: Ex. Supporting multi-domain organizations / multiple-users with the same
+  login...
+- Overriding persistence: IAM internal is used for persisting of user account information, organizations (customers),
+  authentication providers...
+- ...
+
+**/!\ WARNING:**
+CAS does not officially recommend extending core workflows, but unfortunately, VitamUI does exactly that...
+This also means that upgrading CAS versions implies basically a rewrite of much customizations (3-way merge between CAS
+vN-1, CAS vN, and VitamUI's CAS customization)
 
 ## Configuration
 
@@ -84,14 +247,51 @@ The `ProvidersService` loads the identity providers from the IAM API every minut
 
 ## Webflow
 
-The webflow (`webflow/login/login-webflow` file) is customized to perform the login process in two steps:
+Spring WebFlow workflows can be highly customizable. A workflow consists of :
+- Views: templated pages rendered to the used
+- Actions: Java code handlers to process user actions (like a POST request)
+- Transitions / states: From a specific state, executing an action returns a transition to a target state (a view or
+  another action)
+- Session data: Data that can be persisted within user web session
+- Flow-scope data: Data that can be persisted and can be passed from page to page while navigating within a specific
+  web workflow. It is serialized as a secure blob persisted on client-side (as an encrypted hidden field in html forms).
+  Flow-scope data is "lost" if the client closes or refreshes his browser.
 
+Login workflow (`webflow/login/login-webflow` file) has been (deeply) customized to perform the login process in 3
+steps:
 - login input (`templates/emailForm.html`)
+- customer selection (`templates/customerForm.html`) : Optional, only when multiple user accounts match the input email.
 - password input (new file: `templates/passwordForm.html`) or authentication delegation.
 
-It's the `DispatcherAction` (called by the webflow) which computes if the user must fill in his password or be redirected to an IdP for login.
+If the provided email address matches a single user account, the target organization (customerId) is automatically
+selected.
+
+If multiple user accounts match the provided email, then the user if asked to select the target organization
+(customerId) that he wants to log into.
+
+If the provided email is invalid / does not exist in the system :
+- If the domain does not match any configured organization email domains ==> KO
+- If the domain matches a single organization, user is prompted to enter its credentials.
+  Only after credential validation, then he will be rejected with an "email or password is invalid" error message
+  (so we don't disclose account existence information).
+- If the domain matches multiple organizations, the user is asked to select the target organization then to enter its
+  credentials. Then he will be rejected with an "email or password is invalid" error message (so we don't disclose
+  account existence information).
+
+Once customerId selected (automatically or manually), the user is redirected to the appropriate authentication provider
+using the `DispatcherAction` (called by the webflow) which redirects the user: to password page if internal provider is
+selected, or an external IdP OIDC / SAML.
+TLS X509 certificate authentication is automatic, and does not follow this workflow.
 
 The external IdP can be forced using the `idp` request parameter (the `cas_idp` parameter must be used at the applications level via the `VitamUICasAuthenticationEntryPoint`).
+
+**Important:** Information disclosure is still possible in some cases :
+- The client enters too many bad credentials and locks the account: this is a global problem for most authentication
+  providers.
+- The list of configured organizations for an email domain: this is currently not considered as sensitive information.
+- The fact that organization selection depends on user account existence (no prompt for single user accounts VS multiple
+  for users having some accounts VS and all organizations for users having accounts for all organization or unknown
+  emails): This is a by-design limitation, and aims to provide enhanced user experience.
 
 ## Authentication
 
