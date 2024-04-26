@@ -197,7 +197,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private String casIdentity;
 
     @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLargeLogoPath;
+    private String vitamuiLogoLargePath;
 
     @Value("${theme.vitamui-favicon:#{null}}")
     private String vitamuiFaviconPath;
@@ -370,7 +370,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public ServletContextInitializer servletContextInitializer() {
-        return new InitContextConfiguration(vitamuiLargeLogoPath, vitamuiFaviconPath);
+        return new InitContextConfiguration(vitamuiLogoLargePath, vitamuiFaviconPath);
     }
 
     @Bean
