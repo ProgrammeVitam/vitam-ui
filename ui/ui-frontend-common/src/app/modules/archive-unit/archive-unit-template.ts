@@ -463,4 +463,60 @@ export const customTemplate: DisplayRule[] = [
       },
     },
   },
+  {
+    Path: 'PersistentIdentifier',
+    ui: {
+      Path: 'Generalities.PersistentIdentifier',
+      component: 'group',
+      layout: {
+        columns: 2,
+        size: 'medium',
+      },
+    },
+  },
+
+  {
+    Path: 'PersistentIdentifier',
+    ui: {
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierType',
+      component: 'group',
+      layout: {
+        columns: 1,
+        size: 'medium',
+      },
+    },
+  },
+  {
+    Path: 'PersistentIdentifier',
+    ui: {
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierOrigin',
+      component: 'group',
+      layout: {
+        columns: 1,
+        size: 'medium',
+      },
+    },
+  },
+  {
+    Path: 'PersistentIdentifier',
+    ui: {
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierReference',
+      component: 'group',
+      layout: {
+        columns: 1,
+        size: 'medium',
+      },
+    },
+  },
+  {
+    Path: 'PersistentIdentifier',
+    ui: {
+      Path: 'Generalities.PersistentIdentifier.PersistentIdentifierContent',
+      component: 'group',
+      layout: {
+        columns: 1,
+        size: 'medium',
+      },
+    },
+  },
 ];
