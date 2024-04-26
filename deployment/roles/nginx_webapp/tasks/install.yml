@@ -75,38 +75,7 @@
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitamui_defaults.folder.conf_permission }}"
-  when: vitamui_struct.secure | default(true) | bool
-  notify: reload nginx
-
-- block:
-
-# TODO: Will not work in production, we don't have a local vault_cert_pass_file...
-  - name: Decrypt vault-certs
-    command: "ansible-vault decrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
-
-  - name: Read certificate key from vault file
-    include_vars:
-      file: "{{ vault_cert_file }}"
-      name: ui_keys
-    no_log: "{{ hide_passwords_during_deploy }}"
-
-  - name: Encrypt back vault-certs
-    command: "ansible-vault encrypt {{ vault_cert_file }} --vault-password-file {{ vault_cert_pass_file }}"
-
-  delegate_to: localhost
-
-- name: "Selected key for {{ vitamui_struct.vitamui_component }}"
-  set_fact:
-    selected_key: "{{ ui_keys['server_' + vitamui_struct.vitamui_component | regex_replace('-', '_') + '_key'] }}"
-  no_log: "{{ hide_passwords_during_deploy }}"
-
-- name: "Add keypass for {{ vitamui_struct.vitamui_component }}"
-  template:
-    src: certificate.key_pass.j2
-    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass"
-    group: "{{ frontend_group }}"
-    owner: "{{ frontend_user }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  when: vitamui_struct.secure | default(secure) | bool
   notify: reload nginx
 
 - name: Ensure nginx is started
