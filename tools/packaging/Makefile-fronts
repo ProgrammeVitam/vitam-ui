@@ -9,23 +9,25 @@ GROUP           := $(USER)
 COPYRIGHT           = VitamUI Copyright 2018 VITAM_UI
 COMMIT_ID           = $(shell  git rev-parse --short HEAD)
 BRANCHE             = $(shell  git rev-parse --abbv6L6zFUCr82Bjy9Qrev-ref HEAD)
+DESCRIPTION         = $(NAME)-rsc package for vitamui solution. Branch: $(BRANCHE), commit: $(COMMIT_ID)
 
 # Install params
 VITAMUI_DIRS         =  data
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
-RPM_OUTPUT_PATH     := vitamui-$(MODULE)-rsc-$(VERSION).rpm
-DEB_OUTPUT_PATH     := vitamui-$(MODULE)-rsc-$(VERSION).deb
+RPM_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
-FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(MODULE)-rsc" -v $(VERSION)
+FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION)
 FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-install-rsc.sh" --after-install "$(TEMPLATE_TMP_DIR)/after-install-rsc.sh"
 FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-rsc.sh"
 
 # variable used to copy
-RESSOURCE_DIR_ORIGIN := $(abspath ../../ui-frontend/dist/$(MODULE)/)
+NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
+RESSOURCE_DIR_ORIGIN := $(abspath ../../ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/)
 RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/)
 
 clean:
@@ -37,7 +39,7 @@ $(STAGING_ROOT):
 stage: $(STAGING_ROOT)
 
 $(VITAMUI_DIRS): stage
-	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(MODULE))
+	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME_WITHOUT_SUFFIX))
 
 vitamui-dirs:  $(VITAMUI_DIRS)
 
@@ -46,7 +48,7 @@ template-files:
 	@for fic in  $(TEMPLATE_SRC) ; \
 	do \
 		sed  \
-			-e "s/__MODULE__/$(MODULE)/g" \
+			-e "s/__NAME__/$(NAME_WITHOUT_SUFFIX)/g" \
 			-e "s/__USER__/$(USER)/g" \
 			-e "s/__GROUP__/$(GROUP)/g" \
 			$$fic >  $(TEMPLATE_TMP_DIR)/`basename $$fic`; \
