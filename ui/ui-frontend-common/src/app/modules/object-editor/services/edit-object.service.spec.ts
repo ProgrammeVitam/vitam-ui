@@ -497,10 +497,10 @@ describe('EditObjectService', () => {
                 jasmine.objectContaining({
                   path: 'Addressee',
                   kind: 'object-array',
-                  children: [],
                 }),
               ]),
             );
+            expect(editObject.children.length).toEqual(16);
           });
         },
       ),

@@ -75,6 +75,7 @@ export class EditObjectService {
 
     if (editObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
     if (editObject.required) control.setValidators([Validators.required]);
+    if (editObject.kind === 'object-array' && editObject.children.length === 0) editObject.actions.add.handler();
 
     return editObject;
   }
