@@ -9,7 +9,7 @@
     mode: 0555
 
 # FIXME : put it in group_vars (root/root/555)
-- name: Ensure {{ vitamui_defaults.folder.root_path | default('/vitamui') }} sub-directories exist
+- name: "Ensure {{ vitamui_defaults.folder.root_path | default('/vitamui') }} sub-directories exist"
   file:
     path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}"
     owner: root
@@ -25,43 +25,3 @@
     - log
     - script
     - tmp
-
-- name: "install openjdk from {{ ansible_distribution_release }}-backports only when Debian"
-  apt:
-    name: openjdk-11-jre-headless
-    state: latest
-    default_release: "{{ ansible_distribution_release }}-backports"
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - disable_internet_repositories_install | default(false) | bool == false
-    - ansible_distribution_version | int < 12
-
-- name: "install openjdk only when Debian"
-  apt:
-    name: openjdk-11-jre-headless
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - disable_internet_repositories_install | default(false) | bool == true
-    - ansible_distribution_version | int < 12
-
-
-- name: "install openjdk 17 only when Debian 12"
-  apt:
-    name: openjdk-17-jre-headless
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay }}"
-  when:
-    - ansible_os_family == "Debian"
-    - ansible_distribution_version | int == 12

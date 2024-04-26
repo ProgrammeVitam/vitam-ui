@@ -1,0 +1,50 @@
+---
+
+- block:
+
+  - name: force openjdk-8 is absent
+    package:
+      name: openjdk-8-jdk-headless
+      state: absent
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+
+  - name: Install openjdk on Debian
+    apt:
+      name: "{{ 'openjdk-11-jre-headless' if ansible_distribution_version | int < 12 else 'openjdk-17-jre-headless' }}"
+      state: latest
+    register: result
+    retries: "{{ packages_install_retries_number }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay }}"
+
+  when:
+    - ansible_os_family == "Debian"
+    - install_mode != "container"
+
+- block:
+  - name: force java-1.8.0-openjdk is absent
+    package:
+      name:
+        - java-1.8.0-openjdk
+        - java-1.8.0-openjdk-headless
+      state: absent
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+
+  - name: Install openjdk on RedHat
+    package:
+      name: java-11-openjdk-headless
+      state: latest
+    register: result
+    retries: "{{ packages_install_retries_number | default(2) }}"
+    until: result is succeeded
+    delay: "{{ packages_install_retries_delay | default(10) }}"
+
+  when:
+    - ansible_os_family == "RedHat"
+    - install_mode != "container"

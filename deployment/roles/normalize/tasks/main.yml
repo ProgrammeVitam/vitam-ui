@@ -3,3 +3,7 @@
 - import_tasks: vitamui.yml
 
 - import_tasks: vitam.yml
+
+- name: Check proper java version installed
+  include_tasks: check_java.yml
+  when: inventory_hostname in groups['zone_vitamui_app'] or inventory_hostname in groups['zone_vitamui_cas']

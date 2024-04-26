@@ -44,6 +44,3 @@ vitam_repositories:
     value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-core/
   - key: vitam-extras
     value: https://download.programmevitam.fr/vitam_nightly/rpm/vitam-extras/
-
-# To avoid installation of internet repositories (like epel for example)
-disable_internet_repositories_install: true # default value if unset: false
