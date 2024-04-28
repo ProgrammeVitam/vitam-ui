@@ -147,14 +147,295 @@ https://dev.vitamui.com:8080/cas/login).
 - Only ONE organization may use x509 certificate authentication per email domain; CAS has no means to know to which
   organization a certificate belongs.
 
-## OpenId Connect authentication delegation
+## OpenId Connect (OIDC) authentication delegation
 
-> TODO
+VitamUI offers the possibility to delegate authentication to an external IDP using the OpenID Connect protocol. 
+To configure an external provider in VitamUI, you will need to follow the procedure below:
 
-## SAML authentication delegation
+- Create an OIDC provider for the domain email.
+- As we are using the email address as users login, you put as email attribute the value `email`
+- Choose the email domain concerned by the provider.
+- Client Identifier: The OIDC client's information `Client ID`
+- Client Secret: The OIDC client's information `Client Secret`
+- Discovery URL: This is the discovery URL, typically ending with `.openid-configuration` (e.g., https://my-oidc-provider.com/.well-known/openid-configuration)
+- Scope: `openid email`
+- JWS Algorithm: The Access token signature algorithm, it depends on the configuration of the OIDC client (ex: ES256).
 
-> TODO
+We have additional parameters that depend on your OIDC client, such as:
 
+- Use State: Default to `true`
+- Use Nonce: Default to `true`
+- Use PKCE: Default to `false`
+- Custom Settings: These are customized parameters of the OIDC client if needed.
+
+**Warnings:**
+
+To ensure these configurations work properly, there are certain rules to follow:
+
+- you need to add the CAS Url and Vitamui Url to OIDC Client into the fields: 
+
+  - `Valid redirect URIs`
+  - `Valid post logout redirect URIs`
+  - `Web origins`
+  **Example** 
+     ```json
+       "redirectUris": [
+        "https://dev.vitamui.com:4200/*",
+        "https://dev.vitamui.com:8080/*"
+        "https://myfirst-env.fr/*",
+        "https://mysecond-env.fr/*"
+      ],
+      "webOrigins": [
+        "https://dev.vitamui.com:4200/*",
+        "https://dev.vitamui.com:8080/*"
+        "https://myfirst-env.fr/*",
+        "https://mysecond-env.fr/*"
+      ]
+      ``` 
+  
+- The external provider must be accessible from CAS VM, at least the `Discovery URL`.
+- You need to restart the CAS service after adding the provider.
+
+**Settings example for local test**
+
+Bellow an example on OIDC authentication provider based on a pre-configured keycloak.
+
+To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
+- Simply launch the `tools/docker/external-idp-cas/run-dev.sh` script,
+- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test user.
+- The keycloak is accessible on the url `http://localhost:8041`
+- The keycloak credentials for admin are:
+    - user: `admin`,
+    - password: `changeme`
+- The OIDC client created has the following informations:
+    - identifier: `vitamui-oidc`
+    - secret: `QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui`
+    - OpenID Endpoint Configuration: `http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration`
+- The user created has the following informations:
+    - Username: `demo@change-me.fr`
+    - Email: `demo@change-me.fr`
+    - Name: `demo oidc vitamui`
+    - Password: `ChangeIt.2024`
+
+** Vitamui provider collection content **
+Based on the test container, bellow an example of OIDC authentication provider for the local provider:
+
+```mongodb-json
+
+{
+    _id: '662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b',
+    identifier: '53',
+    name: 'keycloak-oidc',
+    technicalName: 'idp295983',
+    internal: false,
+    enabled: true,
+    patterns: [
+        '.*@change-me.fr'
+    ],
+    readonly: false,
+    mailAttribute: 'email',
+    autoProvisioningEnabled: false,
+    propagateLogout: false,
+    authnRequestBinding: 'POST',
+    wantsAssertionsSigned: false,
+    authnRequestSigned: false,
+    clientId: 'vitamui-oidc',
+    clientSecret: 'QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui',
+    discoveryUrl: 'http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration',
+    scope: 'openid email',
+    preferredJwsAlgorithm: 'ES256',
+    useState: true,
+    useNonce: true,
+    usePkce: false,
+    protocoleType: 'OIDC',
+    customerId: '5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9',
+    _class: 'providers'
+}
+
+```
+
+
+## SAML V2 authentication delegation
+
+To set up Saml V2 authentication with vitamui, please follow these steps:
+
+- Retrieve the federation certificate from your IDP (e.g., orga-SAML.crt).
+- Obtain the SAML federation configuration file from your IDP provider (e.g., FederationMetadata.xml).
+    - Import the provider certificate into the cas_server keystore:
+      ```sh
+        keytool -importcert -keystore environments/keystores/server/my_server/keystore_cas-server.jks -storepass xxx -alias orga-saml -file environments/certs/orga-SAML.crt
+        ```
+    - In Vitamui interface, we create an external provider of SAML type with the following informations:
+        - Email attribute: keep it empty, except if the idp provide the email after authentication
+        - Upload the CAS keystore file (with the associated password) (keystore_cas-server.jks)
+        - Upload the IDP metadata file (e.g., FederationMetadata.xml)
+        - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and
+          provide it to the external IDP provider, this file is used to declare our vitamui provider as a service. 
+
+**Warnings:**
+- You need to restart the CAS service after adding the provider.
+
+**Settings example for local test**
+
+To test the saml authentication, bellow an example with an external CAS on version 6.6.x :
+
+- clone the example project ```https://github.com/casinthecloud/cas-overlay-demo.git```
+  - Checkout the branch ```6.6.x```
+  - Create a directory ```/etc/cas``` with ```777``` permissions on the folder. 
+  - To run the test as a war without an application server, you need to update some settings:
+      - in the ```pom.xml```:
+          - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat``` 
+          - Add the following dependencies:
+               ```xml
+                 <dependency>
+                    <groupId>org.apereo.cas</groupId>
+                    <artifactId>cas-server-support-saml-idp</artifactId>
+                    <version>${cas.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apereo.cas</groupId>
+                    <artifactId>cas-server-support-oidc</artifactId>
+                    <version>${cas.version}</version>
+                </dependency>    
+                ```
+          - Add the plugin: 
+            ```xml
+               <plugin>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-maven-plugin</artifactId>
+                  <version>2.7.3</version>
+                  <configuration>
+                      <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
+                      <excludes>
+                          <exclude>
+                              <groupId>org.apereo.cas</groupId>
+                              <artifactId>cas-server-webapp-tomcat</artifactId>
+                          </exclude>
+                      </excludes>
+                  </configuration>
+                  <executions>
+                      <execution>
+                          <goals>
+                              <goal>repackage</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+              </plugin>
+            ``` 
+        - in the ```application.yml```:
+          - update the port of the external cas by change the default port from ```8080``` to another port ex(```8383```)
+          and add these settings: 
+              ```yaml
+            cas.server.name: http://localhost:8383
+            cas.server.prefix: http://localhost:8383/cas
+            server.port: 8383
+            server.ssl.enabled: false
+            cas.server.tomcat.httpProxy.enabled: false
+            cas.server.tomcat.http:
+              - enabled: false
+             ```
+          - add a test user/password:
+            ```yaml
+              cas.authn.accept.users: myusernam@mydomainmail.fr::mypassword
+              cas.authn.attribute-repository.stub.attributes.email: myusernam@mydomainmail.fr
+             ```
+          - **myusernam@mydomainmail.fr**  is the user email for testing, and **mypassword** is the password
+
+      - run ```mvn clean package``` on the project.
+      - run ```java -jar target/cas.war``` 
+      - After launching,cas will generate some settings files inside the directory ```/etc/cas/saml```
+      - Login in into Vitamui as a superadmin, create a SAML provider with the following information:
+        - Pattern: email domain configured before: ```mydomainmail.fr```
+        - Type: ```SAML```
+        - Email attribute: empty (except if the cas send the email after authentication)
+        - CAS Keystore: for testing: you upload any keystore with the right passowrd.
+        - IDP Metadata: upload the file generated by running external CAS, from the path ```/etc/cas/saml/idp-metadata.xml```
+        - Assertions : false
+        - Signed request: false.
+      - On vitamui, after creating the provider (SSO list) : 
+        - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS, 
+            example ```/some-path-of-cas/SPS-metadata.xml```. 
+        - create a new resource file on the project external CAS , example: ```saml-metadata.json``` in the directory:
+             src/main/resources/services with the following content:
+        ```json
+           {
+          "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
+          "name" : "SAMLService",
+          "id" : 1,
+          "evaluationOrder" : 1,
+          "metadataLocation" : "/some-path-of-cas/SPS-metadata.xml",
+          "skipGeneratingTransientNameId": true,
+          "serviceId" : "https://vitamui_host/cas/login/{{technical-provider-id}}"
+          }
+        ``` 
+        We have to check the following important informations: 
+        **vitamui_host** is the url of the vitamui.
+        **some-path-of-cas** is a directory path on the CAS external path vm.
+        **technical-provider-id** is the ```technicalName``` of the provider in providers collection in vitamui db created before.
+    - run ```mvn clean package``` on the project.
+    - run ```java -jar target/cas.war```
+
+- You need to restart the CAS service on the Vitamui environment, after adding the provider.
+- Create a user into the organisation with email address ```myusernam@mydomainmail.fr``` 
+- We can test the SAML delegated authentication using the external CAS. 
+      
+
+## Auto provisioning:
+
+The auto provisioning allows the creation and the updating of users after authentication on external IdP.
+When enabled, the auto-provisioning of user call an ad-hoc back-end API that retrn user information based on their primary email address, which is the main authentication information. 
+This requires configuring a provisioning API within the iam-internal service. Below is an example configuration to achieve this.
+
+```yaml
+provisioning-client:
+  identity-providers:
+    - idp-identifier: 662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b
+      uri: http://127.0.0.1:8990/users
+      client:
+        secure: false
+        ssl-configuration:
+          truststore:
+            key-path: /vitamui/conf/iam-internal/truststore_server.jks
+            key-password: AJ2Ft14CQHiU3eegIAlPqxPRp5uLNMizGadu8SficFja7nQN
+          hostname-verification: false
+```
+- The value of the parameter ```idp-identifier``` should be the ```_id``` of the provider from the collection iam->providers
+  - The parameter ```uri``` is the url of the provisioning api that should return user information when it is called with request parameter ```email```
+    - The api call has this format : ```GET {{provisionning-api}}/users?email={{user-email}}```
+    - The api response for user should have the following model : 
+      ```json
+      {
+        "lastname": "some lastname",
+        "firstname": "some firstname",
+        "email": "eme email",
+        "unit": "SOME_UNIT",
+        "address": {
+        "street": "some street",
+        "zipCode": "Some ZIP code",
+        "city": "Some town",
+        "country": "Some country"
+        },
+        "siteCode": "Some site",
+        "internalCode": "Some internal code"
+        }
+      ```
+    - ***Important*** 
+      - The information ```unit``` is very important for provisioning feature, this value is the main information to
+        match the group to affect to the user after authentication, we should have a group having a field ```unit```
+        with value this returned value from provisoning api.
+        ```mongodb-json
+             {
+                _id: '662fd94ed0092f16fcadf37507657badae834cfda87af1110d2de0f2a821a60f',
+                identifier: '134',
+                name: 'Groupe provisionning',
+                enabled: true,
+                profileIds: [***],
+                units: [
+                'VITAM'
+                ]
+            }
+        ```  
+           
 # Development
 
 Développement des pages html - en static grace à thymeleaf et avec sass :
