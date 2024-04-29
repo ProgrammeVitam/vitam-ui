@@ -476,10 +476,10 @@ export const customTemplate: DisplayRule[] = [
   },
 
   {
-    Path: 'PersistentIdentifier',
+    Path: 'PersistentIdentifier.PersistentIdentifierType',
     ui: {
       Path: 'Generalities.PersistentIdentifier.PersistentIdentifierType',
-      component: 'group',
+      component: 'textfield',
       layout: {
         columns: 1,
         size: 'medium',
@@ -487,10 +487,10 @@ export const customTemplate: DisplayRule[] = [
     },
   },
   {
-    Path: 'PersistentIdentifier',
+    Path: 'PersistentIdentifier.PersistentIdentifierOrigin',
     ui: {
       Path: 'Generalities.PersistentIdentifier.PersistentIdentifierOrigin',
-      component: 'group',
+      component: 'textfield',
       layout: {
         columns: 1,
         size: 'medium',
@@ -498,10 +498,10 @@ export const customTemplate: DisplayRule[] = [
     },
   },
   {
-    Path: 'PersistentIdentifier',
+    Path: 'PersistentIdentifier.PersistentIdentifierReference',
     ui: {
       Path: 'Generalities.PersistentIdentifier.PersistentIdentifierReference',
-      component: 'group',
+      component: 'textfield',
       layout: {
         columns: 1,
         size: 'medium',
@@ -509,10 +509,10 @@ export const customTemplate: DisplayRule[] = [
     },
   },
   {
-    Path: 'PersistentIdentifier',
+    Path: 'PersistentIdentifier.PersistentIdentifierContent',
     ui: {
       Path: 'Generalities.PersistentIdentifier.PersistentIdentifierContent',
-      component: 'group',
+      component: 'textfield',
       layout: {
         columns: 1,
         size: 'medium',

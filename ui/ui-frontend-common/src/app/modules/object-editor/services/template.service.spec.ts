@@ -202,4 +202,16 @@ describe('TemplateService', () => {
       expect(output).toEqual(expected);
     });
   });
+
+  it('should detect templates with infinite loops', () => {
+    const data = { replicants: [] };
+    const template: DisplayRule[] = [
+      { Path: 'replicants', ui: { Path: 'replicants', component: 'group' } },
+      { Path: 'replicants', ui: { Path: 'replicants.name', component: 'textfield' } },
+    ];
+
+    expect(() => service.toProjected(data, template)).toThrowError(
+      "Rule 'replicants' contains circular references ['replicants','replicants.name']",
+    );
+  });
 });
