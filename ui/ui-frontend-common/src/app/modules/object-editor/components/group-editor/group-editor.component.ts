@@ -92,7 +92,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
       name: `${action.name}WithValidation`,
       label,
       handler: () => {
-        if (!predicat()) return handler();
+        if (!predicate()) return handler();
 
         const subscription = this.matDialog
           .open(this.removeDialog, this.dialogConfig)
