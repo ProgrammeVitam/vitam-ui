@@ -9,7 +9,7 @@ spring:
 spring.application.name: cas-server
 
 server:
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
@@ -48,7 +48,7 @@ vitamui.cas.identity: cas
 iam-client:
   server-host: {{ vitamui.iam_external.host }}
   server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
+{% if vitamui.iam_external.secure | default(secure) | bool == true %}
   secure: {{ vitamui.iam_external.secure | default(secure) | lower }}
   ssl-configuration:
     keystore:

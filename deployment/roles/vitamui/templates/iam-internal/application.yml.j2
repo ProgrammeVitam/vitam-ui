@@ -21,7 +21,7 @@ logging:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
@@ -56,7 +56,7 @@ server-identity:
 security:
   host: {{ vitamui.security_internal.host }}
   port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.security_internal.secure | default(secure) | bool == true %}
   secure: true
   ssl-configuration:
     truststore:
@@ -75,7 +75,7 @@ login:
 cas-client:
   server-host: {{ vitamui.cas_server.host }}
   server-port: {{ vitamui.cas_server.port_service }}
-{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
+{% if vitamui.cas_server.secure | default(secure) | bool == true %}
   secure: true
   ssl-configuration:
     truststore:

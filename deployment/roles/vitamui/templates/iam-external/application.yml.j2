@@ -18,7 +18,7 @@ logging:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
@@ -59,7 +59,7 @@ iam-external:
   security-client:
     server-host: {{ vitamui.security_internal.host }}
     server-port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.security_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
@@ -73,7 +73,7 @@ iam-external:
     connect-time-out: {{ vitamui.iam_internal.connect_timeout }}
     read-time-out: {{ vitamui.iam_internal.read_timeout }}
     write-time-out: {{ vitamui.iam_internal.write_timeout }}
-{% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
+{% if vitamui.iam_internal.secure | default(secure) | bool == true %}
     secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
@@ -103,7 +103,7 @@ cas:
 {% else %}
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
-  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  internal-url: {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:

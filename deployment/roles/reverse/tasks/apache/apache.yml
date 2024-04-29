@@ -2,20 +2,20 @@
 
 - name: Set apache service name for CentOS
   set_fact:
-    apache_service: "httpd"
-    apache_conf_dir: "conf.d"
-    apache_user: "apache"
-    apache_group: "apache"
-    mime_type_package: "mailcap"
+    apache_service: httpd
+    apache_conf_dir: conf.d
+    apache_user: apache
+    apache_group: apache
+    mime_type_package: mailcap
   when: ansible_os_family == "RedHat"
 
 - name: Set apache service name for Debian
   set_fact:
-    apache_service: "apache2"
-    apache_conf_dir: "sites-available"
-    apache_user: "root"
-    apache_group: "root"
-    mime_type_package: "mime-support"
+    apache_service: apache2
+    apache_conf_dir: sites-available
+    apache_user: root
+    apache_group: root
+    mime_type_package: mime-support
   when: ansible_os_family == "Debian"
 
 - name: install {{ mime_type_package }} & {{ apache_service }} packages
@@ -37,7 +37,7 @@
 - name: Ensure mod_ssl & mod_proxy_html is installed (CentOS)
   package:
     name: ["mod_ssl","mod_proxy_html"]
-    state: present
+    state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
@@ -49,10 +49,9 @@
   copy:
     src: "apache/mod_substitute.so"
     dest: "/etc/{{ apache_service }}/modules/mod_substitute.so"
-    owner: "root"
+    owner: "{{ apache_user }}"
     mode: 0644
-  notify:
-        - reload apache
+  notify: reload apache
   when: ansible_os_family == "RedHat"
 
 # TODO: We could use apache2_module of ansible but it is currently flagged as preview
@@ -60,9 +59,9 @@
   file:
     src: "/etc/{{ apache_service }}/mods-available/{{ item }}"
     dest: "/etc/{{ apache_service }}/mods-enabled/{{ item }}"
-    owner: "root"
+    owner: "{{ apache_user }}"
     state: link
-  when:  ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian"
   with_items:
     - ssl.conf
     - ssl.load
@@ -73,23 +72,13 @@
     - substitute.load
     - proxy_html.load
     - headers.load
-  notify:
-    - reload apache
-
-- name: create DocumentRoot directory
-  file:
-    path: "/var/www/html-{{ vitamui_site_name }}"
-    state: directory
-    owner: root
-    mode: 0755
-  notify:
-    - reload apache
+  notify: reload apache
 
 - name: create certificates directory
   file:
     path: "/etc/{{ apache_service }}/certs"
     state: directory
-    owner: "root"
+    owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
     mode: 0550
 
@@ -97,27 +86,27 @@
   file:
     path: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}"
     state: directory
-    owner: "root"
+    owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
     mode: 0550
 
-- name: create server certificate files when protocole https
+- name: copy server certificate files when protocole https
   copy:
     src: "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/reverse.{{ item }}"
     dest: "/etc/{{ apache_service }}/certs/reverse.{{ item }}"
-    owner: "root"
+    owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
     mode: 0550
   with_items:
-    - "crt"
-    - "key"
+    - crt
+    - key
   when: vitamui_reverse_external_protocol | lower == 'https'
 
 - name: Copy the CA
   copy:
     src: "{{ item }}"
     dest: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}/{{ item | basename }}"
-    owner: "root"
+    owner: "{{ apache_user }}"
     mode: 0400
   with_fileglob:
     - "{{ inventory_dir }}/certs/server/ca/*.crt"
@@ -126,70 +115,40 @@
   template:
     src: "apache/httpd_config"
     dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitamui_reverse_external_dns }}.conf"
-    owner: "root"
-    mode: 0644
-  tags:
-    - update_package_vitam
-  notify:
-    - reload apache
+    owner: "{{ apache_user }}"
+    mode: 0640
+  notify: reload apache
 
-- name: copy proxy-html conf for ui-identity-admin configuration
+- name: copy configurations
   copy:
-    src: "apache/proxy-html.conf"
-    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/proxy-html.conf"
-    owner: "root"
-    mode: 0644
-  tags:
-    - update_package_vitam
-  notify:
-    - reload apache
-
-- name: add js & css to mod_mime
-  copy:
-    src: "apache/mime_vitam.conf"
-    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/mime_vitam.conf"
-    owner: "root"
-    mode: 0644
-  tags:
-    - update_package_vitam
-  notify:
-        - reload apache
-
-- name: limit info in reverse headers
-  copy:
-    src: "apache/security.conf"
-    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/security.conf"
-    owner: "root"
-    mode: 0644
-  tags:
-    - update_package_vitam
-  notify:
-    - reload apache
+    src: "apache/{{ item }}"
+    dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/{{ item }}"
+    owner: "{{ apache_user }}"
+    mode: 0640
+  with_items:
+    - proxy-html.conf
+    - mime_vitam.conf
+    - security.conf
+  notify: reload apache
 
 - name: remove default index page on Debian
   file:
     path: /etc/{{ apache_service }}/sites-enabled/000-default.conf
     state: absent
-  when:  ansible_os_family == "Debian"
-  tags:
-    - update_package_vitam
-  notify:
-    - reload apache
+  notify: reload apache
+  when: ansible_os_family == "Debian"
 
 - name: activate httpd configuration for debian
   file:
-    src: /etc/{{ apache_service }}/{{ apache_conf_dir }}/{{ item }}
-    dest: /etc/{{ apache_service }}/sites-enabled/{{ item }}
-    owner: "root"
+    src: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/{{ item }}"
+    dest: "/etc/{{ apache_service }}/sites-enabled/{{ item }}"
+    owner: "{{ apache_user }}"
     state: link
   with_items:
     - "zz_{{ vitamui_reverse_external_dns }}.conf"
-    - "security.conf"
-  when:  ansible_os_family == "Debian"
-  tags:
-    - update_package_vitam
-  notify:
-        - reload apache
+    - security.conf
+  notify: reload apache
+  when: ansible_os_family == "Debian"
 
 - name: Ensure Apache autostart && Apache is started
   service:

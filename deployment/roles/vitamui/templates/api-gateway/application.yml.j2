@@ -1,7 +1,7 @@
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.server_port | default('8090') }}
-{% if vitamui_struct.secure | default(secure) | lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
