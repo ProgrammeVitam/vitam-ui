@@ -93,7 +93,8 @@ public class UnitInternalController {
         final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
-        return unitInternalService.findUnitById(id, vitamContext);
+        final JsonNode queryForUnitById = unitInternalService.createQueryForUnitById(id);
+        return unitInternalService.searchUnits(queryForUnitById, vitamContext);
     }
 
     // TODO : Secure it !

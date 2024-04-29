@@ -42,8 +42,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option, SigningRoleType, Unit } from 'ui-frontend-common';
-import { ArchiveApiService } from '../../core/api/archive-api.service';
+import {
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  Option,
+  SearchResponse,
+  SigningRoleType,
+} from 'ui-frontend-common';
+import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({
@@ -77,7 +84,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
-    private archiveApiService: ArchiveApiService,
+    private searchUnitApiService: SearchUnitApiService,
   ) {}
 
   ngOnInit() {
@@ -172,9 +179,18 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
 
   public complianceCheck(): void {
     if (this.form.get('unitId').valid) {
-      this.archiveApiService.findArchiveUnit(this.form.get('unitId').value).subscribe((unitIdStatus: Unit) => {
-        this.showWarningMessage =
-          !unitIdStatus.SigningInformation || !unitIdStatus.SigningInformation.SigningRole.includes(SigningRoleType.SIGNED_DOCUMENT);
+      this.searchUnitApiService.getById(this.form.get('unitId').value).subscribe((unitIdStatus: SearchResponse) => {
+        if (!unitIdStatus.$results[0]) {
+          const message = this.translateService.instant('EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND');
+          this.snackBar.open(message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        } else {
+          this.showWarningMessage =
+            !unitIdStatus.$results[0].SigningInformation ||
+            !unitIdStatus.$results[0].SigningInformation.SigningRole.includes(SigningRoleType.SIGNED_DOCUMENT);
+        }
       });
     }
   }

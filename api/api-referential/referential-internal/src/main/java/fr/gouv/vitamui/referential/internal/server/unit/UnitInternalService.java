@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.internal.server.unit;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -54,6 +55,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
@@ -111,6 +113,21 @@ public class UnitInternalService {
         } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new UnexpectedDataException(
                 "Unexpected error occured while building holding dsl query : " + e.getMessage());
+        }
+    }
+
+    public JsonNode createQueryForUnitById(String unitId) {
+
+        try {
+            final SelectMultiQuery select = new SelectMultiQuery();
+            final Query query =
+                eq(VitamFieldsHelper.id(), unitId);
+            select.addQueries(query);
+            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
+            return select.getFinalSelect();
+        } catch (InvalidCreateOperationException e) {
+            throw new UnexpectedDataException(
+                "Unexpected error occured while building dsl query : " + e.getMessage());
         }
     }
 }

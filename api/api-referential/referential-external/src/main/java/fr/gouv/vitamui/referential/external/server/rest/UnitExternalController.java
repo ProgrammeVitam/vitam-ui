@@ -69,6 +69,7 @@ public class UnitExternalController {
     private UnitExternalService unitExternalService;
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_UNITS)
     public VitamUISearchResponseDto searchById(final @PathVariable("id") String id)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
