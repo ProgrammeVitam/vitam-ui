@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { Action, EditObject } from '../../models/edit-object.model';
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
 })
-export class GroupEditorComponent implements OnChanges, OnDestroy {
+export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() editObject: EditObject;
 
   @ViewChild('removeDialog') removeDialog: TemplateRef<GroupEditorComponent>;
@@ -35,18 +35,24 @@ export class GroupEditorComponent implements OnChanges, OnDestroy {
     private matDialog: MatDialog,
   ) {}
 
-  ngOnInit(): void {
-    if (this.editObject?.childrenChange) this.subscription = this.editObject.childrenChange.subscribe(() => this.computeLayout());
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;
 
     if (editObject) {
-      if (this.editObject?.childrenChange && this.subscription) this.subscription.unsubscribe();
-      if (this.editObject?.childrenChange) this.subscription = this.editObject.childrenChange.subscribe(() => this.computeLayout());
+      if (this.editObject?.childrenChange) {
+        if (this.subscription) this.subscription.unsubscribe();
+        this.subscription = this.editObject.childrenChange.subscribe(() => {
+          this.computeLayout();
+          this.computeActions();
+        });
+      }
+
       this.computeLayout();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.computeActions();
   }
 
   ngOnDestroy(): void {
@@ -57,29 +63,18 @@ export class GroupEditorComponent implements OnChanges, OnDestroy {
     this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.editObject);
     this.favoritePath = this.favoriteEntryService.favoritePath(this.editObject);
     this.rows = this.layoutService.compute(this.editObject) as EditObject[][];
-    if (this.editObject.actions) {
-      const removeAction: Action = this.editObject.actions.remove;
+  }
 
-      if (removeAction) {
-        const removeHandler = removeAction.handler;
-        const removeActionWithValidationStep = () => {
-          if (!this.typeService.isConsistent(this.editObject.control.value)) return removeHandler();
+  computeActions() {
+    if (!this.editObject?.actions) return;
 
-          const subscription = this.matDialog
-            .open(this.removeDialog, this.dialogConfig)
-            .afterClosed()
-            .pipe(
-              filter((value) => value),
-              switchMap(() => of(removeHandler())),
-            )
-            .subscribe(() => subscription.unsubscribe());
-        };
-
-        removeAction.handler = removeActionWithValidationStep;
-      }
-
-      this.actionList = Object.values(this.editObject.actions);
+    const current: Action = this.editObject.actions.remove;
+    if (current) {
+      const next: Action = this.withValidation(current, () => this.typeService.isConsistent(this.editObject.control.value));
+      this.replaceAction(current, next);
     }
+
+    this.actionList = Object.values(this.editObject.actions);
   }
 
   toggle(): void {
@@ -88,5 +83,31 @@ export class GroupEditorComponent implements OnChanges, OnDestroy {
 
   stopPropagation(event: Event) {
     event.stopPropagation();
+  }
+
+  private withValidation(action: Action, predicate: () => boolean): Action {
+    const { label, handler } = action;
+
+    return {
+      name: `${action.name}WithValidation`,
+      label,
+      handler: () => {
+        if (!predicat()) return handler();
+
+        const subscription = this.matDialog
+          .open(this.removeDialog, this.dialogConfig)
+          .afterClosed()
+          .pipe(
+            filter((value) => value),
+            switchMap(() => of(handler())),
+          )
+          .subscribe(() => subscription.unsubscribe());
+      },
+    };
+  }
+
+  private replaceAction(current: Action, next: Action): void {
+    delete this.editObject.actions[current.name];
+    this.editObject.actions[next.name] = next;
   }
 }
