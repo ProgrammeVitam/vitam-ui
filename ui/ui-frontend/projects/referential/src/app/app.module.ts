@@ -75,7 +75,7 @@ registerLocaleData(localeFr, 'fr');
     CoreModule,
     BrowserAnimationsModule,
     BrowserModule,
-    VitamUICommonModule,
+    VitamUICommonModule.forRoot(),
     AppRoutingModule,
     MatNativeDateModule,
     SharedModule,

@@ -36,7 +36,7 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { ApplicationId } from 'ui-frontend-common';
 import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -72,6 +72,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    QuicklinkModule,
     RouterModule.forRoot(routes, {
       preloadingStrategy: QuicklinkStrategy,
     }),

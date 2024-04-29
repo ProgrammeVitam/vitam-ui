@@ -90,7 +90,7 @@ const themeServiceClass = environment.standalone ? StandaloneThemeService : Them
     LoggerModule.forRoot(),
     BrowserAnimationsModule,
     BrowserModule,
-    VitamUICommonModule,
+    VitamUICommonModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
     QuicklinkModule,
