@@ -499,7 +499,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.totalResults -= 1;
     }
     result = this.archiveUnits.findIndex(this.ofDynamicAttachementUnit);
-    if (result > 0) {
+    if (result > -1) {
       this.archiveUnits.splice(result, 1);
       this.totalResults -= 1;
     }
