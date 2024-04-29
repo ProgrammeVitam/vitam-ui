@@ -1,6 +1,6 @@
 #jinja2: lstrip_blocks: True
 server {
-  {% if vitamui_struct.secure | default(true) | bool %}
+  {% if vitamui_struct.secure | default(secure) | bool %}
   listen  {{ ip_service }}:{{ vitamui_struct.port_service }} ssl;
   include {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}-ssl.conf;
   {% else %}
@@ -36,10 +36,9 @@ server {
     {% endfor %}
     deny all; # Deny access to all other IP addresses
 
-    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(true) | bool else 'http' }}://API-GATEWAY;
+    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://API-GATEWAY;
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
-    proxy_ssl_password_file {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass;
     proxy_ssl_session_reuse off;
   }
 }

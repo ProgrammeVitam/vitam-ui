@@ -10,7 +10,7 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 proxy_set_header X-Forwarded-Proto $scheme;
 {% if authorization_header_name is defined and authorization_header_name | length %}
 proxy_set_header Authorization $http_{{ authorization_header_name | lower | replace("-", "_") }};
-proxy_set_header {{ authorization_header_name }} "";
+proxy_hide_header {{ authorization_header_name }};
 {% else %}
 proxy_set_header Authorization $http_authorization;
 {% endif %}
