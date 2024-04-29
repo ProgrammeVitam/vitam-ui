@@ -96,8 +96,9 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
     this.archiveUnitEditObjectService.hideSchemaCategoryDisplayObjects(displayObject, schemaByApiPath, ['MANAGEMENT', 'OTHER']);
     this.archiveUnitEditObjectService.hideLabellessDisplayObjects(displayObject);
     this.archiveUnitEditObjectService.displayExternals(displayObject, schemaByApiPath);
-    this.archiveUnitEditObjectService.displayOtherMetadata(displayObject);
     this.archiveUnitEditObjectService.hideInconsistentDisplayObjects(displayObject);
+    // Attention display Other MetaData doit être après hideInconsistentDisplayObjects
+    this.archiveUnitEditObjectService.displayOtherMetadata(displayObject);
 
     return displayObject;
   }

@@ -48,6 +48,7 @@ export class TypeService {
       case 'string':
       case 'number':
       case 'undefined':
+      case 'boolean':
         return true;
       default:
         return false;
