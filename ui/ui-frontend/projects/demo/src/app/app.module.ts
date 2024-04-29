@@ -77,7 +77,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     MatListModule,
     MatButtonModule,
     FormsModule,
-    VitamUICommonModule,
+    VitamUICommonModule.forRoot(),
     LoggerModule.forRoot(),
     SubrogationDemoModule,
     ComponentDemoModule,

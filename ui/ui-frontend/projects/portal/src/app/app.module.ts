@@ -83,7 +83,7 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     BrowserModule,
     BrowserAnimationsModule,
     PortalModule,
-    VitamUICommonModule,
+    VitamUICommonModule.forRoot(),
     InjectorModule,
     MatSnackBarModule,
     MatDialogModule,

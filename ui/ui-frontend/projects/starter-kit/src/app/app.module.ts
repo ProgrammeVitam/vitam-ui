@@ -38,25 +38,24 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { of } from 'rxjs';
 import {
-  AuthenticationModule,
+  AppConfiguration,
+  ApplicationApiService,
+  AuthService,
   BASE_URL,
+  BaseUserInfoApiService,
   ENVIRONMENT,
-  InjectorModule,
   LoggerModule,
+  ThemeService,
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
-  WINDOW_LOCATION,
 } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -87,32 +86,26 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AuthenticationModule.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule,
-    InjectorModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    VitamUICommonModule,
     AppRoutingModule,
-    StarterKitModule,
-    QuicklinkModule,
-    ButtonsModule,
-    MiscellaneousModule,
     ArraysModule,
     BreadcrumbModule,
-    InputsModule,
-    ProgressBarModule,
-    TypographyModule,
-    TooltipModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    ButtonsModule,
     ColorsModule,
-    IconsModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatListModule,
     ElevationModule,
-    TranslationModule,
+    IconsModule,
+    InputsModule,
     LoggerModule.forRoot(),
+    MatListModule,
+    MatSidenavModule,
+    MiscellaneousModule,
+    ProgressBarModule,
+    StarterKitModule,
+    TooltipModule,
+    TranslationModule,
+    TypographyModule,
+    VitamUICommonModule,
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
@@ -127,9 +120,29 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },
-    { provide: BASE_URL, useValue: '/identity-api' },
-    { provide: WINDOW_LOCATION, useValue: window.location },
+    { provide: BASE_URL, useValue: '/FAKE' },
+    { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(authService: AuthService, themeService: ThemeService, applicationApiService: ApplicationApiService) {
+    authService.userInfo = { id: '42', language: 'FRENCH' };
+
+    applicationApiService.getLocalAsset('logo_USER.png').subscribe((userLogo) => {
+      themeService.init(
+        {
+          USER_LOGO: userLogo,
+          THEME_COLORS: {
+            'vitamui-primary': '#702382',
+            'vitamui-secondary': '#2563A9',
+            'vitamui-tertiary': '#C22A40',
+            'vitamui-background': '#F5F7FC',
+            'vitamui-header-footer': '#ffffff',
+          },
+        } as AppConfiguration,
+        {},
+      );
+    });
+  }
+}

@@ -1,5 +1,0 @@
-{
-    "routes": "projects/starter-kit/mock-api/routes.json", 
-    "host": "localhost", 
-    "port": 8888
-}

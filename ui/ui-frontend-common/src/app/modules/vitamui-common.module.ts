@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -285,22 +285,28 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiTreeNodeModule,
     VitamUIAutocompleteMultiSelectModule,
   ],
-  providers: [
-    { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
-    { provide: WINDOW_LOCATION, useValue: window.location },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: loadConfigFactory,
-      deps: [ConfigService, ENVIRONMENT],
-      multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: startupServiceFactory,
-      deps: [StartupService, AuthService],
-      multi: true,
-    },
-    { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true },
-  ],
 })
-export class VitamUICommonModule {}
+export class VitamUICommonModule {
+  static forRoot(): ModuleWithProviders<VitamUICommonModule> {
+    return {
+      ngModule: VitamUICommonModule,
+      providers: [
+        { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        {
+          provide: APP_INITIALIZER,
+          useFactory: loadConfigFactory,
+          deps: [ConfigService, ENVIRONMENT],
+          multi: true,
+        },
+        {
+          provide: APP_INITIALIZER,
+          useFactory: startupServiceFactory,
+          deps: [StartupService, AuthService],
+          multi: true,
+        },
+        { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true },
+      ],
+    };
+  }
+}

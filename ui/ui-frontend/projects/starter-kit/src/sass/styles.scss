@@ -2,14 +2,3 @@
 @import '~ui-frontend-common/sass/theme';
 @import '~bootstrap/scss/bootstrap-grid';
 @import '~ui-frontend-common/sass/fonts/font-styles.css';
-
-body {
-  margin: 0;
-  color: var(--vitamui-grey-900);
-  background: $pale-grey;
-}
-
-h2 {
-  color: var(--vitamui-grey-900);
-  font-weight: 500;
-}
