@@ -40,12 +40,12 @@ export class EditObjectService {
     let control: AbstractControl = this.formBuilder.control(data);
     let actions: { [key: string]: Action } = {};
 
-    if (this.typeService.isList(data) && baseEditObject.kind === 'object-array') {
-      children = data.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema));
+    if (baseEditObject.kind === 'object-array') {
+      children = data?.map((value: any, index: number) => this.editObject(`${path}[${index}]`, value, template, schema)) || [];
       control = this.formBuilder.array(children.map((child) => child.control));
     }
 
-    if (this.typeService.isGroup(data) && baseEditObject.kind === 'object') {
+    if (baseEditObject.kind === 'object') {
       const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
 
       if (fullData) {
@@ -194,8 +194,9 @@ export class EditObjectService {
     schema: Schema,
   ): Partial<EditObject> {
     const key = path.split('.').pop();
-    const isRootPath = !Boolean(path);
-    const kind = isRootPath || this.isArrayElement(key) ? this.kind(value) : this.schemaService.kind(schemaPath, schema);
+    const isRoot = path === '';
+    const isObject = /\[\d+\]$/gm.test(path);
+    const kind = isRoot || isObject ? this.kind(value) : this.schemaService.kind(schemaPath, schema);
     const type = this.kindToType(kind);
     const displayRule = template.find((rule) => rule.ui.Path === schemaPath);
     const component: ComponentType =
@@ -217,10 +218,6 @@ export class EditObjectService {
       virtual: Boolean(schemaElement?.Origin === 'VIRTUAL'),
       childrenChange: new BehaviorSubject<EditObject[]>([]),
     };
-  }
-
-  private isArrayElement(path: string): boolean {
-    return /\[\d+\]/gm.test(path);
   }
 
   private computeChildrenRemoveActions = (editObject: Partial<EditObject>): Action[] => {
