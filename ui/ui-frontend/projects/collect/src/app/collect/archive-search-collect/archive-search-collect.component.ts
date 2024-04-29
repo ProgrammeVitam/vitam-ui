@@ -494,7 +494,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private filterAttachementUnit() {
     let result: number = this.archiveUnits.findIndex(this.ofStaticAttachementUnit);
-    if (result > 0) {
+    if (result > -1) {
       this.archiveUnits.splice(result, 1);
       this.totalResults -= 1;
     }
