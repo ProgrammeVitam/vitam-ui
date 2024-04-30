@@ -25,4 +25,5 @@ USER keycloak
 
 RUN /opt/keycloak/bin/kc.sh show-config
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "-v", "start-dev","--import-realm"]
+#ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "-v", "start-dev","--import-realm","--log-level=debug"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev","--import-realm"]
