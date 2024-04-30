@@ -4,7 +4,6 @@ pipeline {
     }
 
     environment {
-        SLACK_MESSAGE = "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|Open>)"
         MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
@@ -14,6 +13,8 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
+
+        PUPPETEER_DOWNLOAD_HOST="${SERVICE_NEXUS_URL}repository/puppeteer-chrome"
     }
 
     options {
@@ -33,11 +34,9 @@ pipeline {
             agent none
             steps {
                 script {
-                    env.DO_MAJ_CONTEXT = 'true'
-                    env.DO_TEST = 'true'
-                    env.DO_GENERATE_FRONT_RSC = 'true'
-                    env.DO_BUILD = 'true'
-                    env.DO_BUILD_PASTIS_STANDALONE = 'true'
+                    env.DO_BUILD_AND_TEST = 'true'
+                    env.DO_DEPLOY = 'true'
+                    env.DO_DEPLOY_PASTIS_STANDALONE = 'true'
                     env.DO_PUBLISH = 'true'
                 }
             }
@@ -58,53 +57,47 @@ pipeline {
                 script {
                     INPUT_PARAMS = input message: 'Check boxes to select what you want to execute ?',
                     parameters: [
-                        booleanParam(name: 'DO_MAJ_CONTEXT', defaultValue: true, description: 'Run Stage Upgrade build context.'),
-                        booleanParam(name: 'DO_TEST', defaultValue: false, description: 'Run Stage Check vulnerabilities and tests.'),
-                        booleanParam(name: 'DO_GENERATE_FRONT_RSC', defaultValue: true, description: 'Run Stage that generate front ressources.'),
-                        booleanParam(name: 'DO_BUILD', defaultValue: true, description: 'Run Stage Build sources & COTS.'),
-                        booleanParam(name: 'DO_BUILD_PASTIS_STANDALONE', defaultValue: false, description: 'Run build stage for pastis standalone'),
-                        booleanParam(name: 'DO_PUBLISH', defaultValue: true, description: 'Run Stage Publish to repository.'),
+                        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test'),
+                        booleanParam(name: 'DO_DEPLOY', defaultValue: false, description: 'Run Stage Deploy to Nexus'),
+                        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: false, description: 'Run build stage Deploy PASTIS standalone'),
+                        booleanParam(name: 'DO_PUBLISH', defaultValue: false, description: 'Run Stage Publish to repository.'),
                     ]
-                    env.DO_MAJ_CONTEXT = INPUT_PARAMS.DO_MAJ_CONTEXT
-                    env.DO_TEST = INPUT_PARAMS.DO_TEST
-                    env.DO_GENERATE_FRONT_RSC = INPUT_PARAMS.DO_GENERATE_FRONT_RSC
-                    env.DO_BUILD = INPUT_PARAMS.DO_BUILD
-                    env.DO_BUILD_PASTIS_STANDALONE = INPUT_PARAMS.DO_BUILD_PASTIS_STANDALONE
+                    env.DO_BUILD_AND_TEST = INPUT_PARAMS.DO_BUILD_AND_TEST
+                    env.DO_DEPLOY = INPUT_PARAMS.DO_DEPLOY
+                    env.DO_DEPLOY_PASTIS_STANDALONE = INPUT_PARAMS.DO_DEPLOY_PASTIS_STANDALONE
                     env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
                 }
             }
         }
 
         stage('Upgrade build context') {
-            when {
-                environment(name: 'DO_MAJ_CONTEXT', value: 'true')
-            }
             steps {
-                sh 'sudo apt remove -y nodejs'
-                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems jq'
+                sh 'sudo apt remove -y nodejs npm node-npmrc'
+                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
-                sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
-                sh 'sudo gem install fpm  '
+                sh 'sudo gem install fpm'
             }
         }
 
-        stage('Check vulnerabilities and tests') {
+        stage('Build and test') {
             when {
-                environment(name: 'DO_TEST', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-                NODE_OPTIONS="--max_old_space_size=12288"
+                environment(name: 'DO_BUILD_AND_TEST', value: 'true')
             }
             steps {
-                sh 'node -v'
-                sh 'npmrc default'
-
                 sh './tools/check_icomoon.sh'
 
                 sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl '!cots/vitamui-mongo-express'
+                    $MVN_COMMAND clean verify -U -Pvitam \
+                        --projects '!cots/vitamui-mongo-express' \
+                        --projects '!ui/ui-archive-search' \
+                        --projects '!ui/ui-collect' \
+                        --projects '!ui/ui-commons' \
+                        --projects '!ui/ui-identity' \
+                        --projects '!ui/ui-ingest' \
+                        --projects '!ui/ui-pastis' \
+                        --projects '!ui/ui-portal' \
+                        --projects '!ui/ui-referential'
                 '''
             }
             post {
@@ -115,73 +108,47 @@ pipeline {
             }
         }
 
-        stage('Generate front ressources') {
+        stage('Deploy to Nexus') {
             when {
-                environment(name: 'DO_GENERATE_FRONT_RSC', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-                NODE_OPTIONS="--max_old_space_size=12288"
+                environment(name: 'DO_DEPLOY', value: 'true')
             }
             steps {
-                sh 'node -v'
-                sh 'npmrc default'
-
                 sh '''
-                $MVN_COMMAND clean verify -Pvitam -pl 'ui/ui-frontend-common, ui/ui-frontend'
+                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
                 '''
             }
         }
 
-        stage('Build sources') {
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-            }
+        stage('Deploy PASTIS standalone') {
             when {
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_DEPLOY_PASTIS_STANDALONE', value: 'true')
             }
             steps {
-                sh 'npmrc default'
-                sh '''
-                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-mongo-express'
-                '''
-            }
-        }
-
-        stage('Build PASTIS standalone') {
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-            }
-            when {
-                environment(name: 'DO_BUILD_PASTIS_STANDALONE', value: 'true')
-            }
-            steps {
-                sh 'npmrc default'
                 sh '''
                     $MVN_COMMAND install \
                         -D skipTests \
                         -P vitam \
-                        -pl '!ui/ui-archive-search' \
-                        -pl '!ui/ui-collect' \
-                        -pl '!ui/ui-commons' \
-                        -pl '!ui/ui-identity' \
-                        -pl '!ui/ui-ingest' \
-                        -pl '!ui/ui-pastis' \
-                        -pl '!ui/ui-portal' \
-                        -pl '!ui/ui-referential'
+                        --projects '!ui/ui-archive-search' \
+                        --projects '!ui/ui-collect' \
+                        --projects '!ui/ui-commons' \
+                        --projects '!ui/ui-identity' \
+                        --projects '!ui/ui-ingest' \
+                        --projects '!ui/ui-pastis' \
+                        --projects '!ui/ui-portal' \
+                        --projects '!ui/ui-referential'
                 '''
                 sh '''
                     $MVN_COMMAND deploy \
                         -D skipTests \
                         -P standalone \
-                        -pl 'api/api-pastis/pastis-standalone'
+                        --projects 'api/api-pastis/pastis-standalone'
                 '''
             }
         }
 
         stage('Build COTS') {
             when {
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_DEPLOY', value: 'true')
             }
             steps {
                 dir('cots/') {
@@ -195,7 +162,7 @@ pipeline {
         stage("Get publishing scripts") {
             when {
                 environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_DEPLOY', value: 'true')
             }
             steps {
                 checkout([$class: 'GitSCM',
@@ -211,7 +178,7 @@ pipeline {
         stage("Publish rpm and deb") {
             when {
                 environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_DEPLOY', value: 'true')
             }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
@@ -229,7 +196,7 @@ pipeline {
                     tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
                 }
                 environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
+                environment(name: 'DO_DEPLOY', value: 'true')
             }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
