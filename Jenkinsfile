@@ -84,21 +84,39 @@ pipeline {
             when {
                 environment(name: 'DO_BUILD_AND_TEST', value: 'true')
             }
-            steps {
-                sh './tools/check_icomoon.sh'
-
-                sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam \
-                        --projects '!cots/vitamui-mongo-express' \
-                        --projects '!ui/ui-archive-search' \
-                        --projects '!ui/ui-collect' \
-                        --projects '!ui/ui-commons' \
-                        --projects '!ui/ui-identity' \
-                        --projects '!ui/ui-ingest' \
-                        --projects '!ui/ui-pastis' \
-                        --projects '!ui/ui-portal' \
-                        --projects '!ui/ui-referential'
-                '''
+            parallel {
+                stage('Check icomoon') {
+                    steps {
+                        sh './tools/check_icomoon.sh'
+                    }
+                }
+                stage('Build Frontend') {
+                    steps {
+                        sh '''
+                            $MVN_COMMAND clean verify -U -Pvitam \
+                                --projects 'ui/ui-frontend' \
+                                --projects 'ui/ui-frontend-common'
+                        '''
+                    }
+                }
+                stage('Build Backend') {
+                    steps {
+                        sh '''
+                            $MVN_COMMAND clean verify -U -Pvitam \
+                                --projects '!cots/vitamui-mongo-express' \
+                                --projects '!ui/ui-archive-search' \
+                                --projects '!ui/ui-collect' \
+                                --projects '!ui/ui-commons' \
+                                --projects '!ui/ui-frontend' \
+                                --projects '!ui/ui-frontend-common' \
+                                --projects '!ui/ui-identity' \
+                                --projects '!ui/ui-ingest' \
+                                --projects '!ui/ui-pastis' \
+                                --projects '!ui/ui-portal' \
+                                --projects '!ui/ui-referential'
+                        '''
+                    }
+                }
             }
             post {
                 always {
