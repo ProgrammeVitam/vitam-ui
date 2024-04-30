@@ -41,7 +41,7 @@
           <i class="vitamui-icon vitamui-icon-operation" [ngClass]="secu | eventTypeBadgeClass"></i>
         </div>
         <div class="col-2 d-flex align-items-center text break" vitamuiCommonEllipsis>{{ secu.id }}</div>
-        <div class="col-3" vitamuiCommonEllipsis>{{ secu?.type }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ 'SECURE.HOME.ARRAY.TRACEABILITY_TYPES.' + secu?.type | translate }}</div>
         <div class="col-2" vitamuiCommonEllipsis>{{ secu.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
         <div class="col-1" vitamuiCommonEllipsis [ngClass]="secu | eventTypeColorClass">
           {{ (secu | lastEvent)?.outcome }}
