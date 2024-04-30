@@ -54,6 +54,11 @@
       </app-ingest-contract-heritage-tab>
     </mat-tab>
 
+    <mat-tab [label]="'INGEST_CONTRACT.TAB.ATTACHEMENT.TITLE' | translate" class="no-padding">
+      <app-ingest-contract-attachment-tab [readOnly]="readOnly" [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
+      </app-ingest-contract-attachment-tab>
+    </mat-tab>
+
     <mat-tab [label]="'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate" class="no-padding">
       <app-ingest-contract-signature-tab
         [readOnly]="readOnly"
@@ -62,11 +67,6 @@
         #signatureTab
       >
       </app-ingest-contract-signature-tab>
-    </mat-tab>
-
-    <mat-tab [label]="'INGEST_CONTRACT.TAB.ATTACHEMENT.TITLE' | translate" class="no-padding">
-      <app-ingest-contract-attachment-tab [readOnly]="readOnly" [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
-      </app-ingest-contract-attachment-tab>
     </mat-tab>
 
     <mat-tab [label]="'INGEST_CONTRACT.TAB.HISTORY.TITLE' | translate">
