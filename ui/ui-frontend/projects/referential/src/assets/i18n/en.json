@@ -381,7 +381,7 @@
   },
   "ACCESS_CONTRACT": {
     "HOME": {
-      "TITLE": "Set up access contracts",
+      "TITLE": "Access contracts",
       "SEARCH_PLACEHOLDER": "Name, ID",
       "CREATE_ACCESS_CONTRACT": "Create access contract",
       "IMPORT": "Import",
@@ -733,7 +733,7 @@
   },
   "AGENCY": {
     "HOME": {
-      "TITLE": "Configure agent services",
+      "TITLE": "Agent services",
       "TITLE_PLACEHOLDER": "Name, Identifier",
       "ACTION_BUTTON": "Create agent service",
       "ACTION_IMPORT": "Import the referential",
@@ -803,7 +803,7 @@
   },
   "INGEST_CONTRACT": {
     "HOME": {
-      "TITLE": "Set up ingest contracts",
+      "TITLE": "Ingest contracts",
       "SEARCH_PLACEHOLDER": "Name, identifier",
       "CREATE_INGEST_CONTRACT": "Create an ingest contract",
       "IMPORT": "Import",

@@ -381,7 +381,7 @@
   },
   "ACCESS_CONTRACT": {
     "HOME": {
-      "TITLE": "Paramétrer les contrats d'accès",
+      "TITLE": "Contrats d'accès",
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "CREATE_ACCESS_CONTRACT": "Créer un contrat d'accès",
       "IMPORT": "Importer",
@@ -733,7 +733,7 @@
   },
   "AGENCY": {
     "HOME": {
-      "TITLE": "Paramétrer les services agents",
+      "TITLE": "Services agents",
       "TITLE_PLACEHOLDER": "Nom, Identifiant",
       "ACTION_BUTTON": "Créer un service agent",
       "ACTION_IMPORT": "Importer le référentiel",
@@ -803,7 +803,7 @@
   },
   "INGEST_CONTRACT": {
     "HOME": {
-      "TITLE": "Paramétrer les contrats d’entrée",
+      "TITLE": "Contrats d’entrée",
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "CREATE_INGEST_CONTRACT": "Créer un contrat d'entrée",
       "IMPORT": "Importer",
