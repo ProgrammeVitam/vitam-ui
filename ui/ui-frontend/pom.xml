@@ -103,7 +103,7 @@
             </goals>
             <configuration>
               <skip>${skipAllFrontendTests}</skip>
-              <arguments>run test:conf-ci</arguments>
+              <arguments>run ci:test</arguments>
             </configuration>
           </execution>
           <execution>
