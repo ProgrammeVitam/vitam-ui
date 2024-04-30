@@ -118,7 +118,7 @@
         <junit.vintage.engine.version>5.7.0</junit.vintage.engine.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
-        <logback.version>1.2.9</logback.version>
+        <logback.version>1.2.13</logback.version>
         <lombok.version>1.18.20</lombok.version>
         <jakarta.mail.version>1.6.5</jakarta.mail.version>
         <juli.to.slf4j.version>1.1.1</juli.to.slf4j.version>
@@ -153,7 +153,7 @@
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.9</xom.version>
-        <xdocreport.version>2.0.2</xdocreport.version>
+        <xdocreport.version>2.0.3</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
         <esapi.version>2.2.3.1</esapi.version>
         <antisamy.version>1.6.7</antisamy.version>
