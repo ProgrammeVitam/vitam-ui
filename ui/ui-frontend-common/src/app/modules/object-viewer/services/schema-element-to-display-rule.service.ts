@@ -249,18 +249,25 @@ export class SchemaElementToDisplayRuleService {
     }
   }
 
+  private getLayoutSize(schemaElement: SchemaElement): LayoutSize {
+    if (schemaElement.DataType === 'DATETIME') {
+      return 'small';
+    }
+    return { SHORT: 'small', MEDIUM: 'medium', LARGE: 'large' }[schemaElement.StringSize || 'MEDIUM'] as LayoutSize;
+  }
+
   public mapSchemaElementToDisplayRule(schemaElement: SchemaElement): DisplayRule {
     const component: ComponentName = this.mapSchemaElementToComponent(schemaElement);
     const baseDisplayRule = this.schemaElementComponentTypeToDisplayRule[component];
-    const size = { SHORT: 'small', MEDIUM: 'medium', LARGE: 'large' }[schemaElement.StringSize || 'SHORT'] as LayoutSize;
+    const layoutSize = this.getLayoutSize(schemaElement);
     return {
       ...baseDisplayRule,
       Path: schemaElement.Path,
       ui: {
         ...baseDisplayRule.ui,
         layout: {
-          size,
-          columns: size === 'small' ? 1 : 2,
+          size: layoutSize,
+          columns: layoutSize === 'small' ? 1 : 2,
         },
         Path: schemaElement.ApiPath,
         label: schemaElement.ShortName,
