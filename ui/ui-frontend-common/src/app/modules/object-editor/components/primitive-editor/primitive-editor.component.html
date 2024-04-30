@@ -6,7 +6,6 @@
       [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       class="w-100"
     >
-      <ng-container *ngTemplateOutlet="errors"></ng-container>
     </vitamui-common-input>
     <vitamui-common-input
       *ngSwitchCase="'select'"
@@ -14,7 +13,6 @@
       [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       class="w-100"
     >
-      <ng-container *ngTemplateOutlet="errors"></ng-container>
     </vitamui-common-input>
     <vitamui-common-textarea
       *ngSwitchCase="'textarea'"
@@ -22,27 +20,18 @@
       [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       class="w-100"
     >
-      <ng-container *ngTemplateOutlet="errors"></ng-container>
     </vitamui-common-textarea>
     <vitamui-common-datepicker
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
     >
-      <ng-container *ngTemplateOutlet="errors"></ng-container>
     </vitamui-common-datepicker>
     <vitamui-common-datepicker
       *ngSwitchCase="'datetime'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
     >
-      <ng-container *ngTemplateOutlet="errors"></ng-container>
     </vitamui-common-datepicker>
   </ng-container>
 </ng-container>
-
-<ng-template #errors>
-  <vitamui-common-input-error *ngIf="editObject.control.errors?.required" class="vitamui-input-errors">
-    {{ 'COMMON.REQUIRED' | translate }}
-  </vitamui-common-input-error>
-</ng-template>

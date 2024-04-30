@@ -58,7 +58,3 @@
   </mat-dialog-actions>
   <br />
 </ng-template>
-
-<vitamui-common-input-error *ngIf="editObject?.key && editObject.control.invalid" class="vitamui-input-errors">
-  {{ editObject.displayRule.ui.label | translate | empty }}: {{ 'COMMON.INCORRECT_VALUE' | translate }}
-</vitamui-common-input-error>
