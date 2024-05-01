@@ -8,6 +8,7 @@
     var.paths:
       - "{{ vitam_defaults.folder.root_path }}/log/logstash/logstash-plain.log"
     input:
+      fields_under_root: true
       fields:
         kind: log
         vitam_component: logstash

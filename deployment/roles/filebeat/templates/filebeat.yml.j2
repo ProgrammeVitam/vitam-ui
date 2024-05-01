@@ -68,7 +68,7 @@ output.elasticsearch:
     - index: "logstash-access-%{+yyyy.MM.dd}"
       when:
         regexp:
-          fields.kind: "^(access,management)$"
+          kind: "^(access,management)$"
     - index: "logstash-system-%{+yyyy.MM.dd}"
       when.equals:
         event.module: system
@@ -79,7 +79,7 @@ output.elasticsearch:
             - equals:
                 event.module: system
             - regexp:
-                fields.kind: "^(access,management)$"
+                kind: "^(access,management)$"
 
 #
 # Processors

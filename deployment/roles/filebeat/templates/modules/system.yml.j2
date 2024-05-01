@@ -9,6 +9,7 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      fields_under_root: true
       fields:
         kind: syslog
         source: vitamui
@@ -20,6 +21,7 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      fields_under_root: true
       fields:
         kind: auth
         source: vitamui

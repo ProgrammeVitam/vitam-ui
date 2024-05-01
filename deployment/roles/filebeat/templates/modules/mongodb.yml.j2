@@ -8,6 +8,7 @@
     var.paths:
       - "{{ vitamui_defaults.folder.root_path }}/log/mongod/mongo*.log"
     input:
+      fields_under_root: true
       fields:
         kind: log
         vitam_component: mongod_vitamui
@@ -25,22 +26,22 @@
               function process(event) {
                 switch (event.Get("message.s")) {
                     case "I":
-                        event.Put("loglevel", "INFO");
+                        event.Put("log_level", "INFO");
                         break;
                     case "W":
-                        event.Put("loglevel", "WARN");
+                        event.Put("log_level", "WARN");
                         break;
                     case "E":
-                        event.Put("loglevel", "ERROR");
+                        event.Put("log_level", "ERROR");
                         break;
                     case "F":
-                        event.Put("loglevel", "FATAL");
+                        event.Put("log_level", "FATAL");
                         break;
                     default:
-                        event.Put("loglevel", "UNKNOWN");
+                        event.Put("log_level", "UNKNOWN");
                   }
                 }
         - drop_event:
           when:
             equals:
-              loglevel: "INFO"
+              log_level: "INFO"
