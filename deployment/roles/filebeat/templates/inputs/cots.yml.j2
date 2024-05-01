@@ -16,7 +16,13 @@
     source: vitamui
     type: cots
   processors:
-  - dissect:
-      tokenizer: '%{date_time} [%{log_level}]  %{logger}: %{log_message}'
-      target_prefix: ""
+    - dissect:
+        tokenizer: '%{date_time} [%{log_level}]  %{logger}: %{log_message}'
+        target_prefix: ""
+  parsers:
+    - multiline:
+        type: pattern
+        pattern: '^[[:space:]]'
+        negate: false
+        match: after
 {% endif %}
