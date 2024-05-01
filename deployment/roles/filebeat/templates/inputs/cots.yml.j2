@@ -19,6 +19,8 @@
     - dissect:
         tokenizer: '%{date_time} [%{log_level}]  %{logger}: %{log_message}'
         target_prefix: ""
+    - drop_fields:
+        fields: ["date_time"]
   parsers:
     - multiline:
         type: pattern
