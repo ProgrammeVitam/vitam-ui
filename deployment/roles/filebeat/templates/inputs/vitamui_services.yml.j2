@@ -30,7 +30,7 @@
     type: application
   processors:
     - dissect:
-        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size|integer}'
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
     - drop_fields:
         fields: ["date_time"]
@@ -63,7 +63,7 @@
     type: application
   processors:
     - dissect:
-        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size|integer}'
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
     - drop_fields:
         fields: ["date_time"]

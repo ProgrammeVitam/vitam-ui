@@ -15,10 +15,11 @@
         kind: access
         vitam_component: apache
         source: vitamui
+        type: cots
       processors:
-      - dissect:
-          tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size|integer} "%{referer}" "%{user_agent}"'
-          target_prefix: ""
+        - dissect:
+            tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} "%{referer}" "%{user_agent}"'
+            target_prefix: ""
         - drop_fields:
             fields: ["date_time"]
 

@@ -17,9 +17,9 @@
         source: vitamui
         type: cots
       processors:
-      - dissect:
-          tokenizer: '%{client_ip|ip} - %{sender} [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size|integer} %{log_message}'
-          target_prefix: ""
+        - dissect:
+            tokenizer: '%{client_ip|ip} - %{sender} [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} %{log_message}'
+            target_prefix: ""
         - drop_fields:
             fields: ["date_time"]
 
