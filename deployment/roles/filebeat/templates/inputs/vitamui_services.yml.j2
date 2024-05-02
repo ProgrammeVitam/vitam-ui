@@ -96,8 +96,9 @@
     type: application
   processors:
     - dissect:
-        tokenizer: '%{date_time} [%{thread}] [] %{log_level} %{logger} - %{log_message}'
+        tokenizer: '%{date_time} [[%{thread}]] [%{request_id}] %{log_level} %{logger} - %{log_message}'
         target_prefix: ""
+        trim_values: all
     - drop_fields:
         fields: ["date_time"]
   parsers:
