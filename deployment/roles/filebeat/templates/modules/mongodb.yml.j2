@@ -24,6 +24,7 @@
             id: set_log_level
             source: >
               function process(event) {
+                event.Put("log_message", event.Get("message.msg"));
                 switch (event.Get("message.s")) {
                     case "I":
                         event.Put("log_level", "INFO");
@@ -42,6 +43,6 @@
                   }
                 }
         - drop_event:
-          when:
-            equals:
-              log_level: "INFO"
+            when:
+              equals:
+                log_level: "INFO"
