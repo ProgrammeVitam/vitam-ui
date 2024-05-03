@@ -36,10 +36,11 @@
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
+import { map, tap } from 'rxjs/operators';
+import { ConfirmDialogService, Option, StartupService, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
+import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
 
@@ -50,6 +51,8 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  tenantIdentifier: string;
+  hasPriorityOverFileFormatIDsOptions: VitamuiAutocompleteMultiselectOptions;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -64,10 +67,13 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<FileFormatCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
+    private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
     private fileFormatService: FileFormatService,
     private fileFormatCreateValidators: FileFormatCreateValidators,
-  ) {}
+  ) {
+    this.tenantIdentifier = this.startupService.getTenantIdentifier();
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -76,9 +82,24 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
       version: [null, Validators.required],
       mimeType: [null],
       extensions: [null],
+      hasPriorityOverFileFormatIDs: [null],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+
+    this.fileFormatService
+      .getAllForTenant(this.tenantIdentifier)
+      .pipe(
+        map((fileFormats: FileFormat[]) => {
+          const options: Option[] = fileFormats.map((fileFormat) => ({
+            label: fileFormat.puid + ' - ' + fileFormat.name,
+            key: fileFormat.puid,
+          }));
+          return { options };
+        }),
+        tap((options: VitamuiAutocompleteMultiselectOptions) => (this.hasPriorityOverFileFormatIDsOptions = options)),
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {

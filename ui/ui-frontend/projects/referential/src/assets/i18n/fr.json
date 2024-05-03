@@ -489,13 +489,15 @@
     "CREATE_DIALOG": {
       "TITLE": "Informations",
       "SUBTITLE": "Créer un format de fichier",
-      "IDENTIFIER": "Identifiant",
+      "IDENTIFIER": "PUID",
       "NAME": "Nom",
       "MIME_TYPE": "Type MIME",
       "VERSION": "Version",
       "EXTENSION": "Extension(s)",
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
-      "NAME_ALREADY_EXISTS": "Nom déjà utilisé"
+      "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
+      "HAS_PRIORITY_OVER_FILE_FORMAT_ID": "Priorité sur les versions précédentes",
+      "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Taper un PUID ou un nom de format"
     },
     "TAB": {
       "INFORMATION": {

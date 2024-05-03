@@ -79,6 +79,17 @@
       </vitamui-common-input>
     </div>
 
+    <div class="d-flex">
+      <vitamui-common-autocomplete-multi-select
+        class="w-100"
+        formControlName="hasPriorityOverFileFormatIDs"
+        [placeholder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
+        [searchBarPlaceHolder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
+        [multiSelectOptions]="hasPriorityOverFileFormatIDsOptions"
+      >
+      </vitamui-common-autocomplete-multi-select>
+    </div>
+
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending || isDisabledButton">
         {{ 'COMMON.TERMINATE' | translate }}
