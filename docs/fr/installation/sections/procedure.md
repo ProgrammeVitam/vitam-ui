@@ -47,7 +47,7 @@ Les paramètres essentiels à renseigner pour le déploiement de Vitam-UI sont e
 
 .. caution:: Ce mode de déploiement est en mode béta , merci de ne pas l'appliquer dans un environnement de production
 
-Il est possible de déployer vitam en mode conteneur. Pour cela, il faut éditer le contenu du fichier ``deployment/environments/group_vars/all/main/vitam_extra.yml``. Pour cela il faut rajouter les paramètres présentés dans l'exemple
+Il est possible de déployer vitam en mode conteneur. Pour cela, il faut éditer le contenu du fichier ``deployment/environments/group_vars/all/main/vitamui_extra.yml``. Pour cela il faut rajouter les paramètres présentés dans l'exemple
 
 Exemple::
 
