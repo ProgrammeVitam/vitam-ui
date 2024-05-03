@@ -10,15 +10,18 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      fields_under_root: true
       fields:
         kind: access
         vitam_component: apache
         source: vitamui
+        type: cots
       processors:
-      - dissect:
-          tokenizer: '%{client_ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code} %{response_size} "%{referer}" "%{user_agent}"'
-          field: "message"
-          target: ""
+        - dissect:
+            tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} "%{referer}" "%{user_agent}"'
+            target_prefix: ""
+        - drop_fields:
+            fields: ["date_time"]
 
   # Error logs
   error:
@@ -28,7 +31,8 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      fields_under_root: true
       fields:
-      kind: error
-      vitam_component: apache
-      source: vitamui
+        kind: error
+        vitam_component: apache
+        source: vitamui

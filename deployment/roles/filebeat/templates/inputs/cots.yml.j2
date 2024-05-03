@@ -9,18 +9,23 @@
   enabled: {{ filebeat.cots.consul.enable_log | bool | lower }}
   paths:
     - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
+  fields_under_root: true
   fields:
     kind: log
     vitam_component: consul
     source: vitamui
     type: cots
   processors:
-  - dissect:
-      tokenizer: '%{timestamp} [%{loglevel}]  %{logger}: %{message}'
-      field: "message"
-      target: ""
-  - copy_fields:
-      fields:
-        - from: dissect.loglevel
-          to: loglevel
+    - dissect:
+        tokenizer: '%{date_time} [%{log_level}]%{*}%{logger}: %{log_message}'
+        target_prefix: ""
+        trim_values: all
+    - drop_fields:
+        fields: ["date_time"]
+  parsers:
+    - multiline:
+        type: pattern
+        pattern: '^[[:space:]]'
+        negate: false
+        match: after
 {% endif %}

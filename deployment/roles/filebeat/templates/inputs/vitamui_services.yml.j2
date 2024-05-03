@@ -22,16 +22,22 @@
     'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_access} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/accesslog-{{ vitamui_service }}.*.log"
+  fields_under_root: true
   fields:
     kind: access
-    vitam_component: {{ vitamui_service }}
+    vitam_component: vitamui-{{ vitamui_service }}
     source: vitamui
     type: application
   processors:
     - dissect:
-        tokenizer: '%{client_ip} - - [%{[date_time]}] "%{[http_method]} %{[request_path]} HTTP/%{[http_version]}" %{[http_status_code]} %{[response_size]}'
-        field: "message"
-        target: ""
+    {% if vitamui_service == 'cas-server' %}
+        tokenizer: '[%{date_time}] %{client_ip|ip} "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} (%{duration|integer} ms)'
+    {% else %}
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+    {% endif %}
+        target_prefix: ""
+    - drop_fields:
+        fields: ["date_time"]
   {% endif %}
 
   {% if filebeat.services[vitamui_service].enable_management | default(true) | bool %}
@@ -53,16 +59,22 @@
     'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_management} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/management_accesslog-{{ vitamui_service }}.*.log"
+  fields_under_root: true
   fields:
     kind: management
-    vitam_component: {{ vitamui_service }}
+    vitam_component: vitamui-{{ vitamui_service }}
     source: vitamui
     type: application
   processors:
     - dissect:
-        tokenizer: '%{client_ip} - - [%{[date_time]}] "%{[http_method]} %{[request_path]} HTTP/%{[http_version]}" %{[http_status_code]} %{[response_size]}'
-        field: "message"
-        target: ""
+    {% if vitamui_service == 'cas-server' %}
+        tokenizer: '[%{date_time}] %{client_ip|ip} "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} (%{duration|integer} ms)'
+    {% else %}
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+    {% endif %}
+        target_prefix: ""
+    - drop_fields:
+        fields: ["date_time"]
   {% endif %}
 
   {% if filebeat.services[vitamui_service].enable_log | default(true) | bool %}
@@ -84,22 +96,19 @@
     'vitamui_api_gateway': filebeat.services.vitamui_api_gateway.enable_log} [vitamui_service] | default(true) | bool | lower }}
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_service }}/{{ vitamui_service }}.*.log"
+  fields_under_root: true
   fields:
     kind: log
-    vitam_component: {{ vitamui_service }}
+    vitam_component: vitamui-{{ vitamui_service }}
     source: vitamui
     type: application
   processors:
     - dissect:
-        tokenizer: '%{timestamp} [%{thread}] [] %{loglevel} %{logger} - %{message}'
-        field: "message"
-        target: ""
+        tokenizer: '%{date_time} [[%{thread}]] [%{request_id}] %{log_level} %{logger} - %{log_message}'
+        target_prefix: ""
+        trim_values: all
     - drop_fields:
-        fields: ["timestamp","dissect.timestamp"]
-    - copy_fields:
-        fields:
-          - from: dissect.loglevel
-            to: loglevel
+        fields: ["date_time"]
   parsers:
     - multiline:
         type: pattern
