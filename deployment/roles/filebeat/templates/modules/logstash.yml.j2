@@ -6,7 +6,7 @@
   log:
     enabled: {{ filebeat.cots.logstash.enable_log | bool | lower }}
     var.paths:
-      - "{{ vitam_defaults.folder.root_path }}/log/logstash/logstash-plain.log"
+      - "{{ vitamui_defaults.folder.root_path }}/log/logstash/logstash-plain.log"
     input:
       fields_under_root: true
       fields:
