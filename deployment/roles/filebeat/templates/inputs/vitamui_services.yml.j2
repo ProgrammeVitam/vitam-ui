@@ -30,7 +30,11 @@
     type: application
   processors:
     - dissect:
+    {% if vitamui_service == 'cas-server' %}
+        tokenizer: '[%{date_time}] %{client_ip|ip} "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} (%{duration|integer} ms)'
+    {% else %}
         tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+    {% endif %}
         target_prefix: ""
     - drop_fields:
         fields: ["date_time"]
@@ -63,7 +67,11 @@
     type: application
   processors:
     - dissect:
+    {% if vitamui_service == 'cas-server' %}
+        tokenizer: '[%{date_time}] %{client_ip|ip} "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} (%{duration|integer} ms)'
+    {% else %}
         tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+    {% endif %}
         target_prefix: ""
     - drop_fields:
         fields: ["date_time"]
