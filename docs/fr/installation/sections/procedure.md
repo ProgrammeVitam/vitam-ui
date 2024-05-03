@@ -41,6 +41,25 @@ Les paramètres essentiels à renseigner pour le déploiement de Vitam-UI sont e
 
 > Conseil: Vous pouvez surcharger d'autres variables dans ce même fichier afin de vous permettre d'avoir une centralisation des spécificités de votre installation.
 
+### Installation en mode conteneur
+
+.. note:: Fonctionnalité disponible partir de la V7.1 .
+
+.. caution:: Ce mode de déploiement est en mode béta , merci de ne pas l'appliquer dans un environnement de production
+
+Il est possible de déployer vitam en mode conteneur. Pour cela, il faut éditer le contenu du fichier ``deployment/environments/group_vars/all/main/vitam_extra.yml``. Pour cela il faut rajouter les paramètres présentés dans l'exemple
+
+Exemple::
+
+   install_mode: container
+
+   container_repository:
+     registry_url: <url de la registry docker>
+     username: <login>
+     password: <password>
+
+.. warning:: Dans le cas d'utilisation d'une registry interne ne pas oublier d'effectuer un synchronisation sur la registry docker du projet vitam docker.programmevitam.fr .
+
 #### consul_vars.yml
 
 Paramètres de configuration de consul.
