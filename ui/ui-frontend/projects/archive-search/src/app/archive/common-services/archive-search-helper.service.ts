@@ -34,12 +34,12 @@ import {
   CriteriaValue,
   FilingHoldingSchemeNode,
   ORPHANS_NODE_ID,
-  SearchCriteria,
+  CriteriaSearchCriteria,
   SearchCriteriaEltDto,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
@@ -58,7 +58,7 @@ export class ArchiveSearchHelperService {
   ) {}
 
   addCriteria(
-    searchCriterias: Map<string, SearchCriteria>,
+    searchCriterias: Map<string, CriteriaSearchCriteria>,
     searchCriteriaKeys: string[],
     nbQueryCriteria: number,
     keyElt: string,
@@ -106,7 +106,7 @@ export class ArchiveSearchHelperService {
         }
       } else if (searchCriterias) {
         nbQueryCriteria++;
-        let criteria: SearchCriteria;
+        let criteria: CriteriaSearchCriteria;
         if (searchCriterias.has(keyElt)) {
           criteria = searchCriterias.get(keyElt);
           let values = criteria.values;
@@ -231,7 +231,7 @@ export class ArchiveSearchHelperService {
     valueElt: CriteriaValue,
     emit: boolean,
     searchCriteriaKeys: string[],
-    searchCriterias: Map<string, SearchCriteria>,
+    searchCriterias: Map<string, CriteriaSearchCriteria>,
     nbQueryCriteria: number,
   ) {
     if (searchCriterias && searchCriterias.size > 0) {
@@ -347,11 +347,11 @@ export class ArchiveSearchHelperService {
   }
 
   updateCriteriaStatus(
-    searchCriterias: Map<string, SearchCriteria>,
+    searchCriterias: Map<string, CriteriaSearchCriteria>,
     oldStatusFilter: SearchCriteriaStatusEnum,
     newStatus: SearchCriteriaStatusEnum,
   ) {
-    searchCriterias.forEach((value: SearchCriteria) => {
+    searchCriterias.forEach((value: CriteriaSearchCriteria) => {
       value.values.forEach((elt) => {
         if (elt.status === oldStatusFilter) {
           elt.status = newStatus;
@@ -372,7 +372,7 @@ export class ArchiveSearchHelperService {
     });
   }
 
-  findDefaultFacetTabIndex(searchCriterias: Map<string, SearchCriteria>): number {
+  findDefaultFacetTabIndex(searchCriterias: Map<string, CriteriaSearchCriteria>): number {
     let defaultFacetTabIndex = 100;
     if (searchCriterias && searchCriterias.size > 0) {
       for (const criteria of searchCriterias.values()) {
@@ -404,7 +404,7 @@ export class ArchiveSearchHelperService {
     return defaultFacetTabIndex;
   }
 
-  checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
+  checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, CriteriaSearchCriteria>): boolean {
     let hasMgtRuleCriteria = false;
     if (searchCriterias && searchCriterias.size > 0) {
       for (const criteria of searchCriterias.values()) {
@@ -425,8 +425,8 @@ export class ArchiveSearchHelperService {
     return hasMgtRuleCriteria;
   }
 
-  buildFieldsCriteriaListForQUery(searchCriterias: Map<string, SearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
-    searchCriterias.forEach((criteria: SearchCriteria) => {
+  buildFieldsCriteriaListForQUery(searchCriterias: Map<string, CriteriaSearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
+    searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.FIELDS) {
         this.updateCriteriaStatus(searchCriterias, SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
         criteriaSearchList.push({
@@ -442,10 +442,10 @@ export class ArchiveSearchHelperService {
 
   buildManagementRulesCriteriaListForQuery(
     managementRuleType: string,
-    searchCriterias: Map<string, SearchCriteria>,
+    searchCriterias: Map<string, CriteriaSearchCriteria>,
     criteriaSearchList: SearchCriteriaEltDto[],
   ) {
-    searchCriterias.forEach((criteria: SearchCriteria) => {
+    searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       if (criteria.category.toString() === managementRuleType) {
         const strValues: CriteriaValue[] = [];
         criteria.values.forEach((elt) => {
@@ -465,8 +465,8 @@ export class ArchiveSearchHelperService {
     });
   }
 
-  buildNodesListForQUery(searchCriterias: Map<string, SearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
-    searchCriterias.forEach((criteria: SearchCriteria) => {
+  buildNodesListForQUery(searchCriterias: Map<string, CriteriaSearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
+    searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.NODES) {
         this.updateCriteriaStatus(searchCriterias, SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
         criteriaSearchList.push({
@@ -483,7 +483,7 @@ export class ArchiveSearchHelperService {
   fillNodeTitle(
     nodeArray: FilingHoldingSchemeNode[],
     nodeId: string,
-    searchCriterias: Map<string, SearchCriteria>,
+    searchCriterias: Map<string, CriteriaSearchCriteria>,
     searchCriteriaKeys: string[],
     nbQueryCriteria: number,
   ) {

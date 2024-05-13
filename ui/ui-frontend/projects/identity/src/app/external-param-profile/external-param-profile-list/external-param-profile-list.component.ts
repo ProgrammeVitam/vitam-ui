@@ -39,14 +39,14 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
   buildCriteriaFromSearch,
+  CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
   ExternalParamProfile,
   InfiniteScrollTable,
   PageRequest,
   Profile,
-  SearchQuery,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
@@ -123,7 +123,7 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
   }
 
   search() {
-    const query: SearchQuery = {
+    const query: CriteriaSearchQuery = {
       criteria: [...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
     };
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));

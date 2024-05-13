@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { Option, diff } from 'ui-frontend-common';
+import { Option, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { Ontology } from 'vitamui-library';
 import { OntologyService } from '../../ontology.service';

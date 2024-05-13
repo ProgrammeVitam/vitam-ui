@@ -1,4 +1,4 @@
-import { Event as IEvent } from 'ui-frontend-common';
+import { IEvent } from '../../app/modules';
 
 export interface Event extends IEvent {
   idAppSession: string;

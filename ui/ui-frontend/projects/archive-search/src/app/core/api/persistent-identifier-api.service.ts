@@ -29,7 +29,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'vitamui-library';
 import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
 
 @Injectable({

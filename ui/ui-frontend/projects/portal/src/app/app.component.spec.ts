@@ -42,13 +42,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
+import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
 const translations: any = { TEST: 'This is a test' };

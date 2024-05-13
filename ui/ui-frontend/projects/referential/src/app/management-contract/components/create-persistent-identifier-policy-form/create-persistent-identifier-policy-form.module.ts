@@ -37,7 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { CreatePersistentIdentifierPolicyFormComponent } from './create-persistent-identifier-policy-form.component';
 

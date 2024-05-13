@@ -29,7 +29,7 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'ui-frontend-common';
+import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';

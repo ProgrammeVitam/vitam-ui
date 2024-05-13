@@ -38,7 +38,7 @@ import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, Group, Operators, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, VitamUISnackBarService } from 'vitamui-library';
 
 import { GroupApiService } from '../core/api/group-api.service';
 
@@ -86,7 +86,7 @@ export class GroupService extends SearchService<Group> {
     if (name) {
       criterionArray.push({ key: 'name', value: name, operator: Operators.equals });
     }
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
@@ -97,7 +97,7 @@ export class GroupService extends SearchService<Group> {
     const criteria: Criterion[] = [];
     criteria.push({ key: 'units', value: unit, operator: Operators.equalsIgnoreCase });
     criteria.push({ key: 'customerId', value: customerId, operator: Operators.equals });
-    const query: SearchQuery = { criteria };
+    const query: CriteriaSearchQuery = { criteria };
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.groupApi.checkExistsByParam(params);
@@ -129,7 +129,7 @@ export class GroupService extends SearchService<Group> {
     if (enabled) {
       criterionArray.push({ key: 'enabled', value: enabled, operator: Operators.equals });
     }
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     let params = new HttpParams();
 
@@ -140,7 +140,7 @@ export class GroupService extends SearchService<Group> {
     return this.groupApi.getAllByParams(params);
   }
 
-  getNonEmptyLevels(query: SearchQuery) {
+  getNonEmptyLevels(query: CriteriaSearchQuery) {
     return this.groupApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
 

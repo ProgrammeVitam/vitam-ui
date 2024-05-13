@@ -59,8 +59,8 @@ import {
   Rule,
   SecurityService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
 import { TranslateModule } from '@ngx-translate/core';

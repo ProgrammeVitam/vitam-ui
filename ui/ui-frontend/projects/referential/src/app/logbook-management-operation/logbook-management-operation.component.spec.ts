@@ -41,7 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 
 describe('LogbookManagementOperationComponent', () => {

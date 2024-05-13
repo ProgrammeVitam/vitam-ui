@@ -41,7 +41,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
+import { RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { ProfileDetailComponent } from './profile-detail.component';

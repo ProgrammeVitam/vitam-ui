@@ -36,8 +36,8 @@
  */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ENVIRONMENT, VitamUISnackBarService } from 'ui-frontend-common';
-import { BASE_URL, IdentityProvider, LoggerModule, Operators, SearchQuery, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ENVIRONMENT, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, IdentityProvider, LoggerModule, Operators, CriteriaSearchQuery, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
@@ -126,7 +126,7 @@ describe('IdentityProviderService', () => {
         expect(result).toEqual(identityProviders);
       }, fail);
       const criterionArray: any[] = [{ key: 'customerId', value: '4242', operator: Operators.equals }];
-      const query: SearchQuery = { criteria: criterionArray };
+      const query: CriteriaSearchQuery = { criteria: criterionArray };
       const req = httpTestingController.expectOne('/fake-api/providers?criteria=' + encodeURI(JSON.stringify(query)));
       expect(req.request.method).toEqual('GET');
       req.flush(identityProviders);

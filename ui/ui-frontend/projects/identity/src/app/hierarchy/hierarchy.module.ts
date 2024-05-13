@@ -41,7 +41,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
 import { HierarchyCreateModule } from './hierarchy-create';
 import { HierarchyDetailModule } from './hierarchy-detail/hierarchy-detail.module';

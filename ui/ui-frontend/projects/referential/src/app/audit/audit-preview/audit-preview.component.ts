@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Event, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Event, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 
 @Component({

@@ -44,8 +44,8 @@ import {
   InjectorModule,
   LoggerModule,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RuleValidator } from '../../rule.validator';
 import { StorageRuleSearchComponent } from './storage-rule-search.component';
 

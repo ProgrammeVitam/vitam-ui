@@ -46,7 +46,7 @@ import {
   GlobalEventService,
   MenuOption,
   SubrogationModalService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { CustomerSelectService } from '../customer-select.service';
 
 @Component({

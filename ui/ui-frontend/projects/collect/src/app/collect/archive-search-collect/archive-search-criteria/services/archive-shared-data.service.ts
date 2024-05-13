@@ -44,7 +44,7 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaRemoveAction,
   Unit,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { NodeData } from '../models/nodedata.interface';
 
 @Injectable({

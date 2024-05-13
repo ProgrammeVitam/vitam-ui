@@ -26,7 +26,7 @@
  *  * accept its terms.
  *
  */
-import { Direction } from 'ui-frontend-common';
+import { Direction } from 'vitamui-library';
 
 export interface AccessionRegisterSearchDto {
   orderBy?: string;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, Direction, Group, Operators, PageRequest, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, Direction, Group, Operators, PageRequest, CriteriaSearchQuery, VitamUISnackBarService } from 'vitamui-library';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
@@ -199,7 +199,7 @@ describe('GroupService', () => {
       { key: 'customerId', value: '4242', operator: Operators.equals },
       { key: 'name', value: 'profileGroupName', operator: Operators.equals },
     ];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
@@ -213,7 +213,7 @@ describe('GroupService', () => {
       { key: 'customerId', value: '4242', operator: Operators.equals },
       { key: 'name', value: 'profileGroupName', operator: Operators.equals },
     ];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('', { status: 204, statusText: 'No Content' });
@@ -228,7 +228,7 @@ describe('GroupService', () => {
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
       { key: 'customerId', value: 'customerId', operator: Operators.equals },
     ];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
@@ -242,7 +242,7 @@ describe('GroupService', () => {
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
       { key: 'customerId', value: 'customerId', operator: Operators.equals },
     ];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('', { status: 204, statusText: 'No Content' });

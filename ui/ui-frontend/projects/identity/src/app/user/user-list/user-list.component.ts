@@ -42,6 +42,7 @@ import {
   AuthService,
   buildCriteriaFromSearch,
   collapseAnimation,
+  CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
   Group,
@@ -49,10 +50,9 @@ import {
   PageRequest,
   Role,
   rotateAnimation,
-  SearchQuery,
   User,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import {
   Component,
@@ -174,7 +174,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
-      const query: SearchQuery = {
+      const query: CriteriaSearchQuery = {
         criteria: [...buildCriteriaFromUserFilters(this.filterMap), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
@@ -199,7 +199,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     this.groupFilterOptions.sort(sortByLabel(this.locale));
   }
 
-  refreshLevelOptions(query?: SearchQuery) {
+  refreshLevelOptions(query?: CriteriaSearchQuery) {
     this.userService.getLevelsNoEmpty(query).subscribe((levels) => {
       this.levelFilterOptions = levels.map((level) => ({ value: level, label: level }));
       this.levelFilterOptions.sort(sortByLabel(this.locale));

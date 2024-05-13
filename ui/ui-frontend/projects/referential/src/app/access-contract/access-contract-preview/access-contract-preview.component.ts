@@ -38,7 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { AccessContract } from 'ui-frontend-common';
+import { AccessContract } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';

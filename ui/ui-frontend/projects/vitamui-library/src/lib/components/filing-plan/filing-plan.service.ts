@@ -32,8 +32,10 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { DescriptionLevel, FileType, Unit, UnitType } from 'ui-frontend-common';
+import { FileType, UnitType } from '../../../app/modules';
+import { Unit } from '../../../app/modules/models/units/unit.interface';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
+import { DescriptionLevel } from '../../models/description-level.enum';
 import { Node } from '../../models/node.interface';
 
 import { getKeywordValue } from '../../utils/keyword.util';

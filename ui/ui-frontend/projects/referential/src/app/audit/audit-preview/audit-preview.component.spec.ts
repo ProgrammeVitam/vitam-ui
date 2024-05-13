@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { PipesModule } from '../../shared/pipes/pipes.module';

@@ -40,7 +40,7 @@ import { of } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
+import { ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';

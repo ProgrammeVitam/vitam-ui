@@ -40,7 +40,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { PageRequest, PaginatedResponse } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { FileNode } from '../../models/file-node';

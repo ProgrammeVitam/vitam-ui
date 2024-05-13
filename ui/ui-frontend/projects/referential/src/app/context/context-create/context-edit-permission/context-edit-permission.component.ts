@@ -38,8 +38,7 @@
 
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AuthService, ContextPermission, Option } from 'ui-frontend-common';
-import { Customer, Tenant } from 'ui-frontend-common/app/modules/models/customer';
+import { AuthService, ContextPermission, Customer, Option, Tenant } from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';

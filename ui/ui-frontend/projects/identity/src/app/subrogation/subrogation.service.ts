@@ -38,15 +38,15 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  CriteriaSearchQuery,
   Criterion,
   Group,
   Operators,
-  SearchQuery,
   SearchService,
   Subrogation,
   SubrogationApiService,
   SubrogationUser,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { UserGenericApiService } from './user-generic-api.service';
 
@@ -70,7 +70,7 @@ export class SubrogationService extends SearchService<SubrogationUser> {
     const customerIdCriterion: Criterion = { key: 'surrogateCustomerId', value: customerId, operator: Operators.equals };
     criterionArray.push(customerIdCriterion);
 
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const params = new HttpParams().set('criteria', JSON.stringify(query));
 
     return this.subrogationApiService.getAllByParams(params);

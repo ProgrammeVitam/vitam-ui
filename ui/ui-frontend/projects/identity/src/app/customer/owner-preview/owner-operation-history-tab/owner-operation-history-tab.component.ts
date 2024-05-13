@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AuthService, Event, LogbookService } from 'ui-frontend-common';
+import { AuthService, IEvent, LogbookService } from 'vitamui-library';
 
 const EVENT_LIMIT = 100;
 @Component({
@@ -49,7 +49,7 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
   @Input() externalParamId: string;
   @Input() filter: (event: any) => boolean;
 
-  events: Event[] = [];
+  events: IEvent[] = [];
   loading = false;
 
   constructor(

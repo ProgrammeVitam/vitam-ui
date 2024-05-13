@@ -33,7 +33,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
-import { InjectorModule, LoggerModule, RegisterValueEventType } from 'ui-frontend-common';
+import { InjectorModule, LoggerModule, RegisterValueEventType } from 'vitamui-library';
 import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list.component';
 import { AccessionRegisterFixtures } from './accession-register-operations-list.component.statics.spec';
 

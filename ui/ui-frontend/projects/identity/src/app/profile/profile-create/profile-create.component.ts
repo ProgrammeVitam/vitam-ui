@@ -45,7 +45,7 @@ import {
   Group,
   Profile,
   Role,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

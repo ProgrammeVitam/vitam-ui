@@ -43,9 +43,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
-import { AuthService, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL } from 'vitamui-library';
+import { AuthService, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })

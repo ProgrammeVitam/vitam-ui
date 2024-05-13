@@ -57,9 +57,10 @@ import {
   LoggerModule,
   SearchBarModule,
   SecurityService,
+  Status,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveComponent } from './archive.component';
@@ -84,7 +85,7 @@ describe('ArchiveComponent', () => {
     lastUpdate: 'string',
     activationDate: 'string',
     rootUnits: [],
-    accessLog: '',
+    accessLog: Status.ACTIVE,
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
     excludedRootUnits: [],

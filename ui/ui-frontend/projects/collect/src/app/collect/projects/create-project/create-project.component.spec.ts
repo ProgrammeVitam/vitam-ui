@@ -50,7 +50,7 @@ import {
   TransactionStatus,
   WINDOW_LOCATION,
   Workflow,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';

@@ -37,7 +37,7 @@
 import { async, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 import { TenantApiService } from './tenant-api.service';
 
 describe('TenantApiService', () => {

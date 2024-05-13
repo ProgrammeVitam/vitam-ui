@@ -53,8 +53,8 @@ import {
   UnitRuleDto,
   UnitType,
   VitamuiMissingTranslationHandler,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {

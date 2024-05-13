@@ -14,7 +14,6 @@
     </parent>
 
     <modules>
-        <module>ui-frontend-common</module>
         <module>ui-frontend</module>
     </modules>
 

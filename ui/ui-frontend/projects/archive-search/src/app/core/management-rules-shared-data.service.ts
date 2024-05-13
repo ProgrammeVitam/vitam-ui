@@ -37,7 +37,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
 import { ActionsRules, ManagementRules } from '../archive/models/ruleAction.interface';
 
 @Injectable({

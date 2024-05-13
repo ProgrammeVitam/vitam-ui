@@ -48,7 +48,7 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';

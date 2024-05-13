@@ -39,14 +39,14 @@ import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/opera
 import {
   ApplicationId,
   buildCriteriaFromSearch,
+  CriteriaSearchQuery,
   Criterion,
   Direction,
   InfiniteScrollTable,
   Operators,
   PageRequest,
   Profile,
-  SearchQuery,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -139,7 +139,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
       { key: 'tenantIdentifier', value: this.tenantIdentifier, operator: Operators.equals },
     ];
 
-    const query: SearchQuery = {
+    const query: CriteriaSearchQuery = {
       criteria: [...defaultCriteria, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
     };
 

@@ -27,7 +27,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'ui-frontend-common';
+import { Project, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({

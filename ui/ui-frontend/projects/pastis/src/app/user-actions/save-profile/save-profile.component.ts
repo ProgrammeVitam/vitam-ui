@@ -41,7 +41,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { StartupService } from 'ui-frontend-common';
+import { StartupService } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../../../ingest/src/app/shared/vitamui-snack-bar';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';

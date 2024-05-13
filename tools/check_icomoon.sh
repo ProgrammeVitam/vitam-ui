@@ -9,7 +9,7 @@ ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
 ICONS_IN_CODE=$(grep --include='*.'{html,ts} --exclude-dir={design-system,node_modules,dist} -REoha "vitamui-icon-[^\"'< ]+" ../ui/* | sed -e 's/vitamui-icon-//' | sort | uniq)
-ICONS_IN_ICOMOON=$(jq '.icons[].properties.name' ../ui/ui-frontend-common/icomoon-selection.json | sed -e 's/"//g' | sort | uniq)
+ICONS_IN_ICOMOON=$(jq '.icons[].properties.name' ../ui/ui-frontend/projects/vitamui-library/icomoon-selection.json | sed -e 's/"//g' | sort | uniq)
 
 IN_ICOMOON_BUT_NOT_USED_IN_CODE=$(comm -13 <(echo "$ICONS_IN_CODE") <(echo "$ICONS_IN_ICOMOON"))
 if [ ! -z "$IN_ICOMOON_BUT_NOT_USED_IN_CODE" ]; then

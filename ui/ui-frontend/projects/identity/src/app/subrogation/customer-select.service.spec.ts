@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ENVIRONMENT } from 'ui-frontend-common';
-import { AuthService, BASE_URL, LoggerModule, Operators, SearchQuery } from 'ui-frontend-common';
+import { ENVIRONMENT } from 'vitamui-library';
+import { AuthService, BASE_URL, LoggerModule, Operators, CriteriaSearchQuery } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -79,7 +79,7 @@ describe('CustomerSelectService', () => {
     }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('GET');
     req.flush([
@@ -95,7 +95,7 @@ describe('CustomerSelectService', () => {
     }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('GET');
     const msg = 'deliberate 404 error';
@@ -109,7 +109,7 @@ describe('CustomerSelectService', () => {
     }, fail);
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('GET');
     req.flush(null);

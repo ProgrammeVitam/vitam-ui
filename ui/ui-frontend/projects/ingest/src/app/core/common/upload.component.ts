@@ -38,7 +38,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BytesPipe, Logger, StartupService } from 'ui-frontend-common';
+import { BytesPipe, Logger, StartupService } from 'vitamui-library';
 
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { IngestType } from './ingest-type.enum';

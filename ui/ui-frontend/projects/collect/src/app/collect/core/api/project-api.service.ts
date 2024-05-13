@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, SearchCriteriaHistory, Transaction } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, Project, SearchCriteriaHistory, Transaction } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

@@ -56,7 +56,7 @@ import {
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, rotateAnimation } from 'ui-frontend-common';
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, rotateAnimation } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';

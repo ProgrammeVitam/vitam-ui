@@ -48,7 +48,7 @@ import {
   PageRequest,
   Role,
   SecurityProfile,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

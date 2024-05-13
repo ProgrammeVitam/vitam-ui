@@ -41,8 +41,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { of } from 'rxjs';
 
-import { CollapseModule, StartupService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { CollapseModule, StartupService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';

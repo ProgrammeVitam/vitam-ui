@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { AuthService, AuthenticatorService } from 'ui-frontend-common';
+import { AuthenticatorService, AuthService } from 'vitamui-library';
 import { NoAuthenticatorService } from './no-authenticator.service';
 
 export function initializeApp() {
@@ -17,12 +17,10 @@ export function initializeApp() {
   ],
 })
 export class NoAuthenticationModule {
-  private gatewayEnabled = false;
-
   constructor(
     private authenticationService: AuthService,
     private authenticatorService: AuthenticatorService,
   ) {
-    this.authenticationService.configure(this.gatewayEnabled, this.authenticatorService);
+    this.authenticationService.configure(this.authenticatorService);
   }
 }

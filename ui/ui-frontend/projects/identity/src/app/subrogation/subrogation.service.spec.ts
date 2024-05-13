@@ -37,7 +37,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { BASE_URL, SubrogationApiService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, SubrogationApiService, WINDOW_LOCATION } from 'vitamui-library';
 import { SubrogationService } from './subrogation.service';
 
 describe('SubrogationService', () => {

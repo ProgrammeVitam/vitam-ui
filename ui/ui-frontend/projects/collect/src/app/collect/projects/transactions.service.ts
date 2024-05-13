@@ -26,7 +26,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Transaction } from 'ui-frontend-common';
+import { Transaction } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({

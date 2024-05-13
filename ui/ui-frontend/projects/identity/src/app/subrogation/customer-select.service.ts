@@ -36,7 +36,7 @@
  */
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Customer, MenuOption, Operators, SearchQuery } from 'ui-frontend-common';
+import { CriteriaSearchQuery, Customer, MenuOption, Operators } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -53,7 +53,7 @@ export class CustomerSelectService {
 
   getAll(subrogeable: boolean): Observable<MenuOption[]> {
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
 

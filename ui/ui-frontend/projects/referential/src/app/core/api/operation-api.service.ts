@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, Event, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Event, PageRequest, PaginatedResponse } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

@@ -30,7 +30,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   ExternalParameters,
@@ -38,14 +38,14 @@ import {
   FlowType,
   Logger,
   MetadataUnitUp,
-  Ontology,
+  IOntology,
   OntologyService,
   Project,
   ProjectStatus,
   Transaction,
   TransactionStatus,
   Workflow,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
@@ -86,7 +86,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   zippedFile$: Observable<CollectZippedUploadFile>;
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
-  ontologies: Ontology[];
+  ontologies: IOntology[];
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -419,7 +419,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
             duration: 10000,
           });
         }),
-        catchError((error) => this.logger.error(error)),
+        catchError((error) => {
+          this.logger.error(error);
+          return throwError(error);
+        }),
       )
       .subscribe();
   }

@@ -36,7 +36,7 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
 
 @Injectable({

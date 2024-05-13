@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Profile } from 'ui-frontend-common';
+import { Profile } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

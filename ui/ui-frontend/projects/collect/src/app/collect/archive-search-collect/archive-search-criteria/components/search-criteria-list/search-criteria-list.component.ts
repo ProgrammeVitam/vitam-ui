@@ -38,7 +38,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory } from 'ui-frontend-common';
+import { Direction, SearchCriteriaHistory } from 'vitamui-library';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';

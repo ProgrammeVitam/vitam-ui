@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Rule, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Rule, SearchService, VitamUISnackBarService } from 'vitamui-library';
 import { RuleApiService } from '../core/api/rule-api.service';
 
 @Injectable({

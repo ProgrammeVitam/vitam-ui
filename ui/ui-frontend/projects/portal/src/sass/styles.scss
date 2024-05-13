@@ -1,7 +1,7 @@
-@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
-@import '~ui-frontend-common/sass/theme';
-@import '~bootstrap/scss/bootstrap-grid';
-@import '~ui-frontend-common/sass/fonts/font-styles.css';
+@import 'icons/vitamui-icons';
+@import 'theme';
+@import 'bootstrap/scss/bootstrap-grid';
+@import 'fonts/font-styles';
 
 // Override applications icons colors for theming
 @import './theming/application-icons';

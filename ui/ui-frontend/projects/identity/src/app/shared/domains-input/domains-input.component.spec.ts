@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { input } from 'ui-frontend-common/testing';
+import { input } from 'vitamui-library/testing';
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 import { DomainsInputComponent } from './domains-input.component';
 

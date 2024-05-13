@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { LogbookApiService, LogbookService } from 'ui-frontend-common';
+import { LogbookApiService, LogbookService } from 'vitamui-library';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';

@@ -38,7 +38,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'ui-frontend-common';
+import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 @Component({

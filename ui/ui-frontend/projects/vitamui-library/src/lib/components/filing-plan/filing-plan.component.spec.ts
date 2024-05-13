@@ -41,10 +41,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, FileType } from 'ui-frontend-common';
 import { Node } from '../../models/node.interface';
 import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
+import { AuthService, FileType } from '../../../app/modules';
 
 @Component({ selector: 'lib-vitamui-library-node', template: '' })
 class NodeStubComponent {

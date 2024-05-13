@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 
 import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
 import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';

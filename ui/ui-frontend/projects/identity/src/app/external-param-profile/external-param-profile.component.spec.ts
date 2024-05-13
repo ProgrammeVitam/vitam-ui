@@ -41,8 +41,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
 import { ExternalParamProfileService } from './external-param-profile.service';
 

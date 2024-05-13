@@ -54,7 +54,7 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';

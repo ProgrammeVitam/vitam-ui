@@ -31,7 +31,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
+import { SearchCriteriaEltDto, StartupService } from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';

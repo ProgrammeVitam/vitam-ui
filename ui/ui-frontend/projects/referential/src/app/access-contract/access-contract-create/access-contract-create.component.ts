@@ -46,7 +46,7 @@ import {
   Option,
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { FilingPlanMode, Status } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { RULE_TYPES } from '../../rule/rules.constants';

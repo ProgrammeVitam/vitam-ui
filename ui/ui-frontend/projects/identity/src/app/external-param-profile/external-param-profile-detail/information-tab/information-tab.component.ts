@@ -38,7 +38,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContract, ApplicationId, diff, ExternalParamProfile } from 'ui-frontend-common';
+import { AccessContract, ApplicationId, diff, ExternalParamProfile } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';

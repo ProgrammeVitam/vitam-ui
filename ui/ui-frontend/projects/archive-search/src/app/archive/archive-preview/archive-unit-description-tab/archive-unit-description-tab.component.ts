@@ -5,9 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, StartupService } from 'ui-frontend-common';
-import { EditObject } from 'ui-frontend-common/app/modules/object-editor/models/edit-object.model';
-import { SpinnerOverlayService } from 'vitamui-library';
+import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, SpinnerOverlayService, StartupService } from 'vitamui-library';
+import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { ArchiveUnitService } from './archive-unit.service';
 

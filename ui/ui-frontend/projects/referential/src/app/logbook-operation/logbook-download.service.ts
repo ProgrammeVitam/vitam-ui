@@ -37,14 +37,8 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import {
-  DownloadUtils,
-  Event,
-  LogbookApiService,
-  LogbookOperationReportState,
-  SearchService,
-  VitamUISnackBarService,
-} from 'ui-frontend-common';
+import { DownloadUtils, LogbookApiService, LogbookOperationReportState, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { IEvent } from '../../../../vitamui-library/src/app/modules';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';
@@ -55,8 +49,8 @@ const DOWNLOAD_TYPE_OBJECT = 'object';
 @Injectable({
   providedIn: 'root',
 })
-export class LogbookDownloadService extends SearchService<Event> {
-  logbookOperationsReloaded = new Subject<Event[]>();
+export class LogbookDownloadService extends SearchService<IEvent> {
+  logbookOperationsReloaded = new Subject<IEvent[]>();
 
   private evTypeAllowed = [
     'STP_IMPORT_RULES',
@@ -82,7 +76,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     super(logbookApiService);
   }
 
-  isOperationInProgress(event: Event): boolean {
+  isOperationInProgress(event: IEvent): boolean {
     const status = this.getOperationStatus(event);
     switch (status) {
       case 'STARTED':
@@ -93,7 +87,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  getOperationStatus(event: Event): string {
+  getOperationStatus(event: IEvent): string {
     const eventsLength = event.events.length;
 
     if (eventsLength > 0) {
@@ -107,7 +101,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  logbookOperationReportState(event: Event): LogbookOperationReportState {
+  logbookOperationReportState(event: IEvent): LogbookOperationReportState {
     const evType = event.type.toUpperCase();
     const evTypeProc = event.typeProc.toUpperCase();
     if (this.evTypeProcAllowed.includes(evTypeProc) || this.evTypeAllowed.includes(evType)) {
@@ -168,7 +162,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  launchDownloadReport(event: Event, accessContractId: string) {
+  launchDownloadReport(event: IEvent, accessContractId: string) {
     if (this.isOperationInProgress(event)) {
       return;
     }

@@ -35,11 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-file-line-count max-classes-per-file */
-import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
-
 import { EMPTY, of } from 'rxjs';
-import { AdminUserProfile, AuthService, BASE_URL, Customer, LoggerModule, OtpState, User, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {
+  AdminUserProfile,
+  AuthService,
+  BASE_URL,
+  Customer,
+  LoggerModule,
+  OtpState,
+  User,
+  UserInfo,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
@@ -47,7 +55,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CountryService } from 'ui-frontend-common';
+import { CountryService } from 'vitamui-library';
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';

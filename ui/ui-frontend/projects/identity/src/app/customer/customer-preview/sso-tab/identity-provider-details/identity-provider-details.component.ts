@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'vitamui-library';
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';

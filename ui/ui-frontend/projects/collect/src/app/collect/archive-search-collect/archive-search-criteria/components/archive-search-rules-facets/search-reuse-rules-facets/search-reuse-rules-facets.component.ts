@@ -37,8 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Colors, RuleFacets } from 'ui-frontend-common';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 

@@ -39,7 +39,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SecurityProfile } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SecurityProfile } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 

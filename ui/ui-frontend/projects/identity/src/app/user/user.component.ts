@@ -53,7 +53,7 @@ import {
   SidenavPage,
   User,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';

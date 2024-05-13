@@ -43,7 +43,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { BASE_URL, LoggerModule, StartupService } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, StartupService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';

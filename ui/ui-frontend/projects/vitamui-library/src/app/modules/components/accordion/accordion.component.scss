@@ -1,0 +1,83 @@
+@import '../../../../sass/mixins/elevation';
+
+:host {
+  width: 100%;
+}
+
+.v-col {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.v-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+}
+
+:host ::ng-deep .content {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.header {
+  box-shadow:
+    0 0 2px 0 rgba(33, 33, 33, 0.2),
+    0 1px 4px 0 rgba(33, 33, 33, 0.05);
+  min-height: 50px;
+  padding: 0px 16px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  flex-direction: row;
+  font-size: 20px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+
+  &.opened {
+    border-left: 2px solid var(--vitamui-primary);
+    color: var(--vitamui-primary);
+    margin-bottom: 5px;
+  }
+
+  .icon {
+    font-size: 24px;
+    padding-right: 0.3rem;
+  }
+}
+
+// Niveau 2
+::ng-deep vitamui-common-accordion vitamui-common-accordion .header {
+  min-height: 40px !important;
+  border-radius: unset !important;
+  font-size: 16px !important;
+}
+
+// Niveau 2
+::ng-deep vitamui-common-accordion vitamui-common-accordion .content {
+  padding: 10px !important;
+}
+
+// Niveau 3
+::ng-deep vitamui-common-accordion vitamui-common-accordion vitamui-common-accordion .header {
+  min-height: 30px !important;
+}
+
+// Niveau 4
+::ng-deep vitamui-common-accordion vitamui-common-accordion vitamui-common-accordion vitamui-common-accordion .header {
+  min-height: 20px !important;
+}
+
+:host ::ng-deep .favorite-entry {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}

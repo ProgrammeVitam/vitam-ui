@@ -28,7 +28,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'ui-frontend-common';
+import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'vitamui-library';
 import { TransactionsService } from './transactions.service';
 
 @Component({

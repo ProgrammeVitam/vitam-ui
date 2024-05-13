@@ -31,7 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { Rule, RuleService, SearchCriteriaDto, diff } from 'ui-frontend-common';
+import { Rule, RuleService, SearchCriteriaDto, diff } from 'vitamui-library';
 import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';

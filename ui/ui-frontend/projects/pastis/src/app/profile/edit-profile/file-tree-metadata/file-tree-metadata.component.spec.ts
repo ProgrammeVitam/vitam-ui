@@ -35,7 +35,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { PastisApiService } from '../../../core/services';
 import { FileService } from '../../../core/services/file.service';

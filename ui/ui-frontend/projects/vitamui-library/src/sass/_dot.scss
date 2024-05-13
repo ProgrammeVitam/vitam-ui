@@ -1,0 +1,11 @@
+@import './variables/colors';
+
+.dot-danger {
+  @include dot;
+  background-color: $red;
+}
+
+.dot-success {
+  @include dot;
+  background-color: $green;
+}

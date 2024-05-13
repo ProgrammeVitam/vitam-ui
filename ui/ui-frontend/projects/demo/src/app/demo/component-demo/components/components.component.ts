@@ -37,7 +37,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApplicationId, ApplicationInfo, ApplicationService, ConfirmDialogService } from 'ui-frontend-common';
+import { ApplicationId, ApplicationInfo, ApplicationService, ConfirmDialogService } from 'vitamui-library';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 

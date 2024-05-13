@@ -39,7 +39,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
-  Event,
+  IEvent,
   ExternalParameters,
   ExternalParametersService,
   fadeInOutAnimation,
@@ -47,7 +47,7 @@ import {
   LogbookOperationTypeProc,
   LogbookService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 
@@ -71,7 +71,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
 
   @Output() closePanel = new EventEmitter();
 
-  public event: Event;
+  public event: IEvent;
   private accessContractId: string;
   private hasAccessContractId = false;
   private accessContractLogbookIdentifier: string;
@@ -110,7 +110,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     this.refreshLogbookOperation();
   }
 
-  private setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
+  private setLogbookOperationIfIfHasBeenReloaded(logbookOperations: IEvent[]) {
     const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.eventId);
     if (logbookOperationUpdated) {
       this.event = logbookOperationUpdated;
@@ -202,8 +202,8 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  private eventStatus(ingest: Event): IngestStatus {
-    const lastEvent: Event = this.eventLastEvent(ingest);
+  private eventStatus(ingest: IEvent): IngestStatus {
+    const lastEvent: IEvent = this.eventLastEvent(ingest);
     if (ingest.type === lastEvent.type) {
       return lastEvent.outcome as IngestStatus;
     }
@@ -211,7 +211,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  private eventLastEvent(ingest: Event): Event {
+  private eventLastEvent(ingest: IEvent): IEvent {
     if (!this.eventHasEvents(ingest)) {
       return ingest;
     }
@@ -219,7 +219,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
-  private eventHasEvents(ingest: Event): boolean {
+  private eventHasEvents(ingest: IEvent): boolean {
     return ingest.events !== undefined && ingest.events.length > 0;
   }
 

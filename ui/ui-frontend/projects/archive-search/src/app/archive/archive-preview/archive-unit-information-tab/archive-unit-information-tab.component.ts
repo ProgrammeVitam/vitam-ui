@@ -37,7 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from 'ui-frontend-common';
+import { Unit } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 
 @Component({

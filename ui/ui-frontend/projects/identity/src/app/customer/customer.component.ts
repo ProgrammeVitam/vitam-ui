@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
+import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';

@@ -27,7 +27,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { BASE_URL, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from './logbook-management-operation-api.service';
 
 describe('LogbookManagementOperationApiService', () => {

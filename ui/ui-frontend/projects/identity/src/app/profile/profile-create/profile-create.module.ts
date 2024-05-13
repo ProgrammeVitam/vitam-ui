@@ -44,7 +44,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
+import { RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../../user/group-attribution/group-attribution.module';
 import { ProfileCreateComponent } from './profile-create.component';

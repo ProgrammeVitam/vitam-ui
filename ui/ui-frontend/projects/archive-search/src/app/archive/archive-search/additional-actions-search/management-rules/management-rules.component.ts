@@ -41,7 +41,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService } from 'ui-frontend-common';
+import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';

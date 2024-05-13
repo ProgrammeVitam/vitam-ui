@@ -27,7 +27,7 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BaseHttpClient, BASE_URL } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

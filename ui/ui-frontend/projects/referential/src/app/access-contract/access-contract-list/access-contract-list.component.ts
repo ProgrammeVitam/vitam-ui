@@ -45,7 +45,7 @@ import {
   InfiniteScrollTable,
   PageRequest,
   rotateAnimation,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { AccessContractService } from '../access-contract.service';
 

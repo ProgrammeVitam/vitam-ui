@@ -34,7 +34,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { ManagementContractCreateModule } from './management-contract-create/management-contract-create.module';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';

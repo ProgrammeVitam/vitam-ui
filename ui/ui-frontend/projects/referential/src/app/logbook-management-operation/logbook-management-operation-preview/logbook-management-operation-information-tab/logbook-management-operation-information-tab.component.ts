@@ -26,7 +26,7 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Event, LogbookService } from 'ui-frontend-common';
+import { IEvent, LogbookService } from 'vitamui-library';
 import { OperationDetails } from '../../../models/operation-response.interface';
 
 @Component({
@@ -38,7 +38,7 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
   @Input() operation: OperationDetails;
   @Input() tenantIdentifier: number;
   @Input() tenant: any;
-  event: Event;
+  event: IEvent;
 
   constructor(private logbookService: LogbookService) {}
 
@@ -63,16 +63,16 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
     }
   }
 
-  getLastEvent(event: Event): Event {
+  getLastEvent(event: IEvent): IEvent {
     if (event) {
-      const events: Event[] = event.events.filter((element) => element.outcome === this.operation.stepStatus);
+      const events: IEvent[] = event.events.filter((element) => element.outcome === this.operation.stepStatus);
       return events && events.length > 0 ? events[events.length - 1] : null;
     }
   }
 
-  getEventEndDate(event: Event): Event {
+  getEventEndDate(event: IEvent): IEvent {
     if (event) {
-      const events: Event[] = event.events;
+      const events: IEvent[] = event.events;
       return events && events.length > 0 ? events[events.length - 1] : null;
     }
   }

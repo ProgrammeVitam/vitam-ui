@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
-import { hexToRgb, rgbToHsl } from 'ui-frontend-common';
+import { hexToRgb, rgbToHsl } from 'vitamui-library';
 import { ColorErrorEnum } from './color-error.enum';
 
 @Component({

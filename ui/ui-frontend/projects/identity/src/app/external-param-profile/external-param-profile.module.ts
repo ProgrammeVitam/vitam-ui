@@ -44,7 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'ui-frontend-common';
+import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';

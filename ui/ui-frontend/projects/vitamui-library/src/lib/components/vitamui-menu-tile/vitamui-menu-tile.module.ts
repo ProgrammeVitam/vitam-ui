@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TooltipModule } from 'ui-frontend-common';
+import { TooltipModule } from '../../../app/modules';
 import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 
 @NgModule({

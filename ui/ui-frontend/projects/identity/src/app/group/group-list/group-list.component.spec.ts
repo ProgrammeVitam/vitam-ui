@@ -44,9 +44,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Group, TableFilterModule } from 'ui-frontend-common';
-import { OrderByButtonModule } from 'ui-frontend-common';
-import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Group, TableFilterModule } from 'vitamui-library';
+import { OrderByButtonModule } from 'vitamui-library';
+import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
 

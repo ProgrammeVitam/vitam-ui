@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationId } from 'ui-frontend-common';
+import { ApplicationId } from 'vitamui-library';
 
 @Component({
   // tslint:disable-next-line:component-selector

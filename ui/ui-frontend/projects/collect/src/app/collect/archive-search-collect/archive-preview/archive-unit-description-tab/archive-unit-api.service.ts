@@ -30,7 +30,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, Ontology, ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Ontology, ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

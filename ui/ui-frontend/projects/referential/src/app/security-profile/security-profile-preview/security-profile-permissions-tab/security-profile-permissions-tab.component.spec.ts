@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { SecurityProfile } from 'ui-frontend-common';
+import { SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab.component';
 

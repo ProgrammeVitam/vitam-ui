@@ -26,7 +26,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, PaginatedResponse, Project, SearchService, Transaction } from 'ui-frontend-common';
+import { DEFAULT_PAGE_SIZE, Direction, PageRequest, PaginatedResponse, Project, SearchService, Transaction } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 

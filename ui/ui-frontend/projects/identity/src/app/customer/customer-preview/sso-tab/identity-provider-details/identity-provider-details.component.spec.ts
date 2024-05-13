@@ -41,8 +41,8 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-import { AuthnRequestBindingEnum, IdentityProvider } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthnRequestBindingEnum, IdentityProvider } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details.component';
 

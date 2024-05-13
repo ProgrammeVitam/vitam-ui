@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient } from 'ui-frontend-common';
-import { BASE_URL } from 'ui-frontend-common';
-import { Unit } from 'ui-frontend-common';
+import { BaseHttpClient } from 'vitamui-library';
+import { BASE_URL } from 'vitamui-library';
+import { Unit } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

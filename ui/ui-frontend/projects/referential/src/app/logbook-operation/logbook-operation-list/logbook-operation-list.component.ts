@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import { DEFAULT_PAGE_SIZE, Direction, IEvent, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 
 import {
   Component,
@@ -67,7 +67,7 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
   templateUrl: './logbook-operation-list.component.html',
   styleUrls: ['./logbook-operation-list.component.scss'],
 })
-export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges, OnDestroy {
+export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;
 
   @Input('search') set searchText(searchText: string) {
@@ -80,7 +80,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.searchFiltersChange.next(searchFilters);
   }
 
-  @Output() eventClick = new EventEmitter<Event>();
+  @Output() eventClick = new EventEmitter<IEvent>();
 
   @ViewChild('filterTemplate') filterTemplate: TemplateRef<LogbookOperationListComponent>;
   @ViewChild('filterButton') filterButton: ElementRef;
@@ -141,7 +141,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     return type === ARCHIVE_TRANSFER ? ARCHIVE_TRANSFER_LABEL : type;
   }
 
-  public handleClick(event: Event) {
+  public handleClick(event: IEvent) {
     this.eventClick.emit(event);
   }
 
@@ -171,7 +171,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
   }
 
-  private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
+  private updateLogbookOperations(logbookOperationsReloaded: IEvent[]) {
     logbookOperationsReloaded.forEach((logbookOperation) => {
       const index = this.dataSource.findIndex((o) => o.id === logbookOperation.id);
       this.dataSource[index] = logbookOperation;

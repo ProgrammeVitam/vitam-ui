@@ -24,8 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { RegisterValueEventModel } from 'ui-frontend-common';
-import { RegisterValueEventType } from 'ui-frontend-common/app/modules/models/access-register/register-value-event-model';
+import { RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 
 export class AccessionRegisterFixtures {
   public static valueNotUndefined(value: any) {

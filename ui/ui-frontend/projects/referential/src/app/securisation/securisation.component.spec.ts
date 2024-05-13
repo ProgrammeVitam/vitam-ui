@@ -45,7 +45,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { SecurisationComponent } from './securisation.component';

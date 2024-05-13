@@ -72,8 +72,7 @@ pipeline {
                     steps {
                         sh '''
                             $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects 'ui/ui-frontend' \
-                                --projects 'ui/ui-frontend-common'
+                                --projects 'ui/ui-frontend'
                         '''
                     }
                 }

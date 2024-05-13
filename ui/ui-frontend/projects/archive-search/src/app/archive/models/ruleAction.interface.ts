@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { SearchCriteriaDto } from 'ui-frontend-common';
+import { SearchCriteriaDto } from 'vitamui-library';
 
 export interface ActionsRules {
   ruleType: string;

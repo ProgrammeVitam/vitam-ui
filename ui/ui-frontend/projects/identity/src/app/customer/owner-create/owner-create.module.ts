@@ -39,7 +39,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { OwnerCreateComponent } from './owner-create.component';
 

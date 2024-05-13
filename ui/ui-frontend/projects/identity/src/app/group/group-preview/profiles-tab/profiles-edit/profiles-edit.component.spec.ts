@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -45,7 +45,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { ProfilesEditComponent } from './profiles-edit.component';
 

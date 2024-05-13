@@ -38,20 +38,24 @@ import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/ht
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract,
   AccessContractApiService,
   ApiUnitObject,
+  ArchiveUnit,
   CriteriaDataType,
   CriteriaOperator,
+  CriteriaSearchCriteria,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
-  Ontology,
+  getUnitI18nAttribute,
+  IAccessContract,
+  IOntology,
+  JsonPatchDto,
+  MultiJsonPatchDto,
   PagedResult,
   SearchArchiveUnitsInterface,
-  SearchCriteria,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
@@ -59,10 +63,7 @@ import {
   SearchService,
   SecurityService,
   Unit,
-  getUnitI18nAttribute,
-} from 'ui-frontend-common';
-import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive-unit/models/archive-unit';
-import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive-unit/models/json-patch';
+} from 'vitamui-library';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
@@ -245,7 +246,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
-  getAccessContractById(accessContract: string): Observable<AccessContract> {
+  getAccessContractById(accessContract: string): Observable<IAccessContract> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
@@ -385,35 +386,35 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return criteriaKey === 'ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE';
   }
 
-  isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
+  isAppraisalRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
   }
 
-  isAccessRuleCriteria(criteria: SearchCriteria): boolean {
+  isAccessRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
   }
 
-  isStorageRuleCriteria(criteria: SearchCriteria): boolean {
+  isStorageRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
   }
 
-  isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
+  isClassificationRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
   }
 
-  isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
+  isDisseminationRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
   }
 
-  isReuseRuleCriteria(criteria: SearchCriteria): boolean {
+  isReuseRuleCriteria(criteria: CriteriaSearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.REUSE_RULE;
   }
 
-  getExternalOntologiesList(): Observable<Ontology[]> {
+  getExternalOntologiesList(): Observable<IOntology[]> {
     return this.archiveApiService.getExternalOntologiesList();
   }
 
-  getInternalOntologiesList(): Observable<Ontology[]> {
+  getInternalOntologiesList(): Observable<IOntology[]> {
     return this.archiveApiService.getInternalOntologiesList();
   }
 

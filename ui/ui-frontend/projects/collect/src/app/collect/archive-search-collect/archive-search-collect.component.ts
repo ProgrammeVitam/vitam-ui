@@ -46,7 +46,7 @@ import {
   GlobalEventService,
   ORPHANS_NODE_ID,
   PagedResult,
-  SearchCriteria,
+  CriteriaSearchCriteria,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
   SearchCriteriaEltements,
@@ -59,7 +59,7 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -109,7 +109,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   show = true;
 
   searchCriteriaKeys: string[];
-  searchCriterias: Map<string, SearchCriteria>;
+  searchCriterias: Map<string, CriteriaSearchCriteria>;
   criteriaSearchList: SearchCriteriaEltDto[] = [];
   additionalSearchCriteriaCategories: SearchCriteriaCategory[];
   nbQueryCriteria = 0;
@@ -744,7 +744,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   mapSearchCriteriaHistory() {
     let searchCriteriaHistoryObject: SearchCriteriaHistory;
     const criteriaListObject: SearchCriteriaEltements[] = [];
-    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+    this.searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       const strValues: CriteriaValue[] = [];
       criteria.values.forEach((elt) => {
         strValues.push(elt.value);

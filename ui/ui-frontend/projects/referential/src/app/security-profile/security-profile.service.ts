@@ -38,7 +38,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, SecurityProfile, VitamUISnackBarService } from 'ui-frontend-common';
+import { SearchService, SecurityProfile, VitamUISnackBarService } from 'vitamui-library';
 
 import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 

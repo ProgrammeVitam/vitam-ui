@@ -39,9 +39,9 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, StartupService } from 'ui-frontend-common';
+import { CountryOption, CountryService, Customer, StartupService } from 'vitamui-library';
 
-import { Owner } from 'ui-frontend-common';
+import { Owner } from 'vitamui-library';
 import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from './owner-form.validators';
 
 /*eslint no-use-before-define: "error"*/

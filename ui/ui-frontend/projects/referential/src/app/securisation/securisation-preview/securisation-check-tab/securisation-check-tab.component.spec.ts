@@ -37,12 +37,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, VitamUISnackBarService } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('SecurisationCheckTabComponent', () => {

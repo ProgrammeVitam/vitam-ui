@@ -28,7 +28,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'vitamui-library';
 import { ManagementContractComponent } from './management-contract.component';
 
 const routes: Routes = [

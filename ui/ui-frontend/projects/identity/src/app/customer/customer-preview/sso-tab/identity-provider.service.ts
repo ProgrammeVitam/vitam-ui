@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, IdentityProvider, Operators, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, CriteriaSearchQuery, IdentityProvider, Operators, VitamUISnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -162,7 +162,7 @@ export class IdentityProviderService {
       criterionArray.push({ key: 'customerId', value: customerId, operator: Operators.equals });
     }
 
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
 

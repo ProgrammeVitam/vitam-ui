@@ -39,8 +39,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { of } from 'rxjs';
-import { SignedDocumentPolicyEnum } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { SignedDocumentPolicyEnum } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab.component';
 

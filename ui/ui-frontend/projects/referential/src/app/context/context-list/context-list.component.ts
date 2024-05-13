@@ -52,7 +52,7 @@ import {
   Role,
   rotateAnimation,
   User,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ContextService } from '../context.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

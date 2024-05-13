@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract } from 'ui-frontend-common';
+import { ManagementContract } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';

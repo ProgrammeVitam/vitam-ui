@@ -54,7 +54,7 @@ import {
   StartupService,
   UsageVersionEnum,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
 

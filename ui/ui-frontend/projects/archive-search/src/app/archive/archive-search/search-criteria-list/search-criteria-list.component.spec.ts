@@ -49,7 +49,7 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';

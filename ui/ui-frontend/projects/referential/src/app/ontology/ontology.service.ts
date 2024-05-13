@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 

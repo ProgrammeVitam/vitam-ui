@@ -1,10 +1,10 @@
-@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
-@import '~ui-frontend-common/sass/theme';
-@import '~ui-frontend-common/sass/fonts/font-styles.css';
+@import 'icons/vitamui-icons';
+@import 'theme';
+@import 'fonts/font-styles';
 
 $grid-gutter-width: 20px;
 
-@import '~bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/bootstrap-grid';
 
 @import 'form';
 @import 'login';

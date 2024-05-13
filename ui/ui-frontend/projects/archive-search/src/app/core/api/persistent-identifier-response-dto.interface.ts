@@ -26,7 +26,7 @@
  *
  */
 
-import { ApiUnitObject, Unit } from 'ui-frontend-common';
+import { ApiUnitObject, Unit } from 'vitamui-library';
 
 export interface PersistentIdentifierResponseDto<T extends Unit | ApiUnitObject> {
   $results?: T[];

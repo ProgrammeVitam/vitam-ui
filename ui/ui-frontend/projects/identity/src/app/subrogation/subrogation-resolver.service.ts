@@ -36,7 +36,7 @@
  */
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MenuOption } from 'ui-frontend-common';
+import { MenuOption } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
 import { Resolve, Router } from '@angular/router';

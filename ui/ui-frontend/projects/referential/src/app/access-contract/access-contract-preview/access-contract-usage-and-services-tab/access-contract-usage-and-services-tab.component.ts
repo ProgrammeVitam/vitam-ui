@@ -38,7 +38,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { AccessContract, Agency, diff, Option, VitamuiAutocompleteMultiselectOptions } from 'ui-frontend-common';
+import { AccessContract, Agency, diff, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { AgencyService } from '../../../agency/agency.service';
 import { AccessContractService } from '../../access-contract.service';

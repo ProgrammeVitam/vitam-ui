@@ -1,4 +1,4 @@
-import { AccessContract as IAccessContract } from 'ui-frontend-common';
+import { IAccessContract } from '../../app/modules';
 
 export interface AccessContract extends IAccessContract {
   creationDate: string;

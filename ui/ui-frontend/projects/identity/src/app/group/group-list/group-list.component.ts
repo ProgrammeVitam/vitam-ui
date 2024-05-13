@@ -41,14 +41,14 @@ import { merge, Subject, Subscription } from 'rxjs';
 import {
   buildCriteriaFromSearch,
   collapseAnimation,
+  CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
   Group,
   InfiniteScrollTable,
   PageRequest,
   rotateAnimation,
-  SearchQuery,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
 
@@ -107,7 +107,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange);
 
     searchCriteriaChange.subscribe(() => {
-      const query: SearchQuery = {
+      const query: CriteriaSearchQuery = {
         criteria: [...buildCriteriaFromGroupFilters(this.filterMap), ...buildCriteriaFromSearch(this._search, this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
@@ -129,7 +129,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this.updatedGroupSub.unsubscribe();
   }
 
-  private refreshLevelOptions(query?: SearchQuery) {
+  private refreshLevelOptions(query?: CriteriaSearchQuery) {
     this.groupService.getNonEmptyLevels(query).subscribe((levels: string[]) => {
       this.levelFilterOptions = levels.map((level: string) => ({ value: level, label: level }));
       this.levelFilterOptions.sort(sortByLabel(this.locale));

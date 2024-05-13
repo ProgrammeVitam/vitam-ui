@@ -38,7 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges,
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { IngestContract } from 'ui-frontend-common';
+import { IngestContract } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';

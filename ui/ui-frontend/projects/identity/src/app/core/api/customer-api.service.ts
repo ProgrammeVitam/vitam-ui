@@ -37,7 +37,7 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({

@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfirmDialogModule, VitamUICommonModule } from 'ui-frontend-common';
+import { ConfirmDialogModule, VitamUICommonModule } from 'vitamui-library';
 import { ConfirmActionComponent } from './confirm-action.component';
 
 @NgModule({

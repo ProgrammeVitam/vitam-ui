@@ -4,11 +4,11 @@
 @import '../../../../assets/css/font';
 @import '../../../../assets/css/buttons';
 @import '../../../../assets/css/input';
-@import '~ui-frontend-common/sass/mixins/elevation';
-@import '~ui-frontend-common/sass/material/menu';
-@import '~ui-frontend-common/sass/icons/vitamui-icons';
-@import '~ui-frontend-common/sass/variables/colors';
-@import '~ui-frontend-common/sass/editable-field';
+@import 'mixins/elevation';
+@import 'material/menu';
+@import 'icons/vitamui-icons';
+@import 'variables/colors';
+@import 'editable-field';
 @import '../../../user-actions/add-metadata/add-metadata.component.scss';
 
 .pastis-container-selected-items {

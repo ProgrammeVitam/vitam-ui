@@ -53,7 +53,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { AuthenticationModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { AuthenticationModule, TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';

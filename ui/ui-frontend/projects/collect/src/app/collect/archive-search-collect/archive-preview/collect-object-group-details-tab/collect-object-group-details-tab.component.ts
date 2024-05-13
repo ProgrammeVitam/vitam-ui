@@ -36,7 +36,7 @@ import {
   qualifiersToVersionsWithQualifier,
   Unit,
   VersionWithQualifierDto,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({

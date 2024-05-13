@@ -43,7 +43,7 @@ import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ApplicationSelectContentModule } from 'ui-frontend-common';
+import { ApplicationSelectContentModule } from 'vitamui-library';
 import { ContentListModule } from '../components/content-list/content-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';

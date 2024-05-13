@@ -37,11 +37,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BASE_URL, TableFilterModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, TableFilterModule, WINDOW_LOCATION } from 'vitamui-library';
 import { AccessContractListComponent } from './access-contract-list.component';
 
 import { AccessContractService } from '../access-contract.service';

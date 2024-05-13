@@ -41,7 +41,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, LoggerModule, StartupService } from 'ui-frontend-common';
+import { ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';

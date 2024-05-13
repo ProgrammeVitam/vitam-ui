@@ -37,7 +37,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
 // import { tap } from 'rxjs/operators';
-import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
 // import { SecurityApiService } from 'ui-frontend-common/app/modules/api/security-api.service';
 import { StandaloneThemeService } from './standalone-theme.service';
 

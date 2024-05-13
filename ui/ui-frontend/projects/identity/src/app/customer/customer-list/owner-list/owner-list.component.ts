@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Customer, Owner, Tenant } from 'ui-frontend-common';
+import { Customer, Owner, Tenant } from 'vitamui-library';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
 import { OwnerService } from '../../owner.service';

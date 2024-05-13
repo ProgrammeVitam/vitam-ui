@@ -36,7 +36,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Application, StartupService } from 'ui-frontend-common';
+import { Application, StartupService } from '../../../app/modules';
 
 @Component({
   selector: 'vitamui-common-menu-tile-updated',

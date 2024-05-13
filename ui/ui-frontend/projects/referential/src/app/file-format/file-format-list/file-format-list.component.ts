@@ -48,7 +48,7 @@ import {
   StartupService,
   User,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ConfirmActionComponent, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 

@@ -46,7 +46,7 @@ import {
   PageRequest,
   SearchService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { Event } from 'vitamui-library';
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';

@@ -38,7 +38,15 @@ import { Injectable } from '@angular/core';
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, Profile, ProfileApiService, SearchQuery, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import {
+  Criterion,
+  Operators,
+  Profile,
+  ProfileApiService,
+  CriteriaSearchQuery,
+  SearchService,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +65,7 @@ export class HierarchyService extends SearchService<Profile> {
     this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
   }
 
-  getAllByParams(query: SearchQuery, headers?: HttpHeaders) {
+  getAllByParams(query: CriteriaSearchQuery, headers?: HttpHeaders) {
     const params = new HttpParams().set('criteria', JSON.stringify(query));
     return this.profileApi.getAllByParams(params, headers);
   }
@@ -73,7 +81,7 @@ export class HierarchyService extends SearchService<Profile> {
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
     const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 

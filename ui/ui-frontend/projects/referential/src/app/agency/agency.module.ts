@@ -39,7 +39,7 @@ import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { AgencyCreateModule } from './agency-create';
 import { AgencyListComponent } from './agency-list/agency-list.component';

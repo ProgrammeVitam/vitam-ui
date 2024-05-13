@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AttachmentType, Logo, ThemeService } from 'ui-frontend-common';
+import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
 
 @Component({
   selector: 'app-graphic-identity-form',

@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FileType } from 'ui-frontend-common';
 import { NodeComponent } from './node.component';
+import { FileType } from '../../../app/modules';
 
 describe('NodeComponent', () => {
   let component: NodeComponent;

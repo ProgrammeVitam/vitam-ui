@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from '../../../app/modules';
 
 import { CardGroupModule } from '../card-group/card-group.module';
 import { VitamUIInputModule } from '../vitamui-input/vitamui-input.module';

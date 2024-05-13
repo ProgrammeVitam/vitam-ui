@@ -41,14 +41,14 @@ import { map, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
+  CriteriaSearchQuery,
   Criterion,
   ExternalParamProfile,
   ExternalParamProfileApiService,
   Operators,
-  SearchQuery,
   SearchService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -110,7 +110,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
     const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionApplicationName);
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 

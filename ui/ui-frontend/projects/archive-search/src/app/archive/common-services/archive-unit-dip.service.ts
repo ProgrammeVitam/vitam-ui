@@ -28,7 +28,7 @@ import { Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { SearchCriteriaEltDto } from 'ui-frontend-common';
+import { SearchCriteriaEltDto } from 'vitamui-library';
 import { DipRequestCreateComponent } from '../archive-search/additional-actions-search/dip-request-create/dip-request-create.component';
 import { TransferRequestModalComponent } from '../archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';

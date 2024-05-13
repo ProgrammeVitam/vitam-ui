@@ -40,7 +40,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL } from 'ui-frontend-common';
+import { AuthService, BASE_URL } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyListComponent } from './ontology-list.component';

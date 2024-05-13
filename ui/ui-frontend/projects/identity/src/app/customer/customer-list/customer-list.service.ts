@@ -38,7 +38,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedResponse, SearchService } from 'ui-frontend-common';
+import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedResponse, SearchService } from 'vitamui-library';
 import { CustomerApiService } from '../../core/api/customer-api.service';
 
 @Injectable({

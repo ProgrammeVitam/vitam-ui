@@ -49,7 +49,7 @@ import {
   SignedDocumentPolicyEnum,
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { FilingPlanMode } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';

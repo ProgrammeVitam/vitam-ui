@@ -36,10 +36,10 @@
  */
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
-import { LoggerModule } from 'ui-frontend-common';
+import { LoggerModule } from 'vitamui-library';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 import { CustomerApiService } from './customer-api.service';
 
 describe('CustomerApiService', () => {

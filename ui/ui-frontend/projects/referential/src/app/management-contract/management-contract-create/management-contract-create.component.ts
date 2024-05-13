@@ -35,7 +35,7 @@ import {
   ManagementContract,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import * as uuid from 'uuid';
 import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';

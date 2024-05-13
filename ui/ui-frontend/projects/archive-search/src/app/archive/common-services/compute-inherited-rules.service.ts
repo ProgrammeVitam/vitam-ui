@@ -37,7 +37,7 @@ import {
   SearchCriteriaTypeEnum,
   StartupService,
   UnitType,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from './archive-search-helper.service';

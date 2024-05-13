@@ -28,7 +28,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, PersistentIdentifierPolicyTypeEnum } from 'ui-frontend-common';
+import { ManagementContract, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';

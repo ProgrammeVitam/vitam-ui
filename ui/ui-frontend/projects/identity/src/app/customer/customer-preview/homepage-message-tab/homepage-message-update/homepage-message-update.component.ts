@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, Customer } from 'ui-frontend-common';
+import { ConfirmDialogService, Customer } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
 
 @Component({

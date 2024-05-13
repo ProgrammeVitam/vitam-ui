@@ -37,7 +37,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ExternalParamProfile, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ExternalParamProfile, GlobalEventService, SidenavPage } from 'vitamui-library';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileService } from './external-param-profile.service';

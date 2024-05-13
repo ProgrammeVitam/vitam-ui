@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AccessionRegisterDetail } from 'ui-frontend-common';
+import { AccessionRegisterDetail } from 'vitamui-library';
 
 @Component({
   selector: 'app-accession-register-preview',

@@ -37,7 +37,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'ui-frontend-common';
+import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({

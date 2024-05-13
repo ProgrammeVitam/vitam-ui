@@ -36,7 +36,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { Subrogation, SubrogationModalService } from 'ui-frontend-common';
+import { Subrogation, SubrogationModalService } from 'vitamui-library';
 
 @Component({
   selector: 'demo-subrogation-demo',

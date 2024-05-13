@@ -38,7 +38,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Customer, Theme, ThemeColorType, ThemeService } from 'ui-frontend-common';
+import { Customer, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';

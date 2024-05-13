@@ -40,8 +40,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
 import { of, Subject } from 'rxjs';
-import { ApplicationService, Group } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ApplicationService, Group } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';

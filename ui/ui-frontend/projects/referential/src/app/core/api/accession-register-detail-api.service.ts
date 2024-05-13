@@ -37,7 +37,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccessionRegisterDetail, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { AccessionRegisterDetail, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

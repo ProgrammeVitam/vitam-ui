@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchCriteriaHistory, SearchService } from 'ui-frontend-common';
+import { SearchCriteriaHistory, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../../../core/api/project-api.service';
 
 @Injectable({

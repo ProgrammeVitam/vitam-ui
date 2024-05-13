@@ -38,7 +38,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { StartupService, VitamUISnackBarService } from 'ui-frontend-common';
+import { StartupService, VitamUISnackBarService } from 'vitamui-library';
 import { UserService } from './user.service';
 
 describe('UserService', () => {

@@ -46,7 +46,7 @@ import {
   getColorFromMaps,
   hexToRgb,
   hexToRgbString,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 export interface Theme {
   colors: { [colorId: string]: string };

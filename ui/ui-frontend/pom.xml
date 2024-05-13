@@ -14,16 +14,6 @@
     <version>8.0.0-SNAPSHOT</version>
   </parent>
 
-  <dependencies>
-    <dependency>
-      <groupId>fr.gouv.vitamui</groupId>
-      <artifactId>ui-frontend-common</artifactId>
-      <scope>provided</scope>
-      <type>pom</type>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
-
   <properties>
     <skipTests>false</skipTests>
     <skipAllFrontend>false</skipAllFrontend>
@@ -49,18 +39,6 @@
           <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
         </configuration>
         <executions>
-          <execution>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <phase>generate-sources</phase>
-            <configuration>
-              <skip>${skipAllFrontend}</skip>
-              <!-- npm install - specifying ui-frontend-common ignore integrity hash -->
-              <arguments>install ui-frontend-common --legacy-peer-deps --loglevel warn</arguments>
-            </configuration>
-          </execution>
           <execution>
             <id>npm run build vitamui-library</id>
             <goals>

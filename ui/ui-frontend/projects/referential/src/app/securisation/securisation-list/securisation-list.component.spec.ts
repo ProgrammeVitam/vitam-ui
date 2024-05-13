@@ -41,10 +41,10 @@ import { of } from 'rxjs';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationListComponent } from './securisation-list.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TableFilterModule } from 'ui-frontend-common';
+import { TableFilterModule } from 'vitamui-library';
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;

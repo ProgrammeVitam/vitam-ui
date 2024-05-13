@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Color, ThemeColorType, ThemeService } from 'ui-frontend-common';
+import { Color, ThemeColorType, ThemeService } from 'vitamui-library';
 
 @Component({
   selector: 'app-customer-colors-input',

@@ -42,7 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { LevelInputModule, VitamUICommonModule } from 'ui-frontend-common';
+import { LevelInputModule, VitamUICommonModule } from 'vitamui-library';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';

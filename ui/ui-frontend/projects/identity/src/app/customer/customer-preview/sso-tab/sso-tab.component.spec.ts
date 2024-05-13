@@ -41,8 +41,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { of, Subject } from 'rxjs';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL, Customer, IdentityProvider, OtpState } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, Customer, IdentityProvider, OtpState } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
 import { SsoTabComponent } from './sso-tab.component';

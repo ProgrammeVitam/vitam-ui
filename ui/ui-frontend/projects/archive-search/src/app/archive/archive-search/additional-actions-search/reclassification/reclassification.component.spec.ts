@@ -48,8 +48,8 @@ import {
   SearchCriteriaTypeEnum,
   StartupService,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 import { ReclassificationComponent } from './reclassification.component';

@@ -1,8 +1,8 @@
 /** TODO DEPRECATED : REMOVE THIS CSS AT THE END OF THE REWORK **/
 
-@import '~ui-frontend-common/sass/variables/colors';
-@import '~ui-frontend-common/sass/mixins/fonts';
-@import '~ui-frontend-common/sass/mixins/elevation';
+@import 'variables/colors';
+@import 'mixins/fonts';
+@import 'mixins/elevation';
 
 .login-box {
   position: relative;

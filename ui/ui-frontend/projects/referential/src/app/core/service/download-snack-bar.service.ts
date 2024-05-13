@@ -2,7 +2,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DownloadSnackBarComponent, VitamUISnackBarService } from 'ui-frontend-common';
+import { DownloadSnackBarComponent, VitamUISnackBarService } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

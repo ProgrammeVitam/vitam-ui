@@ -36,7 +36,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { AppGuard } from 'ui-frontend-common';
+import { AppGuard } from 'vitamui-library';
 import { CssComponent } from '../component-demo/css/css.component';
 
 @Component({

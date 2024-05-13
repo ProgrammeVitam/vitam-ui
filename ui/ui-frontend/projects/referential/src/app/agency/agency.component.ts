@@ -41,7 +41,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
-import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';

@@ -36,12 +36,12 @@
  */
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { Event, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'ui-frontend-common';
+import { IEvent, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LogbookSearchService extends SearchService<Event> {
+export class LogbookSearchService extends SearchService<IEvent> {
   constructor(logbookApi: LogbookApiService) {
     super(logbookApi);
   }
