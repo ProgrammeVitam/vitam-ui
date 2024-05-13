@@ -9,7 +9,8 @@
     </div>
 
     <div class="col-3 form-control text-right">
-      <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
+      <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)"
+              (click)="submit()">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
     </div>
@@ -56,7 +57,8 @@
             <i class="material-icons btn-add">add</i>
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate }}
           </button>
-          <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"></app-search-criteria-list>
+          <app-search-criteria-list
+            (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"></app-search-criteria-list>
         </mat-menu>
         <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
           <button class="mat-boutton">
@@ -95,14 +97,16 @@
     ></app-archive-search-rules-facets>
   </div>
   <div class="row" *ngIf="!pending">
-    <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a
+    <a class="hide-ink" *ngIf="!showCriteriaPanel"
+       (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a
     ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
       'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate
     }}</a>
   </div>
 
   <div [hidden]="!showCriteriaPanel">
-    <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
+    <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex"
+                   (selectedIndexChange)="selectedCategoryChange($event)">
       <mat-tab label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
         <div class="card-criteria">
           <app-simple-criteria-search></app-simple-criteria-search>
@@ -128,8 +132,8 @@
           <div class="card-criteria" *ngIf="category.name === 'STORAGE_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                  'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                }}</a>
             </div>
             <app-storage-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
@@ -146,8 +150,8 @@
           <div class="card-criteria" *ngIf="category.name === 'APPRAISAL_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                  'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                }}</a>
             </div>
             <app-appraisal-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
@@ -164,8 +168,8 @@
           <div class="card-criteria" *ngIf="category.name === 'ACCESS_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('ACCESS_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                  'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                }}</a>
             </div>
             <app-access-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
@@ -182,8 +186,8 @@
           <div class="card-criteria" *ngIf="category.name === 'REUSE_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                  'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                }}</a>
             </div>
             <app-reuse-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
@@ -200,8 +204,8 @@
           <div class="card-criteria" *ngIf="category.name === 'DISSEMINATION_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                  'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+                }}</a>
             </div>
             <app-dissemination-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
@@ -241,10 +245,12 @@
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.APPRAISAL_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')"
+                [disabled]="isCategoryAdded('GEL') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.GEL' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')" [disabled]="isCategoryAdded('ACCESS_RULE')">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')"
+                [disabled]="isCategoryAdded('ACCESS_RULE')">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.ACCESS_RULE' | translate }}
         </button>
 
@@ -256,7 +262,8 @@
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.DISSEMINATION_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSE_RULE')" [disabled]="isCategoryAdded('REUSE_RULE')">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSE_RULE')"
+                [disabled]="isCategoryAdded('REUSE_RULE')">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.REUSE_RULE' | translate }}
         </button>
         <button
@@ -288,15 +295,19 @@
         [allChecked]="isAllChecked"
         class="col-8"
       ></vitamui-common-archive-unit-count>
-      <div class="col-3 area-download" [ngClass]="totalResults > 0 && selectedItemCount > 0 ? 'enabled-div' : 'disabled-div'">
-        <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
+      <div class="col-3 area-download"
+           [ngClass]="totalResults > 0 && selectedItemCount > 0 ? 'enabled-div' : 'disabled-div'">
+        <i (click)="exportArchiveUnitsToCsvFile()"
+           class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="launchExportDipModal()"
+                  [disabled]="selectedItemCount === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
+          <button mat-menu-item (click)="launchTransferRequestModal()"
+                  [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
             {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
@@ -338,7 +349,8 @@
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
 
-          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
+          <button mat-menu-item (click)="launchReclassification()"
+                  [disabled]="!hasReclassificationRole || selectedItemCount === 0">
             {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
           </button>
         </vitamui-common-menu-button>
@@ -369,7 +381,7 @@
 
       <div class="col-4 d-flex align-items-center">
         <span
-          >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{
+        >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br/>{{
             'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate
           }}</span
         >
@@ -444,11 +456,18 @@
               </ng-container>
             </span>
           </div>
-          <div class="col-4 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            <p matTooltip="{{ archiveUnit | unitI18n: 'Description' }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-              <b> {{ archiveUnit | unitI18n: 'Title' }}</b> <br />
+          <div class="col-4 d-flex flex-column align-items-start clickable"
+               (click)="archiveUnitClick.emit(archiveUnit)">
+            <span class="no-wrap text-ellipsis"
+                  matTooltip="{{ archiveUnit | unitI18n: 'Title' }}"
+                  matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <b> {{ archiveUnit | unitI18n: 'Title' }}</b>
+            </span>
+            <span class="no-wrap text-ellipsis"
+                  matTooltip="{{ archiveUnit | unitI18n: 'Description' }}"
+                  matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
               {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
-            </p>
+            </span>
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
@@ -457,10 +476,10 @@
             {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            <p
-              matTooltip="{{ archiveUnit['originating_agencyName'] }}   ({{ archiveUnit['#originating_agencies'] }})"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
+            <p class="no-wrap text-ellipsis"
+               matTooltip="{{ archiveUnit['originating_agencyName'] }}   ({{ archiveUnit['#originating_agencies'] }})"
+               matTooltipClass="vitamui-tooltip"
+               [matTooltipShowDelay]="300"
             >
               {{ archiveUnit['originating_agencyName'] }}
             </p>
@@ -480,7 +499,7 @@
 
 <ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
   <mat-dialog-content>
-    <br />
+    <br/>
     <div class="text-title" *ngIf="!shouldReadSelectedItemCount()">
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT' | translate }}
     </div>
@@ -513,7 +532,7 @@
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_2' | translate }}
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions class="mat-dialog-actions-right">
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
@@ -527,7 +546,7 @@
 <ng-template #updateArchiveUnitAlerteMessageDialog>
   <mat-dialog-content>
     <div class="text-title">{{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}</div>
-    <br />
+    <br/>
 
     <div class="row red-text">
       <div class="col-1">
@@ -537,7 +556,7 @@
         {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
       </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
       <div class="col-1">
         <span class="vertical-line"></span>
@@ -553,7 +572,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
@@ -564,7 +583,7 @@
 <ng-template #reclassificationAlerteMessageDialog>
   <mat-dialog-content>
     <div class="text-title">{{ 'RECLASSIFICATION.ALERTE_MESSAGES.RECLASSE_TITLE' | translate }}</div>
-    <br />
+    <br/>
 
     <div class="row red-text">
       <div class="col-1">
@@ -574,7 +593,7 @@
         {{ 'RECLASSIFICATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
       </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
       <div class="col-1">
         <span class="vertical-line"></span>
@@ -593,7 +612,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
@@ -604,7 +623,7 @@
 <ng-template #launchComputeInheritedRuleAlerteMessageDialog>
   <mat-dialog-content>
     <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}</div>
-    <br />
+    <br/>
 
     <div class="row red-text">
       <div class="col-1">
@@ -614,7 +633,7 @@
         {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
       </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
       <div class="col-1">
         <span class="vertical-line"></span>
@@ -630,7 +649,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
@@ -640,7 +659,7 @@
 
 <ng-template #confirmImportantAllowedBulkOperationsDialog>
   <mat-dialog-content>
-    <br />
+    <br/>
     <div class="text large bold">
       <span *ngIf="selectedItemCount > 1">
         {{
@@ -653,7 +672,7 @@
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions class="mat-dialog-actions-right">
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
@@ -666,8 +685,10 @@
 
 <ng-template #actionsWithThresholdReachedAlerteMessageDialog>
   <mat-dialog-content>
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}</div>
-    <br />
+    <div
+      class="text-title">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+    </div>
+    <br/>
 
     <div class="row red-text">
       <div class="col-1">
@@ -677,7 +698,7 @@
         {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
       </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
       <div class="col-1">
         <span class="vertical-line"></span>
@@ -693,7 +714,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <br />
+  <br/>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}

@@ -79,6 +79,10 @@ h5 {
   @include text-colors;
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 .text-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
