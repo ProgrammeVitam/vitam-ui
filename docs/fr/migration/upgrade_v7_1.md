@@ -4,58 +4,99 @@
 
 ## Adaptation des sources de déploiement ansible
 
-### Mise à jour des certificats VitamUI pour l'activation des composants avec l'API GW
+### Mise à jour du fichier d'inventaire
 
-Cette opération est nécessaire car à partir de la V7.1, un nouveau composant applicatif nécessite de nouveaux certificats.
+De nouveaux groupes et paramètres ont fait leur apparition dans le fichier d'inventaire.
 
-* Générer les certificats de VitamUI
+Veuillez vous référer à l'inventaire de référence: `environments/hosts-ui.example`.
+
+* Ajout du nouveau groupe `[hosts_vitamui_api_gateway]` au sein de la zone `[zone_vitamui_app:children]`: Obligatoire pour permettre de déployer ce nouveau composant.
+* Ajout du nouveau groupe `[hosts_logstash]` au sein de la zone `[vitam:children]`: Obligatoire si le groupe `[hosts_vitamui_logstash]` n'est pas défini et que `syslog.name: filebeat` (par défaut).
+* Ajout du nouveau groupe `[reverse]` au sein de la zone `[vitam:children]`: Optionnel, uniquement dans le cas d'un déploiement des extra VitamUI (non recommandé en production).
+* Ajout de la variable `vitamui_reverse_external_dns`: Obligatoire pour définir l'url d'accès à VitamUI.
+
+### Mise à jour des certificats
+
+#### Recharting des applications frontend
+
+Suite au recharting des webapps front, leurs ressources sont maintenant hébergées sur un serveur nginx.
+
+Ainsi, il peut-être opportun de redispatcher les composants des groupes `[hosts_ui_*]` sur les même machines que celles du groupe `[hosts_vitamui_reverseproxy]` afin de mutualiser l'utilisation des ressources.
+
+Si vous modifiez la répartition des services UI dans votre inventaire, vous devrez regénérer les certificats pour ces composants et ainsi supprimer les précédents via la commande suivante:
+
+```sh
+find environments/certs/server/hosts/ -name ui-* -type f -delete
+```
+
+#### Nouveau composant applicatif API Gateway
+
+À partir de la V7.1, le nouveau composant applicatif `api-gateway` a été introduit et nécessite un certificat.
+
+De plus, si vous avez modifié la répartition des services UI, ces commandes seront aussi nécessaires.
+
+* Générer les nouveaux certificats
 
   ```sh
-  ./pki/scripts/generate_certs.sh environments/<inventaire> true
+  ./pki/scripts/generate_certs.sh environments/<inventaire>
   ```
 
-* Mutualiser les certificats entre Vitam et Vitam-UI
+* Regénérer les stores
 
   ```sh
-  ./scripts/mutualize_certs_for_vitamui.sh -v <path_to_vitam_certs_dir> -u <path_to_vitamui_certs_dir>
-  ```
-
-* generate_stores pour Vitam and Vitam-UI
-
-  > Une fois que toutes les étapes précédentes de génération et mutualisation des certificats ont été correctement effectués, vous pouvez générer les stores.
-
-  ```sh
-  # Avec les sources de déploiement Vitam
-  ./generate_stores.sh
-  # Avec les sources de déploiement de VitamUI
   ./generate_stores.sh true
-  ```
-
-* Mettre à jour les certificats de Vitam
-
-  > Cette opération doit être effectuée à l'aide des sources de déploiement de Vitam en V7.1.
-
-  ```sh
-  ansible-playbook -i environments/<inventaire-vitam> ansible-vitam/vitam.yml --tags update_vitam_certificates --ask-vault-pass
-  ```
-
-* Mettre à jour le contexte applicatif de VitamUI d'appel à Vitam
-
-  > Cette opération doit être effectuée à l'aide des sources de déploiement de Vitam en V7.1.
-
-  ```sh
-  ansible-playbook -i environments/<inventaire-vitam> ansible-vitam-exploitation/remove_contexts.yml -e security_profile_id=vitamui-security-profile --ask-vault-pass
-  ansible-playbook -i environments/<inventaire-vitam> ansible-vitam-exploitation/add_contexts.yml -e security_profile_id=vitamui-security-profile --ask-vault-pass
   ```
 
 ### Nouvelle variable vitamui_reverse_external_dns
 
 L'objectif est de différencier le nom du domaine VitamUI de celui de Vitam car ils peuvent être hébergés sur des reverses distincts.
 
-Cette distinction permet notamment d'appliquer le rôle `merge_index` sur le groupe [reverse] afin de fournir les liens d'accès à mongo-express-mongo-vitamui et aux browsers si ils sont déployés.
+Cette distinction permet notamment d'appliquer le rôle `merge_index` sur le groupe `[reverse]` afin de fournir les liens d'accès à mongo-express-mongo-vitamui et aux browsers si ils sont déployés.
 > Attention, à ne pas déployer en production !
 
 Il est maintenant indispensable de rajouter à votre fichier d'inventaire la variable `vitamui_reverse_external_dns` pointant vers le nom de domaine externe d'appel à VitamUI.
+
+### Modification de la durée de rétention des logs par défaut
+
+Par défaut on conserve maintenant 365j de logs (accesslogs & applicatif) dans une limite de 5GB (par composant). De plus, nous avons réduit la quantité de logs gc de `32*64m=2048m` à `8*32m=256m`.
+
+Il est toujours possible de personnaliser ce paramétrage par défaut via les variables suivantes:
+
+* Pour les gc:
+  * `vitamui_defaults.jvm_opts.gc` ou par composant en utilisant la variable `vitamui.<composant>.jvm_opts.gc`.
+
+* Pour les accesslogs:
+  * `vitamui_defaults.services.access_retention_days: 365` ou par composant en utilisant la variable `vitamui.<composant>.access_retention_days: 365`.
+  * `vitamui_defaults.services.access_total_size_cap: 5GB` ou par composant en utilisant la variable `vitamui.<composant>.access_total_size_cap: 5GB`.
+
+* Pour les logs applicatifs:
+  * `vitamui_default.services.log.logback_max_history: 365` ou par composant en utilisant la variable `vitamui.<composant>.log.logback_max_history: 365`.
+  * `vitamui_default.services.log.logback_total_size_cap: 5GB` ou par composant en utilisant la variable `vitam.<composant>.log.logback_total_size_cap: 5GB`.
+
+### Modification de la méthodologie de concentration des logs
+
+Un nouveau composant applicatif (Filebeat) permettant de collecter les logs dans le cluster elasticsearch-log a été ajouté.
+
+La méthode de collecte via rsyslog et syslog-ng sera donc dépréciée dans les futures releases.
+
+Vous pouvez continuer à utiliser les précédentes méthodes de concentation de logs via la configuration du paramètre `syslog.name: filebeat` (rsyslog, syslog-ng).
+
+### Nouveau mode de déploiement en container (beta)
+
+> Attention, à ne pas utiliser en production.
+
+Pour permettre le déploiement en mode conteneur de VitamUI, vous devez configurer les valeurs suivantes:
+
+Dans le fichier de configuration des repositories `environments/group_vars/all/main/repositories.yml`
+
+```yml
+install_mode: container # Default to legacy
+
+container_repository:
+  registry_url:
+  username:
+  password:
+```
 
 ---
 
