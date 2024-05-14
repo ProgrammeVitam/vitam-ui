@@ -491,6 +491,11 @@ button.Button {
 
 .step-password {
   flex-direction: column; }
+  .step-password .message {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 5px; }
 
 .step-password-reset {
   flex-direction: column; }
