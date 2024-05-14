@@ -30,7 +30,7 @@ filebeat:
     enable_auth: false
   cots:
     consul:
-      enable_log: false
+      enable_log: true
     logstash:
       enable_log: true
     apache:
