@@ -3,6 +3,7 @@
 consul:
     service_name: "vitam-consul" # Mandatory for role service_state
     network: "ip_admin" # Which network to use for consul communications ? ip_admin or ip_service ?
+    log_level: ERROR # To avoid token query parameter warnings
 
 # If using [hosts_vitamui_consul_server]
 # Please uncomment the following lines and add the IP_Wan for consul servers to connect to Vitam's consul cluster.
