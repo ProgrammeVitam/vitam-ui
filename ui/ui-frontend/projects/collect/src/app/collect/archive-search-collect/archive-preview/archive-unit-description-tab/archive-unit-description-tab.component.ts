@@ -57,10 +57,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     }
   }
 
-  shouldSave(): boolean {
-    return this.isModified() && this.editObject?.control?.valid;
-  }
-
   isModified(): boolean {
     return this.editMode && !this.editObject?.control?.pristine;
   }
