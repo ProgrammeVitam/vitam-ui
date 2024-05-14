@@ -128,9 +128,13 @@ public class VitamFileFormatService {
     }
 
     /**
-     * Ignore vitam internal fields (#id, #version, #tenant) and FileFormat non mutable fields (Identifier, Name)
+     * Ignore vitam internal fields (#id, #version, #tenant) and FileFormat non mutable fields (Identifier)
      */
     private void patchFields(FileFormatModel fileFormatToPatch, FileFormatModel fieldsToApply) {
+        if (fieldsToApply.getName() != null) {
+            fileFormatToPatch.setName(fieldsToApply.getName());
+        }
+
         if (fieldsToApply.getMimeType() != null) {
             fileFormatToPatch.setMimeType(fieldsToApply.getMimeType());
         }
@@ -141,6 +145,10 @@ public class VitamFileFormatService {
 
         if (fieldsToApply.getExtensions() != null) {
             fileFormatToPatch.setExtensions(fieldsToApply.getExtensions());
+        }
+
+        if (fieldsToApply.getHasPriorityOverFileFormatIDs() != null) {
+            fileFormatToPatch.setHasPriorityOverFileFormatIDs(fieldsToApply.getHasPriorityOverFileFormatIDs());
         }
     }
 

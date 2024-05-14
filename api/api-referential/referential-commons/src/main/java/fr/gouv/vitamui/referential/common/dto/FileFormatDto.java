@@ -76,4 +76,6 @@ public class FileFormatDto extends IdDto implements Serializable {
     private List<String> extensions;
 
     private String createdDate;
+
+    private String updateDate;
 }

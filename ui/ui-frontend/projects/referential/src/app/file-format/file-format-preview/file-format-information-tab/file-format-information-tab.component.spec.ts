@@ -39,13 +39,13 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { WINDOW_LOCATION } from 'ui-frontend-common';
+import { StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;
@@ -54,15 +54,19 @@ describe('FileFormatInformationTabComponent', () => {
   const fileFormatServiceMock = {
     // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null),
+    getAllForTenant: (_data: any) => of(null),
   };
 
-  const fileFormatValue = {
+  const fileFormatValue: Partial<FileFormat> = {
     puid: 'EXTERNAL_puid',
     name: 'Name',
     mimeType: 'application/puid',
     version: '1.0',
     versionPronom: '3.0',
     extensions: ['.puid'],
+    hasPriorityOverFileFormatIDs: ['fmt/1', 'fmt/2', 'fmt/3'],
+    createdDate: '20/02/2020',
+    updateDate: '20/02/2020',
   };
 
   const previousValue: FileFormat = {
@@ -80,13 +84,18 @@ describe('FileFormatInformationTabComponent', () => {
     comment: 'No Comment',
     extensions: ['.puid'],
     createdDate: '20/02/2020',
+    updateDate: '20/02/2020',
   };
 
   beforeEach(waitForAsync(() => {
+    const startupServiceStub = {
+      getTenantIdentifier: () => '',
+    };
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [FileFormatInformationTabComponent],
       providers: [
+        { provide: StartupService, useValue: startupServiceStub },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },

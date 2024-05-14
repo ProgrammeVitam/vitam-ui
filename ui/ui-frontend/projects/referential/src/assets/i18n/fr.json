@@ -477,7 +477,7 @@
     "HOME": {
       "TITLE": "Référentiel des formats de fichiers",
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
-      "CREATE_FILE_FORMATS": "Créer un format de fichier",
+      "CREATE_FILE_FORMATS": "Créer un format de fichier externe",
       "FILE_FORMAT": "format de fichier",
       "IMPORT": "Importer",
       "ARRAY": {
@@ -488,7 +488,7 @@
     },
     "CREATE_DIALOG": {
       "TITLE": "Informations",
-      "SUBTITLE": "Créer un format de fichier",
+      "SUBTITLE": "Créer un format de fichier externe",
       "IDENTIFIER": "PUID",
       "NAME": "Nom",
       "MIME_TYPE": "Type MIME",
@@ -497,16 +497,22 @@
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "HAS_PRIORITY_OVER_FILE_FORMAT_ID": "Priorité sur les versions précédentes",
-      "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Taper un PUID ou un nom de format"
+      "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Saisir un PUID ou un nom de format"
     },
     "TAB": {
       "INFORMATION": {
+        "PUID": "PUID",
+        "PUID_EXTERNAL": "PUID externe",
         "TITLE": "Informations",
         "NAME": "Nom",
         "MIME_TYPE": "Type MIME",
-        "VERSION_PRONOM": "VersionPronom",
-        "VERSION": "Version",
-        "EXTENSION": "Extension(s)"
+        "VERSION_PRONOM": "Version du référentiel Pronom",
+        "VERSION": "Version du format",
+        "EXTENSION": "Extension(s)",
+        "HAS_PRIORITY_OVER_FILE_FORMAT_ID": "Priorité sur les versions précédentes",
+        "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Taper un PUID ou un nom de format",
+        "CREATED_DATE": "Date de création",
+        "MODIFIED_DATE": "Date de dernière modification"
       },
       "HISTORY": {
         "TITLE": "Historique"

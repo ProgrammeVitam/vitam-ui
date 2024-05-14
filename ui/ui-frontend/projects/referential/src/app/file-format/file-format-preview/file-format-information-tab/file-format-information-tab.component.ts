@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { ApplicationId, Role, SecurityService, diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import { BehaviorSubject, Observable, Subscription, combineLatest, of } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { ApplicationId, Role, SecurityService, VitamuiAutocompleteMultiselectOptions, diff } from 'ui-frontend-common';
+import { extend, isEmpty, omit } from 'underscore';
 import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 
@@ -50,32 +51,70 @@ import { FileFormatService } from '../../file-format.service';
   styleUrls: ['./file-format-information-tab.component.scss'],
 })
 export class FileFormatInformationTabComponent {
+  private _dateFormat = 'dd/MM/yyyy';
+  private _fileFormat: FileFormat;
+  private _subscriptions = new Subscription();
+
+  private isInternal = new BehaviorSubject(true);
+  private canUpdateFileFormat = new BehaviorSubject<boolean>(false);
+  private submitting = new BehaviorSubject<boolean>(false);
+  private fileFormats = new BehaviorSubject<FileFormat[]>([]);
+  private fileFormats$ = this.fileFormats.asObservable();
+  private tenantId = new BehaviorSubject<string>(null);
+  private tenantId$ = this.tenantId.asObservable();
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  isInternal$ = this.isInternal.asObservable();
+  canUpdateFileFormat$ = this.canUpdateFileFormat.asObservable();
+  submitting$ = this.submitting.asObservable();
+  canUpdate$: Observable<boolean>;
+  fileFormatOptions$: Observable<VitamuiAutocompleteMultiselectOptions>;
 
   form: FormGroup;
 
-  submited = false;
-
-  ruleFilter = new FormControl();
-
-  hasUpdatetRole: Observable<boolean>;
-
-  // tslint:disable-next-line:variable-name
-  private _fileFormat: FileFormat;
-
+  puidPlaceholder: string;
   previousValue = (): FileFormat => {
-    const cleanedFileFortmat = this._fileFormat;
-    if (!cleanedFileFortmat.mimeType) {
-      cleanedFileFortmat.mimeType = null;
-    }
-    if (!cleanedFileFortmat.extensions) {
-      cleanedFileFortmat.extensions = null;
-    }
-    return cleanedFileFortmat;
+    const fileFormat: FileFormat = { ...this._fileFormat };
+
+    fileFormat.mimeType = fileFormat.mimeType || null;
+    fileFormat.extensions = fileFormat.extensions || null;
+    fileFormat.hasPriorityOverFileFormatIDs = fileFormat.hasPriorityOverFileFormatIDs || null;
+
+    return fileFormat;
   };
 
   @Input()
   set fileFormat(fileFormat: FileFormat) {
+    this._subscriptions.unsubscribe();
+    this._subscriptions = new Subscription();
+    this._subscriptions.add(
+      this.form
+        .get('puid')
+        .valueChanges.pipe(
+          map((puid: string) => !puid.startsWith(FILE_FORMAT_EXTERNAL_PREFIX)),
+          tap((isInternal) => (this.puidPlaceholder = `FILE_FORMATS.TAB.INFORMATION.PUID${isInternal ? '' : '_EXTERNAL'}`)),
+        )
+        .subscribe((isInternal) => this.isInternal.next(isInternal)),
+    );
+    this.canUpdate$ = combineLatest([this.isInternal$, this.canUpdateFileFormat$]).pipe(
+      map(([isInternal, canUpdateFileFormat]: boolean[]) => isInternal || !canUpdateFileFormat),
+      tap((disabled) => {
+        if (disabled) {
+          this.form.controls.name.disable({ onlySelf: true });
+          this.form.controls.mimeType.disable({ onlySelf: true });
+          this.form.controls.version.disable({ onlySelf: true });
+          this.form.controls.extensions.disable({ onlySelf: true });
+          this.form.controls.hasPriorityOverFileFormatIDs.disable({ onlySelf: true });
+        } else {
+          this.form.controls.name.enable({ onlySelf: true });
+          this.form.controls.mimeType.enable({ onlySelf: true });
+          this.form.controls.version.enable({ onlySelf: true });
+          this.form.controls.extensions.enable({ onlySelf: true });
+          this.form.controls.hasPriorityOverFileFormatIDs.enable({ onlySelf: true });
+        }
+      }),
+    );
     this._fileFormat = fileFormat;
     this.resetForm(this.fileFormat);
     this.updated.emit(false);
@@ -96,90 +135,97 @@ export class FileFormatInformationTabComponent {
   }
 
   constructor(
+    @Inject(LOCALE_ID) private locale: string,
     private formBuilder: FormBuilder,
     private fileFormatService: FileFormatService,
     private route: ActivatedRoute,
     private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
-      puid: [null, Validators.required],
-      name: [null, Validators.required],
-      mimeType: [null],
-      version: [null, Validators.required],
-      versionPronom: [null],
-      extensions: [null],
+      puid: [{ value: null, disabled: true }, Validators.required],
+      name: [{ value: null, disabled: true }, Validators.required],
+      mimeType: [{ value: null, disabled: true }],
+      version: [{ value: null, disabled: true }, Validators.required],
+      extensions: [{ value: null, disabled: true }],
+      hasPriorityOverFileFormatIDs: [{ value: null, disabled: true }],
+      createdDate: [{ value: null, disabled: true }],
+      updateDate: [{ value: null, disabled: true }],
+      versionPronom: [{ value: null, disabled: true }],
     });
-    this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.hasUpdatetRole = this.securityService.hasRole(
-          ApplicationId.FILE_FORMATS_APP,
-          parseInt(params.tenantIdentifier),
-          Role.ROLE_UPDATE_FILE_FORMATS,
-        );
-      }
-    });
+    this.route.params
+      .pipe(
+        filter((params: any) => params.tenantIdentifier),
+        tap((params: { tenantIdentifier: string }) => this.tenantId.next(params.tenantIdentifier)),
+        switchMap((params: { tenantIdentifier: string }) =>
+          this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, +params.tenantIdentifier, Role.ROLE_UPDATE_FILE_FORMATS),
+        ),
+      )
+      .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));
+    this.tenantId$
+      .pipe(switchMap((tenantId) => this.fileFormatService.getAllForTenant(tenantId)))
+      .subscribe((fileFormats) => this.fileFormats.next(fileFormats));
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(omit(diff(this.form.getRawValue(), this.previousValue()), 'createdDate', 'updateDate')) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
-  isInvalid(): boolean {
-    return (
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('mimeType').invalid ||
-      this.form.get('mimeType').pending ||
-      this.form.get('version').invalid ||
-      this.form.get('version').pending ||
-      this.form.get('extensions').invalid ||
-      this.form.get('extensions').pending
-    );
-  }
-
-  isInternal(): boolean {
-    return !this.form.getRawValue().puid.startsWith(FILE_FORMAT_EXTERNAL_PREFIX);
-  }
-
   prepareSubmit(): Observable<FileFormat> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, puid: this.previousValue().puid }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => {
-        if (formData.extensions) {
-          // The extensions property must be an array of string, not a string
-          formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
-        } else if (formData.extensions === '') {
-          formData.extensions = [];
-        }
-        return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)));
-      }),
+    const previousValue = this.previousValue();
+    const { id, puid } = previousValue;
+    const patchData = diff(this.form.getRawValue(), previousValue);
+
+    // The extensions property must be an array of string, not a string
+    if (patchData.extensions) patchData.formData.extensions.replace(/\s/g, '').split(',');
+
+    return of(patchData).pipe(
+      filter((data) => !isEmpty(data)),
+      map((data) => extend({ id, puid }, data)),
+      map((data) => omit(data, 'createdDate', 'updateDate')),
+      switchMap((formData) => this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))),
     );
   }
 
   onSubmit() {
-    this.submited = true;
-    if (this.isInvalid()) {
-      return;
-    }
+    if (this.form.pending || this.form.invalid) return;
 
-    this.prepareSubmit().subscribe(
-      () => {
-        this.fileFormatService.get(this._fileFormat.puid).subscribe((response) => {
-          this.submited = false;
-          this.fileFormat = response;
-          this.fileFormatService.updated.next(this.fileFormat);
-        });
-      },
-      () => {
-        this.submited = false;
-      },
-    );
+    this.submitting.next(true);
+    this.prepareSubmit()
+      .pipe(
+        switchMap(() => this.fileFormatService.get(this._fileFormat.puid)),
+        tap(
+          () => this.submitting.next(false),
+          () => this.submitting.next(false),
+        ),
+      )
+      .subscribe((response) => {
+        this.fileFormat = response;
+        this.fileFormatService.updated.next(this.fileFormat);
+      });
   }
 
   resetForm(fileFormat: FileFormat) {
-    this.form.reset(fileFormat, { emitEvent: false });
+    this.form.reset(
+      {
+        ...fileFormat,
+        createdDate: fileFormat.createdDate ? formatDate(fileFormat.createdDate, this._dateFormat, this.locale) : undefined,
+        updateDate: fileFormat.updateDate ? formatDate(fileFormat.updateDate, this._dateFormat, this.locale) : undefined,
+      },
+      { emitEvent: false },
+    );
+
+    if (this.isInternal.value) return;
+
+    this.fileFormatOptions$ = this.fileFormats$.pipe(
+      map((ffs) => ffs.filter((ff) => ff.puid !== fileFormat.puid)),
+      map((fileFormats: FileFormat[]) => ({
+        options: fileFormats.map((ff) => ({
+          label: `${ff.puid}-${ff.name}`,
+          key: ff.puid,
+        })),
+      })),
+    );
   }
 }
