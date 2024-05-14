@@ -49,16 +49,20 @@ import java.util.Optional;
 @Getter
 @Setter
 @Service
-public class SearchCriteriaHistoryExternalService extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
+public class SearchCriteriaHistoryExternalService
+    extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalService.class);
+        SearchCriteriaHistoryExternalService.class
+    );
 
-	private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
+    private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
 
     @Autowired
-    public SearchCriteriaHistoryExternalService(final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient,
-    		final ExternalSecurityService externalSecurityService) {
+    public SearchCriteriaHistoryExternalService(
+        final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.searchCriteriaHistoryInternalRestClient = searchCriteriaHistoryInternalRestClient;
     }

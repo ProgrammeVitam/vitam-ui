@@ -46,6 +46,7 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "list-enable-external-identifiers")
 public class AutoConfigurationVitam {
+
     private Map<String, List<String>> tenants;
 
     AutoConfigurationVitam() {

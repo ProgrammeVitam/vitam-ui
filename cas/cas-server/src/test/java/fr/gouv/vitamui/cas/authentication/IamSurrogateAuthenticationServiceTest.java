@@ -68,49 +68,51 @@ public final class IamSurrogateAuthenticationServiceTest {
 
     @Test
     public void testCanAuthenticateOk() {
-
         givenSubrogationInRequestContext();
 
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
-            .thenReturn(List.of(surrogation()));
+        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+            List.of(surrogation())
+        );
 
         assertTrue(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
     }
 
     @Test
     public void testCanAuthenticateCannotSurrogate() {
-
         givenSubrogationInRequestContext();
 
         val subrogation = surrogation();
         subrogation.setSurrogate("anotherUser");
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
-            .thenReturn(List.of(subrogation));
+        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+            List.of(subrogation)
+        );
 
         assertFalse(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
     }
 
     @Test
     public void testCanAuthenticateNotAccepted() {
-
         givenSubrogationInRequestContext();
 
         val subrogation = surrogation();
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
-            .thenReturn(List.of(subrogation));
+        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+            List.of(subrogation)
+        );
 
         assertFalse(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAccounts() {
-
         givenSubrogationInRequestContext();
 
-        when(casExternalRestClient.getSubrogationsBySuperUserEmailAndCustomerId(any(ExternalHttpContext.class),
-            eq(SU_EMAIL),
-            eq(SU_CUSTOMER_ID))
+        when(
+            casExternalRestClient.getSubrogationsBySuperUserEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(SU_EMAIL),
+                eq(SU_CUSTOMER_ID)
+            )
         ).thenReturn(List.of(surrogation()));
 
         service.getImpersonationAccounts(SU_EMAIL);

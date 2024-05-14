@@ -62,7 +62,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.util.Arrays;
 
 @Configuration
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class PastisContextConfiguration {
 
     @Bean
@@ -70,15 +70,15 @@ public class PastisContextConfiguration {
     @DependsOn("uiProperties")
     public PastisRestClientFactory pastisRestClientFactory(
         final PastisApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
-        return new PastisRestClientFactory(uiProperties.getPastisExternalClient(),
-            restTemplateBuilder);
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new PastisRestClientFactory(uiProperties.getPastisExternalClient(), restTemplateBuilder);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public PastisWebClientFactory iamWebClientFactory( final PastisApplicationProperties uiProperties) {
+    public PastisWebClientFactory iamWebClientFactory(final PastisApplicationProperties uiProperties) {
         return new PastisWebClientFactory(uiProperties.getPastisExternalClient());
     }
 
@@ -89,7 +89,9 @@ public class PastisContextConfiguration {
             Arrays.asList(
                 MediaType.APPLICATION_JSON,
                 new MediaType("application", "*+json"),
-                MediaType.APPLICATION_OCTET_STREAM));
+                MediaType.APPLICATION_OCTET_STREAM
+            )
+        );
         return converter;
     }
 
@@ -100,33 +102,36 @@ public class PastisContextConfiguration {
 
     @Bean
     public ArchivalProfileUnitExternalRestClient archivalProfileCrudRestClient(
-        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getArchivalProfileExternalRestClient();
     }
 
     @Bean
     public ArchivalProfileUnitExternalWebClient archivalProfileWebRestClient(
-        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
         return referentialExternalWebClientFactory.getArchivalProfileExternalWebClient();
     }
 
     @Bean
     public ProfileExternalWebClient profileExternalWebClient(
-        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
         return referentialExternalWebClientFactory.getProfileExternalWebClient();
     }
 
     @Bean
     public PastisTransformationRestClient pastisTransformationRestClient(
-        final PastisRestClientFactory pastisRestClientFactory) {
+        final PastisRestClientFactory pastisRestClientFactory
+    ) {
         return pastisRestClientFactory.getPastisTransformationRestClient();
     }
 
     @Bean
     public PastisTransformationWebClient pastisTransformationWebClient(
-        final PastisWebClientFactory pastisWebClientFactory) {
+        final PastisWebClientFactory pastisWebClientFactory
+    ) {
         return pastisWebClientFactory.getPastisTransformationWebClient();
     }
-
-
 }

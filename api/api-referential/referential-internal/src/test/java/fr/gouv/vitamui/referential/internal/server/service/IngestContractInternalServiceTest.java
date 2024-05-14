@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.server.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,9 +65,6 @@ import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
-import java.io.*;
-import java.util.List;
-import java.util.Set;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,8 +78,16 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.easymock.EasyMock.*;
+
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ServerIdentityConfiguration.class})
+@PrepareForTest({ ServerIdentityConfiguration.class })
 public class IngestContractInternalServiceTest {
 
     private IngestContractService ingestContractService;
@@ -106,15 +107,25 @@ public class IngestContractInternalServiceTest {
         ingestContractService = mock(IngestContractService.class);
         applicationInternalRestClient = mock(ApplicationInternalRestClient.class);
         internalSecurityService = mock(InternalSecurityService.class);
-        ingestContractInternalService = new IngestContractInternalService(ingestContractService, objectMapper, converter, logbookService, applicationInternalRestClient, internalSecurityService);
-
+        ingestContractInternalService = new IngestContractInternalService(
+            ingestContractService,
+            objectMapper,
+            converter,
+            logbookService,
+            applicationInternalRestClient,
+            internalSecurityService
+        );
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS IngestContractInternalServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS IngestContractInternalServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -124,8 +135,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(200));
+        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(200)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -138,8 +150,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(400));
+        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(400)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -148,12 +161,14 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(ingestContractService.findIngestContractById(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -165,8 +180,9 @@ public class IngestContractInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(200));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(200)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -178,8 +194,9 @@ public class IngestContractInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(400));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(400)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -188,11 +205,13 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -205,8 +224,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(200));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(200)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -219,8 +239,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<IngestContractModel>().setHttpCode(400));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<IngestContractModel>().setHttpCode(400)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -229,12 +250,14 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -248,8 +271,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -263,8 +287,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andThrow(new BadRequestException("Exception thrown by vitam"));
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andThrow(new BadRequestException("Exception thrown by vitam"));
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -278,8 +303,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andThrow(new UnavailableServiceException("Exception thrown by vitam"));
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andThrow(new UnavailableServiceException("Exception thrown by vitam"));
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -293,8 +319,9 @@ public class IngestContractInternalServiceTest {
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andThrow(new ConflictException("Exception thrown by vitam"));
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andThrow(new ConflictException("Exception thrown by vitam"));
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -303,16 +330,19 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_ok()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -321,16 +351,19 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_400()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -339,16 +372,19 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+            new AccessExternalClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -357,16 +393,19 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+            new IOException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -375,16 +414,19 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
 
-        expect(ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class)))
-            .andReturn(1);
+        expect(
+            ingestContractService.checkAbilityToCreateIngestContractInVitam(isA(List.class), isA(String.class))
+        ).andReturn(1);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+            new InvalidParseOperationException("Exception thrown by vitam")
+        );
         EasyMock.replay(ingestContractService);
 
         assertThatCode(() -> {
@@ -397,8 +439,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<LogbookOperation>().setHttpCode(200)
+        );
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -411,8 +454,9 @@ public class IngestContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<LogbookOperation>().setHttpCode(400)
+        );
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -421,12 +465,14 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -435,23 +481,34 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void import_should_return_ok() throws IOException, InvalidParseOperationException, AccessExternalClientException {
-
+    public void import_should_return_ok()
+        throws IOException, InvalidParseOperationException, AccessExternalClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         String fileName = "import_ingest_contracts_valid.csv";
-        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, "text/csv", getClass().getResourceAsStream("/data/" + fileName));
+        MultipartFile multipartFile = new MockMultipartFile(
+            fileName,
+            fileName,
+            "text/csv",
+            getClass().getResourceAsStream("/data/" + fileName)
+        );
 
-        expect(internalSecurityService.getHttpContext())
-            .andReturn(new InternalHttpContext(0, "", "", "", "", "", "", ""));
+        expect(internalSecurityService.getHttpContext()).andReturn(
+            new InternalHttpContext(0, "", "", "", "", "", "", "")
+        );
         EasyMock.replay(internalSecurityService);
 
-        expect(applicationInternalRestClient.isApplicationExternalIdentifierEnabled(isA(InternalHttpContext.class), eq("INGEST_CONTRACT")))
-            .andReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        expect(
+            applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
+                isA(InternalHttpContext.class),
+                eq("INGEST_CONTRACT")
+            )
+        ).andReturn(new ResponseEntity<>(false, HttpStatus.OK));
         EasyMock.replay(applicationInternalRestClient);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(ingestContractService);
 
         //When Then
@@ -461,23 +518,34 @@ public class IngestContractInternalServiceTest {
     }
 
     @Test
-    public void import_should_throws_BadRequestException_when_sending_to_vitam() throws IOException, InvalidParseOperationException, AccessExternalClientException {
-
+    public void import_should_throws_BadRequestException_when_sending_to_vitam()
+        throws IOException, InvalidParseOperationException, AccessExternalClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         String fileName = "import_ingest_contracts_invalid_wrong_ids.csv";
-        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, "text/csv", getClass().getResourceAsStream("/data/" + fileName));
+        MultipartFile multipartFile = new MockMultipartFile(
+            fileName,
+            fileName,
+            "text/csv",
+            getClass().getResourceAsStream("/data/" + fileName)
+        );
 
-        expect(internalSecurityService.getHttpContext())
-            .andReturn(new InternalHttpContext(0, "", "", "", "", "", "", ""));
+        expect(internalSecurityService.getHttpContext()).andReturn(
+            new InternalHttpContext(0, "", "", "", "", "", "", "")
+        );
         EasyMock.replay(internalSecurityService);
 
-        expect(applicationInternalRestClient.isApplicationExternalIdentifierEnabled(isA(InternalHttpContext.class), eq("INGEST_CONTRACT")))
-            .andReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        expect(
+            applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
+                isA(InternalHttpContext.class),
+                eq("INGEST_CONTRACT")
+            )
+        ).andReturn(new ResponseEntity<>(false, HttpStatus.OK));
         EasyMock.replay(applicationInternalRestClient);
 
-        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(ingestContractService.createIngestContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(ingestContractService);
 
         BadRequestException badRequestException = null;
@@ -496,7 +564,6 @@ public class IngestContractInternalServiceTest {
 
     @Test
     public void export_should_return_ok() throws VitamClientException, IOException, CsvException {
-
         //Given
         VitamContext vitamContext = new VitamContext(0);
 
@@ -523,10 +590,15 @@ public class IngestContractInternalServiceTest {
 
         List<IngestContractModel> ingestContractModels = converter.convertDtosToVitams(ingestContracts);
 
-        RequestResponse<IngestContractModel> requestResponse = new RequestResponseOK<>(JsonNodeFactory.instance.objectNode(), ingestContractModels, 1);
+        RequestResponse<IngestContractModel> requestResponse = new RequestResponseOK<>(
+            JsonNodeFactory.instance.objectNode(),
+            ingestContractModels,
+            1
+        );
 
-        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(requestResponse);
+        expect(ingestContractService.findIngestContracts(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            requestResponse
+        );
         EasyMock.replay(ingestContractService);
 
         //When
@@ -534,7 +606,8 @@ public class IngestContractInternalServiceTest {
 
         //Then
         String result = asString(exportFile);
-        String expected = "\uFEFF\"Identifier\";\"Name\";\"Description\";\"Status\";\"ArchiveProfiles\";\"CheckParentLink\";\"CheckParentId\";\"LinkParentId\";\"FormatUnidentifiedAuthorized\";\"EveryFormatType\";\"FormatType\";\"ManagementContractId\";\"ComputedInheritedRulesAtIngest\";\"MasterMandatory\";\"EveryDataObjectVersion\";\"DataObjectVersion\";\"ActivationDate\";\"DesactivationDate\"\n" +
+        String expected =
+            "\uFEFF\"Identifier\";\"Name\";\"Description\";\"Status\";\"ArchiveProfiles\";\"CheckParentLink\";\"CheckParentId\";\"LinkParentId\";\"FormatUnidentifiedAuthorized\";\"EveryFormatType\";\"FormatType\";\"ManagementContractId\";\"ComputedInheritedRulesAtIngest\";\"MasterMandatory\";\"EveryDataObjectVersion\";\"DataObjectVersion\";\"ActivationDate\";\"DesactivationDate\"\n" +
             "\"IC-000001\";\"Name\";\"Description\";\"ACTIVE\";\"PR-000001\";\"AUTHORIZED\";\"CheckParentId\";\"LinkParentId\";\"true\";\"true\";\"FormatType\";\"ManagementContractId\";\"true\";\"true\";\"true\";\"PhysicalMaster\";\"31/12/2023\";\"31/12/2023\"\n";
         assertThat(result).isEqualTo(expected);
     }
@@ -546,5 +619,4 @@ public class IngestContractInternalServiceTest {
             throw new UncheckedIOException(e);
         }
     }
-
 }

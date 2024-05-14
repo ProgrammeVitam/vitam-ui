@@ -53,5 +53,4 @@ public class PersistentIdentifierDto {
 
     @JsonProperty("PersistentIdentifierContent")
     private String persistentIdentifierContent;
-
 }

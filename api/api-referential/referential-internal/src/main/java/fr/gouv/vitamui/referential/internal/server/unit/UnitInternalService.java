@@ -66,68 +66,84 @@ public class UnitInternalService {
 
     private final UnitService unitService;
 
-    private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", "Title", "DescriptionLevel", "#unitType", "#unitups", "#allunitups", "#opi", "Keyword",
-            "Vtag", "#object", "Title_"};
+    private static final String[] FILING_PLAN_PROJECTION = new String[] {
+        "#id",
+        "Title",
+        "DescriptionLevel",
+        "#unitType",
+        "#unitups",
+        "#allunitups",
+        "#opi",
+        "Keyword",
+        "Vtag",
+        "#object",
+        "Title_",
+    };
 
     @Autowired
-    public UnitInternalService(
-    		final UnitService unitService
-    	) {
+    public UnitInternalService(final UnitService unitService) {
         this.unitService = unitService;
     }
 
     public JsonNode searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.info("Unit EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.info("Unit EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
         return response.toJsonNode();
     }
 
-    public JsonNode searchUnitsWithErrors(final Optional<String> id, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.info("Unit EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public JsonNode searchUnitsWithErrors(
+        final Optional<String> id,
+        final JsonNode dslQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        LOGGER.info("Unit EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse<JsonNode> response = unitService.searchUnitsWithErrors(id, dslQuery, vitamContext);
         return response.toJsonNode();
     }
 
     public JsonNode findUnitById(final String unitId, final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.info("Unit EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.info("Unit EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse<JsonNode> response = unitService.findUnitById(unitId, vitamContext);
         return response.toJsonNode();
     }
 
-    public JsonNode findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+    public JsonNode findObjectMetadataById(
+        final String unitId,
+        final JsonNode dslQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         return response.toJsonNode();
     }
 
     public JsonNode createQueryForFillingOrHoldingUnit() {
-
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query =
-                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
+            final Query query = in(
+                unitType(),
+                UnitTypeEnum.HOLDING_UNIT.getValue(),
+                UnitTypeEnum.FILING_UNIT.getValue()
+            );
             select.addQueries(query);
             select.addUsedProjection(FILING_PLAN_PROJECTION);
             LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
             return select.getFinalSelect();
         } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new UnexpectedDataException(
-                "Unexpected error occured while building holding dsl query : " + e.getMessage());
+                "Unexpected error occured while building holding dsl query : " + e.getMessage()
+            );
         }
     }
 
     public JsonNode createQueryForUnitById(String unitId) {
-
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query =
-                eq(VitamFieldsHelper.id(), unitId);
+            final Query query = eq(VitamFieldsHelper.id(), unitId);
             select.addQueries(query);
             LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
             return select.getFinalSelect();
         } catch (InvalidCreateOperationException e) {
-            throw new UnexpectedDataException(
-                "Unexpected error occured while building dsl query : " + e.getMessage());
+            throw new UnexpectedDataException("Unexpected error occured while building dsl query : " + e.getMessage());
         }
     }
 }

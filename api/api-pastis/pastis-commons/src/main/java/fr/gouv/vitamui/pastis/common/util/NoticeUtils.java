@@ -43,13 +43,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -58,8 +58,7 @@ public class NoticeUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NoticeUtils.class);
 
-    private NoticeUtils() {
-    }
+    private NoticeUtils() {}
 
     public static Notice getNoticeFromPUA(JSONObject jsonPUA) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -85,8 +84,7 @@ public class NoticeUtils {
     public static List<String> convert(JSONArray jsonArray) throws JsonProcessingException {
         List<String> list;
         ObjectMapper objectMapper = new ObjectMapper();
-        list = objectMapper.readValue(jsonArray.toString(), new TypeReference<>() {
-        });
+        list = objectMapper.readValue(jsonArray.toString(), new TypeReference<>() {});
         return list;
     }
 

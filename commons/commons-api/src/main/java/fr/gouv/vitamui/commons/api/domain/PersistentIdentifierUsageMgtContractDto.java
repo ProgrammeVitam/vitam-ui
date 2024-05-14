@@ -29,7 +29,6 @@
 
 package fr.gouv.vitamui.commons.api.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
 import lombok.AllArgsConstructor;
@@ -47,7 +46,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersistentIdentifierUsageMgtContractDto implements Serializable {
-
 
     private String usageName;
 

@@ -1,33 +1,18 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.Criteria;
-
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
@@ -39,13 +24,29 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.Criteria;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ProfileInternalService}.
  *
  *
  */
-public final class ProfileCrudControllerTest extends AbstractServerIdentityBuilder implements InternalCrudControllerTest {
+public final class ProfileCrudControllerTest
+    extends AbstractServerIdentityBuilder
+    implements InternalCrudControllerTest {
 
     private static final String PROFILE_ID = "profileId";
 
@@ -95,7 +96,9 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     protected void prepareServices() {
         final ProfileDto profileDto = buildProfileDto();
 
-        when(customerRepository.findById(profileDto.getCustomerId())).thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(profileDto.getCustomerId())).thenReturn(
+            Optional.of(IamServerUtilsTest.buildCustomer())
+        );
         when(internalTenantService.findByIdentifier(profileDto.getTenantIdentifier())).thenReturn(new TenantDto());
         when(tenantRepository.findByIdentifier(profileDto.getTenantIdentifier())).thenReturn(buildTenant());
         when(internalSecurityService.getUser()).thenReturn(buildAuthUserDto());
@@ -127,11 +130,9 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
-
     }
 
     @Override
@@ -145,15 +146,17 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create profile " + dto.getName() + ": customerId " + dto.getCustomerId() + " is not allowed", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create profile " + dto.getName() + ": customerId " + dto.getCustomerId() + " is not allowed",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testCreationFailsAsTheTenantDoesNotExist() throws InvalidParseOperationException,
-        PreconditionFailedException  {
+    public void testCreationFailsAsTheTenantDoesNotExist()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -163,15 +166,17 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create profile profileName: The tenant " + TENANT_IDENTIFIER + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create profile profileName: The tenant " + TENANT_IDENTIFIER + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testCreationFailsAsTheRoleDoesNotExist() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testCreationFailsAsTheRoleDoesNotExist()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
         dto.setRoles(null);
@@ -181,15 +186,14 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create profile " + dto.getName() + ": no roles", e.getMessage());
         }
     }
 
     @Test
-    public void testCreationFailsAsTheRolesAreNotAllowed() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testCreationFailsAsTheRolesAreNotAllowed()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final Role role = new Role("Bad Role");
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
@@ -200,14 +204,17 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create profile " + dto.getName() + ": role " + role.getName() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create profile " + dto.getName() + ": role " + role.getName() + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testCreationFailsAsTheNameAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
+    public void testCreationFailsAsTheNameAlreadyExists()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -217,8 +224,7 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create profile " + dto.getName() + ": profile already exists", e.getMessage());
         }
     }
@@ -269,5 +275,4 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     private CustomerDto buildCustomerDto() {
         return IamServerUtilsTest.buildCustomerDto();
     }
-
 }

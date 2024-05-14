@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import fr.gouv.vitam.common.model.ProcessQuery;
-import fr.gouv.vitam.common.model.processing.ProcessDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ItemStatus;
+import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.processing.ProcessDetail;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamOperationService {
 
@@ -56,7 +55,7 @@ public class VitamOperationService {
     }
 
     public RequestResponse<ItemStatus> getOperationDetailsById(VitamContext vitamContext, String idOp)
-            throws VitamClientException {
+        throws VitamClientException {
         return adminExternalClient.getOperationProcessExecutionDetails(vitamContext, idOp);
     }
 
@@ -65,9 +64,12 @@ public class VitamOperationService {
         return adminExternalClient.listOperationsDetails(vitamContext, processQuery);
     }
 
-    public RequestResponse<ItemStatus> updateOperationActionProcess(VitamContext vitamContext, String actionId, String operationId)
-        throws VitamClientException {
-        return adminExternalClient.updateOperationActionProcess(vitamContext, actionId,operationId);
+    public RequestResponse<ItemStatus> updateOperationActionProcess(
+        VitamContext vitamContext,
+        String actionId,
+        String operationId
+    ) throws VitamClientException {
+        return adminExternalClient.updateOperationActionProcess(vitamContext, actionId, operationId);
     }
 
     public RequestResponse<ItemStatus> cancelOperationProcessExecution(VitamContext vitamContext, String operationId)

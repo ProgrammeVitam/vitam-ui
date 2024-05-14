@@ -40,7 +40,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:zeroOrMore")
-
-public class ZeroOrMoreXML extends BaliseXML {
-
-}
+public class ZeroOrMoreXML extends BaliseXML {}

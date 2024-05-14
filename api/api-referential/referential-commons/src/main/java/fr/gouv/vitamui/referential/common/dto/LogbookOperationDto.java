@@ -46,7 +46,6 @@ import java.util.List;
 @Setter
 @ToString
 public class LogbookOperationDto extends LogbookEventDto {
-    
-    private List<LogbookEventDto> events;
 
+    private List<LogbookEventDto> events;
 }

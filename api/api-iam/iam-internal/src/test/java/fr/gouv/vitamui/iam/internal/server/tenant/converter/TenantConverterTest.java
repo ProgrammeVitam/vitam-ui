@@ -1,15 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.tenant.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
-
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -17,6 +8,13 @@ import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TenantConverterTest {
 
@@ -70,20 +68,19 @@ public class TenantConverterTest {
         jsonNode = JsonHandler.getFromString(json);
         assertThat(jsonNode.get(TenantConverter.ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY)).isNotNull();
 
-        tenantDto.setAccessContractLogbookIdentifier(null);;
+        tenantDto.setAccessContractLogbookIdentifier(null);
         json = tenantConverter.convertToLogbook(tenantDto);
         jsonNode = JsonHandler.getFromString(json);
         assertThat(jsonNode.get(TenantConverter.ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY)).isNotNull();
-
         tenantDto.setIngestContractHoldingIdentifier(null);
+
         json = tenantConverter.convertToLogbook(tenantDto);
         jsonNode = JsonHandler.getFromString(json);
         assertThat(jsonNode.get(TenantConverter.INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY)).isNotNull();
-
         tenantDto.setItemIngestContractIdentifier(null);
+
         json = tenantConverter.convertToLogbook(tenantDto);
         jsonNode = JsonHandler.getFromString(json);
         assertThat(jsonNode.get(TenantConverter.ITEM_INGEST_CONTRACT_IDENTIFIER_KEY)).isNotNull();
     }
-
 }

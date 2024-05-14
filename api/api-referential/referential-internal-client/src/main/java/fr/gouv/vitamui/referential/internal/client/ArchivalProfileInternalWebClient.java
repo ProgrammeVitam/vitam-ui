@@ -56,21 +56,33 @@ import java.util.Optional;
 
 public class ArchivalProfileInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileInternalWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivalProfileInternalWebClient.class
+    );
 
     public ArchivalProfileInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
-    public ResponseEntity<JsonNode> importArchivalUnitProfiles(InternalHttpContext context, String fileName, MultipartFile file) {
+    public ResponseEntity<JsonNode> importArchivalUnitProfiles(
+        InternalHttpContext context,
+        String fileName,
+        MultipartFile file
+    ) {
         LOGGER.debug("Import Profile {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
             throw new BadRequestException("No file to check .");
         }
-        return ResponseEntity.ok(multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context,
-            Collections.singletonMap("fileName", fileName),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class));
-
+        return ResponseEntity.ok(
+            multipartData(
+                getUrl() + CommonConstants.PATH_IMPORT,
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", fileName),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+                JsonNode.class
+            )
+        );
     }
 
     @Override

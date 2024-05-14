@@ -34,16 +34,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class ArchiveSearchExternalRestClientFactory extends BaseRestClientFactory {
 
-    public ArchiveSearchExternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
-
-
+    public ArchiveSearchExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public ArchiveSearchExternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+    public ArchiveSearchExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
         final HttpPoolConfiguration httpHostConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 

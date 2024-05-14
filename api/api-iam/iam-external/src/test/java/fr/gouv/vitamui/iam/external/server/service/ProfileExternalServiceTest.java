@@ -1,16 +1,5 @@
 package fr.gouv.vitamui.iam.external.server.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -18,6 +7,16 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.internal.client.ProfileInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProfileExternalServiceTest {
 
@@ -62,8 +61,11 @@ public class ProfileExternalServiceTest {
         profileExternalService.getAll(criteria.toOptionalJson(), Optional.empty());
     }
 
-    private void mockSecurityContext(final String userCustomerId, final Integer tenantIdentifier,
-            final String... userRoles) {
+    private void mockSecurityContext(
+        final String userCustomerId,
+        final Integer tenantIdentifier,
+        final String... userRoles
+    ) {
         final AuthUserDto user = new AuthUserDto();
         user.setLevel("");
         user.setCustomerId(userCustomerId);
@@ -75,7 +77,8 @@ public class ProfileExternalServiceTest {
         Mockito.when(externalSecurityService.getCustomerId()).thenReturn(userCustomerId);
         Mockito.when(externalSecurityService.getTenantIdentifier()).thenReturn(tenantIdentifier);
         Mockito.when(externalSecurityService.getUser()).thenReturn(user);
-        Mockito.when(externalSecurityService.getHttpContext())
-        .thenReturn(new ExternalHttpContext(10, "userToken", "applicationid", "id"));
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(10, "userToken", "applicationid", "id")
+        );
     }
 }

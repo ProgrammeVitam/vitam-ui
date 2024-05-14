@@ -2,38 +2,26 @@ package fr.gouv.vitamui.pastis.server.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.test.rest.AbstractRestControllerMockMvcTest;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
-import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
-import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
-import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
-import fr.gouv.vitamui.pastis.server.ApiPastisServerApplication;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
 import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
-import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.core.Authentication;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -67,8 +55,6 @@ public class PastisControllerTest extends ControllerTest {
         controller = new PastisController(externalSecurityService, service, profileInternalRestClient);
     }
 
-
-
     @Test
     public void testGetArchiveProfile_should_return_ok() throws IOException, TechnicalException {
         UriComponentsBuilder uriBuilder = getUriBuilder("/archiveprofile");
@@ -79,29 +65,19 @@ public class PastisControllerTest extends ControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         ElementProperties dto = objectMapper.readValue(jsonInputStream, ElementProperties.class);
 
-
-
-
         super.performPost(uriBuilder, asJsonString(dto), status().isOk());
     }
 
-
-
     @Test
     public void testCreate() throws TechnicalException, NoSuchAlgorithmException {
-
         Mockito.when(service.createProfile(any(String.class), any(Boolean.class))).thenReturn(new ProfileResponse());
         super.performGet("/profile", ImmutableMap.of("type", "PUA"), status().isOk());
     }
-
-
 
     @Override
     protected String getRessourcePrefix() {
         return RestApi.PASTIS;
     }
-
-
 
     @Override
     protected String[] getServices() {
@@ -117,12 +93,6 @@ public class PastisControllerTest extends ControllerTest {
             ServicesData.ROLE_CREATE_PROFILES,
             ServicesData.ROLE_GET_PASTIS,
             ServicesData.ROLE_DELETE_PASTIS,
-
         };
     }
-
-
-
-
-
 }

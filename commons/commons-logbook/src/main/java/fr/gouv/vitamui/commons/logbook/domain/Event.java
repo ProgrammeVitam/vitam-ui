@@ -36,20 +36,18 @@
  */
 package fr.gouv.vitamui.commons.logbook.domain;
 
-import java.time.OffsetDateTime;
-
-import javax.validation.constraints.NotNull;
-
-import fr.gouv.vitamui.commons.logbook.common.*;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitamui.commons.logbook.common.*;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  *
@@ -175,5 +173,4 @@ public class Event extends IdDocument {
      * Date of the last sent to vitam
      */
     private OffsetDateTime synchronizedVitamDate;
-
 }

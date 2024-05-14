@@ -46,8 +46,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
-
-
     public IngestExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }

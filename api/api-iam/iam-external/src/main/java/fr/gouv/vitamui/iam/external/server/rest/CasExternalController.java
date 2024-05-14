@@ -75,7 +75,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
-@Api(tags = "cas", value = "User authentication management for CAS", description = "User authentication management for CAS")
+@Api(
+    tags = "cas",
+    value = "User authentication management for CAS",
+    description = "User authentication management for CAS"
+)
 public class CasExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasExternalController.class);
@@ -97,12 +101,23 @@ public class CasExternalController {
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
-    public String changePassword(@RequestHeader() final String username, @RequestHeader() final String password,
-        @RequestHeader() final String customerId) throws PreconditionFailedException {
-        LOGGER.debug("changePassword for username: {} / password_exists? {} customerId ", username,
-            StringUtils.isNotBlank(password), StringUtils.isNotBlank(customerId));
-        ParameterChecker.checkParameter("The user, customer id and password are mandatory : ", username, customerId,
-            password);
+    public String changePassword(
+        @RequestHeader final String username,
+        @RequestHeader final String password,
+        @RequestHeader final String customerId
+    ) throws PreconditionFailedException {
+        LOGGER.debug(
+            "changePassword for username: {} / password_exists? {} customerId ",
+            username,
+            StringUtils.isNotBlank(password),
+            StringUtils.isNotBlank(customerId)
+        );
+        ParameterChecker.checkParameter(
+            "The user, customer id and password are mandatory : ",
+            username,
+            customerId,
+            password
+        );
         SanityChecker.checkSecureParameter(username);
         casService.changePassword(username, password, customerId);
         return "true";
@@ -110,21 +125,35 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<? extends UserDto> getUsersByEmail(@RequestParam final String email,
-        @RequestParam final Optional<String> embedded) {
+    public List<? extends UserDto> getUsersByEmail(
+        @RequestParam final String email,
+        @RequestParam final Optional<String> embedded
+    ) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
         ParameterChecker.checkParameter("The email is mandatory : ", email);
         return casService.getUsersByEmail(email, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
-        params = {"loginEmail", "loginCustomerId", "idp"})
+    @GetMapping(
+        value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
+        params = { "loginEmail", "loginCustomerId", "idp" }
+    )
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
-        @RequestParam final String idp, @RequestParam final Optional<String> userIdentifier,
-        @RequestParam Optional<String> embedded) {
-        LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, user identifier : {}, embedded: {}",
-            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+    public UserDto getUser(
+        @RequestParam final String loginEmail,
+        @RequestParam final String loginCustomerId,
+        @RequestParam final String idp,
+        @RequestParam final Optional<String> userIdentifier,
+        @RequestParam Optional<String> embedded
+    ) {
+        LOGGER.debug(
+            "getUser - email : {}, customerId : {}, idp : {}, user identifier : {}, embedded: {}",
+            loginEmail,
+            loginCustomerId,
+            idp,
+            userIdentifier,
+            embedded
+        );
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
@@ -137,10 +166,12 @@ public class CasExternalController {
         return casService.getUserById(id);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = {"superUserEmail", "superUserCustomerId"})
+    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = { "superUserEmail", "superUserCustomerId" })
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(@RequestParam final String superUserEmail,
-        @RequestParam final String superUserCustomerId) {
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(
+        @RequestParam final String superUserEmail,
+        @RequestParam final String superUserCustomerId
+    ) {
         LOGGER.debug("getMySubrogationAsSuperuser: {} / {}", superUserEmail, superUserCustomerId);
         ParameterChecker.checkParameter("The superUserEmail is mandatory : ", superUserEmail);
         ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", superUserCustomerId);
@@ -160,11 +191,17 @@ public class CasExternalController {
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
     @Secured(ServicesData.ROLE_CAS_LOGOUT)
     @ResponseStatus(HttpStatus.OK)
-    public void logout(@RequestParam final String authToken, @RequestParam final String superUser,
-        @RequestParam final String superUserCustomerId) {
-
-        LOGGER.debug("logout: authToken={}, superUser={}, superUserCustomerId={}",
-            authToken, superUser, superUserCustomerId);
+    public void logout(
+        @RequestParam final String authToken,
+        @RequestParam final String superUser,
+        @RequestParam final String superUserCustomerId
+    ) {
+        LOGGER.debug(
+            "logout: authToken={}, superUser={}, superUserCustomerId={}",
+            authToken,
+            superUser,
+            superUserCustomerId
+        );
         ParameterChecker.checkParameter("The authToken is mandatory : ", authToken);
         casService.logout(authToken, superUser, superUserCustomerId);
     }

@@ -76,8 +76,9 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     public static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[_a-z0-9]+$");
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CustomDelegatedClientAuthenticationAction.class
+    );
 
     private final IdentityProviderHelper identityProviderHelper;
 
@@ -100,7 +101,8 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         final Utils utils,
         final TicketRegistry ticketRegistry,
         final CasExternalRestClient casExternalRestClient,
-        final String vitamuiPortalUrl) {
+        final String vitamuiPortalUrl
+    ) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
@@ -112,7 +114,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     @Override
     public Event doExecute(final RequestContext context) {
-
         // save a label in the webflow
         val flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
@@ -125,28 +126,33 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
         val event = super.doExecute(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
-
             // extract and parse username
             String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
 
             // extract and parse subrogation information
             String surrogateEmail = context.getRequestParameters().get(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
-            String surrogateCustomerId =
-                context.getRequestParameters().get(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
+            String surrogateCustomerId = context
+                .getRequestParameters()
+                .get(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
 
             String superUserEmail = context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
-            String superUserCustomerId =
-                context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
+            String superUserCustomerId = context
+                .getRequestParameters()
+                .get(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
 
             if (StringUtils.isNoneBlank(surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId)) {
-
                 validateEmail(surrogateEmail);
                 validateEmail(superUserEmail);
                 validateCustomerId(surrogateCustomerId);
                 validateCustomerId(superUserCustomerId);
 
-                LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
-                    surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+                LOGGER.debug(
+                    "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+                    surrogateEmail,
+                    surrogateCustomerId,
+                    superUserEmail,
+                    superUserCustomerId
+                );
 
                 flowScope.put(Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
                 flowScope.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
@@ -158,17 +164,16 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 credential.setSurrogateUsername(surrogateEmail);
                 WebUtils.putCredential(context, credential);
 
-                CustomerDto surrogateCustomer =
-                    casExternalRestClient.getCustomersByIds(utils.buildContext(surrogateEmail),
-                            List.of(surrogateCustomerId))
-                        .stream()
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException(
-                            "Invalid surrogateCustomerId: '" + surrogateCustomerId + "'"));
+                CustomerDto surrogateCustomer = casExternalRestClient
+                    .getCustomersByIds(utils.buildContext(surrogateEmail), List.of(surrogateCustomerId))
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(
+                        () -> new IllegalArgumentException("Invalid surrogateCustomerId: '" + surrogateCustomerId + "'")
+                    );
 
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
-
             } else if (StringUtils.isNotBlank(username)) {
                 validateEmail(username);
                 WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
@@ -180,7 +185,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             val idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
-
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
@@ -189,7 +193,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
                 // if no authentication
                 if (tgt == null || tgt.isExpired()) {
-
                     // if it matches an existing IdP, save it and redirect
                     val optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
@@ -205,7 +208,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                     }
                 }
             }
-
         }
 
         return event;

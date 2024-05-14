@@ -42,24 +42,64 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class SchemaElementCreateDto {
-    @JsonProperty("Tenant") private Integer tenant;
-    @JsonProperty("Version") private Integer version;
-    @JsonProperty("Path") private String path;
-    @JsonProperty("StringSize") private String stringSize;
-    @JsonProperty("Cardinality") private Cardinality cardinality;
-    @JsonProperty("FieldName") private String fieldName;
-    @JsonProperty("ShortName") private String shortName;
-    @JsonProperty("Description") private String description;
-    @JsonProperty("CreationDate") private String creationDate;
-    @JsonProperty("LastUpdate") private String lastUpdate;
-    @JsonProperty("SedaField") private String sedaField;
-    @JsonProperty("ApiField") private String apiField;
-    @JsonProperty("Type") private SchemaType type;
-    @JsonProperty("Origin") private SchemaOrigin origin;
-    @JsonProperty("Collection") private Collection collection;
-    @JsonProperty("SedaVersions") private List<String> sedaVersions;
-    @JsonProperty("RootPaths") private List<String> rootPaths;
-    @JsonProperty("Category") private SchemaCategory category;
-    @JsonProperty("ApiPath") private String apiPath;
-    @JsonProperty("DataType") private DataType dataType;
+
+    @JsonProperty("Tenant")
+    private Integer tenant;
+
+    @JsonProperty("Version")
+    private Integer version;
+
+    @JsonProperty("Path")
+    private String path;
+
+    @JsonProperty("StringSize")
+    private String stringSize;
+
+    @JsonProperty("Cardinality")
+    private Cardinality cardinality;
+
+    @JsonProperty("FieldName")
+    private String fieldName;
+
+    @JsonProperty("ShortName")
+    private String shortName;
+
+    @JsonProperty("Description")
+    private String description;
+
+    @JsonProperty("CreationDate")
+    private String creationDate;
+
+    @JsonProperty("LastUpdate")
+    private String lastUpdate;
+
+    @JsonProperty("SedaField")
+    private String sedaField;
+
+    @JsonProperty("ApiField")
+    private String apiField;
+
+    @JsonProperty("Type")
+    private SchemaType type;
+
+    @JsonProperty("Origin")
+    private SchemaOrigin origin;
+
+    @JsonProperty("Collection")
+    private Collection collection;
+
+    @JsonProperty("SedaVersions")
+    private List<String> sedaVersions;
+
+    @JsonProperty("RootPaths")
+    private List<String> rootPaths;
+
+    @JsonProperty("Category")
+    private SchemaCategory category;
+
+    @JsonProperty("ApiPath")
+    private String apiPath;
+
+    @JsonProperty("DataType")
+    private DataType dataType;
 }

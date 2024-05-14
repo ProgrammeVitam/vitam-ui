@@ -54,6 +54,7 @@ import java.util.Optional;
 
 @Service
 public class AccessContractService extends AbstractPaginateService<AccessContractDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
 
     private AccessContractExternalRestClient client;
@@ -67,8 +68,14 @@ public class AccessContractService extends AbstractPaginateService<AccessContrac
     }
 
     @Override
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -82,7 +89,8 @@ public class AccessContractService extends AbstractPaginateService<AccessContrac
         return commonService.checkPagination(page, size);
     }
 
-    @Override public BasePaginatingAndSortingRestClient<AccessContractDto, ExternalHttpContext> getClient() {
+    @Override
+    public BasePaginatingAndSortingRestClient<AccessContractDto, ExternalHttpContext> getClient() {
         return client;
     }
 
@@ -91,6 +99,6 @@ public class AccessContractService extends AbstractPaginateService<AccessContrac
     }
 
     public boolean check(ExternalHttpContext context, AccessContractDto accessContractDto) {
-        return client.check(context,accessContractDto);
+        return client.check(context, accessContractDto);
     }
 }

@@ -42,7 +42,6 @@ import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.mongo.domain.Operation;
 
 public interface IOperationConverter<D extends OperationDto, E extends Operation> extends Converter<D, E> {
-
     @Override
     default String convertToLogbook(D dto) {
         throw new NotImplementedException("");

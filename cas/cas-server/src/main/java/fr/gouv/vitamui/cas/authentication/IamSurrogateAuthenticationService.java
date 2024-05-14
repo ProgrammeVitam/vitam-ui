@@ -59,24 +59,30 @@ import java.util.Optional;
  */
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(IamSurrogateAuthenticationService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IamSurrogateAuthenticationService.class
+    );
 
     private final CasExternalRestClient casExternalRestClient;
 
     private final Utils utils;
 
-    public IamSurrogateAuthenticationService(final CasExternalRestClient casExternalRestClient,
-        final ServicesManager servicesManager, final Utils utils) {
+    public IamSurrogateAuthenticationService(
+        final CasExternalRestClient casExternalRestClient,
+        final ServicesManager servicesManager,
+        final Utils utils
+    ) {
         super(servicesManager);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;
     }
 
     @Override
-    public boolean canImpersonateInternal(final String surrogate, final Principal principal,
-        final Optional<Service> service) {
-
+    public boolean canImpersonateInternal(
+        final String surrogate,
+        final Principal principal,
+        final Optional<Service> service
+    ) {
         val requestContext = RequestContextHolder.getRequestContext();
         val flowScope = requestContext.getFlowScope();
 
@@ -85,11 +91,18 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
         String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
 
-        LOGGER.debug("Checking impersonation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
-            surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+        LOGGER.debug(
+            "Checking impersonation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+            surrogateEmail,
+            surrogateCustomerId,
+            superUserEmail,
+            superUserCustomerId
+        );
 
-        Assert.isTrue(surrogateEmail.equals(surrogate),
-            String.format("Invalid surrogate. Expected '%s', got: '%s'", surrogateEmail, surrogate));
+        Assert.isTrue(
+            surrogateEmail.equals(surrogate),
+            String.format("Invalid surrogate. Expected '%s', got: '%s'", surrogateEmail, surrogate)
+        );
 
         val id = principal.getId();
         boolean canAuthenticate = false;
@@ -99,10 +112,11 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
                 .stream()
                 .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)
                 .anyMatch(
-                    s -> s.getSuperUser().equals(superUserEmail)
-                        && s.getSuperUserCustomerId().equals(superUserCustomerId)
-                        && s.getSurrogate().equals(surrogateEmail)
-                        && s.getSurrogateCustomerId().equals(surrogateCustomerId)
+                    s ->
+                        s.getSuperUser().equals(superUserEmail) &&
+                        s.getSuperUserCustomerId().equals(superUserCustomerId) &&
+                        s.getSurrogate().equals(surrogateEmail) &&
+                        s.getSurrogateCustomerId().equals(surrogateCustomerId)
                 );
         } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve subrogations: {}", id, e);

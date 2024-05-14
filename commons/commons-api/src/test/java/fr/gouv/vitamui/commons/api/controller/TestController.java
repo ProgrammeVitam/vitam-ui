@@ -1,10 +1,5 @@
 package fr.gouv.vitamui.commons.api.controller;
 
-import java.io.IOException;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
@@ -18,15 +13,21 @@ import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
 import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.exception.ValidationException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 public class TestController {
 
     public static final String APPLICATION_SERVER_EXCEPTION = "/test/applicationServerException";
 
-    public static final String APPLICATION_SERVER_EXCEPTION_WITH_THROWABLE = "/test/applicationServerExceptionWithThrowable";
+    public static final String APPLICATION_SERVER_EXCEPTION_WITH_THROWABLE =
+        "/test/applicationServerExceptionWithThrowable";
 
-    public static final String APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE = "/test/applicationServerExceptionWithMessageAndThrowable";
+    public static final String APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE =
+        "/test/applicationServerExceptionWithMessageAndThrowable";
 
     public static final String BAD_REQUEST_EXCEPTION = "/test/badRequestException";
 
@@ -140,5 +141,4 @@ public class TestController {
     public String getValidationException() {
         throw new ValidationException("ValidationException");
     }
-
 }

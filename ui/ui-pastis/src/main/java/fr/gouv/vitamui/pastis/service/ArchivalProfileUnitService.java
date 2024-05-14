@@ -60,6 +60,7 @@ import java.util.Optional;
 
 @Service
 public class ArchivalProfileUnitService extends AbstractPaginateService<ArchivalProfileUnitDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileUnitService.class);
 
     private final ArchivalProfileUnitExternalRestClient client;
@@ -69,9 +70,11 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
     private final CommonService commonService;
 
     @Autowired
-    public ArchivalProfileUnitService(final CommonService commonService,
+    public ArchivalProfileUnitService(
+        final CommonService commonService,
         final ArchivalProfileUnitExternalRestClient client,
-        final ArchivalProfileUnitExternalWebClient webClient) {
+        final ArchivalProfileUnitExternalWebClient webClient
+    ) {
         this.commonService = commonService;
         this.client = client;
         this.webClient = webClient;
@@ -88,8 +91,10 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
     }
 
     @Override
-    public Collection<ArchivalProfileUnitDto> getAll(final ExternalHttpContext context,
-        final Optional<String> criteria) {
+    public Collection<ArchivalProfileUnitDto> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria
+    ) {
         return client.getAll(context, criteria);
     }
 
@@ -104,7 +109,6 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
         }
         return super.update(c, dto);
     }
-
 
     @Override
     public void delete(ExternalHttpContext context, String id) {

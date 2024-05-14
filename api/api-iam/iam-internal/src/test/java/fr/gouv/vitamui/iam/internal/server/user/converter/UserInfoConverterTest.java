@@ -1,14 +1,12 @@
 package fr.gouv.vitamui.iam.internal.server.user.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
-
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UserInfoConverterTest {
-
 
     private final UserInfoConverter userInfoConverter = new UserInfoConverter();
 
@@ -37,6 +35,4 @@ class UserInfoConverterTest {
         //then
         assertThat(entity).isEqualToComparingFieldByField(dto);
     }
-
-
 }

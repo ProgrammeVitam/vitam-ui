@@ -1,9 +1,9 @@
 package fr.gouv.vitamui.iam.internal.server.user.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-
-import lombok.Data;
 
 @Data
 public class ApplicationAnalytics implements Serializable {
@@ -15,7 +15,6 @@ public class ApplicationAnalytics implements Serializable {
     private int accessCounter;
 
     private OffsetDateTime lastAccess;
-
 
     public ApplicationAnalytics(String applicationId) {
         this.setApplicationId(applicationId);

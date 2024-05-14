@@ -19,14 +19,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ExternalParamProfileInternalControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ExternalParamProfileInternalControllerTest.class);
+        ExternalParamProfileInternalControllerTest.class
+    );
 
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
 
     @MockBean
     private ExternalParamProfileInternalService externalParamProfileInternalService;
-
 
     @Test
     public void testCreateExternalParamProfile() {
@@ -57,8 +57,7 @@ public class ExternalParamProfileInternalControllerTest extends ApiIamController
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

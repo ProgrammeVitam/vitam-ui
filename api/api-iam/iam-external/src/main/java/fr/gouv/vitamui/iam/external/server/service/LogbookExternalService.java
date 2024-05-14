@@ -40,8 +40,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -79,9 +79,11 @@ public class LogbookExternalService extends AbstractInternalClientService {
     private final LogbookInternalWebClient<InternalHttpContext> logbookWebClient;
 
     @Autowired
-    public LogbookExternalService(final LogbookInternalRestClient<InternalHttpContext> logbookRestClient,
+    public LogbookExternalService(
+        final LogbookInternalRestClient<InternalHttpContext> logbookRestClient,
         final ExternalSecurityService externalSecurityService,
-        final LogbookInternalWebClient<InternalHttpContext> logbookWebClient) {
+        final LogbookInternalWebClient<InternalHttpContext> logbookWebClient
+    ) {
         super(externalSecurityService);
         this.logbookRestClient = logbookRestClient;
         this.logbookWebClient = logbookWebClient;
@@ -95,7 +97,6 @@ public class LogbookExternalService extends AbstractInternalClientService {
         }
     }
 
-
     protected void checkAccessRights(final Integer requestedTenantIdentifier) {
         final boolean allAccess = externalSecurityService.canAccessToAllTenants();
         if (!allAccess) {
@@ -103,8 +104,13 @@ public class LogbookExternalService extends AbstractInternalClientService {
             if (tenantIdentifier == null) {
                 throw new ApplicationServerException("Unable to retrieve the tenant linked to the current user.");
             }
-            if (!tenantIdentifier.equals(requestedTenantIdentifier) && !externalSecurityService.canAccessAllCustomersTenants()) {
-                throw new NoRightsException("You can't access the operations on the following tenant : " + requestedTenantIdentifier);
+            if (
+                !tenantIdentifier.equals(requestedTenantIdentifier) &&
+                !externalSecurityService.canAccessAllCustomersTenants()
+            ) {
+                throw new NoRightsException(
+                    "You can't access the operations on the following tenant : " + requestedTenantIdentifier
+                );
             }
         }
     }
@@ -116,8 +122,10 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      */
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findOperationById(getInternalHttpContext(), id),
-            LogbookOperationsResponseDto.class);
+        return responseMapping(
+            logbookRestClient.findOperationById(getInternalHttpContext(), id),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     /**
@@ -127,8 +135,10 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      */
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findUnitLifeCyclesByUnitId(getInternalHttpContext(), id),
-            LogbookLifeCycleResponseDto.class);
+        return responseMapping(
+            logbookRestClient.findUnitLifeCyclesByUnitId(getInternalHttpContext(), id),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     /**
@@ -138,8 +148,10 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      */
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findObjectLifeCyclesByUnitId(getInternalHttpContext(), id),
-            LogbookLifeCycleResponseDto.class);
+        return responseMapping(
+            logbookRestClient.findObjectLifeCyclesByUnitId(getInternalHttpContext(), id),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     /**
@@ -149,13 +161,18 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @return
      * @throws VitamClientException
      */
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select, final Integer vitamTenantIdentifier) throws PreconditionFailedException {
+    public LogbookOperationsResponseDto findOperations(
+        @RequestBody final JsonNode select,
+        final Integer vitamTenantIdentifier
+    ) throws PreconditionFailedException {
         SanityChecker.sanitizeJson(select);
         if (Objects.nonNull(vitamTenantIdentifier)) {
             checkAccessRights(vitamTenantIdentifier);
         }
-        return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select, vitamTenantIdentifier),
-            LogbookOperationsResponseDto.class);
+        return responseMapping(
+            logbookRestClient.findOperations(getInternalHttpContext(), select, vitamTenantIdentifier),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     /**
@@ -186,13 +203,11 @@ public class LogbookExternalService extends AbstractInternalClientService {
      */
 
     public Mono<ResponseEntity<Resource>> downloadReport(final String id, final String downloadType) {
-            return logbookWebClient
-                .downloadReport(getInternalHttpContext(), id, downloadType);
+        return logbookWebClient.downloadReport(getInternalHttpContext(), id, downloadType);
     }
 
     @Override
     protected BaseRestClient<InternalHttpContext> getClient() {
         return logbookRestClient;
     }
-
 }

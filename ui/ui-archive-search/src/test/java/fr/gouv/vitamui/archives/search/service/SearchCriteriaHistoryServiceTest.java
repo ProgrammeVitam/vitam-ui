@@ -26,8 +26,8 @@
 
 package fr.gouv.vitamui.archives.search.service;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,8 +63,8 @@ public class SearchCriteriaHistoryServiceTest {
     @Test
     public void testGetSearchCriteriaHistories() {
         when(searchCriteriaHistoryExternalRestClient.getSearchCriteriaHistory(ArgumentMatchers.any())).thenReturn(
-            Arrays.asList(new SearchCriteriaHistoryDto()));
+            Arrays.asList(new SearchCriteriaHistoryDto())
+        );
         Assert.assertNotNull(searchCriteriaHistoryService.getSearchCritriaHistory(null));
     }
-
 }

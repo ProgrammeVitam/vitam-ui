@@ -50,11 +50,11 @@ public class LogbookManagementOperationServiceTest {
 
     @Mock
     private LogbookManagementOperationExternalRestClient client;
+
     @Mock
     private CommonService commonService;
 
     private LogbookManagementOperationService service;
-
 
     @Before
     public void setUp() {
@@ -65,15 +65,14 @@ public class LogbookManagementOperationServiceTest {
     @Test
     public void list_operations_details_should_call_appropriate_rest_client_once() {
         // Given
-        Mockito.when(client.searchOperationsDetails(isNull(), any(ProcessQuery.class)))
-            .thenReturn(new ResponseEntity<>(new VitamUIProcessDetailResponseDto(), HttpStatus.OK));
+        Mockito.when(client.searchOperationsDetails(isNull(), any(ProcessQuery.class))).thenReturn(
+            new ResponseEntity<>(new VitamUIProcessDetailResponseDto(), HttpStatus.OK)
+        );
 
         // When
         service.searchOperationsDetails(null, new ProcessQuery());
 
         // Then
-        verify(client, Mockito.times(1))
-            .searchOperationsDetails(isNull(), any(ProcessQuery.class));
-
+        verify(client, Mockito.times(1)).searchOperationsDetails(isNull(), any(ProcessQuery.class));
     }
 }

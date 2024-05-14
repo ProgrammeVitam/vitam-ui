@@ -26,10 +26,27 @@ public class ExportIngestContracts extends ExportCSVParams {
     private static final String ACTIVATION_DATE = "ActivationDate";
     private static final String DESACTIVATION_DATE = "DesactivationDate";
 
-    public ExportIngestContracts(){
-        List<String> headers = List.of(IDENTIFIER, NAME, DESCRIPTION, STATUS, ARCHIVE_PROFILES, CHECK_PARENT_LINK, CHECK_PARENT_ID,
-            LINK_PARENT_ID, FORMAT_UNIDENTIFIED_AUTHORIZED, EVERY_FORMAT_TYPE, FORMAT_TYPE, MANAGEMENT_CONTRACT_ID, COMPUTED_INHERITED_RULES_AT_INGEST, MASTER_MANDATORY,
-            EVERY_DATA_OBJECT_VERSION, DATA_OBJECT_VERSION, ACTIVATION_DATE, DESACTIVATION_DATE);
+    public ExportIngestContracts() {
+        List<String> headers = List.of(
+            IDENTIFIER,
+            NAME,
+            DESCRIPTION,
+            STATUS,
+            ARCHIVE_PROFILES,
+            CHECK_PARENT_LINK,
+            CHECK_PARENT_ID,
+            LINK_PARENT_ID,
+            FORMAT_UNIDENTIFIED_AUTHORIZED,
+            EVERY_FORMAT_TYPE,
+            FORMAT_TYPE,
+            MANAGEMENT_CONTRACT_ID,
+            COMPUTED_INHERITED_RULES_AT_INGEST,
+            MASTER_MANDATORY,
+            EVERY_DATA_OBJECT_VERSION,
+            DATA_OBJECT_VERSION,
+            ACTIVATION_DATE,
+            DESACTIVATION_DATE
+        );
         this.setHeaders(headers);
     }
 

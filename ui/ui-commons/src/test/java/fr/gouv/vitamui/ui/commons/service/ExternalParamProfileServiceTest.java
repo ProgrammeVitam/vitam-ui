@@ -58,7 +58,7 @@ public class ExternalParamProfileServiceTest extends ServiceTest<ExternalParamPr
         when(client.findHistoryById(any(), any())).thenReturn(null);
 
         //When
-        service.findHistoryById(null,"ID");
+        service.findHistoryById(null, "ID");
 
         //Then
         verify(client, Mockito.times(1)).findHistoryById(any(), any());
@@ -89,5 +89,4 @@ public class ExternalParamProfileServiceTest extends ServiceTest<ExternalParamPr
     protected AbstractCrudService<ExternalParamProfileDto> getService() {
         return service;
     }
-
 }

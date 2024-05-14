@@ -19,12 +19,15 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 public class ExternalParamProfileExternalControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ExternalParamProfileExternalControllerTest.class);
+        ExternalParamProfileExternalControllerTest.class
+    );
 
     @MockBean
     private ExternalParamProfileExternalService externalParamProfileExternalService;
 
-    private ExternalParamProfileExternalController mockedController = MvcUriComponentsBuilder.on(ExternalParamProfileExternalController.class);
+    private ExternalParamProfileExternalController mockedController = MvcUriComponentsBuilder.on(
+        ExternalParamProfileExternalController.class
+    );
 
     @Test
     public void testPatchExternalParamProfile() {
@@ -55,8 +58,7 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -65,12 +67,11 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE};
+        return new String[] { ServicesData.ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE };
     }
 
     @Override
     protected Class<ExternalParamProfileDto> getDtoClass() {
         return ExternalParamProfileDto.class;
     }
-
 }

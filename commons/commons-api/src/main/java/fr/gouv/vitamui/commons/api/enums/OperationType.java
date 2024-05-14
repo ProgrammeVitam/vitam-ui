@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.api.enums;
 
 public enum OperationType {
-
     VITAMUI,
     LOCAL_FILE_DOWNLOAD,
     VITAM_UNIT_DOWNLOAD,
@@ -47,5 +46,5 @@ public enum OperationType {
     ZIP,
     ITEM_CREATION,
     VITAM_DOCUMENTS_UPLOAD,
-    VITAM_AND_LOCAL_DOWNLOAD
+    VITAM_AND_LOCAL_DOWNLOAD,
 }

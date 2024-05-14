@@ -84,7 +84,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
-@Api(tags = "cas", value = "User authentication management for CAS", description = "User authentication management for CAS")
+@Api(
+    tags = "cas",
+    value = "User authentication management for CAS",
+    description = "User authentication management for CAS"
+)
 public class CasInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasInternalController.class);
@@ -105,8 +109,11 @@ public class CasInternalController {
     private final UserInternalService internalUserService;
 
     @Autowired
-    public CasInternalController(final CasInternalService casService, final PasswordEncoder passwordEncoder,
-        final UserInternalService internalUserService) {
+    public CasInternalController(
+        final CasInternalService casService,
+        final PasswordEncoder passwordEncoder,
+        final UserInternalService internalUserService
+    ) {
         this.casService = casService;
         this.passwordEncoder = passwordEncoder;
         this.internalUserService = internalUserService;
@@ -144,8 +151,12 @@ public class CasInternalController {
         }
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, nbFailedAttemps, oldStatus);
 
-        LOGGER.debug("username: {} -> passwordMatch: {} / nbFailedAttemps: {}", username, passwordMatch,
-            nbFailedAttemps);
+        LOGGER.debug(
+            "username: {} -> passwordMatch: {} / nbFailedAttemps: {}",
+            username,
+            passwordMatch,
+            nbFailedAttemps
+        );
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             final String message = "Too many login attempts for username: " + username;
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
@@ -176,34 +187,54 @@ public class CasInternalController {
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username,
+    public String changePassword(
+        @RequestHeader(defaultValue = "") final String username,
         @RequestHeader(defaultValue = "") final String password,
-        @RequestHeader(defaultValue = "") final String customerId) {
-        LOGGER.debug("changePassword for username: {} / password_exists? {}, customerId {} ", username,
-            StringUtils.isNotBlank(password), customerId);
+        @RequestHeader(defaultValue = "") final String customerId
+    ) {
+        LOGGER.debug(
+            "changePassword for username: {} / password_exists? {}, customerId {} ",
+            username,
+            StringUtils.isNotBlank(password),
+            customerId
+        );
         casService.updatePassword(username, password, customerId);
         return "true";
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    public List<UserDto> getUsersByEmail(@RequestParam final String email,
-        @RequestParam(required = false) String embedded) {
+    public List<UserDto> getUsersByEmail(
+        @RequestParam final String email,
+        @RequestParam(required = false) String embedded
+    ) {
         LOGGER.debug("getUserByEmail: {}", email);
         ParameterChecker.checkParameter("user email is mandatory : ", email);
         return casService.getUsersByEmail(email, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
-        params = {"loginEmail", "loginCustomerId"})
-    public UserDto getUser(@RequestParam final String loginEmail, @RequestParam final String loginCustomerId,
-        @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
-        @RequestParam(required = false) final String embedded) throws InvalidParseOperationException {
+    @GetMapping(
+        value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
+        params = { "loginEmail", "loginCustomerId" }
+    )
+    public UserDto getUser(
+        @RequestParam final String loginEmail,
+        @RequestParam final String loginCustomerId,
+        @RequestParam final String idp,
+        @RequestParam(required = false) final String userIdentifier,
+        @RequestParam(required = false) final String embedded
+    ) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(idp, loginEmail, loginCustomerId);
         if (userIdentifier != null) {
             SanityChecker.checkSecureParameter(userIdentifier);
         }
-        LOGGER.debug("getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
-            loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+        LOGGER.debug(
+            "getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
+            loginEmail,
+            loginCustomerId,
+            idp,
+            userIdentifier,
+            embedded
+        );
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
@@ -213,9 +244,11 @@ public class CasInternalController {
         return casService.getUserProfileById(id);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = {"superUserEmail", "superUserCustomerId"})
-    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(@RequestParam final String superUserEmail,
-        @RequestParam final String superUserCustomerId) {
+    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = { "superUserEmail", "superUserCustomerId" })
+    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(
+        @RequestParam final String superUserEmail,
+        @RequestParam final String superUserCustomerId
+    ) {
         LOGGER.debug("getMySubrogationAsSuperuser: {} / {}", superUserEmail, superUserCustomerId);
         ParameterChecker.checkParameter("super user email is mandatory : ", superUserEmail);
         ParameterChecker.checkParameter("super user customerId is mandatory : ", superUserCustomerId);
@@ -246,16 +279,27 @@ public class CasInternalController {
 
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public void logout(@RequestParam final String authToken, @RequestParam final String superUser,
-        @RequestParam final String superUserCustomerId) {
-        LOGGER.debug("logout: authToken={}, superUser={}, superUserCustomerId={}", authToken,
-            superUser, superUserCustomerId);
+    public void logout(
+        @RequestParam final String authToken,
+        @RequestParam final String superUser,
+        @RequestParam final String superUserCustomerId
+    ) {
+        LOGGER.debug(
+            "logout: authToken={}, superUser={}, superUserCustomerId={}",
+            authToken,
+            superUser,
+            superUserCustomerId
+        );
         ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
         final CasInternalService.PrincipalFromToken principal = casService.removeTokenAndGetPrincipal(authToken);
 
         if ((null != principal) && StringUtils.isNotBlank(superUser)) {
-            casService.deleteSubrogationBySuperUserAndSurrogate(superUser, superUserCustomerId,
-                principal.getEmail(), principal.getCustomerId());
+            casService.deleteSubrogationBySuperUserAndSurrogate(
+                superUser,
+                superUserCustomerId,
+                principal.getEmail(),
+                principal.getCustomerId()
+            );
         }
     }
 }

@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.tenant.converter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
@@ -50,6 +44,10 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class TenantConverter implements Converter<TenantDto, Tenant> {
 
@@ -63,11 +61,13 @@ public class TenantConverter implements Converter<TenantDto, Tenant> {
 
     public static final String INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY = "Identifiant du contrat d'entrée pour l'arbre";
 
-    public static final String ITEM_INGEST_CONTRACT_IDENTIFIER_KEY = "Identifiant du contrat d'entrée pour les bordereaux";
+    public static final String ITEM_INGEST_CONTRACT_IDENTIFIER_KEY =
+        "Identifiant du contrat d'entrée pour les bordereaux";
 
     public static final String ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY = "Identifiant du contrat d'accès pour l'arbre";
 
-    public static final String ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY = "Identifiant du contrat d'accès pour le logbook";
+    public static final String ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY =
+        "Identifiant du contrat d'accès pour le logbook";
 
     private final OwnerRepository ownerRepository;
 
@@ -83,10 +83,22 @@ public class TenantConverter implements Converter<TenantDto, Tenant> {
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(tenant.getEnabled()));
         Optional<Owner> owner = ownerRepository.findById(tenant.getOwnerId());
         owner.ifPresent(o -> logbookData.put(OWNER_ID_KEY, o.getIdentifier()));
-        logbookData.put(ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getAccessContractHoldingIdentifier()));
-        logbookData.put(ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getAccessContractLogbookIdentifier()));
-        logbookData.put(INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getIngestContractHoldingIdentifier()));
-        logbookData.put(ITEM_INGEST_CONTRACT_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getItemIngestContractIdentifier()));
+        logbookData.put(
+            ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY,
+            LogbookUtils.getValue(tenant.getAccessContractHoldingIdentifier())
+        );
+        logbookData.put(
+            ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY,
+            LogbookUtils.getValue(tenant.getAccessContractLogbookIdentifier())
+        );
+        logbookData.put(
+            INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY,
+            LogbookUtils.getValue(tenant.getIngestContractHoldingIdentifier())
+        );
+        logbookData.put(
+            ITEM_INGEST_CONTRACT_IDENTIFIER_KEY,
+            LogbookUtils.getValue(tenant.getItemIngestContractIdentifier())
+        );
 
         return ApiUtils.toJson(logbookData);
     }

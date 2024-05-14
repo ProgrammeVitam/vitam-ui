@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.iam.security.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
@@ -53,6 +45,13 @@ import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.InternalAuthentication;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -75,7 +74,8 @@ public class InternalSecurityService {
     }
 
     private InternalAuthentication getAuthentication() {
-        final InternalAuthentication authentication = (InternalAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        final InternalAuthentication authentication = (InternalAuthentication) SecurityContextHolder.getContext()
+            .getAuthentication();
         if (authentication == null) {
             throw new UnAuthorizedException("Unable to get the security context. You probably are not authenticated.");
         }
@@ -161,8 +161,12 @@ public class InternalSecurityService {
 
         final List<ProfileDto> profiles = user.getProfileGroup().getProfiles();
         return profiles == null || profiles.size() == 0
-                ? Collections.emptyList()
-                : profiles.stream().filter(ProfileDto::isEnabled).flatMap(p -> p.getRoles().stream()).collect(Collectors.toList());
+            ? Collections.emptyList()
+            : profiles
+                .stream()
+                .filter(ProfileDto::isEnabled)
+                .flatMap(p -> p.getRoles().stream())
+                .collect(Collectors.toList());
     }
 
     public static List<Role> getRoles(final AuthUserDto user, final Integer tenantIdentifier) {
@@ -172,14 +176,22 @@ public class InternalSecurityService {
 
         final List<ProfileDto> profiles = user.getProfileGroup().getProfiles();
         return profiles == null || profiles.size() == 0
-                ? Collections.emptyList()
-                : profiles.stream().filter(ProfileDto::isEnabled).filter(p -> tenantIdentifier.equals(p.getTenantIdentifier()))
-                        .flatMap(p -> p.getRoles().stream()).collect(Collectors.toList());
+            ? Collections.emptyList()
+            : profiles
+                .stream()
+                .filter(ProfileDto::isEnabled)
+                .filter(p -> tenantIdentifier.equals(p.getTenantIdentifier()))
+                .flatMap(p -> p.getRoles().stream())
+                .collect(Collectors.toList());
     }
 
     public TenantDto getTenant(final Integer tenantIdentifier) {
-        final Optional<TenantDto> tenant = getUser().getTenantsByApp().stream().flatMap(t -> t.getTenants().stream())
-                .filter(t -> tenantIdentifier.equals(t.getIdentifier())).findAny();
+        final Optional<TenantDto> tenant = getUser()
+            .getTenantsByApp()
+            .stream()
+            .flatMap(t -> t.getTenants().stream())
+            .filter(t -> tenantIdentifier.equals(t.getIdentifier()))
+            .findAny();
         return tenant.orElseThrow(() -> new ApplicationServerException("Tenant not found"));
     }
 
@@ -207,7 +219,9 @@ public class InternalSecurityService {
      * @return
      */
     public VitamContext buildVitamContext(final Integer tenantId, final String accessContractId) {
-        return new VitamContext(tenantId).setAccessContract(accessContractId).setApplicationSessionId(getApplicationId());
+        return new VitamContext(tenantId)
+            .setAccessContract(accessContractId)
+            .setApplicationSessionId(getApplicationId());
     }
 
     public boolean hasRole(final String role) {

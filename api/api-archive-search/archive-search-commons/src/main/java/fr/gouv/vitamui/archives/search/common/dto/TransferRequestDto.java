@@ -46,6 +46,7 @@ import java.util.Set;
 @Getter
 @Accessors(chain = true)
 public class TransferRequestDto implements Serializable {
+
     private TransferRequestParameters transferRequestParameters;
     private SearchCriteriaDto searchCriteria;
     private Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns;

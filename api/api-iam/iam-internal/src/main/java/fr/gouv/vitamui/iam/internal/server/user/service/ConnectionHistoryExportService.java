@@ -44,13 +44,16 @@ public class ConnectionHistoryExportService extends ExcelFileGenerator<Connectio
 
     @Override
     public String getFileName(String identificationElement) {
-        return String.format("reports-export-connection-%s.xlsx", DATE_TIME_FORMATTER_ISO_WITH_MS.format(Instant.now()));
+        return String.format(
+            "reports-export-connection-%s.xlsx",
+            DATE_TIME_FORMATTER_ISO_WITH_MS.format(Instant.now())
+        );
     }
 
     @Override
     protected void insertDataRows(Sheet sheet, List<ConnectionHistoryDto> data, Optional<CellStyle> dateStyle) {
         int rowIndex = 1;
-        for(ConnectionHistoryDto element : data) {
+        for (ConnectionHistoryDto element : data) {
             final Row row = sheet.createRow(rowIndex);
             insertRow(row, element, dateStyle);
             rowIndex += 1;
@@ -58,15 +61,15 @@ public class ConnectionHistoryExportService extends ExcelFileGenerator<Connectio
     }
 
     public Resource generateWorkbook(final List<ConnectionHistoryDto> data) throws IOException {
-        this.data  = data;
-        var output =  this.createFile();
+        this.data = data;
+        var output = this.createFile();
         return new ByteArrayResource(output);
     }
 
     public void insertRow(Row row, ConnectionHistoryDto data, Optional<CellStyle> dateStyle) {
         cellValueOf(row, 0, data.getUserId());
 
-        if(data.getConnectionDateTime() == null ){
+        if (data.getConnectionDateTime() == null) {
             return;
         }
 
@@ -76,5 +79,4 @@ public class ConnectionHistoryExportService extends ExcelFileGenerator<Connectio
         cellValueOf(row, 1, ldt.toLocalDate(), dateStyle);
         cellValueOf(row, 2, ldt.toLocalTime().toString());
     }
-
 }

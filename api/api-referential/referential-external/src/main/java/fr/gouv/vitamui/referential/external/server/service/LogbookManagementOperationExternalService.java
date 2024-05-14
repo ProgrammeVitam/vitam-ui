@@ -32,9 +32,9 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.referential.internal.client.LogbookManagementOperationInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,14 +44,20 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @Service
-public class LogbookManagementOperationExternalService extends AbstractResourceClientService<ProcessDetailDto, ProcessDetailDto> {
+public class LogbookManagementOperationExternalService
+    extends AbstractResourceClientService<ProcessDetailDto, ProcessDetailDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationExternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        LogbookManagementOperationExternalService.class
+    );
 
     private LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient;
 
     @Autowired
-    public LogbookManagementOperationExternalService(ExternalSecurityService externalSecurityService, LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient) {
+    public LogbookManagementOperationExternalService(
+        ExternalSecurityService externalSecurityService,
+        LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient
+    ) {
         super(externalSecurityService);
         this.logbookManagementOperationInternalRestClient = logbookManagementOperationInternalRestClient;
     }
@@ -63,18 +69,26 @@ public class LogbookManagementOperationExternalService extends AbstractResourceC
 
     public ProcessDetailDto searchOperationsDetails(ProcessQuery processQuery) {
         LOGGER.debug("Get all Operations details with processQuery = {} ", processQuery);
-        return logbookManagementOperationInternalRestClient.searchOperationsDetails(getInternalHttpContext(), processQuery);
+        return logbookManagementOperationInternalRestClient.searchOperationsDetails(
+            getInternalHttpContext(),
+            processQuery
+        );
     }
 
     public ProcessDetailDto cancelOperationProcessExecution(String operationId) {
         LOGGER.debug("Cancel the operation Id= {} ", operationId);
-        return logbookManagementOperationInternalRestClient.cancelOperationProcessExecution(getInternalHttpContext(), operationId);
+        return logbookManagementOperationInternalRestClient.cancelOperationProcessExecution(
+            getInternalHttpContext(),
+            operationId
+        );
     }
 
     public ProcessDetailDto updateOperationActionProcess(String operationId, String actionId) {
-        LOGGER.debug("Update operation Id= {} with the action Id= {}",operationId, actionId);
-        return logbookManagementOperationInternalRestClient.updateOperationActionProcess(getInternalHttpContext(), actionId, operationId);
+        LOGGER.debug("Update operation Id= {} with the action Id= {}", operationId, actionId);
+        return logbookManagementOperationInternalRestClient.updateOperationActionProcess(
+            getInternalHttpContext(),
+            actionId,
+            operationId
+        );
     }
-
-
 }

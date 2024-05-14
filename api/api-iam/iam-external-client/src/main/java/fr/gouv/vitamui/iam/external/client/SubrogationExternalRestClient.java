@@ -77,7 +77,12 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
         uriBuilder.path("/surrogate/accept");
         uriBuilder.path(CommonConstants.PATH_ID);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -95,7 +100,12 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path("/me/surrogate");
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -103,14 +113,32 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
     public SubrogationDto getMySubrogationAsSuperuser(final ExternalHttpContext context) {
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final URIBuilder uriBuilder = getUriBuilderFromPath("/me/superuser");
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(buildUriBuilder(uriBuilder), HttpMethod.GET, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            buildUriBuilder(uriBuilder),
+            HttpMethod.GET,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
 
-    public PaginatedValuesDto<UserDto> getGenericUsers(final ExternalHttpContext context, final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<UserDto> getGenericUsers(
+        final ExternalHttpContext context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "search page={}, size={}, criteria={}, orderBy={}, direction={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
 
         final URIBuilder builder = getUriBuilderFromPath("/users/generic");
         builder.addParameter("page", page.toString());
@@ -120,8 +148,12 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
         direction.ifPresent(o -> builder.addParameter("direction", o.toString()));
 
         final HttpEntity<UserDto> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<PaginatedValuesDto<UserDto>> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
-                getUserDtoPaginatedClass());
+        final ResponseEntity<PaginatedValuesDto<UserDto>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getUserDtoPaginatedClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -131,7 +163,12 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URIBuilder builder = getUriBuilderFromPath("/groups/" + id + "/");
 
-        final ResponseEntity<GroupDto> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, GroupDto.class);
+        final ResponseEntity<GroupDto> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            GroupDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -148,12 +185,10 @@ public class SubrogationExternalRestClient extends BaseCrudRestClient<Subrogatio
 
     @Override
     protected ParameterizedTypeReference<List<SubrogationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<SubrogationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<SubrogationDto>>() {};
     }
 
     protected ParameterizedTypeReference<PaginatedValuesDto<UserDto>> getUserDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {};
     }
 }

@@ -1,24 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
@@ -35,6 +16,24 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link OwnerInternalService}.
@@ -72,8 +71,17 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ownerService = new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
-                internalSecurityService, ownerConverter, logbookService, tenantRepository);
+        ownerService = new OwnerInternalService(
+            sequenceGeneratorService,
+            ownerRepository,
+            customerRepository,
+            new AddressService(),
+            iamLogbookService,
+            internalSecurityService,
+            ownerConverter,
+            logbookService,
+            tenantRepository
+        );
     }
 
     private void prepareServices() {
@@ -106,8 +114,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         final OwnerDto dto = buildOwnerDto();
         try {
             ownerService.create(dto);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -121,9 +128,11 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         dto.setId(null);
         try {
             ownerService.create(dto);
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create owner " + dto.getName() + ": customer " + dto.getCustomerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create owner " + dto.getName() + ": customer " + dto.getCustomerId() + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
@@ -137,8 +146,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create owner " + dto.getName() + ": readonly must be set to false", e.getMessage());
         }
     }
@@ -156,9 +164,15 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create owner " + dto.getName() + ": a owner with code: " + dto.getCode() + " already exists.", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create owner " +
+                dto.getName() +
+                ": a owner with code: " +
+                dto.getCode() +
+                " already exists.",
+                e.getMessage()
+            );
         }
     }
 
@@ -189,8 +203,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         final OwnerDto dto = buildOwnerDto();
         try {
             ownerService.update(dto);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update owner: no owner found for id " + dto.getId(), e.getMessage());
         }
     }
@@ -204,9 +217,11 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update owner " + dto.getId() + ": customer " + dto.getCustomerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update owner " + dto.getId() + ": customer " + dto.getCustomerId() + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
@@ -219,15 +234,13 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update owner " + dto.getId() + ": readonly must be set to false", e.getMessage());
         }
     }
 
     @Test
     public void testUpdateFailsAsIsReadonlyIsTrue() {
-
         final Owner owner = buildOwner();
         owner.setReadonly(true);
 
@@ -238,8 +251,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update owner " + dto.getId() + ": readonly owner", e.getMessage());
         }
     }
@@ -256,9 +268,11 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         try {
             ownerService.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update owner " + dto.getId() + ": a owner with code: " + dto.getCode() + " already exists.", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update owner " + dto.getId() + ": a owner with code: " + dto.getCode() + " already exists.",
+                e.getMessage()
+            );
         }
     }
 
@@ -293,5 +307,4 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
     }
-
 }

@@ -78,6 +78,5 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 }

@@ -42,7 +42,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -56,15 +55,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 class ArchivesSearchReuseRuleQueryBuilderServiceTest {
-    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER =
-        "reuse/expected-search-query-with-rule-identifier.txt";
+
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER = "reuse/expected-search-query-with-rule-identifier.txt";
     public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE =
         "reuse/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
-    public static String SEARCH_QUERY_WITH_RULES_IDENTIFIERS =
-        "reuse/expected-search-query-with-rules-identifiers.txt";
+    public static String SEARCH_QUERY_WITH_RULES_IDENTIFIERS = "reuse/expected-search-query-with-rules-identifiers.txt";
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchReuseRuleQueryBuilderServiceTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivesSearchReuseRuleQueryBuilderServiceTest.class
+    );
 
     @BeforeEach
     public void setUp() {
@@ -72,15 +71,13 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery()
-        throws Exception {
+    void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ReuseRuleIdentifier")));
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ReuseRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
@@ -93,19 +90,18 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 
     @Test
-    void testFillQueryFromCriteriaListOfRulesIdentifiersArePresentThenReturnTheExactQuery()
-        throws Exception {
+    void testFillQueryFromCriteriaListOfRulesIdentifiersArePresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ReuseRuleFirstIdentifier"), new CriteriaValue("ReuseRuleSecondIdentifier")));
+            List.of(new CriteriaValue("ReuseRuleFirstIdentifier"), new CriteriaValue("ReuseRuleSecondIdentifier"))
+        );
 
         criteriaList.add(searchCriteriaEltDto);
 
@@ -119,7 +115,6 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULES_IDENTIFIERS);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 
     @Test
@@ -130,8 +125,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ReuseRuleIdentifier")));
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ReuseRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         SearchCriteriaEltDto searchCriteriaWithDateEltDto = new SearchCriteriaEltDto();
@@ -152,7 +146,6 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 
     @Test
@@ -197,9 +190,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent("reuse/one-date-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
-
 
     @Test
     public void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaIntervalDate()
@@ -209,8 +200,9 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
-        searchCriteriaEltDto
-            .setValues(List.of(new CriteriaValue("2011-11-02T02:50:12.208Z", "2021-11-02T02:50:12.208Z")));
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("2011-11-02T02:50:12.208Z", "2021-11-02T02:50:12.208Z"))
+        );
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.GTE.name());
         criteriaList.add(searchCriteriaEltDto);
 
@@ -224,9 +216,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.debug(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/interval-date-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
-
 
     @Test
     public void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaRuleCode()
@@ -250,7 +240,6 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/identifier-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
 
     @Test
@@ -266,9 +255,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto
-            .setCriteria(
-                ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -284,9 +271,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/identifier-inherited-only-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
-
 
     @Test
     public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesWithOnlyInheritedOrScopedRules()
@@ -301,16 +286,14 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -326,9 +309,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/identifier-inherited-or-scoped-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
-
 
     @Test
     public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesInWaitingToCalculate()
@@ -343,16 +324,14 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -368,7 +347,6 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/identifier-waiting-to-recalculate-rule-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
 
     @Test
@@ -384,16 +362,14 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name());
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.REUSE_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -409,8 +385,5 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = FileReader.loadFileContent("reuse/identifier-no-rules-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
-
-
 }

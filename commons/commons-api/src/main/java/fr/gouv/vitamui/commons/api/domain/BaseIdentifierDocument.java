@@ -36,14 +36,12 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-
 /**
  * Base document with a VitamUI identifier.
  *
  *
  */
 public interface BaseIdentifierDocument {
-
     /**
      * VitamUI identifier getter
      *

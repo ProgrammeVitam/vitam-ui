@@ -45,7 +45,5 @@ import fr.gouv.vitamui.security.server.certificate.domain.Certificate;
  *
  */
 public interface CertificateRepository extends VitamUIRepository<Certificate, String> {
-
     Certificate findByData(String data);
-
 }

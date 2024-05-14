@@ -77,8 +77,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
+        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<JsonNode>().setHttpCode(200)
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -91,8 +92,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
+        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<JsonNode>().setHttpCode(400)
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -101,12 +103,14 @@ public class UnitInternalServiceTest {
     }
 
     @Test
-    public void searchUnits_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void searchUnits_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(unitService.searchUnits(isA(JsonNode.class), isA(VitamContext.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -119,8 +123,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
+        expect(
+            unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -133,8 +138,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
+        expect(
+            unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -143,12 +149,14 @@ public class UnitInternalServiceTest {
     }
 
     @Test
-    public void searchUnitsWithErrors_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void searchUnitsWithErrors_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            unitService.searchUnitsWithErrors(isA(Optional.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -161,8 +169,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
 
-        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
+        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<JsonNode>().setHttpCode(200)
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -175,8 +184,9 @@ public class UnitInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
 
-        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
+        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<JsonNode>().setHttpCode(400)
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -185,12 +195,14 @@ public class UnitInternalServiceTest {
     }
 
     @Test
-    public void findUnitById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findUnitById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
 
-        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(unitService.findUnitById(isA(String.class), isA(VitamContext.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -204,8 +216,9 @@ public class UnitInternalServiceTest {
         String unitId = "id";
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
+        expect(
+            unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -219,8 +232,9 @@ public class UnitInternalServiceTest {
         String unitId = "id";
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
+        expect(
+            unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -229,13 +243,15 @@ public class UnitInternalServiceTest {
     }
 
     @Test
-    public void findObjectMetadataById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findObjectMetadataById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
-        expect(unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            unitService.findObjectMetadataById(isA(String.class), isA(JsonNode.class), isA(VitamContext.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(unitService);
 
         assertThatCode(() -> {
@@ -246,27 +262,36 @@ public class UnitInternalServiceTest {
     @Test
     public void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
         // Given
-        JsonNode expectedQuery =
-            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+        JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
 
         // When
-        JsonNode givenQuery =
-            unitInternalService.createQueryForFillingOrHoldingUnit();
+        JsonNode givenQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
 
         // Then
         Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#object")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#object")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#unitType")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#unitType")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#id")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#id")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("DescriptionLevel")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("DescriptionLevel")
+        ).isTrue();
     }
 }
-

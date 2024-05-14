@@ -73,40 +73,47 @@ public class OntologyExternalService extends AbstractResourceClientService<Ontol
 
     @Autowired
     public OntologyExternalService(
-    	ExternalSecurityService externalSecurityService,
-    	OntologyInternalRestClient ontologyInternalRestClient,
-    	OntologyInternalWebClient ontologyInternalWebClient) {
+        ExternalSecurityService externalSecurityService,
+        OntologyInternalRestClient ontologyInternalRestClient,
+        OntologyInternalWebClient ontologyInternalWebClient
+    ) {
         super(externalSecurityService);
         this.ontologyInternalRestClient = ontologyInternalRestClient;
         this.ontologyInternalWebClient = ontologyInternalWebClient;
     }
 
     public List<OntologyDto> getAll(final Optional<String> criteria) {
-        return ontologyInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return ontologyInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     public OntologyDto getOne(String id) {
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<OntologyDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<OntologyDto, InternalHttpContext> getClient() {
         return ontologyInternalRestClient;
     }
 
-    public PaginatedValuesDto<OntologyDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                         final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<OntologyDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         // Can't use DLab super.getAllPaginated because the criteria is updated for internal concerne.
         // TODO: Maybe needs a VITAM class for ResourceClientService ?
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<OntologyDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<OntologyDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
-
 
     public OntologyDto create(final OntologyDto accessContractDto) {
         return ontologyInternalRestClient.create(getInternalHttpContext(), accessContractDto);

@@ -45,7 +45,9 @@ public enum Collection {
     }
 
     public static Collection of(final String collection) {
-        return Arrays.stream(Collection.values()).filter(c -> Objects.equals(c.getValue(), collection)).findFirst()
+        return Arrays.stream(Collection.values())
+            .filter(c -> Objects.equals(c.getValue(), collection))
+            .findFirst()
             .orElseThrow();
     }
 }

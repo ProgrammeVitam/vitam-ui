@@ -41,6 +41,7 @@ import java.util.Set;
 
 @Service
 public class ArchiveUnitServiceImpl implements ArchiveUnitService {
+
     private final SecurityContextService<ExternalHttpContext> securityContextService;
     private final ArchiveUnitClient client;
 

@@ -36,13 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 public class IamInternalWebClientFactory extends BaseWebClientFactory {
 
@@ -61,15 +59,25 @@ public class IamInternalWebClientFactory extends BaseWebClientFactory {
      * @param httpPoolConfig
      */
     @Deprecated
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public IamInternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
 
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
+    public IamInternalWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfiguration, webClientBuilder);
     }
 
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public IamInternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfig, httpPoolConfig, webClientBuilder);
     }
 

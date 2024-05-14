@@ -46,6 +46,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ProfileResponse extends IdDto {
+
     String name;
     transient ElementProperties profile;
     Notice notice;

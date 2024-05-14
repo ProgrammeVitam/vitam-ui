@@ -130,7 +130,8 @@ public class TenantInternalController implements CrudController<TenantDto> {
      */
     @PostMapping
     @Override
-    public TenantDto create(final @Valid @RequestBody TenantDto dto) throws InvalidParseOperationException, PreconditionFailedException {
+    public TenantDto create(final @Valid @RequestBody TenantDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
         SanityChecker.sanitizeCriteria(dto);
         return internalTenantService.create(dto);
@@ -147,7 +148,10 @@ public class TenantInternalController implements CrudController<TenantDto> {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalTenantService.update(dto);
     }
 
@@ -163,12 +167,16 @@ public class TenantInternalController implements CrudController<TenantDto> {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch tenant : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch tenant : the DTO id must match the path id"
+        );
         return internalTenantService.patch(partialDto);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
         LOGGER.debug("get logbook for tenant with id :{}", id);
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

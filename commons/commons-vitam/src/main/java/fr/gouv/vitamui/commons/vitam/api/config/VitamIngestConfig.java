@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
+import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 
 @Configuration
 public class VitamIngestConfig extends VitamClientConfig {

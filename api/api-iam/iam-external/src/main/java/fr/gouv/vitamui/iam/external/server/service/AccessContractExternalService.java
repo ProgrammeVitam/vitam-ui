@@ -57,8 +57,10 @@ public class AccessContractExternalService extends AbstractInternalClientService
     private final AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient;
 
     @Autowired
-    public AccessContractExternalService(final AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public AccessContractExternalService(
+        final AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.accessContractInternalRestClient = accessContractInternalRestClient;
     }
@@ -75,6 +77,4 @@ public class AccessContractExternalService extends AbstractInternalClientService
     protected BaseRestClient<InternalHttpContext> getClient() {
         return accessContractInternalRestClient;
     }
-
-
 }

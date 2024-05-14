@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -96,9 +95,7 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         buildHeadersExternal(context, headers);
     }
 
-    private void buildHeadersExternal(final ExternalHttpContext context, final MultiValueMap<String, String> headers) {
-
-    }
+    private void buildHeadersExternal(final ExternalHttpContext context, final MultiValueMap<String, String> headers) {}
 
     private void buildCommonHeaders(final AbstractHttpContext context, final MultiValueMap<String, String> headers) {
         final Integer tenantIdentifier = context.getTenantIdentifier();
@@ -108,8 +105,10 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         final String requestId = context.getRequestId();
         final String accessContractId = context.getAccessContract();
         if (tenantIdentifier != null) {
-            headers.put(CommonConstants.X_TENANT_ID_HEADER,
-                    Collections.singletonList(String.valueOf(tenantIdentifier)));
+            headers.put(
+                CommonConstants.X_TENANT_ID_HEADER,
+                Collections.singletonList(String.valueOf(tenantIdentifier))
+            );
         }
         if (userToken != null) {
             headers.put(CommonConstants.X_USER_TOKEN_HEADER, Collections.singletonList(userToken));
@@ -173,8 +172,7 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
     protected URIBuilder getUriBuilderFromUrl() {
         try {
             return new URIBuilder(getUrl());
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new ApplicationServerException(e.getMessage());
         }
     }
@@ -187,8 +185,7 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
     protected URIBuilder getUriBuilder(final String url) {
         try {
             return new URIBuilder(url);
-        }
-        catch (final URISyntaxException exception) {
+        } catch (final URISyntaxException exception) {
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
     }
@@ -200,8 +197,7 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
     protected URIBuilder getUriBuilderFromPath(final String path) {
         try {
             return new URIBuilder(getUrl() + path);
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new ApplicationServerException(e.getMessage());
         }
     }
@@ -209,10 +205,8 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
     protected URI buildUriBuilder(final URIBuilder builder) {
         try {
             return builder.build();
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new ApplicationServerException(e.getMessage());
         }
     }
-
 }

@@ -69,7 +69,9 @@ public class CustomTokenValidator extends TokenValidator {
         if (AGENTCONNECT_ACR_VALUES.contains(acrParam)) {
             final String acrClaim = claimsSet.getStringClaim(ACR);
             if (!acrParam.equals(acrClaim)) {
-                throw new BadJWTException("[AGENTCONNECT] Bad acr claim in the ID token: it must match the provided value in the acr_values custom param");
+                throw new BadJWTException(
+                    "[AGENTCONNECT] Bad acr claim in the ID token: it must match the provided value in the acr_values custom param"
+                );
             }
         }
 

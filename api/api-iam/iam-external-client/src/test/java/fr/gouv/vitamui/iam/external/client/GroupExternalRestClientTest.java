@@ -27,16 +27,22 @@ public class GroupExternalRestClientTest extends AbstractServerIdentityBuilder {
     private RestTemplate restTemplate;
 
     @Before
-    public void setUp(){
-        groupExternalRestClient = new GroupExternalRestClient(restTemplate,"http://localhost:8083");
+    public void setUp() {
+        groupExternalRestClient = new GroupExternalRestClient(restTemplate, "http://localhost:8083");
     }
 
     @Test
-    public void getAll_returnsGroups(){
+    public void getAll_returnsGroups() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/groups";
-        Mockito.when(restTemplate.exchange(Mockito.eq(url), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(groupExternalRestClient.getDtoListClass())))
-            .thenReturn(new ResponseEntity<List<GroupDto>>(Arrays.asList(new GroupDto()), HttpStatus.OK));
+        Mockito.when(
+            restTemplate.exchange(
+                Mockito.eq(url),
+                Mockito.eq(HttpMethod.GET),
+                Mockito.any(),
+                Mockito.eq(groupExternalRestClient.getDtoListClass())
+            )
+        ).thenReturn(new ResponseEntity<List<GroupDto>>(Arrays.asList(new GroupDto()), HttpStatus.OK));
         groupExternalRestClient.getAll(context, Optional.empty());
     }
 }

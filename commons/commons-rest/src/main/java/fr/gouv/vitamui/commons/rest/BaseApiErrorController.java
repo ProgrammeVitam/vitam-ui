@@ -70,5 +70,4 @@ public class BaseApiErrorController implements ErrorController {
     public String getErrorPath() {
         return ERROR_MAPPING;
     }
-
 }

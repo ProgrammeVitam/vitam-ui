@@ -57,17 +57,26 @@ import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
  */
 @Slf4j
 public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
+
     private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 
     private final Utils utils;
 
-    public CustomSendTokenAction(final CommunicationsManager communicationsManager,
-                                 final CasSimpleMultifactorAuthenticationService multifactorAuthenticationService,
-                                 final CasSimpleMultifactorAuthenticationProperties properties,
-                                 final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
-                                 final BucketConsumer bucketConsumer,
-                                 final Utils utils) {
-        super(communicationsManager, multifactorAuthenticationService, properties, tokenCommunicationStrategy, bucketConsumer);
+    public CustomSendTokenAction(
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationService multifactorAuthenticationService,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
+        final BucketConsumer bucketConsumer,
+        final Utils utils
+    ) {
+        super(
+            communicationsManager,
+            multifactorAuthenticationService,
+            properties,
+            tokenCommunicationStrategy,
+            bucketConsumer
+        );
         this.utils = utils;
     }
 

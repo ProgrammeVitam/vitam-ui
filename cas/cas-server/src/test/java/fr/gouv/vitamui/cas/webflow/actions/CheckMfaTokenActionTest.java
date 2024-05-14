@@ -51,7 +51,9 @@ public class CheckMfaTokenActionTest extends BaseWebflowActionTest {
         flowParameters.put("credential", credential);
 
         ticket = mock(CasSimpleMultifactorAuthenticationTicket.class);
-        when(ticketRegistry.getTicket("CASMFA-" + TOKEN, CasSimpleMultifactorAuthenticationTicket.class)).thenReturn(ticket);
+        when(ticketRegistry.getTicket("CASMFA-" + TOKEN, CasSimpleMultifactorAuthenticationTicket.class)).thenReturn(
+            ticket
+        );
     }
 
     @Test

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 @Service
 public class TranslateService {
+
     private final ResourceBundle bundleFR = ResourceBundle.getBundle("exported-data", Locale.FRENCH);
 
     public String translate(boolean value) {

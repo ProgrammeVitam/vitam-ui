@@ -5,11 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class ApplicationParameterType {
-    
+
     private ApplicationEnum data;
 
     public ApplicationParameterType(final String data) {
         this.data = ApplicationEnum.valueOf(data.toUpperCase());
     }
-
 }

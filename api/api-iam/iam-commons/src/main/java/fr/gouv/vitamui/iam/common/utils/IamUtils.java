@@ -41,10 +41,10 @@ import java.util.Optional;
 
 public final class IamUtils {
 
-    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+    public static final String EMAIL_VALID_REGEXP =
+        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
 
-    private IamUtils() {
-    }
+    private IamUtils() {}
 
     /**
      * Method to build a string of embedded fields in following the format:

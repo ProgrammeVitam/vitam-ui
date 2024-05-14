@@ -91,14 +91,29 @@ public class EventService {
      * @param outcome
      */
     @Transactional(propagation = Propagation.MANDATORY)
-    public Event logUpdate(final InternalHttpContext context, final String accessContractLogbookIdentifier,
-                           final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
-                           final EventLogable evType, final Collection<EventDiffDto> evDetData) {
-        LOGGER.info(" EvIdAppSession : {} " , context.getApplicationId());
+    public Event logUpdate(
+        final InternalHttpContext context,
+        final String accessContractLogbookIdentifier,
+        final Integer tenantIdentifier,
+        final String objectIdentifier,
+        final String collectionNames,
+        final EventLogable evType,
+        final Collection<EventDiffDto> evDetData
+    ) {
+        LOGGER.info(" EvIdAppSession : {} ", context.getApplicationId());
         LOGGER.debug("------------- context : {}", context);
-        return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
-                tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK,
-                LogbookUtils.getEvData(evDetData).toString(), StatusCode.OK);
+        return create(
+            context.getRequestId(),
+            context.getApplicationId(),
+            accessContractLogbookIdentifier,
+            tenantIdentifier,
+            objectIdentifier,
+            collectionNames,
+            evType,
+            EventTypeProc.EXTERNAL_LOGBOOK,
+            LogbookUtils.getEvData(evDetData).toString(),
+            StatusCode.OK
+        );
     }
 
     /**
@@ -115,13 +130,28 @@ public class EventService {
      * @param outcome
      */
     @Transactional(propagation = Propagation.MANDATORY)
-    public Event logCreate(final InternalHttpContext context, final String accessContractLogbookIdentifier,
-            final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
-            final EventLogable evType, final String evDetData) {
+    public Event logCreate(
+        final InternalHttpContext context,
+        final String accessContractLogbookIdentifier,
+        final Integer tenantIdentifier,
+        final String objectIdentifier,
+        final String collectionNames,
+        final EventLogable evType,
+        final String evDetData
+    ) {
         LOGGER.debug("------------- context : {}", context);
-        return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
-                tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK, evDetData,
-                StatusCode.OK);
+        return create(
+            context.getRequestId(),
+            context.getApplicationId(),
+            accessContractLogbookIdentifier,
+            tenantIdentifier,
+            objectIdentifier,
+            collectionNames,
+            evType,
+            EventTypeProc.EXTERNAL_LOGBOOK,
+            evDetData,
+            StatusCode.OK
+        );
     }
 
     /**
@@ -136,18 +166,41 @@ public class EventService {
      * @param evDetData
      * @return
      */
-    public Event logAccess(final InternalHttpContext context, final String accessContractLogbookIdentifier,
-            final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
-            final EventLogable evType, final String evDetData) {
-        return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
-                tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK, evDetData,
-                StatusCode.OK);
+    public Event logAccess(
+        final InternalHttpContext context,
+        final String accessContractLogbookIdentifier,
+        final Integer tenantIdentifier,
+        final String objectIdentifier,
+        final String collectionNames,
+        final EventLogable evType,
+        final String evDetData
+    ) {
+        return create(
+            context.getRequestId(),
+            context.getApplicationId(),
+            accessContractLogbookIdentifier,
+            tenantIdentifier,
+            objectIdentifier,
+            collectionNames,
+            evType,
+            EventTypeProc.EXTERNAL_LOGBOOK,
+            evDetData,
+            StatusCode.OK
+        );
     }
 
-    private Event create(final String evIdReq, final String evIdAppSession,
-            final String accessContractLogbookIdentifier, final Integer tenantIdentifier, final String obId,
-            final String obIdReq, final EventLogable evType, final EventTypeProc evTypeProc, final String evDetData,
-            final StatusCode outcome) {
+    private Event create(
+        final String evIdReq,
+        final String evIdAppSession,
+        final String accessContractLogbookIdentifier,
+        final Integer tenantIdentifier,
+        final String obId,
+        final String obIdReq,
+        final EventLogable evType,
+        final EventTypeProc evTypeProc,
+        final String evDetData,
+        final StatusCode outcome
+    ) {
         final Event event = new Event();
         final GUID guid = GUIDFactory.newOperationLogbookGUID(tenantIdentifier);
         event.setId(guid.getId());
@@ -157,9 +210,9 @@ public class EventService {
         event.setObId(obId);
         event.setObIdReq(obIdReq);
         event.setEvTypeProc(evTypeProc);
-        if(evType != null) {
+        if (evType != null) {
             event.setEvType(evType.toString());
-        }else{
+        } else {
             throw new ApplicationServerException("Event type must not be null");
         }
         event.setEvDetData(evDetData);

@@ -1,23 +1,22 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
+import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
-import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ApplicationInternalController}.
@@ -46,8 +45,7 @@ public final class ApplicationInternalControllerTest {
 
         try {
             controller.getAll(Optional.empty(), Optional.empty());
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }
     }
@@ -55,5 +53,4 @@ public final class ApplicationInternalControllerTest {
     private ApplicationDto buildApplicationDto() {
         return IamServerUtilsTest.buildApplicationDto();
     }
-
 }

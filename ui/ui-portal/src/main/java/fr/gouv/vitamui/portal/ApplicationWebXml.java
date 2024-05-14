@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.portal;
 
+import fr.gouv.vitamui.portal.config.DefaultProfileUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-
-import fr.gouv.vitamui.portal.config.DefaultProfileUtil;
 
 /**
  * This is a helper Java class that provides an alternative to creating a
@@ -50,7 +49,6 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-
         /*
           set a default to use when no profile is configured.
          */

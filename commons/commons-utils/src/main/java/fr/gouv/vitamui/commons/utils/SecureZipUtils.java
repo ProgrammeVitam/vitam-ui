@@ -62,11 +62,11 @@ public class SecureZipUtils {
      * @param unzipFolderPath unzip folder, if not exist ll be created
      * @throws SecurityException if attack is being detected
      */
-    public static void unzipFolder(final String zipFilePath, final String unzipFolderPath) throws IOException, SecurityException {
-
+    public static void unzipFolder(final String zipFilePath, final String unzipFolderPath)
+        throws IOException, SecurityException {
         Path zipFile = Paths.get(zipFilePath);
 
-        try(InputStream zipFileStream = new FileInputStream(zipFile.toFile())){
+        try (InputStream zipFileStream = new FileInputStream(zipFile.toFile())) {
             unzipFolder(zipFileStream, unzipFolderPath);
         }
     }
@@ -107,8 +107,7 @@ public class SecureZipUtils {
      * @return the normalized path
      * @throws SecurityException throw security exception where a threat is detected
      */
-    public static Path zipSlipProtect(final ZipEntry zipEntry, final Path targetDir)
-        throws SecurityException {
+    public static Path zipSlipProtect(final ZipEntry zipEntry, final Path targetDir) throws SecurityException {
         Path targetDirResolved = targetDir.resolve(zipEntry.getName());
 
         // make sure normalized file still has targetDir as its prefix
@@ -121,7 +120,6 @@ public class SecureZipUtils {
         return normalizePath;
     }
 
-
     /**
      * Method allowing to generate a zip folder containing the documents from the map.
      * @param filePaths List containing the files paths to add to the folder
@@ -131,7 +129,6 @@ public class SecureZipUtils {
      */
     public static void zipFiles(final List<Path> filePaths, final OutputStream zipOutputStream) throws IOException {
         try (final ZipOutputStream zipFolder = new ZipOutputStream(zipOutputStream)) {
-
             for (final Path filePath : filePaths) {
                 canSecurelyZipFile(filePath.toFile());
 
@@ -143,7 +140,6 @@ public class SecureZipUtils {
         }
     }
 
-
     /**
      * Method allowing to generate a zip folder containing the documents from the map.
      * @param streamMap Map containing the filename and stream to add to the folder
@@ -151,10 +147,9 @@ public class SecureZipUtils {
      * @throws IOException
      * @throws FileNotFoundException
      */
-    public static void zipStreams(final Map<String, InputStream> streamMap, final OutputStream zipOutputStream) throws IOException {
-
+    public static void zipStreams(final Map<String, InputStream> streamMap, final OutputStream zipOutputStream)
+        throws IOException {
         try (final ZipOutputStream zipFolderStream = new ZipOutputStream(zipOutputStream)) {
-
             for (final Map.Entry<String, InputStream> entry : streamMap.entrySet()) {
                 final var filename = entry.getKey();
                 final var inputStream = entry.getValue();
@@ -169,7 +164,6 @@ public class SecureZipUtils {
         }
     }
 
-
     /**
      * Method allowing to generate a zip folder containing the files in a folder
      * @param sourceFolderPath List containing the files paths to add to the folder
@@ -178,18 +172,17 @@ public class SecureZipUtils {
      * @throws FileNotFoundException
      */
     public static void zipFolder(final String sourceFolderPath, final OutputStream zipOutputStream) throws IOException {
-
         try (ZipOutputStream realZipOutputStream = new ZipOutputStream(zipOutputStream)) {
             Path folderToZipPath = Paths.get(sourceFolderPath);
             final List<Path> filePaths;
-            try(final var fileStream = Files.walk(folderToZipPath)) {
+            try (final var fileStream = Files.walk(folderToZipPath)) {
                 filePaths = fileStream.collect(Collectors.toList());
             }
-            for(Path filePath: filePaths) {
+            for (Path filePath : filePaths) {
                 canSecurelyZipFile(filePath.toFile());
-                if(Files.isDirectory(filePath)){
+                if (Files.isDirectory(filePath)) {
                     String name = folderToZipPath.relativize(filePath).toString();
-                    if(!name.isEmpty()) {
+                    if (!name.isEmpty()) {
                         realZipOutputStream.putNextEntry(new ZipEntry(name + (name.endsWith("/") ? "" : "/")));
                         realZipOutputStream.closeEntry();
                     }
@@ -209,7 +202,7 @@ public class SecureZipUtils {
      * @param file file to check
      */
     private static void canSecurelyZipFile(File file) {
-        if (FileUtils.isSymlink(file)){
+        if (FileUtils.isSymlink(file)) {
             throw new SecurityException("Can't zip file with symlink in it");
         }
     }

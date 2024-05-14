@@ -40,7 +40,6 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
     @MockBean
     private BuildProperties buildProperties;
 
-
     @Test
     public void testGetCustomer() throws Exception {
         super.testGetEntityById();
@@ -61,8 +60,13 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
         LOGGER.debug("testGetCustomersByOrder");
 
         final QueryDto criteria = QueryDto.criteria("customerId", 1, CriterionOperator.EQUALS);
-        final ImmutableMap<String, Object> params = new ImmutableMap.Builder<String, Object>().put("page", "1").put("size", "20").put("orderBy", "id")
-                .put("direction", "ASC").put("criteria", criteria.toJson()).build();
+        final ImmutableMap<String, Object> params = new ImmutableMap.Builder<String, Object>()
+            .put("page", "1")
+            .put("size", "20")
+            .put("orderBy", "id")
+            .put("direction", "ASC")
+            .put("criteria", criteria.toJson())
+            .build();
 
         final ResultActions result = super.performGet(StringUtils.EMPTY, params);
     }
@@ -72,9 +76,13 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
         LOGGER.debug("testGetCustomersByOrderWithBadKeyArgumentSanitizingThenReturnBadRequest");
 
         final QueryDto criteria = QueryDto.criteria("customerId<script>", 1, CriterionOperator.EQUALS);
-        final ImmutableMap<String, Object> params =
-            new ImmutableMap.Builder<String, Object>().put("page", "1").put("size", "20").put("orderBy", "id")
-                .put("direction", "ASC").put("criteria", criteria.toJson()).build();
+        final ImmutableMap<String, Object> params = new ImmutableMap.Builder<String, Object>()
+            .put("page", "1")
+            .put("size", "20")
+            .put("orderBy", "id")
+            .put("direction", "ASC")
+            .put("criteria", criteria.toJson())
+            .build();
 
         final ResultActions result = super.performGet(StringUtils.EMPTY, params, status().isBadRequest());
     }
@@ -85,7 +93,11 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
         Mockito.when(service.checkExist(any(), any())).thenReturn(true);
 
         final QueryDto criteria = QueryDto.criteria().addCriterion("code", 1, CriterionOperator.EQUALS);
-        final ResultActions result = super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()), status().isOk());
+        final ResultActions result = super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isOk()
+        );
     }
 
     @Test
@@ -94,9 +106,11 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
         Mockito.when(service.checkExist(any(), any())).thenReturn(true);
 
         final QueryDto criteria = QueryDto.criteria().addCriterion("code<script>", 1, CriterionOperator.EQUALS);
-        final ResultActions result = super
-            .performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()),
-                status().isBadRequest());
+        final ResultActions result = super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isBadRequest()
+        );
     }
 
     @Test
@@ -105,7 +119,11 @@ public class CustomerControllerTest extends UiIdentityRestControllerTest<Custome
         Mockito.when(service.checkExist(any(), any())).thenReturn(false);
 
         final QueryDto criteria = QueryDto.criteria().addCriterion("code", 1, CriterionOperator.EQUALS);
-        final ResultActions result = super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()), status().isNoContent());
+        final ResultActions result = super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isNoContent()
+        );
     }
 
     @Override

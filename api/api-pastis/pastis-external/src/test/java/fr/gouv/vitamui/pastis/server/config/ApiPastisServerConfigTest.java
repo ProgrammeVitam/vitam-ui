@@ -84,6 +84,4 @@ public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
     public void testPuaDefinition() {
         assertThat(pastisService).isNotNull();
     }
-
-
 }

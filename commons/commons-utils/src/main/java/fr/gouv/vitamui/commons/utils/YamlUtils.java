@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,17 +48,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-
 public final class YamlUtils {
 
     private static final String ARGUMENTS_MUST_BE_NON_NULL = "Arguments must be non null";
 
-    private YamlUtils() {
-    }
+    private YamlUtils() {}
 
     /**
      * Read the Yaml file and return the object read
@@ -71,8 +69,7 @@ public final class YamlUtils {
         try (final FileReader yamlFileReader = new FileReader(yamlFile)) {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             return clasz.cast(mapper.readValue(yamlFileReader, clasz));
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw new IOException(e);
         }
     }
@@ -92,8 +89,7 @@ public final class YamlUtils {
         try (final FileReader yamlFileReader = new FileReader(yamlFile)) {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             return mapper.readValue(yamlFileReader, typeReference);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw new IOException(e);
         }
     }
@@ -113,8 +109,7 @@ public final class YamlUtils {
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
             return clasz.cast(mapper.readValue(yamlInputStream, clasz));
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw new IOException(e);
         }
     }

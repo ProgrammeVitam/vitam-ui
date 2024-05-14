@@ -39,6 +39,4 @@ package fr.gouv.vitamui.referential.common.dto;
 import fr.gouv.vitam.common.model.administration.FileFormatModel;
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-public class FileFormatResponseDto extends AbstractVitamUIResponseDto<FileFormatModel> {
-
-}
+public class FileFormatResponseDto extends AbstractVitamUIResponseDto<FileFormatModel> {}

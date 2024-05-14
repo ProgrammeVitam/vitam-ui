@@ -87,6 +87,7 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
 
     @Mock
     private RestTemplate restTemplate;
+
     final PodamFactory factory = new PodamFactoryImpl();
 
     private final String BASE_URL = "http://localhost:7090";
@@ -111,10 +112,14 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
     public void shouldSendTransactionWithSuccess() {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + SEND_PATH),
-            HttpMethod.PUT,
-            new HttpEntity<>(params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + SEND_PATH),
+                HttpMethod.PUT,
+                new HttpEntity<>(params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(() -> collectTransactionInternalRestClient.sendTransaction(params.getKey(), PROJECT_ID));
     }
@@ -123,10 +128,14 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
     public void shouldValidateTransactionWithSuccess() {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + VALIDATE_PATH),
-            HttpMethod.PUT,
-            new HttpEntity<>(params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + VALIDATE_PATH),
+                HttpMethod.PUT,
+                new HttpEntity<>(params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(() -> collectTransactionInternalRestClient.validateTransaction(params.getKey(), PROJECT_ID));
     }
@@ -135,10 +144,14 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
     public void shouldReopenTransactionWithSuccess() {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + REOPEN_PATH),
-            HttpMethod.PUT,
-            new HttpEntity<>(params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + REOPEN_PATH),
+                HttpMethod.PUT,
+                new HttpEntity<>(params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(() -> collectTransactionInternalRestClient.reopenTransaction(params.getKey(), PROJECT_ID));
     }
@@ -147,10 +160,14 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
     public void shouldAbortTransactionWithSuccess() {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + ABORT_PATH),
-            HttpMethod.PUT,
-            new HttpEntity<>(params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + ABORT_PATH),
+                HttpMethod.PUT,
+                new HttpEntity<>(params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(() -> collectTransactionInternalRestClient.abortTransaction(params.getKey(), PROJECT_ID));
     }
@@ -161,13 +178,18 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + TRANSACTION_ID),
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + TRANSACTION_ID),
                 HttpMethod.GET,
-                new HttpEntity<>(params.getValue()), CollectTransactionDto.class))
-            .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
+                new HttpEntity<>(params.getValue()),
+                CollectTransactionDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
         // WHEN
-        CollectTransactionDto response =
-            collectTransactionInternalRestClient.getTransactionById(params.getKey(), TRANSACTION_ID);
+        CollectTransactionDto response = collectTransactionInternalRestClient.getTransactionById(
+            params.getKey(),
+            TRANSACTION_ID
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectTransactionDto.class);
@@ -182,13 +204,18 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(BASE_URL + COLLECT_TRANSACTION_PATH,
+            restTemplate.exchange(
+                BASE_URL + COLLECT_TRANSACTION_PATH,
                 HttpMethod.PUT,
-                new HttpEntity<>(collectTransactionDto, params.getValue()), CollectTransactionDto.class))
-            .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
+                new HttpEntity<>(collectTransactionDto, params.getValue()),
+                CollectTransactionDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
         // WHEN
-        CollectTransactionDto response =
-            collectTransactionInternalRestClient.updateTransaction(params.getKey(), collectTransactionDto);
+        CollectTransactionDto response = collectTransactionInternalRestClient.updateTransaction(
+            params.getKey(),
+            collectTransactionDto
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectTransactionDto.class);
@@ -202,13 +229,19 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         // GIVEN
         ResultsDto resultsDto = factory.manufacturePojo(ResultsDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + ARCHIVE_UNIT_INFO + "/" + UNIT_ID),
-            HttpMethod.GET,
-            new HttpEntity<>(params.getValue()), ResultsDto.class))
-            .thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + ARCHIVE_UNIT_INFO + "/" + UNIT_ID),
+                HttpMethod.GET,
+                new HttpEntity<>(params.getValue()),
+                ResultsDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
         // WHEN
-        ResponseEntity<ResultsDto> response =
-            collectTransactionInternalRestClient.findUnitById(UNIT_ID, params.getKey());
+        ResponseEntity<ResultsDto> response = collectTransactionInternalRestClient.findUnitById(
+            UNIT_ID,
+            params.getKey()
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);
@@ -224,32 +257,50 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         ArchiveUnitsDto archiveUnitsDto = factory.manufacturePojo(ArchiveUnitsDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         final SearchCriteriaDto searchQuery = new SearchCriteriaDto();
-        when(restTemplate.exchange(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + ARCHIVE_UNITS,
-            HttpMethod.POST,
-            new HttpEntity<>(searchQuery, params.getValue()), ArchiveUnitsDto.class))
-            .thenReturn(new ResponseEntity<>(archiveUnitsDto, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + ARCHIVE_UNITS,
+                HttpMethod.POST,
+                new HttpEntity<>(searchQuery, params.getValue()),
+                ArchiveUnitsDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(archiveUnitsDto, HttpStatus.OK));
         // WHEN
-        ArchiveUnitsDto response =
-            collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(params.getKey(), PROJECT_ID,
-                searchQuery);
+        ArchiveUnitsDto response = collectTransactionInternalRestClient.searchCollectProjectArchiveUnits(
+            params.getKey(),
+            PROJECT_ID,
+            searchQuery
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(ArchiveUnitsDto.class);
         assertNotNull(response.getArchives());
         assertNotNull(response.getArchives().getResults());
         assertEquals(5, response.getArchives().getResults().size());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(0).getId(),
-            response.getArchives().getResults().get(0).getId());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(0).getDescription(),
-            response.getArchives().getResults().get(0).getDescription());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(0).getOriginatingAgencyName(),
-            response.getArchives().getResults().get(0).getOriginatingAgencyName());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(4).getId(),
-            response.getArchives().getResults().get(4).getId());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(4).getDescription(),
-            response.getArchives().getResults().get(4).getDescription());
-        assertEquals(archiveUnitsDto.getArchives().getResults().get(4).getOriginatingAgencyName(),
-            response.getArchives().getResults().get(4).getOriginatingAgencyName());
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(0).getId(),
+            response.getArchives().getResults().get(0).getId()
+        );
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(0).getDescription(),
+            response.getArchives().getResults().get(0).getDescription()
+        );
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(0).getOriginatingAgencyName(),
+            response.getArchives().getResults().get(0).getOriginatingAgencyName()
+        );
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(4).getId(),
+            response.getArchives().getResults().get(4).getId()
+        );
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(4).getDescription(),
+            response.getArchives().getResults().get(4).getDescription()
+        );
+        assertEquals(
+            archiveUnitsDto.getArchives().getResults().get(4).getOriginatingAgencyName(),
+            response.getArchives().getResults().get(4).getOriginatingAgencyName()
+        );
     }
 
     @Test
@@ -263,12 +314,16 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
             restTemplate.exchange(
                 BASE_URL + COLLECT_TRANSACTION_PATH + "/" + PROJECT_ID + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH,
                 HttpMethod.POST,
-                new HttpEntity<>(searchQuery, params.getValue()), Resource.class))
-            .thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+                new HttpEntity<>(searchQuery, params.getValue()),
+                Resource.class
+            )
+        ).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
         // WHEN
-        Resource response =
-            collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(PROJECT_ID, searchQuery,
-                params.getKey());
+        Resource response = collectTransactionInternalRestClient.exportCsvArchiveUnitsByCriteria(
+            PROJECT_ID,
+            searchQuery,
+            params.getKey()
+        );
         // THEN
         assertNotNull(response);
         assertEquals(csvContent, IOUtils.toString(response.getInputStream(), StandardCharsets.UTF_8));
@@ -293,14 +348,20 @@ public class CollectTransactionInternalRestClientTest extends ServerIdentityExte
         // GIVEN
         ResultsDto resultsDto = factory.manufacturePojo(ResultsDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + CommonConstants.OBJECTS_PATH + "/" + OBJECT_ID),
-            HttpMethod.GET,
-            new HttpEntity<>(params.getValue()), ResultsDto.class))
-            .thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + CommonConstants.OBJECTS_PATH + "/" + OBJECT_ID),
+                HttpMethod.GET,
+                new HttpEntity<>(params.getValue()),
+                ResultsDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
 
         // WHEN
-        ResponseEntity<ResultsDto> response =
-            collectTransactionInternalRestClient.findObjectGroupById(OBJECT_ID, params.getKey());
+        ResponseEntity<ResultsDto> response = collectTransactionInternalRestClient.findObjectGroupById(
+            OBJECT_ID,
+            params.getKey()
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);

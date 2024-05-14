@@ -95,10 +95,13 @@ public class OntologyInternalService {
     @Value("${internal_ontology_file_path}")
     private String internalOntologieFilePath;
 
-
     @Autowired
-    public OntologyInternalService(OntologyService ontologyService, ObjectMapper objectMapper, OntologyConverter converter,
-                                 LogbookService logbookService) {
+    public OntologyInternalService(
+        OntologyService ontologyService,
+        ObjectMapper objectMapper,
+        OntologyConverter converter,
+        LogbookService logbookService
+    ) {
         this.ontologyService = ontologyService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -108,8 +111,10 @@ public class OntologyInternalService {
     public OntologyDto getOne(VitamContext vitamContext, String identifier) {
         try {
             RequestResponse<OntologyModel> requestResponse = ontologyService.findOntologyById(vitamContext, identifier);
-            final OntologyResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
+            final OntologyResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                OntologyResponseDto.class
+            );
             if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
             } else {
@@ -124,8 +129,10 @@ public class OntologyInternalService {
         final RequestResponse<OntologyModel> requestResponse;
         try {
             requestResponse = ontologyService.findOntologies(vitamContext, new Select().getFinalSelect());
-            final OntologyResponseDto ontologyResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
+            final OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                OntologyResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(ontologyResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
@@ -133,10 +140,14 @@ public class OntologyInternalService {
         }
     }
 
-    public PaginatedValuesDto<OntologyDto> getAllPaginated(final Integer pageNumber, final Integer size,
-                                                         final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-                                                         Optional<String> criteria) {
-
+    public PaginatedValuesDto<OntologyDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
 
@@ -149,7 +160,7 @@ public class OntologyInternalService {
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Unable to find ontologies with pagination", ioe);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
 
@@ -165,8 +176,10 @@ public class OntologyInternalService {
         try {
             requestResponse = ontologyService.findOntologies(vitamContext, query);
 
-            final OntologyResponseDto ontologyResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
+            final OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                OntologyResponseDto.class
+            );
 
             return ontologyResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
@@ -176,7 +189,10 @@ public class OntologyInternalService {
 
     public Boolean check(VitamContext vitamContext, OntologyDto ontologyDto) {
         try {
-            return !ontologyService.checkAbilityToCreateOntologyInVitam(converter.convertDtosToVitams(Arrays.asList(ontologyDto)), vitamContext);
+            return !ontologyService.checkAbilityToCreateOntologyInVitam(
+                converter.convertDtosToVitams(Arrays.asList(ontologyDto)),
+                vitamContext
+            );
         } catch (ConflictException e) {
             return true;
         }
@@ -187,12 +203,18 @@ public class OntologyInternalService {
         ontologyDto.setOrigin(OntologyOrigin.EXTERNAL);
         ontologies.add(ontologyDto);
         try {
-            RequestResponse requestResponse = ontologyService.importOntologies(context, converter.convertDtosToVitams(ontologies));
+            RequestResponse requestResponse = ontologyService.importOntologies(
+                context,
+                converter.convertDtosToVitams(ontologies)
+            );
             VitamRestUtils.checkResponse(requestResponse);
-            OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
+            OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                OntologyResponseDto.class
+            );
             List<OntologyDto> ontologyDtos = converter.convertVitamsToDtos(ontologyResponseDto.getResults());
-            return (ontologyDtos == null || ontologyDtos.isEmpty())? ontologyDto : ontologyDtos.get(0);
-        } catch (InvalidParseOperationException | AccessExternalClientException | IOException  e) {
+            return (ontologyDtos == null || ontologyDtos.isEmpty()) ? ontologyDto : ontologyDtos.get(0);
+        } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Unable to create ontology", e);
         }
     }
@@ -200,21 +222,27 @@ public class OntologyInternalService {
     public void delete(VitamContext context, String identifier) {
         List<OntologyDto> ontologies = getAll(context);
         try {
-            ontologyService.importOntologies(context, converter.convertDtosToVitams(ontologies
-                .stream()
-                .filter(ontologyDto ->
-                    !(ontologyDto.getId().equals(identifier) && OntologyOrigin.EXTERNAL.equals(ontologyDto.getOrigin()))
-                    ).collect(Collectors.toList()))
+            ontologyService.importOntologies(
+                context,
+                converter.convertDtosToVitams(
+                    ontologies
+                        .stream()
+                        .filter(
+                            ontologyDto ->
+                                !(ontologyDto.getId().equals(identifier) &&
+                                    OntologyOrigin.EXTERNAL.equals(ontologyDto.getOrigin()))
+                        )
+                        .collect(Collectors.toList())
+                )
             );
-        } catch (InvalidParseOperationException | AccessExternalClientException | IOException  e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Unable to delete ontology", e);
         }
     }
 
-    public OntologyDto patch(VitamContext vitamContext,final Map<String, Object> partialDto) {
+    public OntologyDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
         final OntologyDto ontologyDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
-        partialDto.forEach((key,value) ->
-        {
+        partialDto.forEach((key, value) -> {
             if ("type".equals(key)) {
                 ontologyDto.setType(OntologyType.valueOf((String) value));
             } else if (!"id".equals(key)) {
@@ -224,7 +252,6 @@ public class OntologyInternalService {
                     throw new InternalServerException("Unable to copy properties to DTO", e);
                 }
             }
-
         });
 
         try {
@@ -235,16 +262,20 @@ public class OntologyInternalService {
         }
     }
 
-    private RequestResponse<?> updateOntology(final VitamContext vitamContext, final String id, OntologyDto patchOntology)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        if(vitamContext != null) {
-            LOGGER.info("Update Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    private RequestResponse<?> updateOntology(
+        final VitamContext vitamContext,
+        final String id,
+        OntologyDto patchOntology
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        if (vitamContext != null) {
+            LOGGER.info("Update Ontology EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
         final List<OntologyDto> ontologies = getAll(vitamContext);
 
-        ontologies.stream()
-                .filter( ontology -> id.equals(ontology.getId()) )
-                .forEach( ontology -> this.patchFields(ontology, patchOntology) );
+        ontologies
+            .stream()
+            .filter(ontology -> id.equals(ontology.getId()))
+            .forEach(ontology -> this.patchFields(ontology, patchOntology));
 
         return ontologyService.importOntologies(vitamContext, converter.convertDtosToVitams(ontologies));
     }
@@ -269,25 +300,23 @@ public class OntologyInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-        	throw new InternalServerException("Unable to fetch history", e);
+            throw new InternalServerException("Unable to fetch history", e);
         }
     }
 
-  public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
-    try {
-      final RequestResponse<?> requestResponse =
-          ontologyService.importOntologies(context, fileName, file);
-      VitamRestUtils.checkResponse(requestResponse, 200, 204);
-      return requestResponse.toJsonNode();
-    } catch (InvalidParseOperationException
-        | AccessExternalClientException
-        | VitamClientException
-        | IOException e) {
-      throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
+    public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
+        try {
+            final RequestResponse<?> requestResponse = ontologyService.importOntologies(context, fileName, file);
+            VitamRestUtils.checkResponse(requestResponse, 200, 204);
+            return requestResponse.toJsonNode();
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
+            throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
+        }
     }
-  }
 
     /**
      * Read internal ontology fields list from a file

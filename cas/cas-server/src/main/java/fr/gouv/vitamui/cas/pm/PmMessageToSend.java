@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import java.util.Locale;
-
-import org.springframework.context.HierarchicalMessageSource;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.context.HierarchicalMessageSource;
+
+import java.util.Locale;
 
 /**
  * Message to send in the context of the password management.
@@ -75,22 +74,38 @@ public class PmMessageToSend {
         this.text = text;
     }
 
-    public static PmMessageToSend buildMessage(final HierarchicalMessageSource messageSource, final String firstname,
-            final String lastname, final String ttlInMinutes, final String url, final String platformName, final Locale locale) {
+    public static PmMessageToSend buildMessage(
+        final HierarchicalMessageSource messageSource,
+        final String firstname,
+        final String lastname,
+        final String ttlInMinutes,
+        final String url,
+        final String platformName,
+        final Locale locale
+    ) {
         final String subject;
         final String text;
         if (ONE_DAY.equals(ttlInMinutes)) {
             subject = messageSource.getMessage(PM_ACCOUNTCREATION_SUBJECT_KEY, null, locale);
-            text = messageSource.getMessage(PM_ACCOUNTCREATION_TEXT_KEY,
-                    new Object[] { firstname, lastname, "24", url, platformName }, locale);
+            text = messageSource.getMessage(
+                PM_ACCOUNTCREATION_TEXT_KEY,
+                new Object[] { firstname, lastname, "24", url, platformName },
+                locale
+            );
         } else {
             final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
             if (validityDurationInMinutes >= 120) {
-                text = messageSource.getMessage(PM_RESET_TEXT_KEY_2, new Object[] { firstname, lastname, validityDurationInMinutes / 60, url, platformName},
-                    locale);
+                text = messageSource.getMessage(
+                    PM_RESET_TEXT_KEY_2,
+                    new Object[] { firstname, lastname, validityDurationInMinutes / 60, url, platformName },
+                    locale
+                );
             } else {
-                text = messageSource.getMessage(PM_RESET_TEXT_KEY_1, new Object[] { firstname, lastname, ttlInMinutes, url, platformName},
-                    locale);
+                text = messageSource.getMessage(
+                    PM_RESET_TEXT_KEY_1,
+                    new Object[] { firstname, lastname, ttlInMinutes, url, platformName },
+                    locale
+                );
             }
             subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
         }

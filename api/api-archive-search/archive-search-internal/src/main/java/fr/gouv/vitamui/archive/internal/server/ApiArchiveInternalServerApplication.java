@@ -43,12 +43,12 @@ public class ApiArchiveInternalServerApplication implements CommandLineRunner {
     @Autowired
     private Environment env;
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ApiArchiveInternalServerApplication.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ApiArchiveInternalServerApplication.class
+    );
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiArchiveInternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiArchiveInternalServerApplication.class).build();
         app.run(args);
     }
 

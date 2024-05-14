@@ -1,18 +1,17 @@
 package fr.gouv.vitamui.commons.api.logger.info;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
+import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
+import fr.gouv.vitamui.commons.api.logger.AbstractVitamUITest;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
-import fr.gouv.vitamui.commons.api.logger.AbstractVitamUITest;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Import(ServerIdentityConfigurationForProfiles.class)
@@ -70,8 +69,10 @@ public class VitamUIInfoLoggerTest extends AbstractVitamUITest {
         logger.info(format, object1, object2);
         assertTrue("Log message should be written.", buf.length() > 0);
         assertTrue("Log message should be written.", buf.lastIndexOf(message) > 0);
-        assertTrue("Log message should be written.",
-                buf.lastIndexOf(message + " " + object1.toString() + " " + object2.toString()) > 0);
+        assertTrue(
+            "Log message should be written.",
+            buf.lastIndexOf(message + " " + object1.toString() + " " + object2.toString()) > 0
+        );
     }
 
     @Test
@@ -86,8 +87,10 @@ public class VitamUIInfoLoggerTest extends AbstractVitamUITest {
         logger.info(format, object1, object2, object3);
         assertTrue("Log message should be written.", buf.length() > 0);
         assertTrue("Log message should be written.", buf.lastIndexOf(message) > 0);
-        assertTrue("Log message should be written.", buf.lastIndexOf(
-                message + " " + object1.toString() + " " + object2.toString() + " " + object3.toString()) > 0);
+        assertTrue(
+            "Log message should be written.",
+            buf.lastIndexOf(message + " " + object1.toString() + " " + object2.toString() + " " + object3.toString()) >
+            0
+        );
     }
-
 }

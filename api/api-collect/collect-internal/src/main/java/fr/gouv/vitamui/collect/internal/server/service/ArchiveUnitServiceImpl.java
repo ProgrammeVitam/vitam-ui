@@ -59,6 +59,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 
 @Service
 public class ArchiveUnitServiceImpl implements ArchiveUnitService {
+
     private static final VitamUILogger log = VitamUILoggerFactory.getInstance(ArchiveUnitServiceImpl.class);
     private final CollectExternalClient collectExternalClient;
     private final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter;
@@ -67,11 +68,13 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
     private final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto;
 
     @Autowired
-    public ArchiveUnitServiceImpl(final CollectExternalClient collectExternalClient,
+    public ArchiveUnitServiceImpl(
+        final CollectExternalClient collectExternalClient,
         final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter,
         final ExternalParametersService externalParametersService,
         final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter,
-        final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto) {
+        final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto
+    ) {
         this.collectExternalClient = collectExternalClient;
         this.updateArchiveUnitDtoToUpdateMultiQueryConverter = updateArchiveUnitDtoToUpdateMultiQueryConverter;
         this.externalParametersService = externalParametersService;
@@ -81,7 +84,8 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
 
     @Override
     public OperationIdDto update(String transactionId, Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet) {
-        final Set<UpdateMultiQuery> updateMultiQueries = updateArchiveUnitDtoSet.stream()
+        final Set<UpdateMultiQuery> updateMultiQueries = updateArchiveUnitDtoSet
+            .stream()
             .map(updateArchiveUnitDtoToUpdateMultiQueryConverter::convert)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
@@ -104,7 +108,8 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
 
     @Override
     public OperationIdDto update(String transactionId, MultiJsonPatchDto multiJsonPatchDto) {
-        final Set<UpdateMultiQuery> updateMultiQueries = multiJsonPatchDto.stream()
+        final Set<UpdateMultiQuery> updateMultiQueries = multiJsonPatchDto
+            .stream()
             .map(jsonPatchDtoToUpdateMultiQueryConverter::convert)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
@@ -118,9 +123,11 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
         final VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         final BulkCommandDto bulkCommandDto = updateMultiQueriesToBulkCommandDto.convert(updateMultiQueries);
         try {
-            final RequestResponseOK<BulkAtomicUpdateResult> response =
-                collectExternalClient.bulkAtomicUpdateUnits(context,  transactionId,
-                    JsonHandler.toJsonNode(bulkCommandDto));
+            final RequestResponseOK<BulkAtomicUpdateResult> response = collectExternalClient.bulkAtomicUpdateUnits(
+                context,
+                transactionId,
+                JsonHandler.toJsonNode(bulkCommandDto)
+            );
             final OperationId operationId = new OperationId(response.getHeaderString(X_REQUEST_ID_HEADER));
             final OperationIdDto operationIdDto = new OperationIdDto().setOperationId(operationId);
             log.info("Operation started: {}", operationIdDto);

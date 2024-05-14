@@ -123,10 +123,19 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     private final GroupExportService groupExportService;
 
     @Autowired
-    public GroupInternalService(final SequenceGeneratorService sequenceGeneratorService, final GroupRepository groupRepository,
-            final CustomerRepository customerRepository, final ProfileInternalService internalProfileService, final UserRepository userRepository,
-            final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository, final IamLogbookService iamLogbookService,
-            final GroupConverter groupConverter, final LogbookService logbookService, final GroupExportService groupExportService) {
+    public GroupInternalService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final GroupRepository groupRepository,
+        final CustomerRepository customerRepository,
+        final ProfileInternalService internalProfileService,
+        final UserRepository userRepository,
+        final InternalSecurityService internalSecurityService,
+        final TenantRepository tenantRepository,
+        final IamLogbookService iamLogbookService,
+        final GroupConverter groupConverter,
+        final LogbookService logbookService,
+        final GroupExportService groupExportService
+    ) {
         super(sequenceGeneratorService);
         this.groupRepository = groupRepository;
         this.customerRepository = customerRepository;
@@ -152,8 +161,14 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
      * {@inheritDoc}
      */
     @Override
-    public PaginatedValuesDto<GroupDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteriaJsonString,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
+    public PaginatedValuesDto<GroupDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteriaJsonString,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         return super.getAllPaginated(page, size, criteriaJsonString, orderBy, direction, embedded);
     }
 
@@ -175,14 +190,13 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
         checkNameExist(null, dto.getName(), dto.getCustomerId(), message);
-        checkUnitsExist(null, dto.getUnits(),dto.getCustomerId(), message);
+        checkUnitsExist(null, dto.getUnits(), dto.getCustomerId(), message);
         checkLevel(dto.getLevel(), message);
         checkProfiles(dto.getLevel(), dto.getCustomerId(), dto.getProfileIds(), message);
         super.checkIdentifier(dto.getIdentifier(), message);
 
         dto.setId(generateSuperId());
         dto.setIdentifier(getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER));
-
     }
 
     /**
@@ -192,15 +206,21 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     protected Group beforePatch(final Map<String, Object> partialDto) {
         final String id = CastUtils.toString(partialDto.get("id"));
         final String message = "Unable to update group " + id;
-        if(getVitamContext() != null) {
-            LOGGER.debug("Patch Group EvIdAppSession : {} " , getVitamContext().getApplicationSessionId());
+        if (getVitamContext() != null) {
+            LOGGER.debug("Patch Group EvIdAppSession : {} ", getVitamContext().getApplicationSessionId());
         }
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
         final Group group = find(id, customerId, message);
 
         checkLevel(group.getLevel(), message);
         checkIsReadonly(group.isReadonly(), message);
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "customerId", "readonly", "identifier")), message);
+        Assert.isTrue(
+            !checkMapContainsOnlyFieldsUnmodifiable(
+                partialDto,
+                Arrays.asList("id", "customerId", "readonly", "identifier")
+            ),
+            message
+        );
         final String level = CastUtils.toString(partialDto.get("level"));
         if (level != null) {
             checkLevel(level, message);
@@ -237,48 +257,62 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     @Override
     protected void processPatch(final Group group, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        if(getVitamContext() != null) {
-            LOGGER.debug("Patch Group EvIdAppSession : {} " , getVitamContext().getApplicationSessionId());
+        if (getVitamContext() != null) {
+            LOGGER.debug("Patch Group EvIdAppSession : {} ", getVitamContext().getApplicationSessionId());
         }
 
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
-                case "customerId" :
-                case "readonly" :
-                case "identifier" :
+                case "id":
+                case "customerId":
+                case "readonly":
+                case "identifier":
                     break;
-                case "name" :
+                case "name":
                     logbooks.add(new EventDiffDto(GroupConverter.NAME_KEY, group.getName(), entry.getValue()));
                     group.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "description" :
-                    logbooks.add(new EventDiffDto(GroupConverter.DESCRIPTION_KEY, group.getDescription(), entry.getValue()));
+                case "description":
+                    logbooks.add(
+                        new EventDiffDto(GroupConverter.DESCRIPTION_KEY, group.getDescription(), entry.getValue())
+                    );
                     group.setDescription(CastUtils.toString(entry.getValue()));
                     break;
-                case "enabled" :
+                case "enabled":
                     logbooks.add(new EventDiffDto(GroupConverter.ENABLED_KEY, group.isEnabled(), entry.getValue()));
                     group.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "level" :
+                case "level":
                     logbooks.add(new EventDiffDto(GroupConverter.LEVEL_KEY, group.getLevel(), entry.getValue()));
                     group.setLevel(CastUtils.toString(entry.getValue()));
                     break;
-                case "profileIds" :
+                case "profileIds":
                     final List<String> profileIds = CastUtils.toList(entry.getValue());
-                    logbooks.add(new EventDiffDto(GroupConverter.PROFILE_IDS_KEY, groupConverter.convertProfileIdsToLogbook(group.getProfileIds()),
-                            groupConverter.convertProfileIdsToLogbook(profileIds)));
+                    logbooks.add(
+                        new EventDiffDto(
+                            GroupConverter.PROFILE_IDS_KEY,
+                            groupConverter.convertProfileIdsToLogbook(group.getProfileIds()),
+                            groupConverter.convertProfileIdsToLogbook(profileIds)
+                        )
+                    );
                     group.setProfileIds(profileIds);
                     break;
-                case "units" :
+                case "units":
                     final Collection<String> unitsDto = CollectionUtils.emptyIfNull(CastUtils.toList(entry.getValue()));
                     final Set<String> units = new HashSet<String>(unitsDto);
-                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertUnitsToLogbook(group.getUnits()),
-                            groupConverter.convertUnitsToLogbook(units)));
+                    logbooks.add(
+                        new EventDiffDto(
+                            GroupConverter.UNITS_KEY,
+                            groupConverter.convertUnitsToLogbook(group.getUnits()),
+                            groupConverter.convertUnitsToLogbook(units)
+                        )
+                    );
                     group.setUnits(units);
                     break;
-                default :
-                    throw new IllegalArgumentException("Unable to patch group " + group.getId() + ": key " + entry.getKey() + " is not allowed");
+                default:
+                    throw new IllegalArgumentException(
+                        "Unable to patch group " + group.getId() + ": key " + entry.getKey() + " is not allowed"
+                    );
             }
         }
         iamLogbookService.updateGroupEvent(group, logbooks);
@@ -297,9 +331,18 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
     private Group find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
-        return getRepository().findByIdAndCustomerId(id, customerId)
-                .orElseThrow(() -> new IllegalArgumentException(message + ": no group found for id " + id + " - customerId " + customerId));
+        Assert.isTrue(
+            StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()),
+            message + ": customerId " + customerId + " is not allowed"
+        );
+        return getRepository()
+            .findByIdAndCustomerId(id, customerId)
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        message + ": no group found for id " + id + " - customerId " + customerId
+                    )
+            );
     }
 
     private void checkEnabled(final String groupId, final boolean dtoEnable, final String message) {
@@ -310,13 +353,19 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     }
 
     private void checkLevel(final String level, final String message) {
-        Assert.isTrue(Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level), "level : " + level + " format is not allowed");
+        Assert.isTrue(
+            Pattern.matches(ApiIamInternalConstants.LEVEL_VALID_REGEXP, level),
+            "level : " + level + " format is not allowed"
+        );
         Assert.isTrue(internalSecurityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
     }
 
     private void checkModifyLevel(final Group group, final String dtoLevel, final String message) {
         if (!StringUtils.equals(group.getLevel(), dtoLevel)) {
-            Assert.isTrue(CollectionUtils.isEmpty(group.getProfileIds()), message + ": the group contains " + group.getProfileIds().size() + " profiles");
+            Assert.isTrue(
+                CollectionUtils.isEmpty(group.getProfileIds()),
+                message + ": the group contains " + group.getProfileIds().size() + " profiles"
+            );
 
             final long count = userRepository.countByGroupId(group.getId());
             Assert.isTrue(count == 0, message + ": the group is referenced by " + count + " users");
@@ -331,9 +380,16 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         return group;
     }
 
-    private void checkProfiles(final String groupLevel, final String customerId, final List<String> dtoProfiles, final String message) {
-
-        final List<ProfileDto> profiles = internalProfileService.getMany(dtoProfiles, Optional.of(EmbeddedOptions.ALL.toString()));
+    private void checkProfiles(
+        final String groupLevel,
+        final String customerId,
+        final List<String> dtoProfiles,
+        final String message
+    ) {
+        final List<ProfileDto> profiles = internalProfileService.getMany(
+            dtoProfiles,
+            Optional.of(EmbeddedOptions.ALL.toString())
+        );
 
         Assert.isTrue(CollectionUtils.isNotEmpty(profiles), message + ": no profiles");
 
@@ -341,30 +397,57 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
         profiles.stream().forEach(p -> Assert.isTrue(p.isEnabled(), message + ": one of the profile is disabled"));
 
-        profiles.stream().forEach(p -> {
-            LOGGER.debug("Profile : {} - profileLevel : {}, grouplevel : {}.", p, p.getLevel(), groupLevel);
-            Assert.isTrue(StringUtils.equals(p.getLevel(), groupLevel), message + ": profile and group level must be equals");
-        });
+        profiles
+            .stream()
+            .forEach(p -> {
+                LOGGER.debug("Profile : {} - profileLevel : {}, grouplevel : {}.", p, p.getLevel(), groupLevel);
+                Assert.isTrue(
+                    StringUtils.equals(p.getLevel(), groupLevel),
+                    message + ": profile and group level must be equals"
+                );
+            });
 
-        profiles.stream().forEach(p -> {
-            LOGGER.debug("Veryfing profile : {}", p.getId());
-            LOGGER.debug("Profile : {}", p);
-            Assert.isTrue(StringUtils.equals(p.getCustomerId(), customerId), message + ": profile and group customerId must be equals");
-        });
+        profiles
+            .stream()
+            .forEach(p -> {
+                LOGGER.debug("Veryfing profile : {}", p.getId());
+                LOGGER.debug("Profile : {}", p);
+                Assert.isTrue(
+                    StringUtils.equals(p.getCustomerId(), customerId),
+                    message + ": profile and group customerId must be equals"
+                );
+            });
 
-        profiles.stream().forEach(p -> {
-            final Tenant tenant = tenantRepository.findByIdentifier(p.getTenantIdentifier());
-            Assert.notNull(tenant, message + ": the following tenant does not exist in database: " + p.getTenantIdentifier());
-            Assert.isTrue(StringUtils.equals(tenant.getCustomerId(), customerId), message + ": tenant and group customerId must be equals");
-        });
+        profiles
+            .stream()
+            .forEach(p -> {
+                final Tenant tenant = tenantRepository.findByIdentifier(p.getTenantIdentifier());
+                Assert.notNull(
+                    tenant,
+                    message + ": the following tenant does not exist in database: " + p.getTenantIdentifier()
+                );
+                Assert.isTrue(
+                    StringUtils.equals(tenant.getCustomerId(), customerId),
+                    message + ": tenant and group customerId must be equals"
+                );
+            });
 
         for (int i = 0; i < profiles.size() - 1; i++) {
             for (int j = i + 1; j < profiles.size(); j++) {
                 final ProfileDto p1 = profiles.get(i);
                 final ProfileDto p2 = profiles.get(j);
-                if (StringUtils.equals(p1.getApplicationName(), p2.getApplicationName()) && p1.getTenantIdentifier().equals(p2.getTenantIdentifier())) {
+                if (
+                    StringUtils.equals(p1.getApplicationName(), p2.getApplicationName()) &&
+                    p1.getTenantIdentifier().equals(p2.getTenantIdentifier())
+                ) {
                     throw new IllegalArgumentException(
-                            message + ": profiles " + p1.getId() + " and " + p2.getId() + " share the same applicationName and tenant");
+                        message +
+                        ": profiles " +
+                        p1.getId() +
+                        " and " +
+                        p2.getId() +
+                        " share the same applicationName and tenant"
+                    );
                 }
             }
         }
@@ -379,7 +462,10 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     }
 
     private void checkCustomer(final String customerId, final String message) {
-        Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
+        Assert.isTrue(
+            StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()),
+            message + ": customerId " + customerId + " is not allowed"
+        );
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), message + ": customer " + customerId + " does not exist");
@@ -387,26 +473,39 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 
-    private void checkNameExist(final String oldName, final String newName, final String customerId, final String message) {
+    private void checkNameExist(
+        final String oldName,
+        final String newName,
+        final String customerId,
+        final String message
+    ) {
         if (!StringUtils.equals(oldName, newName)) {
             final Criteria criteria = Criteria.where("customerId").is(customerId).and("name").is(newName);
             Assert.isTrue(!getRepository().exists(criteria), message + ": group already exists");
         }
     }
 
-    protected void checkUnitsExist(final Set<String> oldUnits, final Set<String> newUnits, final String customerId, final String message) {
+    protected void checkUnitsExist(
+        final Set<String> oldUnits,
+        final Set<String> newUnits,
+        final String customerId,
+        final String message
+    ) {
         if (!Objects.deepEquals(oldUnits, newUnits) && CollectionUtils.isNotEmpty(newUnits)) {
-                newUnits.stream()
-                    .filter(unit -> !CollectionUtils.emptyIfNull(oldUnits).contains(unit))
-                    .forEach(unit -> {
+            newUnits
+                .stream()
+                .filter(unit -> !CollectionUtils.emptyIfNull(oldUnits).contains(unit))
+                .forEach(unit -> {
                     List<CriteriaDefinition> criteria = new ArrayList<>();
                     criteria.add(Criteria.where("customerId").is(customerId));
-                    MongoUtils.addCriteriaIgnoreCase("units", Optional.of(unit),criteria);
-                    Assert.isTrue(!getRepository().exists(criteria), String.format(message + ": unit already exists", unit));
+                    MongoUtils.addCriteriaIgnoreCase("units", Optional.of(unit), criteria);
+                    Assert.isTrue(
+                        !getRepository().exists(criteria),
+                        String.format(message + ": unit already exists", unit)
+                    );
                 });
         }
     }
-
 
     /**
      * {@inheritDoc}
@@ -417,9 +516,15 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
             final String embedded = optEmbedded.get();
             if (EmbeddedOptions.ALL.toString().equalsIgnoreCase(embedded)) {
                 final List<String> profileIds = dto.getProfileIds();
-                final List<ProfileDto> profiles = internalProfileService.getMany(profileIds, IamUtils.buildOptionalEmbedded(EmbeddedOptions.ALL));
-                profiles.sort(Comparator.comparing(ProfileDto::getApplicationName).thenComparing((p1, p2) -> p1.getTenantName().compareTo(p2.getTenantName()))
-                        .thenComparing(ProfileDto::getName));
+                final List<ProfileDto> profiles = internalProfileService.getMany(
+                    profileIds,
+                    IamUtils.buildOptionalEmbedded(EmbeddedOptions.ALL)
+                );
+                profiles.sort(
+                    Comparator.comparing(ProfileDto::getApplicationName)
+                        .thenComparing((p1, p2) -> p1.getTenantName().compareTo(p2.getTenantName()))
+                        .thenComparing(ProfileDto::getName)
+                );
                 dto.setProfiles(profiles);
 
                 dto.setUsersCount(userRepository.countByGroupId(dto.getId()));
@@ -434,7 +539,6 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
      * @param profileIds
      */
     public void updateProfilesById(final String id, final List<String> profileIds) {
-
         final Query query = new Query(Criteria.where("id").is(id));
         final Update update = Update.update("profileIds", profileIds);
 
@@ -442,8 +546,13 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         if (optionalGroup.isPresent()) {
             final Group group = optionalGroup.get();
             final Collection<EventDiffDto> logbooks = new ArrayList<>();
-            logbooks.add(new EventDiffDto(GroupConverter.PROFILE_IDS_KEY, groupConverter.convertProfileIdsToLogbook(group.getProfileIds()),
-                    groupConverter.convertProfileIdsToLogbook(profileIds)));
+            logbooks.add(
+                new EventDiffDto(
+                    GroupConverter.PROFILE_IDS_KEY,
+                    groupConverter.convertProfileIdsToLogbook(group.getProfileIds()),
+                    groupConverter.convertProfileIdsToLogbook(profileIds)
+                )
+            );
 
             groupRepository.updateMulti(query, update);
             iamLogbookService.updateGroupEvent(group, logbooks);
@@ -481,9 +590,9 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     }
 
     /**
-    *
-    * {@inheritDoc}
-    */
+     *
+     * {@inheritDoc}
+     */
     @Override
     public void addDataAccessRestrictions(final Collection<CriteriaDefinition> criteria) {
         super.addDataAccessRestrictions(criteria);
@@ -522,12 +631,18 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         LOGGER.debug("findHistoryById for id" + id);
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
+            .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+            .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Group> group = getRepository().findById(id);
         group.orElseThrow(() -> new NotFoundException(String.format("No group found with id : %s", id)));
-        return logbookService.findEventsByIdentifierAndCollectionNames(group.get().getIdentifier(), MongoDbCollections.GROUPS, vitamContext).toJsonNode();
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(
+                group.get().getIdentifier(),
+                MongoDbCollections.GROUPS,
+                vitamContext
+            )
+            .toJsonNode();
     }
 
     /**
@@ -544,6 +659,7 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         }
         return (List<String>) document.get(CommonConstants.LEVEL_ATTRIBUTE);
     }
+
     private VitamContext getVitamContext() {
         return internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
     }
@@ -556,30 +672,37 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
             throw new UnexpectedDataException("Profile groups list is empty");
         }
 
-        return groupExportService.exportProfileGroups(groupsDto, profilesDto, loadGroupHistoryGroupedByEventType(groupsDto));
+        return groupExportService.exportProfileGroups(
+            groupsDto,
+            profilesDto,
+            loadGroupHistoryGroupedByEventType(groupsDto)
+        );
     }
 
-    private Map<String, List<LogbookEventDto>> loadGroupHistoryGroupedByEventType(List<GroupDto> groupsDto){
-
+    private Map<String, List<LogbookEventDto>> loadGroupHistoryGroupedByEventType(List<GroupDto> groupsDto) {
         if (CollectionUtils.isEmpty(groupsDto)) {
             return Map.of();
         }
 
-        var groupsIds = groupsDto.stream().map(GroupDto::getIdentifier).filter(Objects::nonNull).collect(Collectors.toList());
+        var groupsIds = groupsDto
+            .stream()
+            .map(GroupDto::getIdentifier)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
         var types = List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name());
 
-        var operationRequest = logbookService.findEvents(
-            groupsIds,
-            MongoDbCollections.GROUPS,
-            getVitamContext());
+        var operationRequest = logbookService.findEvents(groupsIds, MongoDbCollections.GROUPS, getVitamContext());
 
         return VitamRestUtils.responseMapping(operationRequest.toJsonNode(), LogbookOperationsResponseDto.class)
-            .getResults().stream()
+            .getResults()
+            .stream()
             .flatMap(op -> op.getEvents().stream())
             .filter(
-                evt -> evt.getObIdReq().equals(MongoDbCollections.GROUPS)
-                && types.contains(evt.getEvType())
-                && groupsIds.contains(evt.getObId())
-            ).collect(Collectors.groupingBy(LogbookEventDto::getEvType));
+                evt ->
+                    evt.getObIdReq().equals(MongoDbCollections.GROUPS) &&
+                    types.contains(evt.getEvType()) &&
+                    groupsIds.contains(evt.getObId())
+            )
+            .collect(Collectors.groupingBy(LogbookEventDto::getEvType));
     }
 }

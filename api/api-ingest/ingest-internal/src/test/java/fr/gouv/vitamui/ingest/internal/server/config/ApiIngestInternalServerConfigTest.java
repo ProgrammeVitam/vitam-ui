@@ -59,7 +59,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class ApiIngestInternalServerConfigTest {
 
-
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
@@ -78,10 +77,8 @@ public class ApiIngestInternalServerConfigTest {
     @Autowired
     private IngestInternalService ingestInternalService;
 
-
     @Test
     public void testIngestInternal() {
         Assert.assertNotNull(ingestInternalService);
     }
-
 }

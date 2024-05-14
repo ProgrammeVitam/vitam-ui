@@ -37,5 +37,5 @@ public enum OntologyType {
     DOUBLE,
     TEXT,
     GEO_POINT,
-    ENUM
+    ENUM,
 }

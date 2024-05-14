@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProfileGroupExportSheet extends SheetDto {
+
     public static final String PROFILE_GROUP_SHEET_NAME = "Liste_profils_groupes";
     public static final List<String> PROFILE_GROUP_SHEET_COLUMNS = List.of(
         "Id du groupe de profil",

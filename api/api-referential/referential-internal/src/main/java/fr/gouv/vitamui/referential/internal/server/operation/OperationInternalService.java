@@ -37,22 +37,12 @@
 package fr.gouv.vitamui.referential.internal.server.operation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.node.JsonNodeCreator;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.JsonObject;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -99,39 +89,47 @@ public class OperationInternalService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationInternalService.class);
 
-    final private OperationService operationService;
+    private final OperationService operationService;
 
-    final private LogbookService logbookService;
-    final private ExternalParametersService externalParametersService;
-    final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
-    final private String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
-    final private String AUDIT_FILE_INTEGRITY = "AUDIT_FILE_INTEGRITY";
-    final private String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
-    final private List<String> AUDITS_WITHOUT_PROJECTION = List.of(AUDIT_FILE_INTEGRITY,AUDIT_FILE_EXISTING);
+    private final LogbookService logbookService;
+    private final ExternalParametersService externalParametersService;
+    private final String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
+    private final String AUDIT_FILE_RECTIFICATION = "AUDIT_FILE_RECTIFICATION";
+    private final String AUDIT_FILE_INTEGRITY = "AUDIT_FILE_INTEGRITY";
+    private final String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
+    private final List<String> AUDITS_WITHOUT_PROJECTION = List.of(AUDIT_FILE_INTEGRITY, AUDIT_FILE_EXISTING);
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
     private final ObjectMapper objectMapper;
 
     @Autowired
-    OperationInternalService(OperationService operationService, LogbookService logbookService,
-        ObjectMapper objectMapper, ExternalParametersService externalParametersService) {
+    OperationInternalService(
+        OperationService operationService,
+        LogbookService logbookService,
+        ObjectMapper objectMapper,
+        ExternalParametersService externalParametersService
+    ) {
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
         this.externalParametersService = externalParametersService;
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
@@ -153,8 +151,10 @@ public class OperationInternalService {
             LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
-            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                LogbookOperationsResponseDto.class
+            );
 
             return logbookOperationsResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
@@ -186,8 +186,10 @@ public class OperationInternalService {
     public void updateAuditDslQuery(AuditOptions auditOptions, Optional<Long> thresholdOpt) {
         SelectMultiQuery multiQuery = new SelectMultiQuery();
         try {
-            if (!List.of("originatingagency", "tenant", "dsl").contains(auditOptions.getAuditType())
-                || null == thresholdOpt) {
+            if (
+                !List.of("originatingagency", "tenant", "dsl").contains(auditOptions.getAuditType()) ||
+                null == thresholdOpt
+            ) {
                 throw new InvalidCreateOperationException("Invalid audit query");
             }
             if (("originatingagency").equals(auditOptions.getAuditType())) {
@@ -203,11 +205,12 @@ public class OperationInternalService {
                 auditOptions.setQuery(previousDslQuery);
             }
 
-            Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
-                .forEach(((ObjectNode) auditOptions.getQuery())::remove);
-            if ( !AUDITS_WITHOUT_PROJECTION.contains(auditOptions.getAuditActions())){
+            Arrays.stream(new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS }).forEach(
+                ((ObjectNode) auditOptions.getQuery())::remove
+            );
+            if (!AUDITS_WITHOUT_PROJECTION.contains(auditOptions.getAuditActions())) {
                 ObjectNode dslQueryProjection = (ObjectNode) auditOptions.getQuery();
-                dslQueryProjection.put(DSL_QUERY_PROJECTION, objectMapper.readTree("{}") );
+                dslQueryProjection.put(DSL_QUERY_PROJECTION, objectMapper.readTree("{}"));
                 auditOptions.setQuery(dslQueryProjection);
             }
         } catch (InvalidCreateOperationException e) {
@@ -233,7 +236,6 @@ public class OperationInternalService {
                 default:
                     throw new InternalServerException("Unable to  export that kind of report: " + type);
             }
-
         } catch (VitamClientException | AccessExternalClientServerException e) {
             throw new InternalServerException("Unable to export operation report", e);
         }
@@ -250,8 +252,12 @@ public class OperationInternalService {
 
             RequestResponse response = logbookService.checkTraceability(vitamContext, select.getFinalSelect());
             return response.toJsonNode();
-        } catch (InvalidCreateOperationException | AccessExternalClientServerException |
-                 InvalidParseOperationException | AccessUnauthorizedException e) {
+        } catch (
+            InvalidCreateOperationException
+            | AccessExternalClientServerException
+            | InvalidParseOperationException
+            | AccessUnauthorizedException e
+        ) {
             throw new InternalServerException("Unable to check traceability operation", e);
         }
     }

@@ -36,11 +36,16 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Map;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.UserInfoService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,13 +53,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ui.commons.service.UserInfoService;
-import io.swagger.annotations.Api;
+import java.util.Map;
 
 @Api(tags = "userinfos")
 @RequestMapping("${ui-prefix}/userinfos")
@@ -70,7 +69,6 @@ public class UserInfoController extends AbstractUiRestController {
         this.service = service;
     }
 
-
     @GetMapping(CommonConstants.PATH_ME)
     public UserInfoDto getMyUserInfo() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get my user info ");
@@ -80,7 +78,6 @@ public class UserInfoController extends AbstractUiRestController {
     @PatchMapping(CommonConstants.PATH_ME)
     public UserInfoDto patchMyUserInfo(@RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch me with {}", partialDto);
         return service.patchMyUserInfo(buildUiHttpContext(), partialDto);

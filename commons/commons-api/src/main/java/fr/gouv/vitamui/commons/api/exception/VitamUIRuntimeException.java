@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.api.exception;
 
 public class VitamUIRuntimeException extends VitamUIException {
+
     private static final long serialVersionUID = -6574816923689373032L;
 
     public VitamUIRuntimeException(String message, Throwable cause) {

@@ -61,16 +61,17 @@ public class CustomerSelectedAction extends AbstractAction {
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-
         val flowScope = requestContext.getFlowScope();
 
         String loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
         String customerId = requestContext.getRequestParameters().get(Constants.SELECT_CUSTOMER_ID_PARAM);
 
-        List<CustomerModel> customerModels =
-            (List<CustomerModel>) flowScope.getRequired(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST);
+        List<CustomerModel> customerModels = (List<CustomerModel>) flowScope.getRequired(
+            Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST
+        );
 
-        CustomerModel customerModel = customerModels.stream()
+        CustomerModel customerModel = customerModels
+            .stream()
             .filter(c -> c.getCustomerId().equals(customerId))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Invalid customerId '" + customerId + "'"));

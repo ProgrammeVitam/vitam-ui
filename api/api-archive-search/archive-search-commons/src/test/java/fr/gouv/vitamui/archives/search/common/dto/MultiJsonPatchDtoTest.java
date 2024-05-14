@@ -41,13 +41,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MultiJsonPatchDtoTest {
+
     @Test
     public void testJsonPatchSerializationDeserialization() throws JsonProcessingException {
         // Création d'un exemple de MultiJsonPatchDto
         ObjectMapper objectMapper = new ObjectMapper();
         JsonPatch jsonPatch = new JsonPatch();
-        jsonPatch.add(new PatchCommand().setOp(PatchOperation.ADD).setPath("/name")
-            .setValue(objectMapper.readValue("{\"field\":\"John\"}", ObjectNode.class)));
+        jsonPatch.add(
+            new PatchCommand()
+                .setOp(PatchOperation.ADD)
+                .setPath("/name")
+                .setValue(objectMapper.readValue("{\"field\":\"John\"}", ObjectNode.class))
+        );
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         multiJsonPatchDto.add(new JsonPatchDto().setId("1").setJsonPatch(new JsonPatch()));
         multiJsonPatchDto.add(new JsonPatchDto().setId("2").setJsonPatch(jsonPatch));
@@ -58,7 +63,8 @@ class MultiJsonPatchDtoTest {
         // Vérification de la sérialisation
         assertEquals(
             "[{\"id\":\"1\",\"jsonPatch\":[]},{\"id\":\"2\",\"jsonPatch\":[{\"op\":\"add\",\"path\":\"/name\",\"value\":{\"field\":\"John\"}}]}]",
-            jsonString);
+            jsonString
+        );
 
         // Conversion du JSON en objet MultiJsonPatchDto
         MultiJsonPatchDto deserializedDto = objectMapper.readValue(jsonString, MultiJsonPatchDto.class);
@@ -76,8 +82,12 @@ class MultiJsonPatchDtoTest {
         // Création d'un exemple de MultiJsonPatchDto avec une instruction ADD
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         JsonPatch jsonPatch = new JsonPatch();
-        jsonPatch.add(new PatchCommand().setOp(PatchOperation.ADD).setPath("/name")
-            .setValue(JsonNodeFactory.instance.textNode("bonjour")));
+        jsonPatch.add(
+            new PatchCommand()
+                .setOp(PatchOperation.ADD)
+                .setPath("/name")
+                .setValue(JsonNodeFactory.instance.textNode("bonjour"))
+        );
         multiJsonPatchDto.add(new JsonPatchDto().setId("1").setJsonPatch(jsonPatch));
 
         // Conversion de l'objet en JSON
@@ -101,5 +111,4 @@ class MultiJsonPatchDtoTest {
         assertEquals("/name", deserializedPatchCommand.getPath());
         assertEquals(JsonNodeFactory.instance.textNode("bonjour"), deserializedPatchCommand.getValue());
     }
-
 }

@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server.common.converter;
 
-import org.junit.Test;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
+import org.junit.Test;
 
 public class AddressConverterTest {
 
@@ -18,6 +17,5 @@ public class AddressConverterTest {
         dto.setZipCode("zipcode");
 
         Address entity = converter.convertDtoToEntity(dto);
-
     }
 }

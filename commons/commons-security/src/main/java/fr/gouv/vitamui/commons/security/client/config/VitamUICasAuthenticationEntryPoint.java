@@ -36,17 +36,7 @@
  */
 package fr.gouv.vitamui.commons.security.client.config;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.AJAX_HEADER_NAME;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AJAX_HEADER_VALUE;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.util.CommonUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -56,7 +46,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.util.Assert;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.net.URLEncoder;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.AJAX_HEADER_NAME;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AJAX_HEADER_VALUE;
 
 public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPoint, InitializingBean {
 
@@ -92,9 +90,11 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
     }
 
     @Override
-    public final void commence(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException authenticationException)
-            throws IOException, ServletException {
-
+    public final void commence(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final AuthenticationException authenticationException
+    ) throws IOException, ServletException {
         final String urlEncodedService = createServiceUrl(request, response);
         String redirectUrl = createRedirectUrl(urlEncodedService);
         // customization:
@@ -106,15 +106,18 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
         // pass the cas_username parameter to the CAS server as the username parameter
         final String casUsernameParameter = request.getParameter(CommonConstants.CAS_USERNAME_PARAMETER);
         if (StringUtils.isNotBlank(casUsernameParameter)) {
-            redirectUrl += "&" + CommonConstants.USERNAME_PARAMETER + "=" + URLEncoder.encode(casUsernameParameter, "UTF-8");
+            redirectUrl +=
+            "&" + CommonConstants.USERNAME_PARAMETER + "=" + URLEncoder.encode(casUsernameParameter, "UTF-8");
         }
 
         preCommence(request, response);
 
-        if (StringUtils.isNotEmpty(request.getHeader(AJAX_HEADER_NAME)) && request.getHeader(AJAX_HEADER_NAME).equalsIgnoreCase(AJAX_HEADER_VALUE)) {
+        if (
+            StringUtils.isNotEmpty(request.getHeader(AJAX_HEADER_NAME)) &&
+            request.getHeader(AJAX_HEADER_NAME).equalsIgnoreCase(AJAX_HEADER_VALUE)
+        ) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, redirectUrl);
-        }
-        else {
+        } else {
             response.sendRedirect(redirectUrl);
         }
     }
@@ -127,8 +130,14 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
      * @return the constructed service url. CANNOT be NULL.
      */
     protected String createServiceUrl(final HttpServletRequest request, final HttpServletResponse response) {
-        return CommonUtils.constructServiceUrl(null, response, serviceProperties.getService(), null, serviceProperties.getArtifactParameter(),
-                encodeServiceUrlWithSessionId);
+        return CommonUtils.constructServiceUrl(
+            null,
+            response,
+            serviceProperties.getService(),
+            null,
+            serviceProperties.getArtifactParameter(),
+            encodeServiceUrlWithSessionId
+        );
     }
 
     /**
@@ -139,7 +148,13 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
      * @return the redirect url. CANNOT be NULL.
      */
     protected String createRedirectUrl(final String serviceUrl) {
-        return CommonUtils.constructRedirectUrl(loginUrl, serviceProperties.getServiceParameter(), serviceUrl, serviceProperties.isSendRenew(), false);
+        return CommonUtils.constructRedirectUrl(
+            loginUrl,
+            serviceProperties.getServiceParameter(),
+            serviceUrl,
+            serviceProperties.isSendRenew(),
+            false
+        );
     }
 
     /**
@@ -148,9 +163,7 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
      * @param request the HttpServletRequest
      * @param response the HttpServletResponse
      */
-    protected void preCommence(final HttpServletRequest request, final HttpServletResponse response) {
-
-    }
+    protected void preCommence(final HttpServletRequest request, final HttpServletResponse response) {}
 
     /**
      * The enterprise-wide CAS login URL. Usually something like
@@ -192,5 +205,4 @@ public class VitamUICasAuthenticationEntryPoint implements AuthenticationEntryPo
     protected boolean getEncodeServiceUrlWithSessionId() {
         return encodeServiceUrlWithSessionId;
     }
-
 }

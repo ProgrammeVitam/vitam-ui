@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @FunctionalInterface
 public interface TokenExtractor {
-
     static TokenExtractor headerExtractor(String tokenHeaderName) {
         return request -> request.getHeader(tokenHeaderName);
     }

@@ -48,7 +48,6 @@ import java.util.Optional;
  *
  */
 public interface SubrogationRepository extends VitamUIRepository<Subrogation, String> {
-
     List<Subrogation> findBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
 
     Subrogation findOneBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
@@ -56,6 +55,9 @@ public interface SubrogationRepository extends VitamUIRepository<Subrogation, St
     Subrogation findOneBySurrogateAndSurrogateCustomerId(String email, String customerId);
 
     Optional<Subrogation> findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
-        String superUser, String superUserCustomerId, String surrogate, String surrogateCustomerId);
-
+        String superUser,
+        String superUserCustomerId,
+        String surrogate,
+        String surrogateCustomerId
+    );
 }

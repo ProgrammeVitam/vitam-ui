@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.securityprofile;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitam.common.model.administration.SecurityProfileModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SecurityProfileConverter {
 
@@ -60,5 +60,4 @@ public class SecurityProfileConverter {
     public List<SecurityProfileDto> convertVitamsToDtos(final List<SecurityProfileModel> securityProfiles) {
         return securityProfiles.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

@@ -48,8 +48,10 @@ class AccessRegisterVitamQueryHelperTest {
 
     private static AccessionRegisterSearchDto getResourceAsCriteria(String name)
         throws FileNotFoundException, InvalidParseOperationException {
-        return JsonHandler.getFromInputStream(PropertiesUtils.getResourceAsStream("json/access-register/" + name),
-            AccessionRegisterSearchDto.class);
+        return JsonHandler.getFromInputStream(
+            PropertiesUtils.getResourceAsStream("json/access-register/" + name),
+            AccessionRegisterSearchDto.class
+        );
     }
 
     @Test
@@ -171,5 +173,4 @@ class AccessRegisterVitamQueryHelperTest {
         );
         JSONAssert.assertEquals(jsonNode.toString(), getResourceAsString("dsl08.json"), false);
     }
-
 }

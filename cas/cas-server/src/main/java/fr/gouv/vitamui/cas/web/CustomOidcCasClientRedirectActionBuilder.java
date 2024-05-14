@@ -25,6 +25,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasClientRedirectActionBuilder {
+
     private final OidcRequestSupport oidcRequestSupport;
 
     private final OAuth20RequestParameterResolver parameterResolver;
@@ -38,7 +39,10 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
         if (prompts.contains(OidcConstants.PROMPT_NONE)) {
             renew = false;
             gateway = true;
-        } else if (prompts.contains(OidcConstants.PROMPT_LOGIN) || oidcRequestSupport.isCasAuthenticationOldForMaxAgeAuthorizationRequest(context)) {
+        } else if (
+            prompts.contains(OidcConstants.PROMPT_LOGIN) ||
+            oidcRequestSupport.isCasAuthenticationOldForMaxAgeAuthorizationRequest(context)
+        ) {
             renew = true;
         }
 
@@ -47,33 +51,57 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
         return action;
     }
 
-    protected Optional<RedirectionAction> internalBuild(final CasClient casClient, final WebContext context,
-        final boolean renew, final boolean gateway) {
-
+    protected Optional<RedirectionAction> internalBuild(
+        final CasClient casClient,
+        final WebContext context,
+        final boolean renew,
+        final boolean gateway
+    ) {
         val username = context.getRequestParameter(Constants.LOGIN_USER_EMAIL_PARAM);
         val superUserEmail = context.getRequestParameter(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
         val superUserCustomerId = context.getRequestParameter(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
         val surrogateEmail = context.getRequestParameter(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
         val surrogateCustomerId = context.getRequestParameter(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
 
-        boolean subrogationMode = superUserEmail.isPresent() && superUserCustomerId.isPresent()
-            && surrogateEmail.isPresent() && surrogateCustomerId.isPresent();
+        boolean subrogationMode =
+            superUserEmail.isPresent() &&
+            superUserCustomerId.isPresent() &&
+            surrogateEmail.isPresent() &&
+            surrogateCustomerId.isPresent();
 
         val idp = context.getRequestParameter(CommonConstants.IDP_PARAMETER);
 
         val serviceUrl = casClient.computeFinalCallbackUrl(context);
         val casServerLoginUrl = casClient.getConfiguration().getLoginUrl();
-        val redirectionUrl = casServerLoginUrl + (casServerLoginUrl.contains("?") ? "&" : "?")
-            + CasProtocolConstants.PARAMETER_SERVICE + '=' + EncodingUtils.urlEncode(serviceUrl)
-            + (renew ? '&' + CasProtocolConstants.PARAMETER_RENEW + "=true" : StringUtils.EMPTY)
-            + (gateway ? '&' + CasProtocolConstants.PARAMETER_GATEWAY + "=true" : StringUtils.EMPTY)
+        val redirectionUrl =
+            casServerLoginUrl +
+            (casServerLoginUrl.contains("?") ? "&" : "?") +
+            CasProtocolConstants.PARAMETER_SERVICE +
+            '=' +
+            EncodingUtils.urlEncode(serviceUrl) +
+            (renew ? '&' + CasProtocolConstants.PARAMETER_RENEW + "=true" : StringUtils.EMPTY) +
+            (gateway ? '&' + CasProtocolConstants.PARAMETER_GATEWAY + "=true" : StringUtils.EMPTY) +
             // CUSTO:
-            + (subrogationMode ? '&' + Constants.LOGIN_SUPER_USER_EMAIL_PARAM + '=' + superUserEmail.get() +
-            '&' + Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM + '=' + superUserCustomerId.get() +
-            '&' + Constants.LOGIN_SURROGATE_EMAIL_PARAM + '=' + surrogateEmail.get() +
-            '&' + Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM + '=' + surrogateCustomerId.get() : StringUtils.EMPTY)
-            + (username.isPresent() ? '&' + Constants.LOGIN_USER_EMAIL_PARAM + '=' + username.get() : StringUtils.EMPTY)
-            + (idp.isPresent() ? '&' + CommonConstants.IDP_PARAMETER + '=' + idp.get() : StringUtils.EMPTY);
+            (subrogationMode
+                    ? '&' +
+                    Constants.LOGIN_SUPER_USER_EMAIL_PARAM +
+                    '=' +
+                    superUserEmail.get() +
+                    '&' +
+                    Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM +
+                    '=' +
+                    superUserCustomerId.get() +
+                    '&' +
+                    Constants.LOGIN_SURROGATE_EMAIL_PARAM +
+                    '=' +
+                    surrogateEmail.get() +
+                    '&' +
+                    Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM +
+                    '=' +
+                    surrogateCustomerId.get()
+                    : StringUtils.EMPTY) +
+            (username.isPresent() ? '&' + Constants.LOGIN_USER_EMAIL_PARAM + '=' + username.get() : StringUtils.EMPTY) +
+            (idp.isPresent() ? '&' + CommonConstants.IDP_PARAMETER + '=' + idp.get() : StringUtils.EMPTY);
 
         LOGGER.debug("Final redirect url is [{}]", redirectionUrl);
         return Optional.of(new FoundAction(redirectionUrl));

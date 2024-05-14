@@ -39,14 +39,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateMultiQuery>, BulkCommandDto> {
+
     @Override
     public BulkCommandDto convert(Set<UpdateMultiQuery> source) {
-        final List<ObjectNode> finalUpdateMultiQueries =
-            source.stream()
-                .map(UpdateMultiQuery::getFinalUpdate)
-                .peek(objectNode -> objectNode.remove("$roots"))
-                .peek(objectNode -> objectNode.remove("$filter"))
-                .collect(Collectors.toList());
+        final List<ObjectNode> finalUpdateMultiQueries = source
+            .stream()
+            .map(UpdateMultiQuery::getFinalUpdate)
+            .peek(objectNode -> objectNode.remove("$roots"))
+            .peek(objectNode -> objectNode.remove("$filter"))
+            .collect(Collectors.toList());
         return new BulkCommandDto(finalUpdateMultiQueries);
     }
 }

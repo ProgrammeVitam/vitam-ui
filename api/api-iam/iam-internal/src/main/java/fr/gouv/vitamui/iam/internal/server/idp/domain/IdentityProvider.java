@@ -36,23 +36,21 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.domain;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitamui.iam.internal.server.common.domain.CustomerIdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An identity provider.
@@ -64,7 +62,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" })
+@ToString(
+    callSuper = true,
+    exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" }
+)
 public class IdentityProvider extends CustomerIdDocument {
 
     // Common data to all providers
@@ -91,7 +92,6 @@ public class IdentityProvider extends CustomerIdDocument {
 
     private boolean readonly;
 
-
     // Common data to external providers (SAML + OIDC)
     private String mailAttribute;
 
@@ -100,7 +100,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private boolean autoProvisioningEnabled;
 
     private boolean propagateLogout;
-
 
     // SAML provider data
     private String keystoreBase64;
@@ -120,7 +119,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private Boolean wantsAssertionsSigned;
 
     private Boolean authnRequestSigned;
-
 
     // OIDC provider data
     private String clientId;

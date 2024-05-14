@@ -36,25 +36,19 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository.impl;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.mongodb.client.result.UpdateResult;
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.mongo.IdDocument;
+import fr.gouv.vitamui.commons.mongo.domain.AggregationResultValue;
+import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.domain.DocumentWithItems;
+import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import fr.gouv.vitamui.commons.mongo.repository.VitamUISequenceRepository;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -80,26 +74,31 @@ import org.springframework.data.mongodb.repository.support.SimpleMongoRepository
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.mongodb.client.result.UpdateResult;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.mongo.IdDocument;
-import fr.gouv.vitamui.commons.mongo.domain.AggregationResultValue;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
-import fr.gouv.vitamui.commons.mongo.domain.DocumentWithItems;
-import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
-import fr.gouv.vitamui.commons.mongo.repository.VitamUISequenceRepository;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 
 /**
  * {@inheritDoc}
  */
-public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable> extends SimpleMongoRepository<T, ID>
-        implements VitamUIRepository<T, ID>, VitamUISequenceRepository<T, ID> {
+public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable>
+    extends SimpleMongoRepository<T, ID>
+    implements VitamUIRepository<T, ID>, VitamUISequenceRepository<T, ID> {
 
     private final MongoOperations mongoOperations;
 
@@ -131,8 +130,13 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * {@inheritDoc}
      */
     @Override
-    public PaginatedValuesDto<T> getPaginatedValues(final Integer page, final Integer size, final Optional<Query> query, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<T> getPaginatedValues(
+        final Integer page,
+        final Integer size,
+        final Optional<Query> query,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final Pageable pageable;
 
         final Query finalQuery = query.orElse(new Query());
@@ -143,9 +147,10 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
             pageable = PageRequest.of(page, size, sort);
 
             // Enables case insensitive and accent insensitive search and sorting
-            finalQuery.collation(Collation.of(Locale.ENGLISH).strength(Collation.ComparisonLevel.secondary()).numericOrderingEnabled());
-        }
-        else {
+            finalQuery.collation(
+                Collation.of(Locale.ENGLISH).strength(Collation.ComparisonLevel.secondary()).numericOrderingEnabled()
+            );
+        } else {
             pageable = PageRequest.of(page, size);
         }
         final Page<T> paginate = findAll(finalQuery, pageable);
@@ -160,9 +165,16 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      */
     @Override
     @SuppressWarnings({ "rawtypes" })
-    public <E> PaginatedValuesDto<E> getPaginatedNestedValues(final Class<E> type, final String collectionName, final String fieldName,
-            final Collection<CriteriaDefinition> criteriaList, final Integer page, final Integer size, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) throws JsonParseException, JsonMappingException, IOException {
+    public <E> PaginatedValuesDto<E> getPaginatedNestedValues(
+        final Class<E> type,
+        final String collectionName,
+        final String fieldName,
+        final Collection<CriteriaDefinition> criteriaList,
+        final Integer page,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) throws JsonParseException, JsonMappingException, IOException {
         // collectionName, fieldName are mandatory in order to get the paginated nested values
         Assert.isTrue(StringUtils.isNotEmpty(collectionName), "CollectionName should be provided.");
         Assert.isTrue(StringUtils.isNotEmpty(fieldName), "FiledName should be provided.");
@@ -198,22 +210,33 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
                     .and(fieldName).slice(size, page * size).as("items")
         );
         // @formatter:on
-        final AggregationResults<DocumentWithItems> result = mongoOperations.aggregate(Aggregation.newAggregation(operations), collectionName,
-                DocumentWithItems.class);
+        final AggregationResults<DocumentWithItems> result = mongoOperations.aggregate(
+            Aggregation.newAggregation(operations),
+            collectionName,
+            DocumentWithItems.class
+        );
 
         // we build the paginated items, we use Jackson to retrieve the right object type for the generic.
         // or else each value will be returned as LinkedHashMap.
         final boolean hasNext = result.getUniqueMappedResult().getItemsSize() > ((page * size) + size);
-        return new PaginatedValuesDto<>(JsonUtils.convertValueList(result.getUniqueMappedResult().getItems(), type), page, size, hasNext);
+        return new PaginatedValuesDto<>(
+            JsonUtils.convertValueList(result.getUniqueMappedResult().getItems(), type),
+            page,
+            size,
+            hasNext
+        );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<T> findAll(final Iterable<CriteriaDefinition> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-            final boolean enableCollation) {
-
+    public List<T> findAll(
+        final Iterable<CriteriaDefinition> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final boolean enableCollation
+    ) {
         final Query query = new Query();
         for (final CriteriaDefinition c : criteria) {
             query.addCriteria(c);
@@ -255,11 +278,10 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     @Override
     public Optional<CustomSequence> incrementSequence(final String nameSequence, final Number incrementValue) {
         final Query query = new Query(Criteria.where("name").is(nameSequence));
-        Update update =  new Update().inc("sequence", incrementValue);
+        Update update = new Update().inc("sequence", incrementValue);
         FindAndModifyOptions options = FindAndModifyOptions.options().returnNew(true);
         final CustomSequence result = mongoOperations.findAndModify(query, update, options, CustomSequence.class);
         return Optional.ofNullable(result);
-
     }
 
     /**
@@ -272,8 +294,7 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
         Optional<CustomSequence> result = null;
         if (writeResult.getMatchedCount() == 1) {
             result = Optional.ofNullable(mongoOperations.findOne(query, CustomSequence.class));
-        }
-        else {
+        } else {
             result = Optional.empty();
         }
         return result;
@@ -321,7 +342,9 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
 
     @Override
     public Optional<T> findOne(final Query query) {
-        return Optional.ofNullable(mongoOperations.findOne(query, entityInformation.getJavaType(), entityInformation.getCollectionName()));
+        return Optional.ofNullable(
+            mongoOperations.findOne(query, entityInformation.getJavaType(), entityInformation.getCollectionName())
+        );
     }
 
     @Override
@@ -397,15 +420,19 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * @return Map<String, Object> aggregation results.
      */
     @Override
-    public Map<String, Object> aggregation(final Iterable<String> fields,
-                                           final Iterable<CriteriaDefinition> criteria,
-                                           final AggregationRequestOperator operationType,
-                                           final Optional<String> orderBy,
-                                           final Optional<DirectionDto> direction) {
+    public Map<String, Object> aggregation(
+        final Iterable<String> fields,
+        final Iterable<CriteriaDefinition> criteria,
+        final AggregationRequestOperator operationType,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final Map<String, Object> result = new HashMap<>();
         final List<AggregationOperation> matchOperations = new ArrayList<>();
         criteria.forEach(criteriaDefinition -> matchOperations.add(match(criteriaDefinition)));
-        fields.forEach(field -> result.put(field, aggregateByField(field, matchOperations, operationType, orderBy, direction)));
+        fields.forEach(
+            field -> result.put(field, aggregateByField(field, matchOperations, operationType, orderBy, direction))
+        );
         return result;
     }
 
@@ -418,11 +445,13 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * @throws UnsupportedOperationException if operationType is not supported
      * @return list of values, or a single result, or null depending on the aggregation result.
      */
-    private Object aggregateByField(final String field,
-                                    final List<AggregationOperation> matchOperations,
-                                    final AggregationRequestOperator operationType,
-                                    final Optional<String> orderBy,
-                                    final Optional<DirectionDto> direction){
+    private Object aggregateByField(
+        final String field,
+        final List<AggregationOperation> matchOperations,
+        final AggregationRequestOperator operationType,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final List<AggregationOperation> aggregationOperations = new ArrayList<>(matchOperations);
         aggregationOperations.add(match(new Criteria(field).ne(null)));
         // we sort before the aggregation
@@ -440,7 +469,9 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
                 throw new UnsupportedOperationException("Unsupported aggregation : " + operationType);
         }
         final Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
-        return formatAggregationResult(mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), AggregationResultValue.class));
+        return formatAggregationResult(
+            mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), AggregationResultValue.class)
+        );
     }
 
     /**
@@ -450,10 +481,16 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * @param aggregationResults Execution result of an aggregation operation.
      * @return list of values, or a single result, or null depending on the size of aggregationResults.
      */
-    private Object formatAggregationResult(final AggregationResults<AggregationResultValue> aggregationResults){
+    private Object formatAggregationResult(final AggregationResults<AggregationResultValue> aggregationResults) {
         if (aggregationResults.getMappedResults().size() > 1) {
-            return aggregationResults.getMappedResults().stream().map(AggregationResultValue::getValue).collect(Collectors.toList());
+            return aggregationResults
+                .getMappedResults()
+                .stream()
+                .map(AggregationResultValue::getValue)
+                .collect(Collectors.toList());
         }
-        return aggregationResults.getUniqueMappedResult() != null ? aggregationResults.getUniqueMappedResult().getValue() : null;
+        return aggregationResults.getUniqueMappedResult() != null
+            ? aggregationResults.getUniqueMappedResult().getValue()
+            : null;
     }
 }

@@ -36,15 +36,12 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccessContractVitamDto extends AccessContractModelDto implements Serializable {
-
-}
+public class AccessContractVitamDto extends AccessContractModelDto implements Serializable {}

@@ -44,5 +44,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class StorageDto {
+
     private String strategyId;
 }

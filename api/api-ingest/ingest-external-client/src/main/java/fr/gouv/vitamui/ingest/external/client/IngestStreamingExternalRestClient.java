@@ -64,8 +64,9 @@ import java.util.List;
 public class IngestStreamingExternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(IngestStreamingExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IngestStreamingExternalRestClient.class
+    );
 
     public IngestStreamingExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -83,24 +84,23 @@ public class IngestStreamingExternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
-
-    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
+    public ResponseEntity<Void> streamingUpload(
+        final ExternalHttpContext context,
+        String fileName,
         InputStream inputStream,
         final String contextId,
-        final String action) {
+        final String action
+    ) {
         LOGGER.debug("Calling upload using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD);
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -111,14 +111,18 @@ public class IngestStreamingExternalRestClient
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
 
-        final ResponseEntity<Void> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Void.class
+        );
         LOGGER.info("The response is {}", response.toString());
         return response;
     }
-
 }

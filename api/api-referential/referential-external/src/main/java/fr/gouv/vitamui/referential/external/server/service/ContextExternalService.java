@@ -69,22 +69,30 @@ public class ContextExternalService extends AbstractResourceClientService<Contex
     private ContextInternalRestClient contextInternalRestClient;
 
     @Autowired
-    public ContextExternalService(ExternalSecurityService externalSecurityService, ContextInternalRestClient contextInternalRestClient) {
+    public ContextExternalService(
+        ExternalSecurityService externalSecurityService,
+        ContextInternalRestClient contextInternalRestClient
+    ) {
         super(externalSecurityService);
         this.contextInternalRestClient = contextInternalRestClient;
     }
 
     public List<ContextDto> getAll(final Optional<String> criteria) {
-        return contextInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return contextInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<ContextDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<ContextDto, InternalHttpContext> getClient() {
         return contextInternalRestClient;
     }
 
-    public PaginatedValuesDto<ContextDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -123,5 +131,4 @@ public class ContextExternalService extends AbstractResourceClientService<Contex
     public boolean check(ContextDto accessContractDto) {
         return contextInternalRestClient.check(getInternalHttpContext(), accessContractDto);
     }
-
 }

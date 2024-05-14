@@ -18,7 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = CustomSequenceRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = CustomSequenceRepository.class,
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class CustomSequenceRepositoryTest {
 
     @Autowired
@@ -53,8 +56,10 @@ public class CustomSequenceRepositoryTest {
     @Test
     public void testIncrementSequence() {
         createSequence(TEST_IDENTIFIER);
-        Optional<CustomSequence> sequence = repository.incrementSequence(TEST_IDENTIFIER,
-                CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE);
+        Optional<CustomSequence> sequence = repository.incrementSequence(
+            TEST_IDENTIFIER,
+            CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
+        );
         assertThat(sequence.isPresent()).isTrue();
         assertThat(sequence.get().getSequence()).isEqualTo(2);
     }

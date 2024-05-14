@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.provider;
 
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Identity providers dans IAM admin : opérations de vérification.
@@ -19,8 +19,7 @@ public class ApiIamExternalIdentityPoviderCheckSteps extends CommonSteps {
             final QueryDto criteria = QueryDto.criteria("id", TestConstants.SYSTEM_IDP_ID, CriterionOperator.EQUALS);
 
             getIdentityProviderRestClient().checkExist(getSystemTenantUserAdminContext(), criteria.toJson());
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

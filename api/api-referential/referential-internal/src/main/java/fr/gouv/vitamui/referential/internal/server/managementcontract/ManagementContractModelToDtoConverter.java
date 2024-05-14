@@ -58,9 +58,11 @@ public class ManagementContractModelToDtoConverter
         copyBasicProperties(source, managementContractDto);
         managementContractDto.setStorage(convertStorage(source.getStorage()));
         managementContractDto.setVersionRetentionPolicy(
-            convertVersionRetentionPolicy(source.getVersionRetentionPolicy()));
+            convertVersionRetentionPolicy(source.getVersionRetentionPolicy())
+        );
         managementContractDto.setPersistentIdentifierPolicyList(
-            convertPersistentIdentifierPolicies(source.getPersistentIdentifierPolicyList()));
+            convertPersistentIdentifierPolicies(source.getPersistentIdentifierPolicyList())
+        );
         return managementContractDto;
     }
 
@@ -92,7 +94,8 @@ public class ManagementContractModelToDtoConverter
     }
 
     private VersionRetentionPolicyMgtContractDto convertVersionRetentionPolicy(
-        VersionRetentionPolicyModel versionRetentionPolicy) {
+        VersionRetentionPolicyModel versionRetentionPolicy
+    ) {
         if (versionRetentionPolicy == null) {
             return null;
         }
@@ -100,9 +103,10 @@ public class ManagementContractModelToDtoConverter
         VersionRetentionPolicyMgtContractDto dto = new VersionRetentionPolicyMgtContractDto();
         dto.setInitialVersion(versionRetentionPolicy.getInitialVersion());
         dto.setIntermediaryVersion(
-            versionRetentionPolicy.getIntermediaryVersion() != null ?
-                IntermediaryVersionEnum.valueOf(versionRetentionPolicy.getIntermediaryVersion().name()) :
-                null);
+            versionRetentionPolicy.getIntermediaryVersion() != null
+                ? IntermediaryVersionEnum.valueOf(versionRetentionPolicy.getIntermediaryVersion().name())
+                : null
+        );
         dto.setUsages(convertVersionUsages(versionRetentionPolicy.getUsages()));
         return dto;
     }
@@ -124,14 +128,16 @@ public class ManagementContractModelToDtoConverter
         dto.setUsageName(versionUsageModel.getUsageName());
         dto.setInitialVersion(versionUsageModel.getInitialVersion());
         dto.setIntermediaryVersion(
-            versionUsageModel.getIntermediaryVersion() != null ?
-                IntermediaryVersionEnum.valueOf(versionUsageModel.getIntermediaryVersion().name()) :
-                null);
+            versionUsageModel.getIntermediaryVersion() != null
+                ? IntermediaryVersionEnum.valueOf(versionUsageModel.getIntermediaryVersion().name())
+                : null
+        );
         return dto;
     }
 
     private List<PersistentIdentifierPolicyMgtContractDto> convertPersistentIdentifierPolicies(
-        List<PersistentIdentifierPolicy> policies) {
+        List<PersistentIdentifierPolicy> policies
+    ) {
         if (policies == null) {
             return null;
         }
@@ -140,7 +146,8 @@ public class ManagementContractModelToDtoConverter
     }
 
     private PersistentIdentifierPolicyMgtContractDto convertPersistentIdentifierPolicy(
-        PersistentIdentifierPolicy policy) {
+        PersistentIdentifierPolicy policy
+    ) {
         if (policy == null) {
             return null;
         }
@@ -149,15 +156,17 @@ public class ManagementContractModelToDtoConverter
         dto.setPersistentIdentifierAuthority(policy.getPersistentIdentifierAuthority());
         dto.setPersistentIdentifierUnit(policy.isPersistentIdentifierUnit());
         dto.setPersistentIdentifierPolicyType(
-            policy.getPersistentIdentifierPolicyType() != null ?
-                policy.getPersistentIdentifierPolicyType().name() :
-                null);
+            policy.getPersistentIdentifierPolicyType() != null
+                ? policy.getPersistentIdentifierPolicyType().name()
+                : null
+        );
         dto.setPersistentIdentifierUsages(convertPersistentIdentifierUsages(policy.getPersistentIdentifierUsages()));
         return dto;
     }
 
     private List<PersistentIdentifierUsageMgtContractDto> convertPersistentIdentifierUsages(
-        List<PersistentIdentifierUsage> usages) {
+        List<PersistentIdentifierUsage> usages
+    ) {
         if (usages == null) {
             return null;
         }
@@ -165,8 +174,7 @@ public class ManagementContractModelToDtoConverter
         return usages.stream().map(this::convertPersistentIdentifierUsage).collect(Collectors.toList());
     }
 
-    private PersistentIdentifierUsageMgtContractDto convertPersistentIdentifierUsage(
-        PersistentIdentifierUsage usage) {
+    private PersistentIdentifierUsageMgtContractDto convertPersistentIdentifierUsage(PersistentIdentifierUsage usage) {
         if (usage == null) {
             return null;
         }
@@ -175,9 +183,10 @@ public class ManagementContractModelToDtoConverter
         dto.setUsageName(usage.getUsageName() != null ? usage.getUsageName().getName() : null);
         dto.setInitialVersion(usage.isInitialVersion());
         dto.setIntermediaryVersion(
-            usage.getIntermediaryVersion() != null ?
-                IntermediaryVersionEnum.valueOf(usage.getIntermediaryVersion().name()) :
-                null);
+            usage.getIntermediaryVersion() != null
+                ? IntermediaryVersionEnum.valueOf(usage.getIntermediaryVersion().name())
+                : null
+        );
         return dto;
     }
 }

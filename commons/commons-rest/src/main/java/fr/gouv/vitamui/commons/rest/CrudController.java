@@ -36,17 +36,15 @@
  */
 package fr.gouv.vitamui.commons.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import org.springframework.http.ResponseEntity;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import org.springframework.http.ResponseEntity;
-
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-
 public interface CrudController<D extends IdDto> {
-
     /**
      * Get All with criteria.
      * @param criteria

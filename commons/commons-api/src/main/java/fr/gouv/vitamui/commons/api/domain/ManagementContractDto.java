@@ -70,5 +70,4 @@ public class ManagementContractDto extends IdDto implements Serializable {
     private VersionRetentionPolicyMgtContractDto versionRetentionPolicy;
 
     private List<PersistentIdentifierPolicyMgtContractDto> persistentIdentifierPolicyList;
-
 }

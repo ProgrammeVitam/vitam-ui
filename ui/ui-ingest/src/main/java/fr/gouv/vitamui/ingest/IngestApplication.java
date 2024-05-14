@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.ingest;
 
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,7 @@ public class IngestApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestApplication.class);
 
     public static void main(final String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(IngestApplication.class)
-            .build();
+        SpringApplication app = new SpringApplicationBuilder(IngestApplication.class).build();
         app.run(args);
     }
 
@@ -67,5 +65,4 @@ public class IngestApplication implements CommandLineRunner {
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
     }
-
 }

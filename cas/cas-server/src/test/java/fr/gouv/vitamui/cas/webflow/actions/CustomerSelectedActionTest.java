@@ -39,13 +39,11 @@ public class CustomerSelectedActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testSelectedCustomerIdOK() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
         requestParameters.put(Constants.SELECT_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
 
         CustomerSelectedAction customerSelectedAction = new CustomerSelectedAction();
         Event event = customerSelectedAction.doExecute(context);
-
 
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL);
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_1);
@@ -56,12 +54,11 @@ public class CustomerSelectedActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testSelectedCustomerIdInvalid() {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
         requestParameters.put(Constants.SELECT_CUSTOMER_ID_PARAM, "Invalid");
 
         CustomerSelectedAction customerSelectedAction = new CustomerSelectedAction();
-        assertThatThrownBy( () -> customerSelectedAction.doExecute(context))
+        assertThatThrownBy(() -> customerSelectedAction.doExecute(context))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Invalid customerId");
     }

@@ -32,11 +32,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class ArchiveSearchExternalWebClientFactory extends BaseWebClientFactory {
 
-    public ArchiveSearchExternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder) {
+    public ArchiveSearchExternalWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfiguration, webClientBuilder);
     }
-
 
     public ArchiveSearchExternalWebClient getArchiveSearchExternalWebClient() {
         return new ArchiveSearchExternalWebClient(getWebClient(), getBaseUrl());
@@ -46,5 +47,4 @@ public class ArchiveSearchExternalWebClientFactory extends BaseWebClientFactory 
     public String getBaseUrl() {
         return super.getBaseUrl();
     }
-
 }

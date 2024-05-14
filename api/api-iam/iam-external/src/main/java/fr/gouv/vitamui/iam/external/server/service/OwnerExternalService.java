@@ -71,8 +71,10 @@ public class OwnerExternalService extends AbstractResourceClientService<OwnerDto
     private final OwnerInternalRestClient ownerInternalRestClient;
 
     @Autowired
-    public OwnerExternalService(final OwnerInternalRestClient ownerInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public OwnerExternalService(
+        final OwnerInternalRestClient ownerInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.ownerInternalRestClient = ownerInternalRestClient;
     }
@@ -142,5 +144,4 @@ public class OwnerExternalService extends AbstractResourceClientService<OwnerDto
     protected String getVersionApiCrtieria() {
         return CRITERIA_VERSION_V2;
     }
-
 }

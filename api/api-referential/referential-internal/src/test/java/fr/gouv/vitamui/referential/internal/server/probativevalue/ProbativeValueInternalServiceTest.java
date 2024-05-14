@@ -36,10 +36,27 @@
  */
 package fr.gouv.vitamui.referential.internal.server.probativevalue;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.ByteStreams;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,177 +67,182 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.ByteStreams;
-
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBuilder {
 
-	private ProbativeValueInternalService probativeValueInternalService;
+    private ProbativeValueInternalService probativeValueInternalService;
 
-	@Mock
-	private VitamBatchReportService vitamProbativeValueService;
+    @Mock
+    private VitamBatchReportService vitamProbativeValueService;
 
-	@Mock
-	private UnitService unitService;
+    @Mock
+    private UnitService unitService;
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-		probativeValueInternalService = new ProbativeValueInternalService(vitamProbativeValueService, unitService);
-	}
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        probativeValueInternalService = new ProbativeValueInternalService(vitamProbativeValueService, unitService);
+    }
 
-	@Test
-	public void shoudl_generate_report_on_probativereport() throws JsonParseException, JsonMappingException,
-			VitamClientException, IOException, InvalidParseOperationException {
-		File workspace = this.folder.newFolder();
-		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
-				.thenReturn(buildVitamProbativeReport("data/provative_report_WARNING.json"));
-		when(unitService.getByIdIn(any(), any()))
-				.thenReturn(buildVitamUISearchResponseDto("data/vitam_units_response.json"));
-		when(unitService.findObjectMetadataById(any(), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response.json"));
-		VitamContext vitamContext = new VitamContext(0);
-		String operationId = "Test";
+    @Test
+    public void shoudl_generate_report_on_probativereport()
+        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        File workspace = this.folder.newFolder();
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
+            buildVitamProbativeReport("data/provative_report_WARNING.json")
+        );
+        when(unitService.getByIdIn(any(), any())).thenReturn(
+            buildVitamUISearchResponseDto("data/vitam_units_response.json")
+        );
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response.json")
+        );
+        VitamContext vitamContext = new VitamContext(0);
+        String operationId = "Test";
 
-		File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
-		FileOutputStream zipOutputStream = new FileOutputStream(zip);
-		probativeValueInternalService.exportReport(vitamContext, operationId, workspace.getAbsolutePath(),
-				zipOutputStream);
-		zipOutputStream.close();
+        File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
+        FileOutputStream zipOutputStream = new FileOutputStream(zip);
+        probativeValueInternalService.exportReport(
+            vitamContext,
+            operationId,
+            workspace.getAbsolutePath(),
+            zipOutputStream
+        );
+        zipOutputStream.close();
 
-		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
-		Path zipJsonFile = zipFs.getPath(operationId + ".json");
-		assertTrue(Files.exists(zipJsonFile));
-		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
-		assertTrue(Files.exists(zipPdfFile));
+        assertTrue(zip.exists());
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        Path zipJsonFile = zipFs.getPath(operationId + ".json");
+        assertTrue(Files.exists(zipJsonFile));
+        Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
+        assertTrue(Files.exists(zipPdfFile));
 
-		File json = new File(workspace.getAbsolutePath(), operationId + ".json");
-		assertTrue(json.exists());
-		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
-		assertTrue(pdf.exists());
-	}
+        File json = new File(workspace.getAbsolutePath(), operationId + ".json");
+        assertTrue(json.exists());
+        File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
+        assertTrue(pdf.exists());
+    }
 
-	@Test
-	public void shoudl_generate_report_on_probativereport_multiple_entries() throws JsonParseException,
-			JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
-		File workspace = this.folder.newFolder();
-		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
-				.thenReturn(buildVitamProbativeReport("data/provative_report_WARNING_multiple_entries.json"));
-		when(unitService.getByIdIn(any(), any()))
-				.thenReturn(buildVitamUISearchResponseDto("data/vitam_units_response_multiple_entries.json"));
-		when(unitService.findObjectMetadataById(eq("aeaqaaaaaahc23qyabnlmalrcf6o2pyaaaaq"), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_1.json"));
-		when(unitService.findObjectMetadataById(eq("aeaqaaaaaahc23qyabnlmalrcf6o2tyaaaba"), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_2.json"));
-		when(unitService.findObjectMetadataById(eq("aeaqaaaaaahmnykxabnagalrcg7u3kiaaaba"), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_3.json"));
-		when(unitService.findObjectMetadataById(eq("aeaqaaaaaahmnykxabnagalrcg7u3laaaaba"), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_4.json"));
-		VitamContext vitamContext = new VitamContext(0);
-		String operationId = "Test_LONG";
+    @Test
+    public void shoudl_generate_report_on_probativereport_multiple_entries()
+        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        File workspace = this.folder.newFolder();
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
+            buildVitamProbativeReport("data/provative_report_WARNING_multiple_entries.json")
+        );
+        when(unitService.getByIdIn(any(), any())).thenReturn(
+            buildVitamUISearchResponseDto("data/vitam_units_response_multiple_entries.json")
+        );
+        when(unitService.findObjectMetadataById(eq("aeaqaaaaaahc23qyabnlmalrcf6o2pyaaaaq"), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_1.json")
+        );
+        when(unitService.findObjectMetadataById(eq("aeaqaaaaaahc23qyabnlmalrcf6o2tyaaaba"), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_2.json")
+        );
+        when(unitService.findObjectMetadataById(eq("aeaqaaaaaahmnykxabnagalrcg7u3kiaaaba"), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_3.json")
+        );
+        when(unitService.findObjectMetadataById(eq("aeaqaaaaaahmnykxabnagalrcg7u3laaaaba"), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response_multiple_entries_4.json")
+        );
+        VitamContext vitamContext = new VitamContext(0);
+        String operationId = "Test_LONG";
 
-		File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
-		FileOutputStream zipOutputStream = new FileOutputStream(zip);
-		probativeValueInternalService.exportReport(vitamContext, operationId, workspace.getAbsolutePath(),
-				zipOutputStream);
-		zipOutputStream.close();
+        File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
+        FileOutputStream zipOutputStream = new FileOutputStream(zip);
+        probativeValueInternalService.exportReport(
+            vitamContext,
+            operationId,
+            workspace.getAbsolutePath(),
+            zipOutputStream
+        );
+        zipOutputStream.close();
 
-		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
-		Path zipJsonFile = zipFs.getPath(operationId + ".json");
-		assertTrue(Files.exists(zipJsonFile));
-		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
-		assertTrue(Files.exists(zipPdfFile));
+        assertTrue(zip.exists());
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        Path zipJsonFile = zipFs.getPath(operationId + ".json");
+        assertTrue(Files.exists(zipJsonFile));
+        Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
+        assertTrue(Files.exists(zipPdfFile));
 
-		File json = new File(workspace.getAbsolutePath(), operationId + ".json");
-		assertTrue(json.exists());
-		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
-		assertTrue(pdf.exists());
-	}
+        File json = new File(workspace.getAbsolutePath(), operationId + ".json");
+        assertTrue(json.exists());
+        File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
+        assertTrue(pdf.exists());
+    }
 
-	@Test
-	public void shoudl_generate_report_on_probativereport_ko() throws JsonParseException, JsonMappingException,
-			VitamClientException, IOException, InvalidParseOperationException {
-		File workspace = this.folder.newFolder();
-		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
-				.thenReturn(buildVitamProbativeReport("data/provative_report_KO.json"));
-		when(unitService.getByIdIn(any(), any()))
-				.thenReturn(buildVitamUISearchResponseDto("data/vitam_units_response_ko.json"));
-		when(unitService.findObjectMetadataById(any(), any()))
-				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_ko.json"));
-		VitamContext vitamContext = new VitamContext(0);
-		String operationId = "Test_KO";
+    @Test
+    public void shoudl_generate_report_on_probativereport_ko()
+        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        File workspace = this.folder.newFolder();
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
+            buildVitamProbativeReport("data/provative_report_KO.json")
+        );
+        when(unitService.getByIdIn(any(), any())).thenReturn(
+            buildVitamUISearchResponseDto("data/vitam_units_response_ko.json")
+        );
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(
+            buildGotMetadataResponse("data/vitam_got_metadatas_response_ko.json")
+        );
+        VitamContext vitamContext = new VitamContext(0);
+        String operationId = "Test_KO";
 
-		File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
-		FileOutputStream zipOutputStream = new FileOutputStream(zip);
-		probativeValueInternalService.exportReport(vitamContext, operationId, workspace.getAbsolutePath(),
-				zipOutputStream);
-		zipOutputStream.close();
+        File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
+        FileOutputStream zipOutputStream = new FileOutputStream(zip);
+        probativeValueInternalService.exportReport(
+            vitamContext,
+            operationId,
+            workspace.getAbsolutePath(),
+            zipOutputStream
+        );
+        zipOutputStream.close();
 
-		assertTrue(zip.exists());
-		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
-		Path zipJsonFile = zipFs.getPath(operationId + ".json");
-		assertTrue(Files.exists(zipJsonFile));
-		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
-		assertTrue(Files.exists(zipPdfFile));
+        assertTrue(zip.exists());
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        Path zipJsonFile = zipFs.getPath(operationId + ".json");
+        assertTrue(Files.exists(zipJsonFile));
+        Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
+        assertTrue(Files.exists(zipPdfFile));
 
-		File json = new File(workspace.getAbsolutePath(), operationId + ".json");
-		assertTrue(json.exists());
-		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
-		assertTrue(pdf.exists());
-	}
+        File json = new File(workspace.getAbsolutePath(), operationId + ".json");
+        assertTrue(json.exists());
+        File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
+        assertTrue(pdf.exists());
+    }
 
-	private InputStream buildVitamProbativeReport(String filename)
-			throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		InputStream inputStream = ProbativeValueInternalServiceTest.class.getClassLoader()
-				.getResourceAsStream(filename);
-		return inputStream;
-	}
+    private InputStream buildVitamProbativeReport(String filename)
+        throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream =
+            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        return inputStream;
+    }
 
-	private VitamUISearchResponseDto buildVitamUISearchResponseDto(String filename)
-			throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		InputStream inputStream = ProbativeValueInternalServiceTest.class.getClassLoader()
-				.getResourceAsStream(filename);
-		return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
-	}
+    private VitamUISearchResponseDto buildVitamUISearchResponseDto(String filename)
+        throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream =
+            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
+    }
 
-	private RequestResponse<JsonNode> buildGotMetadataResponse(String filename)
-			throws JsonParseException, JsonMappingException, IOException, InvalidParseOperationException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		InputStream inputStream = ProbativeValueInternalServiceTest.class.getClassLoader()
-				.getResourceAsStream(filename);
-		return RequestResponseOK
-				.getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
-	}
-
+    private RequestResponse<JsonNode> buildGotMetadataResponse(String filename)
+        throws JsonParseException, JsonMappingException, IOException, InvalidParseOperationException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream =
+            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
+    }
 }

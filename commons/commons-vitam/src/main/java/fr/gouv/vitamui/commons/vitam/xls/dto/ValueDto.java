@@ -14,8 +14,7 @@ public class ValueDto {
     private Object value;
     private Type type;
 
-    public static ValueDto of(Object value, Type type){
+    public static ValueDto of(Object value, Type type) {
         return builder().value(value).type(type).build();
     }
-
 }

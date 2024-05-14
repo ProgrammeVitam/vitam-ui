@@ -47,10 +47,7 @@ public class CommonConstants {
 
     public static final String ERROR_REQUIRED_VALUE_EMPTY_OR_NULL = "ERROR_REQUIRED_VALUE_EMPTY_OR_NULL";
 
-
     public static final String IDENTIFIER_MANDATORY_PARAMETER = "The Identifier is a mandatory parameter: ";
-
-
 
     public static final String ADMIN_PATH = "/admin/v0";
 
@@ -245,7 +242,6 @@ public class CommonConstants {
     public static final String USER_INFO_HISTORY = "/{id}/history";
 
     public static final String CONNECTION_HISTORY_EXPORT = "/connection-history" + PATH_EXPORT;
-
 
     /**
      * Constant contains application list for portal/header applications display

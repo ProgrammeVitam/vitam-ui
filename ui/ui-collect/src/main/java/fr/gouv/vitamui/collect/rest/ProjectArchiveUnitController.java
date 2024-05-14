@@ -71,8 +71,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     private final SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Autowired
-    public ProjectArchiveUnitController(
-        final SearchCriteriaHistoryService searchCriteriaHistoryService) {
+    public ProjectArchiveUnitController(final SearchCriteriaHistoryService searchCriteriaHistoryService) {
         this.searchCriteriaHistoryService = searchCriteriaHistoryService;
     }
 
@@ -91,8 +90,8 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
     @GetMapping(SEARCH_CRITERIA_HISTORY)
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory()
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get the search criteria history");
 
         List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtoList =

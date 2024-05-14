@@ -38,12 +38,10 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.List;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
 @NoArgsConstructor
 public class PersistentIdentifierPolicyDto implements Serializable {
-
 
     private String persistentIdentifierPolicyType;
 
@@ -52,7 +50,6 @@ public class PersistentIdentifierPolicyDto implements Serializable {
     private String persistentIdentifierAuthority;
 
     private List<PersistentIdentifierUsageDto> persistentIdentifierUsages;
-
 
     @JsonProperty("PersistentIdentifierPolicyType")
     public String getPersistentIdentifierPolicyType() {
@@ -84,15 +81,13 @@ public class PersistentIdentifierPolicyDto implements Serializable {
         this.persistentIdentifierUnit = persistentIdentifierUnit;
     }
 
-
     @JsonProperty("PersistentIdentifierAuthority")
     public void setPersistentIdentifierAuthority(String persistentIdentifierAuthority) {
         this.persistentIdentifierAuthority = persistentIdentifierAuthority;
     }
 
     @JsonProperty("PersistentIdentifierUsages")
-    public void setPersistentIdentifierUsages(
-        List<PersistentIdentifierUsageDto> persistentIdentifierUsages) {
+    public void setPersistentIdentifierUsages(List<PersistentIdentifierUsageDto> persistentIdentifierUsages) {
         this.persistentIdentifierUsages = persistentIdentifierUsages;
     }
 
@@ -101,7 +96,8 @@ public class PersistentIdentifierPolicyDto implements Serializable {
         @JsonProperty("PersistentIdentifierPolicyType") String persistentIdentifierPolicyType,
         @JsonProperty("PersistentIdentifierUnit") boolean persistentIdentifierUnit,
         @JsonProperty("PersistentIdentifierAuthority") String persistentIdentifierAuthority,
-        @JsonProperty("PersistentIdentifierUsages") List<PersistentIdentifierUsageDto> persistentIdentifierUsages) {
+        @JsonProperty("PersistentIdentifierUsages") List<PersistentIdentifierUsageDto> persistentIdentifierUsages
+    ) {
         this.persistentIdentifierPolicyType = persistentIdentifierPolicyType;
         this.persistentIdentifierUnit = persistentIdentifierUnit;
         this.persistentIdentifierAuthority = persistentIdentifierAuthority;

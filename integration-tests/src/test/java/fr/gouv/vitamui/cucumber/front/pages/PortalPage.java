@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.cucumber.front.pages;
 
-import org.openqa.selenium.By;
-
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
+import org.openqa.selenium.By;
 
 @DefaultUrl("/")
 public class PortalPage extends AbstractPage {
@@ -15,9 +14,12 @@ public class PortalPage extends AbstractPage {
     }
 
     public boolean isAppListPageDisplayed() {
-        return $("//div[@class='account']").isDisplayed() && $("//div[@class='user-app-container']").isDisplayed()
-                && $("//div[@class='admin-app-container']").isDisplayed()
-                && $("//div[@class='settings-app-container']").isDisplayed();
+        return (
+            $("//div[@class='account']").isDisplayed() &&
+            $("//div[@class='user-app-container']").isDisplayed() &&
+            $("//div[@class='admin-app-container']").isDisplayed() &&
+            $("//div[@class='settings-app-container']").isDisplayed()
+        );
     }
 
     public void waitForTitleToAppear() {
@@ -31,5 +33,4 @@ public class PortalPage extends AbstractPage {
     public WebElementFacade getApplicationElement(String applicationId) {
         return find(By.id(applicationId));
     }
-
 }

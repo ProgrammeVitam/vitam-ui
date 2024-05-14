@@ -1,28 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -38,13 +20,32 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link GroupInternalController}.
  *
  *
  */
-public final class GroupInternalControllerTest extends AbstractServerIdentityBuilder implements InternalCrudControllerTest {
+public final class GroupInternalControllerTest
+    extends AbstractServerIdentityBuilder
+    implements InternalCrudControllerTest {
 
     private GroupInternalController controller;
 
@@ -83,7 +84,19 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
 
         Mockito.when(groupConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(groupConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService, userRepository, internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null, null);
+        internalGroupService = new GroupInternalService(
+            sequenceGeneratorService,
+            groupRepository,
+            customerRepository,
+            internalProfileService,
+            userRepository,
+            internalSecurityService,
+            tenantRepository,
+            iamLogbookService,
+            groupConverter,
+            null,
+            null
+        );
 
         controller = new GroupInternalController(internalGroupService);
         controller.setInternalGroupService(internalGroupService);
@@ -126,8 +139,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -144,15 +156,17 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create group " + dto.getName() + ": customer " + dto.getCustomerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create group " + dto.getName() + ": customer " + dto.getCustomerId() + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testCreationFailsAsTheProfileDoesNotExist() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testCreationFailsAsTheProfileDoesNotExist()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 
@@ -162,25 +176,26 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create group " + dto.getName() + ": no profiles", e.getMessage());
         }
     }
 
     @Test
-    public void testCreationFailsAsTheNameIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
+    public void testCreationFailsAsTheNameIsAlreadyUsed()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 
         prepareServices();
-        when(groupRepository.exists(Criteria.where("customerId").is(dto.getCustomerId()).and("name").is(dto.getName()))).thenReturn(true);
+        when(
+            groupRepository.exists(Criteria.where("customerId").is(dto.getCustomerId()).and("name").is(dto.getName()))
+        ).thenReturn(true);
 
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create group " + dto.getName() + ": group already exists", e.getMessage());
         }
     }
@@ -240,5 +255,4 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
         dto.setTenantName(tenantDto.getName());
         return dto;
     }
-
 }

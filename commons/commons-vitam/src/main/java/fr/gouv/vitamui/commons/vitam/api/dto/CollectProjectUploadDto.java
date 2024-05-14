@@ -34,5 +34,4 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CollectProjectUploadDto extends IdDto {
-}
+public class CollectProjectUploadDto extends IdDto {}

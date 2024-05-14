@@ -56,8 +56,7 @@ public class ApiIamInternalServerApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiIamInternalServerApplication.class);
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiIamInternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiIamInternalServerApplication.class).build();
         app.run(args);
     }
 

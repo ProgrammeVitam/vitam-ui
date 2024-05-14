@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.referential.internal.server.common.rest;
 
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import fr.gouv.vitamui.iam.common.rest.RestApi;
 
 /**
  * A controller with two status endpoints: /status (up and running?) and /autotest (is MongoDB alive?)

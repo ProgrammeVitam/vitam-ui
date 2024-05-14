@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.commons.api.application;
 
-import java.util.regex.Pattern;
-
+import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
+import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
@@ -45,8 +45,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
-import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
+import java.util.regex.Pattern;
 
 public abstract class AbstractContextConfiguration {
 
@@ -68,5 +67,4 @@ public abstract class AbstractContextConfiguration {
 
         return cs;
     }
-
 }

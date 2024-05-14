@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.owner.converter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -47,6 +44,9 @@ import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class OwnerConverter implements Converter<OwnerDto, Owner> {
 

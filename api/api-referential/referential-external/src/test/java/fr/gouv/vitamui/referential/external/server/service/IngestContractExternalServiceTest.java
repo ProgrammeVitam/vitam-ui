@@ -36,19 +36,11 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.internal.client.IngestContractInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.IngestContractInternalWebClient;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,6 +50,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IngestContractExternalServiceTest extends ExternalServiceTest {
@@ -77,63 +78,71 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ingestContractExternalService = new IngestContractExternalService(externalSecurityService, ingestContractInternalRestClient, ingestContractInternalWebClient);
+        ingestContractExternalService = new IngestContractExternalService(
+            externalSecurityService,
+            ingestContractInternalRestClient,
+            ingestContractInternalWebClient
+        );
     }
 
     @Test
     public void getAll_should_return_IngestContractDtoList_when_ingestContractInternalRestClient_return_IngestContractDtoList() {
-
         List<IngestContractDto> list = new ArrayList<>();
         IngestContractDto ingestContractDto = new IngestContractDto();
         ingestContractDto.setId("1");
         list.add(ingestContractDto);
 
-        when(ingestContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
+        when(ingestContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(
+            list
+        );
 
         assertThatCode(() -> {
             ingestContractExternalService.getAll(Optional.empty());
         }).doesNotThrowAnyException();
-
     }
 
     @Test
     public void create_should_return_IngestContractDto_when_ingestContractInternalRestClient_return_IngestContractDto() {
-
         IngestContractDto ingestContractDto = new IngestContractDto();
         ingestContractDto.setId("1");
 
-        when(ingestContractInternalRestClient.create(any(InternalHttpContext.class), any(IngestContractDto.class)))
-            .thenReturn(ingestContractDto);
+        when(
+            ingestContractInternalRestClient.create(any(InternalHttpContext.class), any(IngestContractDto.class))
+        ).thenReturn(ingestContractDto);
 
         assertThatCode(() -> {
             ingestContractExternalService.create(new IngestContractDto());
         }).doesNotThrowAnyException();
-
-
     }
 
     @Test
     public void check_should_return_boolean_when_ingestContractInternalRestClient_return_boolean() {
-
-        when(ingestContractInternalRestClient.check(any(InternalHttpContext.class), any(IngestContractDto.class)))
-            .thenReturn(true);
+        when(
+            ingestContractInternalRestClient.check(any(InternalHttpContext.class), any(IngestContractDto.class))
+        ).thenReturn(true);
 
         assertThatCode(() -> {
             ingestContractExternalService.check(new IngestContractDto());
         }).doesNotThrowAnyException();
-
     }
 
     @Test
     public void import_should_return_ok() throws IOException {
-
         // Given
         String fileName = "import_ingest_contracts_valid.csv";
-        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, "text/csv", getClass().getResourceAsStream("/data/" + fileName));
+        MultipartFile multipartFile = new MockMultipartFile(
+            fileName,
+            fileName,
+            "text/csv",
+            getClass().getResourceAsStream("/data/" + fileName)
+        );
 
-        when(ingestContractInternalWebClient.importIngestContracts(any(InternalHttpContext.class), any(MultipartFile.class)))
-            .thenReturn(new ResponseEntity<Void>(HttpStatus.CREATED));
+        when(
+            ingestContractInternalWebClient.importIngestContracts(
+                any(InternalHttpContext.class),
+                any(MultipartFile.class)
+            )
+        ).thenReturn(new ResponseEntity<Void>(HttpStatus.CREATED));
 
         // When Then
         assertThatCode(() -> {

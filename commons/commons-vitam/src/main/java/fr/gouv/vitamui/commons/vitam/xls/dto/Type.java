@@ -4,5 +4,4 @@ public enum Type {
     STRING,
     DOUBLE,
     DATE,
-
 }

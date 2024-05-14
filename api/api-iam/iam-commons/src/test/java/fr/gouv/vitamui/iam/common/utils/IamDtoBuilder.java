@@ -1,11 +1,5 @@
 package fr.gouv.vitamui.iam.common.utils;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
@@ -25,11 +19,22 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import fr.gouv.vitamui.iam.common.utils.DtoFactory;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class IamDtoBuilder {
 
-    public static UserDto buildUserDto(final String id, final String email, final String groupId, final String customerId, final String level) {
+    public static UserDto buildUserDto(
+        final String id,
+        final String email,
+        final String groupId,
+        final String customerId,
+        final String level
+    ) {
         final UserDto userDto = new UserDto();
         userDto.setId(id);
         userDto.setEmail(email);
@@ -71,20 +76,31 @@ public class IamDtoBuilder {
         return userDto;
     }
 
-    public static ProfileDto buildProfileDto(final String id, final String name, final String customerId,
-        final Integer tenantId, final String applicationName,
-        final String level, final List<Role> roles) {
-        final ProfileDto profileDto = DtoFactory
-            .buildProfileDto(name, "description", false, level, tenantId, applicationName, new ArrayList<String>(),
-                customerId);
+    public static ProfileDto buildProfileDto(
+        final String id,
+        final String name,
+        final String customerId,
+        final Integer tenantId,
+        final String applicationName,
+        final String level,
+        final List<Role> roles
+    ) {
+        final ProfileDto profileDto = DtoFactory.buildProfileDto(
+            name,
+            "description",
+            false,
+            level,
+            tenantId,
+            applicationName,
+            new ArrayList<String>(),
+            customerId
+        );
         profileDto.setId(id);
         profileDto.setRoles(roles);
         return profileDto;
     }
 
-
     public static ExternalParametersDto buildExternalParametersDto() {
-
         String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
         ExternalParametersDto externalParametersDto = new ExternalParametersDto();
@@ -104,8 +120,13 @@ public class IamDtoBuilder {
         return applicationDto;
     }
 
-    public static GroupDto buildGroupDto(final String id, final String name, final String customerId,
-        final List<String> profileIds, final String level) {
+    public static GroupDto buildGroupDto(
+        final String id,
+        final String name,
+        final String customerId,
+        final List<String> profileIds,
+        final String level
+    ) {
         final GroupDto groupDto = new GroupDto();
         groupDto.setId(id);
         groupDto.setCustomerId(customerId);
@@ -118,7 +139,12 @@ public class IamDtoBuilder {
         return groupDto;
     }
 
-    public static CustomerDto buildCustomerDto(final String id, final String name, final String code, final String emailDomain) {
+    public static CustomerDto buildCustomerDto(
+        final String id,
+        final String name,
+        final String code,
+        final String emailDomain
+    ) {
         final CustomerDto customer = new CustomerDto();
         customer.setId(id);
         customer.setName(name);
@@ -136,7 +162,13 @@ public class IamDtoBuilder {
         return customer;
     }
 
-    public static TenantDto buildTenantDto(final String id, final String name, final Integer tenantIdentifier, final String ownerId, final String customerId) {
+    public static TenantDto buildTenantDto(
+        final String id,
+        final String name,
+        final Integer tenantIdentifier,
+        final String ownerId,
+        final String customerId
+    ) {
         final TenantDto tenantDto = new TenantDto();
         tenantDto.setId(id);
         tenantDto.setEnabled(true);
@@ -160,8 +192,13 @@ public class IamDtoBuilder {
         return ownerDto;
     }
 
-    public static SubrogationDto buildSubrogationDto(final String id, final String surrogate,
-        final String surrogateCustomerId, final String superUser, final String superUserCustomerId) {
+    public static SubrogationDto buildSubrogationDto(
+        final String id,
+        final String surrogate,
+        final String surrogateCustomerId,
+        final String superUser,
+        final String superUserCustomerId
+    ) {
         final SubrogationDto subrogation = new SubrogationDto();
         subrogation.setId(id);
         subrogation.setDate(OffsetDateTime.now());
@@ -173,8 +210,14 @@ public class IamDtoBuilder {
         return subrogation;
     }
 
-    public static IdentityProviderDto buildIdentityProviderDto(final String idpId, final String idpName, final String customerId, final List<String> patterns,
-            final boolean internal, final boolean autoProvisioningEnabled) {
+    public static IdentityProviderDto buildIdentityProviderDto(
+        final String idpId,
+        final String idpName,
+        final String customerId,
+        final List<String> patterns,
+        final boolean internal,
+        final boolean autoProvisioningEnabled
+    ) {
         final IdentityProviderDto idpDto = new IdentityProviderDto();
         idpDto.setId(idpId);
         idpDto.setName(idpName);
@@ -194,5 +237,4 @@ public class IamDtoBuilder {
         address.setStreet("rue faubourg poissoniére");
         return address;
     }
-
 }

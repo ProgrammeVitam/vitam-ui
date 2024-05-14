@@ -65,17 +65,22 @@ public class CollectInternalWebClientTest extends ServerIdentityExtension {
 
     @Mock
     private WebClient webClient;
+
     private final String BASE_URL = "http://localhost:7090";
 
     @BeforeEach
     public void setUp() {
         webClient = WebClient.builder()
-            .exchangeFunction(clientRequest ->
-                Mono.just(ClientResponse.create(HttpStatus.OK)
-                    .header("content-type", "application/json")
-                    .body("{ \"hello\" : \"I am an object\"}")
-                    .build())
-            ).build();
+            .exchangeFunction(
+                clientRequest ->
+                    Mono.just(
+                        ClientResponse.create(HttpStatus.OK)
+                            .header("content-type", "application/json")
+                            .body("{ \"hello\" : \"I am an object\"}")
+                            .build()
+                    )
+            )
+            .build();
         collectInternalWebClient = new CollectInternalWebClient(webClient, BASE_URL);
     }
 
@@ -90,8 +95,12 @@ public class CollectInternalWebClientTest extends ServerIdentityExtension {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         // WHEN
-        Mono<ResponseEntity<Resource>> response =
-            collectInternalWebClient.downloadObjectFromUnit(UNIT_ID, "BinaryMaster", 1, params.getKey());
+        Mono<ResponseEntity<Resource>> response = collectInternalWebClient.downloadObjectFromUnit(
+            UNIT_ID,
+            "BinaryMaster",
+            1,
+            params.getKey()
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(Mono.class);

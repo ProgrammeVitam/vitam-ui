@@ -59,8 +59,7 @@ import java.util.List;
 public class ArchiveInternalRestClient
     extends BasePaginatingAndSortingRestClient<ArchiveUnitsDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveInternalRestClient.class);
 
     protected Class<JsonNode> getJsonNodeClass() {
         return JsonNode.class;
@@ -77,14 +76,12 @@ public class ArchiveInternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<ArchiveUnitsDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ArchiveUnitsDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ArchiveUnitsDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ArchiveUnitsDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -96,169 +93,220 @@ public class ArchiveInternalRestClient
         LOGGER.debug("Calling searchArchiveUnitsByCriteria with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + RestApi.SEARCH_PATH, HttpMethod.POST,
-                request, ArchiveUnitsDto.class);
+        final ResponseEntity<ArchiveUnitsDto> response = restTemplate.exchange(
+            getUrl() + RestApi.SEARCH_PATH,
+            HttpMethod.POST,
+            request,
+            ArchiveUnitsDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
-
 
     public VitamUISearchResponseDto getFilingHoldingScheme(InternalHttpContext context) {
         LOGGER.debug("Calling get filing holding scheme");
         MultiValueMap<String, String> headers = buildHeaders(context);
 
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        final ResponseEntity<VitamUISearchResponseDto> response = restTemplate
-            .exchange(getUrl() + RestApi.FILING_HOLDING_SCHEME_PATH, HttpMethod.GET, request,
-                VitamUISearchResponseDto.class);
+        final ResponseEntity<VitamUISearchResponseDto> response = restTemplate.exchange(
+            getUrl() + RestApi.FILING_HOLDING_SCHEME_PATH,
+            HttpMethod.GET,
+            request,
+            VitamUISearchResponseDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OBJECTGROUP + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.OBJECTGROUP + CommonConstants.PATH_ID
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query,
-        final InternalHttpContext context) {
+    public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query, final InternalHttpContext context) {
         LOGGER.debug("Calling exportCsvArchiveUnitsByCriteria with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
-                request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH,
+            HttpMethod.POST,
+            request,
+            Resource.class
+        );
         checkResponse(response);
         return response.getBody();
-
     }
 
-    public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
-        final InternalHttpContext context) {
+    public String exportDIPByCriteria(
+        final ExportDipCriteriaDto exportDipCriteriaDto,
+        final InternalHttpContext context
+    ) {
         LOGGER.debug("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST, request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + RestApi.EXPORT_DIP,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
-    public String transferRequest(final TransferRequestDto transferRequestDto,
-        final InternalHttpContext context) {
+    public String transferRequest(final TransferRequestDto transferRequestDto, final InternalHttpContext context) {
         LOGGER.debug("Calling transfer request with query {} ", transferRequestDto);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.TRANSFER_REQUEST, HttpMethod.POST, request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + RestApi.TRANSFER_REQUEST,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
-    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context,
-        final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAnalysis(
+        final InternalHttpContext context,
+        final SearchCriteriaDto query
+    ) {
         LOGGER.debug("Calling elimination analysis with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<JsonNode> response =
-            restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ANALYSIS, HttpMethod.POST,
-                request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + RestApi.ELIMINATION_ANALYSIS,
+            HttpMethod.POST,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response;
-
     }
 
-    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context,
-        final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAction(
+        final InternalHttpContext context,
+        final SearchCriteriaDto query
+    ) {
         LOGGER.debug("Calling elimination action with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<JsonNode> response =
-            restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ACTION, HttpMethod.POST,
-                request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + RestApi.ELIMINATION_ACTION,
+            HttpMethod.POST,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response;
-
     }
 
-    public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
-        final InternalHttpContext context) {
+    public String updateArchiveUnitsRules(
+        final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        final InternalHttpContext context
+    ) {
         LOGGER.debug("Calling Update Archive Units Rules  with query {} ", ruleSearchCriteriaDto);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
-                request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + RestApi.MASS_UPDATE_UNITS_RULES,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
         checkResponse(response);
         return response.getBody();
-
     }
 
-    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
-        final InternalHttpContext context) {
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto, final InternalHttpContext context) {
         LOGGER.debug("Calling computedInheritedRules with query {} ", searchCriteriaDto);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
-                request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + RestApi.COMPUTED_INHERITED_RULES,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
         checkResponse(response);
         return response.getBody();
-
     }
-
 
     public ResultsDto selectUnitWithInheritedRules(InternalHttpContext context, SearchCriteriaDto query) {
         LOGGER.debug("Calling select Unit With Inherited Rules with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<ResultsDto> response =
-            restTemplate.exchange(getUrl() + RestApi.UNIT_WITH_INHERITED_RULES, HttpMethod.POST,
-                request, ResultsDto.class);
+        final ResponseEntity<ResultsDto> response = restTemplate.exchange(
+            getUrl() + RestApi.UNIT_WITH_INHERITED_RULES,
+            HttpMethod.POST,
+            request,
+            ResultsDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
-    public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
-        final InternalHttpContext context) {
+    public String reclassification(
+        final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final InternalHttpContext context
+    ) {
         LOGGER.debug("Calling reclassification with query {} ", reclassificationCriteriaDto);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<ReclassificationCriteriaDto> request = new HttpEntity<>(reclassificationCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.RECLASSIFICATION, HttpMethod.POST,
-                request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + RestApi.RECLASSIFICATION,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public List<VitamUiOntologyDto> getExternalOntologiesList(final InternalHttpContext context) {
         LOGGER.debug("[INTERNAL] : Calling Get External ontologies list");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
-    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String identifier, final InternalHttpContext context) {
+    public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
+        String identifier,
+        final InternalHttpContext context
+    ) {
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UNITS_PERSISTENT_IDENTIFIER).queryParam("id", identifier);
-        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class).getBody();
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.UNITS_PERSISTENT_IDENTIFIER
+        ).queryParam("id", identifier);
+        return restTemplate
+            .exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class)
+            .getBody();
     }
 
-    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(String identifier, final InternalHttpContext context) {
+    public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(
+        String identifier,
+        final InternalHttpContext context
+    ) {
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OBJECTS_PERSISTENT_IDENTIFIER).queryParam("id", identifier);
-        return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class).getBody();
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.OBJECTS_PERSISTENT_IDENTIFIER
+        ).queryParam("id", identifier);
+        return restTemplate
+            .exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, PersistentIdentifierResponseDto.class)
+            .getBody();
     }
-
 }

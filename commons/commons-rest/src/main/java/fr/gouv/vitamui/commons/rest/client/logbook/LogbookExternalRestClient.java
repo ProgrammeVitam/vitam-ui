@@ -36,9 +36,8 @@
  */
 package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * A REST client to get logbooks for an External API.
@@ -50,5 +49,4 @@ public class LogbookExternalRestClient extends LogbookInternalRestClient<Externa
     public LogbookExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
-
 }

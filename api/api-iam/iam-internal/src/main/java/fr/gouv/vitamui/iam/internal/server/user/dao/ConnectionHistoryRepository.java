@@ -46,9 +46,7 @@ import java.util.List;
  * MongoDB repository for the connection history.
  */
 public interface ConnectionHistoryRepository extends VitamUIRepository<ConnectionHistory, String> {
-
-    long deleteByUserId (String id);
-
+    long deleteByUserId(String id);
 
     List<ConnectionHistory> findAllByConnectionDateTimeBetweenAndUserIdIn(Date start, Date end, List<String> userId);
 }

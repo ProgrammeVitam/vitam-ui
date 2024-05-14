@@ -51,7 +51,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -107,7 +106,6 @@ public class UserConverter implements Converter<UserDto, User> {
 
     private final GroupRepository groupRepository;
 
-
     private final AddressConverter addressConverter;
 
     public UserConverter(final GroupRepository groupRepository, final AddressConverter addressConverter) {
@@ -133,7 +131,12 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
         userLogbookData.put(CENTER_CODES, LogbookUtils.getValue(user.getCenterCodes()));
-        AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
+        AddressDto address = new AddressDto(
+            GPDR_DEFAULT_VALUE,
+            GPDR_DEFAULT_VALUE,
+            GPDR_DEFAULT_VALUE,
+            GPDR_DEFAULT_VALUE
+        );
         addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());
         group.ifPresent(g -> userLogbookData.put(GROUP_IDENTIFIER_KEY, g.getIdentifier()));
@@ -154,7 +157,7 @@ public class UserConverter implements Converter<UserDto, User> {
 
     @Override
     public UserDto convertEntityToDto(final User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         }
         final UserDto userDto = new UserDto();
@@ -165,20 +168,26 @@ public class UserConverter implements Converter<UserDto, User> {
         }
         if (user.getAnalytics() != null) {
             List<ApplicationAnalyticsDto> applicationAnalyticsDtoList = new ArrayList<>();
-            user.getAnalytics().getApplications().forEach(application -> {
-                ApplicationAnalyticsDto applicationAnalyticsDto = new ApplicationAnalyticsDto();
-                applicationAnalyticsDto.setApplicationId(application.getApplicationId());
-                applicationAnalyticsDto.setLastAccess(application.getLastAccess());
-                applicationAnalyticsDto.setAccessCounter(application.getAccessCounter());
-                applicationAnalyticsDtoList.add(applicationAnalyticsDto);
-            });
+            user
+                .getAnalytics()
+                .getApplications()
+                .forEach(application -> {
+                    ApplicationAnalyticsDto applicationAnalyticsDto = new ApplicationAnalyticsDto();
+                    applicationAnalyticsDto.setApplicationId(application.getApplicationId());
+                    applicationAnalyticsDto.setLastAccess(application.getLastAccess());
+                    applicationAnalyticsDto.setAccessCounter(application.getAccessCounter());
+                    applicationAnalyticsDtoList.add(applicationAnalyticsDto);
+                });
 
             List<AlertAnalyticsDto> alertAnalyticsDtoDtoList = new ArrayList<>();
-            user.getAnalytics().getAlerts().forEach(alert -> {
-                AlertAnalyticsDto alertAnalyticsDto = new AlertAnalyticsDto();
-                BeanUtils.copyProperties(alert, alertAnalyticsDto);
-                alertAnalyticsDtoDtoList.add(alertAnalyticsDto);
-            });
+            user
+                .getAnalytics()
+                .getAlerts()
+                .forEach(alert -> {
+                    AlertAnalyticsDto alertAnalyticsDto = new AlertAnalyticsDto();
+                    BeanUtils.copyProperties(alert, alertAnalyticsDto);
+                    alertAnalyticsDtoDtoList.add(alertAnalyticsDto);
+                });
             analyticsDto.setApplications(applicationAnalyticsDtoList);
             analyticsDto.setAlerts(alertAnalyticsDtoDtoList);
 
@@ -187,5 +196,4 @@ public class UserConverter implements Converter<UserDto, User> {
         }
         return userDto;
     }
-
 }

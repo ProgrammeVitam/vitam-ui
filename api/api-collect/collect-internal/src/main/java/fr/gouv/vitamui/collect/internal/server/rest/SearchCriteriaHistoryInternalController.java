@@ -63,12 +63,14 @@ import java.util.List;
 public class SearchCriteriaHistoryInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryInternalController.class);
+        SearchCriteriaHistoryInternalController.class
+    );
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 
     @Autowired
     public SearchCriteriaHistoryInternalController(
-        final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService) {
+        final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService
+    ) {
         this.searchCriteriaHistoryInternalService = searchCriteriaHistoryInternalService;
     }
 

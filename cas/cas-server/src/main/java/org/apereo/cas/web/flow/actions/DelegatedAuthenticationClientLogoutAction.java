@@ -24,6 +24,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class DelegatedAuthenticationClientLogoutAction extends BaseCasWebflowAction {
+
     protected final Clients clients;
 
     protected final SessionStore sessionStore;
@@ -94,9 +95,6 @@ public class DelegatedAuthenticationClientLogoutAction extends BaseCasWebflowAct
      * @return the current client
      */
     protected Optional<Client> findCurrentClient(final UserProfile currentProfile) {
-        return currentProfile == null
-            ? Optional.<Client>empty()
-            : clients.findClient(currentProfile.getClientName());
+        return currentProfile == null ? Optional.<Client>empty() : clients.findClient(currentProfile.getClientName());
     }
 }
-

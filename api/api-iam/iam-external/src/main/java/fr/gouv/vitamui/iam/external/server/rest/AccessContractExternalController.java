@@ -69,8 +69,7 @@ public class AccessContractExternalController {
     private final AccessContractExternalService accessContractExternalService;
 
     @Autowired
-    public AccessContractExternalController(
-        AccessContractExternalService accessContractExternalService) {
+    public AccessContractExternalController(AccessContractExternalService accessContractExternalService) {
         this.accessContractExternalService = accessContractExternalService;
     }
 
@@ -84,10 +83,15 @@ public class AccessContractExternalController {
     @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = "/accesscontracts/{identifier:.+}")
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
-    public AccessContractsDto getById(final @PathVariable("identifier") String identifier) throws
-        UnsupportedEncodingException {
-        LOGGER.debug("get access contract by id {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
-        return accessContractExternalService.getAccessContractById(URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+    public AccessContractsDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get access contract by id {} / {}",
+            identifier,
+            URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString())
+        );
+        return accessContractExternalService.getAccessContractById(
+            URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
-
 }

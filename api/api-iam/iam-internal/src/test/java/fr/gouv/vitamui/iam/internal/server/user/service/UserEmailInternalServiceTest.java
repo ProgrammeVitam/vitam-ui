@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
  */
 public final class UserEmailInternalServiceTest {
 
-
     private static final String LASTNAME = "John";
 
     private static final String FIRSTNAME = "Doe";
@@ -83,17 +82,30 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME,
-            "fr", CUSTOMER_ID);
+        verify(restTemplate).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     @Test
     public void testSendEmailKoNoUser() {
-
         internalUserEmailService.sendCreationEmail(null);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr", CUSTOMER_ID);
+        verify(restTemplate, times(0)).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     @Test
@@ -103,8 +115,15 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr", CUSTOMER_ID);
+        verify(restTemplate, times(0)).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     @Test
@@ -114,20 +133,35 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        Mockito.verify(restTemplate, times(0))
-            .getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME, LASTNAME, "fr", CUSTOMER_ID);
+        Mockito.verify(restTemplate, times(0)).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     @Test
     public void testSendEmailKoUserIsNotInternal() {
         final UserDto user = buildUser();
-        when(identityProviderHelper.identifierMatchProviderPattern(any(List.class), eq(EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(false);
+        when(
+            identityProviderHelper.identifierMatchProviderPattern(any(List.class), eq(EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(false);
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr", CUSTOMER_ID);
+        verify(restTemplate, times(0)).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     @Test
@@ -137,8 +171,15 @@ public final class UserEmailInternalServiceTest {
 
         internalUserEmailService.sendCreationEmail(user);
 
-        verify(restTemplate, times(0)).getForEntity(BASE_URL + casResetPasswordUrl, Boolean.class, EMAIL, FIRSTNAME,
-            LASTNAME, "fr", CUSTOMER_ID);
+        verify(restTemplate, times(0)).getForEntity(
+            BASE_URL + casResetPasswordUrl,
+            Boolean.class,
+            EMAIL,
+            FIRSTNAME,
+            LASTNAME,
+            "fr",
+            CUSTOMER_ID
+        );
     }
 
     private UserDto buildUser() {
@@ -153,9 +194,7 @@ public final class UserEmailInternalServiceTest {
         return user;
     }
 
-
     private UserInfoDto buildUserInfoDto() {
         return IamServerUtilsTest.buildUserInfoDto();
     }
 }
-

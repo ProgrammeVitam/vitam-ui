@@ -54,6 +54,7 @@ public class LoginRequestDto {
 
     @NotNull
     private String loginEmail;
+
     @NotNull
     private String loginCustomerId;
 

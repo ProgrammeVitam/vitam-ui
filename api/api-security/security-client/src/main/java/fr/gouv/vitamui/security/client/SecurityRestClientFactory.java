@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.security.client;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
-
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * A REST client factory to create specialized Security REST clients
@@ -50,12 +49,18 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
 
 public class SecurityRestClientFactory extends BaseRestClientFactory {
 
-    public SecurityRestClientFactory(RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public SecurityRestClientFactory(
+        RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, null, restTemplateBuilder);
     }
 
-    public SecurityRestClientFactory(RestClientConfiguration restClientConfiguration,
-            HttpPoolConfiguration httpHostConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public SecurityRestClientFactory(
+        RestClientConfiguration restClientConfiguration,
+        HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 

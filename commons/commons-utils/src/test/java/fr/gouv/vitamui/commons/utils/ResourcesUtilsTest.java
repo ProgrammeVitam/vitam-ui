@@ -14,10 +14,8 @@ public class ResourcesUtilsTest {
     public void testBuildPath() {
         try (InputStream stream = ResourcesUtils.getResourceAsStream("json-test.json")) {
             assertTrue(stream != null);
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             fail("Should not raized an exception");
         }
     }
-
 }

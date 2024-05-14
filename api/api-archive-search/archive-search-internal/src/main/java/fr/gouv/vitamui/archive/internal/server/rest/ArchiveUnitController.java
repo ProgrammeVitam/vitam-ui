@@ -52,6 +52,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 @RestController
 @RequestMapping("/archive-units")
 public class ArchiveUnitController {
+
     final ArchiveUnitService archiveUnitService;
 
     public ArchiveUnitController(ArchiveUnitService archiveUnitService) {
@@ -63,7 +64,8 @@ public class ArchiveUnitController {
     @Produces(APPLICATION_JSON)
     @ApiOperation("Updates several archive units asynchronously by passing partial changes to apply to an archive unit")
     public ResponseEntity<OperationIdDto> update(
-        @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet) {
+        @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet
+    ) {
         return ResponseEntity.ok(archiveUnitService.update(updateArchiveUnitDtoSet));
     }
 
@@ -71,8 +73,10 @@ public class ArchiveUnitController {
     @Consumes(APPLICATION_JSON_PATCH_JSON)
     @Produces(APPLICATION_JSON)
     @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on an archive unit")
-    public ResponseEntity<OperationIdDto> update(@RequestBody @Validated final JsonPatch jsonPatch,
-        @RequestParam String archiveUnitId) {
+    public ResponseEntity<OperationIdDto> update(
+        @RequestBody @Validated final JsonPatch jsonPatch,
+        @RequestParam String archiveUnitId
+    ) {
         final JsonPatchDto jsonPatchDto = new JsonPatchDto().setId(archiveUnitId).setJsonPatch(jsonPatch);
         return update(jsonPatchDto);
     }

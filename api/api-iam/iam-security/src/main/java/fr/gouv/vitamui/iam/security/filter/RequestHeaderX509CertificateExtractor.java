@@ -41,7 +41,9 @@ import java.util.Base64;
 
 public class RequestHeaderX509CertificateExtractor implements X509CertificateExtractor {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RequestHeaderX509CertificateExtractor.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        RequestHeaderX509CertificateExtractor.class
+    );
 
     @Setter
     private String certificateHeaderName = "x-ssl-cert";
@@ -52,18 +54,31 @@ public class RequestHeaderX509CertificateExtractor implements X509CertificateExt
 
         final String certificate = request.getHeader(certificateHeaderName);
         if (StringUtils.isBlank(certificate)) {
-            LOGGER.error(String.format("Can not extract X509 certificate from header %s : with error: [Header value is empty!].", certificateHeaderName));
+            LOGGER.error(
+                String.format(
+                    "Can not extract X509 certificate from header %s : with error: [Header value is empty!].",
+                    certificateHeaderName
+                )
+            );
             return null;
         }
 
         try {
             final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            return (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificate)));
+            return (X509Certificate) certificateFactory.generateCertificate(
+                new ByteArrayInputStream(Base64.getDecoder().decode(certificate))
+            );
         } catch (final CertificateException e) {
-            LOGGER.error(String.format("Can not extract X509 certificate from header %s : %s", certificateHeaderName, certificate), e);
+            LOGGER.error(
+                String.format(
+                    "Can not extract X509 certificate from header %s : %s",
+                    certificateHeaderName,
+                    certificate
+                ),
+                e
+            );
         }
 
         return null;
     }
-
 }

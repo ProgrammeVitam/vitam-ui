@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.dao;
 
-import java.util.List;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
+
+import java.util.List;
 
 /**
  * MongoDB repository for the identity providers.
@@ -47,7 +47,5 @@ import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
  *
  */
 public interface IdentityProviderRepository extends VitamUIRepository<IdentityProvider, String> {
-
     List<IdentityProvider> findByCustomerId(String customerId);
-
 }

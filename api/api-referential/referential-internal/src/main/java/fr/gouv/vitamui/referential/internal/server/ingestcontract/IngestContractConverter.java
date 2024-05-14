@@ -124,5 +124,4 @@ public class IngestContractConverter {
     public List<IngestContractDto> convertVitamsToDtos(final List<IngestContractModel> ingestContracts) {
         return ingestContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

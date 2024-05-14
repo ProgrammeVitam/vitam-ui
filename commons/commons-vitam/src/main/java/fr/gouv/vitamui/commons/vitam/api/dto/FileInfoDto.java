@@ -64,5 +64,4 @@ public class FileInfoDto {
 
     @JsonProperty("DateCreatedByApplication")
     private String dateCreatedByApplication;
-
 }

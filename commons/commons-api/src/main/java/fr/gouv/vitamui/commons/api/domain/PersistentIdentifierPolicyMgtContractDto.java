@@ -47,7 +47,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PersistentIdentifierPolicyMgtContractDto implements Serializable {
 
-
     private String persistentIdentifierPolicyType;
 
     private boolean persistentIdentifierUnit;

@@ -1,7 +1,9 @@
 package fr.gouv.vitamui.commons.logbook.common;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
+import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Condition;
 import org.junit.BeforeClass;
@@ -12,10 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
-import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class, LogbookAutoConfiguration.class })

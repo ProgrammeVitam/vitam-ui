@@ -60,15 +60,18 @@ import java.util.Optional;
 
 @Service
 public class ProfileService extends AbstractPaginateService<ProfileDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileService.class);
     private final ProfileExternalWebClient webClient;
     private final CommonService commonService;
     private ProfileExternalRestClient client;
 
-
     @Autowired
-    public ProfileService(final ProfileExternalRestClient client, ProfileExternalWebClient webClient,
-        CommonService commonService) {
+    public ProfileService(
+        final ProfileExternalRestClient client,
+        ProfileExternalWebClient webClient,
+        CommonService commonService
+    ) {
         this.client = client;
         this.webClient = webClient;
         this.commonService = commonService;
@@ -83,7 +86,6 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
     public BasePaginatingAndSortingRestClient<ProfileDto, ExternalHttpContext> getClient() {
         return client;
     }
-
 
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);
@@ -100,12 +102,10 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
         return client.updateProfile(c, dto);
     }
 
-
     @Override
     public void delete(ExternalHttpContext context, String id) {
         client.delete(context, id);
     }
-
 
     public ResponseEntity<Resource> download(ExternalHttpContext context, String id) {
         return client.download(context, id);
@@ -115,8 +115,11 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
         return webClient.importProfiles(context, file);
     }
 
-    public ResponseEntity<JsonNode> updateProfileFile(ExternalHttpContext context, String id, MultipartFile profileFile)
-        throws IOException {
+    public ResponseEntity<JsonNode> updateProfileFile(
+        ExternalHttpContext context,
+        String id,
+        MultipartFile profileFile
+    ) throws IOException {
         return client.updateProfileFile(context, id, profileFile);
     }
 }

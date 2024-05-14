@@ -36,13 +36,10 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.rest.BaseApiErrorController;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @ApiIgnore
-public class ApiErrorController extends BaseApiErrorController {
-
-}
+public class ApiErrorController extends BaseApiErrorController {}

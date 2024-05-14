@@ -38,6 +38,5 @@ package fr.gouv.vitamui.commons.api.enums;
 
 public enum UserTypeEnum {
     GENERIC,
-    NOMINATIVE
-
+    NOMINATIVE,
 }

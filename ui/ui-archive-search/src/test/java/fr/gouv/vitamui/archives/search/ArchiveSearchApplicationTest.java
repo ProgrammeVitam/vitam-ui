@@ -36,7 +36,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class ArchiveSearchApplicationTest {
@@ -49,8 +48,6 @@ public class ArchiveSearchApplicationTest {
 
     @Test
     public void testPropertiesLoading() {
-
         Assert.assertNotNull(archiveSearchApplicationProperties);
-
     }
 }

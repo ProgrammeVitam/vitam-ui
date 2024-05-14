@@ -39,12 +39,9 @@ package fr.gouv.vitamui.iam.external.server.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -60,7 +57,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-
 @Getter
 @Setter
 @Service
@@ -69,7 +65,10 @@ public class UserInfoExternalService extends AbstractResourceClientService<UserI
     private final UserInfoInternalRestClient userInfoInternalRestClient;
 
     @Autowired
-    public UserInfoExternalService(final UserInfoInternalRestClient userInfoInternalRestClient, final ExternalSecurityService externalSecurityService) {
+    public UserInfoExternalService(
+        final UserInfoInternalRestClient userInfoInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.userInfoInternalRestClient = userInfoInternalRestClient;
     }
@@ -122,12 +121,11 @@ public class UserInfoExternalService extends AbstractResourceClientService<UserI
     public void checkLogbookRight(final String id) {
         final boolean hasRoleGetUserInfos = externalSecurityService.hasRole(ServicesData.ROLE_GET_USER_INFOS);
         if (!hasRoleGetUserInfos && !StringUtils.equals(externalSecurityService.getUser().getUserInfoId(), id)) {
-                throw new ForbiddenException(String.format("Unable to access user info with id: %s", id));
+            throw new ForbiddenException(String.format("Unable to access user info with id: %s", id));
         }
         final UserInfoDto userInfoDto = super.getOne(id);
         if (userInfoDto == null) {
             throw new ForbiddenException(String.format("Unable to access user info with id: %s", id));
         }
     }
-
 }

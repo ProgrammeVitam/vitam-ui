@@ -41,7 +41,8 @@ public interface X509CertificateExtractor {
     }
 
     static X509CertificateExtractor requestHeaderX509CertificateExtractor(String certificateHeaderName) {
-        RequestHeaderX509CertificateExtractor requestHeaderX509CertificateExtractor = new RequestHeaderX509CertificateExtractor();
+        RequestHeaderX509CertificateExtractor requestHeaderX509CertificateExtractor =
+            new RequestHeaderX509CertificateExtractor();
         if (StringUtils.isNoneBlank(certificateHeaderName)) {
             requestHeaderX509CertificateExtractor.setCertificateHeaderName(certificateHeaderName);
         }

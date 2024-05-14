@@ -67,17 +67,31 @@ public class ProfileInternalWebClient extends BaseWebClient<InternalHttpContext>
         if (file == null) {
             throw new BadRequestException("No file to check .");
         }
-        return ResponseEntity.ok(multipartData("http://localhost:7087/referential/v1/profile" + "/import", HttpMethod.POST, context,
-            Collections.singletonMap("fileName", fileName),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class));
+        return ResponseEntity.ok(
+            multipartData(
+                "http://localhost:7087/referential/v1/profile" + "/import",
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", fileName),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+                JsonNode.class
+            )
+        );
     }
 
     public JsonNode updateProfileFile(InternalHttpContext context, String id, MultipartFile profileFile) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/updateProfileFile" + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + "/updateProfileFile" + CommonConstants.PATH_ID
+        );
 
-        return multipartData(getUrl() + "/updateProfileFile" + CommonConstants.PATH_ID, HttpMethod.PUT, context,
+        return multipartData(
+            getUrl() + "/updateProfileFile" + CommonConstants.PATH_ID,
+            HttpMethod.PUT,
+            context,
             Collections.singletonMap("fileName", profileFile.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", profileFile)), JsonNode.class);
+            Optional.of(new AbstractMap.SimpleEntry<>("file", profileFile)),
+            JsonNode.class
+        );
     }
 
     @Override
@@ -86,7 +100,5 @@ public class ProfileInternalWebClient extends BaseWebClient<InternalHttpContext>
     }
 
     @Override
-    public void close() {
-
-    }
+    public void close() {}
 }

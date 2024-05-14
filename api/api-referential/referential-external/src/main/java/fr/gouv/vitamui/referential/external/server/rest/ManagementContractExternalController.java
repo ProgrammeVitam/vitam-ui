@@ -27,7 +27,6 @@
  *
  */
 
-
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -65,7 +64,9 @@ import java.util.Optional;
 @Setter
 public class ManagementContractExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ManagementContractExternalController.class
+    );
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
@@ -76,7 +77,7 @@ public class ManagementContractExternalController {
         this.managementContractExternalService = managementContractExternalService;
     }
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -86,12 +87,22 @@ public class ManagementContractExternalController {
 
     @GetMapping(params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws PreconditionFailedException {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException {
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return managementContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -107,8 +118,10 @@ public class ManagementContractExternalController {
 
     @PostMapping(CommonConstants.PATH_CHECK)
     @Secured({ ServicesData.ROLE_GET_MANAGEMENT_CONTRACT })
-    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(
+        @RequestBody ManagementContractDto managementContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check exist managementContract = {}", managementContractDto);
         final boolean exist = managementContractExternalService.check(managementContractDto);
@@ -127,20 +140,26 @@ public class ManagementContractExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_CONTRACT)
-    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws PreconditionFailedException {
+    public ManagementContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         LOGGER.debug("Patch {} with {}", id, partialDto);
         return managementContractExternalService.patch(partialDto);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/history")
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ManagementContract with id :{}", id);
         return managementContractExternalService.findHistoryById(id);

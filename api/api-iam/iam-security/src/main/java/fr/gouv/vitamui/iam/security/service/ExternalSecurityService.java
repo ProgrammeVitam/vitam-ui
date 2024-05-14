@@ -36,21 +36,20 @@
  */
 package fr.gouv.vitamui.iam.security.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -61,7 +60,8 @@ import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
 public class ExternalSecurityService {
 
     public ExternalAuthentication getAuthentication() {
-        final ExternalAuthentication authentication = (ExternalAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        final ExternalAuthentication authentication = (ExternalAuthentication) SecurityContextHolder.getContext()
+            .getAuthentication();
         if (authentication == null) {
             throw new UnAuthorizedException("Unable to get the security context. You probably are not authenticated.");
         }
@@ -73,7 +73,10 @@ public class ExternalSecurityService {
      * @return True if the current user has the right role, false otherwise.
      */
     public boolean canAccessToAllTenants() {
-        return getAuthentication().getAuthorities().stream().anyMatch(r -> r.getAuthority().equalsIgnoreCase(ServicesData.ROLE_GET_ALL_TENANTS));
+        return getAuthentication()
+            .getAuthorities()
+            .stream()
+            .anyMatch(r -> r.getAuthority().equalsIgnoreCase(ServicesData.ROLE_GET_ALL_TENANTS));
     }
 
     /**
@@ -81,7 +84,10 @@ public class ExternalSecurityService {
      * @return True if the current user has the right role, false otherwise.
      */
     public boolean canAccessAllCustomersTenants() {
-        return getAuthentication().getAuthorities().stream().anyMatch(r -> r.getAuthority().equalsIgnoreCase(ServicesData.ROLE_GET_TENANTS));
+        return getAuthentication()
+            .getAuthorities()
+            .stream()
+            .anyMatch(r -> r.getAuthority().equalsIgnoreCase(ServicesData.ROLE_GET_TENANTS));
     }
 
     /**
@@ -151,8 +157,12 @@ public class ExternalSecurityService {
     }
 
     public TenantDto getTenant(final Integer tenantIdentifier) {
-        final Optional<TenantDto> tenant = getUser().getTenantsByApp().stream().flatMap(t -> t.getTenants().stream())
-                .filter(t -> tenantIdentifier.equals(t.getIdentifier())).findAny();
+        final Optional<TenantDto> tenant = getUser()
+            .getTenantsByApp()
+            .stream()
+            .flatMap(t -> t.getTenants().stream())
+            .filter(t -> tenantIdentifier.equals(t.getIdentifier()))
+            .findAny();
         tenant.orElseThrow(() -> new ApplicationServerException("Tenant not found"));
         return tenant.get();
     }
@@ -178,7 +188,6 @@ public class ExternalSecurityService {
     }
 
     public InternalHttpContext getInternalHttpContext() {
-        return InternalHttpContext
-            .buildFromExternalHttpContext(getHttpContext());
+        return InternalHttpContext.buildFromExternalHttpContext(getHttpContext());
     }
 }

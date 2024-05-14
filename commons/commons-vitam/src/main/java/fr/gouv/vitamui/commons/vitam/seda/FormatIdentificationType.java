@@ -1,10 +1,9 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
-
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
@@ -16,12 +15,11 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
  * <p>Classe Java pour FormatIdentificationType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="FormatIdentificationType"&gt;
  *   &lt;complexContent&gt;
@@ -36,28 +34,26 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FormatIdentificationType", propOrder = {
-    "formatLitteral",
-    "mimeType",
-    "formatId",
-    "encoding"
-})
+@XmlType(name = "FormatIdentificationType", propOrder = { "formatLitteral", "mimeType", "formatId", "encoding" })
 public class FormatIdentificationType {
 
     @XmlElement(name = "FormatLitteral")
     protected String formatLitteral;
+
     @XmlElement(name = "MimeType")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String mimeType;
+
     @XmlElement(name = "FormatId")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String formatId;
+
     @XmlElement(name = "Encoding")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
@@ -65,11 +61,11 @@ public class FormatIdentificationType {
 
     /**
      * Obtient la valeur de la propriété formatLitteral.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getFormatLitteral() {
         return formatLitteral;
@@ -77,11 +73,11 @@ public class FormatIdentificationType {
 
     /**
      * Définit la valeur de la propriété formatLitteral.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setFormatLitteral(String value) {
         this.formatLitteral = value;
@@ -89,11 +85,11 @@ public class FormatIdentificationType {
 
     /**
      * Obtient la valeur de la propriété mimeType.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getMimeType() {
         return mimeType;
@@ -101,11 +97,11 @@ public class FormatIdentificationType {
 
     /**
      * Définit la valeur de la propriété mimeType.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setMimeType(String value) {
         this.mimeType = value;
@@ -113,11 +109,11 @@ public class FormatIdentificationType {
 
     /**
      * Obtient la valeur de la propriété formatId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getFormatId() {
         return formatId;
@@ -125,11 +121,11 @@ public class FormatIdentificationType {
 
     /**
      * Définit la valeur de la propriété formatId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setFormatId(String value) {
         this.formatId = value;
@@ -137,11 +133,11 @@ public class FormatIdentificationType {
 
     /**
      * Obtient la valeur de la propriété encoding.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEncoding() {
         return encoding;
@@ -149,14 +145,13 @@ public class FormatIdentificationType {
 
     /**
      * Définit la valeur de la propriété encoding.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEncoding(String value) {
         this.encoding = value;
     }
-
 }

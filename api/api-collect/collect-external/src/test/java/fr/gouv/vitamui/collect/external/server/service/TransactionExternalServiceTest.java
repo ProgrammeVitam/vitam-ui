@@ -59,8 +59,10 @@ class TransactionExternalServiceTest {
 
     @Mock
     private ExternalSecurityService externalSecurityService;
+
     @Mock
     private CollectTransactionInternalRestClient collectTransactionInternalRestClient;
+
     @Mock
     private UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient;
 
@@ -71,13 +73,15 @@ class TransactionExternalServiceTest {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        transactionExternalService = new TransactionExternalService(externalSecurityService, collectTransactionInternalRestClient,
-             updateUnitsMetadataInternalRestClient);
+        transactionExternalService = new TransactionExternalService(
+            externalSecurityService,
+            collectTransactionInternalRestClient,
+            updateUnitsMetadataInternalRestClient
+        );
     }
 
     @Test
     void update_units_should_return_response_when_vitamUpdateUnits_return_response() {
-
         // Given
         String initialString = "csv file to update collect units";
         final String transactionId = "transactionId";
@@ -86,9 +90,14 @@ class TransactionExternalServiceTest {
         InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
 
         // When
-        when(updateUnitsMetadataInternalRestClient.updateArchiveUnitsMetadataFromFile(any(InternalHttpContext.class), eq(fileName),
-           eq(transactionId), eq(csvFile)))
-            .thenReturn(vitamResponse);
+        when(
+            updateUnitsMetadataInternalRestClient.updateArchiveUnitsMetadataFromFile(
+                any(InternalHttpContext.class),
+                eq(fileName),
+                eq(transactionId),
+                eq(csvFile)
+            )
+        ).thenReturn(vitamResponse);
 
         // Then
         assertThatCode(() -> {
@@ -96,8 +105,12 @@ class TransactionExternalServiceTest {
         }).doesNotThrowAnyException();
     }
 
-    private void mockSecurityContext(ExternalSecurityService externalSecurityService, final String userCustomerId, final Integer tenantIdentifier,
-        final String... userRoles) {
+    private void mockSecurityContext(
+        ExternalSecurityService externalSecurityService,
+        final String userCustomerId,
+        final Integer tenantIdentifier,
+        final String... userRoles
+    ) {
         final AuthUserDto user = new AuthUserDto();
         user.setLevel("");
         user.setCustomerId(userCustomerId);
@@ -108,7 +121,8 @@ class TransactionExternalServiceTest {
         }
 
         Mockito.when(externalSecurityService.getUser()).thenReturn(user);
-        Mockito.when(externalSecurityService.getHttpContext())
-            .thenReturn(new ExternalHttpContext(10, "userToken", "applicationId", "id"));
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(10, "userToken", "applicationId", "id")
+        );
     }
 }

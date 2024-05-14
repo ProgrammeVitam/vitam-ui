@@ -107,7 +107,6 @@ public class JsonUtils {
         return mapperWithNonNullFields.convertValue(fromValue, clazz);
     }
 
-
     /**
      * Convert value Object to specified Type.
      * @param fromValue
@@ -117,7 +116,8 @@ public class JsonUtils {
      * @throws JsonMappingException
      * @throws IOException
      */
-    public static <T> List<T> convertValueList(final Object fromValue, final Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> List<T> convertValueList(final Object fromValue, final Class<T> clazz)
+        throws JsonParseException, JsonMappingException, IOException {
         final JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
 
         return mapper.convertValue(fromValue, type);
@@ -134,7 +134,8 @@ public class JsonUtils {
      * @throws JsonMappingException
      * @throws IOException
      */
-    public static <T> T fromJson(final String json, final TypeReference<T> type) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T fromJson(final String json, final TypeReference<T> type)
+        throws JsonParseException, JsonMappingException, IOException {
         return mapper.readValue(json, type);
     }
 
@@ -148,7 +149,8 @@ public class JsonUtils {
      * @throws JsonMappingException
      * @throws IOException
      */
-    public static <T> T fromJson(final String json, final Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T fromJson(final String json, final Class<T> clazz)
+        throws JsonParseException, JsonMappingException, IOException {
         return mapper.readValue(json, clazz);
     }
 
@@ -164,7 +166,8 @@ public class JsonUtils {
         return mapper.treeToValue(json, clazz);
     }
 
-    public static <T> T treeToValue(final JsonNode json, final Class<T> clazz, final boolean failOnMissingProperties) throws JsonProcessingException {
+    public static <T> T treeToValue(final JsonNode json, final Class<T> clazz, final boolean failOnMissingProperties)
+        throws JsonProcessingException {
         ObjectMapper mapperToUse = mapper;
         if (!failOnMissingProperties) {
             mapperToUse = mapperDontFailOnUnknowProperties;

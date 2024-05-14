@@ -51,5 +51,4 @@ public class AccessionRegisterDto extends IdDto {
     private Integer version;
 
     private String originatingAgency;
-
 }

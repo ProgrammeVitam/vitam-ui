@@ -76,8 +76,7 @@ public class InternalAuthentificationService {
         AuthUserDto userProfile;
         try {
             userProfile = userInternalRestClient.getMe(httpContext);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             LOGGER.error("Can't find User's Profile for {}. {}", httpContext, ex.getMessage());
             throw new BadCredentialsException(ex.getMessage());
         }

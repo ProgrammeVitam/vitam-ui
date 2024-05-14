@@ -87,7 +87,9 @@ import java.util.Optional;
 @Setter
 public class IngestContractInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IngestContractInternalController.class
+    );
 
     @Autowired
     private IngestContractInternalService ingestContractInternalService;
@@ -95,7 +97,7 @@ public class IngestContractInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<IngestContractDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all ingestContract criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -103,25 +105,46 @@ public class IngestContractInternalController {
         return ingestContractInternalService.getAll(vitamContext);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                 @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                                 @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities ingestContract page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities ingestContract page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestContractInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public IngestContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get ingestContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public IngestContractDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get ingestContract identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
-        return ingestContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return ingestContractInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody IngestContractDto ingestContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody IngestContractDto ingestContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist ingestContract={}", ingestContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ingestContractDto.setTenant(tenant);
@@ -130,7 +153,10 @@ public class IngestContractInternalController {
     }
 
     @PostMapping
-    public IngestContractDto create(@Valid @RequestBody IngestContractDto ingestContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public IngestContractDto create(
+        @Valid @RequestBody IngestContractDto ingestContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("create ingestContract={}", ingestContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ingestContractDto.setTenant(tenant);
@@ -139,7 +165,10 @@ public class IngestContractInternalController {
 
     /* TODO: Implement this */
     @PutMapping(CommonConstants.PATH_ID)
-    public IngestContractDto update(final @PathVariable("id") String id, final @Valid @RequestBody IngestContractDto dto) {
+    public IngestContractDto update(
+        final @PathVariable("id") String id,
+        final @Valid @RequestBody IngestContractDto dto
+    ) {
         /*LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return ingestContractInternalService.update(dto);*/
@@ -147,11 +176,17 @@ public class IngestContractInternalController {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public IngestContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return ingestContractInternalService.patch(vitamContext, partialDto);
     }
 
@@ -164,7 +199,10 @@ public class IngestContractInternalController {
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<Void> importIngestContracts(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> importIngestContracts(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
         LOGGER.debug("importing ingest contracts file {}", fileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestContractInternalService.importIngestContracts(vitamContext, file);

@@ -48,6 +48,7 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "password")
 public class PasswordConfiguration {
+
     public static String ANSSI = "anssi";
     public static String CUSTOM = "custom";
 
@@ -61,24 +62,28 @@ public class PasswordConfiguration {
 
     @Data
     public static class PasswordConstraints {
+
         private Map<String, PasswordDefaultConstraints> defaults = new HashMap<>();
         private Map<String, PasswordCustomConstraints> customs = new HashMap<>();
     }
 
     @Data
     public static class PasswordDefaultConstraints {
+
         private SpecialChars specialChars;
         private List<String> messages;
     }
 
     @Data
     public static class SpecialChars {
+
         private String title;
         private List<String> messages;
     }
 
     @Data
     public static class PasswordCustomConstraints {
+
         private String title;
         private List<String> messages;
     }

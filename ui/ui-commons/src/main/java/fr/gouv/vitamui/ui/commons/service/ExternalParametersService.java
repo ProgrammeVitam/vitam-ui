@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -46,7 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  *  UI external parameters service.
@@ -56,22 +53,21 @@ import java.util.stream.Collectors;
 @Service
 public class ExternalParametersService {
 
-	static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
 
-	private ExternalParametersExternalRestClient client;
+    private ExternalParametersExternalRestClient client;
 
-	@Autowired
-	public ExternalParametersService(final ExternalParametersExternalRestClient client) {
-	    this.client = client;
-	}
+    @Autowired
+    public ExternalParametersService(final ExternalParametersExternalRestClient client) {
+        this.client = client;
+    }
 
-	/**
-	 * Get the external parameters for the authenticated user
-	 * @return
-	 */
+    /**
+     * Get the external parameters for the authenticated user
+     * @return
+     */
     public Map<String, String> getMyExternalParameters(ExternalHttpContext context) {
         LOGGER.debug("Get external parameters for the authenticated user");
         return client.getMyExternalParameters(context);
     }
-
 }

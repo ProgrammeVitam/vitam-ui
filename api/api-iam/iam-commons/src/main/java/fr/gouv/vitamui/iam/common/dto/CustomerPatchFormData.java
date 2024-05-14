@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,7 +45,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Optional;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
@@ -56,8 +56,10 @@ public class CustomerPatchFormData {
 
     @JsonIgnore
     private Optional<MultipartFile> header;
+
     @JsonIgnore
     private Optional<MultipartFile> footer;
+
     @JsonIgnore
     private Optional<MultipartFile> portal;
 

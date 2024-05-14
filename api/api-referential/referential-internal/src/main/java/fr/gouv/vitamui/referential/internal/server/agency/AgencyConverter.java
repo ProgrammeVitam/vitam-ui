@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.agency;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AgencyConverter {
 
@@ -64,5 +64,4 @@ public class AgencyConverter {
     public List<AgencyDto> convertVitamsToDtos(final List<AgencyModelDto> agencies) {
         return agencies.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

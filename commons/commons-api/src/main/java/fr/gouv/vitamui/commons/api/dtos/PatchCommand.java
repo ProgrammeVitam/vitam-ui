@@ -37,7 +37,13 @@ import javax.validation.constraints.NotNull;
 @Data
 @Accessors(chain = true)
 public class PatchCommand {
-    @NotNull private PatchOperation op;
-    @NotBlank private String path;
-    @NotNull private JsonNode value;
+
+    @NotNull
+    private PatchOperation op;
+
+    @NotBlank
+    private String path;
+
+    @NotNull
+    private JsonNode value;
 }

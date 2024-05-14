@@ -42,9 +42,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateArchiveUnitDto {
+
     @NonNull
     @JsonProperty("#id")
     private String id;
+
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter

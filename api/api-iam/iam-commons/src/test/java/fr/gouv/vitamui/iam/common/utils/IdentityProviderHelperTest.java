@@ -33,8 +33,11 @@ public final class IdentityProviderHelperTest {
     public void testFindByUserIdentifierOk() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
-        final Optional<IdentityProviderDto> result =
-            helper.findByUserIdentifierAndCustomerId(providers, GOOD_EMAIL, CUSTOMER_ID_1);
+        final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
+            providers,
+            GOOD_EMAIL,
+            CUSTOMER_ID_1
+        );
 
         assertEquals(providers.get(0), result.get());
     }
@@ -43,8 +46,11 @@ public final class IdentityProviderHelperTest {
     public void testFindByUserIdentifierKo() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
-        final Optional<IdentityProviderDto> result =
-            helper.findByUserIdentifierAndCustomerId(providers, BAD_EMAIL, CUSTOMER_ID_1);
+        final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
+            providers,
+            BAD_EMAIL,
+            CUSTOMER_ID_1
+        );
 
         assertFalse(result.isPresent());
     }

@@ -30,9 +30,14 @@ public class IngestContractInternalWebClient extends BaseWebClient<InternalHttpC
         }
 
         LOGGER.debug("Import file {}", file.getOriginalFilename());
-        return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context,
+        return multipartData(
+            getUrl() + CommonConstants.PATH_IMPORT,
+            HttpMethod.POST,
+            context,
             Collections.singletonMap("fileName", file.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)), ResponseEntity.class);
+            Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+            ResponseEntity.class
+        );
     }
 
     @Override

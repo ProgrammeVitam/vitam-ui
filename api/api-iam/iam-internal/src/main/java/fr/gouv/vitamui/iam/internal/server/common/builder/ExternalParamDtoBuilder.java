@@ -44,13 +44,16 @@ public class ExternalParamDtoBuilder {
     }
 
     public static ExternalParametersDto build(ExternalParamProfileDto entityDto, String externalParamIdentifier) {
-
         ExternalParametersDto externalParametersDto = new ExternalParametersDto();
         List<ParameterDto> parametersDtos = new ArrayList<>();
         parametersDtos.add(new ParameterDto(PARAM_ACCESS_CONTRACT_NAME, entityDto.getAccessContract()));
         if (!entityDto.isUsePlatformThreshold() && entityDto.getBulkOperationsThreshold() != null) {
-            parametersDtos.add(new ParameterDto(PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
-                String.valueOf(entityDto.getBulkOperationsThreshold())));
+            parametersDtos.add(
+                new ParameterDto(
+                    PARAM_BULK_OPERATIONS_THRESHOLD_NAME,
+                    String.valueOf(entityDto.getBulkOperationsThreshold())
+                )
+            );
         }
 
         externalParametersDto.setParameters(parametersDtos);

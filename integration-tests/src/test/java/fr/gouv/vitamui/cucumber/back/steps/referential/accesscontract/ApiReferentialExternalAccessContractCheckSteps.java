@@ -53,9 +53,9 @@ public class ApiReferentialExternalAccessContractCheckSteps extends CommonSteps 
         try {
             final AccessContractDto accessContractDto = new AccessContractDto();
             accessContractDto.setIdentifier(TestConstants.ACCESS_CONTRACT_NAME);
-            testContext.bResponse = getAccessContractRestClient().check(getSystemTenantUserAdminContext(), accessContractDto);
-        }
-        catch (final RuntimeException e) {
+            testContext.bResponse = getAccessContractRestClient()
+                .check(getSystemTenantUserAdminContext(), accessContractDto);
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

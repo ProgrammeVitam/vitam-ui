@@ -5,8 +5,6 @@ import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
 import io.cucumber.java.en.Given;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Common steps for the ARCHIVE SEARCH API.
  */
@@ -15,6 +13,7 @@ public class ArchiveSearchCommonSteps extends CommonSteps {
     @Given("^un critere de recherche a été créé$")
     public void un_critere_de_recherche_a_été_créé() {
         testContext.savedSearchCriteriaHistoryDto = FactoryDto.buildDto(SearchCriteriaHistoryDto.class);
-        testContext.searchCriteriaHistoryDto = getSearchCriteriaHistoryExternalRestClient().create(getSystemTenantUserAdminContext(), testContext.savedSearchCriteriaHistoryDto);
+        testContext.searchCriteriaHistoryDto = getSearchCriteriaHistoryExternalRestClient()
+            .create(getSystemTenantUserAdminContext(), testContext.savedSearchCriteriaHistoryDto);
     }
 }

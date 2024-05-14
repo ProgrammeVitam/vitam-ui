@@ -39,6 +39,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class SearchCriteriaSort implements Serializable {
+
     private String criteria;
     private DirectionDto sorting = DirectionDto.ASC;
 }

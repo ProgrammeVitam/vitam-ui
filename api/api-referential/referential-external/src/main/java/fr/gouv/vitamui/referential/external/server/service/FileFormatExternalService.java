@@ -63,40 +63,49 @@ import java.util.stream.Collectors;
 
 @Service
 public class FileFormatExternalService extends AbstractResourceClientService<FileFormatDto, FileFormatDto> {
+
     private FileFormatInternalRestClient fileFormatInternalRestClient;
 
     private FileFormatInternalWebClient fileFormatInternalWebClient;
 
     @Autowired
     public FileFormatExternalService(
-    	ExternalSecurityService externalSecurityService,
-    	FileFormatInternalRestClient fileFormatInternalRestClient,
-    	FileFormatInternalWebClient fileFormatInternalWebClient) {
+        ExternalSecurityService externalSecurityService,
+        FileFormatInternalRestClient fileFormatInternalRestClient,
+        FileFormatInternalWebClient fileFormatInternalWebClient
+    ) {
         super(externalSecurityService);
         this.fileFormatInternalRestClient = fileFormatInternalRestClient;
         this.fileFormatInternalWebClient = fileFormatInternalWebClient;
     }
 
     public List<FileFormatDto> getAll(final Optional<String> criteria) {
-        return fileFormatInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return fileFormatInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<FileFormatDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<FileFormatDto, InternalHttpContext> getClient() {
         return fileFormatInternalRestClient;
     }
 
-    public PaginatedValuesDto<FileFormatDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<FileFormatDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         // Can't use DLab super.getAllPaginated because the criteria is updated for internal concern.
         // TODO: Maybe needs a VITAM class for ResourceClientService ?
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<FileFormatDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<FileFormatDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     public FileFormatDto getOne(String id) {

@@ -33,6 +33,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Error during schema parsing")
 public class SchemaParsingException extends RuntimeException {
+
     public SchemaParsingException(Throwable cause) {
         super(cause);
     }

@@ -33,8 +33,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NettyServerCustomizer
-    implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
+public class NettyServerCustomizer implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
 
     private final int maxHttpHeaderSize;
 
@@ -45,11 +44,11 @@ public class NettyServerCustomizer
     @Override
     public void customize(NettyReactiveWebServerFactory factory) {
         factory.addServerCustomizers(
-            server -> server.httpRequestDecoder(
-                reqDecorator -> reqDecorator
-                    .maxInitialLineLength(maxHttpHeaderSize)
-                    .maxHeaderSize(maxHttpHeaderSize)
-            )
+            server ->
+                server.httpRequestDecoder(
+                    reqDecorator ->
+                        reqDecorator.maxInitialLineLength(maxHttpHeaderSize).maxHeaderSize(maxHttpHeaderSize)
+                )
         );
     }
 }

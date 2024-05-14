@@ -65,8 +65,10 @@ class ExportDipInternalServiceTest {
 
     @Mock
     private ExportDipV2Service exportDipV2Service;
+
     @Mock
     private ArchiveSearchInternalService archiveSearchInternalService;
+
     @InjectMocks
     ExportDipInternalService exportDipInternalService;
 
@@ -76,22 +78,33 @@ class ExportDipInternalServiceTest {
     }
 
     @Test
-    void dipExport_should_pass()
-        throws Exception {
+    void dipExport_should_pass() throws Exception {
         //Given
-        final Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns = Map.of(BINARY_MASTER, Set.of(FIRST));
-        final ExportDipCriteriaDto exportDipCriteriaDto = newExportDipCriteriaDto(true, "2.2", dataObjectVersionsPatterns);
+        final Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns = Map.of(
+            BINARY_MASTER,
+            Set.of(FIRST)
+        );
+        final ExportDipCriteriaDto exportDipCriteriaDto = newExportDipCriteriaDto(
+            true,
+            "2.2",
+            dataObjectVersionsPatterns
+        );
         VitamContext vitamContext = newVitamContext();
         String jsonDslQuery =
             "{\"$roots\":[],\"$query\":[{\"$and\":[{\"$eq\":{\"#id\":\"aeaqaaaaaehmay6yaaqhual6ysiaariaaaba\"}}]}],\"$filter\":{\"$limit\":10},\"$projection\":{},\"$facets\":[]}";
         JsonNode dslQuery = newJsonNode(jsonDslQuery);
 
-        Mockito.when(archiveSearchInternalService.prepareDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext))
-            .thenReturn(dslQuery);
+        Mockito.when(
+            archiveSearchInternalService.prepareDslQuery(
+                exportDipCriteriaDto.getExportDIPSearchCriteria(),
+                vitamContext
+            )
+        ).thenReturn(dslQuery);
         String requestResponseOKJson =
             "{\"httpCode\":202,\"$hits\":{\"total\":1,\"offset\":0,\"limit\":0,\"size\":1},\"$results\":[{\"itemId\":\"aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq\",\"message\":\"toutestOK\",\"globalStatus\":\"STARTED\",\"globalState\":\"RUNNING\",\"lifecycleEnable\":true}]}";
-        RequestResponse<JsonNode> responseReturned =
-            RequestResponseOK.getFromJsonNode(newJsonNode(requestResponseOKJson));
+        RequestResponse<JsonNode> responseReturned = RequestResponseOK.getFromJsonNode(
+            newJsonNode(requestResponseOKJson)
+        );
         Mockito.when(exportDipV2Service.exportDip(eq(vitamContext), any())).thenReturn(responseReturned);
 
         //When
@@ -106,7 +119,9 @@ class ExportDipInternalServiceTest {
         assertThat(dipRequest.isExportWithLogBookLFC()).isTrue();
         assertThat(dipRequest.isExportWithoutObjects()).isFalse();
         assertThat(dipRequest.getSedaVersion()).isEqualTo("2.2");
-        assertThat(dipRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(dataObjectVersionsPatterns);
+        assertThat(dipRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(
+            dataObjectVersionsPatterns
+        );
     }
 
     private JsonNode newJsonNode(String json) throws JsonProcessingException {
@@ -117,8 +132,11 @@ class ExportDipInternalServiceTest {
         return new VitamContext(1);
     }
 
-    private ExportDipCriteriaDto newExportDipCriteriaDto(boolean lifeCycleLogs, String sedaVersion,
-        Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns) {
+    private ExportDipCriteriaDto newExportDipCriteriaDto(
+        boolean lifeCycleLogs,
+        String sedaVersion,
+        Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns
+    ) {
         final ExportDipCriteriaDto exportDipCriteriaDto = new ExportDipCriteriaDto();
         exportDipCriteriaDto.setLifeCycleLogs(lifeCycleLogs);
         exportDipCriteriaDto.setSedaVersion(sedaVersion);

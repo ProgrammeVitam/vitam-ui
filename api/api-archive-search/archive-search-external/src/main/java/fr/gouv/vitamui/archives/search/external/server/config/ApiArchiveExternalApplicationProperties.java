@@ -26,7 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.server.config;
 
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,5 +48,4 @@ public class ApiArchiveExternalApplicationProperties {
     private RestClientConfiguration securityClient;
 
     private RestClientConfiguration archiveSearchInternalClient;
-
 }

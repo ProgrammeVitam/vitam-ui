@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.ToString;
+
+import java.util.Set;
 
 @ToString
 public class AccessContractModelDto {
@@ -64,7 +63,7 @@ public class AccessContractModelDto {
     private String lastUpdate;
 
     private String activationDate;
-    
+
     private String deactivationDate;
 
     private Boolean writingPermission;
@@ -136,12 +135,11 @@ public class AccessContractModelDto {
     public void setActivationDate(String activationDate) {
         this.activationDate = activationDate;
     }
-    
+
     @JsonProperty("DeactivationDate")
     public void setDeactivationDate(String deactivationDate) {
         this.deactivationDate = deactivationDate;
     }
-
 
     @JsonProperty("WritingPermission")
     public void setWritingPermission(Boolean writingPermission) {
@@ -242,7 +240,7 @@ public class AccessContractModelDto {
     public String getActivationDate() {
         return activationDate;
     }
-    
+
     @JsonProperty("deactivationDate")
     public String getDeactivationDate() {
         return deactivationDate;

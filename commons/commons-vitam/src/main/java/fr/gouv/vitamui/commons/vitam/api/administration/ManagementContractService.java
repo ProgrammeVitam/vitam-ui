@@ -71,29 +71,42 @@ public class ManagementContractService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<ManagementContractModel> findManagementContracts(final VitamContext vitamContext, final JsonNode select)
-        throws VitamClientException {
-        final RequestResponse<ManagementContractModel> response = adminExternalClient.findManagementContracts(vitamContext, select);
+    public RequestResponse<ManagementContractModel> findManagementContracts(
+        final VitamContext vitamContext,
+        final JsonNode select
+    ) throws VitamClientException {
+        final RequestResponse<ManagementContractModel> response = adminExternalClient.findManagementContracts(
+            vitamContext,
+            select
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<ManagementContractModel> findManagementContractById(final VitamContext vitamContext, final String contractId)
-        throws VitamClientException {
-        final RequestResponse<ManagementContractModel> response = adminExternalClient.findManagementContractById(vitamContext, contractId);
+    public RequestResponse<ManagementContractModel> findManagementContractById(
+        final VitamContext vitamContext,
+        final String contractId
+    ) throws VitamClientException {
+        final RequestResponse<ManagementContractModel> response = adminExternalClient.findManagementContractById(
+            vitamContext,
+            contractId
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse createManagementContracts(final VitamContext vitamContext, final List<ManagementContractModelDto> managementContractModelDtos)
-        throws InvalidParseOperationException, AccessExternalClientException, IOException {
+    public RequestResponse createManagementContracts(
+        final VitamContext vitamContext,
+        final List<ManagementContractModelDto> managementContractModelDtos
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeManagementContracts(managementContractModelDtos)) {
             return adminExternalClient.createManagementContracts(vitamContext, byteArrayInputStream);
         }
     }
 
-    private ByteArrayInputStream serializeManagementContracts(final List<ManagementContractModelDto> managementContractModelDtos)
-        throws IOException {
+    private ByteArrayInputStream serializeManagementContracts(
+        final List<ManagementContractModelDto> managementContractModelDtos
+    ) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(managementContractModelDtos, JsonNode.class);
         LOGGER.debug("The json for creation management contract, sent to Vitam {}", node);
@@ -110,50 +123,70 @@ public class ManagementContractService {
      * @return
      * the tenant where the managment contract will be created
      */
-    public Integer checkAbilityToCreateManagementContractInVitam(final List<ManagementContractModelDto> managementContractModelDtos, final String applicationSessionId) {
-
+    public Integer checkAbilityToCreateManagementContractInVitam(
+        final List<ManagementContractModelDto> managementContractModelDtos,
+        final String applicationSessionId
+    ) {
         if (managementContractModelDtos != null && !managementContractModelDtos.isEmpty()) {
             // check if tenant is ok in the request body
-            final Optional<ManagementContractModelDto> managementContractModelDto = managementContractModelDtos.stream().findFirst();
-            final Integer tenantIdentifier = managementContractModelDto.isPresent() ? managementContractModelDto.get().getTenant() : null;
+            final Optional<ManagementContractModelDto> managementContractModelDto = managementContractModelDtos
+                .stream()
+                .findFirst();
+            final Integer tenantIdentifier = managementContractModelDto.isPresent()
+                ? managementContractModelDto.get().getTenant()
+                : null;
             if (tenantIdentifier != null) {
-                final boolean sameTenant = managementContractModelDtos.stream().allMatch(mc -> tenantIdentifier.equals(mc.getTenant()));
+                final boolean sameTenant = managementContractModelDtos
+                    .stream()
+                    .allMatch(mc -> tenantIdentifier.equals(mc.getTenant()));
                 if (!sameTenant) {
                     LOGGER.error("All the management contracts must have the same tenant identifier");
                     throw new BadRequestException("All the management contracts must have the same tenant identifier");
                 }
-            }
-            else {
+            } else {
                 LOGGER.error("The tenant identifier must be present in the request body");
                 throw new BadRequestException("The tenant identifier must be present in the request body");
             }
 
             try {
                 // check if tenant exist in Vitam
-                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(applicationSessionId);
+                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
+                    applicationSessionId
+                );
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<ManagementContractModel> response = findManagementContracts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    LOGGER.error("Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
-                    throw new NotFoundException("Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
-                    LOGGER.error("Can't create management contracts for this tenant, Vitam response code : " + response.getStatus());
-                    throw new UnavailableServiceException("Can't create management contracts for this tenant, Vitam response code : " + response.getStatus());
+                    LOGGER.error(
+                        "Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam"
+                    );
+                    throw new NotFoundException(
+                        "Can't create management contracts for the tenant : " + tenantIdentifier + " not found in Vitam"
+                    );
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
+                    LOGGER.error(
+                        "Can't create management contracts for this tenant, Vitam response code : " +
+                        response.getStatus()
+                    );
+                    throw new UnavailableServiceException(
+                        "Can't create management contracts for this tenant, Vitam response code : " +
+                        response.getStatus()
+                    );
                 }
 
                 verifyManagementContractExistence(managementContractModelDtos, response);
-            }
-            catch (final VitamClientException e) {
-                LOGGER.error("Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage());
-                throw new UnavailableServiceException("Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage());
+            } catch (final VitamClientException e) {
+                LOGGER.error(
+                    "Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
+                throw new UnavailableServiceException(
+                    "Can't create management contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return tenantIdentifier;
         }
         final String msg = "The body is not found";
         LOGGER.error(msg);
         throw new BadRequestException(msg);
-
     }
 
     /**
@@ -163,31 +196,53 @@ public class ManagementContractService {
      * @param response : list of management contracts in vitam
      *
      */
-    private void verifyManagementContractExistence(final List<ManagementContractModelDto> managementContractModelDtos , final RequestResponse<ManagementContractModel> response) {
+    private void verifyManagementContractExistence(
+        final List<ManagementContractModelDto> managementContractModelDtos,
+        final RequestResponse<ManagementContractModel> response
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ManagementContractResponseDto managementContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), ManagementContractResponseDto.class);
-            final List<String> managementContractsNames = managementContractModelDtos.stream().map(
-                ManagementContractModelDto::getName).filter(Objects::nonNull).map(String::strip).collect(Collectors.toList());
-            boolean alreadyCreated = managementContractResponseDto.getResults().stream().anyMatch(ac -> managementContractsNames.contains(ac.getName()));
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper.treeToValue(
+                response.toJsonNode(),
+                ManagementContractResponseDto.class
+            );
+            final List<String> managementContractsNames = managementContractModelDtos
+                .stream()
+                .map(ManagementContractModelDto::getName)
+                .filter(Objects::nonNull)
+                .map(String::strip)
+                .collect(Collectors.toList());
+            boolean alreadyCreated = managementContractResponseDto
+                .getResults()
+                .stream()
+                .anyMatch(ac -> managementContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
-                final String msg = "Can't create management contract, a contract with the same name already exist in Vitam";
+                final String msg =
+                    "Can't create management contract, a contract with the same name already exist in Vitam";
                 LOGGER.error(msg);
                 throw new ConflictException(msg);
             }
 
-            final List<String> managementContractsIdentifiers = managementContractModelDtos.stream().map(
-                ManagementContractModelDto::getIdentifier).filter(Objects::nonNull).map(String::strip).collect(Collectors.toList());
-            alreadyCreated = managementContractResponseDto.getResults().stream().anyMatch(ac -> managementContractsIdentifiers.contains(ac.getIdentifier()));
+            final List<String> managementContractsIdentifiers = managementContractModelDtos
+                .stream()
+                .map(ManagementContractModelDto::getIdentifier)
+                .filter(Objects::nonNull)
+                .map(String::strip)
+                .collect(Collectors.toList());
+            alreadyCreated = managementContractResponseDto
+                .getResults()
+                .stream()
+                .anyMatch(ac -> managementContractsIdentifiers.contains(ac.getIdentifier()));
             if (alreadyCreated) {
-                final String msg = "Can't create management contract, a contract with the same identifier already exist in Vitam";
+                final String msg =
+                    "Can't create management contract, a contract with the same identifier already exist in Vitam";
                 LOGGER.error(msg);
                 throw new ConflictException(msg);
             }
-        }
-        catch (final JsonProcessingException exception) {
-            final String msg = "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
+        } catch (final JsonProcessingException exception) {
+            final String msg =
+                "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
             LOGGER.error(msg);
             throw new UnexpectedDataException(msg, exception);
         }

@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpMethod.GET;
 
 public class SchemaClient extends BaseRestClient<ExternalHttpContext> {
+
     public SchemaClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
@@ -60,11 +61,15 @@ public class SchemaClient extends BaseRestClient<ExternalHttpContext> {
 
     public List<SchemaDto> getSchemas(final ExternalHttpContext externalHttpContext, final Set<Collection> collections)
         throws URISyntaxException {
-        final URI uri = new URIBuilder(getUrl()).addParameter("collections",
-            collections.stream().map(Collection::name).collect(
-                Collectors.joining(","))).build();
-        final ResponseEntity<SchemaDto[]> responseEntity =
-            restTemplate.exchange(uri, GET, generateHeaders(externalHttpContext), SchemaDto[].class);
+        final URI uri = new URIBuilder(getUrl())
+            .addParameter("collections", collections.stream().map(Collection::name).collect(Collectors.joining(",")))
+            .build();
+        final ResponseEntity<SchemaDto[]> responseEntity = restTemplate.exchange(
+            uri,
+            GET,
+            generateHeaders(externalHttpContext),
+            SchemaDto[].class
+        );
 
         return Arrays.asList(Objects.requireNonNull(responseEntity.getBody()));
     }

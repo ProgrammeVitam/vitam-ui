@@ -86,18 +86,35 @@ public class UserEmailInternalService {
     }
 
     public void sendCreationEmail(final UserDto userDto) {
-        if (userDto != null && userDto.getStatus() == UserStatusEnum.ENABLED &&
-            userDto.getType() == UserTypeEnum.NOMINATIVE) {
-            final List<IdentityProviderDto> providers =
-                internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
-            if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail(),
-                userDto.getCustomerId())) {
+        if (
+            userDto != null &&
+            userDto.getStatus() == UserStatusEnum.ENABLED &&
+            userDto.getType() == UserTypeEnum.NOMINATIVE
+        ) {
+            final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(
+                Optional.empty(),
+                Optional.empty()
+            );
+            if (
+                identityProviderHelper.identifierMatchProviderPattern(
+                    providers,
+                    userDto.getEmail(),
+                    userDto.getCustomerId()
+                )
+            ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
-                restClientFactory.getRestTemplate()
-                    .getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class,
-                        userDto.getEmail(), userDto.getFirstname(), userDto.getLastname(),
-                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(), userDto.getCustomerId());
+                restClientFactory
+                    .getRestTemplate()
+                    .getForEntity(
+                        restClientFactory.getBaseUrl() + casResetPasswordUrl,
+                        Boolean.class,
+                        userDto.getEmail(),
+                        userDto.getFirstname(),
+                        userDto.getLastname(),
+                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(),
+                        userDto.getCustomerId()
+                    );
             }
         }
     }

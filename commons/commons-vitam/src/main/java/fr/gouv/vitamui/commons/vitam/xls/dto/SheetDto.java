@@ -22,5 +22,4 @@ public class SheetDto {
     private List<Map<String, ValueDto>> lines;
 
     private boolean autoSizeRows = false;
-
 }

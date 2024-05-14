@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import fr.gouv.vitam.common.model.StatusCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,35 +46,34 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CheckDto {
-	
-	@JsonProperty("name")
-	private String name;
-	
-	@JsonProperty("details")
-	private String details;
-	
-	@JsonProperty("type")
-	private String type;
-	
-	@JsonProperty("source")
-	private String source;
-	
-	@JsonProperty("destination")
-	private String destination;
-	
-	@JsonProperty("sourceComparable")
-	private String sourceComparable;
-	
-	@JsonProperty("destinationComparable")
-	private String destinationComparable;
-	
-	@JsonProperty("action")
-	private String action;
-	
-	@JsonProperty("item")
-	private String item;
-	
-	@JsonProperty("status")
-	private StatusCode status;
 
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("details")
+    private String details;
+
+    @JsonProperty("type")
+    private String type;
+
+    @JsonProperty("source")
+    private String source;
+
+    @JsonProperty("destination")
+    private String destination;
+
+    @JsonProperty("sourceComparable")
+    private String sourceComparable;
+
+    @JsonProperty("destinationComparable")
+    private String destinationComparable;
+
+    @JsonProperty("action")
+    private String action;
+
+    @JsonProperty("item")
+    private String item;
+
+    @JsonProperty("status")
+    private StatusCode status;
 }

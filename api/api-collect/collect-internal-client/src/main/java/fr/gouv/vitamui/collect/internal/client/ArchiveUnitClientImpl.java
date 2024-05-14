@@ -51,7 +51,8 @@ import java.util.Set;
 import static org.springframework.http.HttpMethod.PATCH;
 
 public class ArchiveUnitClientImpl extends BaseRestClient<InternalHttpContext> implements ArchiveUnitClient {
-    private final static String ARCHIVE_UNITS = "archive-units";
+
+    private static final String ARCHIVE_UNITS = "archive-units";
     private static final VitamUILogger log = VitamUILoggerFactory.getInstance(ArchiveUnitClientImpl.class);
 
     public ArchiveUnitClientImpl(RestTemplate restTemplate, String baseUrl) {
@@ -63,8 +64,11 @@ public class ArchiveUnitClientImpl extends BaseRestClient<InternalHttpContext> i
         return String.format("/%s", ARCHIVE_UNITS);
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final String transactionId, final Set<UpdateArchiveUnitDto> updateOperationDtoSet) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final String transactionId,
+        final Set<UpdateArchiveUnitDto> updateOperationDtoSet
+    ) {
         final URI uri;
         try {
             uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, transactionId).build();
@@ -72,13 +76,21 @@ public class ArchiveUnitClientImpl extends BaseRestClient<InternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(updateOperationDtoSet, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext, final String transactionId, final String id,
-        final JsonPatch jsonPatch) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final String transactionId,
+        final String id,
+        final JsonPatch jsonPatch
+    ) {
         final URI uri;
         try {
             uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, transactionId, id).build();
@@ -86,36 +98,58 @@ public class ArchiveUnitClientImpl extends BaseRestClient<InternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(jsonPatch, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext, final String transactionId, final JsonPatchDto jsonPatchDto) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final String transactionId,
+        final JsonPatchDto jsonPatchDto
+    ) {
         final URI uri;
         try {
-            uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, transactionId, "update", "single").build();
+            uri = new URIBuilder(getBaseUrl())
+                .setPathSegments(ARCHIVE_UNITS, transactionId, "update", "single")
+                .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(jsonPatchDto, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final String transactionId, final MultiJsonPatchDto multiJsonPatchDto) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final String transactionId,
+        final MultiJsonPatchDto multiJsonPatchDto
+    ) {
         final URI uri;
         try {
-            uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, transactionId, "update", "multiple").build();
+            uri = new URIBuilder(getBaseUrl())
+                .setPathSegments(ARCHIVE_UNITS, transactionId, "update", "multiple")
+                .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(multiJsonPatchDto, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
-
 }

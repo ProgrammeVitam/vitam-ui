@@ -17,11 +17,9 @@ public class ExportCSVUtils {
 
     public static final byte[] BOM = new byte[] { (byte) 239, (byte) 187, (byte) 191 };
 
-    private ExportCSVUtils() {
-    }
+    private ExportCSVUtils() {}
 
     public static Resource generateCSVFile(List<String[]> lines, char separator) {
-
         try {
             // create a write
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -48,5 +46,4 @@ public class ExportCSVUtils {
             throw new BadRequestException("Unable to generate csv file ", e);
         }
     }
-
 }

@@ -77,7 +77,7 @@ public class UnitExternalController {
         return unitExternalService.findUnitById(id);
     }
 
-    @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
+    @PostMapping({ RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID })
     @Secured(ServicesData.ROLE_GET_UNITS)
     public JsonNode searchByDsl(final @PathVariable Optional<String> id, final @RequestBody JsonNode dsl) {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
@@ -87,20 +87,17 @@ public class UnitExternalController {
 
     @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
     @Secured(ServicesData.ROLE_GET_UNITS)
-    public JsonNode findObjectMetadataById(
-            @PathVariable final String id,
-            @RequestBody final JsonNode dsl) throws VitamClientException, InvalidParseOperationException {
+    public JsonNode findObjectMetadataById(@PathVariable final String id, @RequestBody final JsonNode dsl)
+        throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeJson(dsl);
         return unitExternalService.findObjectMetadataById(id, dsl);
     }
 
-
     @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFilingAndHoldingUnits() {
         return unitExternalService.getFilingAndHoldingUnits();
     }
-
 }

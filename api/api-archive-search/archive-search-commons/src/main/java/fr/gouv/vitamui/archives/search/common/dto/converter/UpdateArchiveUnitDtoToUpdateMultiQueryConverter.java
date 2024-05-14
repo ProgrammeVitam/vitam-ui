@@ -44,8 +44,10 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.GUID;
 @Service
 public class UpdateArchiveUnitDtoToUpdateMultiQueryConverter
     implements Converter<UpdateArchiveUnitDto, UpdateMultiQuery> {
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(UpdateArchiveUnitDtoToUpdateMultiQueryConverter.class);
+
+    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(
+        UpdateArchiveUnitDtoToUpdateMultiQueryConverter.class
+    );
 
     @Override
     public UpdateMultiQuery convert(UpdateArchiveUnitDto source) {

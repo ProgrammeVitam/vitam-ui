@@ -53,6 +53,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @author Paulo Pimenta <pimenta@cines.fr>
  */
@@ -62,10 +63,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ElementRNG {
 
-
     private static ElementProperties elementStatic = new ElementProperties();
+
     @Getter
     private static ElementProperties elementStaticRoot = new ElementProperties();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ElementRNG.class);
     private static long idCounter = 0;
     String name;
@@ -76,8 +78,11 @@ public class ElementRNG {
     List<ElementRNG> children = new ArrayList<>();
 
     public static void setDataForParentElementOrAttribute(ElementProperties parentNode, ElementRNG node) {
-        if (null != parentNode.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())
-            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))) {
+        if (
+            null != parentNode.getType() &&
+            (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType()) ||
+                RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))
+        ) {
             parentNode.setValueOrData(node.getType());
             if (RNGConstants.getTypesMap().containsKey(parentNode.getName())) {
                 parentNode.setDataType(RNGConstants.getTypesMap().get(parentNode.getName()).getLabel());
@@ -89,18 +94,22 @@ public class ElementRNG {
     }
 
     public static void setDocumentationForParentElement(ElementProperties parentNode, ElementRNG node) {
-        if (null != parentNode.getType() &&
-            RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
-            if(parentNode.getName() != null && parentNode.getName().equals("ArchiveUnit")
-                && node.getValue().contains("Commentaire : ")){
+        if (
+            null != parentNode.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())
+        ) {
+            if (
+                parentNode.getName() != null &&
+                parentNode.getName().equals("ArchiveUnit") &&
+                node.getValue().contains("Commentaire : ")
+            ) {
                 parentNode.setDocumentation(node.getValue().replace("Commentaire : ", ""));
-                if(parentNode.getDocumentation() != null ){
+                if (parentNode.getDocumentation() != null) {
                     parentNode.setEditName(parentNode.getDocumentation());
                 }
-            }else{
-                if(parentNode.getDocumentation() != null ){
+            } else {
+                if (parentNode.getDocumentation() != null) {
                     parentNode.setEditName(node.getValue());
-                }else{
+                } else {
                     parentNode.setDocumentation(node.getValue());
                 }
             }
@@ -113,20 +122,19 @@ public class ElementRNG {
     // a node
     //the level of the node
     //the parent of the node
-    public static void buildElementPropertiesTree(ElementRNG node, int profondeur,
-        ElementProperties parentNode) {
+    public static void buildElementPropertiesTree(ElementRNG node, int profondeur, ElementProperties parentNode) {
         ElementProperties local = new ElementProperties();
         LOGGER.trace("Generating JSON element {}", node.getName());
-        if (null != node.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(node.getType())
-            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(node.getType())) {
-
+        if (
+            (null != node.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(node.getType())) ||
+            RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(node.getType())
+        ) {
             local.setCardinality(elementStatic.getCardinality());
             local.setGroupOrChoice(elementStatic.getGroupOrChoice());
             local.setName(node.getName());
             local.setType(node.getType());
             local.setLevel(profondeur);
             local.setValue(node.getValue());
-
 
             elementStatic = new ElementProperties();
 
@@ -141,14 +149,13 @@ public class ElementRNG {
                 elementStaticRoot = local;
             }
         } else {
-
             if (RNGConstants.isValueOrData(node.getType())) {
                 setDataForParentElementOrAttribute(parentNode, node);
             } else if (RNGConstants.isCardinality(node.getType())) {
                 elementStatic.setCardinality(node.getType());
             } else if (RNGConstants.hasGroupOrChoice(node.getType())) {
                 elementStatic.setGroupOrChoice(node.getType());
-            } else if ( "documentation".equals(node.getType()) && null != node.getValue()) {
+            } else if ("documentation".equals(node.getType()) && null != node.getValue()) {
                 setDocumentationForParentElement(parentNode, node);
             }
 
@@ -157,10 +164,13 @@ public class ElementRNG {
         buildTree(node, profondeur, local);
     }
 
-    private static void buildTree(ElementRNG node, int profondeur, ElementProperties local){
+    private static void buildTree(ElementRNG node, int profondeur, ElementProperties local) {
         for (ElementRNG next : node.getChildren()) {
-            if (null != next.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(next.getType())
-                || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(next.getType()))) {
+            if (
+                null != next.getType() &&
+                (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(next.getType()) ||
+                    RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(next.getType()))
+            ) {
                 buildElementPropertiesTree(next, profondeur + 1, local);
             } else {
                 buildElementPropertiesTree(next, profondeur, local);

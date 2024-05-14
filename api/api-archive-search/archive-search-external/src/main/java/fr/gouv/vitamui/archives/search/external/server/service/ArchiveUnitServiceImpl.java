@@ -46,12 +46,15 @@ import java.util.Set;
 
 @Service
 public class ArchiveUnitServiceImpl implements ArchiveUnitService {
+
     private final ExternalSecurityService externalSecurityService;
     private final ArchiveUnitClient client;
 
     @Autowired
-    public ArchiveUnitServiceImpl(final ExternalSecurityService externalSecurityService,
-        final ArchiveUnitClient client) {
+    public ArchiveUnitServiceImpl(
+        final ExternalSecurityService externalSecurityService,
+        final ArchiveUnitClient client
+    ) {
         this.externalSecurityService = externalSecurityService;
         this.client = client;
     }

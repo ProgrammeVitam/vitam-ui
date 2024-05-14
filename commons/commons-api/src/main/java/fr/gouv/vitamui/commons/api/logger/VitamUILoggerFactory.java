@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.commons.api.logger;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.helpers.NOPLoggerFactory;
-
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.NOPLoggerFactory;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * The <code>VitamUILoggerFactory</code> is a utility class producing Loggers for VITAMUI.
@@ -85,15 +84,19 @@ public final class VitamUILoggerFactory {
         final StringBuilder buf = new StringBuilder();
         final PrintStream err = System.err; // NOSONAR
         try {
-            System.setErr(new PrintStream(new OutputStream() {
-
-                @Override
-                public void write(final int b) {
-                    buf.append((char) b);
-                }
-            }, true, "US-ASCII"));
-        }
-        catch (final UnsupportedEncodingException e) {
+            System.setErr(
+                new PrintStream(
+                    new OutputStream() {
+                        @Override
+                        public void write(final int b) {
+                            buf.append((char) b);
+                        }
+                    },
+                    true,
+                    "US-ASCII"
+                )
+            );
+        } catch (final UnsupportedEncodingException e) {
             throw new InternalServerException(e.getMessage());
         }
 
@@ -104,11 +107,9 @@ public final class VitamUILoggerFactory {
                 err.print(buf.toString());
                 err.flush();
             }
-        }
-        finally {
+        } finally {
             System.setErr(err);
         }
         VitamUILoggerFactory.initialized = true;
     }
-
 }

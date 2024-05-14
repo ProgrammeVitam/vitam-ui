@@ -142,14 +142,20 @@ public class TransactionExternalController {
         return transactionExternalService.updateTransaction(transactionDto);
     }
 
-
     @Secured(ServicesData.ROLE_UPDATE_UNITS_METADATA)
-    @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID  +  UPDATE_UNITS_METADATA_PATH,
-        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId, InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @ApiOperation(
+        value = "Upload on streaming metadata file and update archive units",
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    @PutMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public String updateArchiveUnitsMetadataFromFile(
+        final @PathVariable("transactionId") String transactionId,
+        InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(" [External] The transactionId is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);

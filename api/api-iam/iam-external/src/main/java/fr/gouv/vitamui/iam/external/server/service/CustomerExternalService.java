@@ -79,8 +79,11 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
     private final CustomerInternalWebClient customerInternalV2RestClient;
 
     @Autowired
-    public CustomerExternalService(final CustomerInternalRestClient customerInternalRestClient, final CustomerInternalWebClient customerInternalV2RestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public CustomerExternalService(
+        final CustomerInternalRestClient customerInternalRestClient,
+        final CustomerInternalWebClient customerInternalV2RestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.customerInternalRestClient = customerInternalRestClient;
         this.customerInternalV2RestClient = customerInternalV2RestClient;
@@ -120,8 +123,13 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
     }
 
     @Override
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -135,7 +143,18 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "name", "code", "companyName", "enabled", "language", "otp", "defaultEmailDomain", "emailDomains", "subrogeable");
+        return Arrays.asList(
+            "id",
+            "name",
+            "code",
+            "companyName",
+            "enabled",
+            "language",
+            "otp",
+            "defaultEmailDomain",
+            "emailDomains",
+            "subrogeable"
+        );
     }
 
     @Override

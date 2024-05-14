@@ -34,7 +34,6 @@ import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.ui.commons.service.SchemaService;
 import io.swagger.annotations.Api;
-import org.bouncycastle.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -59,6 +58,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 public class SchemaController extends AbstractUiRestController {
+
     private final SchemaService schemaService;
 
     @Autowired

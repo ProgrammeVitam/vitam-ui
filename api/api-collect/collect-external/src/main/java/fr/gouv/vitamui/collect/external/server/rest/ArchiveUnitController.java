@@ -55,7 +55,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 @RestController
 @RequestMapping("/collect-api/archive-units/{transactionId}")
 public class ArchiveUnitController {
-    @Autowired ArchiveUnitService archiveUnitService;
+
+    @Autowired
+    ArchiveUnitService archiveUnitService;
 
     @PatchMapping
     @Consumes(APPLICATION_JSON)
@@ -63,7 +65,9 @@ public class ArchiveUnitController {
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
     @ApiOperation("Updates several archive units asynchronously by passing partial changes to apply to an archive unit")
     public ResponseEntity<OperationIdDto> update(
-        @PathVariable("transactionId") final String transactionId, @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet) {
+        @PathVariable("transactionId") final String transactionId,
+        @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet
+    ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, updateArchiveUnitDtoSet));
     }
 
@@ -72,8 +76,11 @@ public class ArchiveUnitController {
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
     @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on an archive unit")
-    public ResponseEntity<OperationIdDto> update(@PathVariable("transactionId") final String transactionId, @RequestBody @Validated final JsonPatch jsonPatch,
-        @PathVariable final String archiveUnitId) {
+    public ResponseEntity<OperationIdDto> update(
+        @PathVariable("transactionId") final String transactionId,
+        @RequestBody @Validated final JsonPatch jsonPatch,
+        @PathVariable final String archiveUnitId
+    ) {
         final JsonPatchDto jsonPatchDto = new JsonPatchDto().setId(archiveUnitId).setJsonPatch(jsonPatch);
         return update(transactionId, jsonPatchDto);
     }
@@ -83,7 +90,10 @@ public class ArchiveUnitController {
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
     @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on this one")
-    public ResponseEntity<OperationIdDto> update(@PathVariable("transactionId") final String transactionId, @RequestBody @Validated final JsonPatchDto jsonPatchDto) {
+    public ResponseEntity<OperationIdDto> update(
+        @PathVariable("transactionId") final String transactionId,
+        @RequestBody @Validated final JsonPatchDto jsonPatchDto
+    ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, jsonPatchDto));
     }
 
@@ -92,8 +102,10 @@ public class ArchiveUnitController {
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
     @ApiOperation("Updates several archive units asynchronously by passing a list of operation to do on these ones")
-    public ResponseEntity<OperationIdDto> update(@PathVariable("transactionId") final String transactionId, @RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto) {
+    public ResponseEntity<OperationIdDto> update(
+        @PathVariable("transactionId") final String transactionId,
+        @RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto
+    ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, multiJsonPatchDto));
     }
 }
-

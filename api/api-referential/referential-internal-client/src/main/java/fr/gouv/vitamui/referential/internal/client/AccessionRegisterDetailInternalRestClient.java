@@ -57,8 +57,9 @@ import java.util.List;
 public class AccessionRegisterDetailInternalRestClient
     extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessionRegisterDetailInternalRestClient.class
+    );
 
     public AccessionRegisterDetailInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -66,8 +67,7 @@ public class AccessionRegisterDetailInternalRestClient
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -81,19 +81,23 @@ public class AccessionRegisterDetailInternalRestClient
     }
 
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
-    public Resource exportAccessionRegisterCsv(final AccessionRegisterSearchDto query,
-        final InternalHttpContext context) {
+    public Resource exportAccessionRegisterCsv(
+        final AccessionRegisterSearchDto query,
+        final InternalHttpContext context
+    ) {
         LOGGER.debug("Calling exportAccessionRegisterCsv with query {} ", query);
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response = restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV,
-            HttpMethod.POST, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            getUrl() + RestApi.EXPORT_CSV,
+            HttpMethod.POST,
+            request,
+            Resource.class
+        );
         checkResponse(response);
         return response.getBody();
     }
-
 }

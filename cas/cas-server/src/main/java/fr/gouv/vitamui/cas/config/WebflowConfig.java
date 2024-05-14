@@ -111,7 +111,6 @@ import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -231,34 +230,52 @@ public class WebflowConfig {
 
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, utils,
-            delegatedClientDistributedSessionStore.getObject());
+        return new DispatcherAction(
+            providersService,
+            identityProviderHelper,
+            casRestClient,
+            utils,
+            delegatedClientDistributedSessionStore.getObject()
+        );
     }
 
     @Bean
     public DefaultTransientSessionTicketFactory pmTicketFactory() {
         return new DefaultTransientSessionTicketFactory(
-            new PmTransientSessionTicketExpirationPolicyBuilder(casProperties));
+            new PmTransientSessionTicketExpirationPolicyBuilder(casProperties)
+        );
     }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public Action sendPasswordResetInstructionsAction(
         final CasConfigurationProperties casProperties,
-        @Qualifier(PasswordManagementService.DEFAULT_BEAN_NAME)
-        final PasswordManagementService passwordManagementService,
+        @Qualifier(
+            PasswordManagementService.DEFAULT_BEAN_NAME
+        ) final PasswordManagementService passwordManagementService,
         @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
         @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver,
         @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
         @Qualifier(TicketFactory.BEAN_NAME) final TicketFactory ticketFactory,
-        @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder) {
+        @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder
+    ) {
         val pmTicketFactory = new DefaultTicketFactory();
         pmTicketFactory.addTicketFactory(TransientSessionTicket.class, pmTicketFactory());
 
-        return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager,
-            passwordManagementService, ticketRegistry, pmTicketFactory,
-            defaultPrincipalResolver, passwordResetUrlBuilder, messageSource, providersService,
-            identityProviderHelper, utils, vitamuiPlatformName);
+        return new I18NSendPasswordResetInstructionsAction(
+            casProperties,
+            communicationsManager,
+            passwordManagementService,
+            ticketRegistry,
+            pmTicketFactory,
+            defaultPrincipalResolver,
+            passwordResetUrlBuilder,
+            messageSource,
+            providersService,
+            identityProviderHelper,
+            utils,
+            vitamuiPlatformName
+        );
     }
 
     @Bean
@@ -272,13 +289,20 @@ public class WebflowConfig {
     public CasWebflowConfigurer defaultWebflowConfigurer(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY)
-        final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY)
-        final FlowDefinitionRegistry logoutFlowRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices) {
-        val c =
-            new CustomLoginWebflowConfigurer(flowBuilderServices, loginFlowRegistry, applicationContext, casProperties);
+        @Qualifier(
+            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
+        ) final FlowDefinitionRegistry loginFlowRegistry,
+        @Qualifier(
+            CasWebflowConstants.BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY
+        ) final FlowDefinitionRegistry logoutFlowRegistry,
+        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
+    ) {
+        val c = new CustomLoginWebflowConfigurer(
+            flowBuilderServices,
+            loginFlowRegistry,
+            applicationContext,
+            casProperties
+        );
         c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
         c.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return c;
@@ -289,20 +313,33 @@ public class WebflowConfig {
     public Action delegatedAuthenticationAction(
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
-        @Qualifier(DelegatedClientAuthenticationFailureEvaluator.BEAN_NAME)
-        final DelegatedClientAuthenticationFailureEvaluator delegatedClientAuthenticationFailureEvaluator,
-        @Qualifier(DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME)
-        final DelegatedClientAuthenticationConfigurationContext delegatedClientAuthenticationConfigurationContext,
-        @Qualifier(DelegatedClientAuthenticationWebflowManager.DEFAULT_BEAN_NAME)
-        final DelegatedClientAuthenticationWebflowManager delegatedClientWebflowManager) {
+        @Qualifier(
+            DelegatedClientAuthenticationFailureEvaluator.BEAN_NAME
+        ) final DelegatedClientAuthenticationFailureEvaluator delegatedClientAuthenticationFailureEvaluator,
+        @Qualifier(
+            DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME
+        ) final DelegatedClientAuthenticationConfigurationContext delegatedClientAuthenticationConfigurationContext,
+        @Qualifier(
+            DelegatedClientAuthenticationWebflowManager.DEFAULT_BEAN_NAME
+        ) final DelegatedClientAuthenticationWebflowManager delegatedClientWebflowManager
+    ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
             .withProperties(casProperties)
             .withAction(
-                () -> new CustomDelegatedClientAuthenticationAction(delegatedClientAuthenticationConfigurationContext,
-                    delegatedClientWebflowManager, delegatedClientAuthenticationFailureEvaluator,
-                    identityProviderHelper,
-                    providersService, utils, ticketRegistry, casRestClient, vitamuiPortalUrl))
+                () ->
+                    new CustomDelegatedClientAuthenticationAction(
+                        delegatedClientAuthenticationConfigurationContext,
+                        delegatedClientWebflowManager,
+                        delegatedClientAuthenticationFailureEvaluator,
+                        identityProviderHelper,
+                        providersService,
+                        utils,
+                        ticketRegistry,
+                        casRestClient,
+                        vitamuiPortalUrl
+                    )
+            )
             .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION)
             .build()
             .get();
@@ -314,24 +351,42 @@ public class WebflowConfig {
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(LogoutManager.DEFAULT_BEAN_NAME) final LogoutManager logoutManager,
-        @Qualifier(CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER)
-        final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        @Qualifier(
+            CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER
+        ) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
         @Qualifier("warnCookieGenerator") final CasCookieBuilder warnCookieGenerator,
-        @Qualifier(CentralAuthenticationService.BEAN_NAME)
-        final CentralAuthenticationService centralAuthenticationService,
-        @Qualifier(SingleLogoutRequestExecutor.BEAN_NAME)
-        final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
-        @Qualifier(ServiceTicketSessionTrackingPolicy.BEAN_NAME)
-        final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy) {
+        @Qualifier(
+            CentralAuthenticationService.BEAN_NAME
+        ) final CentralAuthenticationService centralAuthenticationService,
+        @Qualifier(
+            SingleLogoutRequestExecutor.BEAN_NAME
+        ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
+        @Qualifier(
+            ServiceTicketSessionTrackingPolicy.BEAN_NAME
+        ) final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy
+    ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
             .withProperties(casProperties)
-            .withAction(() -> new GeneralTerminateSessionAction(centralAuthenticationService,
-                ticketGrantingTicketCookieGenerator,
-                warnCookieGenerator, casProperties.getLogout(), logoutManager, applicationContext,
-                defaultSingleLogoutRequestExecutor,
-                utils, casRestClient, servicesManager, casProperties, frontChannelLogoutAction, ticketRegistry,
-                serviceTicketSessionTrackingPolicy))
+            .withAction(
+                () ->
+                    new GeneralTerminateSessionAction(
+                        centralAuthenticationService,
+                        ticketGrantingTicketCookieGenerator,
+                        warnCookieGenerator,
+                        casProperties.getLogout(),
+                        logoutManager,
+                        applicationContext,
+                        defaultSingleLogoutRequestExecutor,
+                        utils,
+                        casRestClient,
+                        servicesManager,
+                        casProperties,
+                        frontChannelLogoutAction,
+                        ticketRegistry,
+                        serviceTicketSessionTrackingPolicy
+                    )
+            )
             .withId(CasWebflowConstants.ACTION_ID_TERMINATE_SESSION)
             .build()
             .get();
@@ -343,11 +398,21 @@ public class WebflowConfig {
         final IdentityProviderHelper identityProviderHelper,
         final ProvidersService providersService,
         @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
-        @Qualifier(PasswordManagementService.DEFAULT_BEAN_NAME)
-        final PasswordManagementService passwordManagementService) {
-        return new ResetPasswordController(casProperties, passwordManagementService, communicationsManager,
-            messageSource, utils, passwordResetUrlBuilder, identityProviderHelper, providersService,
-            new ObjectMapper());
+        @Qualifier(
+            PasswordManagementService.DEFAULT_BEAN_NAME
+        ) final PasswordManagementService passwordManagementService
+    ) {
+        return new ResetPasswordController(
+            casProperties,
+            passwordManagementService,
+            communicationsManager,
+            messageSource,
+            utils,
+            passwordResetUrlBuilder,
+            identityProviderHelper,
+            providersService,
+            new ObjectMapper()
+        );
     }
 
     @Bean
@@ -359,22 +424,29 @@ public class WebflowConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public Action mfaSimpleMultifactorSendTokenAction(
         final ConfigurableApplicationContext applicationContext,
-        @Qualifier(CasSimpleMultifactorAuthenticationService.BEAN_NAME)
-        final CasSimpleMultifactorAuthenticationService casSimpleMultifactorAuthenticationService,
-        @Qualifier("mfaSimpleMultifactorTokenCommunicationStrategy")
-        final CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy,
+        @Qualifier(
+            CasSimpleMultifactorAuthenticationService.BEAN_NAME
+        ) final CasSimpleMultifactorAuthenticationService casSimpleMultifactorAuthenticationService,
+        @Qualifier(
+            "mfaSimpleMultifactorTokenCommunicationStrategy"
+        ) final CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy,
         final CasConfigurationProperties casProperties,
         @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
-        @Qualifier("mfaSimpleMultifactorBucketConsumer") final BucketConsumer mfaSimpleMultifactorBucketConsumer) {
+        @Qualifier("mfaSimpleMultifactorBucketConsumer") final BucketConsumer mfaSimpleMultifactorBucketConsumer
+    ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
             .withProperties(casProperties)
             .withAction(() -> {
                 val simple = casProperties.getAuthn().getMfa().getSimple();
                 return new CustomSendTokenAction(
-                    communicationsManager, casSimpleMultifactorAuthenticationService, simple,
+                    communicationsManager,
+                    casSimpleMultifactorAuthenticationService,
+                    simple,
                     mfaSimpleMultifactorTokenCommunicationStrategy,
-                    mfaSimpleMultifactorBucketConsumer, utils);
+                    mfaSimpleMultifactorBucketConsumer,
+                    utils
+                );
             })
             .withId(CasWebflowConstants.ACTION_ID_MFA_SIMPLE_SEND_TOKEN)
             .build()
@@ -384,9 +456,14 @@ public class WebflowConfig {
     @Bean
     @DependsOn("defaultWebflowConfigurer")
     public CasWebflowConfigurer mfaSimpleMultifactorWebflowConfigurer() {
-        val cfg = new CustomCasSimpleMultifactorWebflowConfigurer(flowBuilderServices,
-            loginFlowDefinitionRegistry, mfaSimpleAuthenticatorFlowRegistry, applicationContext, casProperties,
-            MultifactorAuthenticationWebflowUtils.getMultifactorAuthenticationWebflowCustomizers(applicationContext));
+        val cfg = new CustomCasSimpleMultifactorWebflowConfigurer(
+            flowBuilderServices,
+            loginFlowDefinitionRegistry,
+            mfaSimpleAuthenticatorFlowRegistry,
+            applicationContext,
+            casProperties,
+            MultifactorAuthenticationWebflowUtils.getMultifactorAuthenticationWebflowCustomizers(applicationContext)
+        );
         cfg.setOrder(100);
         return cfg;
     }
@@ -401,23 +478,36 @@ public class WebflowConfig {
     public Action delegatedAuthenticationClientLogoutAction(
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
-        @Qualifier("builtClients")
-        final Clients builtClients,
-        @Qualifier("delegatedClientDistributedSessionStore")
-        final SessionStore delegatedClientDistributedSessionStore,
+        @Qualifier("builtClients") final Clients builtClients,
+        @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
         final IdentityProviderHelper identityProviderHelper,
-        final ProvidersService providersService) {
+        final ProvidersService providersService
+    ) {
         return BeanSupplier.of(Action.class)
-            .when(BeanCondition.on("cas.slo.disabled").isFalse().evenIfMissing()
-                .given(applicationContext.getEnvironment()))
-            .supply(() -> WebflowActionBeanSupplier.builder()
-                .withApplicationContext(applicationContext)
-                .withProperties(casProperties)
-                .withAction(() -> new CustomDelegatedAuthenticationClientLogoutAction(builtClients,
-                    delegatedClientDistributedSessionStore, providersService, identityProviderHelper))
-                .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_CLIENT_LOGOUT)
-                .build()
-                .get())
+            .when(
+                BeanCondition.on("cas.slo.disabled")
+                    .isFalse()
+                    .evenIfMissing()
+                    .given(applicationContext.getEnvironment())
+            )
+            .supply(
+                () ->
+                    WebflowActionBeanSupplier.builder()
+                        .withApplicationContext(applicationContext)
+                        .withProperties(casProperties)
+                        .withAction(
+                            () ->
+                                new CustomDelegatedAuthenticationClientLogoutAction(
+                                    builtClients,
+                                    delegatedClientDistributedSessionStore,
+                                    providersService,
+                                    identityProviderHelper
+                                )
+                        )
+                        .withId(CasWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_CLIENT_LOGOUT)
+                        .build()
+                        .get()
+            )
             .otherwise(() -> ConsumerExecutionAction.NONE)
             .get();
     }
@@ -427,14 +517,18 @@ public class WebflowConfig {
     public Action x509Check() {
         if (x509AuthnEnabled) {
             val sslHeaderName = casProperties.getAuthn().getX509().getSslHeaderName();
-            val certificateExtractor =
-                new CustomRequestHeaderX509CertificateExtractor(sslHeaderName, x509AuthnMandatory);
+            val certificateExtractor = new CustomRequestHeaderX509CertificateExtractor(
+                sslHeaderName,
+                x509AuthnMandatory
+            );
 
             return new X509CertificateCredentialsRequestHeaderAction(
                 initialAuthenticationAttemptWebflowEventResolver.getObject(),
                 serviceTicketRequestWebflowEventResolver.getObject(),
                 adaptiveAuthenticationPolicy.getObject(),
-                certificateExtractor, casProperties);
+                certificateExtractor,
+                casProperties
+            );
         } else {
             return new StaticEventExecutionAction("error");
         }
@@ -443,37 +537,54 @@ public class WebflowConfig {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver(
-        @Qualifier("selectiveAuthenticationProviderWebflowEventResolver")
-        final CasWebflowEventResolver selectiveAuthenticationProviderWebflowEventResolver,
-        @Qualifier("casWebflowConfigurationContext")
-        final CasWebflowEventResolutionConfigurationContext casWebflowConfigurationContext,
-        @Qualifier("adaptiveAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver adaptiveAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("timedAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver timedAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("globalAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver globalAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("httpRequestAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver httpRequestAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("restEndpointAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver restEndpointAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("groovyScriptAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver groovyScriptAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver")
-        final CasWebflowEventResolver predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver,
-        @Qualifier("principalAttributeAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver principalAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("authenticationAttributeAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver authenticationAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("registeredServiceAuthenticationPolicyWebflowEventResolver")
-        final CasWebflowEventResolver registeredServiceAuthenticationPolicyWebflowEventResolver) {
-
-        val resolver = new CustomCasDelegatingWebflowEventResolver(casWebflowConfigurationContext,
-            selectiveAuthenticationProviderWebflowEventResolver, x509AuthnMandatory);
+        @Qualifier(
+            "selectiveAuthenticationProviderWebflowEventResolver"
+        ) final CasWebflowEventResolver selectiveAuthenticationProviderWebflowEventResolver,
+        @Qualifier(
+            "casWebflowConfigurationContext"
+        ) final CasWebflowEventResolutionConfigurationContext casWebflowConfigurationContext,
+        @Qualifier(
+            "adaptiveAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver adaptiveAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "timedAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver timedAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "globalAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver globalAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "httpRequestAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver httpRequestAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "restEndpointAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver restEndpointAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "groovyScriptAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver groovyScriptAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver"
+        ) final CasWebflowEventResolver predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver,
+        @Qualifier(
+            "principalAttributeAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver principalAttributeAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "authenticationAttributeAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver authenticationAttributeAuthenticationPolicyWebflowEventResolver,
+        @Qualifier(
+            "registeredServiceAuthenticationPolicyWebflowEventResolver"
+        ) final CasWebflowEventResolver registeredServiceAuthenticationPolicyWebflowEventResolver
+    ) {
+        val resolver = new CustomCasDelegatingWebflowEventResolver(
+            casWebflowConfigurationContext,
+            selectiveAuthenticationProviderWebflowEventResolver,
+            x509AuthnMandatory
+        );
         resolver.addDelegate(adaptiveAuthenticationPolicyWebflowEventResolver);
         resolver.addDelegate(timedAuthenticationPolicyWebflowEventResolver);
         resolver.addDelegate(globalAuthenticationPolicyWebflowEventResolver);
@@ -492,7 +603,8 @@ public class WebflowConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     @Bean
     public OidcRevocationEndpointController oidcRevocationEndpointController(
-        @Qualifier(OidcConfigurationContext.BEAN_NAME) final OidcConfigurationContext oidcConfigurationContext) {
+        @Qualifier(OidcConfigurationContext.BEAN_NAME) final OidcConfigurationContext oidcConfigurationContext
+    ) {
         return new CustomOidcRevocationEndpointController(oidcConfigurationContext);
     }
 

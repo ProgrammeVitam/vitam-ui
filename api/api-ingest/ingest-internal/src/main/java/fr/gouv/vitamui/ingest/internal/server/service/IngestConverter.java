@@ -36,23 +36,31 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.service;
 
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 
 public class IngestConverter {
 
     public static LogbookOperationDto convertVitamToDto(LogbookOperationDto logbookOperationModel) {
         logbookOperationModel.setId(logbookOperationModel.getEvId());
         logbookOperationModel.setEvents(
-                logbookOperationModel.getEvents().stream()
-                        .map( x -> { x.setId(x.getEvId()); return x; })
-                        .collect(Collectors.toList()));
+            logbookOperationModel
+                .getEvents()
+                .stream()
+                .map(x -> {
+                    x.setId(x.getEvId());
+                    return x;
+                })
+                .collect(Collectors.toList())
+        );
         return logbookOperationModel;
     }
 
-    public static List<LogbookOperationDto> convertVitamsToDtos(final List<LogbookOperationDto> logbookOperationModels) {
+    public static List<LogbookOperationDto> convertVitamsToDtos(
+        final List<LogbookOperationDto> logbookOperationModels
+    ) {
         return logbookOperationModels.stream().map(IngestConverter::convertVitamToDto).collect(Collectors.toList());
     }
 }

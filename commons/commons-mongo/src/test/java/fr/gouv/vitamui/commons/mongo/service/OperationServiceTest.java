@@ -1,30 +1,5 @@
 /*package fr.gouv.vitamui.commons.mongo.service;
 
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import fr.gouv.vitamui.commons.api.domain.OperationDto;
-import fr.gouv.vitamui.commons.api.domain.VitamOperationDto;
-import fr.gouv.vitamui.commons.api.enums.OperationStatus;
-import fr.gouv.vitamui.commons.api.enums.OperationType;
-import fr.gouv.vitamui.commons.mongo.config.MongoConverterConfiguration;
-import fr.gouv.vitamui.commons.mongo.config.TestMongoConfig;
-import fr.gouv.vitamui.commons.mongo.converter.OperationConverter;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.dao.OperationRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class, MongoConverterConfiguration.class })

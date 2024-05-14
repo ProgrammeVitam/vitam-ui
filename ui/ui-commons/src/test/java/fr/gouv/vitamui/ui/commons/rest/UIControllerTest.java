@@ -1,24 +1,26 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.test.rest.AbstractMockMvcCrudControllerTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.rest.AbstractMockMvcCrudControllerTest;
+import java.util.Collection;
+import java.util.HashMap;
 
 public abstract class UIControllerTest<T extends IdDto> extends AbstractMockMvcCrudControllerTest<T> {
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        final Authentication authentication = new UsernamePasswordAuthenticationToken(buildPrincipal(),
-                buildCredentials(), buildGrantedAuthorities());
+        final Authentication authentication = new UsernamePasswordAuthenticationToken(
+            buildPrincipal(),
+            buildCredentials(),
+            buildGrantedAuthorities()
+        );
         return authentication;
     }
 
@@ -45,5 +47,4 @@ public abstract class UIControllerTest<T extends IdDto> extends AbstractMockMvcC
     protected String getDefaultTenantIdHeader() {
         return "1";
     }
-
 }

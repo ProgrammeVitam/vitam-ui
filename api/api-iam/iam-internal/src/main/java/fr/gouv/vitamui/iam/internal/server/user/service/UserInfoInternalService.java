@@ -70,11 +70,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-
 @Getter
 @Setter
 public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, UserInfo> {
-
 
     private UserInfoRepository userInfoRepository;
 
@@ -89,10 +87,14 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoInternalService.class);
 
     @Autowired
-    public UserInfoInternalService(final SequenceGeneratorService sequenceGeneratorService,
+    public UserInfoInternalService(
+        final SequenceGeneratorService sequenceGeneratorService,
         final UserInfoRepository userInfoRepository,
-        final InternalSecurityService internalSecurityService, final UserInfoConverter userInfoConverter,
-        final IamLogbookService iamLogbookService, final LogbookService logbookService) {
+        final InternalSecurityService internalSecurityService,
+        final UserInfoConverter userInfoConverter,
+        final IamLogbookService iamLogbookService,
+        final LogbookService logbookService
+    ) {
         super(sequenceGeneratorService);
         this.userInfoRepository = userInfoRepository;
         this.internalSecurityService = internalSecurityService;
@@ -101,7 +103,6 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
         this.logbookService = logbookService;
     }
 
-
     public UserInfoDto getMe() {
         final AuthUserDto user = internalSecurityService.getUser();
         final String userInfoId = user.getUserInfoId();
@@ -109,8 +110,9 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
             throw new ApplicationServerException("user must have user information id ", user.getId());
         }
         final Optional<UserInfo> userInfoOptional = userInfoRepository.findById(userInfoId);
-        final UserInfo userInfo =
-            userInfoOptional.orElseThrow(() -> new ApplicationServerException("user info not found ", userInfoId));
+        final UserInfo userInfo = userInfoOptional.orElseThrow(
+            () -> new ApplicationServerException("user info not found ", userInfoId)
+        );
         return userInfoConverter.convertEntityToDto(userInfo);
     }
 
@@ -121,7 +123,6 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
         return super.patch(partialDto);
     }
 
-
     @Override
     protected void processPatch(final UserInfo userInfo, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
@@ -131,12 +132,14 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
                     break;
                 case "language":
                     logbooks.add(
-                        new EventDiffDto(UserInfoConverter.LANGUAGE_KEY, userInfo.getLanguage(), entry.getValue()));
+                        new EventDiffDto(UserInfoConverter.LANGUAGE_KEY, userInfo.getLanguage(), entry.getValue())
+                    );
                     userInfo.setLanguage(CastUtils.toString(entry.getValue()));
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Unable to patch group " + userInfo.getId() + ": key " + entry.getKey() + " is not allowed");
+                        "Unable to patch group " + userInfo.getId() + ": key " + entry.getKey() + " is not allowed"
+                    );
             }
         }
         iamLogbookService.updateUserInfoEvent(userInfo, logbooks);
@@ -174,8 +177,13 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
 
         final Optional<UserInfo> userInfo = getRepository().findById(id);
         userInfo.orElseThrow(() -> new NotFoundException(String.format("No user information found with id : %s", id)));
-        return logbookService.findEventsByIdentifierAndCollectionNames(userInfo.get().getIdentifier(),
-            MongoDbCollections.USER_INFOS, vitamContext).toJsonNode();
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(
+                userInfo.get().getIdentifier(),
+                MongoDbCollections.USER_INFOS,
+                vitamContext
+            )
+            .toJsonNode();
     }
 
     @Override
@@ -190,7 +198,8 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
     private UserInfo find(final String id, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
-        return getRepository().findById(id)
+        return getRepository()
+            .findById(id)
             .orElseThrow(() -> new IllegalArgumentException(message + ": no user info found for id " + id));
     }
 }

@@ -30,15 +30,14 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -60,13 +59,15 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {TransactionArchiveUnitExternalController.class})
+@WebMvcTest(controllers = { TransactionArchiveUnitExternalController.class })
 class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectArchiveUnitExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ProjectArchiveUnitExternalControllerTest.class
+    );
 
     private static final String ANY_TRANSACTION_CODE = "ANY_TRANSACTION_CODE";
+
     @MockBean
     private TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
@@ -75,12 +76,13 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
     @BeforeEach
     public void setUp() {
         transactionArchiveUnitExternalController = new TransactionArchiveUnitExternalController(
-            transactionArchiveUnitExternalService);
+            transactionArchiveUnitExternalService
+        );
     }
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.PROJECTS};
+        return new String[] { ServicesData.PROJECTS };
     }
 
     @Override
@@ -99,9 +101,7 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -110,7 +110,6 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
 
     @Test
     void test_searchCollectUnitsByCriteria_with_invalid_criteria_should_return_ko() {
-
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
         nodeCriteria.setCriteria("NODES");
@@ -119,9 +118,9 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
         nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
-        Mockito
-            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
-            .thenReturn(expectedResponse);
+        Mockito.when(
+            transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query)
+        ).thenReturn(expectedResponse);
 
         assertThatCode(() -> transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query))
             .isInstanceOf(PreconditionFailedException.class)
@@ -129,29 +128,27 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
     }
 
     @Test
-    void test_searchArchiveUnitsByCriteria_with_valid_criteria_should_return_ok() throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    void test_searchArchiveUnitsByCriteria_with_valid_criteria_should_return_ok()
+        throws InvalidParseOperationException, PreconditionFailedException {
         SearchCriteriaDto query = new SearchCriteriaDto();
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
-        Mockito
-            .when(transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query))
-            .thenReturn(expectedResponse);
-        VitamUIArchiveUnitResponseDto
-            responseDto = transactionArchiveUnitExternalController.searchArchiveUnits("projectId", query);
+        Mockito.when(
+            transactionArchiveUnitExternalService.searchCollectTransactionArchiveUnits("projectId", query)
+        ).thenReturn(expectedResponse);
+        VitamUIArchiveUnitResponseDto responseDto = transactionArchiveUnitExternalController.searchArchiveUnits(
+            "projectId",
+            query
+        );
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 
     @Test
-    void testGetOntologiesListThenReturnOntologiesValuesList()
-        throws PreconditionFailedException {
+    void testGetOntologiesListThenReturnOntologiesValuesList() throws PreconditionFailedException {
         // Given
         List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
-        Mockito
-            .when(transactionArchiveUnitExternalService.getExternalOntologiesList())
-            .thenReturn(expectedResponse);
+        Mockito.when(transactionArchiveUnitExternalService.getExternalOntologiesList()).thenReturn(expectedResponse);
         List<VitamUiOntologyDto> response = transactionArchiveUnitExternalController.getExternalOntologiesList();
 
         // Then
@@ -166,13 +163,16 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
         ResultsDto expectedResponse = new ResultsDto();
 
         // When
-        Mockito
-            .when(transactionArchiveUnitExternalService.selectUnitWithInheritedRules(Mockito.anyString(),
-                Mockito.any(SearchCriteriaDto.class)))
-            .thenReturn(expectedResponse);
-        ResultsDto response =
-            transactionArchiveUnitExternalController.selectUnitWithInheritedRules(ANY_TRANSACTION_CODE,
-                searchCriteriaDto);
+        Mockito.when(
+            transactionArchiveUnitExternalService.selectUnitWithInheritedRules(
+                Mockito.anyString(),
+                Mockito.any(SearchCriteriaDto.class)
+            )
+        ).thenReturn(expectedResponse);
+        ResultsDto response = transactionArchiveUnitExternalController.selectUnitWithInheritedRules(
+            ANY_TRANSACTION_CODE,
+            searchCriteriaDto
+        );
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

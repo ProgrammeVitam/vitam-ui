@@ -1,11 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.owner.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
@@ -13,6 +8,9 @@ import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OwnerConverterTest {
 
@@ -69,5 +67,4 @@ public class OwnerConverterTest {
         assertThat(jsonNode.get(OwnerConverter.NAME_KEY)).isNotNull();
         assertThat(jsonNode.get(OwnerConverter.COMPANY_NAME_KEY)).isNotNull();
     }
-
 }

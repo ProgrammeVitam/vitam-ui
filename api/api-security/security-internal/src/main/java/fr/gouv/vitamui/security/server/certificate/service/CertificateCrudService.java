@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.security.server.certificate.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.security.common.dto.CertificateDto;
@@ -50,6 +45,10 @@ import fr.gouv.vitamui.security.server.certificate.domain.Certificate;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * The service to read, create, update and delete the certificates.
@@ -66,9 +65,10 @@ public class CertificateCrudService extends VitamUICrudService<CertificateDto, C
 
     @Autowired
     public CertificateCrudService(
-            final SequenceGeneratorService sequenceGeneratorService,
-            final CertificateRepository certificateRepository,
-            final ContextService contextCrudService) {
+        final SequenceGeneratorService sequenceGeneratorService,
+        final CertificateRepository certificateRepository,
+        final ContextService contextCrudService
+    ) {
         super(sequenceGeneratorService);
         this.certificateRepository = certificateRepository;
         this.contextCrudService = contextCrudService;
@@ -97,8 +97,11 @@ public class CertificateCrudService extends VitamUICrudService<CertificateDto, C
         certificate.setSerialNumber(dto.getSerialNumber());
         certificate.setIssuerDN(dto.getIssuerDN());
         // clean the certificate before saving it
-        final String data = dto.getData().replaceAll("\\n", "").replaceFirst("-----BEGIN CERTIFICATE-----", "")
-                .replaceFirst("-----END CERTIFICATE-----", "");
+        final String data = dto
+            .getData()
+            .replaceAll("\\n", "")
+            .replaceFirst("-----BEGIN CERTIFICATE-----", "")
+            .replaceFirst("-----END CERTIFICATE-----", "");
         certificate.setData(data);
         return certificate;
     }

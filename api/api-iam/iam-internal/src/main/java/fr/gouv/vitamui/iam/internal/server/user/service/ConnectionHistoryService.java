@@ -8,7 +8,6 @@ import fr.gouv.vitamui.iam.internal.server.user.converter.ConnectionHistoryConve
 import fr.gouv.vitamui.iam.internal.server.user.dao.ConnectionHistoryRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.ConnectionHistory;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -31,10 +30,12 @@ public class ConnectionHistoryService {
     private final UserInternalService userInternalService;
 
     @Autowired
-    public ConnectionHistoryService(final ConnectionHistoryRepository connectionHistoryRepository,
-                                    final ConnectionHistoryExportService exportService,
-                                    final InternalSecurityService securityService,
-                                    final @Lazy UserInternalService userInternalService) {
+    public ConnectionHistoryService(
+        final ConnectionHistoryRepository connectionHistoryRepository,
+        final ConnectionHistoryExportService exportService,
+        final InternalSecurityService securityService,
+        final @Lazy UserInternalService userInternalService
+    ) {
         this.connectionHistoryRepository = connectionHistoryRepository;
         this.connectionHistoryConverter = new ConnectionHistoryConverter();
         this.connectionHistoryExportService = exportService;
@@ -42,16 +43,17 @@ public class ConnectionHistoryService {
         this.userInternalService = userInternalService;
     }
 
-    public void saveUserConnection(ConnectionHistory connectionHistory){
+    public void saveUserConnection(ConnectionHistory connectionHistory) {
         connectionHistoryRepository.save(connectionHistory);
     }
 
-    public void deleteByUserId(String userId){
+    public void deleteByUserId(String userId) {
         connectionHistoryRepository.deleteByUserId(userId);
     }
 
     public Resource exportConnectionHistory(Optional<String> optCriteria) {
-        Map<String, String> mapCriteria = optCriteria.map(criteria -> (Map<String, String>) QueryDto.fromJson(criteria).getCriterionList().get(0).getValue())
+        Map<String, String> mapCriteria = optCriteria
+            .map(criteria -> (Map<String, String>) QueryDto.fromJson(criteria).getCriterionList().get(0).getValue())
             .orElseGet(Collections::emptyMap);
 
         Date start = Optional.ofNullable(mapCriteria.getOrDefault("start", null))
@@ -68,10 +70,17 @@ public class ConnectionHistoryService {
         Assert.notNull(end, "The end date must not be null");
 
         final AuthUserDto connectedUser = this.securityService.getUser();
-        List<String> userIdsFromCustomer = this.userInternalService.findByCustomerId(connectedUser.getCustomerId()).stream().map(User::getIdentifier).collect(Collectors.toList());
+        List<String> userIdsFromCustomer =
+            this.userInternalService.findByCustomerId(connectedUser.getCustomerId())
+                .stream()
+                .map(User::getIdentifier)
+                .collect(Collectors.toList());
 
-
-        List<ConnectionHistoryDto> connectionHistoryDto =  findConnectionHistoryBetweenAndUserIds(start, end, userIdsFromCustomer);
+        List<ConnectionHistoryDto> connectionHistoryDto = findConnectionHistoryBetweenAndUserIds(
+            start,
+            end,
+            userIdsFromCustomer
+        );
 
         try {
             return connectionHistoryExportService.generateWorkbook(connectionHistoryDto);
@@ -80,10 +89,16 @@ public class ConnectionHistoryService {
         }
     }
 
-    private List<ConnectionHistoryDto> findConnectionHistoryBetweenAndUserIds(Date start, Date end, List<String> userIds){
-        var listConnection = connectionHistoryRepository.findAllByConnectionDateTimeBetweenAndUserIdIn(start, end, userIds);
-        return listConnection.stream().map(connectionHistoryConverter::convertEntityToDto)
-            .collect(Collectors.toList());
+    private List<ConnectionHistoryDto> findConnectionHistoryBetweenAndUserIds(
+        Date start,
+        Date end,
+        List<String> userIds
+    ) {
+        var listConnection = connectionHistoryRepository.findAllByConnectionDateTimeBetweenAndUserIdIn(
+            start,
+            end,
+            userIds
+        );
+        return listConnection.stream().map(connectionHistoryConverter::convertEntityToDto).collect(Collectors.toList());
     }
-
 }

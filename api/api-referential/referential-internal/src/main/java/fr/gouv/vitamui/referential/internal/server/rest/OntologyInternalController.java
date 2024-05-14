@@ -97,9 +97,8 @@ public class OntologyInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<OntologyDto> getAll(@RequestParam final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all ontology criteria={}", criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -107,27 +106,39 @@ public class OntologyInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<OntologyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        if(orderBy.isPresent()){
+    public PaginatedValuesDto<OntologyDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @PostMapping
-    public OntologyDto create(@Valid @RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public OntologyDto create(
+        @Valid @RequestBody OntologyDto ontologyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("create ontology={}", ontologyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ontologyDto.setTenant(tenant);
-        return ontologyInternalService.create(vitamContext,ontologyDto);
+        return ontologyInternalService.create(vitamContext, ontologyDto);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
@@ -135,15 +146,23 @@ public class OntologyInternalController {
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         SanityChecker.checkSecureParameter(identifier);
-        LOGGER.debug("get ontology identifier={} / {}", identifier, URLDecoder.decode(identifier,
-            StandardCharsets.UTF_8));
+        LOGGER.debug(
+            "get ontology identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8)
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return ontologyInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return ontologyInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody OntologyDto ontologyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check exist accessContract={}", ontologyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -155,19 +174,21 @@ public class OntologyInternalController {
     @PatchMapping(CommonConstants.PATH_ID)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return ontologyInternalService.patch(vitamContext, partialDto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);
@@ -186,8 +207,8 @@ public class OntologyInternalController {
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) throws
-        PreconditionFailedException {
+    public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file)
+        throws PreconditionFailedException {
         SanityChecker.isValidFileName(fileName);
         LOGGER.debug("import ontology file {}", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());

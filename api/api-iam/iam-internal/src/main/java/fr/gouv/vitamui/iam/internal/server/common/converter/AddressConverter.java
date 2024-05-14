@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.converter;
 
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
+
+import java.util.Map;
 
 public class AddressConverter {
 
@@ -67,5 +67,4 @@ public class AddressConverter {
     public AddressDto convertEntityToDto(final Address address) {
         return VitamUIUtils.copyProperties(address, new AddressDto());
     }
-
 }

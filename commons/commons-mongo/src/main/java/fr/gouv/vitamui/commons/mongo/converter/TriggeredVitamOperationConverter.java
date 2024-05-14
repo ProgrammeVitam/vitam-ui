@@ -42,7 +42,8 @@ import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.mongo.domain.TriggeredVitamOperation;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 
-public class TriggeredVitamOperationConverter implements Converter<TriggeredVitamOperationDto, TriggeredVitamOperation> {
+public class TriggeredVitamOperationConverter
+    implements Converter<TriggeredVitamOperationDto, TriggeredVitamOperation> {
 
     @Override
     public String convertToLogbook(TriggeredVitamOperationDto dto) {
@@ -51,7 +52,6 @@ public class TriggeredVitamOperationConverter implements Converter<TriggeredVita
 
     @Override
     public TriggeredVitamOperation convertDtoToEntity(TriggeredVitamOperationDto dto) {
-
         final TriggeredVitamOperation triggeredVitamOperation = new TriggeredVitamOperation();
         VitamUIUtils.copyProperties(dto, triggeredVitamOperation);
 
@@ -60,11 +60,9 @@ public class TriggeredVitamOperationConverter implements Converter<TriggeredVita
 
     @Override
     public TriggeredVitamOperationDto convertEntityToDto(TriggeredVitamOperation entity) {
-
         final TriggeredVitamOperationDto triggeredVitamOperationDto = new TriggeredVitamOperationDto();
         VitamUIUtils.copyProperties(entity, triggeredVitamOperationDto);
 
         return triggeredVitamOperationDto;
     }
-
 }

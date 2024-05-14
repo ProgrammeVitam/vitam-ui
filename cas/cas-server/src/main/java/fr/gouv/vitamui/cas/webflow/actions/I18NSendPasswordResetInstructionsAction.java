@@ -79,8 +79,9 @@ import java.util.Objects;
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        I18NSendPasswordResetInstructionsAction.class
+    );
 
     private final HierarchicalMessageSource messageSource;
 
@@ -94,7 +95,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private final ObjectMapper objectMapper;
 
-    public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
+    public I18NSendPasswordResetInstructionsAction(
+        final CasConfigurationProperties casProperties,
         final CommunicationsManager communicationsManager,
         final PasswordManagementService passwordManagementService,
         final TicketRegistry ticketRegistry,
@@ -105,9 +107,17 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        final String vitamuiPlatformName) {
-        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory,
-            principalResolver, passwordResetUrlBuilder);
+        final String vitamuiPlatformName
+    ) {
+        super(
+            casProperties,
+            communicationsManager,
+            passwordManagementService,
+            ticketRegistry,
+            ticketFactory,
+            principalResolver,
+            passwordResetUrlBuilder
+        );
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -116,10 +126,12 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         this.objectMapper = new ObjectMapper();
     }
 
-    @Audit(action = AuditableActions.REQUEST_CHANGE_PASSWORD,
+    @Audit(
+        action = AuditableActions.REQUEST_CHANGE_PASSWORD,
         principalResolverName = "REQUEST_CHANGE_PASSWORD_PRINCIPAL_RESOLVER",
         actionResolverName = AuditActionResolvers.REQUEST_CHANGE_PASSWORD_ACTION_RESOLVER,
-        resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER)
+        resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER
+    )
     @Override
     protected Event doExecute(final RequestContext requestContext) throws Exception {
         if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
@@ -136,9 +148,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         if (StringUtils.isBlank(email) || customerId == null) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
-        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(),
-            email, customerId)) {
-
+        } else if (
+            !identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email, customerId)
+        ) {
             LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
             return success();
         }
@@ -155,8 +167,11 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         if (url != null) {
             val pm = casProperties.getAuthn().getPm();
             val duration = Beans.newDuration(pm.getReset().getExpiration());
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", url,
-                duration);
+            LOGGER.debug(
+                "Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
+                url,
+                duration
+            );
             // CUSTO: only send email (and not SMS)
             val sendEmail = sendPasswordResetEmailToAccount(email, url);
             if (sendEmail.isSuccess()) {
@@ -166,8 +181,11 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
         LOGGER.error("Failed to notify account [{}]", email);
-        return getErrorEvent("contact.failed", "Failed to send the password reset link via email address or phone",
-            requestContext);
+        return getErrorEvent(
+            "contact.failed",
+            "Failed to send the password reset link via email address or phone",
+            requestContext
+        );
     }
 
     @Override
@@ -189,8 +207,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             throw new IllegalStateException("Missing loginEmail or loginCustomer");
         }
         if (!Objects.equals(loginEmail, username)) {
-            throw new IllegalStateException("Missing loginCustomerId (" + loginCustomerId + ") " +
-                "mismatches username (" + username + ")");
+            throw new IllegalStateException(
+                "Missing loginCustomerId (" + loginCustomerId + ") " + "mismatches username (" + username + ")"
+            );
         }
 
         LinkedMultiValueMap<String, Object> records = new LinkedMultiValueMap<>();
@@ -200,15 +219,29 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         return builder.username(username).record(records).build();
     }
 
-    private EmailCommunicationResult sendPasswordResetEmailToAccount(
-        final String to, final URL url) {
+    private EmailCommunicationResult sendPasswordResetEmailToAccount(final String to, final URL url) {
         val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
 
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
-            String.valueOf(duration.toMinutes()), url.toString(), vitamuiPlatformName, LocaleContextHolder.getLocale());
-        return EmailCommunicationResult.builder().success(
-            utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
-                messageToSend.getSubject(), to, null, null)).build();
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
+            messageSource,
+            "",
+            "",
+            String.valueOf(duration.toMinutes()),
+            url.toString(),
+            vitamuiPlatformName,
+            LocaleContextHolder.getLocale()
+        );
+        return EmailCommunicationResult.builder()
+            .success(
+                utils.htmlEmail(
+                    messageToSend.getText(),
+                    casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+                    messageToSend.getSubject(),
+                    to,
+                    null,
+                    null
+                )
+            )
+            .build();
     }
-
 }

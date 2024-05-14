@@ -108,8 +108,10 @@ import java.util.EnumSet;
  * Configure all beans to customize the CAS server.
  */
 @Configuration
-@EnableConfigurationProperties({CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class})
-@Import({ServerIdentityAutoConfiguration.class})
+@EnableConfigurationProperties(
+    { CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class }
+)
+@Import({ ServerIdentityAutoConfiguration.class })
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
@@ -237,40 +239,68 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public UserAuthenticationHandler userAuthenticationHandler(final IamExternalRestClientFactory iamRestClientFactory,
-                                                               final CasExternalRestClient casRestClient) {
+    public UserAuthenticationHandler userAuthenticationHandler(
+        final IamExternalRestClientFactory iamRestClientFactory,
+        final CasExternalRestClient casRestClient
+    ) {
         return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient, utils(), ipHeaderName);
     }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public PrincipalResolver defaultPrincipalResolver(final ProvidersService providersService,
-                                                      @Qualifier("delegatedClientDistributedSessionStore")
-                                                      final SessionStore delegatedClientDistributedSessionStore,
-                                                      final CasExternalRestClient casRestClient) {
-        val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
-        val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
-        return new UserPrincipalResolver(principalFactory, casRestClient, utils(), delegatedClientDistributedSessionStore,
-            identityProviderHelper(), providersService, emailMapping, identifierMapping, x509DefaultDomain);
+    public PrincipalResolver defaultPrincipalResolver(
+        final ProvidersService providersService,
+        @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
+        final CasExternalRestClient casRestClient
+    ) {
+        val emailMapping = new X509AttributeMapping(
+            x509EmailAttribute,
+            x509EmailAttributeParsing,
+            x509EmailAttributeExpansion
+        );
+        val identifierMapping = new X509AttributeMapping(
+            x509IdentifierAttribute,
+            x509IdentifierAttributeParsing,
+            x509IdentifierAttributeExpansion
+        );
+        return new UserPrincipalResolver(
+            principalFactory,
+            casRestClient,
+            utils(),
+            delegatedClientDistributedSessionStore,
+            identityProviderHelper(),
+            providersService,
+            emailMapping,
+            identifierMapping,
+            x509DefaultDomain
+        );
     }
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(
         final UserAuthenticationHandler userAuthenticationHandler,
-        @Qualifier("defaultPrincipalResolver")
-        PrincipalResolver defaultPrincipalResolver) {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler, defaultPrincipalResolver);
+        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+    ) {
+        return plan ->
+            plan.registerAuthenticationHandlerWithPrincipalResolver(
+                userAuthenticationHandler,
+                defaultPrincipalResolver
+            );
     }
 
     @Bean
     @RefreshScope
-    public PrincipalResolver surrogatePrincipalResolver(@Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver) {
+    public PrincipalResolver surrogatePrincipalResolver(
+        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+    ) {
         return defaultPrincipalResolver;
     }
 
     @Bean
     @RefreshScope
-    public PrincipalResolver x509SubjectDNPrincipalResolver(@Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver) {
+    public PrincipalResolver x509SubjectDNPrincipalResolver(
+        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+    ) {
         return defaultPrincipalResolver;
     }
 
@@ -286,7 +316,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IdentityProviderExternalRestClient identityProviderCrudRestClient(final IamExternalRestClientFactory iamRestClientFactory) {
+    public IdentityProviderExternalRestClient identityProviderCrudRestClient(
+        final IamExternalRestClientFactory iamRestClientFactory
+    ) {
         return iamRestClientFactory.getIdentityProviderExternalRestClient();
     }
 
@@ -297,8 +329,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public ProvidersService providersService(@Qualifier("builtClients") final Clients builtClients,
-                                             final IdentityProviderExternalRestClient identityProviderCrudRestClient) {
+    public ProvidersService providersService(
+        @Qualifier("builtClients") final Clients builtClients,
+        final IdentityProviderExternalRestClient identityProviderCrudRestClient
+    ) {
         return new ProvidersService(builtClients, identityProviderCrudRestClient, pac4jClientBuilder(), utils());
     }
 
@@ -314,27 +348,49 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender, casProperties.getServer().getPrefix());
+        return new Utils(
+            tokenApiCas,
+            casTenantIdentifier,
+            casIdentity,
+            mailSender,
+            casProperties.getServer().getPrefix()
+        );
     }
 
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
-        return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
-            protocolTicketCipherExecutor, servicesManager, utils());
+        return new DynamicTicketGrantingTicketFactory(
+            ticketGrantingTicketUniqueIdGenerator,
+            grantingTicketExpirationPolicy.getObject(),
+            protocolTicketCipherExecutor,
+            servicesManager,
+            utils()
+        );
     }
 
     @Bean
     @RefreshScope
     public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
-        return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy, accessTokenJwtBuilder, servicesManager);
+        return new CustomOAuth20DefaultAccessTokenFactory(
+            accessTokenExpirationPolicy,
+            accessTokenJwtBuilder,
+            servicesManager
+        );
     }
 
     @Override
     public void configureTicketCatalog(final TicketCatalog plan, final CasConfigurationProperties casProperties) {
         final TicketDefinition metadata = buildTicketDefinition(
-            plan, "TOK", OAuth20AccessToken.class, OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
+            plan,
+            "TOK",
+            OAuth20AccessToken.class,
+            OAuth20DefaultAccessToken.class,
+            Ordered.HIGHEST_PRECEDENCE
+        );
         metadata.getProperties().setStorageName(casProperties.getAuthn().getOauth().getAccessToken().getStorageName());
-        val timeout = Beans.newDuration(casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()).getSeconds();
+        val timeout = Beans.newDuration(
+            casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()
+        ).getSeconds();
         metadata.getProperties().setStorageTimeout(timeout);
         metadata.getProperties().setExcludeFromCascade(casProperties.getLogout().isRemoveDescendantTickets());
         registerTicketDefinition(plan, metadata);
@@ -349,12 +405,25 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @RefreshScope
     @Bean
-    public PasswordManagementService passwordChangeService(final ProvidersService providersService,
-                                                           final TicketRegistry ticketRegistry,
-                                                           final CasExternalRestClient casRestClient) {
-        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor, casProperties.getServer().getPrefix(),
-            passwordHistoryService, casRestClient, providersService, identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
-            ticketRegistry, passwordValidator(), passwordConfiguration);
+    public PasswordManagementService passwordChangeService(
+        final ProvidersService providersService,
+        final TicketRegistry ticketRegistry,
+        final CasExternalRestClient casRestClient
+    ) {
+        return new IamPasswordManagementService(
+            casProperties.getAuthn().getPm(),
+            passwordManagementCipherExecutor,
+            casProperties.getServer().getPrefix(),
+            passwordHistoryService,
+            casRestClient,
+            providersService,
+            identityProviderHelper(),
+            centralAuthenticationService.getObject(),
+            utils(),
+            ticketRegistry,
+            passwordValidator(),
+            passwordConfiguration
+        );
     }
 
     @Bean
@@ -362,7 +431,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy() {
         return new CasSimpleMultifactorTokenCommunicationStrategy() {
             @Override
-            public EnumSet<TokenSharingStrategyOptions> determineStrategy(CasSimpleMultifactorAuthenticationTicket token) {
+            public EnumSet<TokenSharingStrategyOptions> determineStrategy(
+                CasSimpleMultifactorAuthenticationTicket token
+            ) {
                 return EnumSet.of(TokenSharingStrategyOptions.SMS);
             }
         };

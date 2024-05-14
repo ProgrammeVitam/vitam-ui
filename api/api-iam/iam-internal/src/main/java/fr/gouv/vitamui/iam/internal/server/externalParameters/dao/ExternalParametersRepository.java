@@ -46,6 +46,4 @@ import java.util.Optional;
  */
 public interface ExternalParametersRepository extends VitamUIRepository<ExternalParameters, String> {
     Optional<ExternalParameters> findByIdentifier(String identifier);
-
-
 }

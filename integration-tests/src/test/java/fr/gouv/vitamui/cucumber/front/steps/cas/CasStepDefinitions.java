@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.cucumber.front.steps.cas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import fr.gouv.vitamui.cucumber.front.pages.CasPage;
 import fr.gouv.vitamui.cucumber.front.steps.common.CommonStepDefinitions;
 import fr.gouv.vitamui.cucumber.front.utils.UserEnum;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CasStepDefinitions extends CommonStepDefinitions {
 
@@ -43,17 +43,20 @@ public class CasStepDefinitions extends CommonStepDefinitions {
     public void checkErreurMessageIsPresent() {
         casPage.waitForErrorDisplayed();
         assertThat(casPage.hasErrorDispalyed())
-                .overridingErrorMessage("le message d'echec mot de passe actuel est différent de celui attendu")
-                .isTrue();
+            .overridingErrorMessage("le message d'echec mot de passe actuel est différent de celui attendu")
+            .isTrue();
     }
 
     public void checkEmailUnknow() {
         casPage.waitForButtonBack();
         String emailErrorMessage = casPage.getErrorMessage();
         assertThat(emailErrorMessage)
-                .overridingErrorMessage("le message d'echec email : " + emailErrorMessage
-                        + " actuel est différent de celui attendu : " + "Votre compte a un problème de configuration.")
-                .isEqualTo("Votre compte a un problème de configuration.");
+            .overridingErrorMessage(
+                "le message d'echec email : " +
+                emailErrorMessage +
+                " actuel est différent de celui attendu : " +
+                "Votre compte a un problème de configuration."
+            )
+            .isEqualTo("Votre compte a un problème de configuration.");
     }
-
 }

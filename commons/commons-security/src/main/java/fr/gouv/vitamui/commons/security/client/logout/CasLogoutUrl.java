@@ -67,8 +67,7 @@ public class CasLogoutUrl {
     public String getValueWithRedirection(final String redirectionUrl) {
         try {
             return url + "?" + REDIRECTION_PARAMETER + "=" + URLEncoder.encode(redirectionUrl, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             // That's should never happen
             throw new ApplicationServerException(e);
         }

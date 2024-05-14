@@ -36,18 +36,8 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -61,6 +51,14 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgencyService {
 
@@ -73,32 +71,40 @@ public class AgencyService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<AgenciesModel> findAgencies(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
+    public RequestResponse<AgenciesModel> findAgencies(final VitamContext vitamContext, final JsonNode select)
+        throws VitamClientException {
         final RequestResponse<AgenciesModel> response = adminExternalClient.findAgencies(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<AgenciesModel> findAgencyById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
+    public RequestResponse<AgenciesModel> findAgencyById(final VitamContext vitamContext, final String contractId)
+        throws VitamClientException {
         final RequestResponse<AgenciesModel> response = adminExternalClient.findAgencyByID(vitamContext, contractId);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
     public RequestResponse createAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agenciesModel)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
-            return createAgencies(vitamContext, agenciesModel, "Agencies.json");
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        return createAgencies(vitamContext, agenciesModel, "Agencies.json");
     }
 
-    public RequestResponse createAgencies(final VitamContext vitamContext, final List<AgencyModelDto> accessContractModels, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
+    public RequestResponse createAgencies(
+        final VitamContext vitamContext,
+        final List<AgencyModelDto> accessContractModels,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeAgencies(accessContractModels)) {
             return createAgencies(vitamContext, byteArrayInputStream, fileName);
         }
     }
 
-    public RequestResponse<?> createAgencies(final VitamContext vitamContext, final InputStream accessContract, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException {
+    public RequestResponse<?> createAgencies(
+        final VitamContext vitamContext,
+        final InputStream accessContract,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException {
         // FIXME: Check if create erase old agencies.
         // TODO: If yes, need to get all agencies, check for non-existance, add the new one, and re-import all
         return adminExternalClient.createAgencies(vitamContext, accessContract, fileName);
@@ -126,5 +132,4 @@ public class AgencyService {
         }
         return listOfAC;
     }
-
 }

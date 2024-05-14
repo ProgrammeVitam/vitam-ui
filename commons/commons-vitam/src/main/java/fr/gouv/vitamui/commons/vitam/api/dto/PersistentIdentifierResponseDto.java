@@ -59,6 +59,4 @@ public class PersistentIdentifierResponseDto extends AbstractVitamUIResponseDto<
 
     @JsonProperty("$history")
     private List<PurgedPersistentIdentifierDto> history = new ArrayList<>();
-
-
 }

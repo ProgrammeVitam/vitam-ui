@@ -1,19 +1,18 @@
 package fr.gouv.vitamui.iam.internal.server.security;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+import fr.gouv.vitamui.iam.internal.server.subrogation.dao.SubrogationRepository;
+import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
-import fr.gouv.vitamui.iam.internal.server.subrogation.dao.SubrogationRepository;
-import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link IamApiAuthenticationProvider}.
@@ -34,7 +33,8 @@ public final class IamApiAuthenticationProviderTest extends AbstractServerIdenti
         final TokenRepository tokenRepository = mock(TokenRepository.class);
         final SubrogationRepository subrogationRepository = mock(SubrogationRepository.class);
         provider = new IamApiAuthenticationProvider(
-                new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository));
+            new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository)
+        );
 
         final UserDto userProfile = new UserDto();
         userProfile.setId(USER_ID);

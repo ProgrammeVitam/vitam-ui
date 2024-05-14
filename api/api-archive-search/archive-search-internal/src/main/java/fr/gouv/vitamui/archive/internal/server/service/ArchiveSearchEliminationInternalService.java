@@ -53,8 +53,10 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ONLY_DATE_FO
  */
 @Service
 public class ArchiveSearchEliminationInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchEliminationInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchEliminationInternalService.class
+    );
 
     private final EliminationService eliminationService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
@@ -64,7 +66,8 @@ public class ArchiveSearchEliminationInternalService {
     public ArchiveSearchEliminationInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final EliminationService eliminationService,
-        final ObjectMapper objectMapper) {
+        final ObjectMapper objectMapper
+    ) {
         this.eliminationService = eliminationService;
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.objectMapper = objectMapper;
@@ -72,20 +75,22 @@ public class ArchiveSearchEliminationInternalService {
 
     public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = null;
         eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
-        LOGGER.debug("Elimination action final query {} ",
-            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
-        RequestResponse<JsonNode> jsonNodeRequestResponse =
-            eliminationService.startEliminationAction(vitamContext, eliminationRequestBody);
+        LOGGER.debug(
+            "Elimination action final query {} ",
+            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest())
+        );
+        RequestResponse<JsonNode> jsonNodeRequestResponse = eliminationService.startEliminationAction(
+            vitamContext,
+            eliminationRequestBody
+        );
         return jsonNodeRequestResponse.toJsonNode();
     }
 
     public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet, Long threshold) {
-
         ObjectNode query = JsonHandler.createObjectNode();
         query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
         query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
@@ -100,16 +105,18 @@ public class ArchiveSearchEliminationInternalService {
 
     public JsonNode startEliminationAnalysis(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
         JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(searchQuery, vitamContext);
-        EliminationRequestBody eliminationRequestBody =
-            getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
+        EliminationRequestBody eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
 
-        LOGGER.debug("Elimination analysis final query {} ",
-            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
-        RequestResponse<JsonNode> jsonNodeRequestResponse =
-            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
+        LOGGER.debug(
+            "Elimination analysis final query {} ",
+            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest())
+        );
+        RequestResponse<JsonNode> jsonNodeRequestResponse = eliminationService.startEliminationAnalysis(
+            vitamContext,
+            eliminationRequestBody
+        );
 
         return jsonNodeRequestResponse.toJsonNode();
     }

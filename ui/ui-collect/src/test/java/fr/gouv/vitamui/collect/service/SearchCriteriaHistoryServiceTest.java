@@ -66,16 +66,15 @@ public class SearchCriteriaHistoryServiceTest {
     public void searchGetSearchCriteriaHistoryWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(searchCriteriaHistoryExternalRestClient.getSearchCriteriaHistory(ArgumentMatchers.any()))
-            .thenReturn(List.of(new SearchCriteriaHistoryDto()));
+        when(searchCriteriaHistoryExternalRestClient.getSearchCriteriaHistory(ArgumentMatchers.any())).thenReturn(
+            List.of(new SearchCriteriaHistoryDto())
+        );
 
         // When
-        List<SearchCriteriaHistoryDto> response =
-            searchCriteriaHistoryService.getSearchCritriaHistory(context);
+        List<SearchCriteriaHistoryDto> response = searchCriteriaHistoryService.getSearchCritriaHistory(context);
 
         // Then
-        verify(searchCriteriaHistoryExternalRestClient, times(1))
-            .getSearchCriteriaHistory(ArgumentMatchers.any());
+        verify(searchCriteriaHistoryExternalRestClient, times(1)).getSearchCriteriaHistory(ArgumentMatchers.any());
         assertNotNull(response);
     }
 
@@ -83,19 +82,21 @@ public class SearchCriteriaHistoryServiceTest {
     public void searchUpdateCriteriaHistoryWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(searchCriteriaHistoryExternalRestClient.update(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new SearchCriteriaHistoryDto());
+        when(searchCriteriaHistoryExternalRestClient.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            new SearchCriteriaHistoryDto()
+        );
         SearchCriteriaHistoryDto newSearchCriteria = new SearchCriteriaHistoryDto();
         newSearchCriteria.setId("ID");
         newSearchCriteria.setName("NAME");
         newSearchCriteria.setSearchCriteriaList(new ArrayList<>());
         // When
-        SearchCriteriaHistoryDto response =
-            searchCriteriaHistoryService.update(context, newSearchCriteria);
+        SearchCriteriaHistoryDto response = searchCriteriaHistoryService.update(context, newSearchCriteria);
 
         // Then
-        verify(searchCriteriaHistoryExternalRestClient, times(1))
-            .update(ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(searchCriteriaHistoryExternalRestClient, times(1)).update(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
     }
 }

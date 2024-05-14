@@ -54,6 +54,5 @@ public final class Constants {
 
     public static final String KEYWORD_METADATA_PREFIX = KEYWORD_FIELD_NAME + ".";
 
-    private Constants() {
-    }
+    private Constants() {}
 }

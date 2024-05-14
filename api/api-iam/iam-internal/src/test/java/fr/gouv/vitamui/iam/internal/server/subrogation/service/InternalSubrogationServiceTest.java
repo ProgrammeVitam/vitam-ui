@@ -91,10 +91,19 @@ public final class InternalSubrogationServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         SubrogationConverter subrogationConverter = new SubrogationConverter(userRepository);
-        service = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
-            userInternalService, groupInternalService,
-            groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter,
-            iamLogbookService);
+        service = new SubrogationInternalService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
         service.setGenericUsersSubrogationTtl(15);
         service.setSubrogationTtl(15);
     }
@@ -110,12 +119,15 @@ public final class InternalSubrogationServiceTest {
         VitamUIUtils.copyProperties(extUser2, user2);
         final Subrogation subro = buildSubrogation();
         Mockito.when(internalSecurityService.getUser()).thenReturn(
-            IamDtoBuilder.buildAuthUserDto("id", USER1_EMAIL, USER1_CUSTOMER_ID));
+            IamDtoBuilder.buildAuthUserDto("id", USER1_EMAIL, USER1_CUSTOMER_ID)
+        );
         Mockito.when(subrogationRepository.save(ArgumentMatchers.any())).thenReturn(subro);
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID))
-            .thenReturn(user2);
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER1_EMAIL, USER1_CUSTOMER_ID))
-            .thenReturn(user1);
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID)).thenReturn(
+            user2
+        );
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER1_EMAIL, USER1_CUSTOMER_ID)).thenReturn(
+            user1
+        );
         Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
         final SubrogationDto subroToCreate = new SubrogationDto();
@@ -147,8 +159,9 @@ public final class InternalSubrogationServiceTest {
         VitamUIUtils.copyProperties(extUser2, user2);
         VitamUIUtils.copyProperties(extUser3, user3);
         final Subrogation subro = buildSubrogation();
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID))
-            .thenReturn(user2);
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID)).thenReturn(
+            user2
+        );
         Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
         final SubrogationDto subroToCreate = new SubrogationDto();
@@ -168,10 +181,12 @@ public final class InternalSubrogationServiceTest {
         final String idSubro = "ID";
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(idSubro)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser())
-            .thenReturn(IamDtoBuilder.buildAuthUserDto("id", USER2_EMAIL, USER2_CUSTOMER_ID));
-        Mockito.when(subrogationRepository.save(ArgumentMatchers.any()))
-            .thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", USER2_EMAIL, USER2_CUSTOMER_ID)
+        );
+        Mockito.when(subrogationRepository.save(ArgumentMatchers.any())).thenAnswer(
+            AdditionalAnswers.returnsFirstArg()
+        );
         final SubrogationDto dto = service.accept(idSubro);
         assertThat(dto.getStatus()).isEqualTo(SubrogationStatusEnum.ACCEPTED);
     }
@@ -180,14 +195,16 @@ public final class InternalSubrogationServiceTest {
     public void testAcceptBadUser() {
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser())
-            .thenReturn(IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER1_CUSTOMER_ID));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER1_CUSTOMER_ID)
+        );
         try {
             service.accept(SUBROGATION_ID);
             fail();
         } catch (final IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(
-                "Users " + BAD_USER_EMAIL + " can't accept subrogation of " + subro.getSurrogate());
+                "Users " + BAD_USER_EMAIL + " can't accept subrogation of " + subro.getSurrogate()
+            );
             throw e;
         }
     }
@@ -196,8 +213,9 @@ public final class InternalSubrogationServiceTest {
     public void testDecline() {
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser())
-            .thenReturn(IamDtoBuilder.buildAuthUserDto("id", USER2_EMAIL, USER2_CUSTOMER_ID));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", USER2_EMAIL, USER2_CUSTOMER_ID)
+        );
         service.decline(SUBROGATION_ID);
     }
 
@@ -205,14 +223,16 @@ public final class InternalSubrogationServiceTest {
     public void testDeclineBadUser() {
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser())
-            .thenReturn(IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER2_CUSTOMER_ID));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER2_CUSTOMER_ID)
+        );
         try {
             service.decline(SUBROGATION_ID);
             fail();
         } catch (final IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(
-                "Users " + BAD_USER_EMAIL + " can't decline subrogation of " + subro.getSurrogate());
+                "Users " + BAD_USER_EMAIL + " can't decline subrogation of " + subro.getSurrogate()
+            );
             throw e;
         }
     }
@@ -231,9 +251,12 @@ public final class InternalSubrogationServiceTest {
 
     private Customer buildCustomer() {
         final String generatedString = generateRandomString();
-        final Customer customer = IamServerUtilsTest.buildCustomer(null, "Integration tests : " + generatedString,
+        final Customer customer = IamServerUtilsTest.buildCustomer(
+            null,
+            "Integration tests : " + generatedString,
             Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
-            List.of(CommonConstants.EMAIL_SEPARATOR + generatedString));
+            List.of(CommonConstants.EMAIL_SEPARATOR + generatedString)
+        );
         customer.setSubrogeable(true);
         return customer;
     }

@@ -45,11 +45,6 @@ import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +73,8 @@ public class ApplicationController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Return config about applications and categories")
     @GetMapping("/filtered")
-    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) throws InvalidParseOperationException {
+    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp)
+        throws InvalidParseOperationException {
         LOGGER.debug("getApplications");
         return service.getApplications(buildUiHttpContext(), filterApp);
     }
@@ -113,7 +109,7 @@ public class ApplicationController extends AbstractUiRestController {
     @GetMapping
     @RequestMapping(method = RequestMethod.GET, value = "/asset")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Object> getAsset(@RequestParam() final List<AttachmentType> assets) {
+    public Map<String, Object> getAsset(@RequestParam final List<AttachmentType> assets) {
         LOGGER.debug("Get Assets {}", assets);
         return service.getBase64Assets(assets);
     }

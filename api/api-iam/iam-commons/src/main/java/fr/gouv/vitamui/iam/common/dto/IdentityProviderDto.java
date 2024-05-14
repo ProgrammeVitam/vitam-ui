@@ -57,8 +57,10 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata",
-        "spMetadata" })
+@ToString(
+    callSuper = true,
+    exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" }
+)
 public class IdentityProviderDto extends CustomerIdDto {
 
     /**
@@ -86,7 +88,6 @@ public class IdentityProviderDto extends CustomerIdDto {
     private List<String> patterns;
 
     private boolean readonly;
-
 
     // Common data to external providers (SAML + OIDC)
     private String mailAttribute;

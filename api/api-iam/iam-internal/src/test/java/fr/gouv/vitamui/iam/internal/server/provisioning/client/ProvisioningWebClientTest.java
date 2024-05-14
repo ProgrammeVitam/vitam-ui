@@ -37,7 +37,6 @@
 
 package fr.gouv.vitamui.iam.internal.server.provisioning.client;
 
-
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import org.junit.jupiter.api.Test;
@@ -98,20 +97,12 @@ class ProvisioningWebClientTest {
     private void mockWebClientResponse(final ProvidedUserDto providedUserDtoStub) {
         Mono monoMock = Mockito.mock(Mono.class);
 
-        when(webClientMock.get())
-            .thenReturn(requestHeadersUriSpecMock);
-        when(requestHeadersUriSpecMock.uri(ArgumentMatchers.any(URI.class)))
-            .thenReturn(requestHeadersUriSpecMock);
-        when(requestHeadersUriSpecMock.headers(ArgumentMatchers.any()))
-            .thenReturn(requestHeadersUriSpecMock);
-        when(requestHeadersUriSpecMock.retrieve())
-            .thenReturn(responseSpecMock);
-        when(responseSpecMock.onStatus(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(responseSpecMock);
-        when(responseSpecMock.bodyToMono(ProvidedUserDto.class))
-            .thenReturn(monoMock);
-        when(monoMock.block())
-            .thenReturn(providedUserDtoStub);
+        when(webClientMock.get()).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.uri(ArgumentMatchers.any(URI.class))).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.headers(ArgumentMatchers.any())).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.retrieve()).thenReturn(responseSpecMock);
+        when(responseSpecMock.onStatus(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(responseSpecMock);
+        when(responseSpecMock.bodyToMono(ProvidedUserDto.class)).thenReturn(monoMock);
+        when(monoMock.block()).thenReturn(providedUserDtoStub);
     }
-
 }

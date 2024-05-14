@@ -1,9 +1,9 @@
 package fr.gouv.vitamui.commons.utils;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class VitamUIStringUtilsTest {
 
@@ -15,5 +15,4 @@ public class VitamUIStringUtilsTest {
         Assert.assertFalse(VitamUIStringUtils.isBoolean(null));
         Assert.assertFalse(VitamUIStringUtils.isBoolean("test"));
     }
-
 }

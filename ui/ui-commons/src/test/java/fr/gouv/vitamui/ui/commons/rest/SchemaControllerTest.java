@@ -53,7 +53,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,9 +69,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
 @Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class })
 public class SchemaControllerTest extends UIControllerTest<IdDto> {
+
     @Value("${ui-prefix}")
     protected String moduleName;
-    @MockBean private SchemaService schemaService;
+
+    @MockBean
+    private SchemaService schemaService;
 
     @TestConfiguration
     static class UserConfiguration {
@@ -98,7 +100,9 @@ public class SchemaControllerTest extends UIControllerTest<IdDto> {
         params.put("collections", ARCHIVE_UNIT);
 
         super.performGet("", params)
-            .andDo(print()).andExpect(status().isOk()).andExpect(content().string(Matchers.containsString("[]")));
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string(Matchers.containsString("[]")));
 
         Mockito.verify(schemaService, Mockito.times(1)).getSchemas(any(), eq(collections));
     }
@@ -119,9 +123,7 @@ public class SchemaControllerTest extends UIControllerTest<IdDto> {
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

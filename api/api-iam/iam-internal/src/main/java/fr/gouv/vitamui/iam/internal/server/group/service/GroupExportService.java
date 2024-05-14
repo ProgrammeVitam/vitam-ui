@@ -30,31 +30,40 @@ import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDAT
 @Service
 @RequiredArgsConstructor
 public class GroupExportService {
+
     public static final String DATE_TIME_FORMAT_ISO_WITH_MS = "yyyy-MM-dd'T'HH_mm_ss.SSSSSS";
-    public static final DateTimeFormatter DATE_TIME_FORMATTER_ISO_WITH_MS = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_ISO_WITH_MS);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER_ISO_WITH_MS = DateTimeFormatter.ofPattern(
+        DATE_TIME_FORMAT_ISO_WITH_MS
+    );
 
     private final ApplicationInternalService applicationInternalService;
 
-    public static String getFilename(){
+    public static String getFilename() {
         return String.format("export-groupes-%s.xlsx", DATE_TIME_FORMATTER_ISO_WITH_MS.format(LocalDateTime.now()));
     }
 
-    public Resource exportProfileGroups(List<GroupDto> groupsDto, List<ProfileDto> profilesDto, Map<String, List<LogbookEventDto>> groupEvents)  {
+    public Resource exportProfileGroups(
+        List<GroupDto> groupsDto,
+        List<ProfileDto> profilesDto,
+        Map<String, List<LogbookEventDto>> groupEvents
+    ) {
         List<Map<String, ValueDto>> dataFirstSheet = getProfilesGroupRows(groupsDto, profilesDto, groupEvents);
         List<Map<String, ValueDto>> dataSecondSheet = getLinkedProfileGroupRows(groupsDto);
 
         try {
-            return ExcelUtils.generateWorkbook(List.of(
-                new ProfileGroupExportSheet(dataFirstSheet),
-                new LinkedProfileExportSheet(dataSecondSheet)
-            ));
+            return ExcelUtils.generateWorkbook(
+                List.of(new ProfileGroupExportSheet(dataFirstSheet), new LinkedProfileExportSheet(dataSecondSheet))
+            );
         } catch (IOException e) {
             throw new InternalServerException("An error occurred while creating the xls profile groups list export", e);
         }
-
     }
 
-    private List<Map<String, ValueDto>> getProfilesGroupRows(List<GroupDto> groupsDto, List<ProfileDto> profilesDto, Map<String, List<LogbookEventDto>> groupEvents){
+    private List<Map<String, ValueDto>> getProfilesGroupRows(
+        List<GroupDto> groupsDto,
+        List<ProfileDto> profilesDto,
+        Map<String, List<LogbookEventDto>> groupEvents
+    ) {
         var groupExport = groupsDto.stream().map(ProfileGroupExport::fromGroup).collect(Collectors.toList());
         addDateEvent(groupExport, groupEvents);
 
@@ -64,20 +73,24 @@ public class GroupExportService {
             .collect(Collectors.toList());
     }
 
-    private List<Map<String, ValueDto>> getLinkedProfileGroupRows(List<GroupDto> groupsDto){
+    private List<Map<String, ValueDto>> getLinkedProfileGroupRows(List<GroupDto> groupsDto) {
         var linkedProfiles = LinkedProfileExport.createListLinked(groupsDto)
             .sorted(Comparator.comparing(LinkedProfileExport::getGroupIdentifier))
             .collect(Collectors.toList());
 
-        var applicationIds = linkedProfiles.stream().map(LinkedProfileExport::getApplicationName)
-            .filter(id -> ! (id == null || id.isEmpty()))
-            .distinct().collect(Collectors.toList());
+        var applicationIds = linkedProfiles
+            .stream()
+            .map(LinkedProfileExport::getApplicationName)
+            .filter(id -> !(id == null || id.isEmpty()))
+            .distinct()
+            .collect(Collectors.toList());
         var applicationsMap = mapIdApplicationToNames(applicationIds);
 
-        return linkedProfiles.stream()
+        return linkedProfiles
+            .stream()
             .map(linkedProfile -> {
                 var appId = linkedProfile.getApplicationName();
-                if(!(appId == null || appId.isEmpty())){
+                if (!(appId == null || appId.isEmpty())) {
                     linkedProfile.setApplicationName(applicationsMap.get(linkedProfile.getApplicationName()));
                 }
                 return linkedProfile;
@@ -86,32 +99,45 @@ public class GroupExportService {
             .collect(Collectors.toList());
     }
 
-    private Map<String, String> mapIdApplicationToNames(List<String> idApplications){
+    private Map<String, String> mapIdApplicationToNames(List<String> idApplications) {
         return this.applicationInternalService.findApplicationByIdentifier(idApplications);
     }
 
-    private void addDateEvent(List<ProfileGroupExport> profileGroupExports, Map<String, List<LogbookEventDto>> groupEvents) {
+    private void addDateEvent(
+        List<ProfileGroupExport> profileGroupExports,
+        Map<String, List<LogbookEventDto>> groupEvents
+    ) {
         var evtCreations = groupEvents.getOrDefault(EXT_VITAMUI_CREATE_GROUP.name(), List.of());
         var evtUpdates = groupEvents.getOrDefault(EXT_VITAMUI_UPDATE_GROUP.name(), List.of());
 
-        if(!evtCreations.isEmpty()){
-            profileGroupExports.forEach(groupExport ->
-                    evtCreations.stream()
-                        .filter(evt ->  Integer.valueOf(evt.getObId()).equals(groupExport.getIdentifier())
-                            && evt.getEvDateTime() != null )
+        if (!evtCreations.isEmpty()) {
+            profileGroupExports.forEach(
+                groupExport ->
+                    evtCreations
+                        .stream()
+                        .filter(
+                            evt ->
+                                Integer.valueOf(evt.getObId()).equals(groupExport.getIdentifier()) &&
+                                evt.getEvDateTime() != null
+                        )
                         .max(Comparator.comparing(LogbookEventDto::getEvDateTime))
                         .ifPresent(evt -> groupExport.setCreatedAt(evt.getEvDateTime()))
-                );
-        }
-
-        if(!evtUpdates.isEmpty()) {
-            profileGroupExports.forEach(groupExport ->
-                evtUpdates.stream()
-                    .filter(evt -> Integer.valueOf(evt.getObId()).equals(groupExport.getIdentifier()) && evt.getEvDateTime() != null)
-                    .max(Comparator.comparing(LogbookEventDto::getEvDateTime))
-                    .ifPresent(evt -> groupExport.setLastModified(evt.getEvDateTime()))
             );
         }
 
+        if (!evtUpdates.isEmpty()) {
+            profileGroupExports.forEach(
+                groupExport ->
+                    evtUpdates
+                        .stream()
+                        .filter(
+                            evt ->
+                                Integer.valueOf(evt.getObId()).equals(groupExport.getIdentifier()) &&
+                                evt.getEvDateTime() != null
+                        )
+                        .max(Comparator.comparing(LogbookEventDto::getEvDateTime))
+                        .ifPresent(evt -> groupExport.setLastModified(evt.getEvDateTime()))
+            );
+        }
     }
 }

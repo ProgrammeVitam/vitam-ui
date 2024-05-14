@@ -45,13 +45,19 @@ import java.util.stream.Collectors;
 
 public final class EntityFactory {
 
-    private EntityFactory() {
-    }
+    private EntityFactory() {}
 
-    public static Profile buildProfile(final String name, final String identifier, final String description,
-        final boolean isReadonly, final String level, final Integer tenant, final String service,
-        final List<String> roleNames, final String customerId) {
-
+    public static Profile buildProfile(
+        final String name,
+        final String identifier,
+        final String description,
+        final boolean isReadonly,
+        final String level,
+        final Integer tenant,
+        final String service,
+        final List<String> roleNames,
+        final String customerId
+    ) {
         final Profile profile = new Profile();
         profile.setIdentifier(identifier);
         profile.setName(name);
@@ -66,19 +72,42 @@ public final class EntityFactory {
         return profile;
     }
 
-    public static Profile buildProfile(final String name, final String identifier, final String description,
-        final boolean isReadonly, final String level, final Integer tenant, final String service,
-        final List<String> roleNames, final String customerId, final String externalParameterId) {
-
-        final Profile profile =
-            buildProfile(name, identifier, description, isReadonly, level, tenant, service, roleNames, customerId);
+    public static Profile buildProfile(
+        final String name,
+        final String identifier,
+        final String description,
+        final boolean isReadonly,
+        final String level,
+        final Integer tenant,
+        final String service,
+        final List<String> roleNames,
+        final String customerId,
+        final String externalParameterId
+    ) {
+        final Profile profile = buildProfile(
+            name,
+            identifier,
+            description,
+            isReadonly,
+            level,
+            tenant,
+            service,
+            roleNames,
+            customerId
+        );
         profile.setExternalParamId(externalParameterId);
         return profile;
     }
 
-    public static Group buildGroup(final String name, final String identifier, final String description,
-        final boolean isReadonly, final String level, final List<Profile> profiles, final String customerId) {
-
+    public static Group buildGroup(
+        final String name,
+        final String identifier,
+        final String description,
+        final boolean isReadonly,
+        final String level,
+        final List<Profile> profiles,
+        final String customerId
+    ) {
         final Group group = new Group();
         group.setIdentifier(identifier);
         group.setCustomerId(customerId);
@@ -89,5 +118,4 @@ public final class EntityFactory {
         group.setProfileIds(profiles.stream().map(Profile::getId).collect(Collectors.toList()));
         return group;
     }
-
 }

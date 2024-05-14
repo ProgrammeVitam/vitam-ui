@@ -37,14 +37,14 @@ import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import java.util.Set;
 
 public interface ArchiveUnitClient {
-    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final Set<UpdateArchiveUnitDto> updateOperationDtoSet);
+    OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final Set<UpdateArchiveUnitDto> updateOperationDtoSet
+    );
 
-    OperationIdDto update(final AbstractHttpContext abstractHttpContext, final String id,
-        final JsonPatch jsonPatch);
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, final String id, final JsonPatch jsonPatch);
 
     OperationIdDto update(final AbstractHttpContext abstractHttpContext, final JsonPatchDto jsonPatchDto);
 
-    OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final MultiJsonPatchDto multiJsonPatchDto);
+    OperationIdDto update(final AbstractHttpContext abstractHttpContext, final MultiJsonPatchDto multiJsonPatchDto);
 }

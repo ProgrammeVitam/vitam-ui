@@ -43,8 +43,7 @@ import java.io.InputStream;
 
 public class TransferAcknowledgmentService {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransferAcknowledgmentService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransferAcknowledgmentService.class);
     private final AccessExternalClient accessExternalClient;
 
     public TransferAcknowledgmentService(AccessExternalClient accessExternalClient) {

@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.utils;
 
 public interface VitamUIAutoClosable extends AutoCloseable {
-
     @Override
     void close();
 }

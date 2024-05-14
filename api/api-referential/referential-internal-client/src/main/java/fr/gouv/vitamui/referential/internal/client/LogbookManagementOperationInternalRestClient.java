@@ -44,7 +44,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class LogbookManagementOperationInternalRestClient extends BasePaginatingAndSortingRestClient<ProcessDetailDto, InternalHttpContext> {
+public class LogbookManagementOperationInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ProcessDetailDto, InternalHttpContext> {
 
     public LogbookManagementOperationInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -60,35 +61,56 @@ public class LogbookManagementOperationInternalRestClient extends BasePaginating
         return ProcessDetailDto.class;
     }
 
-        protected ParameterizedTypeReference<List<ProcessDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ProcessDetailDto>>() {
-        };
+    protected ParameterizedTypeReference<List<ProcessDetailDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<List<ProcessDetailDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>>() { };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>>() {};
     }
 
     public ProcessDetailDto searchOperationsDetails(InternalHttpContext context, ProcessQuery processQuery) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH );
-        final HttpEntity<AuditOptions> request = new HttpEntity(processQuery,buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.POST, request, ProcessDetailDto.class);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH);
+        final HttpEntity<AuditOptions> request = new HttpEntity(processQuery, buildHeaders(context));
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(
+            uriBuilder.build().toUri(),
+            HttpMethod.POST,
+            request,
+            ProcessDetailDto.class
+        );
         return response.getBody();
     }
 
     public ProcessDetailDto cancelOperationProcessExecution(InternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID
+        );
         final HttpEntity<AuditOptions> request = new HttpEntity(buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.POST,
+            request,
+            ProcessDetailDto.class
+        );
         return response.getBody();
     }
 
-    public ProcessDetailDto updateOperationActionProcess(InternalHttpContext context, String actionId, String operationId) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity(actionId,buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(operationId), HttpMethod.POST, request, ProcessDetailDto.class);
+    public ProcessDetailDto updateOperationActionProcess(
+        InternalHttpContext context,
+        String actionId,
+        String operationId
+    ) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID
+        );
+        final HttpEntity<AuditOptions> request = new HttpEntity(actionId, buildHeaders(context));
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(
+            uriBuilder.build(operationId),
+            HttpMethod.POST,
+            request,
+            ProcessDetailDto.class
+        );
         return response.getBody();
     }
-
 }

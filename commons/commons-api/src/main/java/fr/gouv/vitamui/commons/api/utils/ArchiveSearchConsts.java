@@ -39,36 +39,45 @@ public class ArchiveSearchConsts {
     public static final String RULE_TYPE_FIELD = "RuleType";
     public static final String ARCHIVE_UNIT_INGEST = "INGEST";
 
-
-    public final static String FINAL_ACTION_TYPE_ELIMINATION =
-        "FINAL_ACTION_TYPE_ELIMINATION";
-    public final static String FINAL_ACTION_TYPE_KEEP = "FINAL_ACTION_TYPE_KEEP";
-    public final static String FINAL_ACTION_TYPE_CONFLICT = "FINAL_ACTION_TYPE_CONFLICT";
-    public final static String RULE_ORIGIN_CRITERIA = "RULE_ORIGIN";
-    public final static String ARCHIVE_UNIT_WITH_OBJECTS = "ARCHIVE_UNIT_WITH_OBJECTS";
-    public final static String ARCHIVE_UNIT_WITHOUT_OBJECTS = "ARCHIVE_UNIT_WITHOUT_OBJECTS";
-    public final static String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
-    public final static String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
-    public final static String FILING_UNIT_TYPE = "FILING_UNIT";
-    public final static String HOLDING_UNIT_TYPE = "HOLDING_UNIT";
+    public static final String FINAL_ACTION_TYPE_ELIMINATION = "FINAL_ACTION_TYPE_ELIMINATION";
+    public static final String FINAL_ACTION_TYPE_KEEP = "FINAL_ACTION_TYPE_KEEP";
+    public static final String FINAL_ACTION_TYPE_CONFLICT = "FINAL_ACTION_TYPE_CONFLICT";
+    public static final String RULE_ORIGIN_CRITERIA = "RULE_ORIGIN";
+    public static final String ARCHIVE_UNIT_WITH_OBJECTS = "ARCHIVE_UNIT_WITH_OBJECTS";
+    public static final String ARCHIVE_UNIT_WITHOUT_OBJECTS = "ARCHIVE_UNIT_WITHOUT_OBJECTS";
+    public static final String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
+    public static final String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
+    public static final String FILING_UNIT_TYPE = "FILING_UNIT";
+    public static final String HOLDING_UNIT_TYPE = "HOLDING_UNIT";
     public static final String INGEST_ARCHIVE_TYPE = "INGEST";
     public static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
 
-
     public enum CriteriaDataType {
-        STRING, DATE, INTERVAL
+        STRING,
+        DATE,
+        INTERVAL,
     }
-
 
     public enum CriteriaCategory {
-        FIELDS, APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE, HOLD_RULE, REUSE_RULE, DISSEMINATION_RULE, CLASSIFICATION_RULE, NODES
+        FIELDS,
+        APPRAISAL_RULE,
+        ACCESS_RULE,
+        STORAGE_RULE,
+        HOLD_RULE,
+        REUSE_RULE,
+        DISSEMINATION_RULE,
+        CLASSIFICATION_RULE,
+        NODES,
     }
 
-
     public enum CriteriaMgtRulesCategory {
-        APPRAISAL_RULE("AppraisalRule"), ACCESS_RULE("AccessRule"), STORAGE_RULE("StorageRule"),
-        DISSEMINATION_RULE("DisseminationRule"), CLASSIFICATION_RULE("ClassificationRule"),
-        HOLD_RULE("HoldRule"), REUSE_RULE("ReuseRule");
+        APPRAISAL_RULE("AppraisalRule"),
+        ACCESS_RULE("AccessRule"),
+        STORAGE_RULE("StorageRule"),
+        DISSEMINATION_RULE("DisseminationRule"),
+        CLASSIFICATION_RULE("ClassificationRule"),
+        HOLD_RULE("HoldRule"),
+        REUSE_RULE("ReuseRule");
 
         private final String fieldMapping;
 
@@ -81,92 +90,95 @@ public class ArchiveSearchConsts {
         }
 
         public static boolean contains(String s) {
-            for (CriteriaMgtRulesCategory mgtRulesCategory : values())
-                if (mgtRulesCategory.name().equals(s))
-                    return true;
+            for (CriteriaMgtRulesCategory mgtRulesCategory : values()) if (
+                mgtRulesCategory.name().equals(s)
+            ) return true;
             return false;
         }
     }
-
 
     public enum RuleOrigin {
-        INHERITED, SCOPED
+        INHERITED,
+        SCOPED,
     }
 
-
     public enum RuleOriginValues {
-        ORIGIN_WAITING_RECALCULATE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_LOCAL_OR_INHERIT_RULES;
+        ORIGIN_WAITING_RECALCULATE,
+        ORIGIN_INHERITE_AT_LEAST_ONE,
+        ORIGIN_HAS_NO_ONE,
+        ORIGIN_HAS_AT_LEAST_ONE,
+        ORIGIN_LOCAL_OR_INHERIT_RULES;
 
         public static boolean contains(String s) {
-            for (RuleOriginValues ruleOriginValues : values())
-                if (ruleOriginValues.name().equals(s))
-                    return true;
+            for (RuleOriginValues ruleOriginValues : values()) if (ruleOriginValues.name().equals(s)) return true;
             return false;
         }
     }
 
+    public static final String FINAL_ACTION_INHERITE_FINAL_ACTION = "FINAL_ACTION_INHERITE_FINAL_ACTION";
+    public static final String FINAL_ACTION_HAS_FINAL_ACTION = "FINAL_ACTION_HAS_FINAL_ACTION";
 
-    public final static String FINAL_ACTION_INHERITE_FINAL_ACTION =
-        "FINAL_ACTION_INHERITE_FINAL_ACTION";
-    public final static String FINAL_ACTION_HAS_FINAL_ACTION =
-        "FINAL_ACTION_HAS_FINAL_ACTION";
+    public static final String RULE_FINAL_ACTION = "FINAL_ACTION";
+    public static final String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
 
-    public final static String RULE_FINAL_ACTION = "FINAL_ACTION";
-    public final static String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
+    public static final String RULE_IDENTIFIER = "RULE_IDENTIFIER";
+    public static final String MANAGEMENT_RULE_IDENTIFIER_CRITERIA = "MANAGEMENT_RULE_IDENTIFIER";
+    public static final String MANAGEMENT_RULE_INHERITED_CRITERIA = "MANAGEMENT_RULE_INHERITED_CRITERIA";
+    public static final String APPRAISAL_PREVENT_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_PREVENT_RULE_IDENTIFIER";
 
-    public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
-    public final static String MANAGEMENT_RULE_IDENTIFIER_CRITERIA = "MANAGEMENT_RULE_IDENTIFIER";
-    public final static String MANAGEMENT_RULE_INHERITED_CRITERIA = "MANAGEMENT_RULE_INHERITED_CRITERIA";
-    public final static String APPRAISAL_PREVENT_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_PREVENT_RULE_IDENTIFIER";
+    public static final String RULE_TITLE = "RULE_TITLE";
+    public static final String RULE_END_DATE = "RULE_END_DATE";
+    public static final String MANAGEMENT_RULE_START_DATE = "MANAGEMENT_RULE_START_DATE";
+    public static final String WAITING_RECALCULATE = "WAITING_RECALCULATE";
+    public static final String RULES_COMPUTED = "RULES_COMPUTED";
 
-    public final static String RULE_TITLE = "RULE_TITLE";
-    public final static String RULE_END_DATE = "RULE_END_DATE";
-    public final static String MANAGEMENT_RULE_START_DATE = "MANAGEMENT_RULE_START_DATE";
-    public final static String WAITING_RECALCULATE = "WAITING_RECALCULATE";
-    public final static String RULES_COMPUTED = "RULES_COMPUTED";
+    public static final String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
 
-    public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
+    public static final String ACCESS_RULE_START_DATE_FIELD = "#management.AccessRule.Rules.StartDate";
 
-    public final static String ACCESS_RULE_START_DATE_FIELD = "#management.AccessRule.Rules.StartDate";
+    public static final String REUSE_RULE_START_DATE_FIELD = "#management.ReuseRule.Rules.StartDate";
 
-    public final static String REUSE_RULE_START_DATE_FIELD = "#management.ReuseRule.Rules.StartDate";
+    public static final String DISSEMINATION_RULE_START_DATE_FIELD = "#management.DisseminationRule.Rules.StartDate";
 
-    public final static String DISSEMINATION_RULE_START_DATE_FIELD = "#management.DisseminationRule.Rules.StartDate";
+    public static final String STORAGE_RULE_START_DATE_FIELD = "#management.StorageRule.Rules.StartDate";
 
-    public final static String STORAGE_RULE_START_DATE_FIELD = "#management.StorageRule.Rules.StartDate";
+    public static final String HOLD_RULE_START_DATE_FIELD = "#management.HoldRule.Rules.StartDate";
 
-    public final static String HOLD_RULE_START_DATE_FIELD = "#management.HoldRule.Rules.StartDate";
+    public static final String CLASSIFICATION_RULE_START_DATE_FIELD = "#management.ClassificationRule.Rules.StartDate";
 
-    public final static String CLASSIFICATION_RULE_START_DATE_FIELD = "#management.ClassificationRule.Rules.StartDate";
+    public static final String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
 
-    public final static String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
+    public static final String ACCESS_RULE_IDENTIFIER = "#management.AccessRule.Rules.Rule";
 
-    public final static String ACCESS_RULE_IDENTIFIER = "#management.AccessRule.Rules.Rule";
+    public static final String REUSE_RULE_IDENTIFIER = "#management.ReuseRule.Rules.Rule";
 
-    public final static String REUSE_RULE_IDENTIFIER = "#management.ReuseRule.Rules.Rule";
+    public static final String CLASSIFICATION_RULE_IDENTIFIER = "#management.ClassificationRule.Rules.Rule";
 
-    public final static String CLASSIFICATION_RULE_IDENTIFIER = "#management.ClassificationRule.Rules.Rule";
+    public static final String HOLD_RULE_IDENTIFIER = "#management.HoldRule.Rules.Rule";
 
-    public final static String HOLD_RULE_IDENTIFIER = "#management.HoldRule.Rules.Rule";
+    public static final String STORAGE_RULE_IDENTIFIER = "#management.StorageRule.Rules.Rule";
 
-    public final static String STORAGE_RULE_IDENTIFIER = "#management.StorageRule.Rules.Rule";
+    public static final String DISSEMINATION_RULE_IDENTIFIER = "#management.DisseminationRule.Rules.Rule";
+    public static final String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
+    public static final String ACCESS_RULE_INHERITED = "#management.AccessRule.Inheritance.PreventInheritance";
+    public static final String STORAGE_RULE_INHERITED = "#management.StorageRule.Inheritance.PreventInheritance";
+    public static final String HOLD_RULE_INHERITED = "#management.HoldRule.Inheritance.PreventInheritance";
+    public static final String DISSEMINATION_RULE_INHERITED =
+        "#management.DisseminationRule.Inheritance.PreventInheritance";
+    public static final String REUSE_RULE_INHERITED = "#management.ReuseRule.Inheritance.PreventInheritance";
+    public static final String CLASSIFICATION_RULE_INHERITED =
+        "#management.ClassificationRule.Inheritance.PreventInheritance";
 
-    public final static String DISSEMINATION_RULE_IDENTIFIER = "#management.DisseminationRule.Rules.Rule";
-    public final static String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
-    public final static String ACCESS_RULE_INHERITED = "#management.AccessRule.Inheritance.PreventInheritance";
-    public final static String STORAGE_RULE_INHERITED = "#management.StorageRule.Inheritance.PreventInheritance";
-    public final static String HOLD_RULE_INHERITED = "#management.HoldRule.Inheritance.PreventInheritance";
-    public final static String DISSEMINATION_RULE_INHERITED = "#management.DisseminationRule.Inheritance.PreventInheritance";
-    public final static String REUSE_RULE_INHERITED = "#management.ReuseRule.Inheritance.PreventInheritance";
-    public final static String CLASSIFICATION_RULE_INHERITED = "#management.ClassificationRule.Inheritance.PreventInheritance";
-
-    public final static String APPRAISAL_PREVENT_RULE_IDENTIFIER = "#management.AppraisalRule.Inheritance.PreventRulesId";
-    public final static String ACCESS_PREVENT_RULE_IDENTIFIER = "#management.AccessRule.Inheritance.PreventRulesId";
-    public final static String STORAGE_PREVENT_RULE_IDENTIFIER = "#management.StorageRule.Inheritance.PreventRulesId";
-    public final static String HOLD_PREVENT_RULE_IDENTIFIER = "#management.HoldRule.Inheritance.PreventRulesId";
-    public final static String DISSEMINATION_PREVENT_RULE_IDENTIFIER = "#management.DisseminationRule.Inheritance.PreventRulesId";
-    public final static String REUSE_PREVENT_RULE_IDENTIFIER = "#management.ReuseRule.Inheritance.PreventRulesId";
-    public final static String CLASSIFICATION_PREVENT_RULE_IDENTIFIER = "#management.ClassificationRule.Inheritance.PreventRulesId";
+    public static final String APPRAISAL_PREVENT_RULE_IDENTIFIER =
+        "#management.AppraisalRule.Inheritance.PreventRulesId";
+    public static final String ACCESS_PREVENT_RULE_IDENTIFIER = "#management.AccessRule.Inheritance.PreventRulesId";
+    public static final String STORAGE_PREVENT_RULE_IDENTIFIER = "#management.StorageRule.Inheritance.PreventRulesId";
+    public static final String HOLD_PREVENT_RULE_IDENTIFIER = "#management.HoldRule.Inheritance.PreventRulesId";
+    public static final String DISSEMINATION_PREVENT_RULE_IDENTIFIER =
+        "#management.DisseminationRule.Inheritance.PreventRulesId";
+    public static final String REUSE_PREVENT_RULE_IDENTIFIER = "#management.ReuseRule.Inheritance.PreventRulesId";
+    public static final String CLASSIFICATION_PREVENT_RULE_IDENTIFIER =
+        "#management.ClassificationRule.Inheritance.PreventRulesId";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
@@ -181,43 +193,68 @@ public class ArchiveSearchConsts {
     public static final String FINAL_ACTION_DESTROY_FIELD_VALUE = "Destroy";
     public static final String FINAL_ACTION_CONFLICT_FIELD_VALUE = "Conflict";
 
-    public static final DateTimeFormatter ISO_FRENCH_FORMATER =
-        DateTimeFormatter.ofPattern(ArchiveSearchConsts.ISO_DATE_FORMAT, Locale.FRENCH);
-    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATER =
-        DateTimeFormatter.ofPattern(ArchiveSearchConsts.ONLY_DATE_FORMAT, Locale.FRENCH);
-    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH =
-        DateTimeFormatter.ofPattern(ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH, Locale.FRENCH);
-
+    public static final DateTimeFormatter ISO_FRENCH_FORMATER = DateTimeFormatter.ofPattern(
+        ArchiveSearchConsts.ISO_DATE_FORMAT,
+        Locale.FRENCH
+    );
+    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATER = DateTimeFormatter.ofPattern(
+        ArchiveSearchConsts.ONLY_DATE_FORMAT,
+        Locale.FRENCH
+    );
+    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH = DateTimeFormatter.ofPattern(
+        ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH,
+        Locale.FRENCH
+    );
 
     /*
     Operators for criteria
      */
     public enum CriteriaOperators {
-        EQ, MATCH, LT, GT, LTE, GTE, NOT_EQ, EXISTS, MISSING, NOT_MATCH, IN, NOT_IN
+        EQ,
+        MATCH,
+        LT,
+        GT,
+        LTE,
+        GTE,
+        NOT_EQ,
+        EXISTS,
+        MISSING,
+        NOT_MATCH,
+        IN,
+        NOT_IN,
     }
 
-
-    public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING =
-        Map.of(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION, FINAL_ACTION_DESTROY_FIELD_VALUE,
-            ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP, FINAL_ACTION_KEEP_FIELD_VALUE
-        );
+    public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING = Map.of(
+        ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION,
+        FINAL_ACTION_DESTROY_FIELD_VALUE,
+        ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP,
+        FINAL_ACTION_KEEP_FIELD_VALUE
+    );
 
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
     public static final String ORIGINATING_AGENCY_ID_FIELD = "SP_CODE";
 
-    public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING =
-        Map.of("GUID", "#id", "GUID_OPI", "#opi",
-            ORIGINATING_AGENCY_ID_FIELD, "#originating_agency",
-            "START_DATE", "StartDate",
-            "END_DATE", "EndDate",
-            "SP_LABEL", "originating_agency_label",
-            "ARCHIVE_UNIT_HOLDING_UNIT", "#unitType",
-            RULES_COMPUTED, "#validComputedInheritedRules"
-        );
+    public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING = Map.of(
+        "GUID",
+        "#id",
+        "GUID_OPI",
+        "#opi",
+        ORIGINATING_AGENCY_ID_FIELD,
+        "#originating_agency",
+        "START_DATE",
+        "StartDate",
+        "END_DATE",
+        "EndDate",
+        "SP_LABEL",
+        "originating_agency_label",
+        "ARCHIVE_UNIT_HOLDING_UNIT",
+        "#unitType",
+        RULES_COMPUTED,
+        "#validComputedInheritedRules"
+    );
 
     public static final int DEFAULT_DEPTH = 10;
     public static final int FACET_SIZE_MILTIPLIER = 100;
-
 
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";
@@ -234,7 +271,6 @@ public class ArchiveSearchConsts {
     public static final String DESCRIPTION_LEVEL_CRITERIA = "DESCRIPTION_LEVEL";
     public static final String DESCRIPTION_LEVEL = "DescriptionLevel";
     public static final String ARCHIVE_UNIT_OBJECTS = "#object";
-
 
     /* Query fields */
     public static final String ID = "#id";
@@ -255,7 +291,6 @@ public class ArchiveSearchConsts {
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
-
     public static final String FACETS_EXPIRED_RULES_COMPUTED = "EXPIRED_RULES_COMPUTED";
     public static final String FACETS_UNEXPIRED_RULES_COMPUTED = "UNEXPIRED_RULES_COMPUTED";
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
@@ -273,10 +308,8 @@ public class ArchiveSearchConsts {
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
     public static final String ACCESS_RULE_TYPE = "AccessRule";
 
-
-    public final static String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
-    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+    public static final String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
+    public static final String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
 
     public static final String UNITS_UPS = "#allunitups";
-
 }

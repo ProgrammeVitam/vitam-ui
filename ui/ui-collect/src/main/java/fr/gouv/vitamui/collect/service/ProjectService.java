@@ -54,9 +54,11 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
     private final CommonService commonService;
 
     @Autowired
-    public ProjectService(CommonService commonService,
+    public ProjectService(
+        CommonService commonService,
         CollectExternalRestClient collectExternalRestClient,
-        CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
+        CollectStreamingExternalRestClient collectStreamingExternalRestClient
+    ) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
         this.collectStreamingExternalRestClient = collectStreamingExternalRestClient;
@@ -71,20 +73,27 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         return collectExternalRestClient;
     }
 
-
     public CollectProjectDto createProject(ExternalHttpContext context, CollectProjectDto collectProjectDto) {
         return collectExternalRestClient.create(context, collectProjectDto);
     }
 
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context,
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(
+        ExternalHttpContext context,
         final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction) {
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
     }
 
-    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
-        String transactionId, InputStream inputStream) {
+    public ResponseEntity<Void> streamingUpload(
+        final ExternalHttpContext context,
+        String fileName,
+        String transactionId,
+        InputStream inputStream
+    ) {
         return collectStreamingExternalRestClient.streamingUpload(context, fileName, transactionId, inputStream);
     }
 
@@ -92,7 +101,11 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         collectExternalRestClient.deleteProject(projectId, context);
     }
 
-    public CollectTransactionDto createTransactionForProject(final ExternalHttpContext context, CollectTransactionDto collectTransactionDto, String id) {
+    public CollectTransactionDto createTransactionForProject(
+        final ExternalHttpContext context,
+        CollectTransactionDto collectTransactionDto,
+        String id
+    ) {
         return collectExternalRestClient.createTransactionForProject(context, collectTransactionDto, id);
     }
 
@@ -100,13 +113,17 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         return collectExternalRestClient.getLastTransactionForProjectId(id, context);
     }
 
-
-    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(final Integer page, Integer size,
-        final Optional<String> criteria, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction, final ExternalHttpContext context, String projectId) {
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        final Integer page,
+        Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context,
+        String projectId
+    ) {
         size = beforePaginate(page, size);
-        return getClient().getTransactionsByProjectPaginated(context, page, size, criteria, orderBy, direction,
-            projectId);
+        return getClient()
+            .getTransactionsByProjectPaginated(context, page, size, criteria, orderBy, direction, projectId);
     }
-
 }

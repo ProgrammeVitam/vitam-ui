@@ -90,7 +90,12 @@ public class VitamAgencyService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public VitamAgencyService(AdminExternalClient adminExternalClient, AgencyService agencyService, ObjectMapper objectMapper, AccessExternalClient accessExternalClient) {
+    public VitamAgencyService(
+        AdminExternalClient adminExternalClient,
+        AgencyService agencyService,
+        ObjectMapper objectMapper,
+        AccessExternalClient accessExternalClient
+    ) {
         this.adminExternalClient = adminExternalClient;
         this.agencyService = agencyService;
         this.objectMapper = objectMapper;
@@ -99,7 +104,7 @@ public class VitamAgencyService {
 
     /**
      * Ignore vitam internal fields (#id, #version, #tenant) and Agency non mutable fields (Identifier, Name)
-      */
+     */
     private void patchFields(AgencyModelDto agencyToPatch, AgencyModelDto fieldsToApply) {
         if (fieldsToApply.getName() != null) {
             agencyToPatch.setName(fieldsToApply.getName());
@@ -110,61 +115,83 @@ public class VitamAgencyService {
         }
     }
 
-    public Response export(VitamContext context) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
+    public Response export(VitamContext context)
+        throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
         JsonNode query = VitamQueryHelper.getLastOperationQuery(VitamQueryHelper.AGENCY_IMPORT_OPERATION_TYPE);
-        RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(context, query);
-        LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+        RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(
+            context,
+            query
+        );
+        LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(
+            lastImportOperationResponse.toJsonNode(),
+            LogbookOperationsResponseDto.class
+        );
 
         if (lastImportOperation.getHits().getTotal() == 0) {
             throw new VitamClientException("Can't get a result while selecting lase agency import");
         }
-        LOGGER.info("Export Agencies EvIdAppSession : {} " , context.getApplicationSessionId());
-        return adminExternalClient.downloadAgenciesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
+        LOGGER.info("Export Agencies EvIdAppSession : {} ", context.getApplicationSessionId());
+        return adminExternalClient.downloadAgenciesCsvAsStream(
+            context,
+            lastImportOperation.getResults().get(0).getEvId()
+        );
     }
 
     public RequestResponse<?> importAgencies(VitamContext vitamContext, String fileName, MultipartFile file)
-    	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-    	LOGGER.debug("Import agency file {}", fileName);
-    	return this.importAgencies(vitamContext, file.getInputStream(), fileName);
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Import agency file {}", fileName);
+        return this.importAgencies(vitamContext, file.getInputStream(), fileName);
     }
 
     public RequestResponse<?> patchAgency(final VitamContext vitamContext, final String id, AgencyModelDto patchAgency)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-        LOGGER.info("Patch Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.info("Patch Agency EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(
+            vitamContext,
+            new Select().getFinalSelect()
+        );
         final List<AgencyModelDto> actualAgencies = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class)
+            .getResults();
 
-        actualAgencies.stream()
-            .filter( agency -> id.equals(agency.getId()) )
-            .forEach( agency -> this.patchFields(agency, patchAgency) );
+        actualAgencies
+            .stream()
+            .filter(agency -> id.equals(agency.getId()))
+            .forEach(agency -> this.patchFields(agency, patchAgency));
 
         return importAgencies(vitamContext, actualAgencies);
     }
 
     public boolean deleteAgency(final VitamContext vitamContext, final String id)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.info("Delete Agency EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-        LOGGER.info("Delete Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-
-        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
+        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(
+            vitamContext,
+            new Select().getFinalSelect()
+        );
         final List<AgencyModelDto> actualAgencies = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class)
+            .getResults();
 
-        RequestResponse r = importAgencies(vitamContext, actualAgencies.stream()
-                .filter( agency -> !id.equals(agency.getId()) )
-                .collect(Collectors.toList()));
+        RequestResponse r = importAgencies(
+            vitamContext,
+            actualAgencies.stream().filter(agency -> !id.equals(agency.getId())).collect(Collectors.toList())
+        );
         return r.isOk();
     }
 
     public RequestResponse<?> create(final VitamContext vitamContext, AgencyModelDto newAgency)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.info("Create Agency EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-        LOGGER.info("Create Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-
-        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
+        RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(
+            vitamContext,
+            new Select().getFinalSelect()
+        );
         final List<AgencyModelDto> actualAgencies = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class)
+            .getResults();
 
         actualAgencies.add(newAgency);
 
@@ -172,23 +199,29 @@ public class VitamAgencyService {
     }
 
     private RequestResponse importAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agenciesModel)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         LOGGER.debug("Reimport agencyies {}", agenciesModel);
         return importAgencies(vitamContext, agenciesModel, "Agencies.json");
     }
 
-    private RequestResponse importAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agencyModels, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    private RequestResponse importAgencies(
+        final VitamContext vitamContext,
+        final List<AgencyModelDto> agencyModels,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try (ByteArrayInputStream byteArrayInputStream = serializeAgencies(agencyModels)) {
             return importAgencies(vitamContext, byteArrayInputStream, fileName);
         }
     }
 
-    private RequestResponse<?> importAgencies(final VitamContext vitamContext, final InputStream agencies, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException {
-        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    private RequestResponse<?> importAgencies(
+        final VitamContext vitamContext,
+        final InputStream agencies,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         return adminExternalClient.createAgencies(vitamContext, agencies, fileName);
     }
 
@@ -197,10 +230,8 @@ public class VitamAgencyService {
         LOGGER.debug("The json for creation agencies, sent to Vitam {}", listOfAgencies);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-
             final CsvMapper csvMapper = new CsvMapper();
-            final CsvSchema schema = csvMapper.schemaFor(AgencyCSVDto.class)
-                    .withColumnSeparator(',').withHeader();
+            final CsvSchema schema = csvMapper.schemaFor(AgencyCSVDto.class).withColumnSeparator(',').withHeader();
 
             final ObjectWriter writer = csvMapper.writer(schema);
 
@@ -215,8 +246,10 @@ public class VitamAgencyService {
      * @return
      * the tenant where the access contract will be created
      */
-    public Integer checkAbilityToCreateAgencyInVitam(final List<AgencyModelDto> agencies, final String applicationSessionId) {
-
+    public Integer checkAbilityToCreateAgencyInVitam(
+        final List<AgencyModelDto> agencies,
+        final String applicationSessionId
+    ) {
         if (agencies != null && !agencies.isEmpty()) {
             // check if tenant is ok in the request body
             final Optional<AgencyModelDto> agency = agencies.stream().findFirst();
@@ -226,27 +259,32 @@ public class VitamAgencyService {
                 if (!sameTenant) {
                     throw new BadRequestException("All the access contracts must have the same tenant identifier");
                 }
-            }
-            else {
+            } else {
                 throw new BadRequestException("The tenant identifier must be present in the request body");
             }
 
             try {
                 // check if tenant exist in Vitam
-                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(applicationSessionId);
+                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
+                    applicationSessionId
+                );
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<AgenciesModel> response = agencyService.findAgencies(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create access contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create access contracts for this tenant, Vitam response code : " + response.getStatus());
+                    throw new PreconditionFailedException(
+                        "Can't create access contracts for the tenant : " + tenantIdentifier + " not found in Vitam"
+                    );
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
+                    throw new UnavailableServiceException(
+                        "Can't create access contracts for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyAgencyExistence(agencies, response);
-            }
-            catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+            } catch (final VitamClientException e) {
+                throw new UnavailableServiceException(
+                    "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return tenantIdentifier;
         }
@@ -258,24 +296,47 @@ public class VitamAgencyService {
      * @param accessContracts
      * @param response
      */
-    private void verifyAgencyExistence(final List<AgencyModelDto> accessContracts, final RequestResponse<AgenciesModel> response) {
+    private void verifyAgencyExistence(
+        final List<AgencyModelDto> accessContracts,
+        final RequestResponse<AgenciesModel> response
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), AgencyResponseDto.class);
-            final List<String> accessContractsNames = accessContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
+            final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                response.toJsonNode(),
+                AgencyResponseDto.class
+            );
+            final List<String> accessContractsNames = accessContracts
+                .stream()
+                .map(ac -> ac.getName())
+                .collect(Collectors.toList());
+            boolean alreadyCreated = accessContractResponseDto
+                .getResults()
+                .stream()
+                .anyMatch(ac -> accessContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
-                throw new ConflictException("Can't create access contract, a contract with the same name already exist in Vitam");
+                throw new ConflictException(
+                    "Can't create access contract, a contract with the same name already exist in Vitam"
+                );
             }
-            final List<String> accessContractsIds = accessContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
-            alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsIds.contains(ac.getIdentifier()));
+            final List<String> accessContractsIds = accessContracts
+                .stream()
+                .map(ac -> ac.getIdentifier())
+                .collect(Collectors.toList());
+            alreadyCreated = accessContractResponseDto
+                .getResults()
+                .stream()
+                .anyMatch(ac -> accessContractsIds.contains(ac.getIdentifier()));
             if (alreadyCreated) {
-                throw new ConflictException("Can't create access contract, a contract with the same id already exist in Vitam");
+                throw new ConflictException(
+                    "Can't create access contract, a contract with the same id already exist in Vitam"
+                );
             }
-        }
-        catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+        } catch (final JsonProcessingException e) {
+            throw new UnexpectedDataException(
+                "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage()
+            );
         }
     }
 

@@ -50,8 +50,10 @@ import java.util.stream.Collectors;
  */
 public class IdentityProviderHelper {
 
-    public Optional<IdentityProviderDto> findByTechnicalName(final List<IdentityProviderDto> providers,
-        final String name) {
+    public Optional<IdentityProviderDto> findByTechnicalName(
+        final List<IdentityProviderDto> providers,
+        final String name
+    ) {
         for (final IdentityProviderDto provider : providers) {
             if (StringUtils.equals(provider.getTechnicalName(), name)) {
                 return Optional.of(provider);
@@ -60,30 +62,46 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public List<IdentityProviderDto> findAllByUserIdentifier(final List<IdentityProviderDto> providers,
-        final String identifier) {
-        return providers.stream()
+    public List<IdentityProviderDto> findAllByUserIdentifier(
+        final List<IdentityProviderDto> providers,
+        final String identifier
+    ) {
+        return providers
+            .stream()
             .filter(provider -> provider.getPatterns().stream().anyMatch(identifier::matches))
             .collect(Collectors.toList());
     }
 
-    public Optional<IdentityProviderDto> findByUserIdentifierAndCustomerId(final List<IdentityProviderDto> providers,
-        final String userIdentifier, final String customerId) {
+    public Optional<IdentityProviderDto> findByUserIdentifierAndCustomerId(
+        final List<IdentityProviderDto> providers,
+        final String userIdentifier,
+        final String customerId
+    ) {
+        if (CollectionUtils.isEmpty(providers)) return Optional.empty();
 
-        if (CollectionUtils.isEmpty(providers))
-            return Optional.empty();
-
-        return providers.stream()
+        return providers
+            .stream()
             .filter(provider -> provider.getCustomerId().equals(customerId))
-            .filter(provider -> provider.getPatterns().stream()
-                .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches()))
+            .filter(
+                provider ->
+                    provider
+                        .getPatterns()
+                        .stream()
+                        .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches())
+            )
             .findFirst();
     }
 
-    public boolean identifierMatchProviderPattern(final List<IdentityProviderDto> providers, final String userEmail,
-        final String userCustomerId) {
-        final Optional<IdentityProviderDto> optProvider =
-            findByUserIdentifierAndCustomerId(providers, userEmail, userCustomerId);
+    public boolean identifierMatchProviderPattern(
+        final List<IdentityProviderDto> providers,
+        final String userEmail,
+        final String userCustomerId
+    ) {
+        final Optional<IdentityProviderDto> optProvider = findByUserIdentifierAndCustomerId(
+            providers,
+            userEmail,
+            userCustomerId
+        );
         return optProvider.isPresent() && optProvider.get().getInternal() == Boolean.TRUE;
     }
 }

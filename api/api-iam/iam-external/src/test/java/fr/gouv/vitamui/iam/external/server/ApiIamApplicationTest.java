@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.iam.external.server;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitamui.iam.external.server.config.ApiIamApplicationProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.iam.external.server.config.ApiIamApplicationProperties;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -26,7 +25,6 @@ public class ApiIamApplicationTest {
     @MockBean
     BuildProperties buildProperties;
 
-
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
@@ -34,6 +32,4 @@ public class ApiIamApplicationTest {
         assertThat(iamProperties).isNotNull();
         assertThat(iamProperties.getIamInternalClient()).isNotNull();
     }
-
 }
-

@@ -36,6 +36,10 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class JsonPatchDto {
-    @NonNull private String id;
-    @NonNull private JsonPatch jsonPatch;
+
+    @NonNull
+    private String id;
+
+    @NonNull
+    private JsonPatch jsonPatch;
 }

@@ -1,17 +1,13 @@
 package fr.gouv.vitamui.iam.external.server.service;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.UserBuilder;
+import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,14 +16,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for {@link UserExternalService}.
@@ -87,6 +84,8 @@ public class UserExternalServiceTest {
         roles.forEach(r -> Mockito.when(externalSecurityService.hasRole(r)).thenReturn(true));
 
         when(externalSecurityService.getUser()).thenReturn(user);
-        when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(10, "userToken", APPLICATION_ID, "identifier"));
+        when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(10, "userToken", APPLICATION_ID, "identifier")
+        );
     }
 }

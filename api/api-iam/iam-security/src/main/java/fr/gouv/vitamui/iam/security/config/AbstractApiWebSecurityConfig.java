@@ -30,15 +30,7 @@
  */
 package fr.gouv.vitamui.iam.security.config;
 
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.HEAD;
-import static org.springframework.http.HttpMethod.PATCH;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +44,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
+
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.HEAD;
+import static org.springframework.http.HttpMethod.PATCH;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 /**
  * The security configuration.
@@ -67,8 +68,11 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
 
     protected Environment env;
 
-    public AbstractApiWebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider, final RestExceptionHandler restExceptionHandler,
-            final Environment env) {
+    public AbstractApiWebSecurityConfig(
+        final AuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super();
         this.apiAuthenticationProvider = apiAuthenticationProvider;
         this.restExceptionHandler = restExceptionHandler;
@@ -84,19 +88,22 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
     protected void configure(final HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers(getAuthList()).permitAll()
-            .anyRequest().authenticated()
-        .and()
-            .cors().configurationSource(request -> getCorsConfiguration())
-        .and()
+            .antMatchers(getAuthList())
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .cors()
+            .configurationSource(request -> getCorsConfiguration())
+            .and()
             .exceptionHandling()
             .authenticationEntryPoint(getUnauthorizedHandler())
-        .and()
-            .csrf().disable()
+            .and()
+            .csrf()
+            .disable()
             .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
     }
 
     private CorsConfiguration getCorsConfiguration() {
@@ -117,7 +124,12 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             "/favicon.ico",
             "/actuator/**",
             "*/users/me",
-            "/swagger-resources/**", "/swagger.json", "/**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
+            "/swagger-resources/**",
+            "/swagger.json",
+            "/**/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
         };
     }
 
@@ -126,5 +138,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
         return new ApiAuthenticationEntryPoint(restExceptionHandler);
     }
 
-    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception;
+    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter()
+        throws Exception;
 }

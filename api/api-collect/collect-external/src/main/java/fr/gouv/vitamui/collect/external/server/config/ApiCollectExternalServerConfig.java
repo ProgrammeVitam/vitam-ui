@@ -56,15 +56,18 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
+@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
 public class ApiCollectExternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public SecurityRestClientFactory securityRestClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new SecurityRestClientFactory(apiCollectExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new SecurityRestClientFactory(
+            apiCollectExternalApplicationProperties.getSecurityClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
@@ -74,7 +77,8 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
 
     @Bean
     public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService) {
+        final ExternalAuthentificationService externalAuthentificationService
+    ) {
         return new ExternalApiAuthenticationProvider(externalAuthentificationService);
     }
 
@@ -84,31 +88,40 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient) {
+    public ExternalAuthentificationService externalAuthentificationService(
+        final ContextRestClient contextRestClient,
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(apiCollectExternalApplicationProperties.getIamInternalClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new IamInternalRestClientFactory(
+            apiCollectExternalApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public CollectInternalRestClientFactory collectInternalRestClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new CollectInternalRestClientFactory(apiCollectExternalApplicationProperties.getCollectInternalClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new CollectInternalRestClientFactory(
+            apiCollectExternalApplicationProperties.getCollectInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
@@ -117,64 +130,75 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public CollectTransactionInternalRestClient collectTransactionInternalRestClient(final CollectInternalRestClientFactory factory) {
+    public CollectTransactionInternalRestClient collectTransactionInternalRestClient(
+        final CollectInternalRestClientFactory factory
+    ) {
         return factory.getCollectTransactionInternalRestClient();
     }
 
-
-
     @Bean
     public CollectStreamingInternalRestClientFactory collectStreamingInternalRestClientFactory(
-        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties) {
+        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties
+    ) {
         return new CollectStreamingInternalRestClientFactory(
-            apiCollectExternalApplicationProperties.getCollectInternalClient());
+            apiCollectExternalApplicationProperties.getCollectInternalClient()
+        );
     }
 
     @Bean
     public CollectStreamingInternalRestClient collectStreamingInternalRestClient(
-        final CollectStreamingInternalRestClientFactory factory) {
+        final CollectStreamingInternalRestClientFactory factory
+    ) {
         return factory.getCollectStreamingInternalRestClient();
     }
 
     @Bean
     public CollectInternalWebClientFactory collectInternalWebClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final WebClient.Builder webClientBuilder) {
+        final WebClient.Builder webClientBuilder
+    ) {
         return new CollectInternalWebClientFactory(
-            apiCollectExternalApplicationProperties.getCollectInternalClient(), webClientBuilder);
+            apiCollectExternalApplicationProperties.getCollectInternalClient(),
+            webClientBuilder
+        );
     }
-
 
     @Bean
     public CollectInternalWebClient collectInternalWebClient(
-        final CollectInternalWebClientFactory collectInternalWebClientFactory) {
+        final CollectInternalWebClientFactory collectInternalWebClientFactory
+    ) {
         return collectInternalWebClientFactory.getCollectInternalWebClient();
     }
 
     @Bean
     public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
-        final CollectInternalRestClientFactory collectInternalRestClientFactory) {
+        final CollectInternalRestClientFactory collectInternalRestClientFactory
+    ) {
         return collectInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
-
 
     @Bean
     public UpdateUnitsMetadataInternalRestClientFactory updateUnitsMetadataInternalRestClientFactory(
         final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new UpdateUnitsMetadataInternalRestClientFactory(apiCollectExternalApplicationProperties.getCollectInternalClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new UpdateUnitsMetadataInternalRestClientFactory(
+            apiCollectExternalApplicationProperties.getCollectInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient(
-        final UpdateUnitsMetadataInternalRestClientFactory factory) {
+        final UpdateUnitsMetadataInternalRestClientFactory factory
+    ) {
         return factory.getUpdateUnitsMetadataInternalRestClient();
     }
 
     @Bean
     public ArchiveUnitClient getArchiveUnitClient(
-        final CollectInternalRestClientFactory collectInternalRestClientFactory) {
+        final CollectInternalRestClientFactory collectInternalRestClientFactory
+    ) {
         return collectInternalRestClientFactory.getArchiveUnitClient();
     }
 }

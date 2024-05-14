@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class LogbookLifecycleDto extends LogbookEventDto {
 
@@ -53,5 +53,4 @@ public class LogbookLifecycleDto extends LogbookEventDto {
 
     @JsonProperty("events")
     private List<LogbookEventDto> events;
-
 }

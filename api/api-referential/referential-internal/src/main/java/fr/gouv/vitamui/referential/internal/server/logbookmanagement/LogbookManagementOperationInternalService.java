@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.internal.server.logbookmanagement;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,12 +43,13 @@ import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class LogbookManagementOperationInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationInternalService.class);
-    private static final String START_MAX_DATE  = "30/12/2999";
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        LogbookManagementOperationInternalService.class
+    );
+    private static final String START_MAX_DATE = "30/12/2999";
     private static final String START_MIN_DATE = "01/01/1900";
 
     private ObjectMapper objectMapper;
@@ -57,23 +57,29 @@ public class LogbookManagementOperationInternalService {
     private VitamOperationService vitamOperationService;
 
     @Autowired
-    public LogbookManagementOperationInternalService(ObjectMapper objectMapper, VitamOperationService vitamOperationService) {
+    public LogbookManagementOperationInternalService(
+        ObjectMapper objectMapper,
+        VitamOperationService vitamOperationService
+    ) {
         this.objectMapper = objectMapper;
         this.vitamOperationService = vitamOperationService;
     }
 
-    public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery) throws VitamClientException, JsonProcessingException {
-        LOGGER.info("Get Operations Details with processQuery = {}",processQuery);
-        if( processQuery.getStartDateMax() == null) {
+    public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery)
+        throws VitamClientException, JsonProcessingException {
+        LOGGER.info("Get Operations Details with processQuery = {}", processQuery);
+        if (processQuery.getStartDateMax() == null) {
             processQuery.setStartDateMax(START_MAX_DATE);
         }
-        if(processQuery.getStartDateMin() == null) {
+        if (processQuery.getStartDateMin() == null) {
             processQuery.setStartDateMin(START_MIN_DATE);
         }
 
-        JsonNode response = vitamOperationService.listOperationsDetails(vitamContext,processQuery).toJsonNode();
-        final VitamUIProcessDetailResponseDto processDetailResponse =
-            objectMapper.treeToValue(response, VitamUIProcessDetailResponseDto.class);
+        JsonNode response = vitamOperationService.listOperationsDetails(vitamContext, processQuery).toJsonNode();
+        final VitamUIProcessDetailResponseDto processDetailResponse = objectMapper.treeToValue(
+            response,
+            VitamUIProcessDetailResponseDto.class
+        );
 
         VitamUIProcessDetailResponseDto responseFilled = new VitamUIProcessDetailResponseDto();
         responseFilled.setContext(processDetailResponse.getContext());
@@ -81,32 +87,32 @@ public class LogbookManagementOperationInternalService {
         responseFilled.setResults(processDetailResponse.getResults());
         responseFilled.setHits(processDetailResponse.getHits());
         return new ProcessDetailDto(responseFilled);
-
     }
 
-    public ProcessDetailDto updateOperationActionProcess(VitamContext vitamContext, String actionId, String operationId) throws VitamClientException, JsonProcessingException, InterruptedException {
+    public ProcessDetailDto updateOperationActionProcess(
+        VitamContext vitamContext,
+        String actionId,
+        String operationId
+    ) throws VitamClientException, JsonProcessingException, InterruptedException {
         ProcessDetailDto operation;
-        LOGGER.info("Update operation Id= {} with the action Id= {}",operationId, actionId);
-        if(!EnumUtils.isValidEnum(OperationActionStatus.class, actionId)) {
-            LOGGER.error(
-                "Cannot update  the operation, because the actionId= {} given is not correct ", actionId);
-            throw new VitamClientException(
-                "Cannot update  the operation, because the actionId given is not correct");
-        }
-        else {
-            vitamOperationService.updateOperationActionProcess(vitamContext,actionId,operationId);
+        LOGGER.info("Update operation Id= {} with the action Id= {}", operationId, actionId);
+        if (!EnumUtils.isValidEnum(OperationActionStatus.class, actionId)) {
+            LOGGER.error("Cannot update  the operation, because the actionId= {} given is not correct ", actionId);
+            throw new VitamClientException("Cannot update  the operation, because the actionId given is not correct");
+        } else {
+            vitamOperationService.updateOperationActionProcess(vitamContext, actionId, operationId);
             ProcessQuery processQuery = new ProcessQuery();
             processQuery.setId(operationId);
             operation = searchOperationsDetails(vitamContext, processQuery);
         }
         return operation;
-
     }
 
-    public ProcessDetailDto cancelOperationProcessExecution(VitamContext vitamContext,  String operationId) throws VitamClientException, JsonProcessingException {
-        ProcessDetailDto operation ;
-        LOGGER.info("Cancel the operation Id=  {}",operationId);
-        vitamOperationService.cancelOperationProcessExecution(vitamContext,operationId);
+    public ProcessDetailDto cancelOperationProcessExecution(VitamContext vitamContext, String operationId)
+        throws VitamClientException, JsonProcessingException {
+        ProcessDetailDto operation;
+        LOGGER.info("Cancel the operation Id=  {}", operationId);
+        vitamOperationService.cancelOperationProcessExecution(vitamContext, operationId);
         ProcessQuery processQuery = new ProcessQuery();
         processQuery.setId(operationId);
         operation = searchOperationsDetails(vitamContext, processQuery);

@@ -45,12 +45,16 @@ public class CollectProjectDto extends IdDto {
 
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("tenant")
     private Integer tenant;
+
     @JsonProperty("transactionId")
     private String transactionId;
+
     @JsonProperty("unitUp")
     private String unitUp;
+
     @JsonProperty("unitUps")
     private List<CollectMetadataUnitUpDto> unitUps;
 

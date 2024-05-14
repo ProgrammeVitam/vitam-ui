@@ -44,8 +44,7 @@ public class VitamRestUtilsTest {
             VitamRestUtils.checkResponse(vitamResponse, 200, 201);
             vitamResponse.setHttpCode(202);
             VitamRestUtils.checkResponse(vitamResponse, 200, 201, 202);
-        }
-        catch (final InternalServerException e) {
+        } catch (final InternalServerException e) {
             LOGGER.error("testCheckResponseOk failed", e);
             Assert.fail("Response should be accepted");
         }
@@ -66,8 +65,7 @@ public class VitamRestUtilsTest {
         try {
             VitamRestUtils.checkResponse(vitamResponse);
             VitamRestUtils.checkResponse(vitamResponse, 200, 201);
-        }
-        catch (final InternalServerException e) {
+        } catch (final InternalServerException e) {
             LOGGER.error("testCheckResponseOk failed", e);
             Assert.fail("Response should be accepted");
         }
@@ -84,8 +82,7 @@ public class VitamRestUtilsTest {
         try {
             VitamRestUtils.checkResponse(mockResponse);
             VitamRestUtils.checkResponse(mockResponse, 200, 201);
-        }
-        catch (final NotFoundException e) {
+        } catch (final NotFoundException e) {
             LOGGER.debug("checkReponse 404", e);
             assertThat(e.getMessage()).contains(responseMessage);
             return;

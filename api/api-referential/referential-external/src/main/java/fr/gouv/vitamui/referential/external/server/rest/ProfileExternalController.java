@@ -93,7 +93,7 @@ public class ProfileExternalController {
     @Autowired
     private ProfileExternalService profileExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all profile criteria={}", criteria);
@@ -102,19 +102,25 @@ public class ProfileExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        if(orderBy.isPresent()) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
-            direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return profileExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -137,7 +143,6 @@ public class ProfileExternalController {
         return profileExternalService.download(id);
     }
 
-
     /**
      * Import a Profile file document (xsd or rng, ...)
      *
@@ -147,8 +152,10 @@ public class ProfileExternalController {
      */
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
-    public ResponseEntity<JsonNode> importProfileFile(final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file) throws IOException, InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<JsonNode> importProfileFile(
+        final @PathVariable("id") String id,
+        @RequestParam("file") MultipartFile file
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -157,7 +164,6 @@ public class ProfileExternalController {
         LOGGER.debug("Import profile file {}", file);
         return profileExternalService.updateProfileFile(id, file);
     }
-
 
     /**
      * Update an Archival Profile
@@ -168,13 +174,17 @@ public class ProfileExternalController {
      */
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
     @PutMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<JsonNode> update(final @PathVariable("id") String id,
-        final @Valid @RequestBody ProfileDto dto) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<JsonNode> update(
+        final @PathVariable("id") String id,
+        final @Valid @RequestBody ProfileDto dto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(id);
         SanityChecker.checkSecureParameter(id);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()),
-            "Unable to update profile : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "Unable to update profile : the DTO id must match the path id"
+        );
         LOGGER.debug("Update {} with {}", id, dto);
         return profileExternalService.updateProfile(dto);
     }
@@ -188,15 +198,13 @@ public class ProfileExternalController {
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE_PROFILES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ProfileDto create(final @Valid @RequestBody ProfileDto profileDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ProfileDto create(final @Valid @RequestBody ProfileDto profileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ApiUtils.checkValidity(profileDto);
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("Create {}", profileDto);
         return profileExternalService.create(profileDto);
     }
-
 
     /***
      * Import profile
@@ -206,19 +214,22 @@ public class ProfileExternalController {
      */
     @Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importArchivalProfiles(@RequestParam("fileName") String fileName,
-        @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<JsonNode> importArchivalProfiles(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         LOGGER.debug("Import file archivalProfile {}", fileName);
         return profileExternalService.importProfiles(fileName, file);
     }
 
-    @Secured({ServicesData.ROLE_GET_ARCHIVE_PROFILES})
+    @Secured({ ServicesData.ROLE_GET_ARCHIVE_PROFILES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody ProfileDto profileDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(profileDto);
         final boolean exist = profileExternalService.check(profileDto);
         LOGGER.debug("check exist accessContract={}", profileDto);
@@ -229,19 +240,21 @@ public class ProfileExternalController {
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
-            "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         LOGGER.debug("Patch {} with {}", id, partialDto);
         return profileExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     @GetMapping("/{id}/history")
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException , PreconditionFailedException{
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);

@@ -66,13 +66,15 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH_CRITERIA_HISTOR
 public class SearchCriteriaHistoryExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalController.class);
+        SearchCriteriaHistoryExternalController.class
+    );
 
     private SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
 
     @Autowired
     public SearchCriteriaHistoryExternalController(
-        final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService) {
+        final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService
+    ) {
         this.searchCriteriaHistoryExternalService = searchCriteriaHistoryExternalService;
     }
 

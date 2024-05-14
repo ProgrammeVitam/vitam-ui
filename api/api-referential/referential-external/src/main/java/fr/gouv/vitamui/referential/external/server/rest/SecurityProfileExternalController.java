@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -73,12 +72,14 @@ import java.util.Optional;
 @Setter
 public class SecurityProfileExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SecurityProfileExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SecurityProfileExternalController.class
+    );
 
     @Autowired
     private SecurityProfileExternalService securityProfileExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
     public Collection<SecurityProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
@@ -88,12 +89,22 @@ public class SecurityProfileExternalController {
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return securityProfileExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -109,8 +120,10 @@ public class SecurityProfileExternalController {
 
     @Secured({ ServicesData.ROLE_GET_SECURITY_PROFILES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody SecurityProfileDto securityProfileDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody SecurityProfileDto securityProfileDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(securityProfileDto);
         LOGGER.debug("check exist accessContract={}", securityProfileDto);
         final boolean exist = securityProfileExternalService.check(securityProfileDto);
@@ -129,20 +142,26 @@ public class SecurityProfileExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_SECURITY_PROFILES)
-    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public SecurityProfileDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return securityProfileExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return securityProfileExternalService.findHistoryById(id);
@@ -150,11 +169,11 @@ public class SecurityProfileExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_SECURITY_PROFILES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete securityProfile with id :{}", id);
         securityProfileExternalService.delete(id);
     }
-
 }

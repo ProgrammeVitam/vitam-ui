@@ -113,8 +113,9 @@ public class TenantInternalServiceTest {
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        when(externalParametersRepository.findByIdentifier(Mockito.any(String.class)))
-            .thenReturn(Optional.of(buildExternalParameter()));
+        when(externalParametersRepository.findByIdentifier(Mockito.any(String.class))).thenReturn(
+            Optional.of(buildExternalParameter())
+        );
     }
 
     protected void prepareServices() {
@@ -128,14 +129,16 @@ public class TenantInternalServiceTest {
         final UserDto userProfile = new UserDto();
         userProfile.setId("userId");
 
-        when(customerRepository.findById(tenantDto.getCustomerId()))
-            .thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(tenantDto.getCustomerId())).thenReturn(
+            Optional.of(IamServerUtilsTest.buildCustomer())
+        );
 
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
 
         when(tenantRepository.findByIdentifier(tenantDto.getIdentifier())).thenReturn(null);
-        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId()))
-            .thenReturn(Optional.of(proofTenant));
+        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId())).thenReturn(
+            Optional.of(proofTenant)
+        );
         when(tenantRepository.generateSuperId()).thenReturn(tenantDto.getId());
         when(tenantRepository.save(any())).thenReturn(buildTenant());
         when(sequenceGeneratorService.getNextSequenceId(anyString(), anyInt())).thenReturn(1);
@@ -147,11 +150,10 @@ public class TenantInternalServiceTest {
 
         when(internalUserService.getDefaultAdminUser(proofTenant.getCustomerId())).thenReturn(buildUserDto());
 
-        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty()))
-            .thenReturn(buildGroupDto());
+        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(
+            buildGroupDto()
+        );
         when(internalUserService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildUserDto()));
-
-
     }
 
     @Test
@@ -218,5 +220,4 @@ public class TenantInternalServiceTest {
         externalParameters.setName("identifierdefault_ac_customerId");
         return externalParameters;
     }
-
 }

@@ -56,8 +56,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@Import(value = {AutoConfigurationVitam.class, AutoConfigurationRestController.class, AutoConfigurationService.class,
-    RestExceptionHandler.class})
+@Import(
+    value = {
+        AutoConfigurationVitam.class,
+        AutoConfigurationRestController.class,
+        AutoConfigurationService.class,
+        RestExceptionHandler.class,
+    }
+)
 @AutoConfigureAfter
 @EnableScheduling
 public class UICommonsAutoConfiguration {
@@ -71,26 +77,34 @@ public class UICommonsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IamExternalRestClientFactory iamRestClientFactory(final UIProperties uiProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public IamExternalRestClientFactory iamRestClientFactory(
+        final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamExternalRestClientFactory(uiProperties.getIamExternalClient(), restTemplateBuilder);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IamExternalWebClientFactory iamExternalWebClientFactory(final UIProperties uiProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public IamExternalWebClientFactory iamExternalWebClientFactory(
+        final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamExternalWebClientFactory(uiProperties.getIamExternalClient());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public ReferentialExternalRestClientFactory referentialRestClientFactory(final UIProperties uiProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(),
-            restTemplateBuilder);
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(
+        final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new ReferentialExternalRestClientFactory(
+            uiProperties.getReferentialExternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
@@ -104,7 +118,8 @@ public class UICommonsAutoConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public UnitExternalRestClient unitExternalRestClient(
-        final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+        final ReferentialExternalRestClientFactory referentialRestClientFactory
+    ) {
         return referentialRestClientFactory.getUnitExternalRestClient();
     }
 
@@ -112,7 +127,8 @@ public class UICommonsAutoConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public OntologyExternalRestClient ontologyExternalRestClient(
-        final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+        final ReferentialExternalRestClientFactory referentialRestClientFactory
+    ) {
         return referentialRestClientFactory.getOntologyRestClient();
     }
 

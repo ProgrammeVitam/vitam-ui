@@ -173,7 +173,9 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     private void convertPatterns(final IdentityProviderDto dto, final IdentityProvider provider) {
         if (dto.getPatterns() != null && dto.getPatterns().size() > 0) {
-            dto.setPatterns(dto.getPatterns().stream().map(s -> s.startsWith(".*@") ? s : ".*@" + s).collect(Collectors.toList()));
+            dto.setPatterns(
+                dto.getPatterns().stream().map(s -> s.startsWith(".*@") ? s : ".*@" + s).collect(Collectors.toList())
+            );
         }
         provider.setPatterns(dto.getPatterns());
     }

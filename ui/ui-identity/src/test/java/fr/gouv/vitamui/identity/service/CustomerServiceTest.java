@@ -1,20 +1,5 @@
 package fr.gouv.vitamui.identity.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-
-import java.util.Arrays;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -31,6 +16,19 @@ import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
@@ -81,13 +79,19 @@ public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
     public void testGetCustomerByIdFailed() {
         Mockito.when(client.getOne(any(), any(), any())).thenReturn(null);
         final CustomerDto customer = service.getOne(null, "1", Optional.empty());
-
     }
 
     @Test
     public void testGetsCustomerByCriteria() {
-        final PaginatedValuesDto<CustomerDto> values = service.getAllPaginated(0, 20, Optional.empty(), Optional.of("id"), Optional.of(DirectionDto.ASC), null,
-                null);
+        final PaginatedValuesDto<CustomerDto> values = service.getAllPaginated(
+            0,
+            20,
+            Optional.empty(),
+            Optional.of("id"),
+            Optional.of(DirectionDto.ASC),
+            null,
+            null
+        );
     }
 
     @Test
@@ -99,9 +103,7 @@ public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
         try {
             customer = service.create(null, customer);
             fail();
-        }
-        catch (final ValidationException e) {
-        }
+        } catch (final ValidationException e) {}
     }
 
     @Override

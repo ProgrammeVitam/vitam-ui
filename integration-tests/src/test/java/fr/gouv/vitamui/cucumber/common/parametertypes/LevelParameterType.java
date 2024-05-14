@@ -14,12 +14,10 @@ public class LevelParameterType {
     public LevelParameterType(final String data) {
         if (PARAM_VIDE.equals(data)) {
             this.data = "";
-        }
-        else if (data.matches(REGEX_LEVEL)) {
+        } else if (data.matches(REGEX_LEVEL)) {
             this.data = data;
         } else {
             throw new IllegalArgumentException("Le paramètre " + data + " ne correspond pas à un niveau possible");
         }
     }
-
 }

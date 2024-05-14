@@ -39,7 +39,7 @@ import java.util.List;
  * Access Contract Service
  */
 @Service
-public class AccessContractService  {
+public class AccessContractService {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
 

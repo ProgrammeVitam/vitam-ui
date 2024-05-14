@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.commons.api.logger;
 
-import java.io.Serializable;
-
-import org.slf4j.Logger;
-
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import org.slf4j.Logger;
+
+import java.io.Serializable;
 
 public class VitamUILoggerImpl implements VitamUILogger, Serializable {
 
@@ -359,5 +358,4 @@ public class VitamUILoggerImpl implements VitamUILogger, Serializable {
         }
         return serverIdentity.getLoggerMessagePrepend() + " " + otherMessage;
     }
-
 }

@@ -65,5 +65,4 @@ public class InvalidSanitizeHeaderException extends VitamUIException {
     public InvalidSanitizeHeaderException(final String message, final String key) {
         super(message, key);
     }
-
 }

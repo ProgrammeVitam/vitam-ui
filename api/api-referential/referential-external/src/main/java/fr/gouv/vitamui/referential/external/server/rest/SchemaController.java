@@ -34,7 +34,6 @@ import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.external.server.service.SchemaService;
-import org.bouncycastle.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -55,6 +54,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @RestController
 @RequestMapping(CommonConstants.SCHEMAS)
 public class SchemaController {
+
     private final SchemaService schemaService;
     private final ExternalSecurityService externalSecurityService;
 
@@ -73,7 +73,11 @@ public class SchemaController {
             throw new NoCollectionException();
         }
 
-        return ResponseEntity.ok(schemaService.getSchemas(
-            InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()), collections));
+        return ResponseEntity.ok(
+            schemaService.getSchemas(
+                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
+                collections
+            )
+        );
     }
 }

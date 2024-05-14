@@ -76,16 +76,24 @@ public class AccessContractInternalRestClient<C extends AbstractHttpContext> ext
     public List<AccessContractsDto> getAll(final C context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        final ResponseEntity<List<AccessContractsDto>> response =
-            restTemplate.exchange(getUrl() + "/accesscontracts" , HttpMethod.GET, request, new ParameterizedTypeReference<>(){});
+        final ResponseEntity<List<AccessContractsDto>> response = restTemplate.exchange(
+            getUrl() + "/accesscontracts",
+            HttpMethod.GET,
+            request,
+            new ParameterizedTypeReference<>() {}
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public AccessContractsDto getAccessContractById(final C context, String identifier) {
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<AccessContractsDto> response = restTemplate.exchange(getUrl() + "/accesscontracts/"+ identifier, HttpMethod.GET, request,
-            AccessContractsDto.class);
+        final ResponseEntity<AccessContractsDto> response = restTemplate.exchange(
+            getUrl() + "/accesscontracts/" + identifier,
+            HttpMethod.GET,
+            request,
+            AccessContractsDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }

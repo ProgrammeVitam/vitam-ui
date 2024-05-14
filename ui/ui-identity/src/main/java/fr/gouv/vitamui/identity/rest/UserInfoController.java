@@ -83,13 +83,12 @@ public class UserInfoController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public UserInfoDto getOne(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get user={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
-
 
     /**
      * Create user info
@@ -100,36 +99,36 @@ public class UserInfoController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserInfoDto create(@RequestBody final UserInfoDto dto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public UserInfoDto create(@RequestBody final UserInfoDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("create user info  = {}", dto.getLanguage());
         return service.create(buildUiHttpContext(), dto);
     }
-
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The id is mandatory parameter :", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user  info: the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch user  info: the DTO id must match the path id."
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
-
     @ApiOperation(value = "get history by user info id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) throws InvalidParseOperationException {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The id is mandatory parameter :", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for user info with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
-
 }

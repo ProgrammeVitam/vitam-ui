@@ -72,22 +72,22 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
     private final CertificateRepository certificateRepository;
 
     @Autowired
-    public ContextService(final SequenceGeneratorService sequenceGeneratorService, final ContextRepository contextRepository,
-            final CertificateRepository certificateRepository) {
+    public ContextService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final ContextRepository contextRepository,
+        final CertificateRepository certificateRepository
+    ) {
         super(sequenceGeneratorService);
         this.contextRepository = contextRepository;
         this.certificateRepository = certificateRepository;
     }
 
     public ContextDto findByCertificate(final String data) {
-
         final Certificate certificate = certificateRepository.findByData(data);
         if (certificate == null) {
             LOGGER.error("the certificate is not found");
             throw new NotFoundException("Certificate not found");
-        }
-        else {
-
+        } else {
             final String contextId = certificate.getContextId();
             final List<ContextDto> contexts = getMany(contextId);
 
@@ -97,9 +97,10 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
             }
             if (contexts.size() != 1) {
                 LOGGER.debug("Unable to find only one context for certificate");
-                throw new InternalServerException("Unable to find only one context with id " + certificate.getContextId() + " for certificate");
-            }
-            else {
+                throw new InternalServerException(
+                    "Unable to find only one context with id " + certificate.getContextId() + " for certificate"
+                );
+            } else {
                 return contexts.get(0);
             }
         }
@@ -116,8 +117,7 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
         if (contextDto == null) {
             LOGGER.error("the Context is not found");
             throw new NotFoundException("Context not found");
-        }
-        else {
+        } else {
             contextDto.getTenants().add(tenantIdentifier);
             return update(contextDto);
         }
@@ -127,14 +127,20 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
     protected void beforeCreate(final ContextDto dto) {
         super.beforeCreate(dto);
         final List<String> roleNames = dto.getRoleNames();
-        Assert.isTrue(ServicesData.checkIfRoleNameExists(roleNames), "Some of the rolenames: " + roleNames + " are not allowed");
+        Assert.isTrue(
+            ServicesData.checkIfRoleNameExists(roleNames),
+            "Some of the rolenames: " + roleNames + " are not allowed"
+        );
     }
 
     @Override
     protected void beforeUpdate(final ContextDto dto) {
         super.beforeUpdate(dto);
         final List<String> roleNames = dto.getRoleNames();
-        Assert.isTrue(ServicesData.checkIfRoleNameExists(roleNames), "Some of the rolenames: " + roleNames + " are not allowed");
+        Assert.isTrue(
+            ServicesData.checkIfRoleNameExists(roleNames),
+            "Some of the rolenames: " + roleNames + " are not allowed"
+        );
     }
 
     @Override

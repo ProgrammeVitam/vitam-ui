@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.iam.security.config;
 
-import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.filter.InternalRequestHeadersAuthenticationFilter;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 /**
  * The security configuration.
@@ -54,8 +53,11 @@ import lombok.Setter;
 @Setter
 public class InternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
 
-    public InternalApiWebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider,
-            final RestExceptionHandler restExceptionHandler, final Environment env) {
+    public InternalApiWebSecurityConfig(
+        final AuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
     }
 

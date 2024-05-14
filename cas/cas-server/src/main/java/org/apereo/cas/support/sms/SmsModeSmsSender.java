@@ -30,7 +30,9 @@ import java.util.HashMap;
 public class SmsModeSmsSender implements SmsSender {
 
     private static final ObjectMapper MAPPER = JacksonObjectMapperFactory.builder()
-        .defaultTypingEnabled(false).build().toObjectMapper();
+        .defaultTypingEnabled(false)
+        .build()
+        .toObjectMapper();
 
     private final SmsModeProperties properties;
 
@@ -48,9 +50,13 @@ public class SmsModeSmsSender implements SmsSender {
             data.put("from", from);
 
             val headers = CollectionUtils.<String, String>wrap(
-                "Content-Type", MediaType.APPLICATION_JSON_VALUE,
-                "Accept", MediaType.APPLICATION_JSON_VALUE,
-                "X-Api-Key", properties.getAccessToken());
+                "Content-Type",
+                MediaType.APPLICATION_JSON_VALUE,
+                "Accept",
+                MediaType.APPLICATION_JSON_VALUE,
+                "X-Api-Key",
+                properties.getAccessToken()
+            );
             headers.putAll(properties.getHeaders());
             val exec = HttpUtils.HttpExecutionRequest.builder()
                 .method(HttpMethod.POST)
@@ -75,5 +81,4 @@ public class SmsModeSmsSender implements SmsSender {
         }
         return false;
     }
-
 }

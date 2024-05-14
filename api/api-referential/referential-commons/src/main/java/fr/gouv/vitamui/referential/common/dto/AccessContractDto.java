@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Set;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,7 +68,7 @@ public class AccessContractDto extends IdDto implements Serializable {
     private String lastUpdate;
 
     private String activationDate;
-    
+
     private String deactivationDate;
 
     private String accessLog;

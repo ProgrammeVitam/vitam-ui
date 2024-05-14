@@ -79,14 +79,12 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
 
     @Override
     protected ParameterizedTypeReference<List<ProfileDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ProfileDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ProfileDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>>() {};
     }
 
     public List<String> getLevels(final ExternalHttpContext context, final Optional<String> criteria) {
@@ -95,15 +93,17 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_LEVELS);
         criteria.ifPresent(o -> builder.addParameter("criteria", o));
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<List<String>> response = restTemplate.exchange(buildUriBuilder(builder),
-                HttpMethod.GET, request, getStringListClass());
+        final ResponseEntity<List<String>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getStringListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     private ParameterizedTypeReference<List<String>> getStringListClass() {
-        return new ParameterizedTypeReference<List<String>>() {
-        };
+        return new ParameterizedTypeReference<List<String>>() {};
     }
-
 }

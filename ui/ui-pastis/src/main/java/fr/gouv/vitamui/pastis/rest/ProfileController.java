@@ -108,7 +108,6 @@ public class ProfileController extends AbstractUiRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -125,18 +124,27 @@ public class ProfileController extends AbstractUiRestController {
      * @return a list of profiles
      */
     @ApiOperation(value = "Get entities paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
-        if(orderBy.isPresent()){
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
-            orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -150,9 +158,8 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get profile by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException,
-        InvalidParseOperationException, PreconditionFailedException {
-
+    public ProfileDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, identifier);
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8));
@@ -167,14 +174,15 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "download profile by id")
     @GetMapping(value = RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> download(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<Resource> download(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("download {} profile with id :{}", id);
         Resource body = service.download(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
             .body(body);
     }
 
@@ -187,16 +195,16 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Importer un fichier xsd ou rng dans un profil")
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
-    public ResponseEntity<JsonNode> importProfileFile(final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file) throws IOException, InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<JsonNode> importProfileFile(
+        final @PathVariable("id") String id,
+        @RequestParam("file") MultipartFile file
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter(MANDATORY_ID_MESSAGE, id);
         LOGGER.debug("Update profile file with id :{}", id);
         return service.updateProfileFile(buildUiHttpContext(), id, file);
     }
-
 
     /**
      * Modify Profile by Identifier
@@ -207,12 +215,12 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<JsonNode> updateProfile(@Valid @RequestBody final ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<JsonNode> updateProfile(@Valid @RequestBody final ProfileDto profileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("update profile {}", profileDto.getId());
         return service.updateProfile(buildUiHttpContext(), profileDto);
     }
-
 
     /**
      * Create Profile
@@ -223,7 +231,8 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create Archival Profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("create profile={}", profileDto);
         ProfileDto result = service.create(buildUiHttpContext(), profileDto);
@@ -242,12 +251,11 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "import profile")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) throws InvalidParseOperationException {
+    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file)
+        throws InvalidParseOperationException {
         LOGGER.debug("Import profile from a file {}", file != null ? file.getOriginalFilename() : null);
         return service.importProfiles(buildUiHttpContext(), file);
     }
-
-
 
     /**
      * Check access
@@ -257,14 +265,12 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create profile")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("check ability to create profile={}", profileDto);
         final boolean exist = service.check(buildUiHttpContext(), profileDto);
         LOGGER.debug("response value={}" + exist);
         return RestUtils.buildBooleanResponse(exist);
     }
-
-
-
 }

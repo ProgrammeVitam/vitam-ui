@@ -95,7 +95,6 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
         this.service = service;
     }
 
-
     /**
      * Get all Archival Unit Profiles
      *
@@ -105,8 +104,8 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
-
+    public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -123,21 +122,29 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      * @return a list of Archival Profile Unit
      */
     @ApiOperation(value = "Get entities paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
-        if(orderBy.isPresent()){
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
-            orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
-
 
     /**
      * Get Archival Unit Profile by Identifier
@@ -153,7 +160,6 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ArchivalProfileUnitDto getById(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8));
@@ -170,8 +176,8 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto) throws
-        InvalidParseOperationException, PreconditionFailedException {
+    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
         LOGGER.debug("update profile {}", archivalProfileUnitDto.getId());
         return service.update(buildUiHttpContext(), archivalProfileUnitDto);
@@ -187,8 +193,8 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ArchivalProfileUnitDto> create(
-        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws
-        InvalidParseOperationException, PreconditionFailedException {
+        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(archivalProfileUnitDto);
         LOGGER.debug("create archival unit profile={}", archivalProfileUnitDto);
         ArchivalProfileUnitDto result = service.create(buildUiHttpContext(), archivalProfileUnitDto);
@@ -208,12 +214,11 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      */
     @ApiOperation(value = "import Archival Unit Profile")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) throws InvalidParseOperationException {
+    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file)
+        throws InvalidParseOperationException {
         LOGGER.debug("Import Archival Unit Profile from a file {}", file != null ? file.getOriginalFilename() : null);
         return service.importArchivalUnitProfiles(buildUiHttpContext(), file);
     }
-
-
 
     /**
      * Check access
@@ -223,16 +228,11 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create ontology")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
+    public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto)
+        throws InvalidParseOperationException {
         LOGGER.debug("check ability to create profile={}", archivalProfileUnitDto);
         final boolean exist = service.check(buildUiHttpContext(), archivalProfileUnitDto);
         LOGGER.debug("response value={}" + exist);
         return RestUtils.buildBooleanResponse(exist);
     }
-
-
-
 }
-
-
-

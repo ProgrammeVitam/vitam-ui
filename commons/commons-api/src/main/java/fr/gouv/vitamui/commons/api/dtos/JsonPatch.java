@@ -32,8 +32,6 @@ import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 
-
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class JsonPatch extends ArrayList<PatchCommand> {
-}
+public class JsonPatch extends ArrayList<PatchCommand> {}

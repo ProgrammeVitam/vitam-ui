@@ -69,12 +69,12 @@ public class WebConfig {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20CasClientRedirectActionBuilder oidcCasClientRedirectActionBuilder(
-        @Qualifier(OAuth20RequestParameterResolver.BEAN_NAME)
-        final OAuth20RequestParameterResolver oauthRequestParameterResolver,
-        @Qualifier("oidcRequestSupport")
-        final OidcRequestSupport oidcRequestSupport,
-        @Qualifier("oauthCasClient")
-        final Client oauthCasClient) {
+        @Qualifier(
+            OAuth20RequestParameterResolver.BEAN_NAME
+        ) final OAuth20RequestParameterResolver oauthRequestParameterResolver,
+        @Qualifier("oidcRequestSupport") final OidcRequestSupport oidcRequestSupport,
+        @Qualifier("oauthCasClient") final Client oauthCasClient
+    ) {
         val builder = new CustomOidcCasClientRedirectActionBuilder(oidcRequestSupport, oauthRequestParameterResolver);
         val casClient = (CasClient) oauthCasClient;
         casClient.setRedirectionActionBuilder((webContext, sessionStore) -> builder.build(casClient, webContext));
@@ -86,10 +86,9 @@ public class WebConfig {
     public CorsConfigurationSource corsHttpWebRequestConfigurationSource(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(ArgumentExtractor.BEAN_NAME)
-        final ArgumentExtractor argumentExtractor,
-        @Qualifier(ServicesManager.BEAN_NAME)
-        final ServicesManager servicesManager) {
+        @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
+        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager
+    ) {
         return new RegisteredServiceCorsConfigurationSource(casProperties, servicesManager, argumentExtractor);
     }
 
@@ -97,9 +96,12 @@ public class WebConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public FilterRegistrationBean<CorsFilter> casCorsFilter(
         final CasConfigurationProperties casProperties,
-        @Qualifier("corsHttpWebRequestConfigurationSource") final CorsConfigurationSource corsHttpWebRequestConfigurationSource,
+        @Qualifier(
+            "corsHttpWebRequestConfigurationSource"
+        ) final CorsConfigurationSource corsHttpWebRequestConfigurationSource,
         final IdentityProviderHelper identityProviderHelper,
-        final ProvidersService providersService) {
+        final ProvidersService providersService
+    ) {
         val filter = new CorsFilter(corsHttpWebRequestConfigurationSource);
         // CUSTO:
         filter.setCorsProcessor(new CustomCorsProcessor(providersService, identityProviderHelper));

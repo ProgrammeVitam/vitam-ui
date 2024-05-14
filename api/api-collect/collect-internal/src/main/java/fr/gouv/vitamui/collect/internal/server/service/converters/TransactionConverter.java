@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class TransactionConverter {
 
-
     public static List<CollectTransactionDto> toVitamuiDtos(List<TransactionDto> transactionDtos) {
         return transactionDtos.stream().map(TransactionConverter::toVitamUiDto).collect(Collectors.toList());
     }
@@ -97,5 +96,4 @@ public class TransactionConverter {
         transactionDto.setLastUpdate(projectDto.getLastUpdate());
         return transactionDto;
     }
-
 }

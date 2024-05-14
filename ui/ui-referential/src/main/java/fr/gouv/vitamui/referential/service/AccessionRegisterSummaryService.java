@@ -62,7 +62,10 @@ public class AccessionRegisterSummaryService extends AbstractCrudService<Accessi
         return client;
     }
 
-    public Collection<AccessionRegisterSummaryDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
+    public Collection<AccessionRegisterSummaryDto> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria
+    ) {
         return super.getAll(context, criteria);
     }
 }

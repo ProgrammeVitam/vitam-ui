@@ -101,30 +101,51 @@ public class OperationInternalController {
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return operationInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @PostMapping
-    public void create(@Valid @RequestBody AuditOptions auditOptions, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    public void create(
+        @Valid @RequestBody AuditOptions auditOptions,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
     ) {
         LOGGER.debug("run audit ={}", auditOptions);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         operationInternalService.runAudit(vitamContext, auditOptions);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
     public ResponseEntity<Resource> exportEventById(
-            final @PathVariable("id") String id, final @PathVariable("type") ReportType type,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+        final @PathVariable("id") String id,
+        final @PathVariable("type") ReportType type,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    ) {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         LOGGER.debug("export logbook for operation with id :{}", id);
         Response response = operationInternalService.export(vitamContext, id, type);
         Object entity = response.getEntity();
@@ -136,8 +157,8 @@ public class OperationInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException , PreconditionFailedException{
-
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for operation with id :{}", id);
@@ -146,39 +167,50 @@ public class OperationInternalController {
     }
 
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public JsonNode checkTraceabilityOperation(final @PathVariable String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public JsonNode checkTraceabilityOperation(
+        final @PathVariable String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Launch check traceability operation with id = {}", id);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         return operationInternalService.checkTraceabilityOperation(vitamContext, id);
     }
 
     @PostMapping("/probativeValue")
-    public void runProbativeValue(@Valid @RequestBody ProbativeValueRequest probativeValueRequest, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public void runProbativeValue(
+        @Valid @RequestBody ProbativeValueRequest probativeValueRequest,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("run probative value ={}", probativeValueRequest);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         operationInternalService.runProbativeValue(vitamContext, probativeValueRequest);
     }
 
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<Resource> exportProbativeValue(
+        final @PathVariable("id") String operationId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, operationId);
         SafeFileChecker.checkSafeFilePath(operationId);
         SanityChecker.isValidFileName(operationId);
         SanityChecker.checkSecureParameter(operationId, accessContractId);
         LOGGER.debug("Export probative with operationId : ", operationId);
         LOGGER.debug("Export probative accessContractId : ", accessContractId);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         String tempFolder = "/tmp/" + operationId + ".zip";
         File zip = new File(tempFolder);
         try {

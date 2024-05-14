@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.identity.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.OffsetDateTime;
-
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +14,14 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import java.time.OffsetDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureJsonTesters
 public class MyJsonTests {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(MyJsonTests.class);
 
     @Before
@@ -43,5 +43,4 @@ public class MyJsonTests {
         assertThat(jsonContent).hasJsonPathStringValue("@.lastConnection");
         LOGGER.debug("OffsetDateTime serialize format : " + nowString);
     }
-
 }

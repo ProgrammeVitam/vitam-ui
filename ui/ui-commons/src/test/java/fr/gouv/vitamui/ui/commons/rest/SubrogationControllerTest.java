@@ -28,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
-@WebMvcTest(controllers = {SubrogationController.class})
-@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class})
+@ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
+@WebMvcTest(controllers = { SubrogationController.class })
+@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class })
 public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> {
 
     @TestConfiguration
@@ -43,8 +43,6 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
             properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
-
-
     }
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationControllerTest.class);
@@ -118,5 +116,4 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
         Mockito.when(service.create(any(), any(SubrogationDto.class))).thenReturn(new SubrogationDto());
         Mockito.when(service.getOne(any(), any(), any())).thenReturn(new SubrogationDto());
     }
-
 }

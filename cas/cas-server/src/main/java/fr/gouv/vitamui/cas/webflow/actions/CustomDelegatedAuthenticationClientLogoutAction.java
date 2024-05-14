@@ -22,9 +22,12 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    public CustomDelegatedAuthenticationClientLogoutAction(final Clients clients, final SessionStore sessionStore,
-                                                           final ProvidersService providersService,
-                                                           final IdentityProviderHelper identityProviderHelper) {
+    public CustomDelegatedAuthenticationClientLogoutAction(
+        final Clients clients,
+        final SessionStore sessionStore,
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper
+    ) {
         super(clients, sessionStore);
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -42,7 +45,9 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
         }
 
         val client = optClient.get();
-        val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), client.getName()).get();
+        val provider = identityProviderHelper
+            .findByTechnicalName(providersService.getProviders(), client.getName())
+            .get();
         LOGGER.debug("provider: {}", provider);
         if (!provider.isPropagateLogout()) {
             return Optional.empty();

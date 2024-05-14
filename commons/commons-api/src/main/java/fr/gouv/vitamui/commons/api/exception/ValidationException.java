@@ -59,5 +59,4 @@ public class ValidationException extends VitamUIException {
     public ValidationException(final String message, final String key) {
         super(message, key);
     }
-
 }

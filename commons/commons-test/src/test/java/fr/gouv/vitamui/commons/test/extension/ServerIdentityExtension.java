@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.commons.test.extension;
 
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 
 /**
  * Extension for mock ServerIdentityConfiguration
@@ -20,4 +19,3 @@ public class ServerIdentityExtension implements BeforeAllCallback {
         }
     }
 }
-

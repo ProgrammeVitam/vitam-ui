@@ -62,7 +62,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
  */
 public class ServicesData {
 
-    protected ServicesData() { }
+    protected ServicesData() {}
 
     //------------------------------------ USERS -------------------------------------------
     public static final String SERVICE_USERS = "USERS";
@@ -93,7 +93,6 @@ public class ServicesData {
     public static final String ROLE_GET_USER_INFOS = GET_ROLE_PREFIX + SERVICE_USER_INFOS;
     public static final String ROLE_CREATE_USER_INFOS = CREATE_ROLE_PREFIX + SERVICE_USER_INFOS;
     public static final String ROLE_UPDATE_USER_INFOS = UPDATE_ROLE_PREFIX + SERVICE_USER_INFOS;
-
 
     //------------------------------------ CUSTOMERS -------------------------------------------
 
@@ -177,7 +176,6 @@ public class ServicesData {
 
     public static final String SERVICE_PROFILES_PROFILES_NAMES = "Profil pour la gestion des profils d'utilisateurs";
 
-
     public static final String ROLE_GET_PROFILES = GET_ROLE_PREFIX + SERVICE_PROFILES;
 
     public static final String ROLE_CREATE_PROFILES = CREATE_ROLE_PREFIX + SERVICE_PROFILES;
@@ -225,13 +223,11 @@ public class ServicesData {
 
     public static final String ROLE_CHECK_USERS = CHECK_ROLE_PREFIX + SERVICE_USERS;
 
-
     //------------------------------------ ACCOUNTS -------------------------------------------
 
     public static final String SERVICE_ACCOUNTS = "ACCOUNTS";
 
     public static final String SERVICE_ACCOUNTS_PROFILES_NAMES = "Profil pour la gestion de mon compte";
-
 
     //------------------------------------ APPLICATIONS -------------------------------------------
 
@@ -332,7 +328,6 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
-
     //-------------------------------- SECURITY PROFILE ---------------------------------------
 
     public static final String SERVICE_SECURITY_PROFILES = "SECURITY_PROFILES";
@@ -344,7 +339,6 @@ public class ServicesData {
     public static final String ROLE_UPDATE_SECURITY_PROFILES = UPDATE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
-
 
     //--------------------------------- REGLES DE GESTION -------------------------------------
 
@@ -402,7 +396,6 @@ public class ServicesData {
 
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
 
-
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String SERVICE_ARCHIVE_PROFILES = "ARCHIVE_PROFILES";
@@ -426,7 +419,6 @@ public class ServicesData {
     public static final String ROLE_CREATE_ARCHIVE_PROFILES_UNIT = UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
 
     public static final String ROLE_IMPORT_ARCHIVE_PROFILES_UNIT = DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
-
 
     //------------------------------------ INGESTS -----------------------------------------
 
@@ -484,7 +476,6 @@ public class ServicesData {
     public static final String ROLE_GET_LOGBOOK_OPERATION = GET_ROLE_PREFIX + SERVICE_LOGBOOK_OPERATION;
     public static final String ROLE_GET_ALL_LOGBOOK_OPERATION = GET_ROLE_PREFIX + "ALL_" + SERVICE_LOGBOOK_OPERATION;
 
-
     //------------------------------------ ACCESS CONTRACT EXTERNAL PARAMETERS -------------------------------------------
     public static final String ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = "EXTERNAL_PARAM_PROFILE";
 
@@ -494,7 +485,6 @@ public class ServicesData {
         "ROLE_EDIT_" + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
     public static final String ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE =
         "ROLE_SEARCH_" + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
-
 
     public static final String ACCESSION_REGISTER_DETAIL = "ACCESSION_REGISTER_DETAIL";
 
@@ -533,8 +523,6 @@ public class ServicesData {
     public static final String ROLE_DELETE_MANAGEMENT_CONTRACT = DELETE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
     public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
-
-
 
     //@formatter:off
 
@@ -866,6 +854,7 @@ public class ServicesData {
         ROLE_UPDATE_UNIT_DESC_METADATA
 
             );
+
     //@formatter:on
 
     public static List<String> getAdminVitamUIRoleNames() {
@@ -893,7 +882,8 @@ public class ServicesData {
     }
 
     public static List<String> getServicesByName(final String... serviceName) {
-        return ROLE_NAMES.stream().filter(role -> StringUtils.endsWithAny(role, serviceName))
+        return ROLE_NAMES.stream()
+            .filter(role -> StringUtils.endsWithAny(role, serviceName))
             .collect(Collectors.toList());
     }
 }

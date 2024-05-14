@@ -55,8 +55,10 @@ public class ExternalParametersService {
     private final InternalSecurityService securityService;
 
     @Autowired
-    public ExternalParametersService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-            final InternalSecurityService securityService) {
+    public ExternalParametersService(
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final InternalSecurityService securityService
+    ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.securityService = securityService;
     }
@@ -68,15 +70,19 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient
-                .getMyExternalParameters(securityService.getHttpContext());
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
+        );
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
-                parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
-                .findFirst().orElse(null);
+        ParameterDto parameterAccessContract = myExternalParameter
+            .getParameters()
+            .stream()
+            .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+            .findFirst()
+            .orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
             throw new IllegalArgumentException("No access contract defined");
         }
@@ -89,8 +95,8 @@ public class ExternalParametersService {
      * @return
      */
     public VitamContext buildVitamContextFromExternalParam() {
-        return new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
-                retrieveAccessContractFromExternalParam())
+        return new VitamContext(securityService.getTenantIdentifier())
+            .setAccessContract(retrieveAccessContractFromExternalParam())
             .setApplicationSessionId(securityService.getApplicationId());
     }
 
@@ -101,13 +107,16 @@ public class ExternalParametersService {
      */
     public Optional<Long> retrieveProfilThreshold() {
         Optional<Long> thresholdOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
+        );
         if (CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterThreshold = myExternalParameter.getParameters().stream().filter(
-                    parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME
-                        .equals(parameter.getKey()))
-                .findFirst().orElse(null);
+            ParameterDto parameterThreshold = myExternalParameter
+                .getParameters()
+                .stream()
+                .filter(parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME.equals(parameter.getKey()))
+                .findFirst()
+                .orElse(null);
             if (parameterThreshold != null && parameterThreshold.getValue() != null) {
                 try {
                     Long thresholdValue = Long.valueOf(parameterThreshold.getValue());
@@ -115,8 +124,13 @@ public class ExternalParametersService {
                 } catch (NumberFormatException nfe) {
                     LOGGER.error(
                         "external parameter of bulk threshold contains wrong integer value {}, it will not be used ",
-                        parameterThreshold.getValue());
-                    throw new IllegalArgumentException( "external parameter of bulk threshold contains wrong integer value " + parameterThreshold.getValue() + ", it will not be used ");
+                        parameterThreshold.getValue()
+                    );
+                    throw new IllegalArgumentException(
+                        "external parameter of bulk threshold contains wrong integer value " +
+                        parameterThreshold.getValue() +
+                        ", it will not be used "
+                    );
                 }
             }
         }
