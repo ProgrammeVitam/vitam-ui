@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+{% if (vitamui_struct.vitamui_component == "api-gateway") and (vitamui_struct.accesslogs | default(accesslogs) | bool ) %}
+  <!-- api-gateway access-logs configuration -->
+  <appender name="accessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>{{ vitamui_folder_log }}/accesslog-{{ vitamui_struct.vitamui_component }}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <maxHistory>{{ vitamui_struct.access_retention_days | default(access_retention_days) }}</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="async-accessLog" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="accessLog" />
+  </appender>
+  <logger name="reactor.netty.http.server.AccessLog" level="INFO" additivity="false">
+    <appender-ref ref="async-accessLog"/>
+  </logger>
+  <!-- end of api-gateway access-logs configuration -->
+{% endif %}
+
   <springProperty name="server-identity.identityRole" source="server-identity.identityRole"/>
 
   <!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender"> -->
