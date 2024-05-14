@@ -91,6 +91,9 @@
           <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required">
             {{ 'COMMON.REQUIRED' | translate }}
           </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.pattern">
+            {{ 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate }}
+          </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
 
