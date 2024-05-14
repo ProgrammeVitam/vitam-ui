@@ -226,7 +226,6 @@
         <!--we can choose to execute Karma tests or not-->
         <skipAllFrontendTests>true</skipAllFrontendTests>
         <itCoverageAgent></itCoverageAgent>
-        <spotless.check.skip>true</spotless.check.skip> <!-- Remove after global reformat is done -->
     </properties>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
