@@ -125,6 +125,7 @@ xdescribe('  FileFormatCreateComponent', () => {
       expect(page.control('version')).toBeTruthy();
       expect(page.control('mimeType')).toBeTruthy();
       expect(page.control('extensions')).toBeTruthy();
+      expect(page.control('hasPriorityOverFileFormatIDs')).toBeTruthy();
     });
 
     it('should have a submit button', () => {

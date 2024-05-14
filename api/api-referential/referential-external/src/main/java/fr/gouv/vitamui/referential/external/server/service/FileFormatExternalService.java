@@ -108,8 +108,8 @@ public class FileFormatExternalService extends AbstractResourceClientService<Fil
         return super.patch(partialDto);
     }
 
-    public FileFormatDto create(final FileFormatDto accessContractDto) {
-        return fileFormatInternalRestClient.create(getInternalHttpContext(), accessContractDto);
+    public FileFormatDto create(final FileFormatDto fileFormatDto) {
+        return fileFormatInternalRestClient.create(getInternalHttpContext(), fileFormatDto);
     }
 
     public boolean checkExists(final String criteria) {

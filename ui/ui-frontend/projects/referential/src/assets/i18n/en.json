@@ -489,13 +489,15 @@
     "CREATE_DIALOG": {
       "TITLE": "Information",
       "SUBTITLE": "Create file format",
-      "IDENTIFIER": "Identifier",
+      "IDENTIFIER": "PUID",
       "NAME": "Name",
       "MIME_TYPE": "MIME type",
       "VERSION": "Version",
       "EXTENSION": "Extension(s)",
       "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
-      "NAME_ALREADY_EXISTS": "Name already in use"
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "HAS_PRIORITY_OVER_FILE_FORMAT_ID": "Priority over previous versions",
+      "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Search for PUID or format name"
     },
     "TAB": {
       "INFORMATION": {
