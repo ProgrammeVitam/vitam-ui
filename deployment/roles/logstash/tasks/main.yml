@@ -19,6 +19,7 @@
     group: "{{ vitamui_defaults.users.group }}"
     state: directory
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    recurse: true
   with_items:
     - data
     - log
