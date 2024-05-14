@@ -64,34 +64,37 @@ public class SearchCriteriaHistoryServiceTest {
 
     private SearchCriteriaHistoryInternalService service;
 
-    private final SearchCriteriaHistoryRepository ssearchCriteriaHistoryRepository =
-        mock(SearchCriteriaHistoryRepository.class);
+    private final SearchCriteriaHistoryRepository ssearchCriteriaHistoryRepository = mock(
+        SearchCriteriaHistoryRepository.class
+    );
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryServiceTest.class
+    );
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
-
 
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter = new SearchCriteriaHistoryConverter();
 
     @BeforeEach
     public void setup() throws Exception {
-
-        service = new SearchCriteriaHistoryInternalService(sequenceRepository, ssearchCriteriaHistoryRepository,
+        service = new SearchCriteriaHistoryInternalService(
+            sequenceRepository,
+            ssearchCriteriaHistoryRepository,
             searchCriteriaHistoryConverter,
-            internalSecurityService);
+            internalSecurityService
+        );
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-
     }
 
     @Test
     void testCreateSearchCriteriaHistory() throws Exception {
-        final SearchCriteriaHistoryDto searchCriteriaHistoryDto =
-            searchCriteriaHistoryConverter.convertEntityToDto(Utils.buildSearchCriteriaHistory());
+        final SearchCriteriaHistoryDto searchCriteriaHistoryDto = searchCriteriaHistoryConverter.convertEntityToDto(
+            Utils.buildSearchCriteriaHistory()
+        );
 
         final SearchCriteriaHistory other = new SearchCriteriaHistory();
         VitamUIUtils.copyProperties(searchCriteriaHistoryDto, other);
@@ -115,5 +118,4 @@ public class SearchCriteriaHistoryServiceTest {
         Assertions.assertNotNull("SearchCriteriaHistoryDto id should be defined", created.getId());
         assertThat(result).isEqualToComparingFieldByField(created);
     }
-
 }

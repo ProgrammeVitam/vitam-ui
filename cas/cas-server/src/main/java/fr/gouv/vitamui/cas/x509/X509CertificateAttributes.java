@@ -40,5 +40,7 @@ package fr.gouv.vitamui.cas.x509;
  * X509 certificate attributes
  */
 public enum X509CertificateAttributes {
-    ISSUER_DN, SUBJECT_DN, SUBJECT_ALTERNATE_NAME
+    ISSUER_DN,
+    SUBJECT_DN,
+    SUBJECT_ALTERNATE_NAME,
 }

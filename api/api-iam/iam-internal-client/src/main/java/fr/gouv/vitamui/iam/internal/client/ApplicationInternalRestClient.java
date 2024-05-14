@@ -41,7 +41,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -49,12 +48,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 /**
  * A REST client to check existence, read, create, update and delete the applications.
  *
  *
  */
-public class ApplicationInternalRestClient extends BasePaginatingAndSortingRestClient<ApplicationDto, InternalHttpContext> {
+public class ApplicationInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ApplicationDto, InternalHttpContext> {
 
     private static final String IDENTIFIER_EXTERNAL_PATH = "/{identifier}/externalid";
 
@@ -74,19 +76,19 @@ public class ApplicationInternalRestClient extends BasePaginatingAndSortingRestC
 
     @Override
     protected ParameterizedTypeReference<List<ApplicationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ApplicationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ApplicationDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ApplicationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ApplicationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ApplicationDto>>() {};
     }
 
-    public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(InternalHttpContext context, String applicationId) {
-        var uri = UriComponentsBuilder.fromHttpUrl(getUrl()+ IDENTIFIER_EXTERNAL_PATH)
-            .build(applicationId);
+    public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(
+        InternalHttpContext context,
+        String applicationId
+    ) {
+        var uri = UriComponentsBuilder.fromHttpUrl(getUrl() + IDENTIFIER_EXTERNAL_PATH).build(applicationId);
         return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(buildHeaders(context)), Boolean.class);
     }
 }

@@ -52,7 +52,8 @@ public class CertificateParser {
 
     private CertificateParser() {}
 
-    public static String extract(final X509Certificate cert, final X509AttributeMapping mapping) throws CertificateParsingException {
+    public static String extract(final X509Certificate cert, final X509AttributeMapping mapping)
+        throws CertificateParsingException {
         val name = mapping.getName();
         String value = null;
         if (X509CertificateAttributes.ISSUER_DN.name().equalsIgnoreCase(name)) {
@@ -71,7 +72,9 @@ public class CertificateParser {
                         subjectAltNamesBuilder.append(attributeName).append("=").append(attributeValue).append(", ");
                     }
                 }
-                value = subjectAltNamesBuilder.length() > 0 ? subjectAltNamesBuilder.substring(0, subjectAltNamesBuilder.length() - 2) : "";
+                value = subjectAltNamesBuilder.length() > 0
+                    ? subjectAltNamesBuilder.substring(0, subjectAltNamesBuilder.length() - 2)
+                    : "";
             }
         }
         if (value == null) {

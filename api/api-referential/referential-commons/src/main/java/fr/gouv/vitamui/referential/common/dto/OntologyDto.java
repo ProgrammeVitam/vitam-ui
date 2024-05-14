@@ -82,5 +82,4 @@ public class OntologyDto extends IdDto implements Serializable {
     private OntologyOrigin origin;
 
     private List<String> collections;
-
 }

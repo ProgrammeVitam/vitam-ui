@@ -41,7 +41,7 @@ import javax.xml.stream.XMLInputFactory;
 
 public class XMLInputFactoryUtils {
 
-    private XMLInputFactoryUtils(){}
+    private XMLInputFactoryUtils() {}
 
     public static XMLInputFactory newInstance() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();

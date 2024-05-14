@@ -72,14 +72,18 @@ public class AccessContractExternalService extends AbstractResourceClientService
     private AccessContractInternalWebClient accessContractInternalWebClient;
 
     @Autowired
-    public AccessContractExternalService(ExternalSecurityService externalSecurityService, AccessContractInternalRestClient accessContractInternalRestClient, AccessContractInternalWebClient accessContractInternalWebClient) {
+    public AccessContractExternalService(
+        ExternalSecurityService externalSecurityService,
+        AccessContractInternalRestClient accessContractInternalRestClient,
+        AccessContractInternalWebClient accessContractInternalWebClient
+    ) {
         super(externalSecurityService);
         this.accessContractInternalRestClient = accessContractInternalRestClient;
         this.accessContractInternalWebClient = accessContractInternalWebClient;
     }
 
     public List<AccessContractDto> getAll(final Optional<String> criteria) {
-        return accessContractInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return accessContractInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     @Override
@@ -100,13 +104,19 @@ public class AccessContractExternalService extends AbstractResourceClientService
         return Arrays.asList("name");
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> getClient() {
         return accessContractInternalRestClient;
     }
 
     @Override
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -132,7 +142,6 @@ public class AccessContractExternalService extends AbstractResourceClientService
     public ResponseEntity<Void> importAccessContracts(MultipartFile file) {
         return accessContractInternalWebClient.importAccessContracts(getInternalHttpContext(), file);
     }
-
 
     public ResponseEntity<Resource> exportAccessContracts() {
         return accessContractInternalRestClient.exportAccessContracts(getInternalHttpContext());

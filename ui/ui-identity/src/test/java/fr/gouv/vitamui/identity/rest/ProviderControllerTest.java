@@ -1,9 +1,10 @@
 package fr.gouv.vitamui.identity.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import java.util.Arrays;
-
+import com.google.common.collect.ImmutableMap;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.identity.service.ProviderService;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,12 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.identity.service.ProviderService;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { ProviderController.class })
@@ -37,7 +35,6 @@ public class ProviderControllerTest extends UiIdentityRestControllerTest<Identit
     @MockBean
     private BuildProperties buildProperties;
 
-
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProviderControllerTest.class);
 
     private static final String PREFIX = "/providers";
@@ -45,25 +42,60 @@ public class ProviderControllerTest extends UiIdentityRestControllerTest<Identit
     @Test
     public void testCreateProvider() {
         getLog().debug("test create entity class ={}", getDtoClass().getName());
-        final MockMultipartFile keystore = new MockMultipartFile("keystore", "keystore", "application/x-java-keystore", "foo".getBytes());
-        final MockMultipartFile idpMetadata = new MockMultipartFile("idpMetadata", "idpMetadata", MediaType.APPLICATION_XML_VALUE, "<xml></xml>".getBytes());
-        final MockMultipartFile provider = new MockMultipartFile("provider", "", "application/json", "{\"id\": \"1\"}".getBytes());
+        final MockMultipartFile keystore = new MockMultipartFile(
+            "keystore",
+            "keystore",
+            "application/x-java-keystore",
+            "foo".getBytes()
+        );
+        final MockMultipartFile idpMetadata = new MockMultipartFile(
+            "idpMetadata",
+            "idpMetadata",
+            MediaType.APPLICATION_XML_VALUE,
+            "<xml></xml>".getBytes()
+        );
+        final MockMultipartFile provider = new MockMultipartFile(
+            "provider",
+            "",
+            "application/json",
+            "{\"id\": \"1\"}".getBytes()
+        );
         performPostMultipart(StringUtils.EMPTY, Arrays.asList(keystore, idpMetadata, provider));
     }
 
     @Test
     public void testPatchProviderKeystore() {
         getLog().debug("test patch keystore entity class ={}", getDtoClass().getName());
-        final MockMultipartFile keystore = new MockMultipartFile("keystore", "keystore", "application/x-java-keystore", "foo".getBytes());
-        final MockMultipartFile provider = new MockMultipartFile("provider", "", "application/json", "{\"id\": \"1\"}".getBytes());
+        final MockMultipartFile keystore = new MockMultipartFile(
+            "keystore",
+            "keystore",
+            "application/x-java-keystore",
+            "foo".getBytes()
+        );
+        final MockMultipartFile provider = new MockMultipartFile(
+            "provider",
+            "",
+            "application/json",
+            "{\"id\": \"1\"}".getBytes()
+        );
         performPatchMultipart("/1/keystore", Arrays.asList(keystore, provider));
     }
 
     @Test
     public void testPatchProviderIdpMetadata() {
         getLog().debug("test patch idpMetadata entity class ={}", getDtoClass().getName());
-        final MockMultipartFile idpMetadata = new MockMultipartFile("idpMetadata", "idpMetadata", MediaType.APPLICATION_XML_VALUE, "<xml></xml>".getBytes());
-        final MockMultipartFile provider = new MockMultipartFile("provider", "", "application/json", "{\"id\": \"1\"}".getBytes());
+        final MockMultipartFile idpMetadata = new MockMultipartFile(
+            "idpMetadata",
+            "idpMetadata",
+            MediaType.APPLICATION_XML_VALUE,
+            "<xml></xml>".getBytes()
+        );
+        final MockMultipartFile provider = new MockMultipartFile(
+            "provider",
+            "",
+            "application/json",
+            "{\"id\": \"1\"}".getBytes()
+        );
         performPatchMultipart("/1/idpMetadata", Arrays.asList(idpMetadata, provider));
     }
 
@@ -117,8 +149,7 @@ public class ProviderControllerTest extends UiIdentityRestControllerTest<Identit
     protected void preparedServices() {
         try {
             Mockito.when(service.create(any(), any(), any(), any(String.class))).thenReturn(new IdentityProviderDto());
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             LOGGER.debug(e.getMessage(), e);
         }
         Mockito.when(service.update(any(), any(IdentityProviderDto.class))).thenReturn(new IdentityProviderDto());

@@ -18,28 +18,35 @@ import org.springframework.webflow.execution.RequestContext;
  */
 public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAction {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(CustomSurrogateInitialAuthenticationAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CustomSurrogateInitialAuthenticationAction.class
+    );
 
     @Override
     protected Event doExecute(RequestContext context) throws Exception {
-
         val up = WebUtils.getCredential(context, UsernamePasswordCredential.class);
         if (up == null) {
-            LOGGER.debug("Provided credentials cannot be found, or are already of type [{}]",
-                SurrogateUsernamePasswordCredential.class.getName());
+            LOGGER.debug(
+                "Provided credentials cannot be found, or are already of type [{}]",
+                SurrogateUsernamePasswordCredential.class.getName()
+            );
             return null;
         }
 
         val flowScope = context.getFlowScope();
-        if(isSubrogationMode(flowScope)) {
+        if (isSubrogationMode(flowScope)) {
             String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
             String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
             String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
             String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
 
-            LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
-                surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+            LOGGER.debug(
+                "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+                surrogateEmail,
+                surrogateCustomerId,
+                superUserEmail,
+                superUserCustomerId
+            );
 
             SurrogateUsernamePasswordCredential credential = new SurrogateUsernamePasswordCredential();
             credential.setUsername(superUserEmail);
@@ -47,7 +54,6 @@ public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAc
             credential.assignPassword(up.toPassword());
             WebUtils.putCredential(context, credential);
             WebUtils.putSurrogateAuthenticationRequest(context, Boolean.FALSE);
-
         }
         return null;
     }

@@ -37,22 +37,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PastisGetXmlJsonTree {
 
@@ -64,5 +53,4 @@ public class PastisGetXmlJsonTree {
         ElementRNG.buildElementPropertiesTree(elementRNGRoot, 0, null);
         return ElementRNG.getElementStaticRoot();
     }
-
 }

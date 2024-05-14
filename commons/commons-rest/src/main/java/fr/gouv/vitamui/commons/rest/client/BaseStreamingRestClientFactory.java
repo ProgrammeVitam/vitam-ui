@@ -54,8 +54,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
@@ -75,7 +73,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * A rest client factory to create each domain specific REST client. The http connection is configured by the
@@ -103,25 +100,32 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
         this(restClientConfiguration, null);
     }
 
-    public BaseStreamingRestClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public BaseStreamingRestClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
 
         final boolean useSSL = restClientConfig.isSecure();
-        baseUrl = RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
+        baseUrl = RestUtils.getScheme(useSSL) +
+        restClientConfig.getServerHost() +
+        ":" +
+        restClientConfig.getServerPort();
 
         HttpPoolConfiguration myPoolConfig = httpPoolConfig;
 
         // configure the pool from the restClientConfig if the value of poolMaxTotal is positive
-        if(restClientConfig.getPoolMaxTotal() >= 0) {
+        if (restClientConfig.getPoolMaxTotal() >= 0) {
             myPoolConfig = new HttpPoolConfiguration();
             myPoolConfig.setMaxTotal(restClientConfig.getPoolMaxTotal());
             myPoolConfig.setMaxPerRoute(restClientConfig.getPoolMaxPerRoute());
         }
 
-        final Registry<ConnectionSocketFactory> csfRegistry = useSSL ? buildRegistry(restClientConfig.getSslConfiguration()) : null;
+        final Registry<ConnectionSocketFactory> csfRegistry = useSSL
+            ? buildRegistry(restClientConfig.getSslConfiguration())
+            : null;
         final PoolingHttpClientConnectionManager connectionManager = buildConnectionManager(myPoolConfig, csfRegistry);
         final RequestConfig requestConfig = buildRequestConfig();
-
 
         final CloseableHttpClient httpClient = HttpClientBuilder.create()
             .setConnectionManager(connectionManager)
@@ -141,7 +145,9 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
      */
     private Registry<ConnectionSocketFactory> buildRegistry(final SSLConfiguration sslConfiguration) {
         if (sslConfiguration == null) {
-            throw new ApplicationServerException("SSL Configuration is not defined. Unable to configure the SSLConnection");
+            throw new ApplicationServerException(
+                "SSL Configuration is not defined. Unable to configure the SSLConnection"
+            );
         }
 
         final SSLConfiguration.CertificateStoreConfiguration ks = sslConfiguration.getKeystore();
@@ -149,7 +155,6 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
 
         SSLContext sslContext = null;
         try {
-
             final SSLContextBuilder sslContextBuilder = SSLContextBuilder.create();
 
             if (ks != null) {
@@ -157,23 +162,34 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
                 sslContextBuilder.loadKeyMaterial(keyStore, ks.getKeyPassword().toCharArray());
             }
 
-            sslContext = sslContextBuilder.loadTrustMaterial(new File(ts.getKeyPath()), ts.getKeyPassword().toCharArray()).setProtocol("TLS")
-                    .setSecureRandom(new java.security.SecureRandom()).build();
-        }
-        catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException | CertificateException | IOException | UnrecoverableKeyException e) {
+            sslContext = sslContextBuilder
+                .loadTrustMaterial(new File(ts.getKeyPath()), ts.getKeyPassword().toCharArray())
+                .setProtocol("TLS")
+                .setSecureRandom(new java.security.SecureRandom())
+                .build();
+        } catch (
+            NoSuchAlgorithmException
+            | KeyManagementException
+            | KeyStoreException
+            | CertificateException
+            | IOException
+            | UnrecoverableKeyException e
+        ) {
             LOGGER.error("Unable to build the Registry<ConnectionSocketFactory>.", e);
             LOGGER.error("KeyPath: " + sslConfiguration.getKeystore().getKeyPath());
 
             throw new ApplicationServerException(e);
         }
 
-        final HostnameVerifier hostnameVerifier = sslConfiguration.isHostnameVerification() ? null : TrustAllHostnameVerifier.INSTANCE;
+        final HostnameVerifier hostnameVerifier = sslConfiguration.isHostnameVerification()
+            ? null
+            : TrustAllHostnameVerifier.INSTANCE;
         final SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
-        return RegistryBuilder.<ConnectionSocketFactory> create().register("https", sslFactory).build();
+        return RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslFactory).build();
     }
 
     private KeyStore loadPkcs(final String type, final String filename, final char[] password)
-            throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+        throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         final KeyStore keyStore = KeyStore.getInstance(type);
         final File key = ResourceUtils.getFile(filename);
         try (InputStream in = new FileInputStream(key)) {
@@ -188,12 +204,13 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
      * already the manager has persistent connections for available in the pool will be services by leasing a connection
      * from the pool rather than creating a brand new connection.
      */
-    private PoolingHttpClientConnectionManager buildConnectionManager(final HttpPoolConfiguration poolConfig,
-            final Registry<ConnectionSocketFactory> socketFactoryRegistry) {
-
+    private PoolingHttpClientConnectionManager buildConnectionManager(
+        final HttpPoolConfiguration poolConfig,
+        final Registry<ConnectionSocketFactory> socketFactoryRegistry
+    ) {
         final PoolingHttpClientConnectionManager connectionManager = (socketFactoryRegistry != null)
-                ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
-                : new PoolingHttpClientConnectionManager();
+            ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
+            : new PoolingHttpClientConnectionManager();
 
         if (poolConfig != null) {
             connectionManager.setMaxTotal(poolConfig.getMaxTotal());
@@ -210,8 +227,11 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
     }
 
     private RequestConfig buildRequestConfig() {
-        return RequestConfig.custom().setConnectionRequestTimeout(connectionRequestTimeout).setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout)
-                .build();
+        return RequestConfig.custom()
+            .setConnectionRequestTimeout(connectionRequestTimeout)
+            .setConnectTimeout(connectTimeout)
+            .setSocketTimeout(socketTimeout)
+            .build();
     }
 
     @Override
@@ -227,5 +247,4 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
     public void setRestClientInterceptor(final List<ClientHttpRequestInterceptor> interceptors) {
         restTemplate.setInterceptors(interceptors);
     }
-
 }

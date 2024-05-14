@@ -92,5 +92,4 @@ public class VitamAccessConfig extends VitamClientConfig {
     public EliminationService getEliminationService() {
         return new EliminationService(accessExternalClient());
     }
-
 }

@@ -86,18 +86,24 @@ public class OperationExternalService extends AbstractResourceClientService<Logb
         return operationInternalRestClient;
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                   final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         // Can't use DLab super.getAllPaginated because the criteria is updated for internal concerne.
         // TODO: Maybe needs a VITAM class for ResourceClientService ?
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<LogbookOperationDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<LogbookOperationDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     public boolean runAudit(final AuditOptions auditOptions) {
@@ -129,5 +135,4 @@ public class OperationExternalService extends AbstractResourceClientService<Logb
     public ResponseEntity<Resource> exportProbativeValue(String id) {
         return operationInternalRestClient.exportProbativeValue(getInternalHttpContext(), id);
     }
-
 }

@@ -36,17 +36,15 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.UserInfoExternalRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class UserInfoService extends AbstractCrudService<UserInfoDto> {
-
 
     private final UserInfoExternalRestClient client;
 
@@ -63,10 +61,8 @@ public class UserInfoService extends AbstractCrudService<UserInfoDto> {
         return getClient().patchMe(context, partialDto);
     }
 
-
     @Override
     public UserInfoExternalRestClient getClient() {
         return client;
     }
-
 }

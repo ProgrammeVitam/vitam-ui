@@ -72,23 +72,32 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
     private RuleInternalWebClient ruleInternalWebClient;
 
     @Autowired
-    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient, RuleInternalWebClient ruleInternalWebClient) {
+    public RuleExternalService(
+        ExternalSecurityService externalSecurityService,
+        RuleInternalRestClient ruleInternalRestClient,
+        RuleInternalWebClient ruleInternalWebClient
+    ) {
         super(externalSecurityService);
         this.ruleInternalRestClient = ruleInternalRestClient;
         this.ruleInternalWebClient = ruleInternalWebClient;
     }
 
     public List<RuleDto> getAll(final Optional<String> criteria) {
-        return ruleInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return ruleInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<RuleDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<RuleDto, InternalHttpContext> getClient() {
         return ruleInternalRestClient;
     }
 
-    public PaginatedValuesDto<RuleDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -98,7 +107,7 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
     }
 
     public boolean patchRule(final String id, final Map<String, Object> partialDto) {
-    	return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
+        return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
     }
 
     public boolean createRule(final RuleDto ruleDto) {
@@ -135,5 +144,4 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
     public JsonNode importRules(String fileName, MultipartFile file) {
         return ruleInternalWebClient.importRules(getInternalHttpContext(), fileName, file);
     }
-
 }

@@ -47,6 +47,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VersionRetentionPolicyMgtContractDto implements Serializable {
+
     private boolean initialVersion;
     private IntermediaryVersionEnum intermediaryVersion;
     Set<VersionUsageMgtContractDto> usages;

@@ -36,19 +36,22 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Optional;
-
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.service.ContextService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,19 +67,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.service.ContextService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Optional;
 
 @Api(tags = "context")
 @RestController
@@ -97,9 +95,8 @@ public class ContextController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ContextDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<ContextDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -108,14 +105,25 @@ public class ContextController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ContextDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws PreconditionFailedException, InvalidParseOperationException {
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -137,8 +145,8 @@ public class ContextController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create context")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ContextDto contextDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> check(@RequestBody ContextDto contextDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(contextDto);
         LOGGER.debug("check ability to create context={}", contextDto);
         final boolean exist = service.check(buildUiHttpContext(), contextDto);
@@ -149,8 +157,8 @@ public class ContextController extends AbstractUiRestController {
     @ApiOperation(value = "Create context")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContextDto create(@Valid @RequestBody  ContextDto contextDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ContextDto create(@Valid @RequestBody ContextDto contextDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(contextDto);
         LOGGER.debug("create context={}", contextDto);
         return service.create(buildUiHttpContext(), contextDto);
@@ -162,7 +170,10 @@ public class ContextController extends AbstractUiRestController {
     public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "Unable to patch context : the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, partialDto.getId()),
+            "Unable to patch context : the DTO id must match the path id."
+        );
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         return service.patchWithDto(buildUiHttpContext(), partialDto, id);
@@ -172,10 +183,8 @@ public class ContextController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for context with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
-
 }

@@ -75,7 +75,6 @@ public abstract class BaseStatusRestClient implements RestClient {
         if (status != HttpStatus.OK && status != HttpStatus.NO_CONTENT) {
             throw new ApplicationServerException("Internal Server Error : " + status.getReasonPhrase());
         }
-
         // TODO: consume entity and close
     }
 
@@ -91,5 +90,4 @@ public abstract class BaseStatusRestClient implements RestClient {
     public String getBaseUrl() {
         return baseUrl;
     }
-
 }

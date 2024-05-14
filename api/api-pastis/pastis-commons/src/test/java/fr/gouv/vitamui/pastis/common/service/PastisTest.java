@@ -88,7 +88,6 @@ public class PastisTest {
 
     @Test
     public void testIfJSONCanBeGenerated() throws IOException, JAXBException, URISyntaxException, SAXException {
-
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetJsonTree getJson = new PastisGetJsonTree();
 
@@ -101,9 +100,5 @@ public class PastisTest {
         String jsonTree = getJson.getJsonParsedTree(handler.getElementRNGRoot());
 
         Assert.assertNotNull("JSON profile generated successfully", jsonTree);
-
     }
-
-
-
 }

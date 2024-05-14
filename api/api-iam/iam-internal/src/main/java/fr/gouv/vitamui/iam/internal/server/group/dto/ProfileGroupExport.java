@@ -23,6 +23,7 @@ import static fr.gouv.vitamui.iam.internal.server.group.dto.ProfileGroupExportSh
 @Getter
 @Setter
 public final class ProfileGroupExport implements LineDto {
+
     public static final String TYPE_PROFILE_GROUP = "Groupe de profil";
     public static final String TYPE_PROFILE = "Profil";
     public static final String DATE_FR_PIPE_TIME_WITH_SECONDS = "dd/MM/yyyy '|' HH:mm:ss";
@@ -40,7 +41,6 @@ public final class ProfileGroupExport implements LineDto {
     private String createdAt;
     private String lastModified;
 
-
     public static ProfileGroupExport fromGroup(GroupDto groupDto) {
         return ProfileGroupExport.builder()
             .id(groupDto.getId())
@@ -57,7 +57,7 @@ public final class ProfileGroupExport implements LineDto {
             .build();
     }
 
-    public static ProfileGroupExport fromProfile(ProfileDto profileDto){
+    public static ProfileGroupExport fromProfile(ProfileDto profileDto) {
         return ProfileGroupExport.builder()
             .id(profileDto.getId())
             .identifier(Integer.valueOf(profileDto.getIdentifier()))
@@ -76,37 +76,45 @@ public final class ProfileGroupExport implements LineDto {
     @Override
     public Map<String, ValueDto> toSheetLine() {
         return Map.of(
-           PROFILE_GROUP_SHEET_COLUMNS.get(0), ValueDto.of(identifier, DOUBLE),
-           PROFILE_GROUP_SHEET_COLUMNS.get(1), ValueDto.of(name, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(2), ValueDto.of(type, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(3), ValueDto.of(status, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(4), ValueDto.of(description, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(5), ValueDto.of(subLevel, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(6), ValueDto.of(units, STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(7), ValueDto.of(usersCount, DOUBLE),
-           PROFILE_GROUP_SHEET_COLUMNS.get(8), ValueDto.of(parseDateToFormat(createdAt), STRING),
-           PROFILE_GROUP_SHEET_COLUMNS.get(9), ValueDto.of(parseDateToFormat(lastModified), STRING)
+            PROFILE_GROUP_SHEET_COLUMNS.get(0),
+            ValueDto.of(identifier, DOUBLE),
+            PROFILE_GROUP_SHEET_COLUMNS.get(1),
+            ValueDto.of(name, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(2),
+            ValueDto.of(type, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(3),
+            ValueDto.of(status, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(4),
+            ValueDto.of(description, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(5),
+            ValueDto.of(subLevel, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(6),
+            ValueDto.of(units, STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(7),
+            ValueDto.of(usersCount, DOUBLE),
+            PROFILE_GROUP_SHEET_COLUMNS.get(8),
+            ValueDto.of(parseDateToFormat(createdAt), STRING),
+            PROFILE_GROUP_SHEET_COLUMNS.get(9),
+            ValueDto.of(parseDateToFormat(lastModified), STRING)
         );
     }
 
-    static String join(String separator, Collection<String> collection){
-        if(collection == null){
+    static String join(String separator, Collection<String> collection) {
+        if (collection == null) {
             return "";
         }
         return String.join(separator, collection);
     }
 
-    private static String translateEnable(boolean enable){
+    private static String translateEnable(boolean enable) {
         return enable ? "actif" : "inactif";
     }
 
-    private String parseDateToFormat(String date){
-        if(Strings.isEmpty(date)){
+    private String parseDateToFormat(String date) {
+        if (Strings.isEmpty(date)) {
             return "";
         }
         var frDate = LocalDateTime.parse(date).plusHours(1);
         return frDate.format(FORMATTER);
     }
-
-
 }

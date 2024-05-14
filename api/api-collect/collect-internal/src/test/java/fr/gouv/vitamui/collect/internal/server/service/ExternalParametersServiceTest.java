@@ -52,22 +52,20 @@ public class ExternalParametersServiceTest {
 
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
+
     @MockBean(name = "exteralParametersInternalRestClient")
     private ExternalParametersInternalRestClient exteralParametersInternalRestClient;
 
     @MockBean(name = "securityService")
     private InternalSecurityService securityService;
 
-
     @InjectMocks
     private ExternalParametersService externalParametersService;
-
 
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        externalParametersService =
-            new ExternalParametersService(exteralParametersInternalRestClient, securityService);
+        externalParametersService = new ExternalParametersService(exteralParametersInternalRestClient, securityService);
     }
 
     @Test
@@ -77,8 +75,9 @@ public class ExternalParametersServiceTest {
         parameterDto.setValue("ANY_VALUE");
         parameterDto.setKey("ANY_PARAM");
         myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
-            .thenReturn(myExternalParameter);
+        Mockito.when(
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+        ).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             externalParametersService.retrieveAccessContractFromExternalParam();
@@ -91,8 +90,9 @@ public class ExternalParametersServiceTest {
     void shouldThrowAnotherIllegalArgumentExceptionWhenNoAccessContract() {
         ExternalParametersDto myExternalParameter = new ExternalParametersDto();
         myExternalParameter.setParameters(Lists.emptyList());
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
-            .thenReturn(myExternalParameter);
+        Mockito.when(
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+        ).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             externalParametersService.retrieveAccessContractFromExternalParam();
@@ -108,8 +108,9 @@ public class ExternalParametersServiceTest {
         parameterDto.setValue(SOME_ACCESS_CONTRACT);
         parameterDto.setKey(ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME);
         myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
-            .thenReturn(myExternalParameter);
+        Mockito.when(
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+        ).thenReturn(myExternalParameter);
 
         String accessContractFound = externalParametersService.retrieveAccessContractFromExternalParam();
         Assertions.assertEquals(SOME_ACCESS_CONTRACT, accessContractFound);
@@ -123,10 +124,10 @@ public class ExternalParametersServiceTest {
         parameterDto.setKey(ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME);
         myExternalParameter.setParameters(List.of(parameterDto));
 
-        Mockito.when(exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext()))
-            .thenReturn(myExternalParameter);
-        Mockito.when(securityService.getTenantIdentifier())
-            .thenReturn(SOME_TENANT);
+        Mockito.when(
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+        ).thenReturn(myExternalParameter);
+        Mockito.when(securityService.getTenantIdentifier()).thenReturn(SOME_TENANT);
         VitamContext someContext = new VitamContext(SOME_TENANT).setAccessContract(SOME_ACCESS_CONTRACT);
         VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         Assertions.assertEquals(someContext, context);

@@ -74,23 +74,31 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Archive Unit Object")
-    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID, produces = APPLICATION_OCTET_STREAM_VALUE, params = {
-        "objectId", "tenantId"})
+    @GetMapping(
+        value = DOWNLOAD_ARCHIVE_UNIT + PATH_ID,
+        produces = APPLICATION_OCTET_STREAM_VALUE,
+        params = { "objectId", "tenantId" }
+    )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(
         final @PathVariable("id") String unitId,
         @RequestParam(name = "objectId") String objectId,
         @RequestParam(name = "tenantId") Integer tenantId,
         @RequestParam(name = "qualifier", required = false) String qualifier,
-        @RequestParam(name = "version", required = false) Integer version) throws PreconditionFailedException,
-        InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier, and The tenantId are mandatory parameters: ",
-            unitId, objectId, String.valueOf(tenantId));
+        @RequestParam(name = "version", required = false) Integer version
+    ) throws PreconditionFailedException, InvalidParseOperationException {
+        ParameterChecker.checkParameter(
+            "The Identifier, and The tenantId are mandatory parameters: ",
+            unitId,
+            objectId,
+            String.valueOf(tenantId)
+        );
         SanityChecker.checkSecureParameter(unitId, objectId);
         LOGGER.debug("Download the Archive Unit Object with Unit ID {}", unitId);
         final ObjectData objectData = new ObjectData();
-        ResponseEntity<Resource> responseResource = projectObjectGroupService.downloadObjectFromUnit(unitId, objectId,
-            qualifier, version, objectData, buildUiHttpContext(tenantId)).block();
+        ResponseEntity<Resource> responseResource = projectObjectGroupService
+            .downloadObjectFromUnit(unitId, objectId, qualifier, version, objectData, buildUiHttpContext(tenantId))
+            .block();
         List<String> headersValuesContentDispo = responseResource.getHeaders().get(CONTENT_DISPOSITION);
         LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
         String fileNameHeader = isNotEmpty(objectData.getFilename())
@@ -105,5 +113,4 @@ public class ProjectObjectGroupController extends AbstractUiRestController {
             .header(CONTENT_DISPOSITION, fileNameHeader)
             .body(responseResource.getBody());
     }
-
 }

@@ -61,7 +61,9 @@ import java.util.List;
 
 public class ExternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalApiAuthenticationProvider.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalApiAuthenticationProvider.class
+    );
 
     private final ExternalAuthentificationService extAuthService;
 
@@ -82,7 +84,6 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     @Override
     public Authentication authenticate(final Authentication authentication) {
         if (supports(authentication.getClass())) {
-
             final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
             final ExternalHttpContext httpContext = (ExternalHttpContext) token.getPrincipal();
             final X509Certificate certificate = (X509Certificate) token.getCredentials();
@@ -96,12 +97,14 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
                     final Integer tenantIdentifier = httpContext.getTenantIdentifier();
                     final List<String> intersectionRoles = extAuthService.getRoles(context, userDto, tenantIdentifier);
 
-                    final String applicationId = extAuthService.buildApplicationId(userDto, httpContext, context) ;
-                    final ExternalHttpContext newHttpContext = ExternalHttpContext.buildFromExternalHttpContext(httpContext, applicationId);
+                    final String applicationId = extAuthService.buildApplicationId(userDto, httpContext, context);
+                    final ExternalHttpContext newHttpContext = ExternalHttpContext.buildFromExternalHttpContext(
+                        httpContext,
+                        applicationId
+                    );
 
                     return new ExternalAuthentication(userDto, newHttpContext, certificate, intersectionRoles);
-                }
-                catch (final InvalidAuthenticationException vitamuiException) {
+                } catch (final InvalidAuthenticationException vitamuiException) {
                     throw new BadCredentialsException(vitamuiException.getMessage());
                 }
             }
@@ -132,5 +135,4 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     public boolean supportsCrossTenants(ExternalHttpContext context) {
         return false;
     }
-
 }

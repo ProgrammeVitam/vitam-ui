@@ -82,14 +82,12 @@ class ManagementContractConverterTest {
         managementContractDto.setPersistentIdentifierPolicyList(List.of(persistentIdentifierPolicyMgtContractDto));
 
         // When
-        ManagementContractModelDto managementContractModelDto = managementContractConverter
-            .convertVitamUiManagementContractToVitamMgt(managementContractDto);
+        ManagementContractModelDto managementContractModelDto =
+            managementContractConverter.convertVitamUiManagementContractToVitamMgt(managementContractDto);
 
         // Then
-        assertThat(managementContractModelDto).isNotNull()
-            .isInstanceOf(ManagementContractModelDto.class);
-        assertThat(managementContractDto).usingRecursiveComparison()
-            .isEqualTo(managementContractModelDto);
+        assertThat(managementContractModelDto).isNotNull().isInstanceOf(ManagementContractModelDto.class);
+        assertThat(managementContractDto).usingRecursiveComparison().isEqualTo(managementContractModelDto);
 
         // Assurez-vous que la politique d'identifiant persistant est correctement mappée dans la liste
         List<PersistentIdentifierPolicyDto> persistentIdentifierPolicyList =
@@ -97,11 +95,11 @@ class ManagementContractConverterTest {
         assertThat(persistentIdentifierPolicyList).isNotNull().hasSize(1);
 
         PersistentIdentifierPolicyDto persistentIdentifierPolicyDto = persistentIdentifierPolicyList.get(0);
-        assertThat(persistentIdentifierPolicyDto).isNotNull()
+        assertThat(persistentIdentifierPolicyDto)
+            .isNotNull()
             .usingRecursiveComparison()
             .isEqualTo(persistentIdentifierPolicyMgtContractDto);
     }
-
 
     @Test
     void testConvertVitamMgtContractToVitamUiMgtContract() {
@@ -113,12 +111,12 @@ class ManagementContractConverterTest {
         managementContractModelDto.setName("ContractName");
 
         // When
-        ManagementContractDto managementContractDto = managementContractConverter
-            .convertVitamMgtContractToVitamUiDto(managementContractModelDto);
+        ManagementContractDto managementContractDto = managementContractConverter.convertVitamMgtContractToVitamUiDto(
+            managementContractModelDto
+        );
 
         // Then
-        assertThat(managementContractDto).isNotNull()
-            .isInstanceOf(ManagementContractDto.class);
+        assertThat(managementContractDto).isNotNull().isInstanceOf(ManagementContractDto.class);
         /* assertThat(managementContractModelDto).isEqualToComparingFieldByField(managementContractDto);*/
 
     }

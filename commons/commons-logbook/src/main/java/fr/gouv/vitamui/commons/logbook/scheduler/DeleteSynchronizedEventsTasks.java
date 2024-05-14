@@ -36,15 +36,6 @@
  */
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import java.time.OffsetDateTime;
-import java.util.Collection;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.scheduling.annotation.Scheduled;
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
@@ -52,6 +43,13 @@ import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.scheduling.annotation.Scheduled;
+
+import javax.annotation.PostConstruct;
+import java.time.OffsetDateTime;
+import java.util.Collection;
 
 /**
  *
@@ -83,8 +81,10 @@ public class DeleteSynchronizedEventsTasks {
     @PostConstruct
     public void init() {
         LOGGER.debug(
-                "deleteSynchronizedEventsTasks is running with cron expression {}, deleting events synchronized from {} days ",
-                cronExpression, ttlInDays);
+            "deleteSynchronizedEventsTasks is running with cron expression {}, deleting events synchronized from {} days ",
+            cronExpression,
+            ttlInDays
+        );
     }
 
     @Scheduled(cron = "${logbook.scheduling.deleteSynchronizedEventsTasks.cronExpression}")
@@ -96,13 +96,13 @@ public class DeleteSynchronizedEventsTasks {
             eventRepository.deleteById(e.getId());
         });
         LOGGER.debug("deleteSynchronizedEventsTasks is done");
-
     }
 
     protected Collection<Event> getEventsElligibleToBeDeleted() {
         OffsetDateTime now = OffsetDateTime.now();
         now = now.minusDays(ttlInDays);
-        return eventRepository
-                .findAll(Criteria.where("status").is(EventStatus.SUCCESS).and("synchronizedVitamDate").lte(now));
+        return eventRepository.findAll(
+            Criteria.where("status").is(EventStatus.SUCCESS).and("synchronizedVitamDate").lte(now)
+        );
     }
 }

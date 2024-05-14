@@ -70,11 +70,14 @@ public class ProjectConverter {
     }
 
     public static List<CollectMetadataUnitUpDto> toVitamuiCollectMetadataUnitUpDtos(
-        List<MetadataUnitUp> metadataUnitUps) {
+        List<MetadataUnitUp> metadataUnitUps
+    ) {
         if (Objects.isNull(metadataUnitUps)) {
             return null;
         }
-        return metadataUnitUps.stream().map(ProjectConverter::toVitamuiCollectMetadataUnitUpDto)
+        return metadataUnitUps
+            .stream()
+            .map(ProjectConverter::toVitamuiCollectMetadataUnitUpDto)
             .collect(Collectors.toList());
     }
 
@@ -109,11 +112,16 @@ public class ProjectConverter {
         return externalDto;
     }
 
-    public static List<MetadataUnitUp> toVitamMetadataUnitUps(List<CollectMetadataUnitUpDto> collectMetadataUnitUpDtos) {
+    public static List<MetadataUnitUp> toVitamMetadataUnitUps(
+        List<CollectMetadataUnitUpDto> collectMetadataUnitUpDtos
+    ) {
         if (Objects.isNull(collectMetadataUnitUpDtos)) {
             return null;
         }
-        return collectMetadataUnitUpDtos.stream().map(ProjectConverter::toVitamMetadataUnitUp).collect(Collectors.toList());
+        return collectMetadataUnitUpDtos
+            .stream()
+            .map(ProjectConverter::toVitamMetadataUnitUp)
+            .collect(Collectors.toList());
     }
 
     public static MetadataUnitUp toVitamMetadataUnitUp(CollectMetadataUnitUpDto collectMetadataUnitUpDto) {

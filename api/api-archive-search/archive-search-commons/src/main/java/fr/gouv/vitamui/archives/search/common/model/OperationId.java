@@ -35,7 +35,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class OperationId {
-    @NonNull private String value;
+
+    @NonNull
+    private String value;
 
     @JsonValue
     public String getValue() {

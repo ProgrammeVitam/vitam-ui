@@ -55,7 +55,9 @@ public enum Cardinality {
     }
 
     public static Cardinality of(final String cardinality) {
-        return Arrays.stream(Cardinality.values()).filter(c -> Objects.equals(c.getValue(), cardinality)).findFirst()
+        return Arrays.stream(Cardinality.values())
+            .filter(c -> Objects.equals(c.getValue(), cardinality))
+            .findFirst()
             .orElseThrow();
     }
 }

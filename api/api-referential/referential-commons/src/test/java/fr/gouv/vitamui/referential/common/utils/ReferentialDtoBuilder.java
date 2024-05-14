@@ -62,10 +62,15 @@ public class ReferentialDtoBuilder {
         return contextDto;
     }
 
-    public static RuleDto buildRuleDto(final String id, final String ruleId,
-                                       final String ruleType, final String ruleValue,
-                                       final String ruleDescription, final String ruleDuration,
-                                       final String ruleMeasurement) {
+    public static RuleDto buildRuleDto(
+        final String id,
+        final String ruleId,
+        final String ruleType,
+        final String ruleValue,
+        final String ruleDescription,
+        final String ruleDuration,
+        final String ruleMeasurement
+    ) {
         final RuleDto ruleDto = new RuleDto();
         ruleDto.setId(id);
         ruleDto.setRuleId(ruleId);
@@ -145,5 +150,4 @@ public class ReferentialDtoBuilder {
         ctxt.setPermissions(permissionsDto);
         return ctxt;
     }
-
 }

@@ -130,8 +130,9 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    public static final Pattern EMAIL_VALID_REGEXP =
-        Pattern.compile("^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$");
+    public static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(
+        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$"
+    );
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -157,9 +158,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
     private final String x509DefaultDomain;
 
     @Override
-    public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal,
-        final Optional<AuthenticationHandler> handler) {
-
+    public Principal resolve(
+        final Credential credential,
+        final Optional<Principal> optPrincipal,
+        final Optional<AuthenticationHandler> handler
+    ) {
         // OAuth 2 authorization code flow (client credentials authentication)
         if (optPrincipal.isEmpty()) {
             return NullPrincipal.getInstance();
@@ -183,8 +186,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
             try {
                 val certificate = ((X509CertificateCredential) credential).getCertificate();
                 emailFromCertificate = CertificateParser.extract(certificate, x509EmailAttributeMapping);
-                technicalUserId =
-                    Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
+                technicalUserId = Optional.ofNullable(
+                    CertificateParser.extract(certificate, x509IdentifierAttributeMapping)
+                );
             } catch (final CertificateParsingException e) {
                 throw new RuntimeException(e.getMessage());
             }
@@ -196,8 +200,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String userDomain;
 
             // If the certificate does not contain the user mail, then we use the default domain configured
-            if (StringUtils.isBlank(emailFromCertificate) ||
-                !EMAIL_VALID_REGEXP.matcher(emailFromCertificate).matches()) {
+            if (
+                StringUtils.isBlank(emailFromCertificate) || !EMAIL_VALID_REGEXP.matcher(emailFromCertificate).matches()
+            ) {
                 userDomain = String.format("@%s", x509DefaultDomain);
                 loginEmail = null;
             } else {
@@ -206,28 +211,34 @@ public class UserPrincipalResolver implements PrincipalResolver {
             }
 
             // Certificate authn mode does not support multi-domain. Ensure a single provider matches user email.
-            val availableProvidersForUserDomain = identityProviderHelper
-                .findAllByUserIdentifier(providersService.getProviders(), userDomain);
+            val availableProvidersForUserDomain = identityProviderHelper.findAllByUserIdentifier(
+                providersService.getProviders(),
+                userDomain
+            );
 
-            var certProviders = availableProvidersForUserDomain.stream()
+            var certProviders = availableProvidersForUserDomain
+                .stream()
                 .filter(p -> p.getProtocoleType().equals(PROVIDER_PROTOCOL_TYPE_CERTIFICAT))
                 .collect(Collectors.toList());
 
             if (certProviders.isEmpty()) {
-                LOGGER.warn("Cert authentication failed - No valid certificate identity provider found for: {}",
-                    userDomain);
+                LOGGER.warn(
+                    "Cert authentication failed - No valid certificate identity provider found for: {}",
+                    userDomain
+                );
                 return NullPrincipal.getInstance();
             }
             if (certProviders.size() > 1) {
-                LOGGER.warn("Cert authentication failed - Too many certificate identity providers found for: {}",
-                    userDomain);
+                LOGGER.warn(
+                    "Cert authentication failed - Too many certificate identity providers found for: {}",
+                    userDomain
+                );
                 return NullPrincipal.getInstance();
             }
 
             IdentityProviderDto providerDto = certProviders.get(0);
             userProviderId = providerDto.getId();
             loginCustomerId = providerDto.getCustomerId();
-
         } else if (credential instanceof SurrogateUsernamePasswordCredential) {
             userProviderId = null;
             technicalUserId = Optional.empty();
@@ -237,7 +248,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
             loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0);
             superUserEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0);
             superUserCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
-
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
             userProviderId = null;
@@ -248,17 +258,16 @@ public class UserPrincipalResolver implements PrincipalResolver {
             loginCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0);
             superUserEmail = null;
             superUserCustomerId = null;
-
         } else {
-
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             val webContext = new JEEContext(request, response);
             val clientCredential = (ClientCredential) credential;
             val providerName = clientCredential.getClientName();
-            val provider =
-                identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
+            val provider = identityProviderHelper
+                .findByTechnicalName(providersService.getProviders(), providerName)
+                .get();
             val mailAttribute = provider.getMailAttribute();
             String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
@@ -266,12 +275,19 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 if (CollectionUtils.isEmpty(mails) || CommonHelper.isBlank((String) mails.get(0))) {
                     LOGGER.error(
                         "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
-                        providerName, mailAttribute);
+                        providerName,
+                        mailAttribute
+                    );
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'",
-                        providerName, mailAttribute, principalId, mail);
+                    LOGGER.info(
+                        "Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'",
+                        providerName,
+                        mailAttribute,
+                        principalId,
+                        mail
+                    );
                     email = mail;
                 }
             }
@@ -280,37 +296,48 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
-                if (CollectionUtils.isEmpty(identifiers) ||
-                    CommonHelper.isBlank((String) identifiers.get(0))) {
+                if (CollectionUtils.isEmpty(identifiers) || CommonHelper.isBlank((String) identifiers.get(0))) {
                     LOGGER.error(
                         "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
-                        providerName, identifierAttribute);
+                        providerName,
+                        identifierAttribute
+                    );
                     return NullPrincipal.getInstance();
                 } else {
                     val identifierAttr = (String) identifiers.get(0);
                     LOGGER.info(
                         "Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'",
-                        providerName, identifierAttribute, principalId, identifierAttr);
+                        providerName,
+                        identifierAttribute,
+                        principalId,
+                        identifierAttr
+                    );
                     identifier = identifierAttr;
                 }
             }
 
-            String surrogateEmailFromSession =
-                (String) sessionStore.get(webContext, Constants.FLOW_SURROGATE_EMAIL).orElse(null);
-            String surrogateCustomerIdFromSession =
-                (String) sessionStore.get(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID).orElse(null);
-            String loginEmailFromSession =
-                (String) sessionStore.get(webContext, Constants.FLOW_LOGIN_EMAIL).orElseThrow();
-            String loginCustomerIdFromSession =
-                (String) sessionStore.get(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID).orElseThrow();
+            String surrogateEmailFromSession = (String) sessionStore
+                .get(webContext, Constants.FLOW_SURROGATE_EMAIL)
+                .orElse(null);
+            String surrogateCustomerIdFromSession = (String) sessionStore
+                .get(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID)
+                .orElse(null);
+            String loginEmailFromSession = (String) sessionStore
+                .get(webContext, Constants.FLOW_LOGIN_EMAIL)
+                .orElseThrow();
+            String loginCustomerIdFromSession = (String) sessionStore
+                .get(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID)
+                .orElseThrow();
 
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
 
-            Assert.isTrue(email.equals(loginEmailFromSession),
-                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email));
+            Assert.isTrue(
+                email.equals(loginEmailFromSession),
+                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
+            );
 
             if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
                 userProviderId = null;
@@ -321,7 +348,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 loginCustomerId = surrogateCustomerIdFromSession;
                 superUserEmail = loginEmailFromSession;
                 superUserCustomerId = loginCustomerIdFromSession;
-
             } else {
                 userProviderId = provider.getId();
                 technicalUserId = Optional.of(identifier);
@@ -334,8 +360,15 @@ public class UserPrincipalResolver implements PrincipalResolver {
             }
         }
 
-        LOGGER.debug("Resolving loginEmail: {} | loginCustomerId: {} | superUserEmail: {} | superUserCustomerId: {} |" +
-            " subrogationCall: {}", loginEmail, loginCustomerId, superUserEmail, superUserCustomerId, subrogationCall);
+        LOGGER.debug(
+            "Resolving loginEmail: {} | loginCustomerId: {} | superUserEmail: {} | superUserCustomerId: {} |" +
+            " subrogationCall: {}",
+            loginEmail,
+            loginCustomerId,
+            superUserEmail,
+            superUserCustomerId,
+            subrogationCall
+        );
 
         String embedded = AUTH_TOKEN_PARAMETER;
         if (subrogationCall) {
@@ -345,8 +378,14 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        final UserDto user = casExternalRestClient.getUser(utils.buildContext(loginEmail),
-            loginEmail, loginCustomerId, userProviderId, technicalUserId, Optional.of(embedded));
+        final UserDto user = casExternalRestClient.getUser(
+            utils.buildContext(loginEmail),
+            loginEmail,
+            loginCustomerId,
+            userProviderId,
+            technicalUserId,
+            Optional.of(embedded)
+        );
 
         if (user == null) {
             LOGGER.debug("No user resolved for: {}", loginEmail);
@@ -371,8 +410,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(OTP_ATTRIBUTE, Collections.singletonList(otp));
         val otpUsername = subrogationCall ? superUserEmail : loginEmail;
         val otpCustomerId = subrogationCall ? superUserCustomerId : loginCustomerId;
-        val computedOtp = otp && identityProviderHelper
-            .identifierMatchProviderPattern(providersService.getProviders(), otpUsername, otpCustomerId);
+        val computedOtp =
+            otp &&
+            identityProviderHelper.identifierMatchProviderPattern(
+                providersService.getProviders(),
+                otpUsername,
+                otpCustomerId
+            );
         attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
         attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
         attributes.put(USER_INFO_ID, Collections.singletonList(user.getUserInfoId()));
@@ -393,8 +437,14 @@ public class UserPrincipalResolver implements PrincipalResolver {
         if (subrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
             attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
-            superUser = casExternalRestClient.getUser(utils.buildContext(superUserEmail), superUserEmail,
-                superUserCustomerId, null, Optional.empty(), Optional.empty());
+            superUser = casExternalRestClient.getUser(
+                utils.buildContext(superUserEmail),
+                superUserEmail,
+                superUserCustomerId,
+                null,
+                Optional.empty(),
+                Optional.empty()
+            );
             if (superUser == null) {
                 LOGGER.debug("No super user found for: {}", superUserEmail);
                 return NullPrincipal.getInstance();
@@ -404,15 +454,21 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         if (user instanceof AuthUserDto) {
             final AuthUserDto authUser = (AuthUserDto) user;
-            attributes.put(PROFILE_GROUP_ATTRIBUTE,
-                Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup())));
+            attributes.put(
+                PROFILE_GROUP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup()))
+            );
             attributes.put(CUSTOMER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(authUser.getCustomerIdentifier()));
-            attributes.put(BASIC_CUSTOMER_ATTRIBUTE,
-                Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer())));
+            attributes.put(
+                BASIC_CUSTOMER_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer()))
+            );
             attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
-            attributes.put(TENANTS_BY_APP_ATTRIBUTE,
-                Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
+            attributes.put(
+                TENANTS_BY_APP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp()))
+            );
             attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
             attributes.put(CENTER_CODES, Collections.singletonList(user.getCenterCodes()));
             final Set<String> roles = new HashSet<>();
@@ -431,8 +487,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     @Override
     public boolean supports(final Credential credential) {
-        return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
-            || credential instanceof X509CertificateCredential;
+        return (
+            credential instanceof UsernamePasswordCredential ||
+            credential instanceof ClientCredential ||
+            credential instanceof X509CertificateCredential
+        );
     }
 
     @Override

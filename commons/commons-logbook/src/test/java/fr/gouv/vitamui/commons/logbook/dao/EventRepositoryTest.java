@@ -1,9 +1,12 @@
 package fr.gouv.vitamui.commons.logbook.dao;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.OffsetDateTime;
-
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
+import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
+import fr.gouv.vitamui.commons.logbook.domain.Event;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +16,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.common.model.StatusCode;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
-import fr.gouv.vitamui.commons.logbook.common.EventType;
-import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
-import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import java.time.OffsetDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class })

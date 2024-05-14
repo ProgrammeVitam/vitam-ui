@@ -40,5 +40,5 @@ public enum QueryOperator {
     AND,
     NOR,
     OR,
-    HAVING;
+    HAVING,
 }

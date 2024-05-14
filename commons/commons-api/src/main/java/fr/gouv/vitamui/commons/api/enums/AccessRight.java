@@ -37,9 +37,8 @@
 package fr.gouv.vitamui.commons.api.enums;
 
 public enum AccessRight {
-
     NONE,
     METADATA_PREVIEW,
     CONSULTATION,
-    DOWNLOAD;
+    DOWNLOAD,
 }

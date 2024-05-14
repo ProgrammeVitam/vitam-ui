@@ -74,5 +74,4 @@ public class UserInfoConverter implements Converter<UserInfoDto, UserInfo> {
         VitamUIUtils.copyProperties(userInfo, userDto);
         return userDto;
     }
-
 }

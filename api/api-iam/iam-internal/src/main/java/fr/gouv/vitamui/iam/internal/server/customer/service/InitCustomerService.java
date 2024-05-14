@@ -155,29 +155,40 @@ public class InitCustomerService {
     @Autowired
     private ExternalParametersInternalService externalParametersInternalService;
 
-
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitCustomerService.class);
 
-    @Transactional()
+    @Transactional
     public void initCustomer(final String tenantName, final CustomerDto customerDto, final List<OwnerDto> owners) {
         final List<OwnerDto> ownerDtos = owners;
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
         createIdentityProvider(customerDto.getId(), customerDto.getDefaultEmailDomain());
-        LOGGER.debug("Initializing External Parameter with Customer Identifier {} and tenant Name {}",
-            customerDto.getIdentifier(), tenantName);
-        ExternalParametersDto fullAccessContract =
-            initFullAccessContractExternalParameter(customerDto.getIdentifier(), tenantName);
+        LOGGER.debug(
+            "Initializing External Parameter with Customer Identifier {} and tenant Name {}",
+            customerDto.getIdentifier(),
+            tenantName
+        );
+        ExternalParametersDto fullAccessContract = initFullAccessContractExternalParameter(
+            customerDto.getIdentifier(),
+            tenantName
+        );
 
-        final Tenant proofTenantDto =
-            createProofTenant(tenantName, createdOwnerDtos.get(0).getId(), customerDto.getId(), fullAccessContract);
+        final Tenant proofTenantDto = createProofTenant(
+            tenantName,
+            createdOwnerDtos.get(0).getId(),
+            customerDto.getId(),
+            fullAccessContract
+        );
         final List<Profile> createdAdminProfiles = createAdminProfiles(customerDto, proofTenantDto);
-        Profile fullAccessContractProfile =
-            createExternalParameterProfileForDefaultAccessContract(customerDto.getId(), proofTenantDto.getIdentifier(),
-                fullAccessContract.getId());
+        Profile fullAccessContractProfile = createExternalParameterProfileForDefaultAccessContract(
+            customerDto.getId(),
+            proofTenantDto.getIdentifier(),
+            fullAccessContract.getId()
+        );
         createdAdminProfiles.add(fullAccessContractProfile);
-        fullAccessContract.setName(ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX
-            + proofTenantDto.getIdentifier());
+        fullAccessContract.setName(
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + proofTenantDto.getIdentifier()
+        );
         LOGGER.debug("External Parameter added into DataBase {}", fullAccessContract);
         externalParametersInternalService.update(fullAccessContract);
 
@@ -186,24 +197,25 @@ public class InitCustomerService {
 
         List<Profile> customProfiles = createCustomProfiles(customerDto, proofTenantDto);
 
-        List<Group> customGroups =
-            createCustomGroups(customerDto, proofTenantDto, customProfiles);
+        List<Group> customGroups = createCustomGroups(customerDto, proofTenantDto, customProfiles);
         createCustomUsers(customerDto, customGroups);
-
     }
 
-    private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier,
-        String tenantName) {
+    private ExternalParametersDto initFullAccessContractExternalParameter(
+        String customerIdentifier,
+        String tenantName
+    ) {
         ExternalParametersDto fullAccessContract = new ExternalParametersDto();
         fullAccessContract.setIdentifier(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + customerIdentifier + "_" +
-                tenantName);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
+            customerIdentifier +
+            "_" +
+            tenantName
+        );
         fullAccessContract.setName(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX +
-                customerIdentifier + "_" +
-                tenantName);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX + customerIdentifier + "_" + tenantName
+        );
         return fullAccessContract;
-
     }
 
     private OwnerDto saveOwner(final OwnerDto dto) {
@@ -271,8 +283,12 @@ public class InitCustomerService {
         return saveIdentityProvider(idp);
     }
 
-    private Tenant createProofTenant(final String tenantName, final String ownerId, final String customerId,
-        final ExternalParametersDto fullAccessContractDto) {
+    private Tenant createProofTenant(
+        final String tenantName,
+        final String ownerId,
+        final String customerId,
+        final ExternalParametersDto fullAccessContractDto
+    ) {
         final Tenant tenant = new Tenant();
         tenant.setCustomerId(customerId);
         tenant.setName(tenantName);
@@ -280,8 +296,12 @@ public class InitCustomerService {
         tenant.setOwnerId(ownerId);
         tenant.setEnabled(true);
         tenant.setReadonly(false);
-        tenant.setIdentifier(internalTenantService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER,
-            CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE));
+        tenant.setIdentifier(
+            internalTenantService.getNextSequenceId(
+                SequencesConstants.TENANT_IDENTIFIER,
+                CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
+            )
+        );
         Tenant createdTenant = initVitamTenantService.init(tenant, fullAccessContractDto);
         externalParametersInternalService.create(fullAccessContractDto);
         return saveTenant(createdTenant);
@@ -290,51 +310,80 @@ public class InitCustomerService {
     private List<Profile> createCustomProfiles(CustomerDto customerDto, Tenant proofTenant) {
         List<Profile> profiles = new ArrayList<>();
         if (customerInitConfig.getProfiles() != null) {
-            customerInitConfig.getProfiles().forEach(p -> {
-                Profile profile = EntityFactory
-                    .buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
+            customerInitConfig
+                .getProfiles()
+                .forEach(p -> {
+                    Profile profile = EntityFactory.buildProfile(
+                        p.getName() + " " + proofTenant.getIdentifier(),
                         generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                        p.getDescription(), true, p.getLevel(), proofTenant.getIdentifier(), p.getAppName(),
-                        p.getRoles(), customerDto.getId());
-                profiles.add(saveProfile(profile));
-            });
+                        p.getDescription(),
+                        true,
+                        p.getLevel(),
+                        proofTenant.getIdentifier(),
+                        p.getAppName(),
+                        p.getRoles(),
+                        customerDto.getId()
+                    );
+                    profiles.add(saveProfile(profile));
+                });
         }
         return profiles;
     }
 
-    private Profile createExternalParameterProfileForDefaultAccessContract(String customerId, Integer tenantIdentifier,
-        String externalParameterId) {
+    private Profile createExternalParameterProfileForDefaultAccessContract(
+        String customerId,
+        Integer tenantIdentifier,
+        String externalParameterId
+    ) {
         //Adding nex profile for default access contract defined in External Parameter application
-        Profile defaultAccessContractProfile = EntityFactory
-            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
-                    tenantIdentifier,
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
-                    tenantIdentifier,
-                true,
-                "",
-                tenantIdentifier,
-                Application.EXTERNAL_PARAMS.name(),
-                List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
-                customerId, externalParameterId);
+        Profile defaultAccessContractProfile = EntityFactory.buildProfile(
+            ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " + tenantIdentifier,
+            generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+            ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " + tenantIdentifier,
+            true,
+            "",
+            tenantIdentifier,
+            Application.EXTERNAL_PARAMS.name(),
+            List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
+            customerId,
+            externalParameterId
+        );
         return saveProfile(defaultAccessContractProfile);
     }
 
-    private List<Group> createCustomGroups(CustomerDto customerDto, Tenant proofTenant,
-        List<Profile> profilesAvailable) {
+    private List<Group> createCustomGroups(
+        CustomerDto customerDto,
+        Tenant proofTenant,
+        List<Profile> profilesAvailable
+    ) {
         List<Group> groups = new ArrayList<>();
         if (customerInitConfig.getProfilesGroups() != null) {
-            customerInitConfig.getProfilesGroups().forEach(g -> {
-                Group group = EntityFactory.buildGroup(g.getName(),
-                    generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
-                    g.getDescription(),
-                    true,
-                    g.getLevel(), profilesAvailable.stream().filter(p -> g.getProfiles()
-                            .contains(p.getName().substring(0, p.getName().indexOf(" " + proofTenant.getIdentifier()))))
-                        .collect(Collectors.toList()),
-                    customerDto.getId());
-                groups.add(saveGroup(group));
-            });
+            customerInitConfig
+                .getProfilesGroups()
+                .forEach(g -> {
+                    Group group = EntityFactory.buildGroup(
+                        g.getName(),
+                        generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+                        g.getDescription(),
+                        true,
+                        g.getLevel(),
+                        profilesAvailable
+                            .stream()
+                            .filter(
+                                p ->
+                                    g
+                                        .getProfiles()
+                                        .contains(
+                                            p
+                                                .getName()
+                                                .substring(0, p.getName().indexOf(" " + proofTenant.getIdentifier()))
+                                        )
+                            )
+                            .collect(Collectors.toList()),
+                        customerDto.getId()
+                    );
+                    groups.add(saveGroup(group));
+                });
         }
         return groups;
     }
@@ -343,23 +392,29 @@ public class InitCustomerService {
         List<UserDto> users = new ArrayList<>();
 
         if (customerInitConfig.getUsers() != null) {
-            Map<String, Group> groupsByName =
-                groupsAvailable.stream().collect(Collectors.toMap(Group::getName, Function.identity()));
-            customerInitConfig.getUsers().forEach(u -> {
-                UserDto userDto = new UserDto();
-                userDto.setOtp(false);
-                userDto.setType(UserTypeEnum.GENERIC);
-                userDto.setSubrogeable(true);
-                userDto.setLastname(u.getLastName());
-                userDto.setFirstname(u.getFirstName());
-                userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
-                userDto.setGroupId(groupsByName.get(u.getProfilesGroupName()).getId());
-                userDto.setLevel(u.getLevel());
-                userDto.setCustomerId(customerDto.getId());
-                userDto.setEmail(u.getEmailPrefix() + CommonConstants.EMAIL_SEPARATOR +
-                    customerDto.getDefaultEmailDomain().replace(".*", ""));
-                users.add(saveUser(userDto));
-            });
+            Map<String, Group> groupsByName = groupsAvailable
+                .stream()
+                .collect(Collectors.toMap(Group::getName, Function.identity()));
+            customerInitConfig
+                .getUsers()
+                .forEach(u -> {
+                    UserDto userDto = new UserDto();
+                    userDto.setOtp(false);
+                    userDto.setType(UserTypeEnum.GENERIC);
+                    userDto.setSubrogeable(true);
+                    userDto.setLastname(u.getLastName());
+                    userDto.setFirstname(u.getFirstName());
+                    userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
+                    userDto.setGroupId(groupsByName.get(u.getProfilesGroupName()).getId());
+                    userDto.setLevel(u.getLevel());
+                    userDto.setCustomerId(customerDto.getId());
+                    userDto.setEmail(
+                        u.getEmailPrefix() +
+                        CommonConstants.EMAIL_SEPARATOR +
+                        customerDto.getDefaultEmailDomain().replace(".*", "")
+                    );
+                    users.add(saveUser(userDto));
+                });
         }
         return users;
     }
@@ -367,71 +422,81 @@ public class InitCustomerService {
     private List<Profile> createAdminProfiles(final CustomerDto customerDto, final Tenant proofTenant) {
         final List<Profile> profiles = new ArrayList<>();
 
-        final Profile userProfile =
-            EntityFactory.buildProfile(ServicesData.SERVICE_USERS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                ApiIamInternalConstants.USERS_PROFILE_DESCRIPTION,
-                true,
-                ApiIamInternalConstants.ADMIN_LEVEL,
-                proofTenant.getIdentifier(),
-                CommonConstants.USERS_APPLICATIONS_NAME,
-                ApiIamInternalConstants.getUsersRoles(),
-                customerDto.getId());
+        final Profile userProfile = EntityFactory.buildProfile(
+            ServicesData.SERVICE_USERS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
+            generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+            ApiIamInternalConstants.USERS_PROFILE_DESCRIPTION,
+            true,
+            ApiIamInternalConstants.ADMIN_LEVEL,
+            proofTenant.getIdentifier(),
+            CommonConstants.USERS_APPLICATIONS_NAME,
+            ApiIamInternalConstants.getUsersRoles(),
+            customerDto.getId()
+        );
         profiles.add(saveProfile(userProfile));
 
-        final Profile groupProfile =
-            EntityFactory.buildProfile(ServicesData.SERVICE_GROUPS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                ApiIamInternalConstants.GROUPS_PROFILE_DESCRIPTION,
-                true,
-                ApiIamInternalConstants.ADMIN_LEVEL,
-                proofTenant.getIdentifier(),
-                CommonConstants.PROFILES_GROUPS_APPLICATIONS_NAME,
-                ApiIamInternalConstants.getGroupsRoles(),
-                customerDto.getId());
+        final Profile groupProfile = EntityFactory.buildProfile(
+            ServicesData.SERVICE_GROUPS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
+            generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+            ApiIamInternalConstants.GROUPS_PROFILE_DESCRIPTION,
+            true,
+            ApiIamInternalConstants.ADMIN_LEVEL,
+            proofTenant.getIdentifier(),
+            CommonConstants.PROFILES_GROUPS_APPLICATIONS_NAME,
+            ApiIamInternalConstants.getGroupsRoles(),
+            customerDto.getId()
+        );
         profiles.add(saveProfile(groupProfile));
 
-        final Profile profileUserProfileDto =
-            EntityFactory.buildProfile(ServicesData.SERVICE_PROFILES_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                ApiIamInternalConstants.PROFILE_DESCRIPTION,
-                true,
-                ApiIamInternalConstants.ADMIN_LEVEL,
-                proofTenant.getIdentifier(),
-                CommonConstants.PROFILES_APPLICATIONS_NAME,
-                ApiIamInternalConstants.getProfilesRoles(),
-                customerDto.getId());
+        final Profile profileUserProfileDto = EntityFactory.buildProfile(
+            ServicesData.SERVICE_PROFILES_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
+            generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+            ApiIamInternalConstants.PROFILE_DESCRIPTION,
+            true,
+            ApiIamInternalConstants.ADMIN_LEVEL,
+            proofTenant.getIdentifier(),
+            CommonConstants.PROFILES_APPLICATIONS_NAME,
+            ApiIamInternalConstants.getProfilesRoles(),
+            customerDto.getId()
+        );
         profiles.add(saveProfile(profileUserProfileDto));
 
-        final Profile accountProfile =
-            EntityFactory.buildProfile(ServicesData.SERVICE_ACCOUNTS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                ApiIamInternalConstants.ACCOUNT_PROFILE_DESCRIPTION,
-                true,
-                ApiIamInternalConstants.ADMIN_LEVEL,
-                proofTenant.getIdentifier(),
-                CommonConstants.ACCOUNTS_APPLICATIONS_NAME,
-                ApiIamInternalConstants.getAccountRoles(),
-                customerDto.getId());
+        final Profile accountProfile = EntityFactory.buildProfile(
+            ServicesData.SERVICE_ACCOUNTS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
+            generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+            ApiIamInternalConstants.ACCOUNT_PROFILE_DESCRIPTION,
+            true,
+            ApiIamInternalConstants.ADMIN_LEVEL,
+            proofTenant.getIdentifier(),
+            CommonConstants.ACCOUNTS_APPLICATIONS_NAME,
+            ApiIamInternalConstants.getAccountRoles(),
+            customerDto.getId()
+        );
         profiles.add(saveProfile(accountProfile));
 
         if (customerInitConfig.getAdminProfiles() != null) {
-            customerInitConfig.getAdminProfiles().forEach(p -> {
-                Profile profile = EntityFactory.buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
-                    generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                    p.getDescription(),
-                    true,
-                    p.getLevel(),
-                    proofTenant.getIdentifier(),
-                    p.getAppName(),
-                    p.getRoles(),
-                    customerDto.getId());
-                profiles.add(saveProfile(profile));
-            });
+            customerInitConfig
+                .getAdminProfiles()
+                .forEach(p -> {
+                    Profile profile = EntityFactory.buildProfile(
+                        p.getName() + " " + proofTenant.getIdentifier(),
+                        generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                        p.getDescription(),
+                        true,
+                        p.getLevel(),
+                        proofTenant.getIdentifier(),
+                        p.getAppName(),
+                        p.getRoles(),
+                        customerDto.getId()
+                    );
+                    profiles.add(saveProfile(profile));
+                });
         }
 
-        final List<Profile> tenantProfiles =
-            internalTenantService.getDefaultProfiles(proofTenant.getCustomerId(), proofTenant.getIdentifier());
+        final List<Profile> tenantProfiles = internalTenantService.getDefaultProfiles(
+            proofTenant.getCustomerId(),
+            proofTenant.getIdentifier()
+        );
 
         for (final Profile p : tenantProfiles) {
             profiles.add(saveProfile(p));
@@ -443,11 +508,26 @@ public class InitCustomerService {
     private Group createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
         // Cannot affect to a group 2 profiles on the same application name for the same tenant
         // So take the first found by applicationName/Tenant pair
-        final List<Profile> filteredProfiles = new ArrayList<>(profiles.stream().collect(
-            Collectors.groupingBy(profile -> Pair.of(profile.getApplicationName(), profile.getTenantIdentifier()),
-                Collectors.collectingAndThen(Collectors.toList(), values -> values.get(0)))).values());
-        final Group group = EntityFactory.buildGroup(getAdminClientRootName(customerDto), generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
-            ApiIamInternalConstants.ADMIN_CLIENT_ROOT, true, ApiIamInternalConstants.ADMIN_LEVEL, filteredProfiles, customerDto.getId());
+        final List<Profile> filteredProfiles = new ArrayList<>(
+            profiles
+                .stream()
+                .collect(
+                    Collectors.groupingBy(
+                        profile -> Pair.of(profile.getApplicationName(), profile.getTenantIdentifier()),
+                        Collectors.collectingAndThen(Collectors.toList(), values -> values.get(0))
+                    )
+                )
+                .values()
+        );
+        final Group group = EntityFactory.buildGroup(
+            getAdminClientRootName(customerDto),
+            generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+            ApiIamInternalConstants.ADMIN_CLIENT_ROOT,
+            true,
+            ApiIamInternalConstants.ADMIN_LEVEL,
+            filteredProfiles,
+            customerDto.getId()
+        );
         return saveGroup(group);
     }
 
@@ -463,8 +543,10 @@ public class InitCustomerService {
         userDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
         userDto.setCustomerId(customerDto.getId());
         userDto.setEmail(
-            ApiIamInternalConstants.ADMIN_CLIENT_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR +
-                customerDto.getDefaultEmailDomain().replace(".*", ""));
+            ApiIamInternalConstants.ADMIN_CLIENT_PREFIX_EMAIL +
+            CommonConstants.EMAIL_SEPARATOR +
+            customerDto.getDefaultEmailDomain().replace(".*", "")
+        );
         return saveUser(userDto);
     }
 
@@ -477,8 +559,11 @@ public class InitCustomerService {
     }
 
     protected String generateIdentifier(final String sequenceName) {
-        return String.valueOf(sequenceGeneratorService.getNextSequenceId(sequenceName,
-            CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE));
+        return String.valueOf(
+            sequenceGeneratorService.getNextSequenceId(
+                sequenceName,
+                CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
+            )
+        );
     }
-
 }

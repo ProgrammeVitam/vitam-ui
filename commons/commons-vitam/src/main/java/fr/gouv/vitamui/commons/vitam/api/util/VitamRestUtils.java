@@ -36,41 +36,38 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.external.client.DefaultClient;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.stream.StreamUtils;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidOperationException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-
-import fr.gouv.vitam.common.external.client.DefaultClient;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.stream.StreamUtils;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.InvalidOperationException;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class VitamRestUtils {
 
@@ -93,14 +90,13 @@ public class VitamRestUtils {
      * @param response
      * @throws IOException
      */
-    public static void writeFileResponse(final Response vitamObjectStreamResponse, final HttpServletResponse response) throws IOException {
-
+    public static void writeFileResponse(final Response vitamObjectStreamResponse, final HttpServletResponse response)
+        throws IOException {
         // Sets media type
         final Optional<MediaType> contentTypeOpt = getContentType(vitamObjectStreamResponse);
         if (contentTypeOpt.isPresent()) {
             response.setContentType(contentTypeOpt.get().toString());
-        }
-        else {
+        } else {
             LOGGER.debug("No content type in Vitam reponse");
         }
 
@@ -119,16 +115,20 @@ public class VitamRestUtils {
         final OutputStream os;
         try {
             os = response.getOutputStream();
-        }
-        catch (final IOException exception) {
-            throw new InternalServerException("An error occured while retrieving the output stream from Vitam: " + exception.getMessage(), exception);
+        } catch (final IOException exception) {
+            throw new InternalServerException(
+                "An error occured while retrieving the output stream from Vitam: " + exception.getMessage(),
+                exception
+            );
         }
         try {
             StreamUtils.copy(inputStream, os);
             DefaultClient.staticConsumeAnyEntityAndClose(vitamObjectStreamResponse);
-        }
-        catch (final IOException exception) {
-            throw new InternalServerException("An error occured while copying Vitam input stream to the output stream : " + exception.getMessage(), exception);
+        } catch (final IOException exception) {
+            throw new InternalServerException(
+                "An error occured while copying Vitam input stream to the output stream : " + exception.getMessage(),
+                exception
+            );
         }
     }
 
@@ -138,7 +138,6 @@ public class VitamRestUtils {
      * @return The content type if the information is set.
      */
     public static Optional<MediaType> getContentType(final Response vitamObjectStreamResponse) {
-
         if (vitamObjectStreamResponse != null && vitamObjectStreamResponse.getMediaType() != null) {
             final String vitamMediaType = vitamObjectStreamResponse.getMediaType().toString();
             if (StringUtils.isNotBlank(vitamMediaType)) {
@@ -149,8 +148,7 @@ public class VitamRestUtils {
                 }
                 try {
                     return Optional.ofNullable(MediaType.parseMediaType(updatedMediaType));
-                }
-                catch (final InvalidMediaTypeException e) {
+                } catch (final InvalidMediaTypeException e) {
                     LOGGER.warn("Invalid media type in Vitam response : " + e.getMessage(), e);
                 }
             }
@@ -164,9 +162,10 @@ public class VitamRestUtils {
      * @return The content disposition if the information is set.
      */
     public static Optional<String> getContentDisposition(final Response vitamObjectStreamResponse) {
-
         if (vitamObjectStreamResponse != null) {
-            final Object contentDisposition = vitamObjectStreamResponse.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION);
+            final Object contentDisposition = vitamObjectStreamResponse
+                .getHeaders()
+                .getFirst(HttpHeaders.CONTENT_DISPOSITION);
             if (contentDisposition instanceof String && StringUtils.isNotBlank((String) contentDisposition)) {
                 return Optional.of((String) contentDisposition);
             }
@@ -179,8 +178,7 @@ public class VitamRestUtils {
         final List<Integer> statuses;
         if (acceptedStatus == null || acceptedStatus.length == 0) {
             statuses = Arrays.asList(defaultAcceptedStatuses);
-        }
-        else {
+        } else {
             statuses = Arrays.asList(acceptedStatus);
         }
         return statuses.contains(status);
@@ -206,8 +204,7 @@ public class VitamRestUtils {
                 try {
                     final JsonNode jsonBody = mapper.readTree(body);
                     vitamMessage = jsonBody.get("message").asText();
-                }
-                catch (final IOException e) {
+                } catch (final IOException e) {
                     LOGGER.debug("Vitam response is not in a valid json format");
                 }
             }
@@ -231,25 +228,31 @@ public class VitamRestUtils {
         if (!isStatusAccepted(responseStatus, acceptedStatus)) {
             final JsonNode jsonResponse = response.toJsonNode();
             LOGGER.debug("Vitam error: body:\n{}", jsonResponse);
-            final String message = String.format("status: %d, message: %s", responseStatus, jsonResponse.get("message"));
-            final String description =  String.format("description: %s ",jsonResponse.get("description"));
+            final String message = String.format(
+                "status: %d, message: %s",
+                responseStatus,
+                jsonResponse.get("message")
+            );
+            final String description = String.format("description: %s ", jsonResponse.get("description"));
             throw getException(responseStatus, message, description);
         }
     }
 
-    private static VitamUIException getException(final int responseStatus, final String message, final String description) {
+    private static VitamUIException getException(
+        final int responseStatus,
+        final String message,
+        final String description
+    ) {
         if (responseStatus == HttpStatus.NOT_FOUND.value()) {
             return new NotFoundException("Vitam not found error: " + message);
-        }
-        else if (responseStatus == HttpStatus.BAD_REQUEST.value()) {
-            if(hasDescriptionContainingTotalTrackHitsError(description)){
+        } else if (responseStatus == HttpStatus.BAD_REQUEST.value()) {
+            if (hasDescriptionContainingTotalTrackHitsError(description)) {
                 return new UnexpectedSettingsException("Vitam forbidden settings error: \"");
-            }else return new BadRequestException("Vitam Bad request error: " + message);
-        }
-        else if (responseStatus == HttpStatus.UNAUTHORIZED.value()) {
-            if(hasDescriptionContainingTotalTrackHitsError(description)) {
+            } else return new BadRequestException("Vitam Bad request error: " + message);
+        } else if (responseStatus == HttpStatus.UNAUTHORIZED.value()) {
+            if (hasDescriptionContainingTotalTrackHitsError(description)) {
                 return new UnexpectedSettingsException("Vitam forbidden settings error: \"");
-            }else return new ForbiddenException("Vitam unauthorized error: " + message);
+            } else return new ForbiddenException("Vitam unauthorized error: " + message);
         } else if (responseStatus == HttpStatus.FORBIDDEN.value()) {
             return new ForbiddenException("Vitam forbidden error: " + message);
         } else if (responseStatus == HttpStatus.PRECONDITION_FAILED.value()) {
@@ -260,8 +263,11 @@ public class VitamRestUtils {
     }
 
     private static boolean hasDescriptionContainingTotalTrackHitsError(String description) {
-        return description != null && (description.contains("INVALID_JSON_FIELD: $track_total_hits") ||
-            description.contains("track_total_hits is not authorize"));
+        return (
+            description != null &&
+            (description.contains("INVALID_JSON_FIELD: $track_total_hits") ||
+                description.contains("track_total_hits is not authorize"))
+        );
     }
 
     public static <T> T responseMapping(final JsonNode json, final Class<T> clazz) {
@@ -271,5 +277,4 @@ public class VitamRestUtils {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }
-
 }

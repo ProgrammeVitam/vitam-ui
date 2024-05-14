@@ -40,7 +40,8 @@ public class UpdateUnitsMetadataInternalRestClientFactory extends BaseRestClient
 
     public UpdateUnitsMetadataInternalRestClientFactory(
         RestClientConfiguration restClientConfiguration,
-        RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 

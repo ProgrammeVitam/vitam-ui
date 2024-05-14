@@ -1,11 +1,7 @@
 package fr.gouv.vitamui.commons.api.logger;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-
-import javax.annotation.PostConstruct;
-
+import fr.gouv.vitamui.commons.api.ApplicationTest;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.After;
@@ -15,8 +11,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import fr.gouv.vitamui.commons.api.ApplicationTest;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import javax.annotation.PostConstruct;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Abstract Test Class for VITAMUI.
@@ -41,21 +39,26 @@ public abstract class AbstractVitamUITest {
     @PostConstruct
     public static void setUpBeforeClass() {
         System.setProperty("spring.profiles.active", "ServerIdentityConfiguration-test");
-        final SpringApplication springApplication = new SpringApplicationBuilder().sources(ApplicationTest.class)
-                .build();
+        final SpringApplication springApplication = new SpringApplicationBuilder()
+            .sources(ApplicationTest.class)
+            .build();
         context = springApplication.run();
         final VitamUILogger logger = VitamUILoggerFactory.getInstance(VitamUILoggerTest.class);
         logger.debug("Start Logback test", new Exception("test", new Exception("original")));
         try {
-            System.setOut(new PrintStream(new OutputStream() {
-
-                @Override
-                public void write(final int b) {
-                    buf.append((char) b);
-                }
-            }, true, "UTF-8"));
-        }
-        catch (final UnsupportedEncodingException e) {
+            System.setOut(
+                new PrintStream(
+                    new OutputStream() {
+                        @Override
+                        public void write(final int b) {
+                            buf.append((char) b);
+                        }
+                    },
+                    true,
+                    "UTF-8"
+                )
+            );
+        } catch (final UnsupportedEncodingException e) {
             throw new InternalServerException(e.getMessage());
         }
         e.setStackTrace(new StackTraceElement[] { new StackTraceElement("vitamui1", "vitamui2", "vitamui3", 4) });
@@ -81,5 +84,4 @@ public abstract class AbstractVitamUITest {
     public static void tearDownAfterClass() {
         System.setErr(out);
     }
-
 }

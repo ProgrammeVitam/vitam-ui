@@ -36,10 +36,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("fr.gouv.vitamui.commons.api.converter")
 public class ConverterConfig {
 
-
     @Bean
     public SearchCriteriaHistoryConverter searchCriteriaHistoryConverter() {
         return new SearchCriteriaHistoryConverter();
     }
-
 }

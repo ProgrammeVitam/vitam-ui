@@ -36,6 +36,20 @@
  */
 package fr.gouv.vitamui.commons.mongo.utils;
 
+import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.utils.CastUtils;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.utils.ReflectionUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -47,35 +61,23 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-
-import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.api.utils.CastUtils;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.commons.utils.ReflectionUtils;
-
 public final class MongoUtils {
 
     private static final String BETWEEN_OPEARTOR_KEY_END = "end";
     private static final String BETWEEN_OPERATOR_KEY_START = "start";
 
-    private MongoUtils() {
-    }
+    private MongoUtils() {}
 
     public static void addCriteria(final Optional<?> value, final String key, final List<CriteriaDefinition> criteria) {
         value.ifPresent(v -> criteria.add(Criteria.where(key).is(v)));
     }
 
-    public static void addCriteria(final Optional<?> value, final String key, final List<CriteriaDefinition> criteria,
-            final CriterionOperator operator) {
+    public static void addCriteria(
+        final Optional<?> value,
+        final String key,
+        final List<CriteriaDefinition> criteria,
+        final CriterionOperator operator
+    ) {
         value.ifPresent(v -> criteria.add(getCriteria(key, v, operator)));
     }
 
@@ -85,31 +87,43 @@ public final class MongoUtils {
         }
     }
 
-    public static void addCriteriaGreaterThan(final Optional<?> value, final String key,
-            final List<CriteriaDefinition> criteria) {
+    public static void addCriteriaGreaterThan(
+        final Optional<?> value,
+        final String key,
+        final List<CriteriaDefinition> criteria
+    ) {
         if (value.isPresent()) {
             criteria.add(Criteria.where(key).gt(value.get()));
         }
     }
 
-    public static void addCriteriaStartWith(final Optional<String> value, final String key,
-            final List<CriteriaDefinition> criteria) {
+    public static void addCriteriaStartWith(
+        final Optional<String> value,
+        final String key,
+        final List<CriteriaDefinition> criteria
+    ) {
         if (value.isPresent()) {
             final String valueToSearch = "^" + Pattern.quote(value.get()) + ".*$";
             criteria.add(Criteria.where(key).regex(Pattern.compile(valueToSearch)));
         }
     }
 
-    public static void addCriteriaIgnoreCase(final String key, final Optional<String> value,
-            final List<CriteriaDefinition> criteria) {
+    public static void addCriteriaIgnoreCase(
+        final String key,
+        final Optional<String> value,
+        final List<CriteriaDefinition> criteria
+    ) {
         if (value.isPresent()) {
             final String valueToSearch = "^" + Pattern.quote(value.get()) + "$";
             criteria.add(Criteria.where(key).regex(Pattern.compile(valueToSearch, Pattern.CASE_INSENSITIVE)));
         }
     }
 
-    public static void addCriteriaContainsIgnoreCase(final String key, final Optional<String> value,
-            final List<CriteriaDefinition> criteria) {
+    public static void addCriteriaContainsIgnoreCase(
+        final String key,
+        final Optional<String> value,
+        final List<CriteriaDefinition> criteria
+    ) {
         if (value.isPresent() && StringUtils.isNotEmpty(value.get())) {
             criteria.add(buildCriteriaContainsIgnoreCase(key, value.get()));
         }
@@ -154,8 +168,10 @@ public final class MongoUtils {
         return new Criteria().andOperator(criteria);
     }
 
-    public static <E extends BaseIdDocument> Criteria getCriteriaDefinitionFromEntityClass(final Criterion criterion,
-            final Class<E> entityClass) {
+    public static <E extends BaseIdDocument> Criteria getCriteriaDefinitionFromEntityClass(
+        final Criterion criterion,
+        final Class<E> entityClass
+    ) {
         final Type type = getTypeOfField(entityClass, criterion.getKey());
         return getCriteriaDefinitionFromFieldType(criterion, type);
     }
@@ -168,30 +184,41 @@ public final class MongoUtils {
         return getCriteria(criterion.getKey(), value, criterion.getOperator());
     }
 
-    private static Object getValueFromOperatorAndFieldType(final Object value, final CriterionOperator operator,
-            final Type fieldType) {
+    private static Object getValueFromOperatorAndFieldType(
+        final Object value,
+        final CriterionOperator operator,
+        final Type fieldType
+    ) {
         final Class<?> parametrizedClazz = ReflectionUtils.getParametrizedClass(fieldType);
         switch (operator) {
-            case EQUALS :
-            case NOTEQUALS :
+            case EQUALS:
+            case NOTEQUALS:
                 if (ReflectionUtils.isParametrizedList(fieldType)) {
                     final Collection<Object> listValue = CastUtils.toList(value);
-                    return listValue.stream().map(val -> convertValue(parametrizedClazz, val))
-                            .collect(Collectors.toList());
+                    return listValue
+                        .stream()
+                        .map(val -> convertValue(parametrizedClazz, val))
+                        .collect(Collectors.toList());
                 }
                 return convertValue(parametrizedClazz, value);
-            case IN :
-            case NOTIN :
+            case IN:
+            case NOTIN:
                 final Collection<Object> listVal = CastUtils.toList(value);
                 return listVal.stream().map(val -> convertValue(parametrizedClazz, val)).collect(Collectors.toList());
-            case BETWEEN :
+            case BETWEEN:
                 final Map<String, Object> mapValue = CastUtils.toMap(value);
-                mapValue.put(BETWEEN_OPERATOR_KEY_START, convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPERATOR_KEY_START)));
-                mapValue.put(BETWEEN_OPEARTOR_KEY_END, convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPEARTOR_KEY_END)));
+                mapValue.put(
+                    BETWEEN_OPERATOR_KEY_START,
+                    convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPERATOR_KEY_START))
+                );
+                mapValue.put(
+                    BETWEEN_OPEARTOR_KEY_END,
+                    convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPEARTOR_KEY_END))
+                );
                 return mapValue;
             case ELEMMATCH:
                 return convertValue(QueryDto.class, value);
-            default :
+            default:
                 return convertValue(parametrizedClazz, value);
         }
     }
@@ -219,8 +246,7 @@ public final class MongoUtils {
             try {
                 // we convert the linked hash map to json to re-convert it properly to query dto
                 return QueryDto.fromJson(JsonUtils.toJson(value));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new InvalidFormatException(e.getMessage(), e);
             }
         }
@@ -238,9 +264,11 @@ public final class MongoUtils {
         }
         Criteria criteria;
         switch (operator) {
-            case EQUALS :
-                if (val instanceof String
-                        && (StringUtils.contains((String) val, "*") || StringUtils.contains((String) val, ".*"))) {
+            case EQUALS:
+                if (
+                    val instanceof String &&
+                    (StringUtils.contains((String) val, "*") || StringUtils.contains((String) val, ".*"))
+                ) {
                     final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
                     final StringBuilder options = new StringBuilder();
                     criteria = Criteria.where(key).regex(valueToSearch, options.toString());
@@ -248,51 +276,51 @@ public final class MongoUtils {
                     criteria = Criteria.where(key).is(val);
                 }
                 break;
-            case NOTEQUALS :
+            case NOTEQUALS:
                 criteria = Criteria.where(key).ne(val);
                 break;
-            case EQUALSIGNORECASE :
+            case EQUALSIGNORECASE:
                 final StringBuilder options = new StringBuilder("i");
                 final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
                 criteria = Criteria.where(key).regex(valueToSearch, options.toString());
                 break;
-            case GREATER :
+            case GREATER:
                 criteria = Criteria.where(key).gt(val);
                 break;
-            case LOWER :
+            case LOWER:
                 criteria = Criteria.where(key).lt(val);
                 break;
-            case GREATERTHANOREQUALS :
+            case GREATERTHANOREQUALS:
                 criteria = Criteria.where(key).gte(val);
                 break;
-            case LOWERTHANOREQUALS :
+            case LOWERTHANOREQUALS:
                 criteria = Criteria.where(key).lte(val);
                 break;
-            case CONTAINSIGNORECASE :
+            case CONTAINSIGNORECASE:
                 criteria = MongoUtils.buildCriteriaContains(key, val.toString(), true);
                 break;
-            case CONTAINS :
+            case CONTAINS:
                 criteria = MongoUtils.buildCriteriaContains(key, val.toString(), false);
                 break;
-            case STARTWITH :
+            case STARTWITH:
                 criteria = MongoUtils.buildCriteriaStartWith(key, val.toString(), false);
                 break;
-            case IN :
+            case IN:
                 criteria = Criteria.where(key).in((Collection) val);
                 break;
-            case NOTIN :
+            case NOTIN:
                 criteria = Criteria.where(key).not().in((Collection) val);
                 break;
-            case BETWEEN :
+            case BETWEEN:
                 final Map<String, Object> mapVal = CastUtils.toMap(val);
                 final Criteria startCriteria = Criteria.where(key).gte(mapVal.get(BETWEEN_OPERATOR_KEY_START));
                 final Criteria endCriteria = Criteria.where(key).lte(mapVal.get(BETWEEN_OPEARTOR_KEY_END));
                 criteria = buildAndOperator(startCriteria, endCriteria);
                 break;
-            case ELEMMATCH :
-                criteria = Criteria.where(key).elemMatch(queryDtoToCriteria((QueryDto)val));
+            case ELEMMATCH:
+                criteria = Criteria.where(key).elemMatch(queryDtoToCriteria((QueryDto) val));
                 break;
-            default :
+            default:
                 throw new IllegalArgumentException("Operator " + operator + " is not supported");
         }
         return criteria;
@@ -305,18 +333,22 @@ public final class MongoUtils {
      */
     public static Criteria queryDtoToCriteria(QueryDto queryDto) {
         Collection<CriteriaDefinition> criteria = new ArrayList<>();
-        queryDto.getCriterionList().forEach(criterion -> {
-            criteria.add(MongoUtils.getCriteria(criterion.getKey(), criterion.getValue(), criterion.getOperator()));
-        });
+        queryDto
+            .getCriterionList()
+            .forEach(criterion -> {
+                criteria.add(MongoUtils.getCriteria(criterion.getKey(), criterion.getValue(), criterion.getOperator()));
+            });
 
         // if the criteria contains subQueries, a recursive call is made for each subQuery
-        queryDto.getSubQueries().forEach(queryDtoItem -> {
-            criteria.add(queryDtoToCriteria(queryDtoItem));
-        });
+        queryDto
+            .getSubQueries()
+            .forEach(queryDtoItem -> {
+                criteria.add(queryDtoToCriteria(queryDtoItem));
+            });
 
         final Criteria commonCustomCriteria = new Criteria();
         Criteria[] criteriaList = criteria.stream().map(c -> (Criteria) c).toArray(Criteria[]::new);
-        switch (queryDto.getQueryOperator()){
+        switch (queryDto.getQueryOperator()) {
             case AND:
                 commonCustomCriteria.andOperator(criteriaList);
                 break;
@@ -333,15 +365,11 @@ public final class MongoUtils {
         return commonCustomCriteria;
     }
 
-
     public static Type getTypeOfField(final Class<?> entityClass, final String fieldName) {
         try {
             return ReflectionUtils.getTypeOfField(entityClass, fieldName);
-        }
-        catch (final NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             throw new IllegalArgumentException("no fields " + fieldName + " found", e);
         }
-
     }
-
 }

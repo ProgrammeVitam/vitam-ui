@@ -26,7 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.server.service;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
@@ -70,7 +69,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-
 /**
  * The service to create vitam Archive-Search.
  */
@@ -93,11 +91,13 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     @Autowired
     private final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient;
 
-    public ArchivesSearchExternalService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
+    public ArchivesSearchExternalService(
+        @Autowired ArchiveInternalRestClient archiveInternalRestClient,
         ArchiveSearchInternalWebClient archiveSearchInternalWebClient,
         final ExternalSecurityService externalSecurityService,
         final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient,
-        final ArchiveSearchThresholdService archiveSearchThresholdService) {
+        final ArchiveSearchThresholdService archiveSearchThresholdService
+    ) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
         this.archiveSearchInternalWebClient = archiveSearchInternalWebClient;
@@ -109,7 +109,6 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     protected ArchiveInternalRestClient getClient() {
         return archiveInternalRestClient;
     }
-
 
     public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
@@ -143,7 +142,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
                 qualifier = getLastObjectQualifier(got);
             } else {
                 String finalUsage = usage;
-                qualifier = got.getQualifiers().stream()
+                qualifier = got
+                    .getQualifiers()
+                    .stream()
                     .filter(q -> finalUsage.equals(q.getQualifier()))
                     .findFirst()
                     .orElse(null);
@@ -156,7 +157,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
                     versionsDto = getLastVersion(qualifier);
                 } else {
                     Integer finalVersion = version;
-                    versionsDto = qualifier.getVersions().stream()
+                    versionsDto = qualifier
+                        .getVersions()
+                        .stream()
                         .filter(v -> finalVersion.equals(extractVersion(v)))
                         .findFirst()
                         .orElse(null);
@@ -167,13 +170,20 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
                 }
             }
         }
-        return archiveSearchInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext(), fileName);
+        return archiveSearchInternalWebClient.downloadObjectFromUnit(
+            id,
+            usage,
+            version,
+            getInternalHttpContext(),
+            fileName
+        );
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
         for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
-            QualifiersDto qualifierFound = got.getQualifiers().stream()
+            QualifiersDto qualifierFound = got
+                .getQualifiers()
+                .stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)
                 .orElse(null);
@@ -185,7 +195,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     private VersionsDto getLastVersion(QualifiersDto qualifier) {
-        return qualifier.getVersions().stream()
+        return qualifier
+            .getVersions()
+            .stream()
             .max(comparing(ArchivesSearchExternalService::extractVersion))
             .orElse(null);
     }
@@ -208,9 +220,14 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
             uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
         }
         String filenameExtension = EMPTY;
-        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
-            version.getFileInfoModel().getFilename().contains(".")) {
-            filenameExtension = version.getFileInfoModel().getFilename()
+        if (
+            nonNull(version.getFileInfoModel()) &&
+            isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")
+        ) {
+            filenameExtension = version
+                .getFileInfoModel()
+                .getFilename()
                 .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
         }
         if (isNotBlank(filenameExtension)) {
@@ -290,9 +307,11 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     public String transferAcknowledgment(InputStream atrInputStream, final String originalFileName) {
-        return
-            archiveSearchStreamingInternalRestClient
-                .transferAcknowledgment(getInternalHttpContext(), originalFileName, atrInputStream);
+        return archiveSearchStreamingInternalRestClient.transferAcknowledgment(
+            getInternalHttpContext(),
+            originalFileName,
+            atrInputStream
+        );
     }
 
     public List<VitamUiOntologyDto> getExternalOntologiesList() {
@@ -306,5 +325,4 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(String arkId) {
         return archiveInternalRestClient.findObjectsByPersistentIdentifier(arkId, getInternalHttpContext());
     }
-
 }

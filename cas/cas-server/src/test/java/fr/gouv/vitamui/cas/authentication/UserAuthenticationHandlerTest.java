@@ -74,9 +74,13 @@ public final class UserAuthenticationHandlerTest {
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
         val utils = new Utils(null, 0, null, null, "");
-        handler =
-            new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils,
-                IP_HEADER_NAME);
+        handler = new UserAuthenticationHandler(
+            null,
+            new DefaultPrincipalFactory(),
+            casExternalRestClient,
+            utils,
+            IP_HEADER_NAME
+        );
         credential = new UsernamePasswordCredential("ignored", PASSWORD);
 
         RequestContext requestContext = mock(RequestContext.class);
@@ -99,13 +103,20 @@ public final class UserAuthenticationHandlerTest {
 
     @Test
     public void testSuccessfulAuthentication() throws GeneralSecurityException, PreventedException {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenReturn(basicUser(UserStatusEnum.ENABLED));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         // When
         val result = handler.authenticate(credential, null);
@@ -119,15 +130,21 @@ public final class UserAuthenticationHandlerTest {
     }
 
     @Test
-    public void testSuccessfulSubrogationAuthentication()
-        throws GeneralSecurityException, PreventedException {
-
+    public void testSuccessfulSubrogationAuthentication() throws GeneralSecurityException, PreventedException {
         // Given
         givenSubrogationRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(SUPER_USER_EMAIL),
-            eq(SUPER_USER_CUSTOMER_ID), eq(PASSWORD), eq(USERNAME), eq(CUSTOMER_ID), eq(IP_ADDRESS)))
-            .thenReturn(basicUser(UserStatusEnum.ENABLED));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(SUPER_USER_EMAIL),
+                eq(SUPER_USER_CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         // When
         val result = handler.authenticate(credential, null);
@@ -135,117 +152,166 @@ public final class UserAuthenticationHandlerTest {
         // Then
         assertEquals(SUPER_USER_EMAIL, result.getPrincipal().getId());
         assertEquals(SUPER_USER_EMAIL, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0));
-        assertEquals(SUPER_USER_CUSTOMER_ID,
-            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0));
+        assertEquals(
+            SUPER_USER_CUSTOMER_ID,
+            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0)
+        );
         assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_EMAIL).get(0));
-        assertEquals(CUSTOMER_ID,
-            result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0));
+        assertEquals(
+            CUSTOMER_ID,
+            result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0)
+        );
     }
 
     @Test
     public void testNoUser() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(CUSTOMER_ID),
-            eq(null), eq(null), eq(IP_ADDRESS))).thenReturn(null);
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(PASSWORD),
+                eq(CUSTOMER_ID),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(null);
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(AccountNotFoundException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountNotFoundException.class);
     }
 
     @Test
     public void testUserDisabled() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(CUSTOMER_ID),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenReturn(basicUser(UserStatusEnum.DISABLED));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(PASSWORD),
+                eq(CUSTOMER_ID),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(basicUser(UserStatusEnum.DISABLED));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(AccountException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
     }
 
     @Test
     public void testUserCannotLogin() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenReturn(basicUser(UserStatusEnum.BLOCKED));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(basicUser(UserStatusEnum.BLOCKED));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(AccountException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
     }
 
     @Test
     public void testExpiredPassword() {
-
         // Given
         givenLoginRequestInRequestContext();
 
         val user = basicUser(UserStatusEnum.ENABLED);
         user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenReturn(user);
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenReturn(user);
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(AccountPasswordMustChangeException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(
+            AccountPasswordMustChangeException.class
+        );
     }
 
     @Test
     public void testUserBadCredentials() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenThrow(new InvalidAuthenticationException(""));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenThrow(new InvalidAuthenticationException(""));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(CredentialException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(CredentialException.class);
     }
 
     @Test
     public void testUserLockedAccount() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenThrow(new TooManyRequestsException(""));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenThrow(new TooManyRequestsException(""));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(AccountLockedException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountLockedException.class);
     }
 
     @Test
     public void testTechnicalError() {
-
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(CUSTOMER_ID), eq(PASSWORD),
-            eq(null), eq(null), eq(IP_ADDRESS)))
-            .thenThrow(new BadRequestException(""));
+        when(
+            casExternalRestClient.login(
+                any(ExternalHttpContext.class),
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PASSWORD),
+                eq(null),
+                eq(null),
+                eq(IP_ADDRESS)
+            )
+        ).thenThrow(new BadRequestException(""));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null))
-            .isInstanceOf(PreventedException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
     private UserDto basicUser(final UserStatusEnum status) {

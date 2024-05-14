@@ -9,10 +9,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,10 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SecureZipUtilsTest {
@@ -38,7 +34,10 @@ class SecureZipUtilsTest {
     @BeforeEach
     public void setup() throws IOException {
         var unzipFolderFile = new File(UNZIP_FOLDER);
-        if (unzipFolderFile.exists() && UNZIP_FOLDER.startsWith("/tmp/")/* safe delete if the path is other than tmp*/) {
+        if (
+            unzipFolderFile.exists() && UNZIP_FOLDER.startsWith("/tmp/")
+            /* safe delete if the path is other than tmp*/
+        ) {
             FileUtils.deleteDirectory(unzipFolderFile);
         }
     }
@@ -54,7 +53,6 @@ class SecureZipUtilsTest {
 
     @Test
     public void testUnzipFolderKo() {
-
         assertThrows(SecurityException.class, () -> SecureZipUtils.unzipFolder(EVIL_ZIP_FILE, UNZIP_FOLDER));
 
         File evilFile = new File(EVIL_FILE_PATH);
@@ -67,7 +65,6 @@ class SecureZipUtilsTest {
     }
 
     void testUnzipFolder(String zipFile, String unzipFolder) throws IOException, SecurityException {
-
         SecureZipUtils.unzipFolder(zipFile, unzipFolder);
 
         File file = new File(unzipFolder + "directory/subdirectory/file.txt");
@@ -86,8 +83,8 @@ class SecureZipUtilsTest {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
-        final String sipFilePath = UNZIP_FOLDER +"/zipOutput.zip";
-        try(var zipFile = new FileOutputStream(sipFilePath)) {
+        final String sipFilePath = UNZIP_FOLDER + "/zipOutput.zip";
+        try (var zipFile = new FileOutputStream(sipFilePath)) {
             SecureZipUtils.zipFolder(zipFolder, zipFile);
         }
         FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
@@ -105,10 +102,9 @@ class SecureZipUtilsTest {
         Path link = Paths.get(zipFolder + "/link");
         Files.createSymbolicLink(link, linkedFile);
 
-        try(var zipFile = new FileOutputStream(UNZIP_FOLDER +"/zipOutput.zip")) {
+        try (var zipFile = new FileOutputStream(UNZIP_FOLDER + "/zipOutput.zip")) {
             Assertions.assertThrows(SecurityException.class, () -> SecureZipUtils.zipFolder(zipFolder, zipFile));
-        }
-        finally {
+        } finally {
             Files.delete(link);
         }
     }
@@ -122,10 +118,9 @@ class SecureZipUtilsTest {
         Path link = Paths.get(zipFolder + "/link");
         Files.createSymbolicLink(link, linkedFile);
 
-        try(var zipFile = new FileOutputStream(UNZIP_FOLDER +"/zipOutput.zip")) {
+        try (var zipFile = new FileOutputStream(UNZIP_FOLDER + "/zipOutput.zip")) {
             Assertions.assertThrows(SecurityException.class, () -> SecureZipUtils.zipFolder(zipFolder, zipFile));
-        }
-        finally {
+        } finally {
             Files.delete(link);
         }
     }
@@ -137,8 +132,8 @@ class SecureZipUtilsTest {
 
         List<Path> filesToZip = Arrays.asList(Paths.get(zipFolder + "file.txt"));
 
-        final String zipFilePath = UNZIP_FOLDER +"/zipOutput.zip";
-        try(var zipFile = new FileOutputStream(zipFilePath)) {
+        final String zipFilePath = UNZIP_FOLDER + "/zipOutput.zip";
+        try (var zipFile = new FileOutputStream(zipFilePath)) {
             SecureZipUtils.zipFiles(filesToZip, zipFile);
         }
         FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
@@ -156,12 +151,16 @@ class SecureZipUtilsTest {
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
         final Map<String, InputStream> filesToZip = Map.of(
-                "directory/subdirectory/file.txt", new FileInputStream(zipFolder + "directory/subdirectory/file.txt"),
-                "directory/file.txt", new FileInputStream(zipFolder + "directory/file.txt"),
-                "file.txt", new FileInputStream(zipFolder + "file.txt"));
+            "directory/subdirectory/file.txt",
+            new FileInputStream(zipFolder + "directory/subdirectory/file.txt"),
+            "directory/file.txt",
+            new FileInputStream(zipFolder + "directory/file.txt"),
+            "file.txt",
+            new FileInputStream(zipFolder + "file.txt")
+        );
 
-        final String zipFilePath = UNZIP_FOLDER +"/zipOutput.zip";
-        try(var zipFile = new FileOutputStream(zipFilePath)) {
+        final String zipFilePath = UNZIP_FOLDER + "/zipOutput.zip";
+        try (var zipFile = new FileOutputStream(zipFilePath)) {
             SecureZipUtils.zipStreams(filesToZip, zipFile);
         }
         FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
@@ -171,12 +170,16 @@ class SecureZipUtilsTest {
 
     @Test
     @ParameterizedTest
-    @ValueSource(strings = {"../file.pdf",
-        "/../etc/hosts/file.pdf",
-        "file.pdf\n../../mmm",
-        "file.pdf\r../../mmm",
-        "/file\0.exe.pdf",
-        "../../file.txt"})
+    @ValueSource(
+        strings = {
+            "../file.pdf",
+            "/../etc/hosts/file.pdf",
+            "file.pdf\n../../mmm",
+            "file.pdf\r../../mmm",
+            "/file\0.exe.pdf",
+            "../../file.txt",
+        }
+    )
     void testZipStreamsKoSecurity(final String filename) throws IOException {
         final Map<String, InputStream> filesToZip = Map.of(filename, InputStream.nullInputStream());
 
@@ -185,11 +188,9 @@ class SecureZipUtilsTest {
             Files.createDirectories(Paths.get(UNZIP_FOLDER));
         }
 
-        final String zipFilePath = UNZIP_FOLDER +"zipOutput.zip";
-        try(var zipFile = new FileOutputStream(zipFilePath)) {
+        final String zipFilePath = UNZIP_FOLDER + "zipOutput.zip";
+        try (var zipFile = new FileOutputStream(zipFilePath)) {
             Assertions.assertThrows(SecurityException.class, () -> SecureZipUtils.zipStreams(filesToZip, zipFile));
         }
     }
-
-
 }

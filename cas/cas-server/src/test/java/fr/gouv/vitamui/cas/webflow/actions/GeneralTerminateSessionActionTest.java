@@ -6,7 +6,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.ServicesManager;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,8 +38,22 @@ public final class GeneralTerminateSessionActionTest extends BaseWebflowActionTe
 
         final LogoutManager logoutManager = mock(LogoutManager.class);
 
-        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null, null, null,
-            logoutManager, null, null, null, null, servicesManager, new CasConfigurationProperties(), null, null, null);
+        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(
+            null,
+            null,
+            null,
+            null,
+            logoutManager,
+            null,
+            null,
+            null,
+            null,
+            servicesManager,
+            new CasConfigurationProperties(),
+            null,
+            null,
+            null
+        );
 
         action.performGeneralLogout("tgtId");
     }

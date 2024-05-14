@@ -95,7 +95,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamPasswordManagementService.class);
 
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final CasExternalRestClient casExternalRestClient;
 
@@ -115,8 +115,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static Integer maxOldPassword;
 
-
-    public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
+    public IamPasswordManagementService(
+        final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
         final String issuer,
         final PasswordHistoryService passwordHistoryService,
@@ -127,7 +127,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final Utils utils,
         final TicketRegistry ticketRegistry,
         final PasswordValidator passwordValidator,
-        final PasswordConfiguration passwordConfiguration) {
+        final PasswordConfiguration passwordConfiguration
+    ) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
@@ -145,12 +146,16 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
             // login/pwd subrogation
-            String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(),
-                SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
+            String superUsername = (String) utils.getAttributeValue(
+                authentication.getAttributes(),
+                SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL
+            );
             if (superUsername == null) {
                 // authn delegation subrogation
-                superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(),
-                    SUPER_USER_ATTRIBUTE);
+                superUsername = (String) utils.getAttributeValue(
+                    authentication.getPrincipal().getAttributes(),
+                    SUPER_USER_ATTRIBUTE
+                );
             }
             LOGGER.debug("is it currently a superUser: {}", superUsername);
             Assert.isNull(superUsername, "cannot use password management with subrogation");
@@ -185,8 +190,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
         final UserDto user = casExternalRestClient.getUserByEmailAndCustomerId(
-            utils.buildContext(userLogin.getUserEmail()), userLogin.getUserEmail(), userLogin.getCustomerId(),
-            Optional.empty());
+            utils.buildContext(userLogin.getUserEmail()),
+            userLogin.getUserEmail(),
+            userLogin.getCustomerId(),
+            Optional.empty()
+        );
         if (user == null) {
             LOGGER.debug("User not found with login: {}", userLogin.getUserEmail());
             throw new InvalidPasswordException();
@@ -196,34 +204,52 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             throw new InvalidPasswordException();
         }
 
-        if ((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
-            passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null &&
-            passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
+        if (
+            (passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
+                passwordConfiguration.isCheckOccurrence() &&
+                passwordConfiguration.getOccurrencesCharsNumber() != null &&
+                passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
             (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
                 passwordConfiguration.isCheckOccurrence() &&
                 passwordConfiguration.getOccurrencesCharsNumber() != null &&
-                passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
+                passwordConfiguration.getOccurrencesCharsNumber() > 0)
+        ) {
             String userLastName = user.getLastname();
             Assert.notNull(userLastName, "user last name can not be null");
-            if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(),
-                passwordConfiguration.getOccurrencesCharsNumber())) {
+            if (
+                passwordValidator.isContainsUserOccurrences(
+                    userLastName,
+                    bean.getPassword(),
+                    passwordConfiguration.getOccurrencesCharsNumber()
+                )
+            ) {
                 throw new PasswordContainsUserDictionaryException(
-                    "Invalid password containing an occurence of user name !");
+                    "Invalid password containing an occurence of user name !"
+                );
             }
         }
 
-        val identityProvider =
-            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(),
-                userLogin.getUserEmail(), userLogin.getCustomerId());
-        Assert.isTrue(identityProvider.isPresent(),
-            "only a user [" + userLogin.getUserEmail() +
-                "] linked to an identity provider can change his password");
-        Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
-            "only an internal user [" + userLogin.getUserEmail() + "] can change his password");
+        val identityProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            providersService.getProviders(),
+            userLogin.getUserEmail(),
+            userLogin.getCustomerId()
+        );
+        Assert.isTrue(
+            identityProvider.isPresent(),
+            "only a user [" + userLogin.getUserEmail() + "] linked to an identity provider can change his password"
+        );
+        Assert.isTrue(
+            identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
+            "only an internal user [" + userLogin.getUserEmail() + "] can change his password"
+        );
 
         try {
-            casExternalRestClient.changePassword(utils.buildContext(userLogin.getUserEmail()),
-                userLogin.getUserEmail(), userLogin.getCustomerId(), bean.getPassword());
+            casExternalRestClient.changePassword(
+                utils.buildContext(userLogin.getUserEmail()),
+                userLogin.getUserEmail(),
+                userLogin.getCustomerId(),
+                bean.getPassword()
+            );
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
@@ -235,7 +261,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     @NotNull
     private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
-
         // IMPORTANT: 2 possible workflows :
         // -> If we came from password expiration workflow ==> We already have the username/customerId from flow scope
         // -> If we came from password reset link by email ==> We use a dirty hack to encode a username+password pair as
@@ -249,8 +274,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
         if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginEmailFromFlowScope)) {
             // User customerId already in the scope ==> We came from password expired flow
-            Assert.isTrue(Objects.equals(loginEmailFromFlowScope, username),
-                "Email does not match login email from flow");
+            Assert.isTrue(
+                Objects.equals(loginEmailFromFlowScope, username),
+                "Email does not match login email from flow"
+            );
             UserLoginModel userLoginNode = new UserLoginModel();
             userLoginNode.setCustomerId(loginCustomerIdFromFlowScope);
             userLoginNode.setUserEmail(username);
@@ -258,8 +285,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
 
         try {
-            UserLoginModel userLoginNode = OBJECT_MAPPER.readValue(username, new TypeReference<>() {
-            });
+            UserLoginModel userLoginNode = OBJECT_MAPPER.readValue(username, new TypeReference<>() {});
 
             if (StringUtils.isBlank(userLoginNode.getUserEmail())) {
                 LOGGER.error("Could not find the user email for password changing ");
@@ -268,15 +294,22 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             if (StringUtils.isBlank(userLoginNode.getCustomerId())) {
                 LOGGER.error("Could not find the user customer Id for password changing ");
                 throw new InsufficientAuthenticationException(
-                    "Could not find the user customer Id  for password changing ");
+                    "Could not find the user customer Id  for password changing "
+                );
             }
 
             userLoginNode.setUserEmail(userLoginNode.getUserEmail().toLowerCase().trim());
             return userLoginNode;
         } catch (JacksonException e) {
             throw new IllegalStateException(
-                "Cannot deserialize username field into a " + UserLoginModel.class.getSimpleName() + " instance. " +
-                    "Field value: '" + username + "'", e);
+                "Cannot deserialize username field into a " +
+                UserLoginModel.class.getSimpleName() +
+                " instance. " +
+                "Field value: '" +
+                username +
+                "'",
+                e
+            );
         }
     }
 
@@ -287,9 +320,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            UserDto user =
-                casExternalRestClient.getUserByEmailAndCustomerId(utils.buildContext(usernameWithLowercase),
-                    usernameWithLowercase, customerId, Optional.empty());
+            UserDto user = casExternalRestClient.getUserByEmailAndCustomerId(
+                utils.buildContext(usernameWithLowercase),
+                usernameWithLowercase,
+                customerId,
+                Optional.empty()
+            );
             if (user == null) {
                 LOGGER.error("User not found");
                 return null;
@@ -323,7 +359,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
-
     protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
 
         private static final long serialVersionUID = -8981663363751187076L;
@@ -338,7 +373,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
-
     protected static class PasswordConfirmException extends InvalidPasswordException {
 
         private static final long serialVersionUID = -8981663363751187076L;
@@ -352,7 +386,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             return "password confirm error";
         }
     }
-
 
     protected static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
 

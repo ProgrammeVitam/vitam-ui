@@ -15,18 +15,21 @@ public class CustomCasDelegatingWebflowEventResolver extends DefaultCasDelegatin
 
     private final boolean x509AuthnMandatory;
 
-    public CustomCasDelegatingWebflowEventResolver(final CasWebflowEventResolutionConfigurationContext configurationContext,
-                                                   final CasWebflowEventResolver selectiveResolver,
-                                                   final boolean x509AuthnMandatory) {
+    public CustomCasDelegatingWebflowEventResolver(
+        final CasWebflowEventResolutionConfigurationContext configurationContext,
+        final CasWebflowEventResolver selectiveResolver,
+        final boolean x509AuthnMandatory
+    ) {
         super(configurationContext, selectiveResolver);
         this.x509AuthnMandatory = x509AuthnMandatory;
     }
 
     @Override
-    protected Event returnAuthenticationExceptionEventIfNeeded(final Exception exception,
-                                                               final Credential credential,
-                                                               final WebApplicationService service) {
-
+    protected Event returnAuthenticationExceptionEventIfNeeded(
+        final Exception exception,
+        final Credential credential,
+        final WebApplicationService service
+    ) {
         if (x509AuthnMandatory) {
             if (credential instanceof X509CertificateCredential) {
                 throw new IllegalArgumentException("Authentication failure for mandatory X509 login");

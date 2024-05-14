@@ -49,12 +49,12 @@ import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.REPLACE;
 @Service
 public class JsonPatchToSetActionConverter implements Converter<JsonPatch, SetAction> {
 
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchToSetActionConverter.class);
+    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(JsonPatchToSetActionConverter.class);
 
     @Override
     public SetAction convert(JsonPatch source) {
-        final Map<String, JsonNode> map = source.stream()
+        final Map<String, JsonNode> map = source
+            .stream()
             .filter(patchCommand -> List.of(ADD, REPLACE).contains(patchCommand.getOp()))
             .collect(Collectors.toMap(PatchCommand::getPath, PatchCommand::getValue));
         if (!map.isEmpty()) {

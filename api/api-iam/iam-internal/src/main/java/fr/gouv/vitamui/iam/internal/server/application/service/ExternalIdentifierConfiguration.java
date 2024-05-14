@@ -10,6 +10,7 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "list-enable-external-identifiers")
 public class ExternalIdentifierConfiguration {
+
     private Map<String, List<String>> tenants;
 
     ExternalIdentifierConfiguration() {

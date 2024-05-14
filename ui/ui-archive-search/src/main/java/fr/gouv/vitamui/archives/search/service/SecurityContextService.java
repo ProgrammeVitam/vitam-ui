@@ -46,6 +46,7 @@ import java.util.Objects;
 
 @Service
 public class SecurityContextService<T extends AbstractHttpContext> {
+
     protected HttpServletRequest getCurrentHttpRequest() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
@@ -62,8 +63,7 @@ public class SecurityContextService<T extends AbstractHttpContext> {
         throw new UnAuthorizedException("User is not connected");
     }
 
-    protected T getContext() throws
-        PreconditionFailedException {
+    protected T getContext() throws PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
         final String tenantId = request.getHeader("X-Tenant-Id");
@@ -73,7 +73,8 @@ public class SecurityContextService<T extends AbstractHttpContext> {
                 request,
                 principal,
                 Integer.parseInt(tenantId),
-                accessContractId);
+                accessContractId
+            );
         }
         return (T) ExternalHttpContext.buildFromUiRequest(request, principal);
     }

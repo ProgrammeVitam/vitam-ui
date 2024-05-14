@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class SignaturePolicyDto {
+
     private SignaturePolicy.SignedDocumentPolicyEnum signedDocument;
     private Boolean declaredSignature;
     private Boolean declaredTimestamp;

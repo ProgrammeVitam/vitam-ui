@@ -75,7 +75,9 @@ import java.util.Optional;
 @Setter
 public class AccessContractExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessContractExternalController.class
+    );
 
     @Autowired
     private AccessContractExternalService accessContractExternalService;
@@ -90,13 +92,22 @@ public class AccessContractExternalController {
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException , PreconditionFailedException {
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return accessContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -104,17 +115,18 @@ public class AccessContractExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public AccessContractDto getOne(final @PathVariable("identifier") String identifier)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getAccessContract identifier={}");
         return accessContractExternalService.getOne(identifier);
     }
 
-
     @Secured({ ServicesData.ROLE_GET_ACCESS_CONTRACTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody AccessContractDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody AccessContractDto accessContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(accessContractDto);
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final boolean exist = accessContractExternalService.check(accessContractDto);
@@ -133,12 +145,17 @@ public class AccessContractExternalController {
 
     @Secured(ServicesData.ROLE_UPDATE_ACCESS_CONTRACTS)
     @PatchMapping(CommonConstants.PATH_ID)
-    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException , PreconditionFailedException{
+    public AccessContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return accessContractExternalService.patch(partialDto);
     }
 
@@ -167,7 +184,6 @@ public class AccessContractExternalController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> importAccessContracts(@RequestParam("file") MultipartFile file) {
-
         SanityChecker.isValidFileName(file.getOriginalFilename());
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
         LOGGER.debug("Import access contracts file {}", file.getOriginalFilename());

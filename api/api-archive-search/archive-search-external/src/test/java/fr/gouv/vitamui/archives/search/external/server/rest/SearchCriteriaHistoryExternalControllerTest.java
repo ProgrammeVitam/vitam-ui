@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.junit.jupiter.api.Test;
@@ -56,18 +55,20 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.util.Arrays;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = {SearchCriteriaHistoryExternalController.class})
-public class SearchCriteriaHistoryExternalControllerTest extends
-    ApiArchiveSearchExternalControllerTest<SearchCriteriaHistoryDto> {
+@WebMvcTest(controllers = { SearchCriteriaHistoryExternalController.class })
+public class SearchCriteriaHistoryExternalControllerTest
+    extends ApiArchiveSearchExternalControllerTest<SearchCriteriaHistoryDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryExternalControllerTest.class
+    );
 
     @MockBean
     private SearchCriteriaHistoryExternalService service;
 
-    private SearchCriteriaHistoryExternalController mockedController =
-        MvcUriComponentsBuilder.on(SearchCriteriaHistoryExternalController.class);
+    private SearchCriteriaHistoryExternalController mockedController = MvcUriComponentsBuilder.on(
+        SearchCriteriaHistoryExternalController.class
+    );
 
     @Test
     public void testGetSearchCriteriaHistories() throws Exception {
@@ -104,8 +105,7 @@ public class SearchCriteriaHistoryExternalControllerTest extends
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -117,8 +117,7 @@ public class SearchCriteriaHistoryExternalControllerTest extends
         return new String[] {
             ServicesData.ROLE_GET_ALL_ARCHIVE,
             ServicesData.ROLE_CREATE_ARCHIVE,
-            ServicesData.ROLE_GET_ARCHIVE};
+            ServicesData.ROLE_GET_ARCHIVE,
+        };
     }
-
-
 }

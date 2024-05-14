@@ -1,22 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -46,6 +29,22 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class InitCustomerServiceTest {
@@ -135,7 +134,9 @@ public class InitCustomerServiceTest {
         profileCustomerInit2.setApplicationName(APP_NAME);
         profileCustomerInit2.setName(SECOND_PROFILE_ID);
         profileCustomerInit2.setRoles(new ArrayList<>());
-        given(internalTenantService.getDefaultProfiles(any(), any())).willReturn(List.of(profileCustomerInit1, profileCustomerInit2));
+        given(internalTenantService.getDefaultProfiles(any(), any())).willReturn(
+            List.of(profileCustomerInit1, profileCustomerInit2)
+        );
 
         given(profileRepository.save(any())).willAnswer(invocation -> {
             Profile profileSaved = invocation.getArgument(0, Profile.class);
@@ -143,7 +144,9 @@ public class InitCustomerServiceTest {
             return profileSaved;
         });
 
-        given(ownerConverter.convertDtoToEntity(any())).willReturn(new OwnerConverter(new AddressConverter()).convertDtoToEntity(owner));
+        given(ownerConverter.convertDtoToEntity(any())).willReturn(
+            new OwnerConverter(new AddressConverter()).convertDtoToEntity(owner)
+        );
         given(ownerConverter.convertEntityToDto(any())).willReturn(owner);
         given(ownerRepository.generateSuperId()).willReturn("id");
         given(ownerRepository.save(any())).willAnswer(invocation -> invocation.getArgument(0, Owner.class));
@@ -162,7 +165,9 @@ public class InitCustomerServiceTest {
         ArgumentCaptor<Profile> profileCaptor = ArgumentCaptor.forClass(Profile.class);
         Mockito.verify(profileRepository, times(7)).save(profileCaptor.capture());
         // Two profiles created on the same app
-        Assertions.assertThat(profileCaptor.getAllValues()).filteredOn(profile -> profile.getApplicationName().equals(APP_NAME)).hasSize(2);
+        Assertions.assertThat(profileCaptor.getAllValues())
+            .filteredOn(profile -> profile.getApplicationName().equals(APP_NAME))
+            .hasSize(2);
 
         // Only the first profile of the app in customer-init is affected to admin group
         ArgumentCaptor<Group> groupCaptor = ArgumentCaptor.forClass(Group.class);
@@ -170,5 +175,4 @@ public class InitCustomerServiceTest {
         Assertions.assertThat(groupCaptor.getValue().getProfileIds()).contains(FIRST_PROFILE_ID);
         Assertions.assertThat(groupCaptor.getValue().getProfileIds()).doesNotContain(SECOND_PROFILE_ID);
     }
-
 }

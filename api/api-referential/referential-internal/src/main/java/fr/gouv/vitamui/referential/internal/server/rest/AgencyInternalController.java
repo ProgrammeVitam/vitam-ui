@@ -97,7 +97,7 @@ public class AgencyInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<AgencyDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -106,23 +106,44 @@ public class AgencyInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return agencyInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public AgencyDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get agency identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        LOGGER.debug(
+            "get agency identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return agencyInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return agencyInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody AgencyDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody AgencyDto accessContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         accessContractDto.setTenant(tenant);
@@ -131,18 +152,24 @@ public class AgencyInternalController {
     }
 
     @PostMapping
-    public AgencyDto create(@Valid @RequestBody AgencyDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public AgencyDto create(
+        @Valid @RequestBody AgencyDto accessContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("create accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         accessContractDto.setTenant(tenant);
-        return agencyInternalService.create(vitamContext,accessContractDto);
+        return agencyInternalService.create(vitamContext, accessContractDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return agencyInternalService.patch(vitamContext, partialDto);
     }
 
@@ -161,7 +188,10 @@ public class AgencyInternalController {
         Response response = agencyInternalService.export(vitamContext);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
-            var mergedBomCsvInputStream = new SequenceInputStream(new ByteArrayInputStream(ExportCSVUtils.BOM), (InputStream)entity);
+            var mergedBomCsvInputStream = new SequenceInputStream(
+                new ByteArrayInputStream(ExportCSVUtils.BOM),
+                (InputStream) entity
+            );
             Resource resource = new InputStreamResource(mergedBomCsvInputStream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
@@ -176,8 +206,11 @@ public class AgencyInternalController {
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        if(file != null) {
+    public ResponseEntity importAgencies(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
         }

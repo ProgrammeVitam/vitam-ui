@@ -38,11 +38,9 @@ import java.io.InputStreamReader;
 
 public class FileReader {
 
-    private static String readFromInputStream(InputStream inputStream)
-        throws IOException {
+    private static String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");
@@ -52,8 +50,9 @@ public class FileReader {
     }
 
     public static String loadFileContent(String filename) throws IOException {
-        InputStream inputStream = ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/queries/" + filename);
+        InputStream inputStream =
+            ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/queries/" + filename);
         return readFromInputStream(inputStream);
     }
 }

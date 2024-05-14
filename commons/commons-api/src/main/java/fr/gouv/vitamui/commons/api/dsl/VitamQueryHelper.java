@@ -63,9 +63,11 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-    public static void addParameterCriteria(BooleanQuery query,
+    public static void addParameterCriteria(
+        BooleanQuery query,
         ArchiveSearchConsts.CriteriaOperators operator,
         String searchKey,
         final List<String> searchValues
@@ -97,9 +99,11 @@ public class VitamQueryHelper {
         }
     }
 
-    public static Query buildSubQueryByOperator(String searchKey, String value,
-        ArchiveSearchConsts.CriteriaOperators operator)
-        throws InvalidCreateOperationException {
+    public static Query buildSubQueryByOperator(
+        String searchKey,
+        String value,
+        ArchiveSearchConsts.CriteriaOperators operator
+    ) throws InvalidCreateOperationException {
         Query criteriaSubQuery;
         switch (operator) {
             case MATCH:
@@ -147,10 +151,11 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-
+    public static JsonNode createQueryDSL(
+        Map<String, Object> searchCriteriaMap,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, InvalidCreateOperationException {
         final Select select = new Select();
         final BooleanQuery query = and();
         BooleanQuery queryOr = or();
@@ -201,7 +206,6 @@ public class VitamQueryHelper {
                         }
 
                         break;
-
                     case ArchiveSearchConsts.NAME:
                     case ArchiveSearchConsts.SHORT_NAME:
                     case ArchiveSearchConsts.ID:
@@ -218,7 +222,6 @@ public class VitamQueryHelper {
                         }
 
                         break;
-
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);
                         break;
@@ -237,5 +240,4 @@ public class VitamQueryHelper {
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
     }
-
 }

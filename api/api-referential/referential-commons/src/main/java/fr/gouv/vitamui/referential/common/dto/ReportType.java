@@ -37,5 +37,7 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 public enum ReportType {
-    AUDIT, PROBATIVE_VALUE, TRACEABILITY
+    AUDIT,
+    PROBATIVE_VALUE,
+    TRACEABILITY,
 }

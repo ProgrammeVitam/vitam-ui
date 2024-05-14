@@ -86,7 +86,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-
 /**
  * Task for send to vitam vitamui's events
  * <br>
@@ -131,7 +130,8 @@ public class SendEventToVitamTasks {
         // Retrieve all events who are not already send to vitam or in error status
         final List<Event> events = getEventsElligibleToBeSentToVitam();
         final Map<String, TreeSet<Event>> eventsToSend = new LinkedHashMap<>();
-        final Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate().compareTo(e2.getCreationDate());
+        final Comparator<Event> byPersistedDate = (final Event e1, final Event e2) ->
+            e1.getCreationDate().compareTo(e2.getCreationDate());
         // We stack together event by X-Request-Id
         // The first Event is the 'Master' event and the others are sub-event
         for (final Event e : events) {
@@ -147,7 +147,6 @@ public class SendEventToVitamTasks {
             } catch (final Exception e) {
                 LOGGER.error("Failed to send events to vitam : {}", evts, e);
                 LOGGER.error(e.getMessage(), e);
-
             }
         }
         LOGGER.debug("sendEventToVitamTasks is done");
@@ -155,8 +154,10 @@ public class SendEventToVitamTasks {
 
     protected List<Event> getEventsElligibleToBeSentToVitam() {
         final Criteria criteriaStatusCreated = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.CREATED);
-        final Criteria criteriaStatusError = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.ERROR).and("synchronizedVitamDate")
-                .lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
+        final Criteria criteriaStatusError = Criteria.where(EVENT_KEY_STATUS)
+            .is(EventStatus.ERROR)
+            .and("synchronizedVitamDate")
+            .lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
         final CriteriaDefinition criteria = new Criteria().orOperator(criteriaStatusCreated, criteriaStatusError);
         final Query query = Query.query(criteria);
         final Sort sort = Sort.by(Direction.ASC, "creationDate");
@@ -216,7 +217,6 @@ public class SendEventToVitamTasks {
                 hasError = true;
                 LOGGER.error("Failed to create events {}, reponse: {}", logbookOperationParams, response);
             }
-
         } catch (final Exception e) {
             hasError = true;
             if (response != null && response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
@@ -224,12 +224,10 @@ public class SendEventToVitamTasks {
             } else {
                 LOGGER.error(String.format("Failed to send event %s to vitam", logbookOperationParams), e);
             }
-
         } finally {
             final EventStatus status = hasError ? EventStatus.ERROR : EventStatus.SUCCESS;
             updateEventStatus(events, status, response != null ? response.toString() : "");
         }
-
     }
 
     /**
@@ -237,7 +235,11 @@ public class SendEventToVitamTasks {
      * @param status
      * @param vitamResponse
      */
-    protected void updateEventStatus(final TreeSet<Event> events, final EventStatus status, final String vitamResponse) {
+    protected void updateEventStatus(
+        final TreeSet<Event> events,
+        final EventStatus status,
+        final String vitamResponse
+    ) {
         final Collection<String> ids = events.stream().map(IdDocument::getId).collect(Collectors.toList());
         final Query query = new Query(Criteria.where("id").in(ids));
         final Update update = new Update();
@@ -255,10 +257,13 @@ public class SendEventToVitamTasks {
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    protected LogbookOperationParameters convertEventToMaster(final Event event) throws IllegalArgumentException, IOException {
-        final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
+    protected LogbookOperationParameters convertEventToMaster(final Event event)
+        throws IllegalArgumentException, IOException {
+        final LogbookOperationParameters logbookOperationParameters =
+            LogbookParametersFactory.newLogbookOperationParameters();
 
-        logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
+        logbookOperationParameters
+            .putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
             .putParameterValue(LogbookParameterName.eventType, event.getEvType())
             .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
             .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
@@ -277,10 +282,12 @@ public class SendEventToVitamTasks {
      * @throws IOException
      */
     protected LogbookOperationParameters convertEventToLogbookOperationParams(final Event event)
-            throws IllegalArgumentException, IOException {
-        final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
+        throws IllegalArgumentException, IOException {
+        final LogbookOperationParameters logbookOperationParameters =
+            LogbookParametersFactory.newLogbookOperationParameters();
 
-        logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
+        logbookOperationParameters
+            .putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
             .putParameterValue(LogbookParameterName.eventType, event.getEvType())
             .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
             .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
@@ -288,8 +295,10 @@ public class SendEventToVitamTasks {
             .putParameterValue(LogbookParameterName.outcome, event.getOutcome().toString())
             .putParameterValue(LogbookParameterName.outcomeDetail, event.getOutDetail())
             .putParameterValue(LogbookParameterName.outcomeDetailMessage, event.getOutMessg())
-            .putParameterValue(LogbookParameterName.eventDetailData,
-                addDateInformation(event.getEvDetData(), event.getEvDateTime()))
+            .putParameterValue(
+                LogbookParameterName.eventDetailData,
+                addDateInformation(event.getEvDetData(), event.getEvDateTime())
+            )
             .putParameterValue(LogbookParameterName.eventDateTime, event.getEvDateTime())
             .putParameterValue(LogbookParameterName.objectIdentifier, event.getObId())
             .putParameterValue(LogbookParameterName.eventIdentifierRequest, event.getEvIdReq())
@@ -312,7 +321,5 @@ public class SendEventToVitamTasks {
             LOGGER.error("cann't convert {} to json node ", evDetData, e);
             throw e;
         }
-
     }
-
 }

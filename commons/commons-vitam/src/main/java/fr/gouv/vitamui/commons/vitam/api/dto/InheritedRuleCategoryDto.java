@@ -54,5 +54,4 @@ public class InheritedRuleCategoryDto {
 
     @JsonProperty("Properties")
     private List<InheritedPropertyDto> properties = new ArrayList<>();
-
 }

@@ -26,7 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.client;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -68,11 +67,11 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
 
     ExternalHttpContext defaultContext = new ExternalHttpContext(9, "", "", "");
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchExternalRestClientTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchExternalRestClientTest.class
+    );
 
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
-
 
     private ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
 
@@ -81,8 +80,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
 
     @BeforeEach
     public void setUp() {
-        archiveSearchExternalRestClient =
-            new ArchiveSearchExternalRestClient(restTemplate, "https://test" + RestApi.ARCHIVE_SEARCH_PATH);
+        archiveSearchExternalRestClient = new ArchiveSearchExternalRestClient(
+            restTemplate,
+            "https://test" + RestApi.ARCHIVE_SEARCH_PATH
+        );
     }
 
     @Test
@@ -91,18 +92,24 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archiveSearchExternalRestClient.getPathUrl());
     }
 
-
     @Test
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         SearchCriteriaDto query = new SearchCriteriaDto();
         final VitamUIArchiveUnitResponseDto responseEntity = new VitamUIArchiveUnitResponseDto();
 
-        when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(VitamUIArchiveUnitResponseDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.POST),
+                any(HttpEntity.class),
+                eq(VitamUIArchiveUnitResponseDto.class)
+            )
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
-        VitamUIArchiveUnitResponseDto response =
-            archiveSearchExternalRestClient.searchArchiveUnitsByCriteria(defaultContext, query);
+        VitamUIArchiveUnitResponseDto response = archiveSearchExternalRestClient.searchArchiveUnitsByCriteria(
+            defaultContext,
+            query
+        );
 
         assertEquals(response, responseEntity);
     }
@@ -111,16 +118,19 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     public void whenGetFilingHoldingSChemeRestTemplateOKThenShouldReturnOK() {
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
-        when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(VitamUISearchResponseDto.class)
+            )
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
-        VitamUISearchResponseDto response =
-            archiveSearchExternalRestClient.getFilingHoldingScheme(defaultContext);
+        VitamUISearchResponseDto response = archiveSearchExternalRestClient.getFilingHoldingScheme(defaultContext);
 
         assertEquals(response, responseEntity);
     }
-
 
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
@@ -128,14 +138,20 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query);
 
         Resource resource = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchExternalRestClientTest.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
+            Objects.requireNonNull(
+                ArchiveSearchExternalRestClientTest.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)
+            ).readAllBytes()
+        );
 
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(Resource.class))
+        ).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
-        ResponseEntity<Resource> response =
-            archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, defaultContext);
+        ResponseEntity<Resource> response = archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(
+            query,
+            defaultContext
+        );
 
         assertEquals(response.getBody(), resource);
     }
@@ -144,10 +160,14 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
     public void transferRequest_should_return_OK() {
         TransferRequestDto transferRequestDto = new TransferRequestDto();
         final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto);
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), any(Class.class)))
-            .thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), any(Class.class))
+        ).thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
         // When
-        ResponseEntity<String> response = archiveSearchExternalRestClient.transferRequest(transferRequestDto, defaultContext);
+        ResponseEntity<String> response = archiveSearchExternalRestClient.transferRequest(
+            transferRequestDto,
+            defaultContext
+        );
 
         org.assertj.core.api.Assertions.assertThat(response).isNotNull();
         org.assertj.core.api.Assertions.assertThat(response.getBody()).isEqualTo("OK");
@@ -158,15 +178,26 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         // Given
         String arkId = "ark:/225867/001a9d7db5eghxac";
         PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
-        URI uri = new URI(archiveSearchExternalRestClient.getBaseUrl() + archiveSearchExternalRestClient.getPathUrl()
-            + RestApi.UNITS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac");
-        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
-            .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
+        URI uri = new URI(
+            archiveSearchExternalRestClient.getBaseUrl() +
+            archiveSearchExternalRestClient.getPathUrl() +
+            RestApi.UNITS_PERSISTENT_IDENTIFIER +
+            "?id=ark:/225867/001a9d7db5eghxac"
+        );
+        when(
+            restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class))
+        ).thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        PersistentIdentifierResponseDto persistentIdentifierResponse = archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
+        PersistentIdentifierResponseDto persistentIdentifierResponse =
+            archiveSearchExternalRestClient.findUnitsByPersistentIdentifier(arkId, defaultContext);
         // Then
         assertEquals(persistentIdentifierResponse, result);
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
+        verify(restTemplate).exchange(
+            eq(uri),
+            eq(HttpMethod.GET),
+            any(HttpEntity.class),
+            eq(PersistentIdentifierResponseDto.class)
+        );
     }
 
     @Test
@@ -174,15 +205,25 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         // Given
         final String arkId = "ark:/225867/001a9d7db5eghxac_binary_master";
         final PersistentIdentifierResponseDto result = new PersistentIdentifierResponseDto();
-        final URI uri = new URI(archiveSearchExternalRestClient.getBaseUrl() + archiveSearchExternalRestClient.getPathUrl()
-            + RestApi.OBJECTS_PERSISTENT_IDENTIFIER + "?id=ark:/225867/001a9d7db5eghxac_binary_master");
-        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
-            .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
+        final URI uri = new URI(
+            archiveSearchExternalRestClient.getBaseUrl() +
+            archiveSearchExternalRestClient.getPathUrl() +
+            RestApi.OBJECTS_PERSISTENT_IDENTIFIER +
+            "?id=ark:/225867/001a9d7db5eghxac_binary_master"
+        );
+        when(
+            restTemplate.exchange(any(URI.class), any(HttpMethod.class), any(HttpEntity.class), any(Class.class))
+        ).thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
         // When
-        final PersistentIdentifierResponseDto persistentIdentifierResponse = archiveSearchExternalRestClient.findObjectsByPersistentIdentifier(arkId, defaultContext);
+        final PersistentIdentifierResponseDto persistentIdentifierResponse =
+            archiveSearchExternalRestClient.findObjectsByPersistentIdentifier(arkId, defaultContext);
         // Then
         assertEquals(persistentIdentifierResponse, result);
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), any(HttpEntity.class), eq(PersistentIdentifierResponseDto.class));
+        verify(restTemplate).exchange(
+            eq(uri),
+            eq(HttpMethod.GET),
+            any(HttpEntity.class),
+            eq(PersistentIdentifierResponseDto.class)
+        );
     }
-
 }

@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -76,7 +75,7 @@ public class ContextExternalController {
     @Autowired
     private ContextExternalService contextExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     public Collection<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all context criteria={}", criteria);
@@ -86,12 +85,22 @@ public class ContextExternalController {
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ContextDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return contextExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -105,7 +114,10 @@ public class ContextExternalController {
 
     @Secured({ ServicesData.ROLE_GET_CONTEXTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@Valid @RequestBody ContextDto contextDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(
+        @Valid @RequestBody ContextDto contextDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist context = {}", contextDto);
         SanityChecker.sanitizeCriteria(contextDto);
         ApiUtils.checkValidity(contextDto);
@@ -127,7 +139,10 @@ public class ContextExternalController {
     public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, partialDto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         SanityChecker.checkSecureParameter(id);
         return contextExternalService.patch(partialDto);
     }
@@ -137,8 +152,7 @@ public class ContextExternalController {
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for context with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return contextExternalService.findHistoryById(id);
     }
-
 }

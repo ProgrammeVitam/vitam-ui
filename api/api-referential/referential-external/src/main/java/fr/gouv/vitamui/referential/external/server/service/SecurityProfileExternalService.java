@@ -61,27 +61,36 @@ import java.util.*;
 @Getter
 @Setter
 @Service
-public class SecurityProfileExternalService extends AbstractResourceClientService<SecurityProfileDto, SecurityProfileDto> {
+public class SecurityProfileExternalService
+    extends AbstractResourceClientService<SecurityProfileDto, SecurityProfileDto> {
 
     private SecurityProfileInternalRestClient securityProfileInternalRestClient;
 
     @Autowired
-    public SecurityProfileExternalService(ExternalSecurityService externalSecurityService, SecurityProfileInternalRestClient securityProfileInternalRestClient) {
+    public SecurityProfileExternalService(
+        ExternalSecurityService externalSecurityService,
+        SecurityProfileInternalRestClient securityProfileInternalRestClient
+    ) {
         super(externalSecurityService);
         this.securityProfileInternalRestClient = securityProfileInternalRestClient;
     }
 
     public List<SecurityProfileDto> getAll(final Optional<String> criteria) {
-        return securityProfileInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return securityProfileInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> getClient() {
         return securityProfileInternalRestClient;
     }
 
-    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -125,5 +134,4 @@ public class SecurityProfileExternalService extends AbstractResourceClientServic
     public void delete(final String id) {
         securityProfileInternalRestClient.delete(getInternalHttpContext(), id);
     }
-
 }

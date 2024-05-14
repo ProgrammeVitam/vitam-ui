@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VitamErrorDto {
+
     private int httpCode;
     private String code;
     private String context;

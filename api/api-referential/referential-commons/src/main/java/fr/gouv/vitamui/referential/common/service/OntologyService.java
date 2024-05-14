@@ -57,7 +57,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,7 +71,6 @@ public class OntologyService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
 
-
     private final AdminExternalClient adminExternalClient;
 
     @Autowired
@@ -80,31 +78,34 @@ public class OntologyService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<OntologyModel> findOntologyById(VitamContext vitamContext, String identifier) throws VitamClientException {
-        LOGGER.info("Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologyById(vitamContext,identifier);
+    public RequestResponse<OntologyModel> findOntologyById(VitamContext vitamContext, String identifier)
+        throws VitamClientException {
+        LOGGER.info("Ontology EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologyById(vitamContext, identifier);
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
-    public RequestResponse<OntologyModel> findOntologies(VitamContext vitamContext, JsonNode jsonNode) throws VitamClientException {
-        LOGGER.info("All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologies(vitamContext,jsonNode);
+    public RequestResponse<OntologyModel> findOntologies(VitamContext vitamContext, JsonNode jsonNode)
+        throws VitamClientException {
+        LOGGER.info("All Ontologies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologies(vitamContext, jsonNode);
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
-    public RequestResponse<?> importOntologies(VitamContext vitamContext, List<OntologyModel> ontologies) throws InvalidParseOperationException, AccessExternalClientException, IOException {
+    public RequestResponse<?> importOntologies(VitamContext vitamContext, List<OntologyModel> ontologies)
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeOntologies(ontologies)) {
-            LOGGER.info("Import All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            return adminExternalClient.importOntologies(true,vitamContext,byteArrayInputStream);
+            LOGGER.info("Import All Ontologies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            return adminExternalClient.importOntologies(true, vitamContext, byteArrayInputStream);
         }
     }
-    
-    public RequestResponse<?> importOntologies(VitamContext vitamContext, String fileName, MultipartFile file) 
-        	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-        	LOGGER.debug("Import ontology file {}", fileName);
-        	return adminExternalClient.importOntologies(false, vitamContext, file.getInputStream());
+
+    public RequestResponse<?> importOntologies(VitamContext vitamContext, String fileName, MultipartFile file)
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Import ontology file {}", fileName);
+        return adminExternalClient.importOntologies(false, vitamContext, file.getInputStream());
     }
 
     private ByteArrayInputStream serializeOntologies(List<OntologyModel> ontologiesModel) throws IOException {
@@ -127,7 +128,6 @@ public class OntologyService {
      * @return true if the context can be created, false if the ile format already exists
      */
     public boolean checkAbilityToCreateOntologyInVitam(final List<OntologyModel> models, VitamContext vitamContext) {
-
         if (models != null && !models.isEmpty()) {
             try {
                 // check if tenant exist in Vitam
@@ -135,15 +135,17 @@ public class OntologyService {
                 final RequestResponse<OntologyModel> response = findOntologies(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
                     throw new PreconditionFailedException("Can't create file format for the tenant : UNAUTHORIZED");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create file format for this tenant, Vitam response code : " + response.getStatus());
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
+                    throw new UnavailableServiceException(
+                        "Can't create file format for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyFileFormatExistence(models, response);
-            }
-            catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+            } catch (final VitamClientException e) {
+                throw new UnavailableServiceException(
+                    "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return true;
         }
@@ -155,18 +157,35 @@ public class OntologyService {
      * @param checkFileFormats
      * @param vitamFileFormats
      */
-    private void verifyFileFormatExistence(final List<OntologyModel> checkFileFormats, final RequestResponse<OntologyModel> vitamFileFormats) {
+    private void verifyFileFormatExistence(
+        final List<OntologyModel> checkFileFormats,
+        final RequestResponse<OntologyModel> vitamFileFormats
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(vitamFileFormats.toJsonNode(), ContextResponseDto.class);
-            final List<String> contextIds = checkFileFormats.stream().map(context -> context.getIdentifier()).collect(Collectors.toList());
-            if (contextResponseDto.getResults().stream().anyMatch(context -> contextIds.contains(context.getIdentifier()))) {
-                throw new ConflictException("Can't create ontology, an ontology with the same identifier already exist in Vitam");
+            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(
+                vitamFileFormats.toJsonNode(),
+                ContextResponseDto.class
+            );
+            final List<String> contextIds = checkFileFormats
+                .stream()
+                .map(context -> context.getIdentifier())
+                .collect(Collectors.toList());
+            if (
+                contextResponseDto
+                    .getResults()
+                    .stream()
+                    .anyMatch(context -> contextIds.contains(context.getIdentifier()))
+            ) {
+                throw new ConflictException(
+                    "Can't create ontology, an ontology with the same identifier already exist in Vitam"
+                );
             }
-        }
-        catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create ontology, Error while parsing Vitam response : " + e.getMessage());
+        } catch (final JsonProcessingException e) {
+            throw new UnexpectedDataException(
+                "Can't create ontology, Error while parsing Vitam response : " + e.getMessage()
+            );
         }
     }
 }

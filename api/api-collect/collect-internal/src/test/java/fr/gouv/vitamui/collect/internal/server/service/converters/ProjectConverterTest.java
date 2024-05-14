@@ -54,10 +54,7 @@ class ProjectConverterTest {
             .id("ID")
             .messageIdentifier("messageIdentifier")
             .unitUp("unitUp")
-            .unitUps(List.of(
-                newCollectMetadataUnitUpDto("unit 1"),
-                newCollectMetadataUnitUpDto("unit 2")
-            ))
+            .unitUps(List.of(newCollectMetadataUnitUpDto("unit 1"), newCollectMetadataUnitUpDto("unit 2")))
             .originatingAgencyIdentifier("originatingAgencyIdentifier")
             .submissionAgencyIdentifier("submissionAgencyIdentifier")
             .transferringAgencyIdentifier("transferringAgencyIdentifier")
@@ -79,7 +76,6 @@ class ProjectConverterTest {
             .build();
     }
 
-
     private static ProjectDto newProjectDto() {
         ProjectDto externalDto = new ProjectDto();
         externalDto.setId("ID");
@@ -93,10 +89,7 @@ class ProjectConverterTest {
         externalDto.setSubmissionAgencyIdentifier("submissionAgencyIdentifier");
         externalDto.setTransferringAgencyIdentifier("transferringAgencyIdentifier");
         externalDto.setUnitUp("unitUp");
-        externalDto.setUnitUps(List.of(
-            newMetadataUnitUp("unit 1"),
-            newMetadataUnitUp("unit 2")
-        ));
+        externalDto.setUnitUps(List.of(newMetadataUnitUp("unit 1"), newMetadataUnitUp("unit 2")));
         externalDto.setAcquisitionInformation("acquisitionInformation");
         externalDto.setLegalStatus("legalStatus");
         externalDto.setStatus("status");
@@ -123,10 +116,14 @@ class ProjectConverterTest {
 
     @Test
     void toVitamuiCollectProjectDtos() {
-        Assertions.assertEquals(List.of(collectProjectDto),
-            ProjectConverter.toVitamuiCollectProjectDtos(List.of(projectDto)));
-        Assertions.assertEquals(Collections.emptyList(),
-            ProjectConverter.toVitamuiCollectProjectDtos(Collections.emptyList()));
+        Assertions.assertEquals(
+            List.of(collectProjectDto),
+            ProjectConverter.toVitamuiCollectProjectDtos(List.of(projectDto))
+        );
+        Assertions.assertEquals(
+            Collections.emptyList(),
+            ProjectConverter.toVitamuiCollectProjectDtos(Collections.emptyList())
+        );
     }
 
     @Test
@@ -138,5 +135,4 @@ class ProjectConverterTest {
     void toVitamProjectDto() {
         Assertions.assertEquals(projectDto, ProjectConverter.toVitamProjectDto(collectProjectDto));
     }
-
 }

@@ -43,7 +43,6 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
-import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -80,8 +79,10 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     private final UserInternalRestClient userInternalRestClient;
 
     @Autowired
-    public UserExternalService(final UserInternalRestClient userInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public UserExternalService(
+        final UserInternalRestClient userInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.userInternalRestClient = userInternalRestClient;
     }
@@ -128,8 +129,13 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     }
 
     @Override
-    public PaginatedValuesDto<UserDto> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<UserDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         this.checkAllowedOrderby(orderBy);
         return super.getAllPaginated(page, size, criteria, orderBy, direction);
     }
@@ -141,20 +147,20 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     @Override
     protected void addRestriction(final String key, final QueryDto query) {
         switch (key) {
-            case TYPE_KEY :
+            case TYPE_KEY:
                 addTypeRestriction(query);
                 break;
-            case LEVEL_KEY :
+            case LEVEL_KEY:
                 addLevelRestriction(query);
                 break;
-            default :
+            default:
                 throw new NotImplementedException("Restriction not defined for key: " + key);
         }
     }
 
     private void checkAllowedOrderby(Optional<String> optOrderBy) {
         optOrderBy.ifPresent(orderBy -> {
-            if(orderBy.trim().equalsIgnoreCase("password")) {
+            if (orderBy.trim().equalsIgnoreCase("password")) {
                 throw new ForbiddenException("forbidden orderby field");
             }
         });
@@ -178,8 +184,9 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         if (typeCriterion.isPresent()) {
             final Criterion criterion = typeCriterion.get();
             final UserTypeEnum userType = EnumUtils.stringToEnum(UserTypeEnum.class, criterion.getValue().toString());
-            if (!(criterion.getOperator().equals(CriterionOperator.EQUALS)
-                    && userType.equals(UserTypeEnum.NOMINATIVE))) {
+            if (
+                !(criterion.getOperator().equals(CriterionOperator.EQUALS) && userType.equals(UserTypeEnum.NOMINATIVE))
+            ) {
                 throw new ForbiddenException(String.format("User's type %s is not allowed", userType));
             }
         } else {
@@ -189,8 +196,26 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "lastname", "firstname", "identifier", "groupId", "language", "email", "otp",
-                "subrogeable", "phone", "mobile", "lastConnection", "status", LEVEL_KEY, TYPE_KEY, CUSTOMER_ID_KEY, "siteCode", "centerCodes");
+        return Arrays.asList(
+            "id",
+            "lastname",
+            "firstname",
+            "identifier",
+            "groupId",
+            "language",
+            "email",
+            "otp",
+            "subrogeable",
+            "phone",
+            "mobile",
+            "lastConnection",
+            "status",
+            LEVEL_KEY,
+            TYPE_KEY,
+            CUSTOMER_ID_KEY,
+            "siteCode",
+            "centerCodes"
+        );
     }
 
     @Override
@@ -210,8 +235,13 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     protected Collection<String> getRestrictedKeys(final QueryDto query) {
         Collection<String> restrictedKeys = getRestrictedKeys();
         if (externalSecurityService.hasRole(ServicesData.ROLE_GET_USERS_ALL_CUSTOMERS)) {
-            Optional<String> customerIdKey = query.getCriterionList().stream().map(Criterion::getKey).filter(CUSTOMER_ID_KEY::equals).findFirst();
-            customerIdKey.ifPresent(customerId-> restrictedKeys.removeIf(customerId::equals));
+            Optional<String> customerIdKey = query
+                .getCriterionList()
+                .stream()
+                .map(Criterion::getKey)
+                .filter(CUSTOMER_ID_KEY::equals)
+                .findFirst();
+            customerIdKey.ifPresent(customerId -> restrictedKeys.removeIf(customerId::equals));
         }
         return restrictedKeys;
     }
@@ -240,7 +270,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     public void checkLogbookRight(final String id) {
         final boolean hasRoleGetUsers = externalSecurityService.hasRole(ServicesData.ROLE_GET_USERS);
         if (!hasRoleGetUsers && !StringUtils.equals(externalSecurityService.getUser().getId(), id)) {
-                throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
+            throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
         }
         final UserDto usersDto = super.getOne(id);
         if (usersDto == null) {
@@ -248,21 +278,23 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         }
     }
 
-
     public List<String> getLevels(final Optional<String> criteria) {
         return getClient().getLevels(getInternalHttpContext(), checkAuthorization(criteria));
     }
 
     public UserDto patchAnalytics(final Map<String, Object> partialDto) {
         if (partialDto.containsKey(USER_ID_ATTRIBUTE)) {
-            final boolean hasRolePatchUserAnalytics = externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_USER_INFOS);
+            final boolean hasRolePatchUserAnalytics = externalSecurityService.hasRole(
+                ServicesData.ROLE_UPDATE_USER_INFOS
+            );
 
             if (!hasRolePatchUserAnalytics) {
-                throw new ForbiddenException(String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE)));
+                throw new ForbiddenException(
+                    String.format("Unable to patch analytics for user with id: %s", partialDto.get(USER_ID_ATTRIBUTE))
+                );
             }
         }
 
         return getClient().patchAnalytics(getInternalHttpContext(), partialDto);
     }
-
 }

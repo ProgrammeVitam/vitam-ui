@@ -51,7 +51,10 @@ public class UpdateUnitsMetadataInternalRestClientTest extends ServerIdentityExt
 
     @BeforeEach
     public void setUp() {
-        updateUnitsMetadataInternalRestClient = new UpdateUnitsMetadataInternalRestClient(restTemplate, RestApi.COLLECT_TRANSACTION_PATH);
+        updateUnitsMetadataInternalRestClient = new UpdateUnitsMetadataInternalRestClient(
+            restTemplate,
+            RestApi.COLLECT_TRANSACTION_PATH
+        );
     }
 
     @Test
@@ -59,5 +62,4 @@ public class UpdateUnitsMetadataInternalRestClientTest extends ServerIdentityExt
         Assertions.assertNotNull(updateUnitsMetadataInternalRestClient);
         assertThat(updateUnitsMetadataInternalRestClient.getPathUrl()).isEqualTo(RestApi.COLLECT_TRANSACTION_PATH);
     }
-
 }

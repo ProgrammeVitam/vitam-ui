@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.portal;
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -43,9 +45,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
-
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -66,5 +65,4 @@ public class PortalApplication implements CommandLineRunner {
         LOGGER.debug("VITAMUI SpringBoot Application started:");
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
-
 }

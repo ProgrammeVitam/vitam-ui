@@ -68,22 +68,45 @@ public class ExternalHttpContext extends AbstractHttpContext {
 
     private String requestUri;
 
-    public ExternalHttpContext(final Integer tenantIdentifier, final String userToken, final String applicationId, final String identity) {
+    public ExternalHttpContext(
+        final Integer tenantIdentifier,
+        final String userToken,
+        final String applicationId,
+        final String identity
+    ) {
         this(tenantIdentifier, userToken, applicationId, identity, null, null);
     }
 
-    public ExternalHttpContext(final Integer tenantIdentifier, final String userToken, final String applicationId, final String identity,
-            final String requestId) {
+    public ExternalHttpContext(
+        final Integer tenantIdentifier,
+        final String userToken,
+        final String applicationId,
+        final String identity,
+        final String requestId
+    ) {
         this(tenantIdentifier, userToken, applicationId, identity, requestId, null);
     }
 
-    public ExternalHttpContext(final Integer tenantIdentifier, final String userToken, final String applicationId, final String identity,
-            final String requestId, final String accessContract) {
+    public ExternalHttpContext(
+        final Integer tenantIdentifier,
+        final String userToken,
+        final String applicationId,
+        final String identity,
+        final String requestId,
+        final String accessContract
+    ) {
         super(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract);
     }
 
-    public ExternalHttpContext(final Integer tenantIdentifier, final String userToken, final String applicationId, final String identity,
-                               final String requestId, final String accessContract, String requestUri) {
+    public ExternalHttpContext(
+        final Integer tenantIdentifier,
+        final String userToken,
+        final String applicationId,
+        final String identity,
+        final String requestId,
+        final String accessContract,
+        String requestUri
+    ) {
         super(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract);
         this.requestUri = requestUri;
     }
@@ -101,8 +124,12 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * Build an ExternalContext from request header in the UI layer.
      * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
      */
-    public static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final AuthUserDto principal, final Integer tenantIdentifier,
-            final String accessContract) throws PreconditionFailedException {
+    public static ExternalHttpContext buildFromUiRequest(
+        final HttpServletRequest request,
+        final AuthUserDto principal,
+        final Integer tenantIdentifier,
+        final String accessContract
+    ) throws PreconditionFailedException {
         return buildFromUiRequest(request, principal.getAuthToken(), tenantIdentifier, accessContract);
     }
 
@@ -115,9 +142,16 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * @param accessContract
      * @return
      */
-    private static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final String userToken, final Integer tenantIdentifier,
-            final String accessContract) throws PreconditionFailedException {
-        LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
+    private static ExternalHttpContext buildFromUiRequest(
+        final HttpServletRequest request,
+        final String userToken,
+        final Integer tenantIdentifier,
+        final String accessContract
+    ) throws PreconditionFailedException {
+        LOGGER.debug(
+            "Request Headers : {}",
+            VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders())
+        );
         String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
@@ -136,10 +170,19 @@ public class ExternalHttpContext extends AbstractHttpContext {
         }
         Integer tenantIdentifierToUse = tenantIdentifier;
         if (tenantIdentifierToUse == null) {
-            tenantIdentifierToUse = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), request.getRequestURI());
-
+            tenantIdentifierToUse = getTenantIdentifier(
+                request.getHeader(CommonConstants.X_TENANT_ID_HEADER),
+                request.getRequestURI()
+            );
         }
-        return new ExternalHttpContext(tenantIdentifierToUse, userToken, applicationId, identity, requestId, accessContractToUse);
+        return new ExternalHttpContext(
+            tenantIdentifierToUse,
+            userToken,
+            applicationId,
+            identity,
+            requestId,
+            accessContractToUse
+        );
     }
 
     /**
@@ -147,23 +190,45 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter in the PreAuthentication Phase.
      */
     public static ExternalHttpContext buildFromExternalRequest(final HttpServletRequest request, String userToken) {
-        LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
+        LOGGER.debug(
+            "Request Headers : {}",
+            VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders())
+        );
         String requestUri = request.getRequestURI();
-        final Integer tenantIdentifier = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), requestUri);
+        final Integer tenantIdentifier = getTenantIdentifier(
+            request.getHeader(CommonConstants.X_TENANT_ID_HEADER),
+            requestUri
+        );
         final String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         final String requestId = UUID.randomUUID().toString();
         final String accessContract = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
-        return new ExternalHttpContext(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract, requestUri);
+        return new ExternalHttpContext(
+            tenantIdentifier,
+            userToken,
+            applicationId,
+            identity,
+            requestId,
+            accessContract,
+            requestUri
+        );
     }
 
     /**
      * Build an ExternalContext from a previous external httpContext in the External layer.
      * Note. Usually called by the ExternalApiAuthenticationProvider in the Authentification Phase.
      */
-    public static ExternalHttpContext buildFromExternalHttpContext(final ExternalHttpContext httpContext, final String applicationId) {
-        return new ExternalHttpContext(httpContext.getTenantIdentifier(), httpContext.getUserToken(), applicationId, httpContext.getIdentity(),
-                httpContext.getRequestId(), httpContext.getAccessContract());
+    public static ExternalHttpContext buildFromExternalHttpContext(
+        final ExternalHttpContext httpContext,
+        final String applicationId
+    ) {
+        return new ExternalHttpContext(
+            httpContext.getTenantIdentifier(),
+            httpContext.getUserToken(),
+            applicationId,
+            httpContext.getIdentity(),
+            httpContext.getRequestId(),
+            httpContext.getAccessContract()
+        );
     }
-
 }

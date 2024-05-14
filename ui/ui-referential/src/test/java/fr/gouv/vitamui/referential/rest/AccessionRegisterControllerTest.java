@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(value =  AccessionRegisterController.class)
+@WebMvcTest(value = AccessionRegisterController.class)
 class AccessionRegisterControllerTest extends UiReferentialRestControllerTest<AccessionRegisterDetailDto> {
 
     @MockBean
@@ -33,7 +33,11 @@ class AccessionRegisterControllerTest extends UiReferentialRestControllerTest<Ac
     @Test
     void should_call_the_corresponding_service_once_when_paginated_api_is_called() throws Exception {
         //Given // When
-        ResultActions resultActions = super.performGet("/details", ImmutableMap.of("page", 1, "size", 20), super.getHeaders());
+        ResultActions resultActions = super.performGet(
+            "/details",
+            ImmutableMap.of("page", 1, "size", 20),
+            super.getHeaders()
+        );
 
         //Then
         resultActions.andExpect(status().isOk());

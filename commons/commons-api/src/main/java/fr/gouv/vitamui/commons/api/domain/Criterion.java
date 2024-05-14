@@ -69,5 +69,4 @@ public class Criterion {
     private Object value;
 
     private CriterionOperator operator;
-
 }

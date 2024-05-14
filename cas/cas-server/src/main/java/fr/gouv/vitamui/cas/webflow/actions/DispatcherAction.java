@@ -90,7 +90,6 @@ public class DispatcherAction extends AbstractAction {
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-
         val flowScope = requestContext.getFlowScope();
 
         if (isSubrogationMode(flowScope)) {
@@ -102,18 +101,27 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-
         // We came from subrogation validation
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
         String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
 
-        LOGGER.debug("Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
-            surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+        LOGGER.debug(
+            "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+            surrogateEmail,
+            surrogateCustomerId,
+            superUserEmail,
+            superUserCustomerId
+        );
 
-        ParameterChecker.checkParameter("Missing subrogation params",
-            surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId);
+        ParameterChecker.checkParameter(
+            "Missing subrogation params",
+            surrogateEmail,
+            surrogateCustomerId,
+            superUserEmail,
+            superUserCustomerId
+        );
 
         if (ensureUserIsEnabled(superUserEmail, superUserCustomerId)) {
             return handleUserDisabled(superUserEmail, superUserCustomerId);
@@ -127,7 +135,6 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processLoginRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-
         String userEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
         String customerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
 
@@ -142,12 +149,18 @@ public class DispatcherAction extends AbstractAction {
         return dispatchUser(requestContext, userEmail, customerId, null, null);
     }
 
-    private Event dispatchUser(RequestContext requestContext, String loginEmail,
-        String loginCustomerId, String surrogateEmail, String surrogateCustomerId) throws IOException {
-
-        Optional<IdentityProviderDto> providerOpt =
-            identityProviderHelper.findByUserIdentifierAndCustomerId(providersService.getProviders(), loginEmail,
-                loginCustomerId);
+    private Event dispatchUser(
+        RequestContext requestContext,
+        String loginEmail,
+        String loginCustomerId,
+        String surrogateEmail,
+        String surrogateCustomerId
+    ) throws IOException {
+        Optional<IdentityProviderDto> providerOpt = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            providersService.getProviders(),
+            loginEmail,
+            loginCustomerId
+        );
         if (providerOpt.isEmpty()) {
             LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
@@ -159,7 +172,6 @@ public class DispatcherAction extends AbstractAction {
         val webContext = new JEEContext(request, response);
 
         if (identityProviderDto.getInternal()) {
-
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
@@ -167,25 +179,36 @@ public class DispatcherAction extends AbstractAction {
 
             LOGGER.debug("Redirect the user to the password page...");
             return success();
-
         } else {
-
-            LOGGER.debug("Saving surrogate for after authentication delegation: loginEmail : {}, " +
-                    "loginCustomerId : {}, surrogateEmail : {}, surrogateCustomerId : {}",
-                loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId);
+            LOGGER.debug(
+                "Saving surrogate for after authentication delegation: loginEmail : {}, " +
+                "loginCustomerId : {}, surrogateEmail : {}, surrogateCustomerId : {}",
+                loginEmail,
+                loginCustomerId,
+                surrogateEmail,
+                surrogateCustomerId
+            );
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, loginEmail);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, loginCustomerId);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
 
-            return utils.performClientRedirection(this,
-                ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(), requestContext);
+            return utils.performClientRedirection(
+                this,
+                ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(),
+                requestContext
+            );
         }
     }
 
     private boolean ensureUserIsEnabled(String email, String customerId) {
         UserDto userDto =
-            this.casExternalRestClient.getUserByEmailAndCustomerId(utils.buildContext(email), email, customerId, Optional.empty());
+            this.casExternalRestClient.getUserByEmailAndCustomerId(
+                    utils.buildContext(email),
+                    email,
+                    customerId,
+                    Optional.empty()
+                );
         if (userDto == null) {
             // To avoid account existence disclosure, unknown users are silently ignored.
             // Once they enter their credentials, they will get a generic "login or password invalid" error message.

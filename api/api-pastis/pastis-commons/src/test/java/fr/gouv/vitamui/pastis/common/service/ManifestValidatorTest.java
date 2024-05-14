@@ -78,6 +78,7 @@ public class ManifestValidatorTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
+
     private ManifestValidator manifestValidator;
 
     @Before
@@ -86,19 +87,23 @@ public class ManifestValidatorTest {
     }
 
     @Test
-    public void testManifestOK()
-        throws Exception {
-        Assert
-            .assertTrue(manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"),
-                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")));
+    public void testManifestOK() throws Exception {
+        Assert.assertTrue(
+            manifestValidator.checkFileRNG(
+                PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"),
+                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")
+            )
+        );
     }
 
     @Test
-    public void testManifestNOK()
-        throws Exception {
+    public void testManifestNOK() throws Exception {
         Assert.assertFalse(
-            manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestNOK.xml"),
-                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")));
+            manifestValidator.checkFileRNG(
+                PropertiesUtils.getResourceAsStream("manifests/manifestNOK.xml"),
+                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")
+            )
+        );
     }
 
     /**
@@ -117,21 +122,34 @@ public class ManifestValidatorTest {
 
         BaliseXML.buildBaliseXMLTree(jsonMap, 0, null);
         BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
-        JAXBContext contextObj = JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class,
-            ValueXML.class, OptionalXML.class, OneOrMoreXML.class,
-            ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class,
-            StartXML.class, GrammarXML.class, ChoiceXml.class);
+        JAXBContext contextObj = JAXBContext.newInstance(
+            AttributeXML.class,
+            ElementXML.class,
+            DataXML.class,
+            ValueXML.class,
+            OptionalXML.class,
+            OneOrMoreXML.class,
+            ZeroOrMoreXML.class,
+            AnnotationXML.class,
+            DocumentationXML.class,
+            StartXML.class,
+            GrammarXML.class,
+            ChoiceXml.class
+        );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler());
+        marshallerObj.setProperty(
+            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
+            new PastisCustomCharacterEscapeHandler()
+        );
 
         File rngProfile = tempFolder.newFile("generatedProfile.rng");
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(rngProfile), "UTF-8");
         marshallerObj.marshal(eparentRng, writer);
         writer.close();
 
-        Assert.assertTrue(manifestValidator
-            .checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"), rngProfile));
+        Assert.assertTrue(
+            manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"), rngProfile)
+        );
     }
 }

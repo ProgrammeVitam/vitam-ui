@@ -1,18 +1,7 @@
 package fr.gouv.vitamui.commons.logbook.util;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -21,6 +10,14 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
+import org.junit.Test;
+
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogbookUtilsTest {
 
@@ -30,7 +27,6 @@ public class LogbookUtilsTest {
         String evDetDataString = LogbookUtils.getEvData(Arrays.asList(evData)).toString();
         JsonNode evDetData = JsonHandler.getFromString(evDetDataString);
         assertThat(evDetData).isNotNull();
-
     }
 
     @Test
@@ -40,9 +36,10 @@ public class LogbookUtilsTest {
         operation.setEvId("1");
         operation.setOutcome(StatusCode.OK.toString());
         operation.setEvType("type");
-        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>().addResult(operation)
-                .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
-                .setHttpCode(Response.Status.OK.getStatusCode());
+        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>()
+            .addResult(operation)
+            .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
+            .setHttpCode(Response.Status.OK.getStatusCode());
         // When
         StatusCode statusCode = LogbookUtils.getLogbookOperationStatus(response);
         //Then
@@ -64,12 +61,12 @@ public class LogbookUtilsTest {
         subOperation2.setOutcome(StatusCode.OK.toString());
         subOperation2.setEvType("type");
         operation.setEvents(new ArrayList<>());
-        operation.getEvents()
-                .addAll(List.of(subOperation1, subOperation2));
+        operation.getEvents().addAll(List.of(subOperation1, subOperation2));
 
-        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>().addResult(operation)
-                .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
-                .setHttpCode(Response.Status.OK.getStatusCode());
+        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>()
+            .addResult(operation)
+            .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
+            .setHttpCode(Response.Status.OK.getStatusCode());
         // When
         StatusCode statusCode = LogbookUtils.getLogbookOperationStatus(response);
         //Then
@@ -90,9 +87,10 @@ public class LogbookUtilsTest {
         operation.setEvents(new ArrayList<>());
         operation.getEvents().add(subOperation1);
 
-        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>().addResult(operation)
-                .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
-                .setHttpCode(Response.Status.OK.getStatusCode());
+        final RequestResponse<LogbookOperation> response = new RequestResponseOK<LogbookOperation>()
+            .addResult(operation)
+            .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
+            .setHttpCode(Response.Status.OK.getStatusCode());
         // When
         StatusCode statusCode = LogbookUtils.getLogbookOperationStatus(response);
         // Then

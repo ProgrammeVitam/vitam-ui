@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.archives.search.rest;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
@@ -31,11 +31,12 @@ public class SearchCriteriaHistoryControllerTest extends UiArchiveSearchControll
     @MockBean
     private SearchCriteriaHistoryService service;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryControllerTest.class
+    );
 
     @MockBean
     private BuildProperties buildProperties;
-
 
     @Test
     public void testCreateSearchCriteriaHistory() {
@@ -79,8 +80,12 @@ public class SearchCriteriaHistoryControllerTest extends UiArchiveSearchControll
 
     @Override
     protected void preparedServices() {
-        Mockito.when(service.create(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(new SearchCriteriaHistoryDto());
-        Mockito.when(service.update(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(new SearchCriteriaHistoryDto());
+        Mockito.when(service.create(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(
+            new SearchCriteriaHistoryDto()
+        );
+        Mockito.when(service.update(any(), any(SearchCriteriaHistoryDto.class))).thenReturn(
+            new SearchCriteriaHistoryDto()
+        );
         Mockito.when(service.getOne(any(), any(), any())).thenReturn(new SearchCriteriaHistoryDto());
     }
 }

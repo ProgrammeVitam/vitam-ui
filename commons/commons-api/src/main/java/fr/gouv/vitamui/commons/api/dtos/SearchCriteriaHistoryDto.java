@@ -39,7 +39,6 @@ package fr.gouv.vitamui.commons.api.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaElementsDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

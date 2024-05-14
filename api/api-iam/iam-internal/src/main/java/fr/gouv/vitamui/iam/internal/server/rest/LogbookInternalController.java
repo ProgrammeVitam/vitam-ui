@@ -102,42 +102,53 @@ public class LogbookInternalController {
     private final TenantInternalService tenantInternalService;
 
     @Autowired
-    public LogbookInternalController(final LogbookService logbookService,
-        final InternalSecurityService securityService, final TenantInternalService tenantInternalService) {
+    public LogbookInternalController(
+        final LogbookService logbookService,
+        final InternalSecurityService securityService,
+        final TenantInternalService tenantInternalService
+    ) {
         this.logbookService = logbookService;
         this.securityService = securityService;
         this.tenantInternalService = tenantInternalService;
     }
 
-
     @ApiOperation(value = "Get log book operation by json select")
-    @Secured({ServicesData.ROLE_LOGBOOKS})
+    @Secured({ ServicesData.ROLE_LOGBOOKS })
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-            @RequestBody final JsonNode select, @RequestParam(required = false) final Integer vitamTenantIdentifier) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final JsonNode select,
+        @RequestParam(required = false) final Integer vitamTenantIdentifier
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeJson(select);
         SanityChecker.sanitizeCriteria(select);
 
         final VitamContext vitamContext = getRequestedVitamContext(tenantId, vitamTenantIdentifier);
-        return VitamRestUtils.responseMapping(logbookService.selectOperations(select, vitamContext).toJsonNode(),
-            LogbookOperationsResponseDto.class);
+        return VitamRestUtils.responseMapping(
+            logbookService.selectOperations(select, vitamContext).toJsonNode(),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     @ApiOperation(value = "Get log book operation by id")
-    @Secured({ServicesData.ROLE_LOGBOOKS})
+    @Secured({ ServicesData.ROLE_LOGBOOKS })
     @GetMapping(value = CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     public LogbookOperationsResponseDto findOperationById(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
-        final String accessContractId, @PathVariable final String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestHeader(
+            required = true,
+            value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER
+        ) final String accessContractId,
+        @PathVariable final String id
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Get log book operation by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return VitamRestUtils.responseMapping(logbookService.selectOperationbyId(id, vitamContext).toJsonNode(),
-            LogbookOperationsResponseDto.class);
+        return VitamRestUtils.responseMapping(
+            logbookService.selectOperationbyId(id, vitamContext).toJsonNode(),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     @ApiOperation(value = "Get unit lifecycle by id")
@@ -145,15 +156,20 @@ public class LogbookInternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
-        final String accessContractId, @PathVariable final String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestHeader(
+            required = true,
+            value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER
+        ) final String accessContractId,
+        @PathVariable final String id
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Get unit lifecycle by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return VitamRestUtils.responseMapping(logbookService.findUnitLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
-            LogbookLifeCycleResponseDto.class);
+        return VitamRestUtils.responseMapping(
+            logbookService.findUnitLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     @ApiOperation(value = "Get object lifecycle by id")
@@ -161,25 +177,31 @@ public class LogbookInternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
-        final String accessContractId, @PathVariable final String id)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestHeader(
+            required = true,
+            value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER
+        ) final String accessContractId,
+        @PathVariable final String id
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Get object lifecycle by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return VitamRestUtils
-            .responseMapping(logbookService.findObjectGroupLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
-                LogbookLifeCycleResponseDto.class);
+        return VitamRestUtils.responseMapping(
+            logbookService.findObjectGroupLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     @ApiOperation(value = "Download the manifest for a given operation")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public void downloadManifest(@PathVariable final String id, final HttpServletResponse response,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier)
-        throws IOException, InvalidParseOperationException, PreconditionFailedException {
+    public void downloadManifest(
+        @PathVariable final String id,
+        final HttpServletResponse response,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the manifest for the following Vitam operation : {}", id);
@@ -193,9 +215,11 @@ public class LogbookInternalController {
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public void downloadAtr(@PathVariable final String id, final HttpServletResponse response,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier)
-        throws IOException, InvalidParseOperationException, PreconditionFailedException {
+    public void downloadAtr(
+        @PathVariable final String id,
+        final HttpServletResponse response,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the ATR file for the following Vitam operation : {}", id);
@@ -206,35 +230,41 @@ public class LogbookInternalController {
     }
 
     @ApiOperation(value = "Download the report file for a given operation")
-    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<Resource>> downloadReport(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
-        final String accessContractId,
+        @RequestHeader(
+            required = true,
+            value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER
+        ) final String accessContractId,
         @PathVariable final String id,
         @PathVariable final String downloadType,
-        final HttpServletResponse response) throws VitamClientException, IOException, InvalidParseOperationException,
-        PreconditionFailedException {
-
+        final HttpServletResponse response
+    ) throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, downloadType, accessContractId);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
 
         LOGGER.debug("Access Contract {} ", accessContractId);
-        ParameterChecker
-            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+        ParameterChecker.checkParameter(
+            "The identifier, the accessContract Id  are mandatory parameters: ",
+            id,
+            accessContractId
+        );
         final VitamContext vitamContext = getVitamContext(tenantId, accessContractId);
         Mono<Resource> resourceMono = Mono.fromCallable(() -> {
             Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext);
             return new InputStreamResource((InputStream) vitamResponse.getEntity());
         });
 
-        return resourceMono.subscribeOn(Schedulers.boundedElastic())
-            .flatMap(resource -> Mono.just(ResponseEntity
-                .ok().cacheControl(CacheControl.noCache())
-                .body(resource)));
+        return resourceMono
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(resource -> Mono.just(ResponseEntity.ok().cacheControl(CacheControl.noCache()).body(resource)));
     }
 
     private VitamContext getVitamContext(Integer tenantId, String accessContractId) {
@@ -247,11 +277,16 @@ public class LogbookInternalController {
         return vitamContext;
     }
 
-    private VitamContext getRequestedVitamContext(final Integer headerTenantIdentifier,final Integer requestedVitamTenantIdentifier) {
+    private VitamContext getRequestedVitamContext(
+        final Integer headerTenantIdentifier,
+        final Integer requestedVitamTenantIdentifier
+    ) {
         if (Objects.nonNull(requestedVitamTenantIdentifier)) {
             TenantDto requestedTenant = tenantInternalService.findByIdentifier(requestedVitamTenantIdentifier);
             if (Objects.isNull(requestedTenant)) {
-                throw new BadRequestException(String.format("Tenant not found with identifier : '%d'", requestedVitamTenantIdentifier));
+                throw new BadRequestException(
+                    String.format("Tenant not found with identifier : '%d'", requestedVitamTenantIdentifier)
+                );
             }
             return securityService.buildVitamContext(requestedVitamTenantIdentifier);
         } else {

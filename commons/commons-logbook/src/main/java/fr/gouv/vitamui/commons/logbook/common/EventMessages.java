@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.commons.logbook.common;
 
-import java.util.Map;
-
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import lombok.Data;
+import java.util.Map;
 
 @ConfigurationProperties(ignoreUnknownFields = true)
 @Data
 public class EventMessages {
 
     private Map<String, String> outMessg;
-
 }

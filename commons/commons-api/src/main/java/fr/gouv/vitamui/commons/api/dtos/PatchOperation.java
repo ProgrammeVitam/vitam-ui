@@ -34,7 +34,7 @@ public enum PatchOperation {
     REMOVE("remove"),
     REPLACE("replace");
 
-    final private String value;
+    private final String value;
 
     PatchOperation(final String value) {
         this.value = value;

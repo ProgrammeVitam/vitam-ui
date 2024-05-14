@@ -90,5 +90,4 @@ public class Profile implements Serializable {
 
     @XmlElement(name = "DeactivationDate")
     private String deactivationdate;
-
 }

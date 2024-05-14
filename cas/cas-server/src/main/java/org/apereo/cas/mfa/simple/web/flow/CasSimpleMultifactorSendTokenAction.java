@@ -38,7 +38,9 @@ import java.util.Optional;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuthenticationAction<CasSimpleMultifactorAuthenticationProvider> {
+public class CasSimpleMultifactorSendTokenAction
+    extends AbstractMultifactorAuthenticationAction<CasSimpleMultifactorAuthenticationProvider> {
+
     private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 
     private final CommunicationsManager communicationsManager;
@@ -51,25 +53,32 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
 
     private final BucketConsumer bucketConsumer;
 
-    protected boolean isSmsSent(final CommunicationsManager communicationsManager,
-                                final CasSimpleMultifactorAuthenticationProperties properties,
-                                final Principal principal,
-                                final Ticket tokenTicket,
-                                final RequestContext requestContext) {
+    protected boolean isSmsSent(
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final Principal principal,
+        final Ticket tokenTicket,
+        final RequestContext requestContext
+    ) {
         if (communicationsManager.isSmsSenderDefined()) {
             val smsProperties = properties.getSms();
             val token = tokenTicket.getId();
             // CUSTO:
             val tokenWithoutPrefix = token.substring(CasSimpleMultifactorAuthenticationTicket.PREFIX.length() + 1);
             val smsText = StringUtils.isNotBlank(smsProperties.getText())
-                ? SmsBodyBuilder.builder().properties(smsProperties).parameters(
-                    Map.of("token", token, "tokenWithoutPrefix", tokenWithoutPrefix))
-                .build().get()
+                ? SmsBodyBuilder.builder()
+                    .properties(smsProperties)
+                    .parameters(Map.of("token", token, "tokenWithoutPrefix", tokenWithoutPrefix))
+                    .build()
+                    .get()
                 : token;
 
-            val smsRequest = SmsRequest.builder().from(smsProperties.getFrom())
-                .principal(principal).attribute(smsProperties.getAttributeName())
-                .text(smsText).build();
+            val smsRequest = SmsRequest.builder()
+                .from(smsProperties.getFrom())
+                .principal(principal)
+                .attribute(smsProperties.getAttributeName())
+                .text(smsText)
+                .build();
             return communicationsManager.sms(smsRequest);
         }
         return false;
@@ -85,10 +94,13 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
      * @param requestContext        the request context
      * @return whether the email has been sent.
      */
-    protected EmailCommunicationResult isMailSent(final CommunicationsManager communicationsManager,
-                                                  final CasSimpleMultifactorAuthenticationProperties properties,
-                                                  final Principal principal, final Ticket tokenTicket,
-                                                  final RequestContext requestContext) {
+    protected EmailCommunicationResult isMailSent(
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final Principal principal,
+        final Ticket tokenTicket,
+        final RequestContext requestContext
+    ) {
         if (communicationsManager.isMailSenderDefined()) {
             val mailProperties = properties.getMail();
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
@@ -100,27 +112,35 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
             // CUSTO:
             parameters.put("tokenWithoutPrefix", tokenWithoutPrefix);
 
-            val locale = Optional.ofNullable(RequestContextUtils.getLocaleResolver(request))
-                .map(resolver -> resolver.resolveLocale(request));
+            val locale = Optional.ofNullable(RequestContextUtils.getLocaleResolver(request)).map(
+                resolver -> resolver.resolveLocale(request)
+            );
             val body = EmailMessageBodyBuilder.builder()
                 .properties(mailProperties)
                 .locale(locale)
                 .parameters(parameters)
                 .build()
                 .get();
-            val emailRequest = EmailMessageRequest.builder().emailProperties(mailProperties)
-                .principal(principal).attribute(mailProperties.getAttributeName())
-                .body(body).build();
+            val emailRequest = EmailMessageRequest.builder()
+                .emailProperties(mailProperties)
+                .principal(principal)
+                .attribute(mailProperties.getAttributeName())
+                .body(body)
+                .build();
             return communicationsManager.email(emailRequest);
         }
         return EmailCommunicationResult.builder().build();
     }
 
-    protected boolean isNotificationSent(final CommunicationsManager communicationsManager,
-                                         final Principal principal,
-                                         final Ticket token) {
-        return communicationsManager.isNotificationSenderDefined()
-            && communicationsManager.notify(principal, "Apereo CAS Token", String.format("Token: %s", token.getId()));
+    protected boolean isNotificationSent(
+        final CommunicationsManager communicationsManager,
+        final Principal principal,
+        final Ticket token
+    ) {
+        return (
+            communicationsManager.isNotificationSenderDefined() &&
+            communicationsManager.notify(principal, "Apereo CAS Token", String.format("Token: %s", token.getId()))
+        );
     }
 
     @Override
@@ -140,14 +160,19 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
         LOGGER.debug("Using token [{}] created at [{}]", token.getId(), token.getCreationTime());
 
         val strategy = tokenCommunicationStrategy.determineStrategy(token);
-        val smsSent = strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS)
-            && isSmsSent(communicationsManager, properties, principal, token, requestContext);
+        val smsSent =
+            strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS) &&
+            isSmsSent(communicationsManager, properties, principal, token, requestContext);
 
-        val emailSent = strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.EMAIL)
-            && isMailSent(communicationsManager, properties, principal, token, requestContext).isSuccess();
+        val emailSent =
+            strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.EMAIL) &&
+            isMailSent(communicationsManager, properties, principal, token, requestContext).isSuccess();
 
-        val notificationSent = strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.NOTIFICATION)
-            && isNotificationSent(communicationsManager, principal, token);
+        val notificationSent =
+            strategy.contains(
+                CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.NOTIFICATION
+            ) &&
+            isNotificationSent(communicationsManager, principal, token);
 
         if (smsSent || emailSent || notificationSent) {
             multifactorAuthenticationService.store(token);
@@ -161,7 +186,6 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
         return error();
     }
 
-
     /**
      * Get or create a token.
      *
@@ -169,15 +193,23 @@ public class CasSimpleMultifactorSendTokenAction extends AbstractMultifactorAuth
      * @param principal      the principal
      * @return the token
      */
-    protected CasSimpleMultifactorAuthenticationTicket getOrCreateToken(final RequestContext requestContext, final Principal principal) {
-        val currentToken = WebUtils.getSimpleMultifactorAuthenticationToken(requestContext, CasSimpleMultifactorAuthenticationTicket.class);
+    protected CasSimpleMultifactorAuthenticationTicket getOrCreateToken(
+        final RequestContext requestContext,
+        final Principal principal
+    ) {
+        val currentToken = WebUtils.getSimpleMultifactorAuthenticationToken(
+            requestContext,
+            CasSimpleMultifactorAuthenticationTicket.class
+        );
         return Optional.ofNullable(currentToken)
             .filter(token -> !token.isExpired())
-            .orElseGet(Unchecked.supplier(() -> {
-                WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
-                val service = WebUtils.getService(requestContext);
-                return multifactorAuthenticationService.generate(principal, service);
-            }));
+            .orElseGet(
+                Unchecked.supplier(() -> {
+                    WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
+                    val service = WebUtils.getService(requestContext);
+                    return multifactorAuthenticationService.generate(principal, service);
+                })
+            );
     }
 
     private String getThrottledRequestKeyFor(final Authentication authentication) {

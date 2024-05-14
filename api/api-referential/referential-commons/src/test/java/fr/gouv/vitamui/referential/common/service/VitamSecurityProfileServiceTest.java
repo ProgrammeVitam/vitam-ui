@@ -82,9 +82,13 @@ public class VitamSecurityProfileServiceTest {
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS VitamSecurityProfileServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS VitamSecurityProfileServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -95,8 +99,9 @@ public class VitamSecurityProfileServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
+        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -110,8 +115,9 @@ public class VitamSecurityProfileServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -120,13 +126,15 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void patchSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void patchSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode)).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -135,15 +143,22 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_return_ok_when_vitamclient_ok() throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
+    public void deleteSecurityProfile_should_return_ok_when_vitamclient_ok()
+        throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "1";
 
-        expect(adminExternalClient.createSecurityProfiles(isA(VitamContext.class), isA(InputStream.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(
+            adminExternalClient.createSecurityProfiles(
+                isA(VitamContext.class),
+                isA(InputStream.class),
+                isA(String.class)
+            )
+        ).andReturn(new RequestResponseOK().setHttpCode(200));
 
-        expect(adminExternalClient.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(adminExternalClient.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -152,15 +167,22 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_throw_JsonProcessingException_when_vitamclient_400() throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
+    public void deleteSecurityProfile_should_throw_JsonProcessingException_when_vitamclient_400()
+        throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "1";
 
-        expect(adminExternalClient.createSecurityProfiles(isA(VitamContext.class), isA(InputStream.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            adminExternalClient.createSecurityProfiles(
+                isA(VitamContext.class),
+                isA(InputStream.class),
+                isA(String.class)
+            )
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
 
-        expect(adminExternalClient.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(adminExternalClient.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -169,15 +191,22 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
+    public void deleteSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
 
-        expect(adminExternalClient.createSecurityProfiles(isA(VitamContext.class), isA(InputStream.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(
+            adminExternalClient.createSecurityProfiles(
+                isA(VitamContext.class),
+                isA(InputStream.class),
+                isA(String.class)
+            )
+        ).andThrow(new VitamClientException("Exception thrown by Vitam"));
 
-        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, new Select().getFinalSelect()))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, new Select().getFinalSelect())).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -190,8 +219,9 @@ public class VitamSecurityProfileServiceTest {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
+        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode)).andReturn(
+            new RequestResponseOK<SecurityProfileModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -200,12 +230,14 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void findSecurityProfiles_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
+    public void findSecurityProfiles_should_throw_BadRequestException_when_vitamclient_400()
+        throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
+        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode)).andReturn(
+            new RequestResponseOK<SecurityProfileModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -214,12 +246,14 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void findSecurityProfiles_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findSecurityProfiles_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findSecurityProfiles(vitamSecurityProfile, jsonNode)).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -232,8 +266,9 @@ public class VitamSecurityProfileServiceTest {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";
 
-        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
+        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId)).andReturn(
+            new RequestResponseOK<SecurityProfileModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -242,12 +277,14 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void findSecurityProfileById_should_return_InternalServerException_when_vitamclient_400() throws VitamClientException {
+    public void findSecurityProfileById_should_return_InternalServerException_when_vitamclient_400()
+        throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";
 
-        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
+        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId)).andReturn(
+            new RequestResponseOK<SecurityProfileModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -256,12 +293,14 @@ public class VitamSecurityProfileServiceTest {
     }
 
     @Test
-    public void findSecurityProfileById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findSecurityProfileById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";
 
-        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId)).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {

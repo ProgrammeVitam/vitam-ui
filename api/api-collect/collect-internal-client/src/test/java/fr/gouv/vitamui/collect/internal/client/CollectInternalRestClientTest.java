@@ -103,10 +103,14 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         CollectProjectDto collectProjectDto = factory.manufacturePojo(CollectProjectDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
 
-        when(restTemplate.exchange(BASE_URL + COLLECT_PROJECT_PATH, HttpMethod.POST,
-            new HttpEntity<>(collectProjectDto, params.getValue()),
-            CollectProjectDto.class))
-            .thenReturn(new ResponseEntity<>(collectProjectDto, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                BASE_URL + COLLECT_PROJECT_PATH,
+                HttpMethod.POST,
+                new HttpEntity<>(collectProjectDto, params.getValue()),
+                CollectProjectDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(collectProjectDto, HttpStatus.OK));
 
         // WHEN
         CollectProjectDto response = collectInternalRestClient.create(params.getKey(), collectProjectDto);
@@ -122,34 +126,54 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void shouldGetPaginatedProjectsWithSuccess() {
         // GIVEN
-        PaginatedValuesDto<CollectProjectDto> paginatedprojects =
-            factory.manufacturePojo(PaginatedValuesDto.class, CollectProjectDto.class);
+        PaginatedValuesDto<CollectProjectDto> paginatedprojects = factory.manufacturePojo(
+            PaginatedValuesDto.class,
+            CollectProjectDto.class
+        );
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
 
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "?page=1&size=1"), HttpMethod.GET,
-            new HttpEntity<>(params.getValue()), collectInternalRestClient.getDtoPaginatedClass()))
-            .thenReturn(new ResponseEntity<>(paginatedprojects, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + "?page=1&size=1"),
+                HttpMethod.GET,
+                new HttpEntity<>(params.getValue()),
+                collectInternalRestClient.getDtoPaginatedClass()
+            )
+        ).thenReturn(new ResponseEntity<>(paginatedprojects, HttpStatus.OK));
 
         // WHEN
-        PaginatedValuesDto<CollectProjectDto> response =
-            collectInternalRestClient.getAllPaginated(params.getKey(), 1, 1, Optional.empty(), Optional.empty()
-                , Optional.empty(), Optional.empty());
+        PaginatedValuesDto<CollectProjectDto> response = collectInternalRestClient.getAllPaginated(
+            params.getKey(),
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(PaginatedValuesDto.class);
         assertEquals(5, response.getValues().size());
         assertTrue(response.getValues().stream().findFirst().isPresent());
-        assertEquals(response.getValues().stream().findFirst().get().getId(),
-            response.getValues().stream().findFirst().get().getId());
+        assertEquals(
+            response.getValues().stream().findFirst().get().getId(),
+            response.getValues().stream().findFirst().get().getId()
+        );
     }
 
     @Test
     public void shouldDeleteProjectWithSuccess() {
         // GIVEN
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID), HttpMethod.DELETE,
-            new HttpEntity<>(params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID),
+                HttpMethod.DELETE,
+                new HttpEntity<>(params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(() -> collectInternalRestClient.deleteProject(params.getKey(), PROJECT_ID));
     }
@@ -159,14 +183,17 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         // GIVEN
         ResultsDto resultsDto = factory.manufacturePojo(ResultsDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + OBJECT_GROUPS + "/" + OBJECT_ID),
-            HttpMethod.GET,
-            new HttpEntity<>(params.getValue()), ResultsDto.class))
-            .thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + OBJECT_GROUPS + "/" + OBJECT_ID),
+                HttpMethod.GET,
+                new HttpEntity<>(params.getValue()),
+                ResultsDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(resultsDto, HttpStatus.OK));
 
         // WHEN
-        ResponseEntity<ResultsDto> response =
-            collectInternalRestClient.findObjectById(OBJECT_ID, params.getKey());
+        ResponseEntity<ResultsDto> response = collectInternalRestClient.findObjectById(OBJECT_ID, params.getKey());
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);
@@ -179,27 +206,41 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
     @Test
     public void shouldGetPaginatedTransactionsWithSuccess() {
         // GIVEN
-        PaginatedValuesDto<CollectTransactionDto> paginatedTransactions =
-            factory.manufacturePojo(PaginatedValuesDto.class, CollectTransactionDto.class);
+        PaginatedValuesDto<CollectTransactionDto> paginatedTransactions = factory.manufacturePojo(
+            PaginatedValuesDto.class,
+            CollectTransactionDto.class
+        );
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
 
-        when(restTemplate.exchange(
-            URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + TRANSACTIONS + "?page=1&size=1"),
-            HttpMethod.GET,
-            new HttpEntity<>(params.getValue()), collectInternalRestClient.getTransactionDtoPaginatedClass()))
-            .thenReturn(new ResponseEntity<>(paginatedTransactions, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + TRANSACTIONS + "?page=1&size=1"),
+                HttpMethod.GET,
+                new HttpEntity<>(params.getValue()),
+                collectInternalRestClient.getTransactionDtoPaginatedClass()
+            )
+        ).thenReturn(new ResponseEntity<>(paginatedTransactions, HttpStatus.OK));
 
         // WHEN
         PaginatedValuesDto<CollectTransactionDto> response =
-            collectInternalRestClient.getTransactionsByProjectPaginated(params.getKey(), 1, 1,
-                Optional.empty(), Optional.empty(), Optional.empty(), PROJECT_ID);
+            collectInternalRestClient.getTransactionsByProjectPaginated(
+                params.getKey(),
+                1,
+                1,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                PROJECT_ID
+            );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(PaginatedValuesDto.class);
         assertEquals(5, response.getValues().size());
         assertTrue(response.getValues().stream().findFirst().isPresent());
-        assertEquals(response.getValues().stream().findFirst().get().getId(),
-            response.getValues().stream().findFirst().get().getId());
+        assertEquals(
+            response.getValues().stream().findFirst().get().getId(),
+            response.getValues().stream().findFirst().get().getId()
+        );
     }
 
     @Test
@@ -208,10 +249,13 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + TRANSACTION_ID),
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_TRANSACTION_PATH + "/" + TRANSACTION_ID),
                 HttpMethod.GET,
-                new HttpEntity<>(params.getValue()), CollectTransactionDto.class))
-            .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
+                new HttpEntity<>(params.getValue()),
+                CollectTransactionDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
 
         // WHEN
         CollectTransactionDto response = collectInternalRestClient.getTransactionById(params.getKey(), TRANSACTION_ID);
@@ -229,14 +273,19 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + LAST_TRANSACTION_PATH),
+            restTemplate.exchange(
+                URI.create(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + LAST_TRANSACTION_PATH),
                 HttpMethod.GET,
-                new HttpEntity<>(params.getValue()), CollectTransactionDto.class))
-            .thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
+                new HttpEntity<>(params.getValue()),
+                CollectTransactionDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(collectTransactionDto, HttpStatus.OK));
 
         // WHEN
-        CollectTransactionDto response =
-            collectInternalRestClient.getLastTransactionForProjectId(params.getKey(), PROJECT_ID);
+        CollectTransactionDto response = collectInternalRestClient.getLastTransactionForProjectId(
+            params.getKey(),
+            PROJECT_ID
+        );
         // THEN
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectTransactionDto.class);
@@ -250,13 +299,18 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         // GIVEN
         CollectTransactionDto collectTransactionDto = factory.manufacturePojo(CollectTransactionDto.class);
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
-        when(restTemplate.exchange(BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + TRANSACTIONS,
-            HttpMethod.POST,
-            new HttpEntity<>(collectTransactionDto, params.getValue()), CollectTransactionDto.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                BASE_URL + COLLECT_PROJECT_PATH + "/" + PROJECT_ID + TRANSACTIONS,
+                HttpMethod.POST,
+                new HttpEntity<>(collectTransactionDto, params.getValue()),
+                CollectTransactionDto.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
         assertDoesNotThrow(
-            () -> collectInternalRestClient.createTransaction(params.getKey(), collectTransactionDto, PROJECT_ID));
+            () -> collectInternalRestClient.createTransaction(params.getKey(), collectTransactionDto, PROJECT_ID)
+        );
     }
 
     private static Pair<InternalHttpContext, MultiValueMap<String, String>> generateHeadersAndContext() {
@@ -272,5 +326,4 @@ public class CollectInternalRestClientTest extends ServerIdentityExtension {
         headers.put(X_CUSTOMER_ID_HEADER, Collections.singletonList(""));
         return Pair.of(context, headers);
     }
-
 }

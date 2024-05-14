@@ -71,5 +71,4 @@ public class ManagementDto {
 
     @JsonProperty("UpdateOperation")
     private UpdateOperationDto updateOperationDto;
-
 }

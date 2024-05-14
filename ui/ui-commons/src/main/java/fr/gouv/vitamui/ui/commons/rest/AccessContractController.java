@@ -52,13 +52,13 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-
 @Api(tags = "access contracts")
 @RestController
 @RequestMapping("${ui-prefix}/accesscontracts")
 @Consumes(MediaType.APPLICATION_JSON_VALUE)
 @Produces(MediaType.APPLICATION_JSON_VALUE)
 public class AccessContractController extends AbstractUiRestController {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractController.class);
     private final AccessContractService accessContractService;
 
@@ -76,9 +76,16 @@ public class AccessContractController extends AbstractUiRestController {
 
     @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AccessContractsDto getById(final @PathVariable("identifier") String identifier) throws
-        UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("get access contract by id {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
-        return accessContractService.getAccessContractById(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+    public AccessContractsDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        LOGGER.debug(
+            "get access contract by id {} / {}",
+            identifier,
+            URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString())
+        );
+        return accessContractService.getAccessContractById(
+            buildUiHttpContext(),
+            URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 }

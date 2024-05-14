@@ -112,14 +112,37 @@ public class IdentityProviderBuilder {
 
     private String protocoleType;
 
-    public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
-        final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
-        final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-        final Boolean readonly, final String mailAttribute, final String identifierAttribute,
-        final Integer maximumAuthenticationLifetime, final AuthnRequestBindingEnum authnRequestBinding,
-        final Boolean wantsAssertionsSigned, final Boolean authnRequestSigned, final boolean propagateLogout, final Boolean autoProvisioningEnabled,
-        String clientId, String clientSecret, String discoveryUrl, String scope, String preferredJwsAlgorithm,
-        Map<String, String> customParams, Boolean useState, Boolean useNonce, Boolean usePkce, String protocoleType) {
+    public IdentityProviderBuilder(
+        final String name,
+        final String technicalName,
+        final Boolean enabled,
+        final Boolean internal,
+        final List<String> patterns,
+        final Resource keystore,
+        final String keystorePassword,
+        final String privateKeyPassword,
+        final Resource idpMetadata,
+        final String customerId,
+        final Boolean readonly,
+        final String mailAttribute,
+        final String identifierAttribute,
+        final Integer maximumAuthenticationLifetime,
+        final AuthnRequestBindingEnum authnRequestBinding,
+        final Boolean wantsAssertionsSigned,
+        final Boolean authnRequestSigned,
+        final boolean propagateLogout,
+        final Boolean autoProvisioningEnabled,
+        String clientId,
+        String clientSecret,
+        String discoveryUrl,
+        String scope,
+        String preferredJwsAlgorithm,
+        Map<String, String> customParams,
+        Boolean useState,
+        Boolean useNonce,
+        Boolean usePkce,
+        String protocoleType
+    ) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;

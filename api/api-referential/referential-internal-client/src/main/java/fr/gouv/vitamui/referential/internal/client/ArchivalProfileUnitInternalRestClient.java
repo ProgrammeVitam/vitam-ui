@@ -54,14 +54,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class ArchivalProfileUnitInternalRestClient extends BasePaginatingAndSortingRestClient<ArchivalProfileUnitDto, InternalHttpContext> {
+public class ArchivalProfileUnitInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ArchivalProfileUnitDto, InternalHttpContext> {
 
     public ArchivalProfileUnitInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<ArchivalProfileUnitDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ArchivalProfileUnitDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<ArchivalProfileUnitDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<ArchivalProfileUnitDto>>() {};
     }
 
     @Override
@@ -69,19 +71,24 @@ public class ArchivalProfileUnitInternalRestClient extends BasePaginatingAndSort
         return RestApi.ARCHIVAL_PROFILE_URL;
     }
 
-    @Override protected Class<ArchivalProfileUnitDto> getDtoClass() {
+    @Override
+    protected Class<ArchivalProfileUnitDto> getDtoClass() {
         return ArchivalProfileUnitDto.class;
     }
 
     protected ParameterizedTypeReference<List<ArchivalProfileUnitDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ArchivalProfileUnitDto>>() { };
+        return new ParameterizedTypeReference<List<ArchivalProfileUnitDto>>() {};
     }
 
     public boolean check(InternalHttpContext context, ArchivalProfileUnitDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<ArchivalProfileUnitDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 

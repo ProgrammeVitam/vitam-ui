@@ -59,7 +59,11 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
      * @param x509CertificateExtractors
      * @param tokenExtractors
      */
-    public ExternalRequestHeadersAuthenticationFilter(final AuthenticationManager authenticationManager, final List<X509CertificateExtractor> x509CertificateExtractors, List<TokenExtractor> tokenExtractors) {
+    public ExternalRequestHeadersAuthenticationFilter(
+        final AuthenticationManager authenticationManager,
+        final List<X509CertificateExtractor> x509CertificateExtractors,
+        List<TokenExtractor> tokenExtractors
+    ) {
         super();
         setAuthenticationManager(authenticationManager);
         this.x509CertificateExtractors = x509CertificateExtractors;
@@ -76,7 +80,8 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
     }
 
     private String extractToken(HttpServletRequest request) {
-        return tokenExtractors.stream()
+        return tokenExtractors
+            .stream()
             .map(tokenExtractor -> tokenExtractor.extract(request))
             .filter(Objects::nonNull)
             .findFirst()
@@ -89,7 +94,8 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
     @Override
     protected Object getPreAuthenticatedCredentials(final HttpServletRequest request) {
         // This is a temporary patch to allow both mTLS authentication behind gateway or full mTLS during migration
-        return x509CertificateExtractors.stream()
+        return x509CertificateExtractors
+            .stream()
             .map(x509CertificateExtractor -> x509CertificateExtractor.extract(request))
             .filter(Objects::nonNull)
             .findFirst()

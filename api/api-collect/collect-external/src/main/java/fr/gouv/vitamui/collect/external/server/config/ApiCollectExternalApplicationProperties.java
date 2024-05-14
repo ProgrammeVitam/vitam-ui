@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.collect.external.server.config;
 
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,5 +51,4 @@ public class ApiCollectExternalApplicationProperties {
     private RestClientConfiguration collectInternalClient;
 
     private RestClientConfiguration updateUnitsMetadataInternalClient;
-
 }

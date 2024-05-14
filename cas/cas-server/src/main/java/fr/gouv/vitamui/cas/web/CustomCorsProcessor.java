@@ -36,7 +36,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CustomCorsProcessor extends DefaultCorsProcessor {
 
-    private static final String IDP_LOCATION_XPATH_EXPRESSION = "//*/SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']/@Location";
+    private static final String IDP_LOCATION_XPATH_EXPRESSION =
+        "//*/SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']/@Location";
 
     private static final String IDP_ENTITY_XPATH_EXPRESSION = "//*/@entityID";
 
@@ -45,11 +46,14 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    static final private Set<String> ALLOWED_ORIGINS_WITHOUT_CREDENTIALS = Set.of("http://localhost");
+    private static final Set<String> ALLOWED_ORIGINS_WITHOUT_CREDENTIALS = Set.of("http://localhost");
 
-    protected boolean handleInternal(ServerHttpRequest serverRequest, ServerHttpResponse response,
-                                     CorsConfiguration config, boolean preFlightRequest) throws IOException {
-
+    protected boolean handleInternal(
+        ServerHttpRequest serverRequest,
+        ServerHttpResponse response,
+        CorsConfiguration config,
+        boolean preFlightRequest
+    ) throws IOException {
         String requestOrigin = serverRequest.getHeaders().getOrigin();
         String allowOrigin = checkOrigin(config, requestOrigin);
         HttpHeaders responseHeaders = response.getHeaders();
@@ -66,7 +70,10 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             val clientName = request.getParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER);
             if (StringUtils.endsWith(uri, "/login") && StringUtils.isNotBlank(clientName)) {
                 LOGGER.debug("Delegated authn callback for clientName: {}", clientName);
-                val identityProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), clientName);
+                val identityProvider = identityProviderHelper.findByTechnicalName(
+                    providersService.getProviders(),
+                    clientName
+                );
                 if (identityProvider.isPresent()) {
                     String providerUrl = null;
                     val provider = identityProvider.get();
@@ -133,7 +140,10 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
         }
 
         // CUSTO:
-        if (Boolean.TRUE.equals(config.getAllowCredentials()) && !ALLOWED_ORIGINS_WITHOUT_CREDENTIALS.contains(requestOrigin)) {
+        if (
+            Boolean.TRUE.equals(config.getAllowCredentials()) &&
+            !ALLOWED_ORIGINS_WITHOUT_CREDENTIALS.contains(requestOrigin)
+        ) {
             responseHeaders.setAccessControlAllowCredentials(true);
         }
 
@@ -158,7 +168,6 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         try (StringReader samlMetadataCharacterStream = new StringReader(provider.getIdpMetadata());) {
-
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new InputSource(samlMetadataCharacterStream));
             XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -173,9 +182,12 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             if (StringUtils.isNotBlank(entityId)) {
                 return entityId;
             }
-
         } catch (IOException | ParserConfigurationException | SAXException | XPathExpressionException e) {
-            LOGGER.error("Error during IDP's URL extraction from IDP metadata of provider with Identifier: {}", provider.getIdentifier(), e);
+            LOGGER.error(
+                "Error during IDP's URL extraction from IDP metadata of provider with Identifier: {}",
+                provider.getIdentifier(),
+                e
+            );
         }
         return null;
     }

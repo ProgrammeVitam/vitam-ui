@@ -17,15 +17,13 @@ public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowA
 
     @Test
     public void testNoSubrogationThanCredentialUnchanged() throws Exception {
-
         // Given
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID);
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
         flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
 
-        UsernamePasswordCredential usernamePasswordCredential =
-            new UsernamePasswordCredential(USER, "password");
+        UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredential(USER, "password");
         flowParameters.put("credential", usernamePasswordCredential);
 
         CustomSurrogateInitialAuthenticationAction instance = new CustomSurrogateInitialAuthenticationAction();
@@ -34,22 +32,21 @@ public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowA
         instance.doExecute(context);
 
         // Then
-        assertThat(flowParameters.get("credential"))
-            .isEqualTo(usernamePasswordCredential);
+        assertThat(flowParameters.get("credential")).isEqualTo(usernamePasswordCredential);
     }
-
 
     @Test
     public void testSubrogationThanCredentialChanged() throws Exception {
-
         // Given
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, SUPER_USER);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, SUPER_CUSTOMER_ID);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID);
 
-        UsernamePasswordCredential usernamePasswordCredential =
-            new UsernamePasswordCredential(SUPER_CUSTOMER_ID, "password");
+        UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredential(
+            SUPER_CUSTOMER_ID,
+            "password"
+        );
         flowParameters.put("credential", usernamePasswordCredential);
 
         CustomSurrogateInitialAuthenticationAction instance = new CustomSurrogateInitialAuthenticationAction();
@@ -59,8 +56,7 @@ public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowA
 
         // Then
         Object credential = flowParameters.get("credential");
-        assertThat(credential)
-            .isInstanceOf(SurrogateUsernamePasswordCredential.class);
+        assertThat(credential).isInstanceOf(SurrogateUsernamePasswordCredential.class);
         SurrogateUsernamePasswordCredential surrogateUsernamePasswordCredential =
             (SurrogateUsernamePasswordCredential) credential;
         assertThat(surrogateUsernamePasswordCredential.getUsername()).isEqualTo(SUPER_USER);

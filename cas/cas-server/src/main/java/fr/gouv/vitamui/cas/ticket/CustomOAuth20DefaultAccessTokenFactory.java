@@ -57,9 +57,11 @@ import java.util.List;
 @Getter
 public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccessTokenFactory {
 
-    public CustomOAuth20DefaultAccessTokenFactory(final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
-                                                  final JwtBuilder jwtBuilder,
-                                                  final ServicesManager servicesManager) {
+    public CustomOAuth20DefaultAccessTokenFactory(
+        final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
+        final JwtBuilder jwtBuilder,
+        final ServicesManager servicesManager
+    ) {
         super(expirationPolicy, jwtBuilder, servicesManager);
     }
 

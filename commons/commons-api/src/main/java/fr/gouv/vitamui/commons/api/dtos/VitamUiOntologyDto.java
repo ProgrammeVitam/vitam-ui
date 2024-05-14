@@ -57,7 +57,6 @@ public class VitamUiOntologyDto {
 
     private List<Integer> tenantIds;
 
-
     @JsonProperty("Identifier")
     public String getIdentifier() {
         return identifier;
@@ -138,5 +137,4 @@ public class VitamUiOntologyDto {
     public void setTenantIds(List<Integer> tenantIds) {
         this.tenantIds = tenantIds;
     }
-
 }

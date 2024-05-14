@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Api(tags = "security")
 @RequestMapping("${ui-prefix}/security")

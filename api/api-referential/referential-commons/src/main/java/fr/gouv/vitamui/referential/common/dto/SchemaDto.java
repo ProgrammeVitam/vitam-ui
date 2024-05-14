@@ -29,5 +29,4 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import java.util.ArrayList;
 
-public class SchemaDto extends ArrayList<SchemaElementDto> {
-}
+public class SchemaDto extends ArrayList<SchemaElementDto> {}

@@ -105,22 +105,31 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy;
 
-    public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
-                                         final CasCookieBuilder ticketGrantingTicketCookieGenerator,
-                                         final CasCookieBuilder warnCookieGenerator,
-                                         final LogoutProperties logoutProperties,
-                                         final LogoutManager logoutManager,
-                                         final ConfigurableApplicationContext applicationContext,
-                                         final SingleLogoutRequestExecutor singleLogoutRequestExecutor,
-                                         final Utils utils,
-                                         final CasExternalRestClient casExternalRestClient,
-                                         final ServicesManager servicesManager,
-                                         final CasConfigurationProperties casProperties,
-                                         final Action frontChannelLogoutAction,
-                                         final TicketRegistry ticketRegistry,
-                                         final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy) {
-        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator,
-            logoutProperties, logoutManager, applicationContext, singleLogoutRequestExecutor);
+    public GeneralTerminateSessionAction(
+        final CentralAuthenticationService centralAuthenticationService,
+        final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        final CasCookieBuilder warnCookieGenerator,
+        final LogoutProperties logoutProperties,
+        final LogoutManager logoutManager,
+        final ConfigurableApplicationContext applicationContext,
+        final SingleLogoutRequestExecutor singleLogoutRequestExecutor,
+        final Utils utils,
+        final CasExternalRestClient casExternalRestClient,
+        final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        final Action frontChannelLogoutAction,
+        final TicketRegistry ticketRegistry,
+        final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy
+    ) {
+        super(
+            centralAuthenticationService,
+            ticketGrantingTicketCookieGenerator,
+            warnCookieGenerator,
+            logoutProperties,
+            logoutManager,
+            applicationContext,
+            singleLogoutRequestExecutor
+        );
         this.utils = utils;
         this.casExternalRestClient = casExternalRestClient;
         this.servicesManager = servicesManager;
@@ -130,7 +139,8 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         this.serviceTicketSessionTrackingPolicy = serviceTicketSessionTrackingPolicy;
     }
 
-    @Override @SneakyThrows
+    @Override
+    @SneakyThrows
     public Event terminate(final RequestContext context) {
         final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
         String tgtId = WebUtils.getTicketGrantingTicketId(context);
@@ -144,14 +154,15 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             try {
                 ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
                 if (ticket != null) {
-
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
                     final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
                     final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
-                    final String superUserCustomerId =
-                        (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE);
+                    final String superUserCustomerId = (String) utils.getAttributeValue(
+                        attributes,
+                        SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+                    );
 
                     final ExternalHttpContext externalHttpContext;
                     if (StringUtils.isNotBlank(superUserCustomerId)) {
@@ -160,8 +171,12 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                         externalHttpContext = utils.buildContext(principalEmail);
                     }
 
-                    LOGGER.debug("calling logout for authToken={} and superUser={}, superUserCustomerId={}",
-                        authToken, superUserEmail, superUserCustomerId);
+                    LOGGER.debug(
+                        "calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+                        authToken,
+                        superUserEmail,
+                        superUserCustomerId
+                    );
                     casExternalRestClient.logout(externalHttpContext, authToken, superUserEmail, superUserCustomerId);
                 }
             } catch (final InvalidTicketException e) {
@@ -180,7 +195,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         if (tgtId == null) {
             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout("nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
-
             // no ticket or expired -> general logout
         } else if (ticket == null || ticket.isExpired()) {
             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId);
@@ -198,7 +212,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
         try {
-
             final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
             successes.put("fake", null);
 
@@ -208,7 +221,11 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 .addCredential(null)
                 .build();
 
-            final TicketGrantingTicketImpl fakeTgt = new TicketGrantingTicketImpl(tgtId, authentication, new NeverExpiresExpirationPolicy());
+            final TicketGrantingTicketImpl fakeTgt = new TicketGrantingTicketImpl(
+                tgtId,
+                authentication,
+                new NeverExpiresExpirationPolicy()
+            );
 
             final Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
             int i = 1;
@@ -218,16 +235,20 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                     final String serviceId = logoutUrl.toString();
                     final String fakeSt = "ST-fake-" + i;
                     final Service service = new FakeSimpleWebApplicationServiceImpl(serviceId, serviceId, fakeSt);
-                    fakeTgt.grantServiceTicket(fakeSt, service, new NeverExpiresExpirationPolicy(), false, serviceTicketSessionTrackingPolicy);
+                    fakeTgt.grantServiceTicket(
+                        fakeSt,
+                        service,
+                        new NeverExpiresExpirationPolicy(),
+                        false,
+                        serviceTicketSessionTrackingPolicy
+                    );
                     i++;
                 }
             }
 
             return logoutManager.performLogout(
-                SingleLogoutExecutionRequest.builder()
-                    .ticketGrantingTicket(fakeTgt)
-                    .build());
-
+                SingleLogoutExecutionRequest.builder().ticketGrantingTicket(fakeTgt).build()
+            );
         } catch (final RuntimeException e) {
             LOGGER.error("Unable to perform general logout", e);
             return new ArrayList<>();

@@ -36,14 +36,8 @@
  */
 package fr.gouv.vitamui.commons.rest.configuration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -54,9 +48,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import lombok.Setter;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -69,6 +60,13 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Enables the Swagger API documentation.
@@ -157,7 +155,8 @@ public class SwaggerConfiguration {
 
     public static final String HTTP_CODE_401_MSG = "La requête n'est pas autorisée. Le X-User-Token n'est pas valide";
 
-    public static final String HTTP_CODE_403_MSG = "L'utilisateur ne possède pas les droits pour effectuer cette opération";
+    public static final String HTTP_CODE_403_MSG =
+        "L'utilisateur ne possède pas les droits pour effectuer cette opération";
 
     public static final String HTTP_CODE_404_MSG = "Non trouvée";
 
@@ -229,7 +228,6 @@ public class SwaggerConfiguration {
             parameters.add(requestIdHeader);
         }
 
-
         Set<String> produces = Collections.singleton(MimeTypeUtils.APPLICATION_JSON_VALUE);
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors
@@ -250,22 +248,28 @@ public class SwaggerConfiguration {
 
     private List<ResponseMessage> getResponseMessage(final RequestMethod requestMethod) {
         List<ResponseMessage> responseMessage = new ArrayList<>();
-        ResponseMessage responseMessage403 = new ResponseMessageBuilder().code(HttpStatus.FORBIDDEN.value())
-                .message(HTTP_CODE_403_MSG).build();
-        ResponseMessage responseMessage401 = new ResponseMessageBuilder().code(HttpStatus.UNAUTHORIZED.value())
-                .message(HTTP_CODE_401_MSG).build();
-        ResponseMessage responseMessage404 = new ResponseMessageBuilder().code(HttpStatus.NOT_FOUND.value())
-                .message(HTTP_CODE_404_MSG).build();
+        ResponseMessage responseMessage403 = new ResponseMessageBuilder()
+            .code(HttpStatus.FORBIDDEN.value())
+            .message(HTTP_CODE_403_MSG)
+            .build();
+        ResponseMessage responseMessage401 = new ResponseMessageBuilder()
+            .code(HttpStatus.UNAUTHORIZED.value())
+            .message(HTTP_CODE_401_MSG)
+            .build();
+        ResponseMessage responseMessage404 = new ResponseMessageBuilder()
+            .code(HttpStatus.NOT_FOUND.value())
+            .message(HTTP_CODE_404_MSG)
+            .build();
 
         responseMessage.add(responseMessage401);
         responseMessage.add(responseMessage403);
         switch (requestMethod) {
-            case GET :
-            case PATCH :
-            case PUT :
+            case GET:
+            case PATCH:
+            case PUT:
                 responseMessage.add(responseMessage404);
                 break;
-            default :
+            default:
                 break;
         }
 
@@ -274,7 +278,7 @@ public class SwaggerConfiguration {
 
     @Bean
     @Primary
-    @ConditionalOnProperty(value="swagger.custom.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "swagger.custom.enabled", havingValue = "true", matchIfMissing = true)
     public SwaggerResourcesProvider swaggerResourcesProvider() {
         return new CustomInMemorySwaggerResourcesProvider();
     }
@@ -297,5 +301,4 @@ public class SwaggerConfiguration {
                 Collections.emptyList());
         // @formatter:on
     }
-
 }

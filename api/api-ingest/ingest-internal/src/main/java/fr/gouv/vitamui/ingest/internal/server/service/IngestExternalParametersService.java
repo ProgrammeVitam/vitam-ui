@@ -42,13 +42,15 @@ import java.util.Optional;
  */
 @Service
 public class IngestExternalParametersService {
+
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     @Autowired
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
 
     public IngestExternalParametersService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient) {
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient
+    ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
     }
 
@@ -59,13 +61,16 @@ public class IngestExternalParametersService {
      */
     public Optional<String> retrieveProfilAccessContract(InternalHttpContext internalHttpContext) {
         Optional<String> accessContractOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(internalHttpContext);
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            internalHttpContext
+        );
         if (myExternalParameter != null && CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
-                    parameter -> PARAM_ACCESS_CONTRACT_NAME
-                        .equals(parameter.getKey()))
-                .findFirst().orElse(null);
+            ParameterDto parameterAccessContract = myExternalParameter
+                .getParameters()
+                .stream()
+                .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+                .findFirst()
+                .orElse(null);
             if (parameterAccessContract != null && parameterAccessContract.getValue() != null) {
                 String accessContractValue = parameterAccessContract.getValue();
                 accessContractOpt = Optional.of(accessContractValue);

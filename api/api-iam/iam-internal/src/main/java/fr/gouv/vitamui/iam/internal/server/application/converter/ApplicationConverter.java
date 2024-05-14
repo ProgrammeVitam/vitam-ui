@@ -36,15 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.server.application.converter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * An converter for Application and ApplicationDto.
@@ -76,5 +76,4 @@ public class ApplicationConverter implements Converter<ApplicationDto, Applicati
     public ApplicationDto convertEntityToDto(final Application application) {
         return VitamUIUtils.copyProperties(application, new ApplicationDto());
     }
-
 }

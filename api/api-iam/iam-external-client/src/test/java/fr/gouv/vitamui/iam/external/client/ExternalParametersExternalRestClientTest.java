@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,10 +49,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,28 +64,32 @@ public class ExternalParametersExternalRestClientTest extends AbstractServerIden
     private RestTemplate restTemplate;
 
     @Before
-    public void setUp(){
-    	externalParametersExternalRestClient = new ExternalParametersExternalRestClient(restTemplate,"http://localhost:8083");
+    public void setUp() {
+        externalParametersExternalRestClient = new ExternalParametersExternalRestClient(
+            restTemplate,
+            "http://localhost:8083"
+        );
     }
 
     @Test
-    public void getMyExternalParameters(){
+    public void getMyExternalParameters() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/externalparameters/me";
 
         final Map<String, String> mock = new HashMap<>();
-        mock.put("identifier","name");
+        mock.put("identifier", "name");
 
-        Mockito.when(restTemplate.exchange(
-        	Mockito.eq(url),
-        	Mockito.eq(HttpMethod.GET),
-        	Mockito.any(),
-            Mockito.eq(new ParameterizedTypeReference<Map<String, String>>() {
-            })))
-        .thenReturn(new ResponseEntity<>(mock, HttpStatus.OK));
+        Mockito.when(
+            restTemplate.exchange(
+                Mockito.eq(url),
+                Mockito.eq(HttpMethod.GET),
+                Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<Map<String, String>>() {})
+            )
+        ).thenReturn(new ResponseEntity<>(mock, HttpStatus.OK));
 
         Map<String, String> test = externalParametersExternalRestClient.getMyExternalParameters(context);
         assertNotNull(test);
-        assertEquals(test,mock);
+        assertEquals(test, mock);
     }
 }

@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.external.client;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
@@ -45,8 +44,9 @@ public class UserExternalRestClientTest extends AbstractServerIdentityBuilder {
         UserDto user = UserBuilder.buildWithAnalytics();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         var PATCH_ANALYTIC_URL = BASE_URL + "/iam/v1/users/analytics";
-        when(restTemplate.exchange(eq(URI.create(PATCH_ANALYTIC_URL)), eq(HttpMethod.POST), any(), eq(UserDto.class)))
-                .thenReturn(new ResponseEntity<>(user, HttpStatus.OK));
+        when(
+            restTemplate.exchange(eq(URI.create(PATCH_ANALYTIC_URL)), eq(HttpMethod.POST), any(), eq(UserDto.class))
+        ).thenReturn(new ResponseEntity<>(user, HttpStatus.OK));
         Map<String, Object> analytics = Map.of(APPLICATION_ID, "ACCOUNTS_APP");
 
         UserDto response = userExternalRestClient.patchAnalytics(context, analytics);

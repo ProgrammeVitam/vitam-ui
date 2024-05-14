@@ -1,4 +1,3 @@
-
 /**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -38,10 +37,10 @@
 
 package fr.gouv.vitamui.ui.commons.service;
 
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 
@@ -59,8 +58,14 @@ public abstract class AbstractPaginateWebService<DtoType extends IdDto> extends 
      * @param context http context
      * @return paginated Values
      */
-    public PaginatedValuesDto<DtoType> getAllPaginated(final Integer page, Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-                                                       final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<DtoType> getAllPaginated(
+        final Integer page,
+        Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         size = beforePaginate(page, size);
         return getClient().getAllPaginated(context, page, size, criteria, orderBy, direction);
     }
@@ -76,8 +81,15 @@ public abstract class AbstractPaginateWebService<DtoType extends IdDto> extends 
      * @param context http context
      * @return paginated Values
      */
-    public PaginatedValuesDto<DtoType> getAllPaginated(final Integer page, Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-                                                       final Optional<DirectionDto> direction, final Optional<String> embedded, final ExternalHttpContext context) {
+    public PaginatedValuesDto<DtoType> getAllPaginated(
+        final Integer page,
+        Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded,
+        final ExternalHttpContext context
+    ) {
         size = beforePaginate(page, size);
         return getClient().getAllPaginated(context, page, size, criteria, orderBy, direction, embedded);
     }
@@ -96,5 +108,8 @@ public abstract class AbstractPaginateWebService<DtoType extends IdDto> extends 
     protected abstract Integer beforePaginate(Integer page, Integer size);
 
     @Override
-    public abstract <ContextType extends ExternalHttpContext> BasePaginatingAndSortingWebClient<ContextType, DtoType> getClient();
+    public abstract <ContextType extends ExternalHttpContext> BasePaginatingAndSortingWebClient<
+        ContextType,
+        DtoType
+    > getClient();
 }

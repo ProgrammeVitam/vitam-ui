@@ -80,7 +80,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -173,7 +172,8 @@ public final class VitamUIUtils {
         }
     }
 
-    public static <T> T convertObjectFromJson(final String json, final Class<T> cls) throws JsonParseException, JsonMappingException,IOException {
+    public static <T> T convertObjectFromJson(final String json, final Class<T> cls)
+        throws JsonParseException, JsonMappingException, IOException {
         return new ObjectMapper().readValue(json, cls);
     }
 
@@ -245,9 +245,14 @@ public final class VitamUIUtils {
      * @param requestId Request identifier linked to the current request.
      * @return The generated application ID.
      */
-    public static String generateApplicationId(final String applicationIdExt, final String applicationName,
+    public static String generateApplicationId(
+        final String applicationIdExt,
+        final String applicationName,
         final String userIdentifier,
-        final String superUserIdentifier, final String customerIdentifier, final String requestId) {
+        final String superUserIdentifier,
+        final String customerIdentifier,
+        final String requestId
+    ) {
         // Application-Id format: applicationIdExt:requestId:applicationName:userIdentifier:superUserIdentifier:customerIdentifier.
         final String msg = "Missing %s information for construct X-Application-Id header";
         ParamsUtils.checkParameter(String.format(msg, "applicationName"), applicationName);
@@ -255,22 +260,25 @@ public final class VitamUIUtils {
         ParamsUtils.checkParameter(String.format(msg, "customerIdentifier"), customerIdentifier);
         ParamsUtils.checkParameter(String.format(msg, "requestId"), requestId);
 
-        return String.format("%s:%s:%s:%s:%s:%s",
-            formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")), requestId,
+        return String.format(
+            "%s:%s:%s:%s:%s:%s",
+            formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")),
+            requestId,
             applicationName,
-            userIdentifier, formatOptionalEntriesForApplicationId(superUserIdentifier), customerIdentifier);
+            userIdentifier,
+            formatOptionalEntriesForApplicationId(superUserIdentifier),
+            customerIdentifier
+        );
     }
 
     private static String formatOptionalEntriesForApplicationId(final String entry) {
         return StringUtils.isBlank(entry) ? "-" : entry;
-
     }
 
     public static String getBase64(final MultipartFile file) throws IOException {
         try (final InputStream fileInputStream = file.getInputStream()) {
             final byte[] fileInByteArray = IOUtils.toByteArray(fileInputStream);
             return new String(Base64.getEncoder().encode(fileInByteArray), StandardCharsets.UTF_8);
-
         }
     }
 
@@ -293,7 +301,8 @@ public final class VitamUIUtils {
      * Use {@link #getSha512Print(InputStream)} instead.
      */
     @Deprecated
-    public static String getSha512Print(final byte[] data) throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static String getSha512Print(final byte[] data)
+        throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         Security.addProvider(new BouncyCastleProvider());
         final MessageDigest digest = MessageDigest.getInstance(PRINT_ALGORITHM, "BC");
         digest.digest(data);
@@ -303,7 +312,8 @@ public final class VitamUIUtils {
         return DatatypeConverter.printHexBinary(mdbytes);
     }
 
-    public static String getSha512Print(final InputStream is) throws IOException, NoSuchAlgorithmException, NoSuchProviderException {
+    public static String getSha512Print(final InputStream is)
+        throws IOException, NoSuchAlgorithmException, NoSuchProviderException {
         Security.addProvider(new BouncyCastleProvider());
         final MessageDigest messageDigest = MessageDigest.getInstance(PRINT_ALGORITHM, "BC");
         int bytesRead = 0;
@@ -317,22 +327,25 @@ public final class VitamUIUtils {
     }
 
     public static String secureFormatHeadersLogging(HttpHeaders headers) {
-        return headers.entrySet().stream()
+        return headers
+            .entrySet()
+            .stream()
             .map(entry -> {
                 List<String> values = entry.getValue();
                 if (values.size() == 1) {
-
-                    return (entry.getKey().equalsIgnoreCase(HttpHeaders.AUTHORIZATION) ||
-                        entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHORIZATION) ||
-                        entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHENTICATE)) ?
-                        (entry.getKey() + ":" + "\"" +
-                            (values.get(0).split(" ")[0] + " **********" + "\"")) :
-                        entry.getKey() + ":" + "\"" +
-                            values.get(0) + "\"";
-
+                    return (
+                            entry.getKey().equalsIgnoreCase(HttpHeaders.AUTHORIZATION) ||
+                            entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHORIZATION) ||
+                            entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHENTICATE)
+                        )
+                        ? (entry.getKey() + ":" + "\"" + (values.get(0).split(" ")[0] + " **********" + "\""))
+                        : entry.getKey() + ":" + "\"" + values.get(0) + "\"";
                 } else {
-                    return entry.getKey() + ":" +
-                        (values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
+                    return (
+                        entry.getKey() +
+                        ":" +
+                        (values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")))
+                    );
                 }
             })
             .collect(Collectors.joining(", ", "[", "]"));
@@ -388,5 +401,4 @@ public final class VitamUIUtils {
         System.out.println(value / 1024.0);
         return UI_DECIMAL_FORMAT_2_DIGITS.format(value / 1024.0) + ' ' + ci.current() + 'o';
     }
-
 }

@@ -36,33 +36,13 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -77,12 +57,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping(RestApi.V1_USERS_INFO_URL)
@@ -99,13 +85,11 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
         this.userInfoExternalService = userInfoExternalService;
     }
 
-
     @Override
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_USER_INFOS)
-    public UserInfoDto create(final @Valid @RequestBody UserInfoDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public UserInfoDto create(final @Valid @RequestBody UserInfoDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return userInfoExternalService.create(dto);
@@ -134,9 +118,8 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
     @Override
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_USER_INFOS)
-    public UserInfoDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public UserInfoDto getOne(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
         return userInfoExternalService.getOne(id);
@@ -156,7 +139,6 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
     @PatchMapping(CommonConstants.PATH_ME)
     public UserInfoDto patchMe(@RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch me with {}", partialDto);
         return userInfoExternalService.patchMe(partialDto);
@@ -167,11 +149,13 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
     @Secured(ServicesData.ROLE_UPDATE_USER_INFOS)
     public UserInfoDto patch(final @PathVariable("id") String id, final @RequestBody Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(partialDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch user : the DTO id must match the path id"
+        );
         return userInfoExternalService.patch(partialDto);
     }
 
@@ -180,5 +164,4 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
         LOGGER.debug("get logbook for user info with id :{}", id);
         return userInfoExternalService.findHistoryById(id);
     }
-
 }

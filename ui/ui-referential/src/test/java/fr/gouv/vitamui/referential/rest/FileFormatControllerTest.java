@@ -66,25 +66,25 @@ import static org.mockito.ArgumentMatchers.eq;
 @WebMvcTest(controllers = { FileFormatController.class })
 public class FileFormatControllerTest extends UiReferentialRestControllerTest<FileFormatDto> {
 
-	@Value("${ui-referential.prefix}")
-	protected String apiUrl;
+    @Value("${ui-referential.prefix}")
+    protected String apiUrl;
 
-	@MockBean
-	private FileFormatService service;
+    @MockBean
+    private FileFormatService service;
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatControllerTest.class);
 
-	private static final String PREFIX = "/fileformat";
+    private static final String PREFIX = "/fileformat";
 
-	@Test
-	public void testCreateAccessContract() {
-		super.testCreateEntity();
-	}
+    @Test
+    public void testCreateAccessContract() {
+        super.testCreateEntity();
+    }
 
-	@Test
-	public void testGetAllFileFormats() {
-		super.testGetAllEntityWithCriteria();
-	}
+    @Test
+    public void testGetAllFileFormats() {
+        super.testGetAllEntityWithCriteria();
+    }
 
     @Test
     public void testGetAllPaginatedFileFormats() {
@@ -93,18 +93,17 @@ public class FileFormatControllerTest extends UiReferentialRestControllerTest<Fi
         super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"), headers);
     }
 
-	@Test
-	public void testPatchFileFormat() {
-		super.testPatchEntity();
-	}
+    @Test
+    public void testPatchFileFormat() {
+        super.testPatchEntity();
+    }
 
-	@Test
-	public void testCheckExistByName() {
-		Mockito.when(service.checkExist(any(), any())).thenReturn(true);
-		final QueryDto criteria = QueryDto.criteria().addCriterion("name", "fileFormatName",
-				CriterionOperator.EQUALS);
-		super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
-	}
+    @Test
+    public void testCheckExistByName() {
+        Mockito.when(service.checkExist(any(), any())).thenReturn(true);
+        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "fileFormatName", CriterionOperator.EQUALS);
+        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
+    }
 
     @Test
     public void shouldFindFileFormatByPUID() throws Exception {
@@ -121,19 +120,21 @@ public class FileFormatControllerTest extends UiReferentialRestControllerTest<Fi
     @Test
     public void shouldReturnEmptyStringWhenSearchForNotExistingFileFormat() throws Exception {
         this.mockMvc.perform(
-            MockMvcRequestBuilders.get(this.getUriBuilder("/not-existing-fmt/999999").build().toUri())
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-Tenant-Id", 1)
-                .with(SecurityMockMvcRequestPostProcessors.authentication(buildUserAuthenticated()))
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-        )
+                MockMvcRequestBuilders.get(this.getUriBuilder("/not-existing-fmt/999999").build().toUri())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("X-Tenant-Id", 1)
+                    .with(SecurityMockMvcRequestPostProcessors.authentication(buildUserAuthenticated()))
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+            )
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @Test
     public void shouldFindHistoryByPUID() throws Exception {
-        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
+        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(
+            new LogbookOperationsResponseDto()
+        );
 
         super.performGet("/fmt/23/history")
             .andExpect(MockMvcResultMatchers.status().isOk())
@@ -142,46 +143,46 @@ public class FileFormatControllerTest extends UiReferentialRestControllerTest<Fi
 
     @Test
     public void testExportFileFormat() {
-    	HttpHeaders httpHeaders = new HttpHeaders();
-    	httpHeaders.add("Content-Type", "application/octet-stream");
-    	httpHeaders.add("X-Tenant-Id", "0");
-    	super.performGet("/export", httpHeaders);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/octet-stream");
+        httpHeaders.add("X-Tenant-Id", "0");
+        super.performGet("/export", httpHeaders);
     }
 
-	@Test
-	public void testGetFileFormatById() {
-		super.testGetEntityById();
-	}
+    @Test
+    public void testGetFileFormatById() {
+        super.testGetEntityById();
+    }
 
     @Test
     public void testDeleteFileFormat() {
-    	super.performDelete("/1");
+        super.performDelete("/1");
     }
 
-	@Override
-	protected String getRessourcePrefix() {
-		return "/" + apiUrl + PREFIX;
-	}
+    @Override
+    protected String getRessourcePrefix() {
+        return "/" + apiUrl + PREFIX;
+    }
 
-	@Override
-	protected Class<FileFormatDto> getDtoClass() {
-		return FileFormatDto.class;
-	}
+    @Override
+    protected Class<FileFormatDto> getDtoClass() {
+        return FileFormatDto.class;
+    }
 
-	@Override
-	protected FileFormatDto buildDto() {
-		final FileFormatDto dto = new FileFormatDto();
-		return dto;
-	}
+    @Override
+    protected FileFormatDto buildDto() {
+        final FileFormatDto dto = new FileFormatDto();
+        return dto;
+    }
 
-	@Override
-	protected VitamUILogger getLog() {
-		return LOGGER;
-	}
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
 
-	@Override
-	protected void preparedServices() {
-		Mockito.when(service.create(any(), any(FileFormatDto.class))).thenReturn(new FileFormatDto());
-		Mockito.when(service.update(any(), any(FileFormatDto.class))).thenReturn(new FileFormatDto());
-	}
+    @Override
+    protected void preparedServices() {
+        Mockito.when(service.create(any(), any(FileFormatDto.class))).thenReturn(new FileFormatDto());
+        Mockito.when(service.update(any(), any(FileFormatDto.class))).thenReturn(new FileFormatDto());
+    }
 }

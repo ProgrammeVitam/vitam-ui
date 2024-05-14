@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccessExternalClientEmptyMockTest {
+
     private AccessExternalClientEmptyMock mockClient;
 
     @BeforeEach
@@ -17,8 +18,6 @@ class AccessExternalClientEmptyMockTest {
 
     @Test
     void selectOperations() {
-
-
         // Call the selectOperations method
         var response = mockClient.selectOperations(null, null);
 

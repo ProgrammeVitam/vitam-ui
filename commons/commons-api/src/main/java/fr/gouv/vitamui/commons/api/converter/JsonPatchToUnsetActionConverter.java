@@ -41,13 +41,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
+
+    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
 
     @Override
     public UnsetAction convert(JsonPatch source) {
         try {
-            final String[] paths = source.stream()
+            final String[] paths = source
+                .stream()
                 .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
                 .map(PatchCommand::getPath)
                 .toArray(String[]::new);

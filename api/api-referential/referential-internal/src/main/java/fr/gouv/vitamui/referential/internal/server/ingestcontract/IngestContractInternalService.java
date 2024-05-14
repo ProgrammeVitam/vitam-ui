@@ -114,9 +114,14 @@ public class IngestContractInternalService {
     private final InternalSecurityService internalSecurityService;
 
     @Autowired
-    public IngestContractInternalService(IngestContractService ingestContractService, ObjectMapper objectMapper,
-        IngestContractConverter converter, LogbookService logbookService,
-        ApplicationInternalRestClient applicationInternalRestClient, InternalSecurityService internalSecurityService) {
+    public IngestContractInternalService(
+        IngestContractService ingestContractService,
+        ObjectMapper objectMapper,
+        IngestContractConverter converter,
+        LogbookService logbookService,
+        ApplicationInternalRestClient applicationInternalRestClient,
+        InternalSecurityService internalSecurityService
+    ) {
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -128,10 +133,14 @@ public class IngestContractInternalService {
     public IngestContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
             LOGGER.info("Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<IngestContractModel> requestResponse =
-                ingestContractService.findIngestContractById(vitamContext, identifier);
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContractById(
+                vitamContext,
+                identifier
+            );
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
             if (ingestContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
@@ -146,10 +155,11 @@ public class IngestContractInternalService {
         final RequestResponse<IngestContractModel> requestResponse;
         try {
             LOGGER.debug("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            requestResponse = ingestContractService
-                .findIngestContracts(vitamContext, new Select().getFinalSelect());
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            requestResponse = ingestContractService.findIngestContracts(vitamContext, new Select().getFinalSelect());
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(ingestContractResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
@@ -157,15 +167,19 @@ public class IngestContractInternalService {
         }
     }
 
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         LOGGER.debug("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -181,16 +195,20 @@ public class IngestContractInternalService {
         } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
-
     }
 
     public IngestContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         try {
             LOGGER.info("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            final RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContracts(vitamContext, query);
+            final RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContracts(
+                vitamContext,
+                query
+            );
             LOGGER.debug("VITAM Response: {}", requestResponse.toJsonNode().toPrettyString());
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
             LOGGER.debug("VITAM DTO: {}", ingestContractResponseDto);
 
             return ingestContractResponseDto;
@@ -202,10 +220,10 @@ public class IngestContractInternalService {
     public Boolean check(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
             LOGGER.debug("Ingest Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            Integer ingestContractCheckedTenant =
-                ingestContractService.checkAbilityToCreateIngestContractInVitam(
-                    converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
-                    vitamContext.getApplicationSessionId());
+            Integer ingestContractCheckedTenant = ingestContractService.checkAbilityToCreateIngestContractInVitam(
+                converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
+                vitamContext.getApplicationSessionId()
+            );
             return !vitamContext.getTenantId().equals(ingestContractCheckedTenant);
         } catch (ConflictException e) {
             return true;
@@ -213,18 +231,22 @@ public class IngestContractInternalService {
     }
 
     public IngestContractDto create(VitamContext vitamContext, IngestContractDto ingestContractDto) {
-
-    ingestContractService.checkAbilityToCreateIngestContractInVitam(
-        converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
-        vitamContext.getApplicationSessionId());
+        ingestContractService.checkAbilityToCreateIngestContractInVitam(
+            converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
+            vitamContext.getApplicationSessionId()
+        );
 
         try {
             LOGGER.debug("Create Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-            RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext,
-                converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
-            final IngestContractModel ingestContractVitamDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
+            RequestResponse requestResponse = ingestContractService.createIngestContracts(
+                vitamContext,
+                converter.convertDtosToVitams(Arrays.asList(ingestContractDto))
+            );
+            final IngestContractModel ingestContractVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractModel.class
+            );
             return converter.convertVitamToDto(ingestContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create ingest contract", e);
@@ -232,7 +254,6 @@ public class IngestContractInternalService {
     }
 
     private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
-
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
@@ -270,8 +291,10 @@ public class IngestContractInternalService {
             propertiesToUpdate.put("MasterMandatory", (boolean) partialDto.get("masterMandatory"));
         }
         if (partialDto.get("formatUnidentifiedAuthorized") != null) {
-            propertiesToUpdate.put("FormatUnidentifiedAuthorized",
-                (boolean) partialDto.get("formatUnidentifiedAuthorized"));
+            propertiesToUpdate.put(
+                "FormatUnidentifiedAuthorized",
+                (boolean) partialDto.get("formatUnidentifiedAuthorized")
+            );
         }
         if (partialDto.get("everyFormatType") != null) {
             propertiesToUpdate.put("EveryFormatType", (boolean) partialDto.get("everyFormatType"));
@@ -309,12 +332,16 @@ public class IngestContractInternalService {
             propertiesToUpdate.set("DataObjectVersion", array);
         }
         if (partialDto.get("computeInheritedRulesAtIngest") != null) {
-            propertiesToUpdate.put("ComputeInheritedRulesAtIngest",
-                (boolean) partialDto.get("computeInheritedRulesAtIngest"));
+            propertiesToUpdate.put(
+                "ComputeInheritedRulesAtIngest",
+                (boolean) partialDto.get("computeInheritedRulesAtIngest")
+            );
         }
         if (partialDto.get("signaturePolicy") != null) {
             Map<String, Object> map = (Map<String, Object>) partialDto.get("signaturePolicy");
-            map = map.entrySet().stream()
+            map = map
+                .entrySet()
+                .stream()
                 .collect(Collectors.toMap(entry -> StringUtils.capitalize(entry.getKey()), Map.Entry::getValue));
             JsonNode signaturePolicy = objectMapper.valueToTree(map);
             propertiesToUpdate.set("SignaturePolicy", signaturePolicy);
@@ -335,8 +362,6 @@ public class IngestContractInternalService {
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
-
-
             ArrayNode actions = JsonHandler.createArrayNode();
             if (partialDto.get("managementContractId") == null) {
                 ObjectNode unsetAction = JsonNodeFactory.instance.objectNode();
@@ -346,15 +371,11 @@ public class IngestContractInternalService {
                 actions.add(unsetAction);
             }
 
-
-
             if (!fieldsUpdated.isEmpty()) {
                 ObjectNode action = JsonHandler.createObjectNode();
                 action.set("$set", fieldsUpdated);
                 actions.add(action);
             }
-
-
 
             ObjectNode query = JsonHandler.createObjectNode();
             query.set("$action", actions);
@@ -366,7 +387,6 @@ public class IngestContractInternalService {
                 throw new AccessExternalClientException("Can't patch ingest contract");
             }
             return getOne(vitamContext, id);
-
         } catch (InvalidParseOperationException | AccessExternalClientException e) {
             throw new InternalServerException("Can't patch ingest contract", e);
         }
@@ -382,8 +402,9 @@ public class IngestContractInternalService {
     }
 
     public ResponseEntity<Void> importIngestContracts(VitamContext vitamContext, MultipartFile file) {
-
-        Boolean isIdentifierMandatory = applicationInternalRestClient.isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), INGEST_CONTRACT).getBody();
+        Boolean isIdentifierMandatory = applicationInternalRestClient
+            .isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), INGEST_CONTRACT)
+            .getBody();
 
         if (isIdentifierMandatory == null) {
             throw new InternalServerException("The result of the API call should not be null");
@@ -398,7 +419,10 @@ public class IngestContractInternalService {
         RequestResponse<?> result;
 
         try {
-            result = ingestContractService.createIngestContracts(vitamContext, converter.convertDtosToVitams(ingestContractDtos));
+            result = ingestContractService.createIngestContracts(
+                vitamContext,
+                converter.convertDtosToVitams(ingestContractDtos)
+            );
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create ingest contracts", e);
         }
@@ -408,8 +432,17 @@ public class IngestContractInternalService {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
-        throw new BadRequestException("The CSV file has been rejected by vitam", null, List.of(ImportCSVUtils.errorToJson(ErrorImportFile.builder().error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP).build())));
-
+        throw new BadRequestException(
+            "The CSV file has been rejected by vitam",
+            null,
+            List.of(
+                ImportCSVUtils.errorToJson(
+                    ErrorImportFile.builder()
+                        .error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP)
+                        .build()
+                )
+            )
+        );
     }
 
     private List<IngestContractDto> convertCsvFileToIngestContractsDto(MultipartFile file) {
@@ -428,7 +461,6 @@ public class IngestContractInternalService {
     }
 
     public Resource exportIngestContracts(VitamContext vitamContext) {
-
         final List<IngestContractDto> ingestContracts = getAll(vitamContext);
 
         ExportIngestContracts exporter = new ExportIngestContracts();
@@ -452,16 +484,32 @@ public class IngestContractInternalService {
         return ExportCSVUtils.generateCSVFile(csvLines, exporter.getSeparator());
     }
 
-    private String[] buildIngestContractExportValues(final IngestContractDto ingestContract, final String arrayJoinStr, final DateFormat df) throws ParseException {
-        final String archiveProfiles = ingestContract.getArchiveProfiles() == null ? null : String.join(arrayJoinStr, ingestContract.getArchiveProfiles());
-        final String checkParentId = ingestContract.getCheckParentId() == null ? null : String.join(arrayJoinStr, ingestContract.getCheckParentId());
-        final String dataObjectVersion = ingestContract.getDataObjectVersion() == null ? null : String.join(arrayJoinStr, ingestContract.getDataObjectVersion());
-        final String formatType = ingestContract.getFormatType() == null ? null : String.join(arrayJoinStr, ingestContract.getFormatType());
+    private String[] buildIngestContractExportValues(
+        final IngestContractDto ingestContract,
+        final String arrayJoinStr,
+        final DateFormat df
+    ) throws ParseException {
+        final String archiveProfiles = ingestContract.getArchiveProfiles() == null
+            ? null
+            : String.join(arrayJoinStr, ingestContract.getArchiveProfiles());
+        final String checkParentId = ingestContract.getCheckParentId() == null
+            ? null
+            : String.join(arrayJoinStr, ingestContract.getCheckParentId());
+        final String dataObjectVersion = ingestContract.getDataObjectVersion() == null
+            ? null
+            : String.join(arrayJoinStr, ingestContract.getDataObjectVersion());
+        final String formatType = ingestContract.getFormatType() == null
+            ? null
+            : String.join(arrayJoinStr, ingestContract.getFormatType());
 
-        final var activationDate = ingestContract.getActivationDate() == null ? null : df.format(LocalDateUtil.getDate(ingestContract.getActivationDate()));
-        final var deactivationDate = ingestContract.getDeactivationDate() == null ? null : df.format(LocalDateUtil.getDate(ingestContract.getDeactivationDate()));
+        final var activationDate = ingestContract.getActivationDate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(ingestContract.getActivationDate()));
+        final var deactivationDate = ingestContract.getDeactivationDate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(ingestContract.getDeactivationDate()));
 
-        return new String[]{
+        return new String[] {
             ingestContract.getIdentifier(),
             ingestContract.getName(),
             ingestContract.getDescription(),
@@ -479,7 +527,7 @@ public class IngestContractInternalService {
             String.valueOf(ingestContract.isEveryDataObjectVersion()),
             dataObjectVersion,
             activationDate,
-            deactivationDate
+            deactivationDate,
         };
     }
 }

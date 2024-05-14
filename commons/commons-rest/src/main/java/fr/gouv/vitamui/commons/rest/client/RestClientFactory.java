@@ -38,7 +38,6 @@ package fr.gouv.vitamui.commons.rest.client;
 
 import org.springframework.web.client.RestTemplate;
 
-
 /**
  * The base interface for all Rest Client Factories
  *
@@ -46,7 +45,6 @@ import org.springframework.web.client.RestTemplate;
  */
 
 public interface RestClientFactory {
-
     /**
      * @return the RestTemplate
      * <p>

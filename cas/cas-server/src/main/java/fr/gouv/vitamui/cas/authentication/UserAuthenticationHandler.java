@@ -85,8 +85,13 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
 
     private final String ipHeaderName;
 
-    public UserAuthenticationHandler(final ServicesManager servicesManager, final PrincipalFactory principalFactory,
-        final CasExternalRestClient casExternalRestClient, final Utils utils, final String ipHeaderName) {
+    public UserAuthenticationHandler(
+        final ServicesManager servicesManager,
+        final PrincipalFactory principalFactory,
+        final CasExternalRestClient casExternalRestClient,
+        final Utils utils,
+        final String ipHeaderName
+    ) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;
@@ -96,7 +101,8 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     @Override
     protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(
         final UsernamePasswordCredential transformedCredential,
-        final String originalPassword) throws GeneralSecurityException, PreventedException {
+        final String originalPassword
+    ) throws GeneralSecurityException, PreventedException {
         val requestContext = RequestContextHolder.getRequestContext();
         val flowScope = requestContext.getFlowScope();
         val loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
@@ -107,21 +113,31 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
         val ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
         val context = utils.buildContext(loginEmail);
 
-        LOGGER.debug("Authenticating loginEmail: {} / loginCustomerId: {} / surrogateEmail: {} / surrogateCustomerId:" +
-            " {} / IP: {}", loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId, ip);
+        LOGGER.debug(
+            "Authenticating loginEmail: {} / loginCustomerId: {} / surrogateEmail: {} / surrogateCustomerId:" +
+            " {} / IP: {}",
+            loginEmail,
+            loginCustomerId,
+            surrogateEmail,
+            surrogateCustomerId,
+            ip
+        );
 
         try {
-            val user = casExternalRestClient.login(context,
-                loginEmail, loginCustomerId,
+            val user = casExternalRestClient.login(
+                context,
+                loginEmail,
+                loginCustomerId,
                 originalPassword,
-                surrogateEmail, surrogateCustomerId,
-                ip);
+                surrogateEmail,
+                surrogateCustomerId,
+                ip
+            );
             if (user != null) {
                 if (mustChangePassword(user)) {
                     LOGGER.info("Password expired for: {} ({})", loginEmail, loginCustomerId);
                     throw new AccountPasswordMustChangeException("Password expired for: " + loginEmail);
                 } else if (user.getStatus() == UserStatusEnum.ENABLED && user.getType() == UserTypeEnum.NOMINATIVE) {
-
                     Map<String, List<Object>> attributes = new HashMap<>();
 
                     attributes.put(Constants.FLOW_LOGIN_EMAIL, List.of(loginEmail));

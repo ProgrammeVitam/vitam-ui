@@ -1,10 +1,13 @@
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.OffsetDateTime;
-import java.util.Collection;
-
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
+import fr.gouv.vitamui.commons.logbook.common.EventStatus;
+import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
+import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
+import fr.gouv.vitamui.commons.logbook.domain.Event;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,14 +20,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
-import fr.gouv.vitamui.commons.logbook.common.EventStatus;
-import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
-import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
-import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import java.time.OffsetDateTime;
+import java.util.Collection;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { LogbookAutoConfiguration.class, TestMongoConfig.class })
@@ -92,5 +91,4 @@ public class DeleteSynchronizedEventsTasksIntegTest {
         assertThat(events).isNotEmpty();
         assertThat(events).hasSize(1);
     }
-
 }

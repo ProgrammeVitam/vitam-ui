@@ -50,11 +50,14 @@ public class IngestStreamingInternalRestClientFactory extends BaseStreamingRestC
 
     public IngestStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
-       }
+    }
 
-    public IngestStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+    public IngestStreamingInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration
+    ) {
         super(restClientConfiguration, httpHostConfiguration);
-       }
+    }
 
     public IngestStreamingInternalRestClient getIngestStreamingInternalRestClient() {
         return new IngestStreamingInternalRestClient(getRestTemplate(), getBaseUrl());

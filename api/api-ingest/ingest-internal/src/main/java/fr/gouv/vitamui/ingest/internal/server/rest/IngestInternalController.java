@@ -79,20 +79,22 @@ public class IngestInternalController {
     private InternalSecurityService securityService;
 
     @Autowired
-    public IngestInternalController(final IngestInternalService ingestInternalService,
-        final InternalSecurityService securityService) {
+    public IngestInternalController(
+        final IngestInternalService ingestInternalService,
+        final InternalSecurityService securityService
+    ) {
         this.ingestInternalService = ingestInternalService;
         this.securityService = securityService;
     }
 
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws PreconditionFailedException, InvalidParseOperationException, IOException {
-
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException, InvalidParseOperationException, IOException {
         if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
@@ -101,12 +103,16 @@ public class IngestInternalController {
         }
         SanityChecker.sanitizeCriteria(criteria);
         if (criteria.isPresent()) {
-            SanityChecker.sanitizeCriteria(VitamUIUtils
-                .convertObjectFromJson(criteria.get(), Object.class));
+            SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(criteria.get(), Object.class));
         }
-        LOGGER
-            .debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
-                orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
@@ -147,10 +153,13 @@ public class IngestInternalController {
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    )
-        throws IngestExternalException, PreconditionFailedException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
-            originalFileName);
+    ) throws IngestExternalException, PreconditionFailedException, InvalidParseOperationException {
+        ParameterChecker.checkParameter(
+            "The action and the context ID are mandatory parameters: ",
+            action,
+            contextId,
+            originalFileName
+        );
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         SanityChecker.checkSecureParameter(action, contextId, originalFileName);

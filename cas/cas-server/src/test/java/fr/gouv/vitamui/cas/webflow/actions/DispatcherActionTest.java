@@ -67,26 +67,32 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
-        action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, utils,
-            mock(SessionStore.class));
+        action = new DispatcherAction(
+            providersService,
+            identityProviderHelper,
+            casExternalRestClient,
+            utils,
+            mock(SessionStore.class)
+        );
 
         final SAML2Client client = new SAML2Client();
         provider = new Pac4jClientIdentityProviderDto(new IdentityProviderDto(), client);
         provider.setInternal(true);
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1)))
-            .thenReturn(Optional.of(provider));
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1))
+        ).thenReturn(Optional.of(provider));
     }
 
     @Test
     public void testNoIdentityProvider() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
         flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
 
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1)))
-            .thenReturn(Optional.empty());
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1))
+        ).thenReturn(Optional.empty());
 
         final Event event = action.doExecute(context);
 
@@ -95,7 +101,6 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalAuthnOK() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
@@ -108,7 +113,6 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalAuthnDisabled() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
@@ -116,9 +120,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
-            eq(Optional.empty())))
-            .thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_1),
+                eq(CUSTOMER_ID_1),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -127,7 +136,6 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogation() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
@@ -140,7 +148,6 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogationSurrogateDisabled() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
@@ -148,8 +155,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
-            eq(Optional.empty()))).thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_2),
+                eq(CUSTOMER_ID_2),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -158,7 +171,6 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogationSuperUserDisabled() throws IOException {
-
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
@@ -166,8 +178,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
-            eq(Optional.empty()))).thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_1),
+                eq(CUSTOMER_ID_1),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -199,8 +217,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
-            eq(Optional.empty()))).thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_1),
+                eq(CUSTOMER_ID_1),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -232,8 +256,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_2), eq(CUSTOMER_ID_2),
-            eq(Optional.empty()))).thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_2),
+                eq(CUSTOMER_ID_2),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -251,8 +281,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casExternalRestClient.getUserByEmailAndCustomerId(any(ExternalHttpContext.class), eq(USER_1), eq(CUSTOMER_ID_1),
-            eq(Optional.empty()))).thenReturn(userDto);
+        when(
+            casExternalRestClient.getUserByEmailAndCustomerId(
+                any(ExternalHttpContext.class),
+                eq(USER_1),
+                eq(CUSTOMER_ID_1),
+                eq(Optional.empty())
+            )
+        ).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 

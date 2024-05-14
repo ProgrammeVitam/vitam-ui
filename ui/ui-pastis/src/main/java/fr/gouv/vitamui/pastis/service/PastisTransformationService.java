@@ -59,7 +59,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
 /**
  * UI
  * Pastis Service
@@ -75,9 +74,12 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
     private CommonService commonService;
 
     @Autowired
-    public PastisTransformationService(final PastisTransformationRestClient pastisTransformationRestClient,
+    public PastisTransformationService(
+        final PastisTransformationRestClient pastisTransformationRestClient,
         final PastisTransformationWebClient pastisTransformationWebClient,
-        final ProfileService service, final CommonService commonService) {
+        final ProfileService service,
+        final CommonService commonService
+    ) {
         this.pastisTransformationRestClient = pastisTransformationRestClient;
         this.pastisTransformationWebClient = pastisTransformationWebClient;
         this.profileService = service;

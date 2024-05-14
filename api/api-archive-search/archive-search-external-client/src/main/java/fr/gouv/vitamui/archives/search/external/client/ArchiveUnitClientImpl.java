@@ -51,7 +51,8 @@ import java.util.Set;
 import static org.springframework.http.HttpMethod.PATCH;
 
 public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> implements ArchiveUnitClient {
-    private final static String ARCHIVE_UNITS = "archive-units";
+
+    private static final String ARCHIVE_UNITS = "archive-units";
     private static final VitamUILogger log = VitamUILoggerFactory.getInstance(ArchiveUnitClientImpl.class);
 
     public ArchiveUnitClientImpl(RestTemplate restTemplate, String baseUrl) {
@@ -63,8 +64,10 @@ public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> i
         return String.format("/%s", ARCHIVE_UNITS);
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final Set<UpdateArchiveUnitDto> updateOperationDtoSet) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final Set<UpdateArchiveUnitDto> updateOperationDtoSet
+    ) {
         final URI uri;
         try {
             uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS).build();
@@ -72,13 +75,20 @@ public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(updateOperationDtoSet, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext, final String id,
-        final JsonPatch jsonPatch) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final String id,
+        final JsonPatch jsonPatch
+    ) {
         final URI uri;
         try {
             uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, id).build();
@@ -86,8 +96,12 @@ public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(jsonPatch, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
@@ -99,13 +113,19 @@ public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(jsonPatchDto, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
 
-    public OperationIdDto update(final AbstractHttpContext abstractHttpContext,
-        final MultiJsonPatchDto multiJsonPatchDto) {
+    public OperationIdDto update(
+        final AbstractHttpContext abstractHttpContext,
+        final MultiJsonPatchDto multiJsonPatchDto
+    ) {
         final URI uri;
         try {
             uri = new URIBuilder(getBaseUrl()).setPathSegments(ARCHIVE_UNITS, "update", "multiple").build();
@@ -113,9 +133,12 @@ public class ArchiveUnitClientImpl extends BaseRestClient<ExternalHttpContext> i
             throw new RuntimeException(e);
         }
         final HttpEntity<?> httpEntity = new HttpEntity<>(multiJsonPatchDto, buildHeaders(abstractHttpContext));
-        final ResponseEntity<OperationIdDto> responseEntity =
-            restTemplate.exchange(uri, PATCH, httpEntity, OperationIdDto.class);
+        final ResponseEntity<OperationIdDto> responseEntity = restTemplate.exchange(
+            uri,
+            PATCH,
+            httpEntity,
+            OperationIdDto.class
+        );
         return Objects.requireNonNull(responseEntity.getBody());
     }
-
 }

@@ -1,15 +1,13 @@
 package fr.gouv.vitamui.iam.internal.server.application.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApplicationConverterTest {
 
@@ -47,6 +45,5 @@ public class ApplicationConverterTest {
         JsonNode jsonNode = JsonHandler.getFromString(json);
         assertThat(jsonNode.get(ApplicationConverter.APPLICATION_ID_KEY)).isNotNull();
         assertThat(jsonNode.get(ApplicationConverter.URL_KEY)).isNotNull();
-
     }
 }

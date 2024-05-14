@@ -72,26 +72,36 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
     private AgencyInternalWebClient agencyInternalWebClient;
 
     @Autowired
-    public AgencyExternalService(ExternalSecurityService externalSecurityService, AgencyInternalRestClient agencyInternalRestClient, AgencyInternalWebClient agencyInternalWebClient) {
+    public AgencyExternalService(
+        ExternalSecurityService externalSecurityService,
+        AgencyInternalRestClient agencyInternalRestClient,
+        AgencyInternalWebClient agencyInternalWebClient
+    ) {
         super(externalSecurityService);
         this.agencyInternalRestClient = agencyInternalRestClient;
         this.agencyInternalWebClient = agencyInternalWebClient;
     }
 
     public List<AgencyDto> getAll(final Optional<String> criteria) {
-        return agencyInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return agencyInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     public AgencyDto getOne(String id) {
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<AgencyDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<AgencyDto, InternalHttpContext> getClient() {
         return agencyInternalRestClient;
     }
 
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }

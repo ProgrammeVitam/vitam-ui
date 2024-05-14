@@ -36,23 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.securityprofile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -76,6 +65,15 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SecurityProfileInternalService {
@@ -91,7 +89,12 @@ public class SecurityProfileInternalService {
     private LogbookService logbookService;
 
     @Autowired
-    public SecurityProfileInternalService(VitamSecurityProfileService vitamSecurityProfileService, ObjectMapper objectMapper, SecurityProfileConverter converter,LogbookService logbookService) {
+    public SecurityProfileInternalService(
+        VitamSecurityProfileService vitamSecurityProfileService,
+        ObjectMapper objectMapper,
+        SecurityProfileConverter converter,
+        LogbookService logbookService
+    ) {
         this.vitamSecurityProfileService = vitamSecurityProfileService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -100,43 +103,55 @@ public class SecurityProfileInternalService {
 
     public SecurityProfileDto getOne(VitamContext vitamSecurityProfile, String identifier) {
         try {
-            LOGGER.info("Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-            RequestResponse<SecurityProfileModel> requestResponse = vitamSecurityProfileService.findSecurityProfileById(vitamSecurityProfile, identifier);
-            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class);
-            if(securityProfileResponseDto.getResults().size() == 0){
+            LOGGER.info("Security Profile EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
+            RequestResponse<SecurityProfileModel> requestResponse = vitamSecurityProfileService.findSecurityProfileById(
+                vitamSecurityProfile,
+                identifier
+            );
+            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                SecurityProfileResponseDto.class
+            );
+            if (securityProfileResponseDto.getResults().size() == 0) {
                 return null;
-            }else {
+            } else {
                 return converter.convertVitamToDto(securityProfileResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to get Security Profile", e);
+            throw new InternalServerException("Unable to get Security Profile", e);
         }
     }
 
     public List<SecurityProfileDto> getAll(VitamContext vitamSecurityProfile) {
         final RequestResponse<SecurityProfileModel> requestResponse;
         try {
-            LOGGER.info("All Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-            requestResponse = vitamSecurityProfileService
-                    .findSecurityProfiles(vitamSecurityProfile, new Select().getFinalSelect());
-            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class);
+            LOGGER.info("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
+            requestResponse = vitamSecurityProfileService.findSecurityProfiles(
+                vitamSecurityProfile,
+                new Select().getFinalSelect()
+            );
+            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                SecurityProfileResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(securityProfileResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to get Security Profiles", e);
+            throw new InternalServerException("Unable to get Security Profiles", e);
         }
     }
 
-    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamSecurityProfile,
-            Optional<String> criteria) {
-
-
+    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamSecurityProfile,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
-        LOGGER.info("All Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+        LOGGER.info("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
@@ -146,7 +161,7 @@ public class SecurityProfileInternalService {
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated security profiles", ioe);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
 
@@ -160,10 +175,9 @@ public class SecurityProfileInternalService {
     public SecurityProfileResponseDto findAll(VitamContext vitamSecurityProfile, JsonNode query) {
         final RequestResponse<SecurityProfileModel> requestResponse;
         try {
-            LOGGER.info("All Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+            LOGGER.info("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
             requestResponse = vitamSecurityProfileService.findSecurityProfiles(vitamSecurityProfile, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class);
-
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Can't find security profiles", e);
         }
@@ -172,12 +186,12 @@ public class SecurityProfileInternalService {
     public Boolean check(VitamContext vitamSecurityProfile, SecurityProfileDto securityProfileDto) {
         List<SecurityProfileDto> securityProfileDtoList = new ArrayList<>();
         securityProfileDtoList.add(securityProfileDto);
-        LOGGER.info("Security Profile Check EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+        LOGGER.info("Security Profile Check EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         try {
-            return !vitamSecurityProfileService
-                    .checkAbilityToCreateSecurityProfileInVitam(
-                            converter.convertDtosToVitams(securityProfileDtoList),
-                            vitamSecurityProfile);
+            return !vitamSecurityProfileService.checkAbilityToCreateSecurityProfileInVitam(
+                converter.convertDtosToVitams(securityProfileDtoList),
+                vitamSecurityProfile
+            );
         } catch (ConflictException e) {
             return true;
         } catch (VitamUIException e) {
@@ -187,18 +201,27 @@ public class SecurityProfileInternalService {
 
     public SecurityProfileDto create(VitamContext vitamSecurityProfile, SecurityProfileDto securityProfileDto) {
         try {
-            LOGGER.info("Create Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-            RequestResponse<?> requestResponse = vitamSecurityProfileService.createSecurityProfile(vitamSecurityProfile, converter.convertDtoToVitam(securityProfileDto));
-            final SecurityProfileModel securityProfileVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), SecurityProfileModel.class);
+            LOGGER.info(
+                "Create Security Profiles EvIdAppSession : {} ",
+                vitamSecurityProfile.getApplicationSessionId()
+            );
+            RequestResponse<?> requestResponse = vitamSecurityProfileService.createSecurityProfile(
+                vitamSecurityProfile,
+                converter.convertDtoToVitam(securityProfileDto)
+            );
+            final SecurityProfileModel securityProfileVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                SecurityProfileModel.class
+            );
             return converter.convertVitamToDto(securityProfileVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e
+        ) {
             throw new InternalServerException("Can't create security profile", e);
         }
     }
 
     private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
-
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
@@ -207,7 +230,7 @@ public class SecurityProfileInternalService {
         }
         if (partialDto.get("permissions") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String perm: (List<String>) partialDto.get("permissions")) {
+            for (String perm : (List<String>) partialDto.get("permissions")) {
                 array.add(perm);
             }
             propertiesToUpdate.set("Permissions", array);
@@ -216,14 +239,14 @@ public class SecurityProfileInternalService {
         return propertiesToUpdate;
     }
 
-    public SecurityProfileDto patch(VitamContext vitamSecurityProfile,final Map<String, Object> partialDto) {
+    public SecurityProfileDto patch(VitamContext vitamSecurityProfile, final Map<String, Object> partialDto) {
         // Update updateRequest = new Update();
 
         String id = (String) partialDto.get("identifier");
         if (id == null) {
             throw new BadRequestException("id must be one the the update criteria");
         }
-        LOGGER.info("Patch Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+        LOGGER.info("Patch Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         // Hard fix updateRequest.addActions( UpdateActionHelper.set( convertMapPartialDtoToUpperCaseVitamFields(partialDto) ) ).getFinalUpdateById
         // Allow to manage List<String> objects as value setted
         JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
@@ -238,9 +261,15 @@ public class SecurityProfileInternalService {
         query.set("$action", actions);
 
         try {
-            RequestResponse<?> requestResponse =  vitamSecurityProfileService.patchSecurityProfile(vitamSecurityProfile, id, query);
-            final SecurityProfileModel securityProfileVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), SecurityProfileModel.class);
+            RequestResponse<?> requestResponse = vitamSecurityProfileService.patchSecurityProfile(
+                vitamSecurityProfile,
+                id,
+                query
+            );
+            final SecurityProfileModel securityProfileVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                SecurityProfileModel.class
+            );
             return converter.convertVitamToDto(securityProfileVitamDto);
         } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Can't patch security profile", e);
@@ -249,18 +278,26 @@ public class SecurityProfileInternalService {
 
     public boolean delete(VitamContext context, String id) {
         try {
-            LOGGER.info("Delete Security Profile EvIdAppSession : {} " , context.getApplicationSessionId());
+            LOGGER.info("Delete Security Profile EvIdAppSession : {} ", context.getApplicationSessionId());
             RequestResponse<?> requestResponse = vitamSecurityProfileService.deleteSecurityProfile(context, id);
             return requestResponse.isOk();
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
             throw new InternalServerException("Unable to delete agency", e);
         }
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamSecurityProfile, final String identifier) throws VitamClientException {
+    public JsonNode findHistoryByIdentifier(VitamContext vitamSecurityProfile, final String identifier)
+        throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
-        LOGGER.info(" Security Profile History EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-        return logbookService.findEventsByIdentifierAndCollectionNames(
-                identifier, AdminCollections.ACCESS_CONTRACTS.getName(), vitamSecurityProfile).toJsonNode();
+        LOGGER.info(" Security Profile History EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(
+                identifier,
+                AdminCollections.ACCESS_CONTRACTS.getName(),
+                vitamSecurityProfile
+            )
+            .toJsonNode();
     }
 }

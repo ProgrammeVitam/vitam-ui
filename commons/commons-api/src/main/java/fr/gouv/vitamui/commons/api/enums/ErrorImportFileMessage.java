@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.commons.api.enums;
 
 public enum ErrorImportFileMessage {
-
     FILE_IS_EMPTY,
     FILE_SIZE_TOO_BIG,
     ONLY_ONE_HEADER_INCORRECT_SEPARATOR,
@@ -12,5 +11,5 @@ public enum ErrorImportFileMessage {
     MANDATORY_VALUE,
     NOT_ALLOWED_VALUE,
     ISO_8859_1_ONLY,
-    REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP;
+    REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP,
 }

@@ -62,25 +62,35 @@ public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTic
 
     private final Utils utils;
 
-    public DynamicTicketGrantingTicketFactory(final UniqueTicketIdGenerator ticketGrantingTicketUniqueTicketIdGenerator,
-                                              final ExpirationPolicyBuilder<TicketGrantingTicket> ticketGrantingTicketExpirationPolicy,
-                                              final CipherExecutor<Serializable, String> cipherExecutor,
-                                              final ServicesManager servicesManager,
-                                              final Utils utils) {
-        super(ticketGrantingTicketUniqueTicketIdGenerator, ticketGrantingTicketExpirationPolicy, cipherExecutor, servicesManager);
+    public DynamicTicketGrantingTicketFactory(
+        final UniqueTicketIdGenerator ticketGrantingTicketUniqueTicketIdGenerator,
+        final ExpirationPolicyBuilder<TicketGrantingTicket> ticketGrantingTicketExpirationPolicy,
+        final CipherExecutor<Serializable, String> cipherExecutor,
+        final ServicesManager servicesManager,
+        final Utils utils
+    ) {
+        super(
+            ticketGrantingTicketUniqueTicketIdGenerator,
+            ticketGrantingTicketExpirationPolicy,
+            cipherExecutor,
+            servicesManager
+        );
         this.utils = utils;
     }
 
     @Override
-    protected <T extends TicketGrantingTicket> T produceTicket(final Authentication authentication,
-                                                               final String tgtId, final Service service, final Class<T> clazz) {
+    protected <T extends TicketGrantingTicket> T produceTicket(
+        final Authentication authentication,
+        final String tgtId,
+        final Service service,
+        final Class<T> clazz
+    ) {
         final Principal principal = authentication.getPrincipal();
         final Map<String, List<Object>> attributes = principal.getAttributes();
         final String superUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
         final UserTypeEnum type = (UserTypeEnum) utils.getAttributeValue(attributes, TYPE_ATTRIBUTE);
         if (superUser != null && type == UserTypeEnum.GENERIC) {
-            return (T) new TicketGrantingTicketImpl(
-                tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));
+            return (T) new TicketGrantingTicketImpl(tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));
         } else {
             return super.produceTicket(authentication, tgtId, service, clazz);
         }

@@ -88,12 +88,14 @@ public class ProjectExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws PreconditionFailedException {
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException {
         direction.ifPresent(directionDto -> {
             SanityChecker.sanitizeCriteria(directionDto);
         });
@@ -101,18 +103,26 @@ public class ProjectExternalController {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
-            direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return projectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @ApiOperation(value = "Get transactions by project paginated")
-    @GetMapping(params = {"page", "size"}, value = "/{id}" + TRANSACTIONS)
-    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
+    @GetMapping(params = { "page", "size" }, value = "/{id}" + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        @RequestParam(required = false) final Optional<DirectionDto> direction,
+        @PathVariable("id") String projectId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
@@ -121,14 +131,25 @@ public class ProjectExternalController {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
 
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
-            direction);
-        return projectExternalService.getTransactionsByProjectPaginated(page, size, criteria, orderBy, direction,
-            projectId);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
+        return projectExternalService.getTransactionsByProjectPaginated(
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            projectId
+        );
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
-    @PostMapping()
+    @PostMapping
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -138,10 +159,10 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_CREATE_TRANSACTIONS)
     @PostMapping(value = PATH_ID + "/transactions")
-    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
-    CollectTransactionDto collectTransactionDto)
-        throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public CollectTransactionDto createTransactionForProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create : {}", collectTransactionDto);
@@ -151,7 +172,8 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Void> streamingUpload(InputStream inputStream,
+    public ResponseEntity<Void> streamingUpload(
+        InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName,
         @RequestHeader Map<String, String> headers
@@ -166,9 +188,10 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
     @PutMapping(PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public CollectProjectDto updateProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -205,6 +228,4 @@ public class ProjectExternalController {
         LOGGER.debug("Find the transaction by project with ID {}", id);
         return projectExternalService.getLastTransactionForProjectId(id);
     }
-
-
 }

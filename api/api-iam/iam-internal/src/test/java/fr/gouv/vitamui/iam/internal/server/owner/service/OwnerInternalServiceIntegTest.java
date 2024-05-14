@@ -1,35 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableMap;
-
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -61,14 +33,41 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 
 /**
  * Tests the {@link OwnerInternalService}.
  */
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = {OwnerRepository.class, CustomSequenceRepository.class, TokenRepository.class},
-        repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = { OwnerRepository.class, CustomSequenceRepository.class, TokenRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     private OwnerInternalService ownerService;
@@ -109,19 +108,29 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     @MockBean
     private ConnectionHistoryService connectionHistoryService;
 
-    public OwnerInternalServiceIntegTest() {
-    }
+    public OwnerInternalServiceIntegTest() {}
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ownerService = new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
-                internalSecurityService, ownerConverter, logbookService, tenantRepository);
+        ownerService = new OwnerInternalService(
+            sequenceGeneratorService,
+            ownerRepository,
+            customerRepository,
+            new AddressService(),
+            iamLogbookService,
+            internalSecurityService,
+            ownerConverter,
+            logbookService,
+            tenantRepository
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
 
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
         Mockito.when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
         eventRepository.deleteAll();
     }
@@ -131,8 +140,12 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         final OwnerDto owner = createOwner();
         assertThat(owner.getCode()).isNotBlank();
 
-        final Criteria criteria = Criteria.where("obId").is(owner.getIdentifier()).and("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_OWNER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(owner.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.OWNERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_OWNER);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -194,8 +207,12 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         ownerService.patch(partialDto);
         partialDto.remove("code");
 
-        final Criteria criteria = Criteria.where("obId").is(owner.getIdentifier()).and("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
-                .is(EventType.EXT_VITAMUI_UPDATE_OWNER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(owner.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.OWNERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_UPDATE_OWNER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(8);
     }
@@ -215,21 +232,22 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
 
         Mockito.when(internalSecurityService.getTenantIdentifier()).thenReturn(tenant.getIdentifier());
         Mockito.when(internalSecurityService.getTenant(eq(tenant.getIdentifier()))).thenReturn(tenant);
-        final RequestResponse<LogbookOperation> operationsResponse =
-                new RequestResponseOK<LogbookOperation>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId").addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
-                        .setHttpCode(Response.Status.OK.getStatusCode());
-        Mockito.when(logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())).thenReturn(operationsResponse);
+        final RequestResponse<LogbookOperation> operationsResponse = new RequestResponseOK<LogbookOperation>()
+            .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
+            .addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
+            .setHttpCode(Response.Status.OK.getStatusCode());
+        Mockito.when(
+            logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())
+        ).thenReturn(operationsResponse);
 
         final JsonNode historyResult = ownerService.findHistoryById(ownerCreated.getId());
 
         assertThat(historyResult).isNotEmpty();
         Mockito.verify(internalSecurityService).getTenantIdentifier();
         Mockito.verify(internalSecurityService).getTenant(tenant.getIdentifier());
-
     }
 
     private OwnerDto buildOwnerDto() {
         return IamServerUtilsTest.buildOwnerDto();
     }
-
 }

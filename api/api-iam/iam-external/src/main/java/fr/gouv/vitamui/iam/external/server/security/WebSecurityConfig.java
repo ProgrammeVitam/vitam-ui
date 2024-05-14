@@ -36,17 +36,16 @@
  */
 package fr.gouv.vitamui.iam.external.server.security;
 
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+import fr.gouv.vitamui.iam.security.config.ExternalApiWebSecurityConfig;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.config.ExternalApiWebSecurityConfig;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 
 import javax.validation.constraints.NotNull;
 
@@ -66,8 +65,11 @@ public class WebSecurityConfig extends ExternalApiWebSecurityConfig {
     @NotNull
     private String casExternalUrl;
 
-    public WebSecurityConfig(final ExternalApiAuthenticationProvider apiAuthenticationProvider,
-            final RestExceptionHandler restExceptionHandler, final Environment env) {
+    public WebSecurityConfig(
+        final ExternalApiAuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
     }
 
@@ -82,5 +84,4 @@ public class WebSecurityConfig extends ExternalApiWebSecurityConfig {
 
         return new CasLogoutUrl(casLogoutUrl);
     }
-
 }

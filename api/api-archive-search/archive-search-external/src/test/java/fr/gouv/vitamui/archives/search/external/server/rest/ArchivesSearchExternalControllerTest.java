@@ -26,7 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
-
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
@@ -78,11 +77,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {ArchivesSearchExternalController.class})
+@WebMvcTest(controllers = { ArchivesSearchExternalController.class })
 class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivesSearchExternalControllerTest.class
+    );
 
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
@@ -105,7 +105,6 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         assertNotNull(archivesSearchExternalService);
     }
 
-
     private ArchivesSearchExternalController archivesSearchExternalController;
 
     @BeforeEach
@@ -115,7 +114,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.SERVICE_ARCHIVE};
+        return new String[] { ServicesData.SERVICE_ARCHIVE };
     }
 
     @Override
@@ -134,33 +133,27 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
         return RestApi.ARCHIVE_SEARCH_PATH;
     }
 
-
-
     @Test
-    void test_searchArchiveUnitsByCriteria_with_ok_criteria_should_return_ok() throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    void test_searchArchiveUnitsByCriteria_with_ok_criteria_should_return_ok()
+        throws InvalidParseOperationException, PreconditionFailedException {
         SearchCriteriaDto query = new SearchCriteriaDto();
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
-        Mockito
-            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
-            .thenReturn(expectedResponse);
-        VitamUIArchiveUnitResponseDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
+        Mockito.when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query)).thenReturn(expectedResponse);
+        VitamUIArchiveUnitResponseDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(
+            query
+        );
         assertEquals(responseDto, expectedResponse);
     }
 
     @Test
     void test_searchArchiveUnitsByCriteria_with_invalid_criteria_should_return_ko() {
-
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
         nodeCriteria.setCriteria("NODES");
@@ -169,9 +162,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
-        Mockito
-            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query)).thenReturn(expectedResponse);
 
         assertThatCode(() -> archivesSearchExternalController.searchArchiveUnitsByCriteria(query))
             .isInstanceOf(PreconditionFailedException.class)
@@ -182,8 +173,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() {
         // Given
         VitamUISearchResponseDto expectedResponse = new VitamUISearchResponseDto();
-        when(archivesSearchExternalService.getFilingHoldingScheme())
-            .thenReturn(expectedResponse);
+        when(archivesSearchExternalService.getFilingHoldingScheme()).thenReturn(expectedResponse);
         // When
         VitamUISearchResponseDto filingHoldingSchemeResults =
             archivesSearchExternalController.getFillingHoldingScheme();
@@ -191,8 +181,6 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         assertNotNull(filingHoldingSchemeResults);
         assertEquals(filingHoldingSchemeResults, expectedResponse);
     }
-
-
 
     @Test
     void test_exportCsvArchiveUnitsByCriteria_with_valid_criteria_should_return_ok()
@@ -202,14 +190,15 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         query.setLanguage(Locale.FRENCH.getLanguage());
 
         Resource resource = new ByteArrayResource(
-            Objects.requireNonNull(ArchivesSearchExternalControllerTest.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
+            Objects.requireNonNull(
+                ArchivesSearchExternalControllerTest.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)
+            ).readAllBytes()
+        );
 
-        when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query))
-            .thenReturn(resource);
+        when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query)).thenReturn(resource);
         // When
-        Resource responseCsv =
-            archivesSearchExternalController.exportCsvArchiveUnitsByCriteria(query);
+        Resource responseCsv = archivesSearchExternalController.exportCsvArchiveUnitsByCriteria(query);
         // Then
         assertNotNull(responseCsv);
         assertEquals(responseCsv, resource);
@@ -224,8 +213,7 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
             .setSearchCriteria(new SearchCriteriaDto())
             .setDataObjectVersionsPatterns(Map.of())
             .setLifeCycleLogs(true);
-        when(archivesSearchExternalService.transferRequest(transferRequestDto))
-            .thenReturn("OK");
+        when(archivesSearchExternalService.transferRequest(transferRequestDto)).thenReturn("OK");
         // When
         String response = archivesSearchExternalController.transferRequest(transferRequestDto);
         // Then
@@ -235,13 +223,12 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     @Test
     void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId()
         throws InvalidParseOperationException, PreconditionFailedException {
-
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         String expectedResponse = EXPECTED_RESPONSE;
 
-        Mockito
-            .when(archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto))
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto)).thenReturn(
+            expectedResponse
+        );
 
         String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
         assertEquals(response, expectedResponse);
@@ -255,15 +242,14 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         String expectedResponse = EXPECTED_RESPONSE;
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.computedInheritedRules(searchCriteriaDto))
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.computedInheritedRules(searchCriteriaDto)).thenReturn(
+            expectedResponse
+        );
         String response = archivesSearchExternalController.computedInheritedRules(searchCriteriaDto);
 
         // Then
         assertEquals(response, expectedResponse);
     }
-
 
     @Test
     void testSelectUnitWithInheritedRulesThenReturnVitamOperationId()
@@ -273,9 +259,9 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         ResultsDto expectedResponse = new ResultsDto();
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.selectUnitWithInheritedRules(searchCriteriaDto))
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.selectUnitWithInheritedRules(searchCriteriaDto)).thenReturn(
+            expectedResponse
+        );
         ResultsDto response = archivesSearchExternalController.selectUnitWithInheritedRules(searchCriteriaDto);
 
         // Then
@@ -292,9 +278,9 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
         InputStream atrFile = new ByteArrayInputStream(initialString.getBytes());
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.transferAcknowledgment(atrFile, fileName))
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.transferAcknowledgment(atrFile, fileName)).thenReturn(
+            expectedResponse
+        );
         String response = archivesSearchExternalController.transferAcknowledgment(atrFile, fileName);
 
         // Then
@@ -302,15 +288,12 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     }
 
     @Test
-    void testGetOntologiesListThenReturnOntologiesValuesList()
-        throws PreconditionFailedException {
+    void testGetOntologiesListThenReturnOntologiesValuesList() throws PreconditionFailedException {
         // Given
         List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.getExternalOntologiesList())
-            .thenReturn(expectedResponse);
+        Mockito.when(archivesSearchExternalService.getExternalOntologiesList()).thenReturn(expectedResponse);
         List<VitamUiOntologyDto> response = archivesSearchExternalController.getExternalOntologiesList();
 
         // Then
@@ -318,17 +301,15 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     }
 
     @Test
-    void testFindUnitsByPersistentIdentifier()
-        throws PreconditionFailedException {
+    void testFindUnitsByPersistentIdentifier() throws PreconditionFailedException {
         // Given
         final String arkId = "ark:/225867/001a9d7db5eghxac";
         final PersistentIdentifierResponseDto expectedResponse = new PersistentIdentifierResponseDto();
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.findUnitsByPersistentIdentifier(arkId))
-            .thenReturn(expectedResponse);
-        final PersistentIdentifierResponseDto response = archivesSearchExternalController.findUnitsByPersistentIdentifier(arkId);
+        Mockito.when(archivesSearchExternalService.findUnitsByPersistentIdentifier(arkId)).thenReturn(expectedResponse);
+        final PersistentIdentifierResponseDto response =
+            archivesSearchExternalController.findUnitsByPersistentIdentifier(arkId);
 
         // Then
         verify(archivesSearchExternalService, times(1)).findUnitsByPersistentIdentifier(arkId);
@@ -336,17 +317,17 @@ class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalContr
     }
 
     @Test
-    void testFindObjectsByPersistentIdentifier()
-        throws PreconditionFailedException {
+    void testFindObjectsByPersistentIdentifier() throws PreconditionFailedException {
         // Given
         final String arkId = "ark:/225867/001a9d7db5eghxac_binary_master";
         final PersistentIdentifierResponseDto expectedResponse = new PersistentIdentifierResponseDto();
 
         // When
-        Mockito
-            .when(archivesSearchExternalService.findObjectsByPersistentIdentifier(arkId))
-            .thenReturn(expectedResponse);
-        final PersistentIdentifierResponseDto response = archivesSearchExternalController.findObjectsByPersistentIdentifier(arkId);
+        Mockito.when(archivesSearchExternalService.findObjectsByPersistentIdentifier(arkId)).thenReturn(
+            expectedResponse
+        );
+        final PersistentIdentifierResponseDto response =
+            archivesSearchExternalController.findObjectsByPersistentIdentifier(arkId);
 
         // Then
         verify(archivesSearchExternalService, times(1)).findObjectsByPersistentIdentifier(arkId);

@@ -1,12 +1,11 @@
 package fr.gouv.vitamui.cucumber.front.pages.search;
 
-import java.util.List;
-
-import org.openqa.selenium.WebElement;
-
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.core.pages.PageObject;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 @DefaultUrl("/tenant/9")
 public class ArchiveSearchPage extends PageObject {
@@ -29,5 +28,4 @@ public class ArchiveSearchPage extends PageObject {
     public int getResultRowNumber() {
         return resultRows.size();
     }
-
 }

@@ -2,15 +2,14 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
+import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
-import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 
 /**
  * Tests the {@link IdentityProviderInternalController}.
@@ -30,8 +29,7 @@ public final class IdentityProviderCrudControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    private void prepareServices() {
-    }
+    private void prepareServices() {}
 
     @Test(expected = UnsupportedOperationException.class)
     public void testCannotUpdate() {
@@ -48,5 +46,4 @@ public final class IdentityProviderCrudControllerTest {
     private IdentityProviderDto buildIdentityProviderDto() {
         return IamServerUtilsTest.buildIdentityProviderDto();
     }
-
 }

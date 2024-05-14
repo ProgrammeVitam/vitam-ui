@@ -4,9 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 class TranslateServiceTest {
 
@@ -26,6 +27,20 @@ class TranslateServiceTest {
     }
 
     private static Stream<Arguments> translateParameters() {
-        return Stream.of(Arguments.of("true", "oui"), Arguments.of("false", "non"), Arguments.of("FRENCH", "Français"), Arguments.of("ENGLISH", "Anglais"), Arguments.of("NOMINATIVE", "Nominatif"), Arguments.of("GENERIC", "Générique"), Arguments.of("ENABLED", "actif"), Arguments.of("DISABLED", "inactif"), Arguments.of("BLOCKED", "bloqué"), Arguments.of("REMOVED", "supprimé"), Arguments.of("ANONYM", "anonyme"), Arguments.of("unknown", "unknown"), Arguments.of(null, null));
+        return Stream.of(
+            Arguments.of("true", "oui"),
+            Arguments.of("false", "non"),
+            Arguments.of("FRENCH", "Français"),
+            Arguments.of("ENGLISH", "Anglais"),
+            Arguments.of("NOMINATIVE", "Nominatif"),
+            Arguments.of("GENERIC", "Générique"),
+            Arguments.of("ENABLED", "actif"),
+            Arguments.of("DISABLED", "inactif"),
+            Arguments.of("BLOCKED", "bloqué"),
+            Arguments.of("REMOVED", "supprimé"),
+            Arguments.of("ANONYM", "anonyme"),
+            Arguments.of("unknown", "unknown"),
+            Arguments.of(null, null)
+        );
     }
 }

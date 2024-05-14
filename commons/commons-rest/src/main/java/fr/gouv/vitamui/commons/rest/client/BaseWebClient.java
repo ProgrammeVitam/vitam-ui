@@ -109,16 +109,27 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartData(final String url, final HttpMethod httpMethod, final AbstractHttpContext context,
+    protected <T> T multipartData(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
         final Map<String, Object> dto,
-        final Optional<Entry<String, MultipartFile>> multipartFile, final Class<T> clazz) {
+        final Optional<Entry<String, MultipartFile>> multipartFile,
+        final Class<T> clazz
+    ) {
         return multipartData(url, httpMethod, context, dto, multipartFile, null, clazz);
     }
 
-    protected <T> T multiparts(final String url, final HttpMethod httpMethod, final AbstractHttpContext context,
+    protected <T> T multiparts(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
         final Map<String, Object> dto,
-        final Optional<Entry<String, MultipartFile>> header, final Optional<Entry<String, MultipartFile>> footer,
-        final Optional<Entry<String, MultipartFile>> portal, final Class<T> clazz) {
+        final Optional<Entry<String, MultipartFile>> header,
+        final Optional<Entry<String, MultipartFile>> footer,
+        final Optional<Entry<String, MultipartFile>> portal,
+        final Class<T> clazz
+    ) {
         return multiparts(url, httpMethod, context, dto, header, footer, portal, null, clazz);
     }
 
@@ -134,10 +145,15 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartData(final String url, final HttpMethod httpMethod, final AbstractHttpContext context,
+    protected <T> T multipartData(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
         final Map<String, Object> dto,
-        final Optional<Entry<String, MultipartFile>> multipartFile, final MultiValueMap<String, String> headers,
-        final Class<T> clazz) {
+        final Optional<Entry<String, MultipartFile>> multipartFile,
+        final MultiValueMap<String, String> headers,
+        final Class<T> clazz
+    ) {
         final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         checkHttpMethod(httpMethod);
@@ -155,23 +171,36 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         final MultiValueMap<String, HttpEntity<?>> multiValueMap = builder.build();
 
         if (HttpMethod.POST == httpMethod) {
-            return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .post()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .syncBody(multiValueMap)
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         } else {
-            return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .patch()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .syncBody(multiValueMap)
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         }
-
     }
 
-    private void computeFile(final MultipartBodyBuilder builder,
-        final Optional<Entry<String, MultipartFile>> multipartFile) {
+    private void computeFile(
+        final MultipartBodyBuilder builder,
+        final Optional<Entry<String, MultipartFile>> multipartFile
+    ) {
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
@@ -181,11 +210,17 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         }
     }
 
-    protected <T> T multiparts(final String url, final HttpMethod httpMethod, final AbstractHttpContext context,
+    protected <T> T multiparts(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
         final Map<String, Object> dto,
-        final Optional<Entry<String, MultipartFile>> header, final Optional<Entry<String, MultipartFile>> footer,
-        final Optional<Entry<String, MultipartFile>> portal, final MultiValueMap<String, String> headers,
-        final Class<T> clazz) {
+        final Optional<Entry<String, MultipartFile>> header,
+        final Optional<Entry<String, MultipartFile>> footer,
+        final Optional<Entry<String, MultipartFile>> portal,
+        final MultiValueMap<String, String> headers,
+        final Class<T> clazz
+    ) {
         final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         checkHttpMethod(httpMethod);
@@ -205,19 +240,30 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         final MultiValueMap<String, HttpEntity<?>> multiValueMap = builder.build();
 
         if (HttpMethod.POST == httpMethod) {
-            return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .post()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .syncBody(multiValueMap)
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         } else {
-            return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .patch()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .syncBody(multiValueMap)
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         }
-
     }
 
     /**
@@ -230,9 +276,13 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartDataFromFile(final String url, final HttpMethod httpMethod,
+    protected <T> T multipartDataFromFile(
+        final String url,
+        final HttpMethod httpMethod,
         final AbstractHttpContext context,
-        final Optional<Entry<String, Path>> filePath, final Class<T> clazz) {
+        final Optional<Entry<String, Path>> filePath,
+        final Class<T> clazz
+    ) {
         return multipartDataFromFile(url, httpMethod, context, null, filePath, null, clazz);
     }
 
@@ -245,9 +295,14 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartDataFromFile(final String url, final HttpMethod httpMethod,
-        final AbstractHttpContext context, final Map<String, Object> dto,
-        final Optional<Entry<String, Path>> filePath, final Class<T> clazz) {
+    protected <T> T multipartDataFromFile(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
+        final Map<String, Object> dto,
+        final Optional<Entry<String, Path>> filePath,
+        final Class<T> clazz
+    ) {
         return multipartDataFromFile(url, httpMethod, context, dto, filePath, null, clazz);
     }
 
@@ -262,10 +317,14 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartDataFromFile(final String url, final HttpMethod httpMethod,
+    protected <T> T multipartDataFromFile(
+        final String url,
+        final HttpMethod httpMethod,
         final AbstractHttpContext context,
-        final Optional<Entry<String, Path>> filePath, final MultiValueMap<String, String> headers,
-        final Class<T> clazz) {
+        final Optional<Entry<String, Path>> filePath,
+        final MultiValueMap<String, String> headers,
+        final Class<T> clazz
+    ) {
         return multipartDataFromFile(url, httpMethod, context, null, filePath, headers, clazz);
     }
 
@@ -278,10 +337,15 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param clazz
      * @return
      */
-    protected <T> T multipartDataFromFile(final String url, final HttpMethod httpMethod,
-        final AbstractHttpContext context, final Map<String, Object> dto,
-        final Optional<Entry<String, Path>> filePath, final MultiValueMap<String, String> headers,
-        final Class<T> clazz) {
+    protected <T> T multipartDataFromFile(
+        final String url,
+        final HttpMethod httpMethod,
+        final AbstractHttpContext context,
+        final Map<String, Object> dto,
+        final Optional<Entry<String, Path>> filePath,
+        final MultiValueMap<String, String> headers,
+        final Class<T> clazz
+    ) {
         final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         addMapEntriesToBuilder(dto, builder);
@@ -290,9 +354,16 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
             final Path path = filePath.get().getValue();
             SecurePathUtils.checkDirectoryTraversalVulnerability(path.toString());
             final String contentDisposition = buildContentDisposition(paramName, path.getFileName().toString());
-            builder.asyncPart(paramName, DataBufferUtils
-                .readAsynchronousFileChannel(() -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
-                    BUFFER_FACTORY, CommonConstants.INPUT_STREAM_BUFFER_SIZE), DataBuffer.class)
+            builder
+                .asyncPart(
+                    paramName,
+                    DataBufferUtils.readAsynchronousFileChannel(
+                        () -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
+                        BUFFER_FACTORY,
+                        CommonConstants.INPUT_STREAM_BUFFER_SIZE
+                    ),
+                    DataBuffer.class
+                )
                 .header(RestUtils.CONTENT_DISPOSITION, contentDisposition);
         }
 
@@ -300,28 +371,42 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         LOGGER.debug("multiValueMap .................... {}", multiValueMap);
 
         if (HttpMethod.POST == httpMethod) {
-            return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .post()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(multiValueMap))
                 .retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         } else if (HttpMethod.PATCH == httpMethod) {
-            return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .patch()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(multiValueMap))
                 .retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         } else {
-            return webClient.put().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .put()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(multiValueMap))
                 .retrieve()
-                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException)
+                .bodyToMono(clazz)
                 .block();
         }
-
     }
 
     /**
@@ -334,9 +419,13 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param headers
      * @return
      */
-    protected ClientResponse multipartDataFromFile(final String url, final HttpMethod httpMethod,
+    protected ClientResponse multipartDataFromFile(
+        final String url,
+        final HttpMethod httpMethod,
         final AbstractHttpContext context,
-        final Optional<Entry<String, Path>> filePath, final MultiValueMap<String, String> headers) {
+        final Optional<Entry<String, Path>> filePath,
+        final MultiValueMap<String, String> headers
+    ) {
         final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         checkHttpMethod(httpMethod);
@@ -345,9 +434,16 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
             final String paramName = filePath.get().getKey();
             final Path path = filePath.get().getValue();
             final String contentDisposition = buildContentDisposition(paramName, path.getFileName().toString());
-            builder.asyncPart(paramName, DataBufferUtils
-                .readAsynchronousFileChannel(() -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
-                    BUFFER_FACTORY, CommonConstants.INPUT_STREAM_BUFFER_SIZE), DataBuffer.class)
+            builder
+                .asyncPart(
+                    paramName,
+                    DataBufferUtils.readAsynchronousFileChannel(
+                        () -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
+                        BUFFER_FACTORY,
+                        CommonConstants.INPUT_STREAM_BUFFER_SIZE
+                    ),
+                    DataBuffer.class
+                )
                 .header(RestUtils.CONTENT_DISPOSITION, contentDisposition);
         }
 
@@ -355,15 +451,26 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         LOGGER.debug("multiValueMap .................... {}", multiValueMap);
 
         if (HttpMethod.POST == httpMethod) {
-            return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .post()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).exchange().block();
+                .syncBody(multiValueMap)
+                .exchange()
+                .block();
         } else {
-            return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
+            return webClient
+                .patch()
+                .uri(url)
+                .headers(addHeaders(headers))
+                .headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).exchange().block();
+                .syncBody(multiValueMap)
+                .exchange()
+                .block();
         }
-
     }
 
     /**
@@ -375,36 +482,38 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     public static Mono<? extends Throwable> createResponseException(final ClientResponse response) {
         LOGGER.error("ERROR .................... {}", response.statusCode());
 
-        return response.bodyToMono(String.class).flatMap(serviceException -> {
-            LOGGER.error("ERROR .................... {}", serviceException);
+        return response
+            .bodyToMono(String.class)
+            .flatMap(serviceException -> {
+                LOGGER.error("ERROR .................... {}", serviceException);
 
-            VitamUIError error;
-            // on HEAD requests, we don't have a body
-            if (StringUtils.isBlank(serviceException)) {
-                error = new VitamUIError();
-                error.setStatus(response.statusCode().value());
-                error.setMessage("Unknown problem");
-                error.setError("apierror.unknown");
-            } else {
-                // Added FAIL_ON_UNKNOWN_PROPERTIES:false to prevent error "UnrecognizedPropertyException: Unrecognized field"
-                // TODO check where the property "path" comes from
-                try {
-                    error = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                        .readValue(serviceException, VitamUIError.class);
-                    error.setStatus(response.statusCode().value());
-                } catch (final IOException e) {
-                    LOGGER.error("Error when retrieving exception {}", e);
+                VitamUIError error;
+                // on HEAD requests, we don't have a body
+                if (StringUtils.isBlank(serviceException)) {
                     error = new VitamUIError();
                     error.setStatus(response.statusCode().value());
-                    error.setMessage(e.getMessage());
+                    error.setMessage("Unknown problem");
                     error.setError("apierror.unknown");
+                } else {
+                    // Added FAIL_ON_UNKNOWN_PROPERTIES:false to prevent error "UnrecognizedPropertyException: Unrecognized field"
+                    // TODO check where the property "path" comes from
+                    try {
+                        error = new ObjectMapper()
+                            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                            .readValue(serviceException, VitamUIError.class);
+                        error.setStatus(response.statusCode().value());
+                    } catch (final IOException e) {
+                        LOGGER.error("Error when retrieving exception {}", e);
+                        error = new VitamUIError();
+                        error.setStatus(response.statusCode().value());
+                        error.setMessage(e.getMessage());
+                        error.setError("apierror.unknown");
+                    }
                 }
-            }
 
-            final VitamUIErrorConverter converter = new VitamUIErrorConverter();
-            return Mono.error(converter.convert(error));
-        });
-
+                final VitamUIErrorConverter converter = new VitamUIErrorConverter();
+                return Mono.error(converter.convert(error));
+            });
     }
 
     /**
@@ -415,8 +524,14 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @return
      */
     protected String buildContentDisposition(final String paramName, final String fileName) {
-        return String
-            .format("%s; %s=%s; %s=%s", RestUtils.FORM_DATA, RestUtils.NAME, paramName, RestUtils.FILENAME, fileName);
+        return String.format(
+            "%s; %s=%s; %s=%s",
+            RestUtils.FORM_DATA,
+            RestUtils.NAME,
+            paramName,
+            RestUtils.FILENAME,
+            fileName
+        );
     }
 
     /**
@@ -453,13 +568,23 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @param valueMultipartFile
      * @param contentDisposition
      */
-    protected void addPartFile(final MultipartBodyBuilder builder, final String paramName,
+    protected void addPartFile(
+        final MultipartBodyBuilder builder,
+        final String paramName,
         final MultipartFile valueMultipartFile,
-        final String contentDisposition) {
-        builder.asyncPart(paramName,
-            DataBufferUtils.readInputStream(() -> valueMultipartFile.getInputStream(), BUFFER_FACTORY,
-                CommonConstants.INPUT_STREAM_BUFFER_SIZE),
-            DataBuffer.class).header(RestUtils.CONTENT_DISPOSITION, contentDisposition);
+        final String contentDisposition
+    ) {
+        builder
+            .asyncPart(
+                paramName,
+                DataBufferUtils.readInputStream(
+                    () -> valueMultipartFile.getInputStream(),
+                    BUFFER_FACTORY,
+                    CommonConstants.INPUT_STREAM_BUFFER_SIZE
+                ),
+                DataBuffer.class
+            )
+            .header(RestUtils.CONTENT_DISPOSITION, contentDisposition);
     }
 
     /**
@@ -469,12 +594,16 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      */
     protected void checkHttpMethod(final HttpMethod httpMethod) {
         if (httpMethod == null || (HttpMethod.POST != httpMethod && HttpMethod.PATCH != httpMethod)) {
-            throw new ParseOperationException(String
-                .format("%s not supported. Only %s and %s are allowed.", httpMethod, HttpMethod.POST,
-                    HttpMethod.PATCH));
+            throw new ParseOperationException(
+                String.format(
+                    "%s not supported. Only %s and %s are allowed.",
+                    httpMethod,
+                    HttpMethod.POST,
+                    HttpMethod.PATCH
+                )
+            );
         }
     }
-
 
     /**
      * Convert Flux of  Data buffer To Input Stream
@@ -492,9 +621,9 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
                 .doOnComplete(() -> {
                     try {
                         osPipe.close();
-                    } catch (IOException ignored) {
-                    }
-                }).subscribe(DataBufferUtils.releaseConsumer());
+                    } catch (IOException ignored) {}
+                })
+                .subscribe(DataBufferUtils.releaseConsumer());
         } catch (IOException ioException) {
             LOGGER.error("Error loading stream {} ", ioException.getMessage());
             throw new InternalServerException("Error loading stream {} ", ioException);

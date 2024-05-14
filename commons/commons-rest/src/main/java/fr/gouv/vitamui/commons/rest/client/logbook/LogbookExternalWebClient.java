@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.rest.client.logbook;
 
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -50,5 +49,4 @@ public class LogbookExternalWebClient extends LogbookInternalWebClient<ExternalH
     public LogbookExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
-
 }

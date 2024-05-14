@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.commons.mongo.domain;
 
-import java.util.List;
-
 import lombok.Value;
+
+import java.util.List;
 
 /**
  * Generic Class representing a Document with a nested array.
@@ -54,5 +54,4 @@ public class DocumentWithItems<E> {
     private List<E> items;
 
     private Integer itemsSize;
-
 }

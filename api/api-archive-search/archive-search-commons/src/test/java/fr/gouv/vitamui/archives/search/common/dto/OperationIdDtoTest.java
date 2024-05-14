@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OperationIdDtoTest {
+
     @Test
     public void testSerializationDeserialization() throws Exception {
         // Création d'un objet OperationIdDto

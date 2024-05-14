@@ -14,18 +14,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SecurePathUtilsTest {
 
-
-
     @Test
     @ParameterizedTest
-    @ValueSource(strings = {"../file.pdf",
-        "/../etc/hosts/file.pdf",
-        "file.pdf\n../../mmm",
-        "file.pdf\r../../mmm",
-        "/file\0.exe.pdf",
-        "file..pdf"})
+    @ValueSource(
+        strings = {
+            "../file.pdf",
+            "/../etc/hosts/file.pdf",
+            "file.pdf\n../../mmm",
+            "file.pdf\r../../mmm",
+            "/file\0.exe.pdf",
+            "file..pdf",
+        }
+    )
     void testBuildFullPathKo(String untrustedFileName) {
-        assertThrows(SecurityException.class, ()-> {
+        assertThrows(SecurityException.class, () -> {
             SecurePathUtils.buildFilePath("/tmp", untrustedFileName);
         });
     }
@@ -42,15 +44,23 @@ class SecurePathUtilsTest {
     @ParameterizedTest
     @Disabled
     @MethodSource("buildFullSecuredFilePathOkParameters")
-    void buildFullSecuredFilePathOk(String trustedPartialPath, String untrustedBasePath, String untrustedFileName, String expectedResult) {
-        assertEquals(expectedResult, SecurePathUtils.buildFullSecuredFilePath(trustedPartialPath, untrustedBasePath, untrustedFileName));
+    void buildFullSecuredFilePathOk(
+        String trustedPartialPath,
+        String untrustedBasePath,
+        String untrustedFileName,
+        String expectedResult
+    ) {
+        assertEquals(
+            expectedResult,
+            SecurePathUtils.buildFullSecuredFilePath(trustedPartialPath, untrustedBasePath, untrustedFileName)
+        );
     }
 
     @Test
     @ParameterizedTest
     @MethodSource("buildFullSecuredFilePathKoParameters")
     void buildFullSecuredFilePathKo(String trustedPartialPath, String untrustedBasePath, String untrustedFileName) {
-        assertThrows(SecurityException.class, ()-> {
+        assertThrows(SecurityException.class, () -> {
             SecurePathUtils.buildFullSecuredFilePath(trustedPartialPath, untrustedBasePath, untrustedFileName);
         });
     }
@@ -61,12 +71,10 @@ class SecurePathUtilsTest {
             Arguments.of("/tmp", "item1.pdf", "/tmp/item1.pdf"),
             Arguments.of("/tmp", "item1.pdf", "/tmp/item1.pdf"),
             Arguments.of("/tmp", "item1.pdf", "/tmp/item1.pdf"),
-
-            Arguments.of("tmp", "item1.pdf",  "tmp/item1.pdf"),
             Arguments.of("tmp", "item1.pdf", "tmp/item1.pdf"),
             Arguments.of("tmp", "item1.pdf", "tmp/item1.pdf"),
             Arguments.of("tmp", "item1.pdf", "tmp/item1.pdf"),
-
+            Arguments.of("tmp", "item1.pdf", "tmp/item1.pdf"),
             Arguments.of("tmp/", "item1.pdf", "tmp/item1.pdf"),
             Arguments.of("tmp/", "item1.pdf", "tmp/item1.pdf"),
             Arguments.of("tmp/", "item1.pdf", "tmp/item1.pdf"),
@@ -80,12 +88,10 @@ class SecurePathUtilsTest {
             Arguments.of("/tmp", "/client1", "item1.pdf", "/tmp/client1/item1.pdf"),
             Arguments.of("/tmp", "client1/", "item1.pdf", "/tmp/client1/item1.pdf"),
             Arguments.of("/tmp", "client1", "item1.pdf", "/tmp/client1/item1.pdf"),
-
             Arguments.of("tmp", "/client1/", "item1.pdf", "tmp/client1/item1.pdf"),
             Arguments.of("tmp", "/client1", "item1.pdf", "tmp/client1/item1.pdf"),
             Arguments.of("tmp", "client1/", "item1.pdf", "tmp/client1/item1.pdf"),
             Arguments.of("tmp", "client1", "item1.pdf", "tmp/client1/item1.pdf"),
-
             Arguments.of("tmp/", "/client1/", "item1.pdf", "tmp/client1/item1.pdf"),
             Arguments.of("tmp/", "/client1", "item1.pdf", "tmp/client1/item1.pdf"),
             Arguments.of("tmp/", "client1/", "item1.pdf", "tmp/client1/item1.pdf"),
@@ -99,13 +105,10 @@ class SecurePathUtilsTest {
             Arguments.of("/tmp", "/client1\0/..", "toto.pdf"),
             Arguments.of("/tmp", "/client1", "toto.exe\0.pdf"),
             Arguments.of("/tmp", "/client1", "../../etc/toto.pdf"),
-
             Arguments.of("tmp", "../etc/", "toto.pdf"),
             Arguments.of("tmp", "/client1\0/..", "toto.pdf"),
             Arguments.of("tmp", "/client1", "toto.exe\0.pdf"),
             Arguments.of("tmp", "/client1", "../../etc/toto.pdf"),
-
-
             Arguments.of("tmp/", "../etc/", "toto.pdf"),
             Arguments.of("tmp/", "/client1\0/..", "toto.pdf"),
             Arguments.of("tmp/", "/client1", "toto.exe\0.pdf"),

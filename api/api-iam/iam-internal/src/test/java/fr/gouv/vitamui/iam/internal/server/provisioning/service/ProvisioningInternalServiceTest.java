@@ -37,7 +37,6 @@
 
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -79,7 +78,6 @@ class ProvisioningInternalServiceTest {
     @Mock
     private InternalSecurityService securityServiceMock;
 
-
     @Nested
     class getProvisioningClientConfiguration {
 
@@ -95,8 +93,9 @@ class ProvisioningInternalServiceTest {
             // Prepare
             var idpConfiguration = new IdPProvisioningClientConfiguration();
             idpConfiguration.setIdpIdentifier("idp");
-            Mockito.when(provisioningClientConfigurationMock.getIdentityProviders())
-                .thenReturn(Arrays.asList(idpConfiguration));
+            Mockito.when(provisioningClientConfigurationMock.getIdentityProviders()).thenReturn(
+                Arrays.asList(idpConfiguration)
+            );
 
             // Do
             IdPProvisioningClientConfiguration idpFound = service.getProvisioningClientConfiguration("idp");
@@ -104,7 +103,6 @@ class ProvisioningInternalServiceTest {
             // Verify
             Assert.assertEquals(idpConfiguration, idpFound);
         }
-
     }
 
     @Test
@@ -112,8 +110,9 @@ class ProvisioningInternalServiceTest {
         // Prepare
         var idpConfiguration = new IdPProvisioningClientConfiguration();
         idpConfiguration.setClient(new RestClientConfiguration());
-        Mockito.when(webClientMock.exchangeStrategies(ArgumentMatchers.any(ExchangeStrategies.class)))
-            .thenReturn(webClientMock);
+        Mockito.when(webClientMock.exchangeStrategies(ArgumentMatchers.any(ExchangeStrategies.class))).thenReturn(
+            webClientMock
+        );
 
         // Do
         ProvisioningWebClient webClient = service.buildWebClient(idpConfiguration);
@@ -130,24 +129,42 @@ class ProvisioningInternalServiceTest {
         var providedUserDtoStub = new ProvidedUserDto();
         providedUserDtoStub.setFirstname("youyou");
 
-        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy)
+        Mockito.doReturn(new IdPProvisioningClientConfiguration())
+            .when(provisioningInternalServiceSpy)
             .getProvisioningClientConfiguration(ArgumentMatchers.any());
-        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy)
+        Mockito.doReturn(provisioningWebClient)
+            .when(provisioningInternalServiceSpy)
             .buildWebClient(ArgumentMatchers.any());
-        Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any()))
-            .thenReturn(providedUserDtoStub);
+        Mockito.when(
+            provisioningWebClient.getProvidedUser(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(providedUserDtoStub);
 
         // Do
-        ProvidedUserDto providedUserDto =
-            provisioningInternalServiceSpy
-                .getUserInformation("idp", "email@toto.com", null, null, null, null);
+        ProvidedUserDto providedUserDto = provisioningInternalServiceSpy.getUserInformation(
+            "idp",
+            "email@toto.com",
+            null,
+            null,
+            null,
+            null
+        );
 
         // Verify
-        Mockito.verify(provisioningWebClient, Mockito.times(1)).getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any());
+        Mockito.verify(provisioningWebClient, Mockito.times(1)).getProvidedUser(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertEquals(providedUserDtoStub, providedUserDto);
     }
 
@@ -163,18 +180,31 @@ class ProvisioningInternalServiceTest {
         providedUserDtoStub.setAddress(addressDto);
         ReflectionTestUtils.setField(provisioningInternalServiceSpy, "maxStreetLength", 20);
 
-        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy)
+        Mockito.doReturn(new IdPProvisioningClientConfiguration())
+            .when(provisioningInternalServiceSpy)
             .getProvisioningClientConfiguration(ArgumentMatchers.any());
-        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy)
+        Mockito.doReturn(provisioningWebClient)
+            .when(provisioningInternalServiceSpy)
             .buildWebClient(ArgumentMatchers.any());
-        Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any())).thenReturn(providedUserDtoStub);
+        Mockito.when(
+            provisioningWebClient.getProvidedUser(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(providedUserDtoStub);
 
-        ProvidedUserDto providedUserDto =
-            provisioningInternalServiceSpy
-                .getUserInformation("idp", "email@toto.com", null, null, null, null);
-
+        ProvidedUserDto providedUserDto = provisioningInternalServiceSpy.getUserInformation(
+            "idp",
+            "email@toto.com",
+            null,
+            null,
+            null,
+            null
+        );
 
         assertEquals(providedUserDto.getAddress().getStreet(), "57 Avenue de Grandes");
     }

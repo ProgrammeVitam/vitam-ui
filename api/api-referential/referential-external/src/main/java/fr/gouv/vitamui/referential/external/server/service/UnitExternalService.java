@@ -36,19 +36,17 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.internal.client.UnitInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -58,7 +56,10 @@ public class UnitExternalService extends AbstractInternalClientService {
     @Autowired
     private UnitInternalRestClient unitInternalRestClient;
 
-    public UnitExternalService(@Autowired  UnitInternalRestClient unitInternalRestClient, final ExternalSecurityService externalSecurityService) {
+    public UnitExternalService(
+        @Autowired UnitInternalRestClient unitInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.unitInternalRestClient = unitInternalRestClient;
     }
@@ -83,5 +84,4 @@ public class UnitExternalService extends AbstractInternalClientService {
     public VitamUISearchResponseDto getFilingAndHoldingUnits() {
         return getClient().getFilingAndHoldingUnits(getInternalHttpContext());
     }
-
 }

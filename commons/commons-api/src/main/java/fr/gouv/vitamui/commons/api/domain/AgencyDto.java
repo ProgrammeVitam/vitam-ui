@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.ToString;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)

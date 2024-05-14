@@ -6,10 +6,13 @@ import org.junit.Test;
 public class ReflectionUtilsTest {
 
     class MainDto {
+
         private String field;
         private SubDto neestedObject = new SubDto();
     }
-    class SubDto{
+
+    class SubDto {
+
         private String subField;
     }
 
@@ -20,7 +23,5 @@ public class ReflectionUtilsTest {
         Assert.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.unknownSubField"));
         Assert.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.subField"));
         Assert.assertTrue(ReflectionUtils.hasField(MainDto.class, "neestedObject.subField"));
-
     }
-
 }

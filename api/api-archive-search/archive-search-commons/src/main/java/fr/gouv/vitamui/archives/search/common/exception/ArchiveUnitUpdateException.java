@@ -33,6 +33,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to update archive unit")
 public class ArchiveUnitUpdateException extends RuntimeException {
+
     public ArchiveUnitUpdateException(Throwable e) {
         super(e);
     }

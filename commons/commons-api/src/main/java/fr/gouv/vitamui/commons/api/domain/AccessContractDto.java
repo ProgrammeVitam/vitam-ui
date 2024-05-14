@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Set;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)

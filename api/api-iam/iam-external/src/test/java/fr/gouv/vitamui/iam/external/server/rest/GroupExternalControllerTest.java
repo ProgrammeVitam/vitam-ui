@@ -1,9 +1,13 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Optional;
-
+import com.google.common.collect.ImmutableMap;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.GroupExternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -14,15 +18,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Optional;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.GroupExternalService;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { GroupExternalController.class })
@@ -56,10 +54,8 @@ public class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> 
     @Test
     public void testGetLevels() throws Exception {
         LOGGER.debug("testGetLevels");
-        ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(),
-                status().isOk());
-        result.andExpect(MockMvcResultMatchers.handler()
-                .methodCall(mockedController.getLevels(Optional.empty())));
+        ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(mockedController.getLevels(Optional.empty())));
         Mockito.verify(service, Mockito.times(1)).getLevels(Optional.empty());
     }
 
@@ -74,8 +70,7 @@ public class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> 
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -84,12 +79,11 @@ public class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> 
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.SERVICE_GROUPS};
+        return new String[] { ServicesData.SERVICE_GROUPS };
     }
 
     @Override
     protected Class<GroupDto> getDtoClass() {
         return GroupDto.class;
     }
-
 }

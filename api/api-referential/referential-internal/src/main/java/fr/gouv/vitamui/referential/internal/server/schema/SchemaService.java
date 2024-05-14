@@ -49,13 +49,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class SchemaService {
+
     private static final VitamUILogger log = VitamUILoggerFactory.getInstance(SchemaService.class);
     private final InternalSecurityService internalSecurityService;
     private final AdminExternalClient adminExternalClient;
 
     @Autowired
-    public SchemaService(final InternalSecurityService internalSecurityService,
-        final AdminExternalClient adminExternalClient) {
+    public SchemaService(
+        final InternalSecurityService internalSecurityService,
+        final AdminExternalClient adminExternalClient
+    ) {
         this.internalSecurityService = internalSecurityService;
         this.adminExternalClient = adminExternalClient;
     }
@@ -66,9 +69,7 @@ public class SchemaService {
             final List<SchemaResponse> schemaModels = ((RequestResponseOK<SchemaResponse>) payload).getResults();
             final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
             final SchemaDto schemaDto = new SchemaDto();
-            schemaDto.addAll(schemaModels.stream()
-                .map(converter::convert)
-                .collect(Collectors.toList()));
+            schemaDto.addAll(schemaModels.stream().map(converter::convert).collect(Collectors.toList()));
             return Optional.of(schemaDto);
         } catch (VitamClientException e) {
             throw new SchemaLoadingException(e);
@@ -76,7 +77,8 @@ public class SchemaService {
     }
 
     public List<SchemaDto> getSchemas(final Set<Collection> collections) {
-        return collections.stream()
+        return collections
+            .stream()
             .map(this::getSchema)
             .filter(Optional::isPresent)
             .map(Optional::get)

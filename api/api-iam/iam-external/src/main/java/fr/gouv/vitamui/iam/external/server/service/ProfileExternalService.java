@@ -70,8 +70,10 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     private final ProfileInternalRestClient profileInternalRestClient;
 
     @Autowired
-    public ProfileExternalService(final ProfileInternalRestClient profileInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public ProfileExternalService(
+        final ProfileInternalRestClient profileInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.profileInternalRestClient = profileInternalRestClient;
     }
@@ -126,25 +128,40 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     }
 
     @Override
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-            final Optional<String> embedded) {
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "applicationName", "name", "enabled", "description", LEVEL_KEY, TENANT_IDENTIFIER_KEY, CUSTOMER_ID_KEY, "identifier",
-                EXTERNAL_PARAM_ID_KEY);
+        return Arrays.asList(
+            "id",
+            "applicationName",
+            "name",
+            "enabled",
+            "description",
+            LEVEL_KEY,
+            TENANT_IDENTIFIER_KEY,
+            CUSTOMER_ID_KEY,
+            "identifier",
+            EXTERNAL_PARAM_ID_KEY
+        );
     }
 
     @Override
     protected void addRestriction(final String key, final QueryDto query) {
         switch (key) {
-            case LEVEL_KEY :
+            case LEVEL_KEY:
                 addLevelRestriction(query);
                 break;
-            default :
+            default:
                 throw new NotImplementedException("Restriction not defined for key: " + key);
         }
     }
@@ -158,15 +175,19 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         final QueryDto levelQuery = new QueryDto();
         levelQuery.setQueryOperator(QueryOperator.OR);
         levelQuery.addCriterion("level", externalSecurityService.getLevel() + ".", CriterionOperator.STARTWITH);
-        levelQuery.addCriterion("id", externalSecurityService.getUser().getProfileGroup().getProfileIds(),
-                CriterionOperator.IN);
+        levelQuery.addCriterion(
+            "id",
+            externalSecurityService.getUser().getProfileGroup().getProfileIds(),
+            CriterionOperator.IN
+        );
         query.addQuery(levelQuery);
     }
 
     @Override
     protected Collection<String> getRestrictedKeys() {
         final Collection<String> restrictedKeys = new ArrayList<>(
-                Arrays.asList(CUSTOMER_ID_KEY, LEVEL_KEY, TENANT_IDENTIFIER_KEY));
+            Arrays.asList(CUSTOMER_ID_KEY, LEVEL_KEY, TENANT_IDENTIFIER_KEY)
+        );
         if (externalSecurityService.hasRole(ServicesData.ROLE_GET_PROFILES_ALL_TENANTS)) {
             restrictedKeys.remove(TENANT_IDENTIFIER_KEY);
         }

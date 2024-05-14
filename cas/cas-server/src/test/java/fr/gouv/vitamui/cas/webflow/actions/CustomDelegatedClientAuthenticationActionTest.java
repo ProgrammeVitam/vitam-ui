@@ -62,7 +62,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
         val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
         when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(
-            mock(DelegatedClientIdentityProviderConfigurationProducer.class));
+            mock(DelegatedClientIdentityProviderConfigurationProducer.class)
+        );
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
 
         CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
@@ -71,12 +72,20 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         surrogateCustomerDto.setName(COMPANY);
         surrogateCustomerDto.setId(CUSTOMER_ID_2);
         doReturn(List.of(surrogateCustomerDto))
-            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+            .when(casExternalRestClient)
+            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
 
-        action = new CustomDelegatedClientAuthenticationAction(configContext,
+        action = new CustomDelegatedClientAuthenticationAction(
+            configContext,
             mock(DelegatedClientAuthenticationWebflowManager.class),
-            mock(DelegatedClientAuthenticationFailureEvaluator.class), mock(IdentityProviderHelper.class),
-            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), casExternalRestClient, "");
+            mock(DelegatedClientAuthenticationFailureEvaluator.class),
+            mock(IdentityProviderHelper.class),
+            mock(ProvidersService.class),
+            mock(Utils.class),
+            mock(TicketRegistry.class),
+            casExternalRestClient,
+            ""
+        );
     }
 
     @Test
@@ -129,7 +138,6 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
     @Test
     public void testInvalidSubrogationEmail() {
-
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, BAD_EMAIL);
         requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
@@ -142,7 +150,6 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
     @Test
     public void testInvalidSubrogationCustomerId() {
-
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, EMAIL1);
         requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);

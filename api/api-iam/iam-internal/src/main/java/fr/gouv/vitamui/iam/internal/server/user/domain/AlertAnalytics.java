@@ -33,6 +33,7 @@ import java.io.Serializable;
 
 @Data
 public class AlertAnalytics implements Serializable {
+
     private String applicationId;
 
     private String creationDate;
@@ -48,5 +49,4 @@ public class AlertAnalytics implements Serializable {
     private String key;
 
     private String action;
-
 }

@@ -77,19 +77,28 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testGetProviders() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()),
-            eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))))
-            .thenReturn(Arrays.asList(provider));
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenReturn(Arrays.asList(provider));
 
         service.loadData();
 
         val missingProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            service.getProviders(), "user1@vitamui.com", CUSTOMER_ID);
+            service.getProviders(),
+            "user1@vitamui.com",
+            CUSTOMER_ID
+        );
         assertFalse(missingProvider.isPresent());
 
         val userProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            service.getProviders(), "user1@company.com", CUSTOMER_ID);
+            service.getProviders(),
+            "user1@company.com",
+            CUSTOMER_ID
+        );
         assertTrue(userProvider.isPresent());
         assertEquals(PROVIDER_ID, userProvider.get().getId());
         assertEquals(saml2Client, ((Pac4jClientIdentityProviderDto) userProvider.get()).getClient());
@@ -97,16 +106,18 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testReloadDoesNotThrowException() {
-
         service.reloadData();
     }
 
     @Test
     public void testNoProviderResponse() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()),
-            eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenReturn(
-            null);
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenReturn(null);
         try {
             service.loadData();
             fail("should fail");
@@ -117,10 +128,13 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testBadProviderResponse() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()),
-            eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenThrow(
-            new RuntimeException(ERROR_MESSAGE));
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenThrow(new RuntimeException(ERROR_MESSAGE));
 
         try {
             service.loadData();

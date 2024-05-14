@@ -97,5 +97,4 @@ public class ApiErrorTest {
     public void testRequestTimeOutException() {
         throw ApiErrorGenerator.getRequestTimeOutException();
     }
-
 }

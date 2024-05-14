@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete the tenants.
@@ -70,13 +69,11 @@ public class TenantInternalRestClient extends BasePaginatingAndSortingRestClient
 
     @Override
     protected ParameterizedTypeReference<List<TenantDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<TenantDto>>() {
-        };
+        return new ParameterizedTypeReference<List<TenantDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<TenantDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<TenantDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<TenantDto>>() {};
     }
 }

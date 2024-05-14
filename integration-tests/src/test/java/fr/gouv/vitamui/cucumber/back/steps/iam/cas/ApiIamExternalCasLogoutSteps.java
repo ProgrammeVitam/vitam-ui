@@ -23,27 +23,40 @@ import static org.assertj.core.api.Assertions.fail;
  */
 public class ApiIamExternalCasLogoutSteps extends CommonSteps {
 
-    @When("^un utilisateur avec le rôle ROLE_CAS_LOGOUT fait un logout dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_LOGOUT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_CAS_LOGOUT fait un logout dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_LOGOUT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_LOGOUT_fait_un_logout_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_LOGOUT() {
         createSubrogationByUserStatus(false);
-        surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
-            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmailAndCustomerId(
+        surrogateUser = (AuthUserDto) getCasRestClient(
+            false,
+            new Integer[] { casTenantIdentifier },
+            new String[] { ServicesData.ROLE_CAS_USERS }
+        ).getUserByEmailAndCustomerId(
             getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-            surrogateUser.getEmail(), surrogateUser.getCustomerId(),
-            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
-        getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_LOGOUT })
-                .logout(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), surrogateUser.getAuthToken(),
-                    superUser.getEmail(), superUser.getCustomerId());
+            surrogateUser.getEmail(),
+            surrogateUser.getCustomerId(),
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)
+        );
+        getCasRestClient(
+            false,
+            new Integer[] { casTenantIdentifier },
+            new String[] { ServicesData.ROLE_CAS_LOGOUT }
+        ).logout(
+            getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+            surrogateUser.getAuthToken(),
+            superUser.getEmail(),
+            superUser.getCustomerId()
+        );
     }
 
     @Then("^la subrogation a bien été supprimée$")
     public void la_subrogation_a_bien_été_supprimée() {
         try {
-            getSubrogationRestClient().getOne(getSystemTenantUserAdminContext(), subrogationDto.getId(), Optional.empty());
+            getSubrogationRestClient()
+                .getOne(getSystemTenantUserAdminContext(), subrogationDto.getId(), Optional.empty());
             fail("should throw a NotFoundException");
-        }
-        catch (final NotFoundException e) {
-        }
+        } catch (final NotFoundException e) {}
     }
 
     @Then("^le token d'authentification a bien été supprimé$")
@@ -63,17 +76,28 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
     @When("^cet utilisateur fait un logout$")
     public void cet_utilisateur_fait_un_logout() {
         createSubrogationByUserStatus(false);
-        surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] {casTenantIdentifier},
-            new String[] {ServicesData.ROLE_CAS_USERS}).getUserByEmailAndCustomerId(
+        surrogateUser = (AuthUserDto) getCasRestClient(
+            false,
+            new Integer[] { casTenantIdentifier },
+            new String[] { ServicesData.ROLE_CAS_USERS }
+        ).getUserByEmailAndCustomerId(
             getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-            surrogateUser.getEmail(), surrogateUser.getCustomerId(),
-            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+            surrogateUser.getEmail(),
+            surrogateUser.getCustomerId(),
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)
+        );
         try {
-            getCasRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
-                    .logout(getContext(testContext.tenantIHMContext, testContext.tokenUser),
-                        surrogateUser.getAuthToken(), superUser.getEmail(), superUser.getCustomerId());
-        }
-        catch (final RuntimeException e) {
+            getCasRestClient(
+                testContext.fullAccess,
+                testContext.certificateTenants,
+                testContext.certificateRoles
+            ).logout(
+                getContext(testContext.tenantIHMContext, testContext.tokenUser),
+                surrogateUser.getAuthToken(),
+                superUser.getEmail(),
+                superUser.getCustomerId()
+            );
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

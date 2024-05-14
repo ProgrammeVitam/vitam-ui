@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Map;
-
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.Options;
 import fr.opensagres.xdocreport.core.document.DocumentKind;
@@ -52,6 +47,10 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 import fr.opensagres.xdocreport.template.formatter.NullImageBehaviour;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
 public class PdfFileGenerator {
 
     /**
@@ -62,8 +61,11 @@ public class PdfFileGenerator {
      * @param dataMap                the object containing the data to add to the template.
      * @throws Exception
      */
-    public static void createPdf(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap)
-            throws Exception {
+    public static void createPdf(
+        final InputStream odtTemplateInputStream,
+        final OutputStream pdfOutputStream,
+        final Map<String, Object> dataMap
+    ) throws Exception {
         final IXDocReport xdocGenerator = createXDocReport(odtTemplateInputStream);
         createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
     }
@@ -77,9 +79,13 @@ public class PdfFileGenerator {
      * @param dynamicFields          the dynamic fields to add to the report to enable the creation of the pdf.
      * @throws Exception
      */
-    public static void createPdfWithDynamicInfo(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap,
-            final String... dynamicFields) throws Exception {
-        final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, new String[]{});
+    public static void createPdfWithDynamicInfo(
+        final InputStream odtTemplateInputStream,
+        final OutputStream pdfOutputStream,
+        final Map<String, Object> dataMap,
+        final String... dynamicFields
+    ) throws Exception {
+        final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, new String[] {});
         createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
     }
 
@@ -93,8 +99,13 @@ public class PdfFileGenerator {
      * @param imageFields            the image fields to add to the report to enable the creation of the pdf.
      * @throws Exception
      */
-    public static void createPdfWithMetadata(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap,
-            final String[] dynamicFields, final String[] imageFields) throws Exception {
+    public static void createPdfWithMetadata(
+        final InputStream odtTemplateInputStream,
+        final OutputStream pdfOutputStream,
+        final Map<String, Object> dataMap,
+        final String[] dynamicFields,
+        final String[] imageFields
+    ) throws Exception {
         final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, imageFields);
         createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
     }
@@ -110,9 +121,20 @@ public class PdfFileGenerator {
      * @param htmlFields            the html fields to add to the report to enable the creation of the pdf.
      * @throws Exception
      */
-    public static void createPdfWithMetadataAndHtml(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap,
-                                             final String[] dynamicFields, final String[] imageFields, final String[] htmlFields) throws Exception {
-        final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, imageFields, htmlFields);
+    public static void createPdfWithMetadataAndHtml(
+        final InputStream odtTemplateInputStream,
+        final OutputStream pdfOutputStream,
+        final Map<String, Object> dataMap,
+        final String[] dynamicFields,
+        final String[] imageFields,
+        final String[] htmlFields
+    ) throws Exception {
+        final IXDocReport xdocGenerator = generateXDocReport(
+            odtTemplateInputStream,
+            dynamicFields,
+            imageFields,
+            htmlFields
+        );
         createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
     }
 
@@ -134,16 +156,22 @@ public class PdfFileGenerator {
      * @param pdfOutputStream the generated pdf file /!\ the owner is reponsible for closing the stream.
      * @throws Exception
      */
-    protected static void createPdfDocument(final IXDocReport xdocGenerator, final Map<String, Object> dataMap, final OutputStream pdfOutputStream)
-            throws Exception {
+    protected static void createPdfDocument(
+        final IXDocReport xdocGenerator,
+        final Map<String, Object> dataMap,
+        final OutputStream pdfOutputStream
+    ) throws Exception {
         final IContext context = xdocGenerator.createContext();
         dataMap.entrySet().forEach(entry -> context.put(entry.getKey(), entry.getValue()));
         final Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
         xdocGenerator.convert(context, options, pdfOutputStream);
     }
 
-    private static IXDocReport generateXDocReport(final InputStream odtTemplateInputStream, final String[] dynamicFields, final String[] imageFields)
-            throws Exception {
+    private static IXDocReport generateXDocReport(
+        final InputStream odtTemplateInputStream,
+        final String[] dynamicFields,
+        final String[] imageFields
+    ) throws Exception {
         final IXDocReport xdocGenerator = createXDocReport(odtTemplateInputStream);
         final FieldsMetadata fieldsMetadata = new FieldsMetadata();
         for (final String dynamicField : dynamicFields) {
@@ -157,8 +185,12 @@ public class PdfFileGenerator {
         return xdocGenerator;
     }
 
-    private static IXDocReport generateXDocReport(final InputStream odtTemplateInputStream, final String[] dynamicFields, final String[] imageFields, final String[] htmlFields)
-        throws Exception {
+    private static IXDocReport generateXDocReport(
+        final InputStream odtTemplateInputStream,
+        final String[] dynamicFields,
+        final String[] imageFields,
+        final String[] htmlFields
+    ) throws Exception {
         final IXDocReport xdocGenerator = createXDocReport(odtTemplateInputStream);
         final FieldsMetadata fieldsMetadata = xdocGenerator.createFieldsMetadata();
         for (final String dynamicField : dynamicFields) {
@@ -174,5 +206,4 @@ public class PdfFileGenerator {
 
         return xdocGenerator;
     }
-
 }

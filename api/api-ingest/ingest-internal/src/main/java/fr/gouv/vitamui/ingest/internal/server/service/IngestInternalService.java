@@ -79,11 +79,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 /**
  * Ingest Internal service communication with VITAM.
  */
 public class IngestInternalService {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
@@ -108,13 +108,17 @@ public class IngestInternalService {
     private final AccessContractInternalService accessContractInternalService;
 
     @Autowired
-    public IngestInternalService(final InternalSecurityService internalSecurityService,
-        final LogbookService logbookService, final ObjectMapper objectMapper,
-        final IngestExternalClient ingestExternalClient, final IngestService ingestService,
+    public IngestInternalService(
+        final InternalSecurityService internalSecurityService,
+        final LogbookService logbookService,
+        final ObjectMapper objectMapper,
+        final IngestExternalClient ingestExternalClient,
+        final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,
-        final AccessContractInternalService accessContractInternalService) {
+        final AccessContractInternalService accessContractInternalService
+    ) {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
@@ -128,9 +132,9 @@ public class IngestInternalService {
 
     public RequestResponseOK upload(MultipartFile path, String contextId, String action)
         throws IngestExternalException {
-
-        final VitamContext vitamContext =
-            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(
+            internalSecurityService.getTenantIdentifier()
+        );
 
         RequestResponse<Void> ingestResponse = null;
         try {
@@ -149,20 +153,26 @@ public class IngestInternalService {
         }
 
         return (RequestResponseOK) ingestResponse;
-
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
-
-        Optional<String> accessContractdOpt =
-            ingestExternalParametersService.retrieveProfilAccessContract(internalSecurityService.getHttpContext());
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
+        Optional<String> accessContractdOpt = ingestExternalParametersService.retrieveProfilAccessContract(
+            internalSecurityService.getHttpContext()
+        );
         Set<String> originatingAgencies = new HashSet<>();
         Boolean everyOriginatingAgency = false;
         if (accessContractdOpt.isPresent()) {
-            Optional<AccessContractDto>
-                accessContractDtoOpt = accessContractInternalService.getOne(vitamContext, accessContractdOpt.get());
+            Optional<AccessContractDto> accessContractDtoOpt = accessContractInternalService.getOne(
+                vitamContext,
+                accessContractdOpt.get()
+            );
             if (accessContractDtoOpt.isPresent()) {
                 originatingAgencies = accessContractDtoOpt.get().getOriginatingAgencies();
                 everyOriginatingAgency = accessContractDtoOpt.get().getEveryOriginatingAgency();
@@ -174,15 +184,16 @@ public class IngestInternalService {
         try {
             LOGGER.info(" All ingests EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
                 if (!everyOriginatingAgency) {
-                    vitamCriteria.put(SELECTED_ORIGINATING_AGENCIES, originatingAgencies.stream().collect(Collectors.toList()));
+                    vitamCriteria.put(
+                        SELECTED_ORIGINATING_AGENCIES,
+                        originatingAgencies.stream().collect(Collectors.toList())
+                    );
                 }
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
-
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Unable to find LogbookOperations with pagination", ioe);
         } catch (IOException e) {
@@ -196,9 +207,7 @@ public class IngestInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
-
     public LogbookOperationDto getOne(VitamContext vitamContext, final String id) {
-
         final RequestResponse<LogbookOperation> requestResponse;
         try {
             LOGGER.info("Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
@@ -207,17 +216,19 @@ public class IngestInternalService {
 
             LOGGER.debug("One Ingest Response: {}: ", requestResponse);
 
-            final LogbookOperationsResponseDto logbookOperationDtos =
-                objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationDtos = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                LogbookOperationsResponseDto.class
+            );
 
-            List<LogbookOperationDto> singleLogbookOperationDto =
-                IngestConverter.convertVitamsToDtos(logbookOperationDtos.getResults());
+            List<LogbookOperationDto> singleLogbookOperationDto = IngestConverter.convertVitamsToDtos(
+                logbookOperationDtos.getResults()
+            );
 
             return singleLogbookOperationDto.get(0);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find LogbookOperations", e);
         }
-
     }
 
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
@@ -228,8 +239,10 @@ public class IngestInternalService {
 
             LOGGER.debug("Response: {}: ", requestResponse);
 
-            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                LogbookOperationsResponseDto.class
+            );
 
             LOGGER.debug("Response DTO: {}: ", logbookOperationsResponseDto);
 
@@ -246,13 +259,10 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestGeneratorODTFile.resourceAsString(resource)
-                    .replaceAll(ILLEGAL_CHARACTERS, "");
-
+                manifest = ingestGeneratorODTFile.resourceAsString(resource).replaceAll(ILLEGAL_CHARACTERS, "");
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
-
         } catch (VitamClientException e) {
             LOGGER.error("Unable to find the Manifest {}", e.getMessage());
             throw new InternalServerException("Unable to find the Manifest", e);
@@ -262,17 +272,18 @@ public class IngestInternalService {
     public String getAtrAsString(VitamContext vitamContext, final String id) {
         try {
             String atr = "";
-            Response response =
-                ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.ARCHIVETRANSFERREPLY);
+            Response response = ingestExternalClient.downloadObjectAsync(
+                vitamContext,
+                id,
+                IngestCollection.ARCHIVETRANSFERREPLY
+            );
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                atr = ingestGeneratorODTFile.resourceAsString(resource)
-                    .replaceAll(ILLEGAL_CHARACTERS, "");
+                atr = ingestGeneratorODTFile.resourceAsString(resource).replaceAll(ILLEGAL_CHARACTERS, "");
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return atr;
-
         } catch (VitamClientException e) {
             LOGGER.error("Unable to find ATR {}", e.getMessage());
             throw new InternalServerException("Unable to find ATR", e);
@@ -281,16 +292,15 @@ public class IngestInternalService {
 
     public byte[] generateODTReport(VitamContext vitamContext, final String id)
         throws IOException, URISyntaxException, IngestFileGenerationException {
-
         CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
         Resource customerLogo = null;
 
         try {
             LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
-            Document atr =
-                ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
-            Document manifest =
-                ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+            Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(
+                getManifestAsString(vitamContext, id)
+            );
             TextDocument document;
             try {
                 document = TextDocument.newTextDocument();
@@ -338,21 +348,24 @@ public class IngestInternalService {
             }
 
             return result.toByteArray();
-
         } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report ", e);
         }
-
     }
 
     public String streamingUpload(InputStream inputStream, String contextId, String action)
         throws IngestExternalException {
         try {
-            final VitamContext vitamContext =
-                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-            RequestResponse<Void> ingestResponse =
-                ingestExternalClient.ingest(vitamContext, inputStream, contextId, action);
+            final VitamContext vitamContext = internalSecurityService.buildVitamContext(
+                internalSecurityService.getTenantIdentifier()
+            );
+            RequestResponse<Void> ingestResponse = ingestExternalClient.ingest(
+                vitamContext,
+                inputStream,
+                contextId,
+                action
+            );
 
             if (!ingestResponse.isOk()) {
                 LOGGER.debug("Error on ingest streaming Upload ");

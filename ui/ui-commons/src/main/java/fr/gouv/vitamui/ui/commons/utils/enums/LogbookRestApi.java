@@ -49,5 +49,4 @@ public abstract class LogbookRestApi {
     public static final String LOGBOOK_OPERATION_BY_ID_PATH = LOGBOOK_OPERATION + "/{id}";
 
     public static final String LOGBOOK_OPERATION_PATH = LOGBOOK_OPERATION + "/{identifier}/{collectionName}";
-
 }

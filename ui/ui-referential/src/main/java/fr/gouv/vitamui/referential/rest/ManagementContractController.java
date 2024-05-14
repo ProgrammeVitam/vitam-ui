@@ -98,24 +98,35 @@ public class ManagementContractController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        return  service.getAll(buildUiHttpContext(), criteria);
+        return service.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                     @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException {
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get management contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public ManagementContractDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException, InvalidParseOperationException {
+    public ManagementContractDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException {
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -129,7 +140,8 @@ public class ManagementContractController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create entity")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody  ManagementContractDto managementContractDto) throws InvalidParseOperationException {
+    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto)
+        throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check ability to create managementContract={}", managementContractDto);
         final boolean exist = service.check(buildUiHttpContext(), managementContractDto);
@@ -140,7 +152,8 @@ public class ManagementContractController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ManagementContractDto create(@Valid @RequestBody  ManagementContractDto managementContractDto) throws InvalidParseOperationException {
+    public ManagementContractDto create(@Valid @RequestBody ManagementContractDto managementContractDto)
+        throws InvalidParseOperationException {
         LOGGER.debug("create managementContract={}", managementContractDto);
         return service.create(buildUiHttpContext(), managementContractDto);
     }
@@ -148,17 +161,24 @@ public class ManagementContractController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) throws InvalidParseOperationException {
+    public ManagementContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch managementContract {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch managementContract : the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch managementContract : the DTO id must match the path id."
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
     @ApiOperation(value = "get history by managementContract's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) throws InvalidParseOperationException {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException {
         LOGGER.debug("get logbook for managementContract with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }

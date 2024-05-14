@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.utils;
 
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -9,6 +8,7 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -43,47 +43,33 @@ public class FactoryDto {
         T dto = null;
         if (clazz.equals(CustomerDto.class)) {
             dto = (T) buildBasicCustomerDto();
-        }
-        else if (clazz.equals(OwnerDto.class)) {
+        } else if (clazz.equals(OwnerDto.class)) {
             dto = (T) buildOwnerDto();
-        }
-        else if (clazz.equals(TenantDto.class)) {
+        } else if (clazz.equals(TenantDto.class)) {
             dto = (T) buildTenantDto();
-        }
-        else if (clazz.equals(ProfileDto.class)) {
+        } else if (clazz.equals(ProfileDto.class)) {
             dto = (T) buildProfileDto();
-        }
-        else if (clazz.equals(GroupDto.class)) {
+        } else if (clazz.equals(GroupDto.class)) {
             dto = (T) buildGroupDto();
-        }
-        else if (clazz.equals(UserDto.class)) {
+        } else if (clazz.equals(UserDto.class)) {
             dto = (T) buildBasicUserDto();
-        }
-        else if (clazz.equals(IdentityProviderDto.class)) {
+        } else if (clazz.equals(IdentityProviderDto.class)) {
             dto = (T) buildIdentityProviderDto();
-        }
-        else if (clazz.equals(ContextDto.class)) {
+        } else if (clazz.equals(ContextDto.class)) {
             dto = (T) buildContextDto();
-        }
-        else if (clazz.equals(RuleDto.class)) {
+        } else if (clazz.equals(RuleDto.class)) {
             dto = (T) buildRuleDto();
-        }
-        else if (clazz.equals(AccessContractDto.class)) {
+        } else if (clazz.equals(AccessContractDto.class)) {
             dto = (T) buildAccessContractDto();
-        }
-        else if (clazz.equals(IngestContractDto.class)) {
+        } else if (clazz.equals(IngestContractDto.class)) {
             dto = (T) buildIngestContractDto();
-        }
-        else if (clazz.equals(SecurityProfileDto.class)) {
+        } else if (clazz.equals(SecurityProfileDto.class)) {
             dto = (T) buildSecurityProfileDto();
-        }
-        else if (clazz.equals(SearchCriteriaHistoryDto.class)) {
+        } else if (clazz.equals(SearchCriteriaHistoryDto.class)) {
             dto = (T) buildSearchCriteriaHistoryDto();
-        }
-        else if (clazz.equals(ExternalParametersDto.class)) {
+        } else if (clazz.equals(ExternalParametersDto.class)) {
             dto = (T) buildExternalParametersDto();
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("build method not implemented for class " + clazz);
         }
         return dto;
@@ -94,16 +80,36 @@ public class FactoryDto {
     }
 
     private static IdentityProviderDto buildIdentityProviderDto() {
-        return IamDtoBuilder.buildIdentityProviderDto(null, "idp-" + randomString(), SYSTEM_CUSTOMER_ID, Arrays.asList(randomString()), false, false);
+        return IamDtoBuilder.buildIdentityProviderDto(
+            null,
+            "idp-" + randomString(),
+            SYSTEM_CUSTOMER_ID,
+            Arrays.asList(randomString()),
+            false,
+            false
+        );
     }
 
     private static GroupDto buildGroupDto() {
-        return IamDtoBuilder.buildGroupDto(null, randomString(), SYSTEM_CUSTOMER_ID, Arrays.asList(SYSTEM_USER_PROFILE_ID), ADMIN_LEVEL);
+        return IamDtoBuilder.buildGroupDto(
+            null,
+            randomString(),
+            SYSTEM_CUSTOMER_ID,
+            Arrays.asList(SYSTEM_USER_PROFILE_ID),
+            ADMIN_LEVEL
+        );
     }
 
     private static ProfileDto buildProfileDto() {
-        return IamDtoBuilder.buildProfileDto(null, randomString(), SYSTEM_CUSTOMER_ID, proofTenantIdentitfier, "applicationName", ADMIN_LEVEL,
-                Arrays.asList(new Role(ServicesData.ROLE_CREATE_PROFILES)));
+        return IamDtoBuilder.buildProfileDto(
+            null,
+            randomString(),
+            SYSTEM_CUSTOMER_ID,
+            proofTenantIdentitfier,
+            "applicationName",
+            ADMIN_LEVEL,
+            Arrays.asList(new Role(ServicesData.ROLE_CREATE_PROFILES))
+        );
     }
 
     private static ExternalParametersDto buildExternalParametersDto() {
@@ -119,13 +125,22 @@ public class FactoryDto {
     }
 
     private static CustomerDto buildBasicCustomerDto() {
-        return IamDtoBuilder.buildCustomerDto(null, randomString(), Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
-                randomString() + ".com");
+        return IamDtoBuilder.buildCustomerDto(
+            null,
+            randomString(),
+            Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
+            randomString() + ".com"
+        );
     }
 
     private static UserDto buildBasicUserDto() {
-        final UserDto user = IamDtoBuilder.buildUserDto(null, randomString().toLowerCase() + "@test.com",
-                "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363", SYSTEM_CUSTOMER_ID, ADMIN_LEVEL);
+        final UserDto user = IamDtoBuilder.buildUserDto(
+            null,
+            randomString().toLowerCase() + "@test.com",
+            "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
+            SYSTEM_CUSTOMER_ID,
+            ADMIN_LEVEL
+        );
         user.setIdentifier(null);
         return user;
     }
@@ -135,7 +150,15 @@ public class FactoryDto {
     }
 
     private static RuleDto buildRuleDto() {
-        return ReferentialDtoBuilder.buildRuleDto(null, randomString(), "StorageRule", "Rule value", "Rule Description", "1", "DAY");
+        return ReferentialDtoBuilder.buildRuleDto(
+            null,
+            randomString(),
+            "StorageRule",
+            "Rule value",
+            "Rule Description",
+            "1",
+            "DAY"
+        );
     }
 
     private static AccessContractDto buildAccessContractDto() {

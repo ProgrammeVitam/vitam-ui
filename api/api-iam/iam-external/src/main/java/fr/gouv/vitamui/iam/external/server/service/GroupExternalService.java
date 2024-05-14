@@ -80,8 +80,10 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
     private final GroupInternalRestClient groupInternalRestClient;
 
     @Autowired
-    public GroupExternalService(final GroupInternalRestClient groupInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public GroupExternalService(
+        final GroupInternalRestClient groupInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.groupInternalRestClient = groupInternalRestClient;
     }
@@ -122,24 +124,39 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
     }
 
     @Override
-    public PaginatedValuesDto<GroupDto> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-            final Optional<String> embedded) {
+    public PaginatedValuesDto<GroupDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 
     @Override
     public Collection<String> getAllowedKeys() {
-        return Arrays.asList(ID_KEY, IDENTIFIER_KEY, NAME_KEY, ENABLED_KEY, DESCRIPTION_KEY, LEVEL_KEY, CUSTOMER_ID_KEY, UNITS_KEY, READONLY_KEY);
+        return Arrays.asList(
+            ID_KEY,
+            IDENTIFIER_KEY,
+            NAME_KEY,
+            ENABLED_KEY,
+            DESCRIPTION_KEY,
+            LEVEL_KEY,
+            CUSTOMER_ID_KEY,
+            UNITS_KEY,
+            READONLY_KEY
+        );
     }
 
     @Override
     protected void addRestriction(final String key, final QueryDto query) {
         switch (key) {
-            case LEVEL_KEY :
+            case LEVEL_KEY:
                 addLevelRestriction(query);
                 break;
-            default :
+            default:
                 throw new NotImplementedException("Restriction not defined for key: " + key);
         }
     }
@@ -153,8 +170,11 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
         final QueryDto levelQuery = new QueryDto();
         levelQuery.setQueryOperator(QueryOperator.OR);
         levelQuery.addCriterion("level", externalSecurityService.getLevel() + ".", CriterionOperator.STARTWITH);
-        levelQuery.addCriterion("id", externalSecurityService.getUser().getProfileGroup().getId(),
-                CriterionOperator.EQUALS);
+        levelQuery.addCriterion(
+            "id",
+            externalSecurityService.getUser().getProfileGroup().getId(),
+            CriterionOperator.EQUALS
+        );
         query.addQuery(levelQuery);
     }
 
@@ -207,5 +227,4 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
     public ResponseEntity<Resource> exportProfileGroups() {
         return getClient().exportProfileGroups(getInternalHttpContext(), checkAuthorization(Optional.empty()));
     }
-
 }

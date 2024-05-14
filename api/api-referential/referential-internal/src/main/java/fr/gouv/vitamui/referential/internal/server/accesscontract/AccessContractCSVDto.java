@@ -32,25 +32,41 @@ public class AccessContractCSVDto {
     @CsvBindByName(column = AccessContractCSVUtils.EVERY_ORIGINATING_AGENCY)
     private Boolean everyOriginatingAgency;
 
-    @CsvBindAndSplitByName(column = AccessContractCSVUtils.ORIGINATING_AGENCY, elementType = String.class, splitOn = "[ |]+")
+    @CsvBindAndSplitByName(
+        column = AccessContractCSVUtils.ORIGINATING_AGENCY,
+        elementType = String.class,
+        splitOn = "[ |]+"
+    )
     private Set<String> originatingAgencies;
 
     @CsvBindByName(column = AccessContractCSVUtils.EVERY_DATA_OBJECT_VERSION)
     private Boolean everyDataObjectVersion;
 
-    @CsvBindAndSplitByName(column = AccessContractCSVUtils.DATA_OBJECT_VERSION, elementType = String.class, splitOn = "[ |]+")
+    @CsvBindAndSplitByName(
+        column = AccessContractCSVUtils.DATA_OBJECT_VERSION,
+        elementType = String.class,
+        splitOn = "[ |]+"
+    )
     private Set<String> dataObjectVersion;
 
     @CsvBindAndSplitByName(column = AccessContractCSVUtils.ROOT_UNITS, elementType = String.class, splitOn = "[ |]+")
     private Set<String> rootUnits;
 
-    @CsvBindAndSplitByName(column = AccessContractCSVUtils.EXCLUDED_ROOT_UNITS, elementType = String.class, splitOn = "[ |]+")
+    @CsvBindAndSplitByName(
+        column = AccessContractCSVUtils.EXCLUDED_ROOT_UNITS,
+        elementType = String.class,
+        splitOn = "[ |]+"
+    )
     private Set<String> excludedRootUnits;
 
     @CsvBindByName(column = AccessContractCSVUtils.ACCESS_LOG)
     private ContextStatus accessLog;
 
-    @CsvBindAndSplitByName(column = AccessContractCSVUtils.RULE_CATEGORY_TO_FILTER, elementType = String.class, splitOn = "[ |]+")
+    @CsvBindAndSplitByName(
+        column = AccessContractCSVUtils.RULE_CATEGORY_TO_FILTER,
+        elementType = String.class,
+        splitOn = "[ |]+"
+    )
     private Set<String> ruleCategoryToFilter;
 
     @CsvBindByName(column = AccessContractCSVUtils.WRITING_RESTRICTED_DESC)

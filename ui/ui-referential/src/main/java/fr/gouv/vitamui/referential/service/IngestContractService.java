@@ -54,6 +54,7 @@ import java.util.Optional;
 
 @Service
 public class IngestContractService extends AbstractPaginateService<IngestContractDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractService.class);
 
     private IngestContractExternalRestClient client;
@@ -67,8 +68,14 @@ public class IngestContractService extends AbstractPaginateService<IngestContrac
     }
 
     @Override
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 

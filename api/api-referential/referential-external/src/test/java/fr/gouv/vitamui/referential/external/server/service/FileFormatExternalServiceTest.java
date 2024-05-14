@@ -36,12 +36,13 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalWebClient;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,9 +54,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,8 +71,10 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
 
     @Mock
     private FileFormatInternalRestClient fileFormatInternalRestClient;
+
     @Mock
     private FileFormatInternalWebClient fileFormatInternalWebClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -84,7 +84,11 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        fileFormatExternalService = new FileFormatExternalService(externalSecurityService, fileFormatInternalRestClient, fileFormatInternalWebClient);
+        fileFormatExternalService = new FileFormatExternalService(
+            externalSecurityService,
+            fileFormatInternalRestClient,
+            fileFormatInternalWebClient
+        );
     }
 
     @Test
@@ -94,8 +98,7 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
         fileFormatDto.setId("1");
         list.add(fileFormatDto);
 
-        when(fileFormatInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
+        when(fileFormatInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(list);
 
         assertThatCode(() -> {
             fileFormatExternalService.getAll(Optional.empty());
@@ -107,8 +110,9 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
         FileFormatDto fileFormatDto = new FileFormatDto();
         fileFormatDto.setId("1");
 
-        when(fileFormatInternalRestClient.create(any(InternalHttpContext.class), any(FileFormatDto.class)))
-            .thenReturn(fileFormatDto);
+        when(fileFormatInternalRestClient.create(any(InternalHttpContext.class), any(FileFormatDto.class))).thenReturn(
+            fileFormatDto
+        );
 
         assertThatCode(() -> {
             fileFormatExternalService.create(new FileFormatDto());
@@ -120,8 +124,9 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
         FileFormatDto fileFormatDto = new FileFormatDto();
         fileFormatDto.setId("1");
 
-        when(fileFormatInternalRestClient.check(any(InternalHttpContext.class), any(FileFormatDto.class)))
-            .thenReturn(true);
+        when(fileFormatInternalRestClient.check(any(InternalHttpContext.class), any(FileFormatDto.class))).thenReturn(
+            true
+        );
 
         assertThatCode(() -> {
             fileFormatExternalService.check(new FileFormatDto());
@@ -139,8 +144,9 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void export_should_return_ok_when_fileFormatInternalRestClient_return_ok() {
-        when(fileFormatInternalRestClient.export(any(InternalHttpContext.class)))
-            .thenReturn(new ResponseEntity<Resource>(HttpStatus.ACCEPTED));
+        when(fileFormatInternalRestClient.export(any(InternalHttpContext.class))).thenReturn(
+            new ResponseEntity<Resource>(HttpStatus.ACCEPTED)
+        );
 
         assertThatCode(() -> {
             fileFormatExternalService.export();
@@ -149,19 +155,29 @@ public class FileFormatExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_fileFormats_valid.xml");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_fileFormats_valid.xml");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-        when(fileFormatInternalWebClient.importFileFormats(any(InternalHttpContext.class), any(String.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        when(
+            fileFormatInternalWebClient.importFileFormats(
+                any(InternalHttpContext.class),
+                any(String.class),
+                any(MultipartFile.class)
+            )
+        ).thenReturn(jsonResponse);
 
         assertThatCode(() -> {
-        	fileFormatExternalService.importFileFormats(file.getName(), multipartFile);
+            fileFormatExternalService.importFileFormats(file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

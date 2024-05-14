@@ -55,5 +55,4 @@ public class FileOperationException extends VitamUIException {
     public FileOperationException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

@@ -73,25 +73,34 @@ public class IdentityProviderExternalRestClient extends BaseCrudRestClient<Ident
 
     @Override
     protected ParameterizedTypeReference<List<IdentityProviderDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {
-        };
+        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {};
     }
 
-    public IdentityProviderDto create(final ExternalHttpContext context, final MultipartFile keystore, final MultipartFile idpMetadata, final String provider) {
+    public IdentityProviderDto create(
+        final ExternalHttpContext context,
+        final MultipartFile keystore,
+        final MultipartFile idpMetadata,
+        final String provider
+    ) {
         MultiValueMap<String, String> headers = buildHeaders(context);
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE);
 
         MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
-        if(Objects.nonNull(keystore)) {
+        if (Objects.nonNull(keystore)) {
             bodyBuilder.part("keystore", keystore.getResource());
         }
-        if(Objects.nonNull(idpMetadata)) {
+        if (Objects.nonNull(idpMetadata)) {
             bodyBuilder.part("idpMetadata", idpMetadata.getResource());
         }
         bodyBuilder.part("provider", provider);
 
         final HttpEntity<MultiValueMap<String, HttpEntity<?>>> request = new HttpEntity<>(bodyBuilder.build(), headers);
-        final ResponseEntity<IdentityProviderDto> response = restTemplate.exchange(getUrl(), HttpMethod.POST, request, getDtoClass());
+        final ResponseEntity<IdentityProviderDto> response = restTemplate.exchange(
+            getUrl(),
+            HttpMethod.POST,
+            request,
+            getDtoClass()
+        );
         checkResponse(response, 200, 201);
         return response.getBody();
     }

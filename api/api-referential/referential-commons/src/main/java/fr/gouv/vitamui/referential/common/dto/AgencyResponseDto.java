@@ -39,6 +39,4 @@ package fr.gouv.vitamui.referential.common.dto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-public class AgencyResponseDto extends AbstractVitamUIResponseDto<AgencyModelDto> {
-
-}
+public class AgencyResponseDto extends AbstractVitamUIResponseDto<AgencyModelDto> {}

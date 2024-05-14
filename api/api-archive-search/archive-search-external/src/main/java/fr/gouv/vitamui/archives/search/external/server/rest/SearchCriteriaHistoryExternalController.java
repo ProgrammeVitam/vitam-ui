@@ -39,11 +39,18 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,14 +61,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import io.swagger.annotations.Api;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -78,12 +77,15 @@ import java.util.List;
 public class SearchCriteriaHistoryExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalController.class);
+        SearchCriteriaHistoryExternalController.class
+    );
 
     private SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
 
     @Autowired
-    public SearchCriteriaHistoryExternalController(final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService) {
+    public SearchCriteriaHistoryExternalController(
+        final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService
+    ) {
         this.searchCriteriaHistoryExternalService = searchCriteriaHistoryExternalService;
     }
 
@@ -105,7 +107,8 @@ public class SearchCriteriaHistoryExternalController {
 
     @DeleteMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public void delete(final @PathVariable("id") String id) throws PreconditionFailedException, InvalidParseOperationException {
+    public void delete(final @PathVariable("id") String id)
+        throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryExternalService.delete(id);
@@ -114,9 +117,10 @@ public class SearchCriteriaHistoryExternalController {
     @ApiOperation(value = "Update Search criteria history")
     @PutMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
-    public void update(@RequestBody final SearchCriteriaHistoryDto entity) throws PreconditionFailedException, InvalidParseOperationException {
+    public void update(@RequestBody final SearchCriteriaHistoryDto entity)
+        throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(entity);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , entity.getId());
+        ParameterChecker.checkParameter("Identifier is mandatory : ", entity.getId());
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
         searchCriteriaHistoryExternalService.update(entity);
     }

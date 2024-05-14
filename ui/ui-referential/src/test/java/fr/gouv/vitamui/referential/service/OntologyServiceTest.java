@@ -76,12 +76,16 @@ import static org.mockito.ArgumentMatchers.isNull;
 public class OntologyServiceTest {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
+
     @Mock
     private OntologyExternalRestClient ontologyExternalRestClient;
+
     @Mock
     private OntologyExternalWebClient webClient;
+
     @Mock
     private CommonService commonService;
+
     private OntologyService ontologyService;
 
     @Before
@@ -116,7 +120,6 @@ public class OntologyServiceTest {
 
     @Test
     public void testExport() {
-
         ResponseEntity<Resource> responseEntity = new ResponseEntity<Resource>(HttpStatus.OK);
 
         Mockito.when(ontologyExternalRestClient.export(isNull())).thenReturn(responseEntity);
@@ -128,16 +131,22 @@ public class OntologyServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_ontologies_valid.json");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_ontologies_valid.json");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-	    Mockito.when(webClient.importOntologies(any(ExternalHttpContext.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        Mockito.when(webClient.importOntologies(any(ExternalHttpContext.class), any(MultipartFile.class))).thenReturn(
+            jsonResponse
+        );
 
         assertThatCode(() -> {
             ontologyService.importOntologies(null, multipartFile);

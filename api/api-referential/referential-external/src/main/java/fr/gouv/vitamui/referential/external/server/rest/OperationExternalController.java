@@ -91,31 +91,38 @@ public class OperationExternalController {
     @Autowired
     private OperationExternalService operationExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     public Collection<LogbookOperationDto> getAll(final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all audits criteria={}", criteria);
         return operationExternalService.getAll(criteria);
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
-            direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return operationExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException {
         LOGGER.debug("get logbook for audit with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -124,10 +131,10 @@ public class OperationExternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
-    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id,
-        final @PathVariable("type") ReportType type)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<Resource> exportEventById(
+        final @PathVariable("id") String id,
+        final @PathVariable("type") ReportType type
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         EnumUtils.checkValidEnum(ReportType.class, Optional.of(type.name()));
         ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
@@ -140,7 +147,6 @@ public class OperationExternalController {
     @PostMapping
     public boolean create(final @Valid @RequestBody AuditOptions auditOptions)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Audit Options is mandatory parameter : ", auditOptions);
         SanityChecker.sanitizeCriteria(auditOptions);
         LOGGER.debug("Create {}", auditOptions);
@@ -151,14 +157,19 @@ public class OperationExternalController {
     public ObjectNode extractInfoFromTimestamp(final @RequestBody String timestamp) {
         final ObjectNode result = JsonHandler.createObjectNode();
         try {
-            ASN1InputStream bIn = new ASN1InputStream(new ByteArrayInputStream(
-                org.bouncycastle.util.encoders.Base64.decode(timestamp.getBytes())));
+            ASN1InputStream bIn = new ASN1InputStream(
+                new ByteArrayInputStream(org.bouncycastle.util.encoders.Base64.decode(timestamp.getBytes()))
+            );
             ASN1Primitive obj = bIn.readObject();
             TimeStampResponse tsResp = new TimeStampResponse(obj.toASN1Primitive().getEncoded());
             SignerId signerId = tsResp.getTimeStampToken().getSID();
             X500Name signerCertIssuer = signerId.getIssuer();
-            result.put("genTime", LocalDateUtil.getString(
-                LocalDateUtil.fromDate(tsResp.getTimeStampToken().getTimeStampInfo().getGenTime())));
+            result.put(
+                "genTime",
+                LocalDateUtil.getString(
+                    LocalDateUtil.fromDate(tsResp.getTimeStampToken().getTimeStampInfo().getGenTime())
+                )
+            );
             result.put("signerCertIssuer", signerCertIssuer.toString());
         } catch (TSPException | IOException e) {
             LOGGER.error("Error while transforming timestamp", e);
@@ -167,18 +178,15 @@ public class OperationExternalController {
         return result;
     }
 
-
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public JsonNode checkTraceabilityOperation(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Launch check traceability operation with id = {}", id);
         return operationExternalService.checkTraceabilityOperation(id);
     }
-
 
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -194,7 +202,6 @@ public class OperationExternalController {
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Operation Identifier is mandatory : ", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("export logbook for operation with id :{}", operationId);

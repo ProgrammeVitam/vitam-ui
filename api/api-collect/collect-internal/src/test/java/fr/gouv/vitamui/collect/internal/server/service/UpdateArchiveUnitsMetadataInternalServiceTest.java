@@ -67,20 +67,24 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
 
     @Test
     void updateCollectArchiveUnits_should_pass_when_Vitam_Return_Ok() {
-
         // Given
         VitamContext vitamContext = new VitamContext(1);
         final String vitamResponse = "vitamJsonResponse";
         final String transactionId = "transactionId";
-        InputStream csvFileInputStream = UpdateArchiveUnitsMetadataInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
+        InputStream csvFileInputStream =
+            UpdateArchiveUnitsMetadataInternalServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
 
         //When
         // TODO : do not mix raw values and Matchers !
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any()))
-            .thenReturn(vitamResponse);
-        String response =
-            transactionInternalService.updateArchiveUnitsFromFile(csvFileInputStream, transactionId, vitamContext);
+        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(
+            vitamResponse
+        );
+        String response = transactionInternalService.updateArchiveUnitsFromFile(
+            csvFileInputStream,
+            transactionId,
+            vitamContext
+        );
 
         //Then
         assertThat(response).isEqualTo(vitamResponse);
@@ -88,30 +92,28 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
 
     @Test
     void updateCollectArchiveUnits_should_not_pass_when_Vitam_throw_exception() {
-
         // Given
         VitamContext vitamContext = new VitamContext(1);
         final String vitamResponse = "ERROR_400";
         final String transactionId = "transactionId";
-        InputStream csvFileInputStream = UpdateArchiveUnitsMetadataInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/updateCollectArchiveUnits/wrong_collect_metadata.csv");
+        InputStream csvFileInputStream =
+            UpdateArchiveUnitsMetadataInternalServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/wrong_collect_metadata.csv");
 
         //When
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any()))
-            .thenReturn(vitamResponse);
+        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(
+            vitamResponse
+        );
 
         //Then
-        assertThatCode(() -> transactionInternalService.updateArchiveUnitsFromFile(csvFileInputStream,
-            transactionId, vitamContext)).
-            isInstanceOf(RequestTimeOutException.class);
-
+        assertThatCode(
+            () -> transactionInternalService.updateArchiveUnitsFromFile(csvFileInputStream, transactionId, vitamContext)
+        ).isInstanceOf(RequestTimeOutException.class);
     }
 
-    private static String readFromInputStream(InputStream inputStream)
-        throws IOException {
+    private static String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");
@@ -119,5 +121,4 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
         }
         return resultStringBuilder.toString();
     }
-
 }

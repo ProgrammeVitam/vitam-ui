@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.mongodb.client.result.UpdateResult;
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
+import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
@@ -52,14 +52,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.mongodb.client.result.UpdateResult;
-
-import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
-import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * VITAMUI Mongo CRUD Repository A service to read, create, update and delete an object with identifier.
@@ -69,8 +67,8 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
  * @param <ID> The Identifier of the object.
  */
 @NoRepositoryBean
-public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializable> extends PagingAndSortingRepository<T, I>, QueryByExampleExecutor<T> {
-
+public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializable>
+    extends PagingAndSortingRepository<T, I>, QueryByExampleExecutor<T> {
     /**
      * Generate a super ID.
      * @return
@@ -86,8 +84,13 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param direction
      * @return
      */
-    PaginatedValuesDto<T> getPaginatedValues(final Integer page, final Integer size, final Optional<Query> query, final Optional<String> orderBy,
-                                             final Optional<DirectionDto> direction);
+    PaginatedValuesDto<T> getPaginatedValues(
+        final Integer page,
+        final Integer size,
+        final Optional<Query> query,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    );
 
     /**
      * Retrieve paginated values for nested arrays.
@@ -100,9 +103,16 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param direction
      * @return
      */
-    <E> PaginatedValuesDto<E> getPaginatedNestedValues(Class<E> type, final String collectionName, final String fieldName,
-            final Collection<CriteriaDefinition> criteriaList, final Integer page, final Integer size, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) throws JsonParseException, JsonMappingException, IOException;
+    <E> PaginatedValuesDto<E> getPaginatedNestedValues(
+        Class<E> type,
+        final String collectionName,
+        final String fieldName,
+        final Collection<CriteriaDefinition> criteriaList,
+        final Integer page,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) throws JsonParseException, JsonMappingException, IOException;
 
     List<T> findAll(Query query);
 
@@ -118,7 +128,12 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param enableCollation If true, case and accents are ignored.
      * @return
      */
-    List<T> findAll(Iterable<CriteriaDefinition> criteria, Optional<String> orderBy, Optional<DirectionDto> direction, boolean enableCollation);
+    List<T> findAll(
+        Iterable<CriteriaDefinition> criteria,
+        Optional<String> orderBy,
+        Optional<DirectionDto> direction,
+        boolean enableCollation
+    );
 
     boolean exists(CriteriaDefinition... criteria);
 
@@ -155,9 +170,11 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param direction
      * @return Map<String, Object> aggregation results.
      */
-    Map<String, Object> aggregation(Iterable<String> fields,
-                                    final Iterable<CriteriaDefinition> criteria,
-                                    AggregationRequestOperator operationType,
-                                    Optional<String> orderBy,
-                                    Optional<DirectionDto> direction);
+    Map<String, Object> aggregation(
+        Iterable<String> fields,
+        final Iterable<CriteriaDefinition> criteria,
+        AggregationRequestOperator operationType,
+        Optional<String> orderBy,
+        Optional<DirectionDto> direction
+    );
 }

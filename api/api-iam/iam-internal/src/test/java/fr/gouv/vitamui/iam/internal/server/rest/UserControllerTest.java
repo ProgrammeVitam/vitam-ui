@@ -108,17 +108,21 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         when(customerRepository.findById(userDto.getCustomerId())).thenReturn(Optional.of(buildCustomer()));
         when(internalGroupService.getOne(userDto.getGroupId(), Optional.empty(), Optional.empty())).thenReturn(
-            buildGroupDto());
+            buildGroupDto()
+        );
         when(internalGroupService.getOneByPassSecurity(userDto.getGroupId(), Optional.empty())).thenReturn(
-            buildGroupDto());
+            buildGroupDto()
+        );
         when(internalSecurityService.isLevelAllowed(anyString())).thenCallRealMethod();
         when(internalSecurityService.getLevel()).thenReturn("");
         when(internalSecurityService.getCustomerId()).thenReturn(buildCustomerDto().getId());
         when(internalCustomerService.getOne(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
-            buildCustomerDto());
+            buildCustomerDto()
+        );
 
         when(userRepository.findByIdAndCustomerId(userDto.getId(), userDto.getCustomerId())).thenReturn(
-            Optional.of(buildUser()));
+            Optional.of(buildUser())
+        );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.existsById(userDto.getId())).thenReturn(true);
         when(userRepository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
@@ -160,14 +164,16 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (unknownCustomerId): customer does not exist",
-                e.getMessage());
+            assertEquals(
+                "Unable to create user user@supermail.fr (unknownCustomerId): customer does not exist",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testUserCreationFailsAsCustomerIsNull() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testUserCreationFailsAsCustomerIsNull()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -212,23 +218,27 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null",
-                e.getMessage());
+            assertEquals(
+                "Unable to create user user@supermail.fr (customerId): identifier must be null",
+                e.getMessage()
+            );
         }
     }
 
     @Test
-    public void testCreationFailsAsEmailAlreadyExistsForSameCustomer() throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public void testCreationFailsAsEmailAlreadyExistsForSameCustomer()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
 
         prepareServices();
-        when(userRepository.findByEmailIgnoreCaseAndCustomerId(IamServerUtilsTest.USER_MAIL,
-            IamServerUtilsTest.CUSTOMER_ID))
-            .thenReturn(buildUser());
+        when(
+            userRepository.findByEmailIgnoreCaseAndCustomerId(
+                IamServerUtilsTest.USER_MAIL,
+                IamServerUtilsTest.CUSTOMER_ID
+            )
+        ).thenReturn(buildUser());
 
         try {
             userController.create(userDto);
@@ -239,8 +249,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     }
 
     @Test
-    public void testCreationDoesNotFailAsEmailAlreadyExistsForOtherCustomer() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testCreationDoesNotFailAsEmailAlreadyExistsForOtherCustomer()
+        throws InvalidParseOperationException, PreconditionFailedException {
         String SOME_CUSTOMER_ID = "SOME_CUSTOMER_ID";
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
@@ -248,11 +258,12 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         User someOtherUser = new User();
         prepareServices();
-        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(),
-            Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
-            null);
+        when(
+            userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))
+        ).thenReturn(null);
         when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(
-            someOtherUser);
+            someOtherUser
+        );
 
         userController.create(userDto);
     }
@@ -287,8 +298,10 @@ public final class UserControllerTest implements InternalCrudControllerTest {
             userController.create(userDto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create user user@supermail.fr (customerId): identifier must be null",
-                e.getMessage());
+            assertEquals(
+                "Unable to create user user@supermail.fr (customerId): identifier must be null",
+                e.getMessage()
+            );
         }
     }
 
@@ -303,8 +316,10 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(userRepository, times(1)).save(captor.capture());
 
-        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(userConverter.convertDtoToEntity(userDto),
-            "passwordExpirationDate");
+        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(
+            userConverter.convertDtoToEntity(userDto),
+            "passwordExpirationDate"
+        );
     }
 
     @Override
@@ -322,7 +337,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Unable to update user " + userDto.getId() + ": customerId " + UNKNOWN_CUSTOMER_ID + " is not allowed",
-                e.getMessage());
+                e.getMessage()
+            );
         }
     }
 
@@ -350,7 +366,8 @@ public final class UserControllerTest implements InternalCrudControllerTest {
 
         prepareServices();
         when(userRepository.findByEmailIgnoreCaseAndCustomerId(userDto.getEmail(), userDto.getCustomerId())).thenReturn(
-            buildUser());
+            buildUser()
+        );
 
         try {
             userController.update(userDto.getId(), userDto);
@@ -369,17 +386,15 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         User someOtherUser = new User();
         String SOME_CUSTOMER_ID = "SOME_CUSTOMER_ID";
 
-
         prepareServices();
 
-        when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(),
-            Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))).thenReturn(
-            null);
+        when(
+            userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(IamServerUtilsTest.CUSTOMER_ID))
+        ).thenReturn(null);
         when(userRepository.findByEmailIgnoreCaseAndCustomerId(any(), Mockito.eq(SOME_CUSTOMER_ID))).thenReturn(
-            someOtherUser);
+            someOtherUser
+        );
         userController.update(userDto.getId(), userDto);
-
-
     }
 
     @Override
@@ -394,7 +409,6 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update user " + userDto.getId() + ": mail already exists", e.getMessage());
         }
-
     }
 
     @Test
@@ -412,7 +426,6 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         assertThat(captor.getValue()).isEqualTo(partialDto);
         assertThat(result).isEqualTo(userDto);
     }
-
 
     @Test(expected = UnsupportedOperationException.class)
     public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
@@ -447,5 +460,4 @@ public final class UserControllerTest implements InternalCrudControllerTest {
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
     }
-
 }

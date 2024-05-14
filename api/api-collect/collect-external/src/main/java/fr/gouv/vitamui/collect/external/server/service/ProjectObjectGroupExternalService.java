@@ -31,9 +31,9 @@ package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -57,21 +57,28 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Getter
 @Setter
 @Service
-public class ProjectObjectGroupExternalService extends
-    AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+public class ProjectObjectGroupExternalService
+    extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
     private final CollectInternalWebClient collectInternalWebClient;
 
-    public ProjectObjectGroupExternalService(CollectInternalRestClient collectInternalRestClient,
+    public ProjectObjectGroupExternalService(
+        CollectInternalRestClient collectInternalRestClient,
         CollectInternalWebClient collectInternalWebClient,
-        ExternalSecurityService externalSecurityService) {
+        ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
         this.collectInternalWebClient = collectInternalWebClient;
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String objectId, String usage, Integer version) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        String objectId,
+        String usage,
+        Integer version
+    ) {
         // Logic moved here from ui-collect, similar from the one in archive-search
         String fileName = null;
         ResultsDto got = findObjectById(objectId).getBody();
@@ -82,7 +89,9 @@ public class ProjectObjectGroupExternalService extends
                 qualifier = getLastObjectQualifier(got);
             } else {
                 String finalUsage = usage;
-                qualifier = got.getQualifiers().stream()
+                qualifier = got
+                    .getQualifiers()
+                    .stream()
                     .filter(q -> finalUsage.equals(q.getQualifier()))
                     .findFirst()
                     .orElse(null);
@@ -95,7 +104,9 @@ public class ProjectObjectGroupExternalService extends
                     versionsDto = getLastVersion(qualifier);
                 } else {
                     Integer finalVersion = version;
-                    versionsDto = qualifier.getVersions().stream()
+                    versionsDto = qualifier
+                        .getVersions()
+                        .stream()
                         .filter(v -> finalVersion.equals(extractVersion(v)))
                         .findFirst()
                         .orElse(null);
@@ -107,13 +118,14 @@ public class ProjectObjectGroupExternalService extends
             }
         }
 
-        return collectInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext(), fileName);
+        return collectInternalWebClient.downloadObjectFromUnit(id, usage, version, getInternalHttpContext(), fileName);
     }
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
         for (String qualifierName : ObjectQualifierType.allValuesOrdered) {
-            QualifiersDto qualifierFound = got.getQualifiers().stream()
+            QualifiersDto qualifierFound = got
+                .getQualifiers()
+                .stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)
                 .orElse(null);
@@ -125,7 +137,9 @@ public class ProjectObjectGroupExternalService extends
     }
 
     private VersionsDto getLastVersion(QualifiersDto qualifier) {
-        return qualifier.getVersions().stream()
+        return qualifier
+            .getVersions()
+            .stream()
             .max(comparing(ProjectObjectGroupExternalService::extractVersion))
             .orElse(null);
     }
@@ -148,9 +162,14 @@ public class ProjectObjectGroupExternalService extends
             uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
         }
         String filenameExtension = EMPTY;
-        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
-            version.getFileInfoModel().getFilename().contains(".")) {
-            filenameExtension = version.getFileInfoModel().getFilename()
+        if (
+            nonNull(version.getFileInfoModel()) &&
+            isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")
+        ) {
+            filenameExtension = version
+                .getFileInfoModel()
+                .getFilename()
                 .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
         }
         if (isNotBlank(filenameExtension)) {
@@ -164,6 +183,7 @@ public class ProjectObjectGroupExternalService extends
     public ResponseEntity<ResultsDto> findObjectById(String id) {
         return collectInternalRestClient.findObjectById(id, getInternalHttpContext());
     }
+
     @Override
     protected CollectInternalRestClient getClient() {
         return collectInternalRestClient;

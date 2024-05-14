@@ -38,11 +38,6 @@ import fr.gouv.vitam.common.model.administration.PersistentIdentifierUsage;
 import fr.gouv.vitam.common.model.administration.StorageDetailModel;
 import fr.gouv.vitam.common.model.administration.VersionRetentionPolicyModel;
 import fr.gouv.vitam.common.model.administration.VersionUsageModel;
-import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierPolicyDto;
-import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierUsageDto;
-import fr.gouv.vitamui.commons.api.domain.StorageDetailDto;
-import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
-import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -52,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PatchManagementContractModelTest {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -64,7 +60,6 @@ class PatchManagementContractModelTest {
         managementContractModel.setIdentifier("CG - DRA - 1");
         managementContractModel.setDescription("xxx");
         managementContractModel.setStatus(ActivationStatus.INACTIVE);
-
 
         // Création de l'objet StorageDetailDto
         StorageDetailModel storageDetailModel = new StorageDetailModel();
@@ -116,7 +111,10 @@ class PatchManagementContractModelTest {
 
         String patchedJson = objectMapper.writeValueAsString(patchedDto);
 
-        ManagementContractModel patchedManagementContract = objectMapper.readValue(patchedJson, ManagementContractModel.class);
+        ManagementContractModel patchedManagementContract = objectMapper.readValue(
+            patchedJson,
+            ManagementContractModel.class
+        );
 
         // Vérification que les champs ignorés par @JsonIgnore sont à null
         assertNull(patchedManagementContract.getId());

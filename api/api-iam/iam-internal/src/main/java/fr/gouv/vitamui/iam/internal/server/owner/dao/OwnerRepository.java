@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.owner.dao;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * MongoDB repository for the profiles.
@@ -48,11 +48,9 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
  *
  */
 public interface OwnerRepository extends VitamUIRepository<Owner, String> {
-
     Optional<Owner> findByName(final String name);
 
     Optional<Owner> findByCode(String code);
 
     List<Owner> findByCustomerId(final String id);
-
 }

@@ -45,14 +45,27 @@ import java.util.Optional;
 
 public abstract class AbstractPaginateService<T extends IdDto> extends AbstractCrudService<T> {
 
-    public PaginatedValuesDto<T> getAllPaginated(final Integer page, Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<T> getAllPaginated(
+        final Integer page,
+        Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         size = beforePaginate(page, size);
         return getClient().getAllPaginated(context, page, size, criteria, orderBy, direction);
     }
 
-    public PaginatedValuesDto<T> getAllPaginated(final Integer page, Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction, final Optional<String> embedded, final ExternalHttpContext context) {
+    public PaginatedValuesDto<T> getAllPaginated(
+        final Integer page,
+        Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded,
+        final ExternalHttpContext context
+    ) {
         size = beforePaginate(page, size);
         return getClient().getAllPaginated(context, page, size, criteria, orderBy, direction, embedded);
     }

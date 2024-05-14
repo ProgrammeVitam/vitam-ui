@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LinkedProfileExportSheet extends SheetDto {
+
     public static final String LINKED_PROFILE_SHEET_NAME = "Lien_profils_groupes";
     public static final List<String> LINKED_PROFILE_SHEET_COLUMNS = List.of(
         "Id du groupe de profil",

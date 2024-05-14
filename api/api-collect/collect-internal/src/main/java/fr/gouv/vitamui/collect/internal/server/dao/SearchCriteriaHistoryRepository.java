@@ -29,6 +29,4 @@ package fr.gouv.vitamui.collect.internal.server.dao;
 import fr.gouv.vitamui.collect.internal.server.domain.SearchCriteriaHistoryCollect;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 
-public interface SearchCriteriaHistoryRepository extends VitamUIRepository<SearchCriteriaHistoryCollect, String> {
-
-}
+public interface SearchCriteriaHistoryRepository extends VitamUIRepository<SearchCriteriaHistoryCollect, String> {}

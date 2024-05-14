@@ -55,10 +55,12 @@ public class AccessContractInternalService {
 
     private AccessContractConverter converter;
 
-
     @Autowired
-    public AccessContractInternalService(AccessContractService accessContractService, ObjectMapper objectMapper,
-        AccessContractConverter converter) {
+    public AccessContractInternalService(
+        AccessContractService accessContractService,
+        ObjectMapper objectMapper,
+        AccessContractConverter converter
+    ) {
         this.accessContractService = accessContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -66,12 +68,15 @@ public class AccessContractInternalService {
 
     public Optional<AccessContractDto> getOne(VitamContext vitamContext, String identifier) {
         try {
-
             LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<AccessContractModel> requestResponse =
-                accessContractService.findAccessContractById(vitamContext, identifier);
-            final AccessContractResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(
+                vitamContext,
+                identifier
+            );
+            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessContractResponseDto.class
+            );
             if (CollectionUtils.isEmpty(accessContractResponseDto.getResults())) {
                 return Optional.empty();
             } else {
@@ -81,5 +86,4 @@ public class AccessContractInternalService {
             throw new InternalServerException("Unable to get Access Contrat", e);
         }
     }
-
 }

@@ -48,11 +48,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SearchCriteriaHistoryInternalService extends
-    VitamUICrudService<SearchCriteriaHistoryDto, SearchCriteriaHistoryCollect> {
+public class SearchCriteriaHistoryInternalService
+    extends VitamUICrudService<SearchCriteriaHistoryDto, SearchCriteriaHistoryCollect> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryInternalService.class
+    );
     private static final String MAX_SEARCH_CRITERIA_SAVED_ACHIEVED =
         "L’enregistrement n'est pas possible car vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherches.";
 
@@ -67,7 +68,8 @@ public class SearchCriteriaHistoryInternalService extends
         final CustomSequenceRepository sequenceRepository,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final InternalSecurityService internalSecurityService) {
+        final InternalSecurityService internalSecurityService
+    ) {
         super(sequenceRepository);
         this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
         this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
@@ -120,7 +122,6 @@ public class SearchCriteriaHistoryInternalService extends
     protected String getObjectName() {
         return "searchCriteriaHistory";
     }
-
 
     @Override
     protected Converter<SearchCriteriaHistoryDto, SearchCriteriaHistoryCollect> getConverter() {

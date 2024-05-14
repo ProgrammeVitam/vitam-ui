@@ -36,9 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -48,14 +54,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete customers.
@@ -76,7 +75,12 @@ public class CustomerInternalRestClient extends BasePaginatingAndSortingRestClie
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<CustomerDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, CustomerDto.class);
+        final ResponseEntity<CustomerDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            CustomerDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -86,7 +90,13 @@ public class CustomerInternalRestClient extends BasePaginatingAndSortingRestClie
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.queryParam("code", code);
-        final ResponseEntity<CustomerDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoClass(), code);
+        final ResponseEntity<CustomerDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoClass(),
+            code
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -109,36 +119,46 @@ public class CustomerInternalRestClient extends BasePaginatingAndSortingRestClie
 
     @Override
     protected ParameterizedTypeReference<List<CustomerDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<CustomerDto>>() {
-        };
+        return new ParameterizedTypeReference<List<CustomerDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>>() {};
     }
 
-    public ResponseEntity<Resource> getLogo(final InternalHttpContext context, final String id, final AttachmentType type) {
+    public ResponseEntity<Resource> getLogo(
+        final InternalHttpContext context,
+        final String id,
+        final AttachmentType type
+    ) {
         LOGGER.debug("Get logo for customer with id {}, type: {}", id, type);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo?type=" + type);
-        final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
         checkResponse(response, 200, 204);
         return response;
-
     }
 
     public boolean getGdprSettingStatus(final InternalHttpContext context) {
         LOGGER.debug("get Gdpr Setting Status");
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.GDPR_STATUS);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.GDPR_STATUS
+        );
 
-        final ResponseEntity<Boolean> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            Boolean.class
+        );
         checkResponse(response);
         return response.getBody();
     }
-
 }

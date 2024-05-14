@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.referential.internal.server;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -58,5 +56,4 @@ public class ApiReferentialApplicationTest {
     public void testContextLoads() {
         assertThat(env).isNotNull();
     }
-
 }

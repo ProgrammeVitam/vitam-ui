@@ -27,13 +27,13 @@
 
 package fr.gouv.vitamui.commons.api.exception;
 
-
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Fail to create dsl query")
 public class DslQueryCreateException extends RuntimeException {
+
     public DslQueryCreateException(Throwable e) {
         super(e);
     }

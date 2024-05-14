@@ -47,6 +47,5 @@ import java.util.List;
  *
  */
 public interface ApplicationRepository extends VitamUIRepository<Application, String> {
-
     List<Application> findAllByIdentifierIn(List<String> identifiers);
 }

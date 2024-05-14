@@ -54,12 +54,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
-import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -72,6 +66,13 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
 @RestController
 @RequestMapping(RestApi.FILE_FORMATS_URL)
 @Getter
@@ -83,7 +84,7 @@ public class FileFormatExternalController {
     @Autowired
     private FileFormatExternalService fileFormatExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
     public Collection<FileFormatDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
@@ -93,37 +94,51 @@ public class FileFormatExternalController {
 
     @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<FileFormatDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<FileFormatDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return fileFormatExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
     @RequestMapping(value = "/**", method = RequestMethod.GET)
-    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, InvalidParseOperationException {
+    public Object getByIdOrHistory(HttpServletRequest request)
+        throws UnsupportedEncodingException, InvalidParseOperationException {
         LOGGER.debug("getByIdOrHistory ");
         String requestURL = request.getRequestURL().toString();
-        String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
-        if (StringUtils.endsWith( path, "/history")) {
-            return findHistoryById(StringUtils.substringBefore(path,"/history"));
+        String path = StringUtils.substringAfter(requestURL, RestApi.FILE_FORMATS_URL + "/");
+        if (StringUtils.endsWith(path, "/history")) {
+            return findHistoryById(StringUtils.substringBefore(path, "/history"));
         } else {
-            return getOne(StringUtils.removeEndIgnoreCase(path,"/"));
+            return getOne(StringUtils.removeEndIgnoreCase(path, "/"));
         }
     }
 
     private FileFormatDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get file format identifier={}");
-        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
         return fileFormatExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_FILE_FORMATS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileFormatDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(
+        @RequestBody FileFormatDto fileFormatDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         SanityChecker.sanitizeCriteria(fileFormatDto);
         LOGGER.debug("check exist accessContract={}", fileFormatDto);
         ApiUtils.checkValidity(fileFormatDto);
@@ -150,21 +165,25 @@ public class FileFormatExternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return fileFormatExternalService.patch(partialDto);
     }
 
     private LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return fileFormatExternalService.findHistoryById(id);
     }
 
     @Secured(ServicesData.ROLE_DELETE_FILE_FORMATS)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete fileFormat with id :{}", id);
         fileFormatExternalService.delete(id);
@@ -176,19 +195,18 @@ public class FileFormatExternalController {
         return fileFormatExternalService.export();
     }
 
-  /***
-   * Import file format from a xml file
-   * @param file the file format xml to import
-   * @return the vitam response
-   */
-  @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
-  @PostMapping(CommonConstants.PATH_IMPORT)
-  public JsonNode importFileFormats(@RequestParam("file") MultipartFile file) {
-    ParameterChecker.checkParameter(
-        "The fileName is mandatory parameter : ", file.getOriginalFilename());
-    SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-    SanityChecker.isValidFileName(file.getOriginalFilename());
-    LOGGER.debug("Import file format file {}", file.getOriginalFilename());
-    return fileFormatExternalService.importFileFormats(file.getOriginalFilename(), file);
-  }
+    /***
+     * Import file format from a xml file
+     * @param file the file format xml to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importFileFormats(@RequestParam("file") MultipartFile file) {
+        ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        LOGGER.debug("Import file format file {}", file.getOriginalFilename());
+        return fileFormatExternalService.importFileFormats(file.getOriginalFilename(), file);
+    }
 }

@@ -23,5 +23,4 @@ public abstract class ExportCSVParams {
     public abstract String getArrayJoinStr();
 
     public abstract String getPatternDate();
-
 }

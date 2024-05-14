@@ -35,16 +35,15 @@ import fr.gouv.vitamui.commons.api.domain.QueryOperator;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -58,9 +57,11 @@ public class ApplicationService extends AbstractInternalClientService {
 
     private final ApplicationInternalRestClient applicationInternalRestClient;
 
-    public ApplicationService(final ExternalSecurityService externalSecurityService,
-                              final ApplicationExternalService applicationExternalService,
-                              final ApplicationInternalRestClient applicationInternalRestClient) {
+    public ApplicationService(
+        final ExternalSecurityService externalSecurityService,
+        final ApplicationExternalService applicationExternalService,
+        final ApplicationInternalRestClient applicationInternalRestClient
+    ) {
         super(externalSecurityService);
         this.applicationInternalRestClient = applicationInternalRestClient;
         this.applicationExternalService = applicationExternalService;
@@ -70,7 +71,10 @@ public class ApplicationService extends AbstractInternalClientService {
         final QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
 
-        Collection<ApplicationDto> applications = applicationExternalService.getAll(Optional.of(query.toJson()), Optional.empty());
+        Collection<ApplicationDto> applications = applicationExternalService.getAll(
+            Optional.of(query.toJson()),
+            Optional.empty()
+        );
 
         Map<String, Object> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
@@ -79,12 +83,14 @@ public class ApplicationService extends AbstractInternalClientService {
     }
 
     public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(String applicationId) {
-        return applicationInternalRestClient.isApplicationExternalIdentifierEnabled(getInternalHttpContext(), applicationId);
+        return applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
+            getInternalHttpContext(),
+            applicationId
+        );
     }
 
     @Override
     protected ApplicationInternalRestClient getClient() {
         return applicationInternalRestClient;
     }
-
 }

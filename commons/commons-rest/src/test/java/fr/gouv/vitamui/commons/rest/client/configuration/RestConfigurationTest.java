@@ -94,7 +94,9 @@ public class RestConfigurationTest extends AbstractServerIdentityBuilder {
         assertTrue(httpPoolConfiguration.getMaxTotal() == 500);
         assertTrue(httpPoolConfiguration.getMaxPerRoute() == 50);
 
-        ListIterator<HttpPoolConfiguration.HostConfiguration> it = httpPoolConfiguration.getHostConfigurations().listIterator();
+        ListIterator<HttpPoolConfiguration.HostConfiguration> it = httpPoolConfiguration
+            .getHostConfigurations()
+            .listIterator();
         HttpPoolConfiguration.HostConfiguration firstHttpHost = it.next();
         assertTrue(firstHttpHost.getScheme().equals("http"));
         assertTrue(firstHttpHost.getHost().equals("localhost"));
@@ -107,5 +109,4 @@ public class RestConfigurationTest extends AbstractServerIdentityBuilder {
         assertTrue(secondHttpHost.getPort() == 87654321);
         assertTrue(secondHttpHost.getMaxPerRoute() == 10);
     }
-
 }

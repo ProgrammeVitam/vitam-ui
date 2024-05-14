@@ -92,7 +92,9 @@ import java.util.Optional;
 @Api(tags = "identityproviders", value = "Identity Providers Management")
 public class IdentityProviderExternalController implements CrudController<IdentityProviderDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IdentityProviderExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IdentityProviderExternalController.class
+    );
 
     @Autowired
     private IdentityProviderExternalService identityProviderCrudService;
@@ -104,8 +106,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
-    public List<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-
+    public List<IdentityProviderDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) {
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         LOGGER.debug("Get all criteria={} embedded={}", criteria, embedded);
         return identityProviderCrudService.getAll(criteria, embedded);
@@ -113,9 +117,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
-    public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded)
-        throws PreconditionFailedException {
-
+    public IdentityProviderDto getOne(
+        final @PathVariable("id") String id,
+        final @RequestParam Optional<String> embedded
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
@@ -128,10 +133,18 @@ public class IdentityProviderExternalController implements CrudController<Identi
         throws PreconditionFailedException, IOException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(id, ProviderEmbeddedOptions.IDPMETADATA, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
+        final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(
+            id,
+            ProviderEmbeddedOptions.IDPMETADATA,
+            IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA)
+        );
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=" + "idpmetadata.xml");
-        return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/spMetadata")
@@ -140,10 +153,18 @@ public class IdentityProviderExternalController implements CrudController<Identi
         throws PreconditionFailedException, IOException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(id, ProviderEmbeddedOptions.SPMETADATA, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA));
+        final Resource resource = identityProviderCrudService.getMetadataProviderByProviderId(
+            id,
+            ProviderEmbeddedOptions.SPMETADATA,
+            IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA)
+        );
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=" + "spmetadata.xml");
-        return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
     }
 
     @Override
@@ -154,14 +175,21 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
     @PostMapping
     @ApiIgnore
-    @ApiOperation(value = "Create entity request to upload the file", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(
+        value = "Create entity request to upload the file",
+        produces = "application/json",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
-    public IdentityProviderDto create(@RequestPart final String provider, @RequestPart(value = "keystore",required = false) final MultipartFile keystore,
-                                      @RequestPart(value = "idpMetadata",required = false) final MultipartFile idpMetadata) throws Exception {
+    public IdentityProviderDto create(
+        @RequestPart final String provider,
+        @RequestPart(value = "keystore", required = false) final MultipartFile keystore,
+        @RequestPart(value = "idpMetadata", required = false) final MultipartFile idpMetadata
+    ) throws Exception {
         LOGGER.debug("Create provider: {}", provider);
 
-        if(Objects.nonNull(keystore) && Objects.nonNull(idpMetadata)) {
+        if (Objects.nonNull(keystore) && Objects.nonNull(idpMetadata)) {
             SanityChecker.isValidFileName(keystore.getOriginalFilename());
             SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         }
@@ -175,7 +203,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
     }
 
     @Override
-    public IdentityProviderDto update(final @PathVariable("id") String id, final @Valid @RequestBody IdentityProviderDto dto) {
+    public IdentityProviderDto update(
+        final @PathVariable("id") String id,
+        final @Valid @RequestBody IdentityProviderDto dto
+    ) {
         throw new UnsupportedOperationException("update not implemented");
     }
 
@@ -183,13 +214,17 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @ApiOperation(value = "Update partially provider")
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
-    public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return identityProviderCrudService.patch(partialDto);
     }
 
@@ -197,23 +232,41 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @ApiOperation(value = "Update keystore provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
-    public IdentityProviderDto patchProviderKeystore(final @RequestPart("keystore") MultipartFile keystore, final @RequestPart("provider") String provider,
-                                                     final @PathVariable String id) throws IOException {
+    public IdentityProviderDto patchProviderKeystore(
+        final @RequestPart("keystore") MultipartFile keystore,
+        final @RequestPart("provider") String provider,
+        final @PathVariable String id
+    ) throws IOException {
         LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
-        return identityProviderCrudService.patch(VitamUIUtils.convertObjectFromJson(provider, Map.class), keystore, null, id, ProviderPatchType.KEYSTORE);
+        return identityProviderCrudService.patch(
+            VitamUIUtils.convertObjectFromJson(provider, Map.class),
+            keystore,
+            null,
+            id,
+            ProviderPatchType.KEYSTORE
+        );
     }
 
     @PatchMapping(value = "/{id}/idpMetadata")
     @ApiOperation(value = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
-    public IdentityProviderDto patchProviderIdpMetadata(final @RequestPart("idpMetadata") MultipartFile idpMetadata,
-                                                        final @RequestPart("provider") String provider, final @PathVariable String id) throws IOException {
+    public IdentityProviderDto patchProviderIdpMetadata(
+        final @RequestPart("idpMetadata") MultipartFile idpMetadata,
+        final @RequestPart("provider") String provider,
+        final @PathVariable String id
+    ) throws IOException {
         LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
-        return identityProviderCrudService.patch(VitamUIUtils.convertObjectFromJson(provider, Map.class), null, idpMetadata, id, ProviderPatchType.IDPMETADATA);
+        return identityProviderCrudService.patch(
+            VitamUIUtils.convertObjectFromJson(provider, Map.class),
+            null,
+            idpMetadata,
+            id,
+            ProviderPatchType.IDPMETADATA
+        );
     }
 }

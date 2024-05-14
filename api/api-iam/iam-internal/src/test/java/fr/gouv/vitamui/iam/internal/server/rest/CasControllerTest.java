@@ -127,11 +127,19 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         iamLogbookService = mock(IamLogbookService.class);
         passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
-        internalSubrogationService =
-            new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
-                userInternalService,
-                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository,
-                subrogationConverter, iamLogbookService);
+        internalSubrogationService = new SubrogationInternalService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
 
         casService = spy(CasInternalService.class);
         casService.setInternalUserService(internalUserService);
@@ -182,8 +190,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         userProfile.setProfileGroup(new GroupDto());
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
         when(tokenRepository.generateSuperId()).thenReturn("en");
-        final List<UserDto> results =
-            controller.getUsersByEmail(EMAIL, CommonConstants.AUTH_TOKEN_PARAMETER);
+        final List<UserDto> results = controller.getUsersByEmail(EMAIL, CommonConstants.AUTH_TOKEN_PARAMETER);
 
         assertThat(results).hasSize(1);
         userProfile.setAuthToken("TOKEN");
@@ -291,8 +298,9 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     @Test
     public void testFindSubrogationsBySuperUserId() {
         final Subrogation subrogation = buildSubrogation();
-        when(subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID))
-            .thenReturn(List.of(subrogation));
+        when(
+            subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)
+        ).thenReturn(List.of(subrogation));
         final UserDto user = new UserDto();
         user.setEmail(SUPER_USER_EMAIL);
         user.setCustomerId(SUPER_USER_CUSTOMER_ID);
@@ -312,11 +320,14 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     @Test
     public void testFindSubrogationsBySuperUserEmail() {
         final Subrogation subrogation = buildSubrogation();
-        when(subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID))
-            .thenReturn(List.of(subrogation));
+        when(
+            subrogationRepository.findBySuperUserAndSuperUserCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)
+        ).thenReturn(List.of(subrogation));
 
-        final List<SubrogationDto> subrogations = controller
-            .getSubrogationsBySuperUserEmailAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID);
+        final List<SubrogationDto> subrogations = controller.getSubrogationsBySuperUserEmailAndCustomerId(
+            SUPER_USER_EMAIL,
+            SUPER_USER_CUSTOMER_ID
+        );
         assertEquals(1, subrogations.size());
         final SubrogationDto dto = subrogations.get(0);
         assertEquals(subrogation.getId(), dto.getId());

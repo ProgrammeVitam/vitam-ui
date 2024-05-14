@@ -57,7 +57,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class RuleService extends AbstractPaginateService<RuleDto>{
+public class RuleService extends AbstractPaginateService<RuleDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleService.class);
 
     private RuleExternalRestClient client;
@@ -67,15 +68,25 @@ public class RuleService extends AbstractPaginateService<RuleDto>{
     private CommonService commonService;
 
     @Autowired
-    public RuleService(final CommonService commonService, final RuleExternalRestClient client, final RuleExternalWebClient webClient) {
+    public RuleService(
+        final CommonService commonService,
+        final RuleExternalRestClient client,
+        final RuleExternalWebClient webClient
+    ) {
         this.commonService = commonService;
         this.client = client;
         this.webClient = webClient;
     }
 
     @Override
-    public PaginatedValuesDto<RuleDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -84,7 +95,8 @@ public class RuleService extends AbstractPaginateService<RuleDto>{
         return commonService.checkPagination(page, size);
     }
 
-    @Override public BasePaginatingAndSortingRestClient<RuleDto, ExternalHttpContext> getClient() {
+    @Override
+    public BasePaginatingAndSortingRestClient<RuleDto, ExternalHttpContext> getClient() {
         return client;
     }
 
@@ -93,7 +105,7 @@ public class RuleService extends AbstractPaginateService<RuleDto>{
     }
 
     public boolean check(ExternalHttpContext context, RuleDto ruleDto) {
-        return client.check(context,ruleDto);
+        return client.check(context, ruleDto);
     }
 
     public boolean createRule(ExternalHttpContext context, RuleDto ruleDto) {

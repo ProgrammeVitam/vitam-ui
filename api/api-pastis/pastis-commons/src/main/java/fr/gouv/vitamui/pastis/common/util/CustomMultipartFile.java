@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class CustomMultipartFile implements MultipartFile {
+
     private final byte[] fileByte;
 
     public CustomMultipartFile(byte[] fileByte) {
@@ -52,6 +53,6 @@ public class CustomMultipartFile implements MultipartFile {
 
     @Override
     public void transferTo(File dest) throws IOException, IllegalStateException {
-    new FileOutputStream(dest).write(this.fileByte);
+        new FileOutputStream(dest).write(this.fileByte);
     }
 }

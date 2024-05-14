@@ -59,8 +59,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class,
-    VitamCollectConfig.class, VitamAdministrationConfig.class})
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamCollectConfig.class,
+        VitamAdministrationConfig.class,
+    }
+)
 public class ApiCollectInternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -72,25 +80,29 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final RestClientConfiguration iamInternalRestClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamInternalRestClientFactory(iamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
     @Bean
     public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        final InternalAuthentificationService internalAuthentificationService) {
+        final InternalAuthentificationService internalAuthentificationService
+    ) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public InternalAuthentificationService internalAuthentificationService(
-        final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new InternalAuthentificationService(userInternalRestClient);
     }
 
@@ -100,8 +112,10 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public ProjectInternalService collectInternalService(final CollectService collectService,
-        ObjectMapper objectMapper) {
+    public ProjectInternalService collectInternalService(
+        final CollectService collectService,
+        ObjectMapper objectMapper
+    ) {
         return new ProjectInternalService(collectService, objectMapper);
     }
 
@@ -110,16 +124,20 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
         return new TransactionInternalService(collectService);
     }
 
-
     @Bean
-    public TransactionArchiveUnitInternalService projectArchiveUnitInternalService(final CollectService collectService,
-        AgencyService agencyService, ObjectMapper objectMapper) {
+    public TransactionArchiveUnitInternalService projectArchiveUnitInternalService(
+        final CollectService collectService,
+        AgencyService agencyService,
+        ObjectMapper objectMapper
+    ) {
         return new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
     }
 
     @Bean
-    public ProjectObjectGroupInternalService projectObjectGroupInternalService(final CollectService collectService,
-        ObjectMapper objectMapper) {
+    public ProjectObjectGroupInternalService projectObjectGroupInternalService(
+        final CollectService collectService,
+        ObjectMapper objectMapper
+    ) {
         return new ProjectObjectGroupInternalService(collectService, objectMapper);
     }
 
@@ -128,15 +146,20 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
         final CustomSequenceRepository sequenceRepository,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final InternalSecurityService internalSecurityService) {
-        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository,
-            searchCriteriaHistoryConverter, internalSecurityService);
+        final InternalSecurityService internalSecurityService
+    ) {
+        return new SearchCriteriaHistoryInternalService(
+            sequenceRepository,
+            searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter,
+            internalSecurityService
+        );
     }
-
 
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 }

@@ -50,8 +50,8 @@ import java.util.List;
  * A REST client to check existence, read, create, update and delete the profile external params.
  *
  */
-public class ExternalParamProfileInternalRestClient extends
-    BasePaginatingAndSortingRestClient<ExternalParamProfileDto, InternalHttpContext> {
+public class ExternalParamProfileInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ExternalParamProfileDto, InternalHttpContext> {
 
     public ExternalParamProfileInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

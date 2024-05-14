@@ -36,37 +36,16 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import fr.gouv.vitam.common.database.builder.query.Query;
-import fr.gouv.vitam.common.database.builder.query.QueryHelper;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.QueryHelper;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -84,6 +63,22 @@ import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormat;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatCollection;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatXMLRootDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class VitamFileFormatService {
 
@@ -96,36 +91,45 @@ public class VitamFileFormatService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public VitamFileFormatService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper, AccessExternalClient accessExternalClient) {
+    public VitamFileFormatService(
+        AdminExternalClient adminExternalClient,
+        ObjectMapper objectMapper,
+        AccessExternalClient accessExternalClient
+    ) {
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
         this.accessExternalClient = accessExternalClient;
     }
 
-    public RequestResponse<FileFormatModel> findFileFormats(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
-        LOGGER.info("File Formats EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public RequestResponse<FileFormatModel> findFileFormats(final VitamContext vitamContext, final JsonNode select)
+        throws VitamClientException {
+        LOGGER.info("File Formats EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         final RequestResponse<FileFormatModel> response = adminExternalClient.findFormats(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<FileFormatModel> findFileFormatById(final VitamContext vitamContext, final String formatId) throws VitamClientException {
-        LOGGER.info("File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public RequestResponse<FileFormatModel> findFileFormatById(final VitamContext vitamContext, final String formatId)
+        throws VitamClientException {
+        LOGGER.info("File Format EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             // FIXME Get by id don't return #id and #version
             Select select = new Select();
             select.setQuery(QueryHelper.eq("PUID", formatId));
-            final RequestResponse<FileFormatModel> response = adminExternalClient.findFormats(vitamContext,select.getFinalSelect());
+            final RequestResponse<FileFormatModel> response = adminExternalClient.findFormats(
+                vitamContext,
+                select.getFinalSelect()
+            );
             VitamRestUtils.checkResponse(response);
             return response;
-        } catch (InvalidCreateOperationException icoe){
-          throw  new VitamClientException((icoe));
+        } catch (InvalidCreateOperationException icoe) {
+            throw new VitamClientException((icoe));
         }
     }
 
     /**
      * Ignore vitam internal fields (#id, #version, #tenant) and FileFormat non mutable fields (Identifier, Name)
-      */
+     */
     private void patchFields(FileFormatModel fileFormatToPatch, FileFormatModel fieldsToApply) {
         if (fieldsToApply.getMimeType() != null) {
             fileFormatToPatch.setMimeType(fieldsToApply.getMimeType());
@@ -140,41 +144,50 @@ public class VitamFileFormatService {
         }
     }
 
-    public RequestResponse<?> patchFileFormat(final VitamContext vitamContext, final String id, FileFormatModel patchFileFormat)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
-
+    public RequestResponse<?> patchFileFormat(
+        final VitamContext vitamContext,
+        final String id,
+        FileFormatModel patchFileFormat
+    )
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class)
+            .getResults();
 
-        actualFileFormats.stream()
-            .filter( fileFormat -> id.equals(fileFormat.getPuid()) )
-            .forEach( fileFormat -> this.patchFields(fileFormat, patchFileFormat) );
+        actualFileFormats
+            .stream()
+            .filter(fileFormat -> id.equals(fileFormat.getPuid()))
+            .forEach(fileFormat -> this.patchFields(fileFormat, patchFileFormat));
 
         return importFileFormats(vitamContext, actualFileFormats);
     }
 
     public RequestResponse<?> deleteFileFormat(final VitamContext vitamContext, final String id)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
-
-        LOGGER.debug("Delete File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
+        LOGGER.debug("Delete File Format EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class)
+            .getResults();
 
-        return importFileFormats(vitamContext, actualFileFormats.stream()
-                .filter( fileFormat -> !id.equals(fileFormat.getPuid()) )
-                .collect(Collectors.toList()));
+        return importFileFormats(
+            vitamContext,
+            actualFileFormats
+                .stream()
+                .filter(fileFormat -> !id.equals(fileFormat.getPuid()))
+                .collect(Collectors.toList())
+        );
     }
 
     public RequestResponse<?> create(final VitamContext vitamContext, FileFormatModel newFileFormat)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
-
-        LOGGER.debug("Create File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
+        LOGGER.debug("Create File Format EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class)
+            .getResults();
 
         LOGGER.debug("Before Add List: {}", actualFileFormats);
 
@@ -186,26 +199,28 @@ public class VitamFileFormatService {
     }
 
     public RequestResponse<?> importFileFormats(VitamContext vitamContext, String fileName, MultipartFile file)
-        	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-        	LOGGER.debug("Import file format file {}", fileName);
-        	return adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Import file format file {}", fileName);
+        return adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
     }
 
-    private RequestResponse<?> importFileFormats(final VitamContext vitamContext, final List<FileFormatModel> fileFormatModels)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
+    private RequestResponse<?> importFileFormats(
+        final VitamContext vitamContext,
+        final List<FileFormatModel> fileFormatModels
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeFileFormats(fileFormatModels)) {
             return adminExternalClient.createFormats(vitamContext, byteArrayInputStream, "FileFormats.json");
         }
     }
 
-    private ByteArrayInputStream serializeFileFormats(final List<FileFormatModel> fileFormatDtos) throws IOException, JAXBException {
+    private ByteArrayInputStream serializeFileFormats(final List<FileFormatModel> fileFormatDtos)
+        throws IOException, JAXBException {
         final FileFormatXMLRootDto fileFormatXMLDto = convertDtosToXmlDto(fileFormatDtos);
         LOGGER.debug("The dto for creation fileFormats, sent to Vitam {}", fileFormatXMLDto);
 
         // TODO: Need a function that transform a DTO into an XML !
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-
             JAXBContext jaxbContext = JAXBContext.newInstance(fileFormatXMLDto.getClass());
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -224,7 +239,7 @@ public class VitamFileFormatService {
 
         List<FileFormat> fileFormats = new ArrayList<>();
         Integer formatIdentifier = 0;
-        for (FileFormatModel inputFileFormat: inputFileFormats) {
+        for (FileFormatModel inputFileFormat : inputFileFormats) {
             FileFormat fileFormat = new FileFormat();
             fileFormat.setId(formatIdentifier);
             fileFormat.setName(inputFileFormat.getName());
@@ -246,10 +261,10 @@ public class VitamFileFormatService {
             fileFormats.add(fileFormat);
         }
 
-        for (FileFormat fileFormat: fileFormats) {
+        for (FileFormat fileFormat : fileFormats) {
             List<Integer> priorityIds = new ArrayList<>();
-            for ( String priorityOverFormatId: hasPriorityOverFileFormat.get(fileFormat.getPuid()) ) {
-                priorityIds.add( puidToId.get(priorityOverFormatId) );
+            for (String priorityOverFormatId : hasPriorityOverFileFormat.get(fileFormat.getPuid())) {
+                priorityIds.add(puidToId.get(priorityOverFormatId));
             }
             fileFormat.setHasPriorityOverFileFormatIDs(priorityIds);
         }
@@ -270,8 +285,10 @@ public class VitamFileFormatService {
      * @param fileFormats
      * @return true if the format can be created, false if the ile format already exists
      */
-    public boolean checkAbilityToCreateFileFormatInVitam(final List<FileFormatModel> fileFormats, VitamContext vitamContext) {
-
+    public boolean checkAbilityToCreateFileFormatInVitam(
+        final List<FileFormatModel> fileFormats,
+        VitamContext vitamContext
+    ) {
         if (fileFormats != null && !fileFormats.isEmpty()) {
             try {
                 // check if tenant exist in Vitam
@@ -279,15 +296,17 @@ public class VitamFileFormatService {
                 final RequestResponse<FileFormatModel> response = findFileFormats(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
                     throw new PreconditionFailedException("Can't create file format for the tenant : UNAUTHORIZED");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create file format for this tenant, Vitam response code : " + response.getStatus());
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
+                    throw new UnavailableServiceException(
+                        "Can't create file format for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyFileFormatExistence(fileFormats, response);
-            }
-            catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+            } catch (final VitamClientException e) {
+                throw new UnavailableServiceException(
+                    "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return true;
         }
@@ -299,22 +318,39 @@ public class VitamFileFormatService {
      * @param checkFileFormats
      * @param vitamFileFormats
      */
-    private void verifyFileFormatExistence(final List<FileFormatModel> checkFileFormats, final RequestResponse<FileFormatModel> vitamFileFormats) {
+    private void verifyFileFormatExistence(
+        final List<FileFormatModel> checkFileFormats,
+        final RequestResponse<FileFormatModel> vitamFileFormats
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final FileFormatResponseDto accessContractResponseDto = objectMapper.treeToValue(vitamFileFormats.toJsonNode(), FileFormatResponseDto.class);
-            final List<String> formatsNames = checkFileFormats.stream().map(ac -> ac.getName()).collect(Collectors.toList());
+            final FileFormatResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                vitamFileFormats.toJsonNode(),
+                FileFormatResponseDto.class
+            );
+            final List<String> formatsNames = checkFileFormats
+                .stream()
+                .map(ac -> ac.getName())
+                .collect(Collectors.toList());
             if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsNames.contains(ac.getName()))) {
-                throw new ConflictException("Can't create file format, a format with the same name already exist in Vitam");
+                throw new ConflictException(
+                    "Can't create file format, a format with the same name already exist in Vitam"
+                );
             }
-            final List<String> formatsPuids = checkFileFormats.stream().map(ac -> ac.getPuid()).collect(Collectors.toList());
+            final List<String> formatsPuids = checkFileFormats
+                .stream()
+                .map(ac -> ac.getPuid())
+                .collect(Collectors.toList());
             if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsPuids.contains(ac.getPuid()))) {
-                throw new ConflictException("Can't create file format, a format with the same puid already exist in Vitam");
+                throw new ConflictException(
+                    "Can't create file format, a format with the same puid already exist in Vitam"
+                );
             }
-        }
-        catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+        } catch (final JsonProcessingException e) {
+            throw new UnexpectedDataException(
+                "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage()
+            );
         }
     }
 }

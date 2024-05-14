@@ -91,10 +91,10 @@ public class ProviderController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public IdentityProviderDto getOne(final @PathVariable String id,
-            @ApiParam(defaultValue = "KEYSTORE,IDPMETADATA") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto getOne(
+        final @PathVariable String id,
+        @ApiParam(defaultValue = "KEYSTORE,IDPMETADATA") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         LOGGER.debug("Get provider={}, embedded={}", id, embedded);
@@ -104,9 +104,10 @@ public class ProviderController extends AbstractUiRestController {
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public Collection<IdentityProviderDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -127,11 +128,19 @@ public class ProviderController extends AbstractUiRestController {
         LOGGER.debug("Get keystore provider ={}");
         ParameterChecker.checkParameter("Parameter is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        final IdentityProviderDto dto = service.getOne(buildUiHttpContext(), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
+        final IdentityProviderDto dto = service.getOne(
+            buildUiHttpContext(),
+            id,
+            IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA)
+        );
         final HttpHeaders headers = new HttpHeaders();
         final ByteArrayResource resource = new ByteArrayResource(dto.getIdpMetadata().getBytes());
         headers.add("Content-Disposition", "attachment; filename=" + "idpmetadata.xml");
-        return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
     }
 
     /**
@@ -146,19 +155,34 @@ public class ProviderController extends AbstractUiRestController {
     public ResponseEntity<Resource> getSpMetadataProviderByProviderId(final @PathVariable String id) {
         LOGGER.debug("Get SpMetadata provider ={}");
         ParameterChecker.checkParameter("Parameter is mandatory : ", id);
-        final IdentityProviderDto dto = service.getOne(buildUiHttpContext(), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA));
+        final IdentityProviderDto dto = service.getOne(
+            buildUiHttpContext(),
+            id,
+            IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.SPMETADATA)
+        );
         final HttpHeaders headers = new HttpHeaders();
         final ByteArrayResource resource = new ByteArrayResource(dto.getSpMetadata().getBytes());
         headers.add("Content-Disposition", "attachment; filename=" + "spmetadata.xml");
-        return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
     }
 
     @PostMapping
-    @ApiOperation(value = "Create entity request to upload the file", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(
+        value = "Create entity request to upload the file",
+        produces = "application/json",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'keystore' must not be blank
-    public IdentityProviderDto create(@RequestPart final String provider, @RequestPart(value = "keystore",required = false) final MultipartFile keystore,
-            @RequestPart(value = "idpMetadata",required = false) final MultipartFile idpMetadata) throws Exception {
+    public IdentityProviderDto create(
+        @RequestPart final String provider,
+        @RequestPart(value = "keystore", required = false) final MultipartFile keystore,
+        @RequestPart(value = "idpMetadata", required = false) final MultipartFile idpMetadata
+    ) throws Exception {
         LOGGER.debug("Create provider: {}", provider);
         return service.create(buildUiHttpContext(), keystore, idpMetadata, provider);
     }
@@ -166,9 +190,10 @@ public class ProviderController extends AbstractUiRestController {
     @PatchMapping(value = CommonConstants.PATH_ID)
     @ApiOperation(value = "Update partially provider")
     @ResponseStatus(HttpStatus.OK)
-    public IdentityProviderDto patchProvider(final @RequestBody Map<String, Object> provider, final @PathVariable String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto patchProvider(
+        final @RequestBody Map<String, Object> provider,
+        final @PathVariable String id
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(provider);
@@ -180,30 +205,47 @@ public class ProviderController extends AbstractUiRestController {
     @ApiOperation(value = "Update keystore provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
-    public IdentityProviderDto patchProviderKeystore(final @RequestPart("keystore") MultipartFile keystore, final @RequestPart("provider") String provider,
-            final @PathVariable String id) throws IOException, InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto patchProviderKeystore(
+        final @RequestPart("keystore") MultipartFile keystore,
+        final @RequestPart("provider") String provider,
+        final @PathVariable String id
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(provider, Map.class));
         LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
-        return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), keystore, null, id, ProviderPatchType.KEYSTORE);
+        return service.patch(
+            buildUiHttpContext(),
+            VitamUIUtils.convertObjectFromJson(provider, Map.class),
+            keystore,
+            null,
+            id,
+            ProviderPatchType.KEYSTORE
+        );
     }
 
     @PatchMapping(value = "/{id}/idpMetadata")
     @ApiOperation(value = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
-    public IdentityProviderDto patchProviderIdpMetadata(final @RequestPart("idpMetadata") MultipartFile idpMetadata,
-            final @RequestPart("provider") String provider, final @PathVariable String id)
-        throws IOException, InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto patchProviderIdpMetadata(
+        final @RequestPart("idpMetadata") MultipartFile idpMetadata,
+        final @RequestPart("provider") String provider,
+        final @PathVariable String id
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(provider, Map.class));
         LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
-        return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), null, idpMetadata, id, ProviderPatchType.IDPMETADATA);
+        return service.patch(
+            buildUiHttpContext(),
+            VitamUIUtils.convertObjectFromJson(provider, Map.class),
+            null,
+            idpMetadata,
+            id,
+            ProviderPatchType.IDPMETADATA
+        );
     }
 }

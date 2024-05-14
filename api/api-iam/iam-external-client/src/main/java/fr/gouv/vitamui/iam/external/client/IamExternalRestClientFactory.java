@@ -36,14 +36,12 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractExternalRestClient;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractExternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * A Rest client factory to create specialized IAM Rest clients
@@ -53,12 +51,18 @@ import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
 
 public class IamExternalRestClientFactory extends BaseRestClientFactory {
 
-    public IamExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public IamExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IamExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration,
-            final RestTemplateBuilder restTemplateBuilder) {
+    public IamExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
@@ -125,6 +129,4 @@ public class IamExternalRestClientFactory extends BaseRestClientFactory {
     public AccessContractExternalRestClient getAccessContractExternalRestClient() {
         return new AccessContractExternalRestClient(getRestTemplate(), getBaseUrl());
     }
-
-
 }

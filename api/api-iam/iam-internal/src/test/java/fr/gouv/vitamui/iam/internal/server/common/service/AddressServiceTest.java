@@ -1,16 +1,15 @@
 package fr.gouv.vitamui.iam.internal.server.common.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import fr.gouv.vitamui.commons.test.utils.TestUtils;
+import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
+import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import fr.gouv.vitamui.commons.test.utils.TestUtils;
-import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
-import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddressServiceTest {
 

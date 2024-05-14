@@ -117,9 +117,15 @@ public class AccessContractInternalService {
     private final InternalSecurityService internalSecurityService;
 
     @Autowired
-    public AccessContractInternalService(AccessContractService accessContractService,
-        VitamUIAccessContractService vitamUIAccessContractService, ObjectMapper objectMapper,
-        AccessContractConverter converter, LogbookService logbookService, ApplicationInternalRestClient applicationInternalRestClient, InternalSecurityService internalSecurityService) {
+    public AccessContractInternalService(
+        AccessContractService accessContractService,
+        VitamUIAccessContractService vitamUIAccessContractService,
+        ObjectMapper objectMapper,
+        AccessContractConverter converter,
+        LogbookService logbookService,
+        ApplicationInternalRestClient applicationInternalRestClient,
+        InternalSecurityService internalSecurityService
+    ) {
         this.accessContractService = accessContractService;
         this.vitamUIAccessContractService = vitamUIAccessContractService;
         this.objectMapper = objectMapper;
@@ -131,12 +137,15 @@ public class AccessContractInternalService {
 
     public AccessContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
-
             LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<AccessContractModel> requestResponse =
-                accessContractService.findAccessContractById(vitamContext, identifier);
-            final AccessContractResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(
+                vitamContext,
+                identifier
+            );
+            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessContractResponseDto.class
+            );
             if (accessContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
@@ -150,12 +159,12 @@ public class AccessContractInternalService {
     public List<AccessContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
-
             LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            requestResponse = accessContractService
-                .findAccessContracts(vitamContext, new Select().getFinalSelect());
-            final AccessContractResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+            requestResponse = accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect());
+            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessContractResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
@@ -163,16 +172,19 @@ public class AccessContractInternalService {
         }
     }
 
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
-
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         try {
             LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -184,7 +196,6 @@ public class AccessContractInternalService {
 
             final List<AccessContractDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
             return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
-
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated access contracts", ioe);
         } catch (IOException e) {
@@ -198,7 +209,6 @@ public class AccessContractInternalService {
             LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = accessContractService.findAccessContracts(vitamContext, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
-
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Can't find access contracts", e);
         }
@@ -209,7 +219,8 @@ public class AccessContractInternalService {
             LOGGER.debug("Access Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(
                 converter.convertDtosToVitams(Arrays.asList(accessContractDto)),
-                vitamContext.getApplicationSessionId());
+                vitamContext.getApplicationSessionId()
+            );
             return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
         } catch (ConflictException e) {
             return true;
@@ -217,11 +228,13 @@ public class AccessContractInternalService {
     }
 
     public AccessContractDto create(VitamContext vitamContext, AccessContractDto accessContractDto) {
-
         LOGGER.debug("Creating Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse requestResponse;
         try {
-            requestResponse = accessContractService.createAccessContracts(vitamContext, converter.convertDtosToVitams(List.of(accessContractDto)));
+            requestResponse = accessContractService.createAccessContracts(
+                vitamContext,
+                converter.convertDtosToVitams(List.of(accessContractDto))
+            );
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create access contract", e);
         }
@@ -267,7 +280,11 @@ public class AccessContractInternalService {
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
-        LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id, vitamContext.getApplicationSessionId());
+        LOGGER.debug(
+            "Find History Access Contract By ID {}, EvIdAppSession : {}",
+            id,
+            vitamContext.getApplicationSessionId()
+        );
 
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
@@ -277,8 +294,9 @@ public class AccessContractInternalService {
     }
 
     public ResponseEntity<Void> importAccessContracts(VitamContext context, MultipartFile file) {
-
-        Boolean isIdentifierMandatory = applicationInternalRestClient.isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), ACCESS_CONTRACT).getBody();
+        Boolean isIdentifierMandatory = applicationInternalRestClient
+            .isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), ACCESS_CONTRACT)
+            .getBody();
 
         if (isIdentifierMandatory == null) {
             throw new InternalServerException("The result of the API call should not be null");
@@ -290,18 +308,22 @@ public class AccessContractInternalService {
         List<AccessContractCSVDto> accessContract = convertCsvFileToAccessContractsDto(file);
         LOGGER.debug("access contracts file {} has been parsed in accessContract List", file.getOriginalFilename());
 
-        Gson gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .create();
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
         String jsonString = gson.toJson(accessContract);
         LOGGER.debug("access contracts file {} has been parsed in JSON String", file.getOriginalFilename());
 
         RequestResponse<?> result;
         try {
-            result = accessContractService.createAccessContracts(context, new ByteArrayInputStream(jsonString.getBytes()));
+            result = accessContractService.createAccessContracts(
+                context,
+                new ByteArrayInputStream(jsonString.getBytes())
+            );
             LOGGER.debug("access contracts file {} has been send to VITAM", file.getOriginalFilename());
         } catch (InvalidParseOperationException | AccessExternalClientException e) {
-            throw new InternalServerException("Unable to import access contracts file " + file.getOriginalFilename() + " : ", e);
+            throw new InternalServerException(
+                "Unable to import access contracts file " + file.getOriginalFilename() + " : ",
+                e
+            );
         }
 
         if (HttpStatus.OK.value() == result.getHttpCode()) {
@@ -309,8 +331,17 @@ public class AccessContractInternalService {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
-        throw new BadRequestException("The CSV file has been rejected by vitam", null, List.of(ImportCSVUtils.errorToJson(ErrorImportFile.builder().error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP).build())));
-
+        throw new BadRequestException(
+            "The CSV file has been rejected by vitam",
+            null,
+            List.of(
+                ImportCSVUtils.errorToJson(
+                    ErrorImportFile.builder()
+                        .error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP)
+                        .build()
+                )
+            )
+        );
     }
 
     private List<AccessContractCSVDto> convertCsvFileToAccessContractsDto(MultipartFile file) {
@@ -329,7 +360,6 @@ public class AccessContractInternalService {
     }
 
     public Resource exportAccessContracts(VitamContext vitamContext) {
-
         final List<AccessContractDto> accessContracts = getAll(vitamContext);
 
         ExportAccessContracts exporter = new ExportAccessContracts();
@@ -353,19 +383,41 @@ public class AccessContractInternalService {
         return ExportCSVUtils.generateCSVFile(csvLines, exporter.getSeparator());
     }
 
-    private String[] buildAccessContractExportValues(final AccessContractDto accessContract, final String arrayJoinStr, final DateFormat df) throws ParseException {
-        final String originatingAgencies = accessContract.getOriginatingAgencies() == null ? null : String.join(arrayJoinStr, accessContract.getOriginatingAgencies());
-        final String dataObjectVersions = accessContract.getDataObjectVersion() == null ? null : String.join(arrayJoinStr, accessContract.getDataObjectVersion());
-        final String rootUnits = accessContract.getRootUnits() == null ? null : String.join(arrayJoinStr, accessContract.getRootUnits());
-        final String excludedRootUnits = accessContract.getExcludedRootUnits() == null ? null : String.join(arrayJoinStr, accessContract.getExcludedRootUnits());
-        final String ruleCategoryToFilter = accessContract.getRuleCategoryToFilter() == null ? null : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilter());
+    private String[] buildAccessContractExportValues(
+        final AccessContractDto accessContract,
+        final String arrayJoinStr,
+        final DateFormat df
+    ) throws ParseException {
+        final String originatingAgencies = accessContract.getOriginatingAgencies() == null
+            ? null
+            : String.join(arrayJoinStr, accessContract.getOriginatingAgencies());
+        final String dataObjectVersions = accessContract.getDataObjectVersion() == null
+            ? null
+            : String.join(arrayJoinStr, accessContract.getDataObjectVersion());
+        final String rootUnits = accessContract.getRootUnits() == null
+            ? null
+            : String.join(arrayJoinStr, accessContract.getRootUnits());
+        final String excludedRootUnits = accessContract.getExcludedRootUnits() == null
+            ? null
+            : String.join(arrayJoinStr, accessContract.getExcludedRootUnits());
+        final String ruleCategoryToFilter = accessContract.getRuleCategoryToFilter() == null
+            ? null
+            : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilter());
 
-        final var creationDate = accessContract.getCreationDate() == null ? null : df.format(LocalDateUtil.getDate(accessContract.getCreationDate()));
-        final var lastUpdateDate = accessContract.getLastUpdate() == null ? null : df.format(LocalDateUtil.getDate(accessContract.getLastUpdate()));
-        final var activationDate = accessContract.getActivationDate() == null ? null : df.format(LocalDateUtil.getDate(accessContract.getActivationDate()));
-        final var deactivationDate = accessContract.getDeactivationDate() == null ? null : df.format(LocalDateUtil.getDate(accessContract.getDeactivationDate()));
+        final var creationDate = accessContract.getCreationDate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(accessContract.getCreationDate()));
+        final var lastUpdateDate = accessContract.getLastUpdate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(accessContract.getLastUpdate()));
+        final var activationDate = accessContract.getActivationDate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(accessContract.getActivationDate()));
+        final var deactivationDate = accessContract.getDeactivationDate() == null
+            ? null
+            : df.format(LocalDateUtil.getDate(accessContract.getDeactivationDate()));
 
-        return new String[]{
+        return new String[] {
             accessContract.getIdentifier(),
             accessContract.getName(),
             accessContract.getDescription(),
@@ -383,7 +435,7 @@ public class AccessContractInternalService {
             creationDate,
             lastUpdateDate,
             activationDate,
-            deactivationDate
+            deactivationDate,
         };
     }
 }

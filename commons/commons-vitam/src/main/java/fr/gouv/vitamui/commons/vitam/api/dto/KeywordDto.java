@@ -58,5 +58,4 @@ public class KeywordDto {
 
     @JsonProperty("KeywordType")
     private String keywordType;
-
 }

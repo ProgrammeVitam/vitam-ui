@@ -39,6 +39,7 @@ import java.util.Optional;
 public class UnitService {
 
     private final UnitExternalRestClient unitRestClient;
+
     @Autowired
     public UnitService(final UnitExternalRestClient unitRestClient) {
         this.unitRestClient = unitRestClient;

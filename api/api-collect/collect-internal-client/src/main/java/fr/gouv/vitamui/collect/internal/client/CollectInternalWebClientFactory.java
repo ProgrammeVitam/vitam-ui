@@ -32,8 +32,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class CollectInternalWebClientFactory extends BaseWebClientFactory {
 
-    public CollectInternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder) {
+    public CollectInternalWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfiguration, webClientBuilder);
     }
 

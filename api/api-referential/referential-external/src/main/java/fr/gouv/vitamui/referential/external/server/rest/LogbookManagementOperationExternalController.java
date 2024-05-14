@@ -43,16 +43,19 @@ import fr.gouv.vitamui.referential.external.server.service.LogbookManagementOper
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-
 @RequestMapping(RestApi.LOGBOOK_MANAGEMENT_OPERATION_PATH)
 @RestController
 public class LogbookManagementOperationExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        LogbookManagementOperationExternalController.class
+    );
 
     private final LogbookManagementOperationExternalService logbookManagementOperationExternalService;
 
-    public LogbookManagementOperationExternalController(LogbookManagementOperationExternalService logbookManagementOperationExternalService) {
+    public LogbookManagementOperationExternalController(
+        LogbookManagementOperationExternalService logbookManagementOperationExternalService
+    ) {
         this.logbookManagementOperationExternalService = logbookManagementOperationExternalService;
     }
 
@@ -63,43 +66,50 @@ public class LogbookManagementOperationExternalController {
         SanityChecker.sanitizeCriteria(processQuery);
         LOGGER.debug("All Operations details by Criteria={}", processQuery);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.searchOperationsDetails(processQuery);
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.searchOperationsDetails(
+            processQuery
+        );
         if (processDetailDto != null) {
             operationResponseDto = processDetailDto.getOperations();
         }
         return operationResponseDto;
     }
 
-
     @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
-    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(
+        final @PathVariable("id") String operationId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation with id={}", operationId);
         ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.cancelOperationProcessExecution(operationId);
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.cancelOperationProcessExecution(
+            operationId
+        );
         if (processDetailDto != null) {
             operationResponseDto = processDetailDto.getOperations();
         }
         return operationResponseDto;
     }
 
-    @PostMapping(RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID)
+    @PostMapping(RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
-    public VitamUIProcessDetailResponseDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public VitamUIProcessDetailResponseDto updateOperationActionProcess(
+        final @PathVariable("id") String operationId,
+        @RequestBody final String actionId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(operationId, actionId);
         LOGGER.debug("Update the operation id={} with actionId={}", operationId, actionId);
 
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.updateOperationActionProcess(operationId, actionId);
+        ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.updateOperationActionProcess(
+            operationId,
+            actionId
+        );
         if (processDetailDto != null) {
             operationResponseDto = processDetailDto.getOperations();
         }
         return operationResponseDto;
     }
-
-
 }

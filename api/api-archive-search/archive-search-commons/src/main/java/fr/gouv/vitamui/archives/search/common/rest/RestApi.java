@@ -53,5 +53,4 @@ public class RestApi {
     public static final String BULK_OPERATION_THRESHOLDS = "/bulk-operations-thresholds";
     public static final String UNITS_PERSISTENT_IDENTIFIER = "/units-by-persistent-identifier";
     public static final String OBJECTS_PERSISTENT_IDENTIFIER = "/objects-by-persistent-identifier";
-
 }

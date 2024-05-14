@@ -27,8 +27,26 @@ public class ExportAccessContracts extends ExportCSVParams {
     private static final String DESACTIVATION_DATE = "DesactivationDate";
 
     public ExportAccessContracts() {
-        List<String> headers = List.of(IDENTIFIER, NAME, DESCRIPTION, STATUS, WRITING_PERMISSION, EVERY_ORIGINATING_AGENCY, ORIGINATING_AGENCIES, EVERY_DATA_OBJECT_VERSION,
-                DATA_OBJECT_VERSION, ROOT_UNITS, EXCLUDED_ROOT_UNITS, ACCESS_LOG, RULE_CATEGORY_TO_FILTER, WRITING_RESTRICTED_DESC, CREATION_DATE, LAST_UPDATE, ACTIVATION_DATE, DESACTIVATION_DATE);
+        List<String> headers = List.of(
+            IDENTIFIER,
+            NAME,
+            DESCRIPTION,
+            STATUS,
+            WRITING_PERMISSION,
+            EVERY_ORIGINATING_AGENCY,
+            ORIGINATING_AGENCIES,
+            EVERY_DATA_OBJECT_VERSION,
+            DATA_OBJECT_VERSION,
+            ROOT_UNITS,
+            EXCLUDED_ROOT_UNITS,
+            ACCESS_LOG,
+            RULE_CATEGORY_TO_FILTER,
+            WRITING_RESTRICTED_DESC,
+            CREATION_DATE,
+            LAST_UPDATE,
+            ACTIVATION_DATE,
+            DESACTIVATION_DATE
+        );
         this.setHeaders(headers);
     }
 

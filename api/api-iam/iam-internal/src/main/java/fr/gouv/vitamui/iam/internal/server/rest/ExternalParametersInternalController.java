@@ -62,12 +62,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "externalParameters", value = "External Parameters Management")
 public class ExternalParametersInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersInternalController.class
+    );
 
     private ExternalParametersInternalService externalParametersInternalService;
 
     @Autowired
-    public ExternalParametersInternalController(final ExternalParametersInternalService externalParametersInternalService) {
+    public ExternalParametersInternalController(
+        final ExternalParametersInternalService externalParametersInternalService
+    ) {
         this.externalParametersInternalService = externalParametersInternalService;
     }
 

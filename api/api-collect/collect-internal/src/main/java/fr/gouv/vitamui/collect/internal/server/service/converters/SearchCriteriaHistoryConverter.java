@@ -39,10 +39,10 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class SearchCriteriaHistoryConverter implements Converter<SearchCriteriaHistoryDto, SearchCriteriaHistoryCollect> {
+public class SearchCriteriaHistoryConverter
+    implements Converter<SearchCriteriaHistoryDto, SearchCriteriaHistoryCollect> {
 
-    public SearchCriteriaHistoryConverter() {
-    }
+    public SearchCriteriaHistoryConverter() {}
 
     @Override
     public String convertToLogbook(final SearchCriteriaHistoryDto dto) {

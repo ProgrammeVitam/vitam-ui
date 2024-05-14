@@ -72,10 +72,13 @@ class TransferVitamOperationsInternalServiceTest {
 
     @Mock
     private TransferAcknowledgmentService transferAcknowledgmentService;
+
     @Mock
     private TransferRequestService transferRequestService;
+
     @Mock
     private ArchiveSearchInternalService archiveSearchInternalService;
+
     @InjectMocks
     TransferVitamOperationsInternalService transferVitamOperationsInternalService;
 
@@ -85,22 +88,26 @@ class TransferVitamOperationsInternalServiceTest {
     }
 
     @Test
-    void transferRequest_should_pass()
-        throws Exception {
+    void transferRequest_should_pass() throws Exception {
         //Given
-        final Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns = Map.of(BINARY_MASTER, Set.of(FIRST));
+        final Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns = Map.of(
+            BINARY_MASTER,
+            Set.of(FIRST)
+        );
         final TransferRequestDto transferRequestDto = newTransferRequestDto(true, "2.2", dataObjectVersionsPatterns);
         VitamContext vitamContext = newVitamContext();
         String jsonDslQuery =
             "{\"$roots\":[],\"$query\":[{\"$and\":[{\"$eq\":{\"#id\":\"aeaqaaaaaehmay6yaaqhual6ysiaariaaaba\"}}]}],\"$filter\":{\"$limit\":10},\"$projection\":{},\"$facets\":[]}";
         JsonNode dslQuery = newJsonNode(jsonDslQuery);
 
-        Mockito.when(archiveSearchInternalService.prepareDslQuery(transferRequestDto.getSearchCriteria(), vitamContext))
-            .thenReturn(dslQuery);
+        Mockito.when(
+            archiveSearchInternalService.prepareDslQuery(transferRequestDto.getSearchCriteria(), vitamContext)
+        ).thenReturn(dslQuery);
         String requestResponseOKJson =
             "{\"httpCode\":202,\"$hits\":{\"total\":1,\"offset\":0,\"limit\":0,\"size\":1},\"$results\":[{\"itemId\":\"aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq\",\"message\":\"toutestOK\",\"globalStatus\":\"STARTED\",\"globalState\":\"RUNNING\",\"lifecycleEnable\":true}]}";
-        RequestResponse<JsonNode> responseReturned =
-            RequestResponseOK.getFromJsonNode(newJsonNode(requestResponseOKJson));
+        RequestResponse<JsonNode> responseReturned = RequestResponseOK.getFromJsonNode(
+            newJsonNode(requestResponseOKJson)
+        );
         Mockito.when(transferRequestService.transferRequest(eq(vitamContext), any())).thenReturn(responseReturned);
 
         //When
@@ -115,40 +122,45 @@ class TransferVitamOperationsInternalServiceTest {
         assertThat(transferRequest.isTransferWithLogBookLFC()).isTrue();
         assertThat(transferRequest.isTransferWithoutObjects()).isFalse();
         assertThat(transferRequest.getSedaVersion()).isEqualTo("2.2");
-        assertThat(transferRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(dataObjectVersionsPatterns);
+        assertThat(transferRequest.getDataObjectVersionToExport().getDataObjectVersionsPatterns()).isEqualTo(
+            dataObjectVersionsPatterns
+        );
     }
 
     @Test
     void transferAcknowledgmentRequest_should_pass_and_Vitam_Return_OperationDetails()
         throws VitamClientException, IOException, InvalidParseOperationException {
-
         // Given
         VitamContext vitamContext = new VitamContext(1);
-        InputStream atrFileInputStream = TransferVitamOperationsInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/transferAcknowledgment/ATR_aeeaaaaaaghduohdabkogamdgezb2taaaaaq.xml");
+        InputStream atrFileInputStream =
+            TransferVitamOperationsInternalServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/transferAcknowledgment/ATR_aeeaaaaaaghduohdabkogamdgezb2taaaaaq.xml");
 
-        InputStream transferReplyVitamResponse = TransferVitamOperationsInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/transferAcknowledgment/transferReplyVitamResponse.json");
+        InputStream transferReplyVitamResponse =
+            TransferVitamOperationsInternalServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/transferAcknowledgment/transferReplyVitamResponse.json");
 
         String vitamResponseToString = readFromInputStream(transferReplyVitamResponse);
-        RequestResponse<JsonNode> vitamJsonResponse = RequestResponseOK.getFromJsonNode
-            (new ObjectMapper().readTree(vitamResponseToString));
+        RequestResponse<JsonNode> vitamJsonResponse = RequestResponseOK.getFromJsonNode(
+            new ObjectMapper().readTree(vitamResponseToString)
+        );
 
         //When
-        Mockito.when(transferAcknowledgmentService.transferAcknowledgment(eq(vitamContext), any()))
-            .thenReturn(vitamJsonResponse);
-        String response =
-            transferVitamOperationsInternalService.transferAcknowledgmentService(atrFileInputStream, vitamContext);
+        Mockito.when(transferAcknowledgmentService.transferAcknowledgment(eq(vitamContext), any())).thenReturn(
+            vitamJsonResponse
+        );
+        String response = transferVitamOperationsInternalService.transferAcknowledgmentService(
+            atrFileInputStream,
+            vitamContext
+        );
 
         //Then
         assertThat(response).isEqualTo("aeeaaaaaaghduohdabjwkamdgezrs7aaaaaq");
     }
 
-    private static String readFromInputStream(InputStream inputStream)
-        throws IOException {
+    private static String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");
@@ -165,8 +177,11 @@ class TransferVitamOperationsInternalServiceTest {
         return new VitamContext(1);
     }
 
-    private TransferRequestDto newTransferRequestDto(boolean lifeCycleLogs, String sedaVersion,
-        Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns) {
+    private TransferRequestDto newTransferRequestDto(
+        boolean lifeCycleLogs,
+        String sedaVersion,
+        Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns
+    ) {
         final TransferRequestDto transferRequestDto = new TransferRequestDto();
         transferRequestDto.setLifeCycleLogs(lifeCycleLogs);
         transferRequestDto.setSedaVersion(sedaVersion);

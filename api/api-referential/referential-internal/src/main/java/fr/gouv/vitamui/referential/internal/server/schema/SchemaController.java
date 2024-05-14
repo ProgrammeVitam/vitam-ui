@@ -48,6 +48,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @RestController
 @RequestMapping(CommonConstants.SCHEMAS)
 public class SchemaController {
+
     private final SchemaService schemaService;
 
     @Autowired

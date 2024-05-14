@@ -91,5 +91,4 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
         }
         return Collection.valueOf(schemaResponse.getCollection());
     }
-
 }

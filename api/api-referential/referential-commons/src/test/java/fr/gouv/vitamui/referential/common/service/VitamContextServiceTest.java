@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -54,7 +53,6 @@ import fr.gouv.vitamui.referential.common.dto.ContextVitamDto;
 import fr.gouv.vitamui.referential.common.dto.PermissionDto;
 import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
-import org.apache.commons.lang3.ArrayUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,9 +60,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -89,21 +85,27 @@ public class VitamContextServiceTest {
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS VitamContextServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS VitamContextServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
 
     @Test
-    public void patchContext_should_return_ok_when_vitamclient_ok() throws AccessExternalClientException, InvalidParseOperationException {
+    public void patchContext_should_return_ok_when_vitamclient_ok()
+        throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(
+            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(200));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -112,13 +114,15 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void patchContext_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, InvalidParseOperationException {
+    public void patchContext_should_return_ok_when_vitamclient_400()
+        throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -127,13 +131,15 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void patchContext_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, InvalidParseOperationException {
+    public void patchContext_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by Vitam"));
+        expect(
+            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
+        ).andThrow(new AccessExternalClientException("Exception thrown by Vitam"));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -142,13 +148,15 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void patchContext_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, InvalidParseOperationException {
+    public void patchContext_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
+        expect(
+            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
+        ).andThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -161,8 +169,9 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(200));
+        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -171,12 +180,14 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void findContexts_should_throw_BadRequestException_when_vitamclient_return_400() throws VitamClientException {
+    public void findContexts_should_throw_BadRequestException_when_vitamclient_return_400()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(400));
+        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -185,12 +196,14 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void findContexts_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findContexts_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -203,8 +216,9 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(200));
+        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -213,12 +227,14 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void findContextById_should_throw_InternalServerException_when_vitamclient_return_400() throws VitamClientException {
+    public void findContextById_should_throw_InternalServerException_when_vitamclient_return_400()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(400));
+        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -227,12 +243,14 @@ public class VitamContextServiceTest {
     }
 
     @Test
-    public void findContextById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findContextById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -244,10 +262,13 @@ public class VitamContextServiceTest {
     public void should_convert_contextDto_to_vitamContextDto() {
         ContextDto contextModels = ReferentialDtoBuilder.getContextDto();
         List<ContextVitamDto> contextVitamDtos = ContextDtoConverterUtil.convertContextsToModelOfCreation(
-            Collections.singletonList(contextModels));
+            Collections.singletonList(contextModels)
+        );
         final JsonNode jsonNodeContextDto = objectMapper.convertValue(contextModels.getPermissions(), JsonNode.class);
-        final JsonNode jsonNodeContextVitamDto =
-            objectMapper.convertValue(contextVitamDtos.get(0).getPermissions(), JsonNode.class);
+        final JsonNode jsonNodeContextVitamDto = objectMapper.convertValue(
+            contextVitamDtos.get(0).getPermissions(),
+            JsonNode.class
+        );
 
         assertThat(jsonNodeContextDto).isEqualTo(jsonNodeContextVitamDto);
     }
@@ -259,13 +280,15 @@ public class VitamContextServiceTest {
         contextModels.setPermissions(permissionDtos);
 
         List<ContextVitamDto> contextVitamDtos = ContextDtoConverterUtil.convertContextsToModelOfCreation(
-            Collections.singletonList(contextModels));
+            Collections.singletonList(contextModels)
+        );
 
         final JsonNode jsonNodeContextDto = objectMapper.convertValue(contextModels.getPermissions(), JsonNode.class);
-        final JsonNode jsonNodeContextVitamDto =
-            objectMapper.convertValue(contextVitamDtos.get(0).getPermissions(), JsonNode.class);
+        final JsonNode jsonNodeContextVitamDto = objectMapper.convertValue(
+            contextVitamDtos.get(0).getPermissions(),
+            JsonNode.class
+        );
 
         assertThat(jsonNodeContextDto).hasSameElementsAs(jsonNodeContextVitamDto);
-
     }
 }

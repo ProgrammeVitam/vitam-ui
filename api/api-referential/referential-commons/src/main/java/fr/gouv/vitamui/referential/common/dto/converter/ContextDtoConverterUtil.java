@@ -53,14 +53,19 @@ public class ContextDtoConverterUtil {
             final ContextVitamDto context = new ContextVitamDto();
             ContextVitamDto contextVitamDto = VitamUIUtils.copyProperties(contextDto, context);
 
-            if(contextVitamDto.getPermissions() == null ) {
-                contextVitamDto.setPermissions(contextDto.getPermissions().stream().map(ctxDto -> {
-                    return VitamUIUtils.copyProperties(ctxDto,new PermissionVitamDto());
-                }).collect(Collectors.toSet()));
+            if (contextVitamDto.getPermissions() == null) {
+                contextVitamDto.setPermissions(
+                    contextDto
+                        .getPermissions()
+                        .stream()
+                        .map(ctxDto -> {
+                            return VitamUIUtils.copyProperties(ctxDto, new PermissionVitamDto());
+                        })
+                        .collect(Collectors.toSet())
+                );
             }
             listOfAC.add(contextVitamDto);
         }
         return listOfAC;
     }
 }
-

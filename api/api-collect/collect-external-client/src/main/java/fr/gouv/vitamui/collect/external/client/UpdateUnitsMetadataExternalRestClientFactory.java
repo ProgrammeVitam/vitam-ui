@@ -41,12 +41,16 @@ public class UpdateUnitsMetadataExternalRestClientFactory extends BaseRestClient
 
     public UpdateUnitsMetadataExternalRestClientFactory(
         RestClientConfiguration restClientConfiguration,
-        RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public UpdateUnitsMetadataExternalRestClientFactory(RestClientConfiguration restClientConfig, HttpPoolConfiguration httpPoolConfig,
-        RestTemplateBuilder restTemplateBuilder) {
+    public UpdateUnitsMetadataExternalRestClientFactory(
+        RestClientConfiguration restClientConfig,
+        HttpPoolConfiguration httpPoolConfig,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfig, httpPoolConfig, restTemplateBuilder);
     }
 

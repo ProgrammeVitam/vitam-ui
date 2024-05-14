@@ -85,10 +85,9 @@ public class UserInternalController implements CrudController<UserDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalController.class);
 
-    private final  UserInternalService internalUserService;
+    private final UserInternalService internalUserService;
 
     private final ConnectionHistoryService connectionHistoryService;
-
 
     @GetMapping(CommonConstants.PATH_EXPORT)
     public ResponseEntity<Resource> exportUsers(@RequestParam(required = false) final Optional<String> criteria) {
@@ -103,18 +102,26 @@ public class UserInternalController implements CrudController<UserDto> {
      * {@inheritDoc}
      */
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<? extends UserDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
-
+    public PaginatedValuesDto<? extends UserDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return internalUserService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -149,7 +156,6 @@ public class UserInternalController implements CrudController<UserDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exist criteria={}", criteria);
         final boolean exist = internalUserService.checkExist(criteria);
@@ -161,8 +167,8 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @Override
     @PostMapping
-    public UserDto create(final @Valid @RequestBody UserDto dto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public UserDto create(final @Valid @RequestBody UserDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return internalUserService.create(dto);
@@ -175,12 +181,14 @@ public class UserInternalController implements CrudController<UserDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalUserService.update(dto);
     }
 
@@ -191,17 +199,20 @@ public class UserInternalController implements CrudController<UserDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalUserService.patch(partialDto);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for users with id :{}", id);
@@ -215,7 +226,6 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return internalUserService.getLevels(criteria);

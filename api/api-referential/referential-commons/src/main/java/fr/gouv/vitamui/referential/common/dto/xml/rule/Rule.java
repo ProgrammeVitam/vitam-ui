@@ -44,30 +44,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
-import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Setter
 @Getter
 public class Rule implements Serializable {
 
-    @XmlAttribute(name="ID")
+    @XmlAttribute(name = "ID")
     private Integer id;
 
-    @XmlAttribute(name="RuleId")
+    @XmlAttribute(name = "RuleId")
     private String ruleId;
 
-    @XmlAttribute(name="RuleDescription")
+    @XmlAttribute(name = "RuleDescription")
     private String ruleDescription;
 
-    @XmlAttribute(name="RuleMeasurement")
+    @XmlAttribute(name = "RuleMeasurement")
     private String ruleMeasurement;
 
-    @XmlAttribute(name="RuleDuration")
+    @XmlAttribute(name = "RuleDuration")
     private String ruleDuration;
 
-    @XmlElement(name="RuleType")
+    @XmlElement(name = "RuleType")
     private String ruleType;
-
-
 }

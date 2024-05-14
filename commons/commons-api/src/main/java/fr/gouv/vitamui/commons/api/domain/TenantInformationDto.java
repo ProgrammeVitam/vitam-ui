@@ -36,20 +36,20 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(callSuper = true)
-public class TenantInformationDto implements Serializable  {
+public class TenantInformationDto implements Serializable {
 
     private static final long serialVersionUID = 2154855739544645824L;
 

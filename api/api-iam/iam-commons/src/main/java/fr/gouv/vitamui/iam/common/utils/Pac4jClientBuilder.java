@@ -36,15 +36,16 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.openid.connect.sdk.Nonce;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.ErrorsConstants;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.pac4j.core.client.IndirectClient;
@@ -57,12 +58,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 
 import javax.validation.constraints.NotNull;
-
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.rest.ErrorsConstants;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Base64;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A pac4j client builder.
@@ -92,9 +90,13 @@ public class Pac4jClientBuilder {
 
         try {
             if (StringUtils.isNotBlank(casLoginUrl)) {
-                if (technicalName != null && keystoreBase64 != null && keystorePassword != null
-                    && privateKeyPassword != null && idpMetadata != null) {
-
+                if (
+                    technicalName != null &&
+                    keystoreBase64 != null &&
+                    keystorePassword != null &&
+                    privateKeyPassword != null &&
+                    idpMetadata != null
+                ) {
                     final byte[] keystore = Base64.getDecoder().decode(keystoreBase64);
 
                     final String entityIdUrl = casLoginUrl + "/" + technicalName;
@@ -102,7 +104,8 @@ public class Pac4jClientBuilder {
                         new ByteArrayResource(keystore),
                         keystorePassword,
                         privateKeyPassword,
-                        new ByteArrayResource(idpMetadata.getBytes()));
+                        new ByteArrayResource(idpMetadata.getBytes())
+                    );
                     saml2Config.setServiceProviderEntityId(entityIdUrl);
                     saml2Config.setForceServiceProviderMetadataGeneration(false);
 
@@ -121,16 +124,14 @@ public class Pac4jClientBuilder {
                     saml2Config.setAuthnRequestSigned(authnRequestSigned != null ? authnRequestSigned : true);
 
                     final Boolean wantsAssertionsSigned = provider.getWantsAssertionsSigned();
-                    saml2Config.setWantsAssertionsSigned(wantsAssertionsSigned != null ? wantsAssertionsSigned: true);
+                    saml2Config.setWantsAssertionsSigned(wantsAssertionsSigned != null ? wantsAssertionsSigned : true);
 
                     final SAML2Client saml2Client = new SAML2Client(saml2Config);
                     setCallbackUrl(saml2Client, technicalName);
 
                     saml2Client.init();
                     return Optional.of(saml2Client);
-
                 } else if (clientId != null && clientSecret != null && discoveryUrl != null) {
-
                     final OidcConfiguration oidcConfiguration = new OidcConfiguration();
                     oidcConfiguration.setClientId(clientId);
                     oidcConfiguration.setSecret(clientSecret);
@@ -160,7 +161,6 @@ public class Pac4jClientBuilder {
 
                     oidcClient.init();
                     return Optional.of(oidcClient);
-
                 }
             }
         } catch (final TechnicalException e) {

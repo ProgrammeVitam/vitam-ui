@@ -34,5 +34,4 @@ import java.util.ArrayList;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MultiJsonPatchDto extends ArrayList<JsonPatchDto> {
-}
+public class MultiJsonPatchDto extends ArrayList<JsonPatchDto> {}

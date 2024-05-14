@@ -36,15 +36,15 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,9 +59,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -74,18 +71,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AgencyServiceTest {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyService.class);
+
     @Mock
     private AgencyExternalRestClient client;
+
     @Mock
     private AgencyExternalWebClient webClient;
+
     @Mock
     private CommonService commonService;
+
     private AgencyService service;
 
     @Before
@@ -122,7 +122,6 @@ public class AgencyServiceTest {
 
     @Test
     public void testExport() {
-
         ResponseEntity<Resource> responseEntity = new ResponseEntity<Resource>(HttpStatus.OK);
 
         Mockito.when(client.export(isNull())).thenReturn(responseEntity);
@@ -134,19 +133,25 @@ public class AgencyServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_agencies_valid.csv");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_agencies_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-	    Mockito.when(webClient.importAgencies(any(ExternalHttpContext.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        Mockito.when(webClient.importAgencies(any(ExternalHttpContext.class), any(MultipartFile.class))).thenReturn(
+            jsonResponse
+        );
 
         assertThatCode(() -> {
-        	service.importAgencies(null, multipartFile);
+            service.importAgencies(null, multipartFile);
         }).doesNotThrowAnyException();
     }
 }

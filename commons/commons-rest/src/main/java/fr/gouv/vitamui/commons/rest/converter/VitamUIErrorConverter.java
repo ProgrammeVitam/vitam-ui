@@ -107,7 +107,8 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
                 break;
             case EXPECTATION_FAILED:
                 exception = new UnexpectedSettingsException(source.getMessage(), source.getError());
-                break;default:
+                break;
+            default:
                 LOGGER.error("Error Source {}", source);
                 exception = new ApplicationServerException(source.getMessage());
                 break;
@@ -115,5 +116,4 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
 
         return exception;
     }
-
 }

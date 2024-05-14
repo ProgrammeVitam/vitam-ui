@@ -39,5 +39,5 @@ package fr.gouv.vitamui.iam.common.dto.common;
 public enum ProviderEmbeddedOptions {
     KEYSTORE,
     IDPMETADATA,
-    SPMETADATA;
+    SPMETADATA,
 }

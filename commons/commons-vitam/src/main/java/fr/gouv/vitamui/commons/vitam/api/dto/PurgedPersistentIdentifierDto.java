@@ -72,5 +72,4 @@ public class PurgedPersistentIdentifierDto {
     private String lastPersistentDate;
 
     private List<PersistentIdentifierDto> persistentIdentifier;
-
 }

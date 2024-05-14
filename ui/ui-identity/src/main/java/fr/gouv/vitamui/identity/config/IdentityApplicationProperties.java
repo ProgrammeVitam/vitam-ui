@@ -52,6 +52,4 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component(value = "uiProperties")
 @ConfigurationProperties(prefix = "ui-identity", ignoreUnknownFields = false)
-public class IdentityApplicationProperties extends UIPropertiesImpl implements UIProperties {
-
-}
+public class IdentityApplicationProperties extends UIPropertiesImpl implements UIProperties {}

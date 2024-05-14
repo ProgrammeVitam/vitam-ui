@@ -42,9 +42,9 @@ package fr.gouv.vitamui.cas.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-
 @Data
 public class UserLoginModel {
+
     @JsonProperty("userEmail")
     private String userEmail;
 

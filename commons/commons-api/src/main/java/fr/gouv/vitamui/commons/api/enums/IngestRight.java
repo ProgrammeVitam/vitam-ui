@@ -37,9 +37,8 @@
 package fr.gouv.vitamui.commons.api.enums;
 
 public enum IngestRight {
-
     NONE,
     DEPOSIT,
     CREATE_FOLDER,
-    CREATE_FOLDER_AND_DEPOSIT;
+    CREATE_FOLDER_AND_DEPOSIT,
 }

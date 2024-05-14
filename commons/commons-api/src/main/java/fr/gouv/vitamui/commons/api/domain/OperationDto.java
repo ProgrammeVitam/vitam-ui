@@ -36,18 +36,16 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.time.OffsetDateTime;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter

@@ -43,8 +43,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UnavailableServiceException extends VitamUIException {
 
     /**
-    *
-    */
+     *
+     */
     private static final long serialVersionUID = 1L;
 
     public UnavailableServiceException(final String message) {
@@ -58,5 +58,4 @@ public class UnavailableServiceException extends VitamUIException {
     public UnavailableServiceException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

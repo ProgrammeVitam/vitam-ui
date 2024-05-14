@@ -25,7 +25,9 @@ import java.util.Collection;
 public class AccessExternalClientEmptyMock extends AbstractMockClient implements AccessExternalClient {
 
     public RequestResponse<LogbookOperation> selectOperations(VitamContext vitamContext, JsonNode select) {
-        return (new RequestResponseOK<LogbookOperation>()).addAllResults(new ArrayList<>()).setHttpCode(Response.Status.OK.getStatusCode());
+        return (new RequestResponseOK<LogbookOperation>()).addAllResults(new ArrayList<>()).setHttpCode(
+                Response.Status.OK.getStatusCode()
+            );
     }
 
     public RequestResponse<JsonNode> selectUnits(VitamContext vitamContext, JsonNode selectQuery) {
@@ -33,8 +35,11 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
     }
 
     @Override
-    public RequestResponse<JsonNode> selectUnitsByUnitPersistentIdentifier(VitamContext vitamContext, JsonNode jsonNode, String s)
-            throws VitamClientException {
+    public RequestResponse<JsonNode> selectUnitsByUnitPersistentIdentifier(
+        VitamContext vitamContext,
+        JsonNode jsonNode,
+        String s
+    ) throws VitamClientException {
         throw new NotImplementedException("");
     }
 
@@ -43,7 +48,8 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
     }
 
     @Override
-    public JsonLineIterator<JsonNode> streamObjects(VitamContext vitamContext, JsonNode jsonNode) throws VitamClientException {
+    public JsonLineIterator<JsonNode> streamObjects(VitamContext vitamContext, JsonNode jsonNode)
+        throws VitamClientException {
         throw new NotImplementedException("");
     }
 
@@ -55,19 +61,35 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<JsonNode> selectObjectMetadatasByUnitId(VitamContext vitamContext, JsonNode selectQuery, String unitId) {
+    public RequestResponse<JsonNode> selectObjectMetadatasByUnitId(
+        VitamContext vitamContext,
+        JsonNode selectQuery,
+        String unitId
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<LogbookOperation> selectOperationbyId(VitamContext vitamContext, String processId, JsonNode select) {
+    public RequestResponse<LogbookOperation> selectOperationbyId(
+        VitamContext vitamContext,
+        String processId,
+        JsonNode select
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<LogbookLifecycle> selectUnitLifeCycleById(VitamContext vitamContext, String idUnit, JsonNode select) {
+    public RequestResponse<LogbookLifecycle> selectUnitLifeCycleById(
+        VitamContext vitamContext,
+        String idUnit,
+        JsonNode select
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<LogbookLifecycle> selectObjectGroupLifeCycleById(VitamContext vitamContext, String idObject, JsonNode select) {
+    public RequestResponse<LogbookLifecycle> selectObjectGroupLifeCycleById(
+        VitamContext vitamContext,
+        String idObject,
+        JsonNode select
+    ) {
         throw new NotImplementedException("");
     }
 
@@ -75,15 +97,26 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<AccessRequestReference> createObjectAccessRequestByUnitId(VitamContext vitamContext, String unitId, String usage, int version) {
+    public RequestResponse<AccessRequestReference> createObjectAccessRequestByUnitId(
+        VitamContext vitamContext,
+        String unitId,
+        String usage,
+        int version
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<StatusByAccessRequest> checkAccessRequestStatuses(VitamContext vitamContext, Collection<AccessRequestReference> accessRequestReferences) {
+    public RequestResponse<StatusByAccessRequest> checkAccessRequestStatuses(
+        VitamContext vitamContext,
+        Collection<AccessRequestReference> accessRequestReferences
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<Void> removeAccessRequest(VitamContext vitamContext, AccessRequestReference accessRequestReference) {
+    public RequestResponse<Void> removeAccessRequest(
+        VitamContext vitamContext,
+        AccessRequestReference accessRequestReference
+    ) {
         throw new NotImplementedException("");
     }
 
@@ -128,17 +161,23 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
     }
 
     @Override
-    public Response getObjectByUnitPersistentIdentifier(VitamContext vitamContext, String s, String s1, String s2) throws VitamClientException {
+    public Response getObjectByUnitPersistentIdentifier(VitamContext vitamContext, String s, String s1, String s2)
+        throws VitamClientException {
         throw new NotImplementedException("");
     }
 
     @Override
-    public RequestResponse<JsonNode> getObjectByObjectPersistentIdentifier(VitamContext vitamContext, JsonNode jsonNode, String s) throws VitamClientException {
+    public RequestResponse<JsonNode> getObjectByObjectPersistentIdentifier(
+        VitamContext vitamContext,
+        JsonNode jsonNode,
+        String s
+    ) throws VitamClientException {
         throw new NotImplementedException("");
     }
 
     @Override
-    public Response downloadObjectByObjectPersistentIdentifier(VitamContext vitamContext, String s) throws VitamClientException {
+    public Response downloadObjectByObjectPersistentIdentifier(VitamContext vitamContext, String s)
+        throws VitamClientException {
         throw new NotImplementedException("");
     }
 
@@ -154,25 +193,36 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<JsonNode> deleteComputedInheritedRules(VitamContext vitamContext, JsonNode deleteComputedInheritedRulesQuery) {
+    public RequestResponse<JsonNode> deleteComputedInheritedRules(
+        VitamContext vitamContext,
+        JsonNode deleteComputedInheritedRulesQuery
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<JsonNode> launchPreservation(VitamContext vitamContext, PreservationRequest preservationRequest) {
+    public RequestResponse<JsonNode> launchPreservation(
+        VitamContext vitamContext,
+        PreservationRequest preservationRequest
+    ) {
         throw new NotImplementedException("");
     }
 
-    public RequestResponse<JsonNode> startEliminationAnalysis(VitamContext vitamContext, EliminationRequestBody eliminationRequestBody) {
+    public RequestResponse<JsonNode> startEliminationAnalysis(
+        VitamContext vitamContext,
+        EliminationRequestBody eliminationRequestBody
+    ) {
         throw new NotImplementedException("");
     }
 
     @Override
-    public RequestResponse<JsonNode> startEliminationAction(VitamContext vitamContext, EliminationRequestBody eliminationRequestBody) {
+    public RequestResponse<JsonNode> startEliminationAction(
+        VitamContext vitamContext,
+        EliminationRequestBody eliminationRequestBody
+    ) {
         throw new NotImplementedException("");
     }
 
     public RequestResponse<JsonNode> transferReply(VitamContext vitamContext, InputStream transferReply) {
         throw new NotImplementedException("");
     }
-
 }

@@ -58,5 +58,4 @@ public class NotFoundException extends VitamUIException {
     public NotFoundException(final String message, final String key) {
         super(message, key);
     }
-
 }

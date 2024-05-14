@@ -34,5 +34,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class OperationIdDto {
+
     private OperationId operationId;
 }

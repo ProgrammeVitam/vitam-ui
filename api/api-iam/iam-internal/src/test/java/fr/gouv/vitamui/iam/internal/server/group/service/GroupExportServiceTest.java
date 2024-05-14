@@ -31,28 +31,16 @@ import static org.mockito.Mockito.when;
 class GroupExportServiceTest {
 
     private final ApplicationInternalService applicationInternalService = mock(ApplicationInternalService.class);
-    private GroupExportService groupExportService =  new GroupExportService(applicationInternalService);
-
+    private GroupExportService groupExportService = new GroupExportService(applicationInternalService);
 
     @Test
     void testExportProfileGroups_first_sheet_OK() throws IOException {
         // Given
         final List<ProfileDto> profilesDto = List.of(
-            buildProfileDto(
-                "1068",
-                "Profil Archives Full",
-                "customerID",
-                218,
-                "ARCHIVE_APP"
-            )
+            buildProfileDto("1068", "Profil Archives Full", "customerID", 218, "ARCHIVE_APP")
         );
         final List<GroupDto> groupsDto = List.of(
-            buildGroupDto(
-                "135",
-                "GROUPE_ADMIN_CLIENT_ROOT 000001",
-                "customerID",
-                List.of("1068", "1069")
-            )
+            buildGroupDto("135", "GROUPE_ADMIN_CLIENT_ROOT 000001", "customerID", List.of("1068", "1069"))
         );
 
         groupsDto.forEach(g -> g.setIdentifier(g.getId()));
@@ -62,7 +50,6 @@ class GroupExportServiceTest {
             groupsDto.stream().map(ProfileGroupExport::fromGroup),
             profilesDto.stream().map(ProfileGroupExport::fromProfile)
         ).collect(Collectors.toList());
-
 
         // When
         final Resource excelFile = groupExportService.exportProfileGroups(groupsDto, profilesDto, Map.of());
@@ -80,28 +67,14 @@ class GroupExportServiceTest {
 
         // Assert contents
         assertProfileGroupRows(sheet0, data);
-
     }
 
-
     @Test
-    void  testExportProfileGroups_second_sheet_OK() throws IOException {
+    void testExportProfileGroups_second_sheet_OK() throws IOException {
         // Given
         final List<ProfileDto> profilesDto = List.of(
-            createProfileDto(
-                "1068",
-                "Profil Archives Full",
-                218,
-                "tenant 218",
-                "ARCHIVE_APP"
-            ),
-            createProfileDto(
-                "33088",
-                "Profile Agency",
-                111,
-                "tenant 111",
-                "APP Agency"
-            )
+            createProfileDto("1068", "Profil Archives Full", 218, "tenant 218", "ARCHIVE_APP"),
+            createProfileDto("33088", "Profile Agency", 111, "tenant 111", "APP Agency")
         );
         final List<GroupDto> groupsDto = List.of(
             createGroup(
@@ -111,21 +84,16 @@ class GroupExportServiceTest {
                 List.of("1068", "1069"),
                 List.of(profilesDto.get(0))
             ),
-            createGroup(
-                "136",
-                "Groupe de l'utilisateur support",
-                "customerID",
-                List.of(),
-                List.of()
-            )
+            createGroup("136", "Groupe de l'utilisateur support", "customerID", List.of(), List.of())
         );
 
         groupsDto.forEach(g -> g.setIdentifier(g.getId()));
         profilesDto.forEach(p -> p.setIdentifier(p.getId()));
 
-
         // When
-        when(applicationInternalService.findApplicationByIdentifier(List.of("ARCHIVE_APP"))).thenReturn(Map.of("ARCHIVE_APP", "APP Archives"));
+        when(applicationInternalService.findApplicationByIdentifier(List.of("ARCHIVE_APP"))).thenReturn(
+            Map.of("ARCHIVE_APP", "APP Archives")
+        );
         final Resource excelFile = groupExportService.exportProfileGroups(groupsDto, profilesDto, Map.of());
 
         // Then
@@ -149,23 +117,28 @@ class GroupExportServiceTest {
             "Profil Archives Full"
         );
 
-       assertLinkedProfileRows(sheet1, List.of(line1) );
+        assertLinkedProfileRows(sheet1, List.of(line1));
     }
 
-    private GroupDto createGroup(String id, String name, String customerID, List<String> profilesIds, List<ProfileDto> profiles) {
+    private GroupDto createGroup(
+        String id,
+        String name,
+        String customerID,
+        List<String> profilesIds,
+        List<ProfileDto> profiles
+    ) {
         GroupDto groupDto = buildGroupDto(id, name, customerID, profilesIds);
         groupDto.setProfiles(profiles);
         return groupDto;
     }
 
-
-    private List<String> getRawAsListString(XSSFSheet sheet, int rowIndex, int colNum){
+    private List<String> getRawAsListString(XSSFSheet sheet, int rowIndex, int colNum) {
         return IntStream.range(0, colNum)
             .mapToObj(i -> sheet.getRow(rowIndex).getCell(i).getStringCellValue())
             .collect(Collectors.toList());
     }
 
-    private void assertProfileGroupRows(XSSFSheet sheet0, List<ProfileGroupExport> dataList ){
+    private void assertProfileGroupRows(XSSFSheet sheet0, List<ProfileGroupExport> dataList) {
         IntStream.range(0, dataList.size()).forEach(i -> {
             var actualIdentifier = sheet0.getRow(i + 1).getCell(0).getNumericCellValue();
             var expectedIdentifier = dataList.get(i).getIdentifier();
@@ -198,12 +171,10 @@ class GroupExportServiceTest {
 
             var actualLastUpdated = sheet0.getRow(i + 1).getCell(9).getStringCellValue();
             assertThat(actualLastUpdated).isEqualTo(dataList.get(i).getLastModified());
-
         });
-
     }
 
-    private void assertLinkedProfileRows(XSSFSheet sheet0, List<LinkedProfileExport> dataList ){
+    private void assertLinkedProfileRows(XSSFSheet sheet0, List<LinkedProfileExport> dataList) {
         IntStream.range(0, dataList.size()).forEach(i -> {
             var actualGroupIdentifier = sheet0.getRow(i + 1).getCell(0).getNumericCellValue();
             var expectedGroupIdentifier = dataList.get(i).getGroupIdentifier();
@@ -214,7 +185,9 @@ class GroupExportServiceTest {
             assertThat(actualApplicationName).isEqualTo(expectedApplicationName);
 
             var actualTenantId = sheet0.getRow(i + 1).getCell(2).getNumericCellValue();
-            var expectedTenantId = Optional.ofNullable(dataList.get(i).getTenantIdentifier()).map(Integer::doubleValue).orElse(null);
+            var expectedTenantId = Optional.ofNullable(dataList.get(i).getTenantIdentifier())
+                .map(Integer::doubleValue)
+                .orElse(null);
             assertThat(actualTenantId).isEqualTo(expectedTenantId);
 
             var actualTenantName = sheet0.getRow(i + 1).getCell(3).getStringCellValue();
@@ -225,12 +198,16 @@ class GroupExportServiceTest {
 
             var actualProfileName = sheet0.getRow(i + 1).getCell(5).getStringCellValue();
             assertThat(actualProfileName).isEqualTo(dataList.get(i).getProfileName());
-
         });
-
     }
 
-    private ProfileDto createProfileDto(String id, String name, int tenantId, String tenantName, String applicationName){
+    private ProfileDto createProfileDto(
+        String id,
+        String name,
+        int tenantId,
+        String tenantName,
+        String applicationName
+    ) {
         ProfileDto profileDto = new ProfileDto();
         profileDto.setIdentifier(id);
         profileDto.setId(id);

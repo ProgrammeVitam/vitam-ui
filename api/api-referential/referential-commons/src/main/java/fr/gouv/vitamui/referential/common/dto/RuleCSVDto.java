@@ -38,7 +38,6 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

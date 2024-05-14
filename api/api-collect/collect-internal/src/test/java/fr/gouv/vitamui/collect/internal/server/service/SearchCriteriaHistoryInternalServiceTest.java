@@ -52,14 +52,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 class SearchCriteriaHistoryInternalServiceTest {
+
     @InjectMocks
     SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
+
     @Mock
     InternalSecurityService internalSecurityService;
+
     @Mock
     SearchCriteriaHistoryRepository searchCriteriaHistoryRepository;
-    final PodamFactory factory = new PodamFactoryImpl();
 
+    final PodamFactory factory = new PodamFactoryImpl();
 
     @BeforeEach
     public void beforeEach() {
@@ -70,15 +73,13 @@ class SearchCriteriaHistoryInternalServiceTest {
     void shouldGetSearchCriteriaHistoryDtosWithSuccess() {
         // GIVEN
         final AuthUserDto authUserDto = factory.manufacturePojo(AuthUserDto.class);
-        ArrayList resultedValues =
-            factory.manufacturePojo(ArrayList.class, SearchCriteriaHistoryDto.class);
+        ArrayList resultedValues = factory.manufacturePojo(ArrayList.class, SearchCriteriaHistoryDto.class);
         final QueryDto queryDto = new QueryDto();
         Mockito.when(internalSecurityService.getUser()).thenReturn(authUserDto);
         Mockito.when(searchCriteriaHistoryInternalService.getAll(queryDto)).thenReturn(resultedValues);
 
         // WHEN
-        List<SearchCriteriaHistoryDto> results =
-            searchCriteriaHistoryInternalService.getSearchCriteriaHistoryDtos();
+        List<SearchCriteriaHistoryDto> results = searchCriteriaHistoryInternalService.getSearchCriteriaHistoryDtos();
 
         // THEN
         assertNotNull(results);

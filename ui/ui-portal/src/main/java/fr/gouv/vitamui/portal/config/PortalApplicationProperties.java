@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.portal.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Properties specific to Ihm-Portal Application.
@@ -52,6 +51,4 @@ import lombok.Setter;
 @Setter
 @Component("uiProperties")
 @ConfigurationProperties(prefix = "ui-portal", ignoreUnknownFields = true)
-public class PortalApplicationProperties extends UIPropertiesImpl {
-
-}
+public class PortalApplicationProperties extends UIPropertiesImpl {}

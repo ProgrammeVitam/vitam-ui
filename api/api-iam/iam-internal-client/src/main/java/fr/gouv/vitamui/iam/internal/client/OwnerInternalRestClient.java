@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete the profiles.
@@ -70,13 +69,11 @@ public class OwnerInternalRestClient extends BasePaginatingAndSortingRestClient<
 
     @Override
     protected ParameterizedTypeReference<List<OwnerDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<OwnerDto>>() {
-        };
+        return new ParameterizedTypeReference<List<OwnerDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<OwnerDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<OwnerDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<OwnerDto>>() {};
     }
 }

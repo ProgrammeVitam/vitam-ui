@@ -39,7 +39,9 @@ public enum DataType {
     BOOLEAN;
 
     public static DataType of(final String dataType) {
-        return Arrays.stream(DataType.values()).filter(c -> Objects.equals(c.name(), dataType)).findFirst()
+        return Arrays.stream(DataType.values())
+            .filter(c -> Objects.equals(c.name(), dataType))
+            .findFirst()
             .orElseThrow();
     }
 }

@@ -36,52 +36,53 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.service;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+
 public class AddressService {
 
-    public void processPatch(final Address address, final Map<String, Object> partialDto,
-            final Collection<EventDiffDto> logbooks, final boolean anonymized) {
+    public void processPatch(
+        final Address address,
+        final Map<String, Object> partialDto,
+        final Collection<EventDiffDto> logbooks,
+        final boolean anonymized
+    ) {
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             String oldValue;
             String newValue = anonymized ? GPDR_DEFAULT_VALUE : CastUtils.toString(entry.getValue());
             switch (entry.getKey()) {
-                case "street" :
+                case "street":
                     oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getStreet();
-                    logbooks.add(new EventDiffDto(AddressConverter.STREET_KEY, oldValue,
-                            newValue));
+                    logbooks.add(new EventDiffDto(AddressConverter.STREET_KEY, oldValue, newValue));
                     address.setStreet(CastUtils.toString(entry.getValue()));
                     break;
-                case "zipCode" :
+                case "zipCode":
                     oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getZipCode();
-                    logbooks.add(new EventDiffDto(AddressConverter.ZIP_CODE_KEY, oldValue,
-                            newValue));
+                    logbooks.add(new EventDiffDto(AddressConverter.ZIP_CODE_KEY, oldValue, newValue));
                     address.setZipCode(CastUtils.toString(entry.getValue()));
                     break;
-                case "city" :
+                case "city":
                     oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getCity();
-                    logbooks.add(new EventDiffDto(AddressConverter.CITY_KEY, oldValue,
-                            newValue));
+                    logbooks.add(new EventDiffDto(AddressConverter.CITY_KEY, oldValue, newValue));
                     address.setCity(CastUtils.toString(entry.getValue()));
                     break;
-                case "country" :
+                case "country":
                     oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getCountry();
-                    logbooks.add(new EventDiffDto(AddressConverter.COUNTRY_KEY, oldValue,
-                            newValue));
+                    logbooks.add(new EventDiffDto(AddressConverter.COUNTRY_KEY, oldValue, newValue));
                     address.setCountry(CastUtils.toString(entry.getValue()));
                     break;
-                default :
+                default:
                     throw new IllegalArgumentException(
-                            "Unable to patch address " + " key : " + entry.getKey() + " is not allowed");
+                        "Unable to patch address " + " key : " + entry.getKey() + " is not allowed"
+                    );
             }
         }
     }

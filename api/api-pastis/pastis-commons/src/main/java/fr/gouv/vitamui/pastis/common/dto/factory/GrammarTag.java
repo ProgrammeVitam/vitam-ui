@@ -55,6 +55,4 @@ public class GrammarTag extends RngTag {
 
     @XmlAttribute(name = "xmlns:xsd")
     private String xd = "http://www.w3.org/2001/XMLSchema";
-
-
 }

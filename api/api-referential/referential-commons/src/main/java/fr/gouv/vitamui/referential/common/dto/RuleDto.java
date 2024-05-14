@@ -37,16 +37,12 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitam.common.model.administration.OntologyOrigin;
-import fr.gouv.vitam.common.model.administration.OntologyType;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -46,6 +46,7 @@ import static org.springframework.http.HttpStatus.EXPECTATION_FAILED;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ControllerExceptionHandler.class);
     private ObjectMapper objectMapper;
 

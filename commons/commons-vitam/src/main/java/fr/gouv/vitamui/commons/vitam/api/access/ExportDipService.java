@@ -37,13 +37,7 @@
 
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import javax.ws.rs.core.Response;
-
-import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -51,6 +45,10 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
 
 public class ExportDipService {
 
@@ -71,7 +69,8 @@ public class ExportDipService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> exportDip(final JsonNode selectQuery, final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<JsonNode> exportDip(final JsonNode selectQuery, final VitamContext vitamContext)
+        throws VitamClientException {
         final RequestResponse<JsonNode> response = accessExternalClient.exportDIP(vitamContext, selectQuery);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;

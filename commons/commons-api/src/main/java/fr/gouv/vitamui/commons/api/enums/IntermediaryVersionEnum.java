@@ -30,5 +30,5 @@ package fr.gouv.vitamui.commons.api.enums;
 public enum IntermediaryVersionEnum {
     ALL,
     LAST,
-    NONE
+    NONE,
 }

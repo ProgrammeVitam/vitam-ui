@@ -36,15 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.converter;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -59,6 +50,14 @@ import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.internal.server.owner.converter.OwnerConverter;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
@@ -100,7 +99,11 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String GDPR_ALERT_KEY = "GDPR Alerte";
 
-    public CustomerConverter(final AddressConverter addressConverter, final OwnerRepository ownerRepository, final OwnerConverter ownerConverter) {
+    public CustomerConverter(
+        final AddressConverter addressConverter,
+        final OwnerRepository ownerRepository,
+        final OwnerConverter ownerConverter
+    ) {
         this.ownerRepository = ownerRepository;
         this.ownerConverter = ownerConverter;
         this.addressConverter = addressConverter;
@@ -183,5 +186,4 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         }
         return dto;
     }
-
 }

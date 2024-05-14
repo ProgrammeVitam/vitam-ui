@@ -51,14 +51,17 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Before
     public void before() {
-
         ProvidersService providersService = mock(ProvidersService.class);
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
 
-        listCustomersAction =
-            new ListCustomersAction(providersService, new IdentityProviderHelper(), casExternalRestClient, utils);
+        listCustomersAction = new ListCustomersAction(
+            providersService,
+            new IdentityProviderHelper(),
+            casExternalRestClient,
+            utils
+        );
 
         IdentityProviderDto providerDto1 = getIdentityProvider(CUSTOMER_ID_1, false, EMAIL_DOMAIN_1);
         IdentityProviderDto providerDto2 = getIdentityProvider(CUSTOMER_ID_2, true, EMAIL_DOMAIN_1, EMAIL_DOMAIN_2);
@@ -67,7 +70,6 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testSubrogationThenNoCustomerSelection() throws IOException {
-
         // Given
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
@@ -83,7 +85,6 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testSubrogationWithInvalidProviderThenBadConfig() throws IOException {
-
         // Given
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL_UNKNOWN_DOMAIN);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
@@ -99,15 +100,13 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithEmailMatchingASingleUser() throws IOException {
-
         // Given
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
 
-        doReturn(List.of(userDto))
-            .when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+        doReturn(List.of(userDto)).when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -122,7 +121,6 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithEmailMatchingMultipleUsers() throws IOException {
-
         // Given
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
@@ -133,12 +131,14 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         userDto2.setCustomerId(CUSTOMER_ID_2);
 
         doReturn(List.of(userDto1, userDto2))
-            .when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+            .when(casExternalRestClient)
+            .getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casExternalRestClient)
+            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -158,15 +158,14 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithUnknownUserMatchingASingleCustomerMailDomain() throws IOException {
-
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL2, "password"));
 
-        doReturn(emptyList())
-            .when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL2), eq(Optional.empty()));
+        doReturn(emptyList()).when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL2), eq(Optional.empty()));
 
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "code2", "customer2");
         doReturn(List.of(customerDto2))
-            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+            .when(casExternalRestClient)
+            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -181,16 +180,15 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithUnknownUserMatchingMultipleCustomerMailDomain() throws IOException {
-
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        doReturn(emptyList())
-            .when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+        doReturn(emptyList()).when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casExternalRestClient)
+            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -210,16 +208,17 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithUnknownUserMatchingNoValidCustomerMailDomain() throws IOException {
-
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL_UNKNOWN_DOMAIN, "password"));
 
         doReturn(emptyList())
-            .when(casExternalRestClient).getUsersByEmail(any(), eq(EMAIL_UNKNOWN_DOMAIN), eq(Optional.empty()));
+            .when(casExternalRestClient)
+            .getUsersByEmail(any(), eq(EMAIL_UNKNOWN_DOMAIN), eq(Optional.empty()));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casExternalRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casExternalRestClient)
+            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);

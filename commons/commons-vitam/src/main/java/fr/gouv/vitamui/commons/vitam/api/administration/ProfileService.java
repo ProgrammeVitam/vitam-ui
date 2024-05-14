@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
 
 public class ProfileService {
 
@@ -66,8 +65,7 @@ public class ProfileService {
         Response vitamObjectStreamResponse;
         try {
             vitamObjectStreamResponse = adminExternalClient.downloadProfileFile(vitamContext, archiveProfileIdentifier);
-        }
-        catch (AccessExternalClientException | AccessExternalNotFoundException e) {
+        } catch (AccessExternalClientException | AccessExternalNotFoundException e) {
             throw new InternalServerException("An error occurred while calling Vitam", e);
         }
         VitamRestUtils.checkResponse(vitamObjectStreamResponse);

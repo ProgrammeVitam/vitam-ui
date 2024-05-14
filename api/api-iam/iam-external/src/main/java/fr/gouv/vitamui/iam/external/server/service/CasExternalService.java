@@ -65,8 +65,10 @@ public class CasExternalService extends AbstractInternalClientService {
     private final ExternalSecurityService securityService;
 
     @Autowired
-    public CasExternalService(final CasInternalRestClient casInternalRestClient,
-        final ExternalSecurityService securityService) {
+    public CasExternalService(
+        final CasInternalRestClient casInternalRestClient,
+        final ExternalSecurityService securityService
+    ) {
         super(securityService);
         this.casInternalRestClient = casInternalRestClient;
         this.securityService = securityService;
@@ -84,20 +86,31 @@ public class CasExternalService extends AbstractInternalClientService {
         return getClient().getUsersByEmail(getInternalHttpContext(), email, embedded);
     }
 
-    public UserDto getUser(final String loginEmail, final String loginCustomerId, final String idp,
-        final Optional<String> userIdentifier, final Optional<String> optEmbedded) {
-        return getClient().getUser(getInternalHttpContext(), loginEmail, loginCustomerId,
-            idp, userIdentifier, optEmbedded);
+    public UserDto getUser(
+        final String loginEmail,
+        final String loginCustomerId,
+        final String idp,
+        final Optional<String> userIdentifier,
+        final Optional<String> optEmbedded
+    ) {
+        return getClient()
+            .getUser(getInternalHttpContext(), loginEmail, loginCustomerId, idp, userIdentifier, optEmbedded);
     }
 
     public UserDto getUserById(final String id) {
         return getClient().getUserById(getInternalHttpContext(), id);
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUserAndCustomerId(final String superUserEmail,
-        final String superUserCustomerId) {
-        return getClient().
-            getSubrogationsBySuperUserEmailAndCustomerId(getInternalHttpContext(), superUserEmail, superUserCustomerId);
+    public List<SubrogationDto> getSubrogationsBySuperUserAndCustomerId(
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
+        return getClient()
+            .getSubrogationsBySuperUserEmailAndCustomerId(
+                getInternalHttpContext(),
+                superUserEmail,
+                superUserCustomerId
+            );
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUserId(final String superUserId) {

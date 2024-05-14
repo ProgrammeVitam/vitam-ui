@@ -47,7 +47,6 @@ class RuleConverterTest {
 
     @Test
     void testConvertRuleVitamModelToRuleDtoVitamUI() {
-
         FileRulesModel fileRulesModel = new FileRulesModel();
         fileRulesModel.setRuleId("APP-09049");
         fileRulesModel.setId("FileModelId");
@@ -57,18 +56,17 @@ class RuleConverterTest {
         fileRulesModel.setCreationDate("15/12/2009");
         fileRulesModel.setUpdateDate("30/08/2012");
         fileRulesModel.setRuleValue("Elimination Ouverture des stations SNCF Gare d’Austerlitz");
-        fileRulesModel.setRuleDescription("Elimination - L’échéance est calculée à partir de la date d’annonce de la fermeture");
+        fileRulesModel.setRuleDescription(
+            "Elimination - L’échéance est calculée à partir de la date d’annonce de la fermeture"
+        );
 
         RuleDto ruleDto = ruleConverter.convertVitamToDto(fileRulesModel);
 
-        assertThat(ruleDto).isNotNull()
-            .isEqualToComparingFieldByField(fileRulesModel);
-
+        assertThat(ruleDto).isNotNull().isEqualToComparingFieldByField(fileRulesModel);
     }
 
     @Test
     void testConvertRuleDtoVitamUiToRuleModelVitam() {
-
         RuleDto ruleDto = new RuleDto();
         ruleDto.setTenant(15);
         ruleDto.setRuleId("APP-00001");
@@ -87,7 +85,6 @@ class RuleConverterTest {
 
     @Test
     void testConvertRuleVitamModelToRuleDtoVitamUIWithRuleTypeAndRuleMeasurement() {
-
         final String month = "month";
         final String holdRule = "HoldRule";
 
@@ -104,7 +101,6 @@ class RuleConverterTest {
 
     @Test
     void testConvertRuleDtoVitamUiToRuleModelVitamWithRuleTypeAndRuleMeasurement() {
-
         final String day = "DAY";
         final String appraisalRule = "AppraisalRule";
 

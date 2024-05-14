@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @ToString(callSuper = true)
 public class AlertAnalyticsDto implements Serializable {
+
     private String applicationId;
 
     private String creationDate;
@@ -25,5 +26,4 @@ public class AlertAnalyticsDto implements Serializable {
     private String key;
 
     private String action;
-
 }

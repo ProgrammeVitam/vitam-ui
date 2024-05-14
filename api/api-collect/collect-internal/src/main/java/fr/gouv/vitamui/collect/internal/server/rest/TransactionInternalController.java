@@ -72,8 +72,10 @@ public class TransactionInternalController {
     private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
 
     @Autowired
-    public TransactionInternalController(final TransactionInternalService transactionInternalService,
-        final ExternalParametersService externalParametersService) {
+    public TransactionInternalController(
+        final TransactionInternalService transactionInternalService,
+        final ExternalParametersService externalParametersService
+    ) {
         this.transactionInternalService = transactionInternalService;
         this.externalParametersService = externalParametersService;
     }
@@ -93,8 +95,10 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to close  {}", id);
-        transactionInternalService.validateTransaction(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        transactionInternalService.validateTransaction(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
@@ -103,8 +107,10 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Transaction to reopen  {}", id);
-        transactionInternalService.reopenTransaction(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        transactionInternalService.reopenTransaction(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
@@ -122,17 +128,21 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project Id  {}", id);
-        return transactionInternalService.getTransactionById(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return transactionInternalService.getTransactionById(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
-        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId,
+    @PutMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public String updateArchiveUnitsMetadataFromFile(
+        final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName)
-        throws InvalidParseOperationException, PreconditionFailedException, RequestTimeOutException {
-
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) throws InvalidParseOperationException, PreconditionFailedException, RequestTimeOutException {
         ParameterChecker.checkParameter("The transaction Id is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] update archiveUnits metadata from file for transaction  {}", transactionId);
@@ -140,9 +150,11 @@ public class TransactionInternalController {
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[Internal] csv FileName  {}", originalFileName);
 
-        return transactionInternalService.updateArchiveUnitsFromFile(inputStream, transactionId,
-            externalParametersService.buildVitamContextFromExternalParam());
-
+        return transactionInternalService.updateArchiveUnitsFromFile(
+            inputStream,
+            transactionId,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PutMapping
@@ -151,8 +163,9 @@ public class TransactionInternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, transactionDto);
         SanityChecker.sanitizeCriteria(transactionDto);
         LOGGER.debug("[Internal] Transaction to update : {}", transactionDto);
-        return transactionInternalService.updateTransaction(transactionDto,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return transactionInternalService.updateTransaction(
+            transactionDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
-
 }

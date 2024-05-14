@@ -56,5 +56,5 @@ public enum CriterionOperator {
     COUNT,
     ISNOTNULL,
     ISEQUALTOPROPERTY,
-    NAMEDEXPRESSION
+    NAMEDEXPRESSION,
 }

@@ -133,7 +133,6 @@ public class VitamUIUtilsTest {
         String expected =
             "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
         assertEquals(expected, result);
-
     }
 
     @Test
@@ -158,7 +157,5 @@ public class VitamUIUtilsTest {
         assertEquals("1 ko", VitamUIUtils.humanReadableByteCountBin(1_024L));
         assertEquals("1.17 ko", VitamUIUtils.humanReadableByteCountBin(1_200L));
         assertEquals("225.83 ko", VitamUIUtils.humanReadableByteCountBin(231_246L));
-
     }
-
 }

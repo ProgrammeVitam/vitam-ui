@@ -51,19 +51,33 @@ public class AccessionRegisterConverter {
         throw new UnsupportedOperationException("Utility class !");
     }
 
-    public static AccessionRegisterDetailDto toDetailsDto(final AccessionRegisterDetailModel accessionRegisterDetailModel) {
+    public static AccessionRegisterDetailDto toDetailsDto(
+        final AccessionRegisterDetailModel accessionRegisterDetailModel
+    ) {
         return VitamUIUtils.copyProperties(accessionRegisterDetailModel, new AccessionRegisterDetailDto());
     }
 
-    public static List<AccessionRegisterDetailDto> toDetailsDtos(final List<AccessionRegisterDetailModel> accessionRegisterDetailModels) {
-        return accessionRegisterDetailModels.stream().map(AccessionRegisterConverter::toDetailsDto).collect(Collectors.toList());
+    public static List<AccessionRegisterDetailDto> toDetailsDtos(
+        final List<AccessionRegisterDetailModel> accessionRegisterDetailModels
+    ) {
+        return accessionRegisterDetailModels
+            .stream()
+            .map(AccessionRegisterConverter::toDetailsDto)
+            .collect(Collectors.toList());
     }
 
-    public static AccessionRegisterSummaryDto toSummaryDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
+    public static AccessionRegisterSummaryDto toSummaryDto(
+        final AccessionRegisterSummaryModel accessionRegisterSummaryModel
+    ) {
         return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
     }
 
-    public static List<AccessionRegisterSummaryDto> toSummaryDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
-        return accessionRegisterSummaryModels.stream().map(AccessionRegisterConverter::toSummaryDto).collect(Collectors.toList());
+    public static List<AccessionRegisterSummaryDto> toSummaryDtos(
+        final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels
+    ) {
+        return accessionRegisterSummaryModels
+            .stream()
+            .map(AccessionRegisterConverter::toSummaryDto)
+            .collect(Collectors.toList());
     }
 }

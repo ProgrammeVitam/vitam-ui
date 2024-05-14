@@ -1,26 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.subrogation.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
-import java.util.Date;
-import java.util.Optional;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
@@ -47,14 +26,37 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * Class for test InternalProfileService with a real repository
  */
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = {SubrogationRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = { SubrogationRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     private SubrogationInternalService service;
@@ -68,7 +70,9 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
     @MockBean
     private UserRepository userRepository;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalServiceIntegTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SubrogationInternalServiceIntegTest.class
+    );
 
     @MockBean
     private SequenceGeneratorService sequenceGeneratorService;
@@ -108,13 +112,25 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        service = new SubrogationInternalService(sequenceGeneratorService, repository, userRepository, userInternalService,
-                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository,
-                subrogationConverter, iamLogbookService);
+        service = new SubrogationInternalService(
+            sequenceGeneratorService,
+            repository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
 
         Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -126,7 +142,6 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
 
     @Test
     public void testDeclineSubrogation() {
-
         final String superUserEmail = "sub-roggator@vitamui.com";
         final String superUserCustomerId = "surrogate_system";
 
@@ -143,22 +158,27 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail(currentUserEmail);
         currentUser.setCustomerId(currentUserCustomerId);
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId))
-            .thenReturn(new User());
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId))
-            .thenReturn(new User());
+        Mockito.when(
+            userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId)
+        ).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId)).thenReturn(
+            new User()
+        );
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
-        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
-                .is(EventType.EXT_VITAMUI_DECLINE_SURROGATE);
+        final Criteria subroCriteriaCreation = Criteria.where("obId")
+            .is("" + subro.getId())
+            .and("obIdReq")
+            .is(MongoDbCollections.SUBROGATIONS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_DECLINE_SURROGATE);
         final Optional<Event> evSubroDeclined = eventRepository.findOne(Query.query(subroCriteriaCreation));
         assertThat(evSubroDeclined).isPresent();
     }
 
     @Test
     public void testStopSubrogation() {
-
         final String superUserEmail = "sub-roggator@vitamui.com";
         final String superUserCustomerId = "surrogate_system";
 
@@ -175,18 +195,23 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         final AuthUserDto currentUser = new AuthUserDto();
         currentUser.setEmail(currentUserEmail);
         currentUser.setCustomerId(currentUserCustomerId);
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId))
-            .thenReturn(new User());
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId))
-            .thenReturn(new User());
+        Mockito.when(
+            userRepository.findByEmailIgnoreCaseAndCustomerId(currentUserEmail, currentUserCustomerId)
+        ).thenReturn(new User());
+        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(superUserEmail, superUserCustomerId)).thenReturn(
+            new User()
+        );
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
-        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
-                .is(EventType.EXT_VITAMUI_STOP_SURROGATE);
+        final Criteria subroCriteriaCreation = Criteria.where("obId")
+            .is("" + subro.getId())
+            .and("obIdReq")
+            .is(MongoDbCollections.SUBROGATIONS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_STOP_SURROGATE);
         final Optional<Event> evSubroDeclined = eventRepository.findOne(Query.query(subroCriteriaCreation));
         assertThat(evSubroDeclined).isPresent();
-
     }
 
     private Subrogation buildSubro() {
@@ -198,5 +223,4 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         subro.setSuperUser("superUser@vitamui.com");
         return subro;
     }
-
 }

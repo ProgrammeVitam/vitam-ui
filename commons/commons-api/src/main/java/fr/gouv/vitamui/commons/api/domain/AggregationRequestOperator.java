@@ -42,5 +42,5 @@ package fr.gouv.vitamui.commons.api.domain;
 public enum AggregationRequestOperator {
     COUNT,
     SUM,
-    DISTINCT
+    DISTINCT,
 }

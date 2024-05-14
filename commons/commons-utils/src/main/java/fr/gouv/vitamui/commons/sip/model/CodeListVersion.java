@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.sip.model;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @ToString
@@ -93,9 +93,7 @@ public class CodeListVersion {
     @XmlElement(name = "RelationshipCodeListVersion")
     private String relationshipCodeListVersion;
 
-    private CodeListVersion() {
-
-    }
+    private CodeListVersion() {}
 
     private CodeListVersion(Builder builder) {
         replyCodeListVersion = builder.replyCodeListVersion;
@@ -226,5 +224,4 @@ public class CodeListVersion {
             return new CodeListVersion(this);
         }
     }
-
 }

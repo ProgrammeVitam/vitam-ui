@@ -28,7 +28,6 @@
  */
 package fr.gouv.vitamui.referential.internal.server.managementcontract.converter;
 
-import fr.gouv.vitam.common.model.administration.PersistentIdentifierUsage;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.PersistentIdentifierPolicyDto;
@@ -52,8 +51,10 @@ import java.util.stream.Collectors;
 public class ManagementContractConverter {
 
     public ManagementContractVitamDto convertVitamUiManagementContractToVitamMgt(final ManagementContractDto dto) {
-        ManagementContractVitamDto managementContractVitamDto =
-            VitamUIUtils.copyProperties(dto, new ManagementContractVitamDto());
+        ManagementContractVitamDto managementContractVitamDto = VitamUIUtils.copyProperties(
+            dto,
+            new ManagementContractVitamDto()
+        );
         StorageDetailDto storageDetailDto = new StorageDetailDto();
         if (dto.getStorage() != null) {
             storageDetailDto.setObjectStrategy(dto.getStorage().getObjectStrategy());
@@ -66,74 +67,87 @@ public class ManagementContractConverter {
             versionRetentionPolicyDto.setInitialVersion(dto.getVersionRetentionPolicy().isInitialVersion());
             versionRetentionPolicyDto.setIntermediaryVersion(dto.getVersionRetentionPolicy().getIntermediaryVersion());
             Set<VersionUsageDto> versionUsageDtos = new HashSet<>();
-            if (dto.getVersionRetentionPolicy().getUsages() != null &&
-                !dto.getVersionRetentionPolicy().getUsages().isEmpty()) {
-                dto.getVersionRetentionPolicy().getUsages().forEach(versionUsage -> versionUsageDtos.add(
-                    VitamUIUtils.copyProperties(versionUsage, new VersionUsageDto())));
+            if (
+                dto.getVersionRetentionPolicy().getUsages() != null &&
+                !dto.getVersionRetentionPolicy().getUsages().isEmpty()
+            ) {
+                dto
+                    .getVersionRetentionPolicy()
+                    .getUsages()
+                    .forEach(
+                        versionUsage ->
+                            versionUsageDtos.add(VitamUIUtils.copyProperties(versionUsage, new VersionUsageDto()))
+                    );
             }
             versionRetentionPolicyDto.setUsages(versionUsageDtos);
             managementContractVitamDto.setVersionRetentionPolicy(versionRetentionPolicyDto);
         }
 
-
         // Mapper dto.getPersistentIdentifierPolicy() vers PersistentIdentifierPolicyDto
         List<PersistentIdentifierPolicyMgtContractDto> persistentIdentifierPolicyMgtContractDto =
             dto.getPersistentIdentifierPolicyList();
 
-      managementContractVitamDto.setPersistentIdentifierPolicyList(
-            convertPersistenceIdentifierVitamUiToVitamMgtContract(persistentIdentifierPolicyMgtContractDto));
-
+        managementContractVitamDto.setPersistentIdentifierPolicyList(
+            convertPersistenceIdentifierVitamUiToVitamMgtContract(persistentIdentifierPolicyMgtContractDto)
+        );
 
         return managementContractVitamDto;
-
     }
 
     private List<PersistentIdentifierPolicyDto> convertPersistenceIdentifierVitamUiToVitamMgtContract(
-        List<PersistentIdentifierPolicyMgtContractDto> persistentIdentifierPolicyMgtContractDtoList) {
-
+        List<PersistentIdentifierPolicyMgtContractDto> persistentIdentifierPolicyMgtContractDtoList
+    ) {
         if (persistentIdentifierPolicyMgtContractDtoList == null) {
             return null;
         }
 
-
-        return persistentIdentifierPolicyMgtContractDtoList.stream()
+        return persistentIdentifierPolicyMgtContractDtoList
+            .stream()
             .map(persistentIdentifierPolicyMgtContractDto -> {
                 PersistentIdentifierPolicyDto persistentIdentifierPolicyDto = new PersistentIdentifierPolicyDto();
 
                 persistentIdentifierPolicyDto.setPersistentIdentifierPolicyType(
-                    persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierPolicyType());
+                    persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierPolicyType()
+                );
                 persistentIdentifierPolicyDto.setPersistentIdentifierUnit(
-                    persistentIdentifierPolicyMgtContractDto.isPersistentIdentifierUnit());
+                    persistentIdentifierPolicyMgtContractDto.isPersistentIdentifierUnit()
+                );
                 persistentIdentifierPolicyDto.setPersistentIdentifierAuthority(
-                    persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierAuthority());
+                    persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierAuthority()
+                );
 
                 if (persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierUsages() != null) {
                     List<PersistentIdentifierUsageDto> persistentIdentifierUsages =
-                        persistentIdentifierPolicyMgtContractDto.getPersistentIdentifierUsages().stream()
+                        persistentIdentifierPolicyMgtContractDto
+                            .getPersistentIdentifierUsages()
+                            .stream()
                             .map(usageMgtContractDto -> {
                                 PersistentIdentifierUsageDto usageDto = new PersistentIdentifierUsageDto();
                                 usageDto.setUsageName(usageMgtContractDto.getUsageName());
                                 usageDto.setInitialVersion(usageMgtContractDto.isInitialVersion());
                                 usageDto.setIntermediaryVersion(usageMgtContractDto.getIntermediaryVersion());
                                 return usageDto;
-                            }).collect(Collectors.toList());
+                            })
+                            .collect(Collectors.toList());
 
                     persistentIdentifierPolicyDto.setPersistentIdentifierUsages(persistentIdentifierUsages);
                 }
                 return persistentIdentifierPolicyDto;
-            }).collect(Collectors.toList());
-
-
-
+            })
+            .collect(Collectors.toList());
     }
 
     public ManagementContractDto convertVitamMgtContractToVitamUiDto(
-        final ManagementContractVitamDto managementContractVitamDto) {
-        final ManagementContractDto managementContractDto =
-            VitamUIUtils.copyProperties(managementContractVitamDto, new ManagementContractDto());
+        final ManagementContractVitamDto managementContractVitamDto
+    ) {
+        final ManagementContractDto managementContractDto = VitamUIUtils.copyProperties(
+            managementContractVitamDto,
+            new ManagementContractDto()
+        );
         if (managementContractVitamDto.getStorage() != null) {
-            managementContractDto.setStorage(VitamUIUtils.copyProperties(managementContractVitamDto.getStorage(),
-                new StorageManagementContractDto()));
+            managementContractDto.setStorage(
+                VitamUIUtils.copyProperties(managementContractVitamDto.getStorage(), new StorageManagementContractDto())
+            );
         }
 
         VersionRetentionPolicyMgtContractDto versionRetentionPolicyMgtContractDto =
@@ -141,15 +155,25 @@ public class ManagementContractConverter {
 
         if (managementContractVitamDto.getVersionRetentionPolicy() != null) {
             versionRetentionPolicyMgtContractDto.setInitialVersion(
-                managementContractVitamDto.getVersionRetentionPolicy().getInitialVersion());
+                managementContractVitamDto.getVersionRetentionPolicy().getInitialVersion()
+            );
             versionRetentionPolicyMgtContractDto.setIntermediaryVersion(
-                managementContractVitamDto.getVersionRetentionPolicy().getIntermediaryVersion());
+                managementContractVitamDto.getVersionRetentionPolicy().getIntermediaryVersion()
+            );
             Set<VersionUsageMgtContractDto> versionUsageMgtContractDtoSet = new HashSet<>();
-            if (managementContractVitamDto.getVersionRetentionPolicy().getUsages() != null &&
-                !managementContractVitamDto.getVersionRetentionPolicy().getUsages().isEmpty()) {
-                managementContractVitamDto.getVersionRetentionPolicy().getUsages().forEach(
-                    usageVersion -> versionUsageMgtContractDtoSet.add(
-                        VitamUIUtils.copyProperties(usageVersion, new VersionUsageMgtContractDto())));
+            if (
+                managementContractVitamDto.getVersionRetentionPolicy().getUsages() != null &&
+                !managementContractVitamDto.getVersionRetentionPolicy().getUsages().isEmpty()
+            ) {
+                managementContractVitamDto
+                    .getVersionRetentionPolicy()
+                    .getUsages()
+                    .forEach(
+                        usageVersion ->
+                            versionUsageMgtContractDtoSet.add(
+                                VitamUIUtils.copyProperties(usageVersion, new VersionUsageMgtContractDto())
+                            )
+                    );
             }
             versionRetentionPolicyMgtContractDto.setUsages(versionUsageMgtContractDtoSet);
             managementContractDto.setVersionRetentionPolicy(versionRetentionPolicyMgtContractDto);
@@ -160,47 +184,65 @@ public class ManagementContractConverter {
         }
 
         managementContractDto.setPersistentIdentifierPolicyList(
-            managementContractVitamDto.getPersistentIdentifierPolicyList().stream().map(persistentIdentifierPolicyVitamDto -> {
-                PersistentIdentifierPolicyMgtContractDto persistentIdentifierPolicyMgtContractDto = new PersistentIdentifierPolicyMgtContractDto();
+            managementContractVitamDto
+                .getPersistentIdentifierPolicyList()
+                .stream()
+                .map(persistentIdentifierPolicyVitamDto -> {
+                    PersistentIdentifierPolicyMgtContractDto persistentIdentifierPolicyMgtContractDto =
+                        new PersistentIdentifierPolicyMgtContractDto();
 
-                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierPolicyType(
-                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierPolicyType());
-                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUnit(
-                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierUnit());
-                persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierAuthority(
-                    persistentIdentifierPolicyVitamDto.getPersistentIdentifierAuthority());
+                    persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierPolicyType(
+                        persistentIdentifierPolicyVitamDto.getPersistentIdentifierPolicyType()
+                    );
+                    persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUnit(
+                        persistentIdentifierPolicyVitamDto.getPersistentIdentifierUnit()
+                    );
+                    persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierAuthority(
+                        persistentIdentifierPolicyVitamDto.getPersistentIdentifierAuthority()
+                    );
 
-                if (persistentIdentifierPolicyVitamDto.getPersistentIdentifierUsages() != null) {
+                    if (persistentIdentifierPolicyVitamDto.getPersistentIdentifierUsages() != null) {
+                        List<PersistentIdentifierUsageMgtContractDto> persistentIdentifierUsages =
+                            persistentIdentifierPolicyVitamDto
+                                .getPersistentIdentifierUsages()
+                                .stream()
+                                .map(usageMgtContractDto -> {
+                                    PersistentIdentifierUsageMgtContractDto usageDto =
+                                        new PersistentIdentifierUsageMgtContractDto();
+                                    usageDto.setUsageName(usageMgtContractDto.getUsageName());
+                                    usageDto.setInitialVersion(usageMgtContractDto.getInitialVersion());
+                                    usageDto.setIntermediaryVersion(usageMgtContractDto.getIntermediaryVersion());
+                                    return usageDto;
+                                })
+                                .collect(Collectors.toList());
 
-                    List<PersistentIdentifierUsageMgtContractDto> persistentIdentifierUsages =
-                        persistentIdentifierPolicyVitamDto.getPersistentIdentifierUsages().stream()
-                            .map(usageMgtContractDto -> {
-                                PersistentIdentifierUsageMgtContractDto usageDto = new PersistentIdentifierUsageMgtContractDto();
-                                usageDto.setUsageName(usageMgtContractDto.getUsageName());
-                                usageDto.setInitialVersion(usageMgtContractDto.getInitialVersion());
-                                usageDto.setIntermediaryVersion(usageMgtContractDto.getIntermediaryVersion());
-                                return usageDto;
-                            }).collect(Collectors.toList());
-
-                    persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUsages(persistentIdentifierUsages);
-                }
-                return persistentIdentifierPolicyMgtContractDto;
-            }).collect(Collectors.toList())
+                        persistentIdentifierPolicyMgtContractDto.setPersistentIdentifierUsages(
+                            persistentIdentifierUsages
+                        );
+                    }
+                    return persistentIdentifierPolicyMgtContractDto;
+                })
+                .collect(Collectors.toList())
         );
 
         return managementContractDto;
     }
 
     public List<ManagementContractModelDto> convertVitamUiListMgtContractToVitamListMgtContract(
-        final List<ManagementContractDto> managementContractDtoList) {
-        return managementContractDtoList.stream().map(this::convertVitamUiManagementContractToVitamMgt)
+        final List<ManagementContractDto> managementContractDtoList
+    ) {
+        return managementContractDtoList
+            .stream()
+            .map(this::convertVitamUiManagementContractToVitamMgt)
             .collect(Collectors.toList());
     }
 
     public List<ManagementContractDto> convertVitamListMgtContractToVitamUIMgtContractDtos(
-        final List<ManagementContractVitamDto> managementContractVitamDtoList) {
-        return managementContractVitamDtoList.stream().map(this::convertVitamMgtContractToVitamUiDto)
+        final List<ManagementContractVitamDto> managementContractVitamDtoList
+    ) {
+        return managementContractVitamDtoList
+            .stream()
+            .map(this::convertVitamMgtContractToVitamUiDto)
             .collect(Collectors.toList());
     }
-
 }

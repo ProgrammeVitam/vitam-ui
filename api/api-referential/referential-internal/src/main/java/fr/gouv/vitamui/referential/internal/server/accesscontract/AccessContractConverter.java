@@ -52,7 +52,6 @@ import java.util.stream.Collectors;
 public class AccessContractConverter {
 
     public AccessContractVitamDto convertDtoToVitam(final AccessContractDto dto) {
-
         final AccessContractVitamDto accessContract = VitamUIUtils.copyProperties(dto, new AccessContractVitamDto());
 
         return accessContract;

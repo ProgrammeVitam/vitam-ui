@@ -58,5 +58,4 @@ public class RouteNotFoundException extends VitamUIException {
     public RouteNotFoundException(final String message, final String key) {
         super(message, key);
     }
-
 }

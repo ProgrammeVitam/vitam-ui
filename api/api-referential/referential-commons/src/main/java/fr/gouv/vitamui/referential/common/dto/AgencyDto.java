@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,5 +59,4 @@ public class AgencyDto extends IdDto implements Serializable {
     private String identifier;
 
     private String description;
-
 }

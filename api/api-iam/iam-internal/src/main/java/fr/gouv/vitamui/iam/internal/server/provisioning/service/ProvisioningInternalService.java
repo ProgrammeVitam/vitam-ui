@@ -69,26 +69,45 @@ public class ProvisioningInternalService {
     @NotNull
     private int maxStreetLength;
 
-    public ProvisioningInternalService(final WebClient.Builder webClientBuilder,
+    public ProvisioningInternalService(
+        final WebClient.Builder webClientBuilder,
         final ProvisioningClientConfiguration provisioningClientConfiguration,
-        final InternalSecurityService securityService) {
+        final InternalSecurityService securityService
+    ) {
         this.webClientBuilder = webClientBuilder;
         this.provisioningClientConfiguration = provisioningClientConfiguration;
         this.securityService = securityService;
     }
 
-    public ProvidedUserDto getUserInformation(final String idp, final String email, final String loginCustomerId,
-        final String groupId, final String unit, final String userIdentifier) {
+    public ProvidedUserDto getUserInformation(
+        final String idp,
+        final String email,
+        final String loginCustomerId,
+        final String groupId,
+        final String unit,
+        final String userIdentifier
+    ) {
         final IdPProvisioningClientConfiguration idpProvisioningClient = getProvisioningClientConfiguration(idp);
 
         try (var webClient = buildWebClient(idpProvisioningClient)) {
             final ProvidedUserDto providedUser = webClient.getProvidedUser(
-                securityService.getHttpContext(), email, loginCustomerId, groupId, unit, userIdentifier);
+                securityService.getHttpContext(),
+                email,
+                loginCustomerId,
+                groupId,
+                unit,
+                userIdentifier
+            );
 
             if (Objects.isNull(providedUser)) {
                 throw new NotFoundException(
-                    String.format("No user returned by provisioning with email %s, technicalUserId %s, idp %s", email,
-                        userIdentifier, idp));
+                    String.format(
+                        "No user returned by provisioning with email %s, technicalUserId %s, idp %s",
+                        email,
+                        userIdentifier,
+                        idp
+                    )
+                );
             }
 
             final AddressDto address = providedUser.getAddress();
@@ -106,11 +125,17 @@ public class ProvisioningInternalService {
      * @return
      */
     protected IdPProvisioningClientConfiguration getProvisioningClientConfiguration(final String idp) {
-        return provisioningClientConfiguration.getIdentityProviders()
+        return provisioningClientConfiguration
+            .getIdentityProviders()
             .stream()
             .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equalsIgnoreCase(idp))
-            .findFirst().orElseThrow(() -> new NotFoundException(
-                String.format("Provisioning client configuration not found for IdP : %S", idp)));
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format("Provisioning client configuration not found for IdP : %S", idp)
+                    )
+            );
     }
 
     /**
@@ -120,9 +145,12 @@ public class ProvisioningInternalService {
      * @return
      */
     protected ProvisioningWebClient buildWebClient(final IdPProvisioningClientConfiguration idpProvisioningClient) {
-        final BaseWebClientFactory clientFactory =
-            new BaseWebClientFactory(idpProvisioningClient.getClient(), null, webClientBuilder,
-                idpProvisioningClient.getUri());
+        final BaseWebClientFactory clientFactory = new BaseWebClientFactory(
+            idpProvisioningClient.getClient(),
+            null,
+            webClientBuilder,
+            idpProvisioningClient.getUri()
+        );
 
         return new ProvisioningWebClient(clientFactory.getWebClient(), idpProvisioningClient.getUri());
     }

@@ -40,6 +40,7 @@ import java.util.Set;
 
 @Service
 public class SchemaService {
+
     @Autowired
     private SchemaClient client;
 

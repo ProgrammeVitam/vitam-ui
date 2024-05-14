@@ -99,8 +99,12 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         criteria.ifPresent(c -> builder.addParameter(CRITERIA_QUERY_PARAM, c));
         embedded.ifPresent(e -> builder.addParameter(EMBEDDED_QUERY_PARAM, e));
 
-        final ResponseEntity<List<D>> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET,
-                request, getDtoListClass());
+        final ResponseEntity<List<D>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getDtoListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -112,8 +116,12 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_CHECK);
         builder.addParameter(CRITERIA_QUERY_PARAM, criteria);
 
-        final ResponseEntity<Void> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.HEAD, request,
-                Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.HEAD,
+            request,
+            Void.class
+        );
         checkResponse(response, 200, 204);
         return response.getStatusCodeValue() == 200;
     }
@@ -131,16 +139,24 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         return getOne(context, id, criteria, Optional.empty());
     }
 
-    public D getOne(final C context, final String id, final Optional<String> criteria,
-            final Optional<String> embedded) {
+    public D getOne(
+        final C context,
+        final String id,
+        final Optional<String> criteria,
+        final Optional<String> embedded
+    ) {
         LOGGER.debug("Get {}, criteria={} embedded={}", id, criteria, embedded);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/");
         criteria.ifPresent(c -> builder.addParameter(CRITERIA_QUERY_PARAM, c));
         embedded.ifPresent(e -> builder.addParameter(EMBEDDED_QUERY_PARAM, e));
 
-        final ResponseEntity<D> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
-                getDtoClass());
+        final ResponseEntity<D> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -166,8 +182,13 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         ApiUtils.checkValidity(dto);
         final String dtoId = dto.getId();
         final HttpEntity<D> request = new HttpEntity<>(dto, buildHeaders(context));
-        final ResponseEntity<D> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.PUT,
-                request, getDtoClass(), dtoId);
+        final ResponseEntity<D> response = restTemplate.exchange(
+            getUrl() + CommonConstants.PATH_ID,
+            HttpMethod.PUT,
+            request,
+            getDtoClass(),
+            dtoId
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -180,8 +201,12 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final String id = (String) partialDto.get("id");
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, buildHeaders(context));
 
-        final ResponseEntity<D> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request,
-                getDtoClass());
+        final ResponseEntity<D> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -194,8 +219,12 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final MultiValueMap<String, String> headers = buildHeaders(context);
 
         final HttpEntity<D> request = new HttpEntity<>(partialDto, headers);
-        final ResponseEntity<D> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request,
-                getDtoClass());
+        final ResponseEntity<D> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -216,11 +245,15 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
      */
     public JsonNode findHistoryById(final C context, final String id) {
         LOGGER.debug("Get logbook of id :{}", id);
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/" + id + "/history" );
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/" + id + "/history");
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(buildHeaders(context));
         LOGGER.debug("Attempt to get logbook at {}", uriBuilder.toUriString());
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request,
-            JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -247,8 +280,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     protected URIBuilder getUriBuilder(final String url) {
         try {
             return new URIBuilder(url);
-        }
-        catch (final URISyntaxException exception) {
+        } catch (final URISyntaxException exception) {
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
     }
@@ -261,8 +293,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     protected URIBuilder getUriBuilderFromPath(final String path) {
         try {
             return new URIBuilder(getUrl() + path);
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new ApplicationServerException(e.getMessage());
         }
     }
@@ -271,8 +302,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     protected URI buildUriBuilder(final URIBuilder builder) {
         try {
             return builder.build();
-        }
-        catch (final URISyntaxException exception) {
+        } catch (final URISyntaxException exception) {
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
     }

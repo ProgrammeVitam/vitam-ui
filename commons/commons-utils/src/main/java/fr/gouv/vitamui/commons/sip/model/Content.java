@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.commons.sip.model;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.ToString;
+import java.util.List;
 
 @Getter
 @ToString
@@ -68,8 +67,7 @@ public class Content {
     @XmlElement(name = "Keyword")
     private List<Keyword> keywords;
 
-    private Content() {
-    }
+    private Content() {}
 
     private Content(Builder builder) {
         descriptionLevel = builder.descriptionLevel;
@@ -90,7 +88,7 @@ public class Content {
 
         private List<Keyword> keywords;
 
-	private String description;
+        private String description;
 
         private String documentType;
 

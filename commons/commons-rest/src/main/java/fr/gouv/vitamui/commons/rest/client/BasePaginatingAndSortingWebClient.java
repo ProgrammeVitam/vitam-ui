@@ -36,19 +36,18 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.ParameterizedTypeReferenceFactory;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.util.Optional;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier, with paginated results.
@@ -56,27 +55,51 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpContext, D extends IdDto> extends BaseCrudWebClient<C, D> {
+public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpContext, D extends IdDto>
+    extends BaseCrudWebClient<C, D> {
 
     private static final String EMBEDDED_QUERY_PARAM = "embedded";
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
     @Autowired
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BasePaginatingAndSortingWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        BasePaginatingAndSortingWebClient.class
+    );
 
     public BasePaginatingAndSortingWebClient(@Autowired final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
-    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<D> getAllPaginated(
+        final C context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return getAllPaginated(context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
-    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
-        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria, orderBy, direction, embedded);
+    public PaginatedValuesDto<D> getAllPaginated(
+        final C context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
+        LOGGER.debug(
+            "search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            embedded
+        );
 
         final URIBuilder builder = getUriBuilderFromUrl();
         builder.addParameter("page", page.toString());
@@ -86,14 +109,14 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
         direction.ifPresent(o -> builder.addParameter("direction", o.toString()));
         embedded.ifPresent(o -> builder.addParameter(EMBEDDED_QUERY_PARAM, o));
 
-        return webClient.get()
-                        .uri(buildUriBuilder(builder))
-                        .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
-                        .retrieve()
-                        .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
-                        .bodyToMono(getDtoPaginatedClass())
-                        .block();
-
+        return webClient
+            .get()
+            .uri(buildUriBuilder(builder))
+            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .bodyToMono(getDtoPaginatedClass())
+            .block();
     }
 
     public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
@@ -121,19 +144,19 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
             }
         }
 
-        if (requestParam.getGroups() != null
-            && requestParam.getGroups().getFields() != null) {
+        if (requestParam.getGroups() != null && requestParam.getGroups().getFields() != null) {
             for (var field : requestParam.getGroups().getFields()) {
                 builder.addParameter("fields", field);
             }
             builder.addParameter("operator", requestParam.getGroups().getOperator().name());
-            
+
             if (requestParam.getGroups().getFieldOperator() != null) {
                 builder.addParameter("fieldOperator", requestParam.getGroups().getFieldOperator());
             }
         }
 
-        return webClient.get()
+        return webClient
+            .get()
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
@@ -144,8 +167,7 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
 
-    protected ParameterizedTypeReference<ResultsDto<D>> getResultsDtoClass(){
+    protected ParameterizedTypeReference<ResultsDto<D>> getResultsDtoClass() {
         return ParameterizedTypeReferenceFactory.createFromInstance(ResultsDto.class, this);
     }
-
 }

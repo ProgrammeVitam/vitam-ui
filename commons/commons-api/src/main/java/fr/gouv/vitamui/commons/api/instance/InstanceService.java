@@ -1,11 +1,9 @@
 package fr.gouv.vitamui.commons.api.instance;
 
-import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
 
-import lombok.AllArgsConstructor;
+import java.util.Objects;
 
 @AllArgsConstructor
 public class InstanceService {
@@ -21,5 +19,4 @@ public class InstanceService {
         var primary = environment.getProperty(PRIMARY_KEY, Boolean.class);
         return Objects.isNull(primary) || primary;
     }
-
 }

@@ -1,29 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -34,6 +10,29 @@ import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link IdentityProviderInternalService}.
@@ -59,14 +58,22 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     @Mock
     private IamLogbookService iamLogbookService;
 
-    private final IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
+    private final IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(
+        spMetadataGenerator
+    );
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        service = new IdentityProviderInternalService(sequenceGeneratorService, identityProviderRepository, spMetadataGenerator, customerRepository,
-                iamLogbookService, identityProviderConverter);
+        service = new IdentityProviderInternalService(
+            sequenceGeneratorService,
+            identityProviderRepository,
+            spMetadataGenerator,
+            customerRepository,
+            iamLogbookService,
+            identityProviderConverter
+        );
     }
 
     private void prepareServices() {
@@ -98,8 +105,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         final IdentityProviderDto dto = buildIdentityProviderDto();
         try {
             service.create(dto);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -113,9 +119,15 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         dto.setId(null);
         try {
             service.create(dto);
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create identity provider " + dto.getName() + ": customer " + dto.getCustomerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create identity provider " +
+                dto.getName() +
+                ": customer " +
+                dto.getCustomerId() +
+                " does not exist",
+                e.getMessage()
+            );
         }
     }
 
@@ -130,9 +142,11 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create identity provider " + dto.getName() + ": technical name must be null at creation", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create identity provider " + dto.getName() + ": technical name must be null at creation",
+                e.getMessage()
+            );
         }
     }
 
@@ -142,14 +156,19 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
         dto.setId(null);
-        dto.setPatterns(List.of("somePattern","somePattern","anotherPattern"));
+        dto.setPatterns(List.of("somePattern", "somePattern", "anotherPattern"));
 
         try {
             service.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create identity provider " + dto.getName() + ":Duplicate pattern found " + String.join(",", List.of("somePattern")), e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create identity provider " +
+                dto.getName() +
+                ":Duplicate pattern found " +
+                String.join(",", List.of("somePattern")),
+                e.getMessage()
+            );
         }
     }
 
@@ -163,9 +182,11 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create identity provider " + dto.getName() + ": readonly must be set to false", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create identity provider " + dto.getName() + ": readonly must be set to false",
+                e.getMessage()
+            );
         }
     }
 
@@ -210,8 +231,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
 
         try {
             service.update(dto);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update identity provider: no provider found for id " + dto.getId(), e.getMessage());
         }
     }
@@ -227,9 +247,15 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update identity provider " + dto.getId() + ": customer " + dto.getCustomerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update identity provider " +
+                dto.getId() +
+                ": customer " +
+                dto.getCustomerId() +
+                " does not exist",
+                e.getMessage()
+            );
         }
     }
 
@@ -244,15 +270,16 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update identity provider " + dto.getId() + ": readonly must be set to false", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update identity provider " + dto.getId() + ": readonly must be set to false",
+                e.getMessage()
+            );
         }
     }
 
     @Test
     public void testUpdateFailsAsIsReadonlyIsTrue() {
-
         final IdentityProvider idp = buildIdentityProvider();
         idp.setReadonly(true);
 
@@ -265,8 +292,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update identity provider " + dto.getId() + ": readonly provider", e.getMessage());
         }
     }
@@ -280,9 +306,11 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         try {
             service.update(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update identity provider " + dto.getId() + ": technical name must not be blank at update", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update identity provider " + dto.getId() + ": technical name must not be blank at update",
+                e.getMessage()
+            );
         }
     }
 
@@ -368,11 +396,16 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
 
     @Test
     public void testGetAvailableDomain() {
-        final List<IdentityProvider> idp = Arrays.asList(buildIdp(".*@vitamui.com", ".*@total.com"), buildIdp(".*@edf.fr", ".*@orange.com"));
+        final List<IdentityProvider> idp = Arrays.asList(
+            buildIdp(".*@vitamui.com", ".*@total.com"),
+            buildIdp(".*@edf.fr", ".*@orange.com")
+        );
         when(identityProviderRepository.findAll(any(CriteriaDefinition.class))).thenReturn(idp);
 
         final Customer customer = buildCustomer();
-        customer.setEmailDomains(Arrays.asList("vitamui.com", "total.com", "edf.fr", "orange.com", "bouygues.com", "telecom.com"));
+        customer.setEmailDomains(
+            Arrays.asList("vitamui.com", "total.com", "edf.fr", "orange.com", "bouygues.com", "telecom.com")
+        );
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
 
         final List<String> availableDomains = service.getDomainsNotAssigned("customerId");
@@ -416,5 +449,4 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
     }
-
 }

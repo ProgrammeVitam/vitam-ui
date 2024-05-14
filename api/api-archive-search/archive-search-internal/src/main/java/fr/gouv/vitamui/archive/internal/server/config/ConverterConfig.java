@@ -52,16 +52,16 @@ public class ConverterConfig {
         return new AccessContractConverter();
     }
 
-
     @Bean
     public SearchCriteriaHistoryConverter searchCriteriaHistoryConverter() {
         return new SearchCriteriaHistoryConverter();
     }
 
     @Bean
-    public Converters converters(final AccessContractConverter accessContractConverter,
-        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter) {
+    public Converters converters(
+        final AccessContractConverter accessContractConverter,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter
+    ) {
         return new Converters(accessContractConverter, searchCriteriaHistoryConverter);
     }
-
 }

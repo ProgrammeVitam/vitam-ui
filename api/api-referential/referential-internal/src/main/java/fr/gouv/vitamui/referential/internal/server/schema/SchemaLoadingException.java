@@ -33,6 +33,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ResponseStatus(code = INTERNAL_SERVER_ERROR, reason = "Error during schema loading")
 public class SchemaLoadingException extends RuntimeException {
+
     public SchemaLoadingException(Throwable cause) {
         super(cause);
     }

@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.ToString;
 
 @ToString
 public class IngestContractDto {
@@ -213,5 +212,4 @@ public class IngestContractDto {
     public List<String> getArchiveProfiles() {
         return archiveProfiles;
     }
-
 }

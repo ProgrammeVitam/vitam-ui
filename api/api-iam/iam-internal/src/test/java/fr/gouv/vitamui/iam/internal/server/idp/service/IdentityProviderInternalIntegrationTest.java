@@ -1,28 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -43,11 +20,35 @@ import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = {IdentityProviderRepository.class, CustomSequenceRepository.class},
-        repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = { IdentityProviderRepository.class, CustomSequenceRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class IdentityProviderInternalIntegrationTest extends AbstractLogbookIntegrationTest {
 
     @MockBean
@@ -91,14 +92,21 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
 
     @Before
     public void setup() {
-
         identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
-        service = new IdentityProviderInternalService(sequenceGeneratorService, repository, spMetadataGenerator, customerRepository, iamLogbookService,
-                identityProviderConverter);
+        service = new IdentityProviderInternalService(
+            sequenceGeneratorService,
+            repository,
+            spMetadataGenerator,
+            customerRepository,
+            iamLogbookService,
+            identityProviderConverter
+        );
         repository.deleteAll();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
     }
 
     @Test
@@ -106,8 +114,12 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         final IdentityProviderDto idp = createIdp();
         assertThat(idp.getIdentifier()).isNotBlank();
 
-        final Criteria criteria = Criteria.where("obId").is(idp.getIdentifier()).and("obIdReq").is(MongoDbCollections.PROVIDERS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_IDP);
+        final Criteria criteria = Criteria.where("obId")
+            .is(idp.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.PROVIDERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_IDP);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -152,8 +164,12 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         service.patch(partialDto);
         partialDto.remove("discoveryUrl");
 
-        final Criteria criteria = Criteria.where("obId").is(dto.getIdentifier()).and("obIdReq").is(MongoDbCollections.PROVIDERS).and("evType")
-                .is(EventType.EXT_VITAMUI_UPDATE_IDP);
+        final Criteria criteria = Criteria.where("obId")
+            .is(dto.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.PROVIDERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_UPDATE_IDP);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(8);
     }
@@ -175,5 +191,4 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
 
         return service.create(dto);
     }
-
 }

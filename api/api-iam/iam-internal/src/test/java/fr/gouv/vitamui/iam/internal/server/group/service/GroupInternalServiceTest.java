@@ -69,7 +69,19 @@ public class GroupInternalServiceTest {
 
     @Before
     public void setup() {
-        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, profileInternalService, userRepository, internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null, null);
+        internalGroupService = new GroupInternalService(
+            sequenceGeneratorService,
+            groupRepository,
+            customerRepository,
+            profileInternalService,
+            userRepository,
+            internalSecurityService,
+            tenantRepository,
+            iamLogbookService,
+            groupConverter,
+            null,
+            null
+        );
         final Tenant tenant = new Tenant();
         tenant.setCustomerId("customerId");
         when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
@@ -100,8 +112,13 @@ public class GroupInternalServiceTest {
 
         wireInternalSecurityServerCalls();
 
-        final PaginatedValuesDto<GroupDto> result = internalGroupService.getAllPaginated(Integer.valueOf(0),
-                Integer.valueOf(5), Optional.empty(), Optional.empty(), Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<GroupDto> result = internalGroupService.getAllPaginated(
+            Integer.valueOf(0),
+            Integer.valueOf(5),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(DirectionDto.ASC)
+        );
         Assert.assertNotNull("Groups should be returned.", result);
         Assert.assertNotNull("Groups should be returned.", result.getValues());
         Assert.assertEquals("Groups size should be returned.", 1, result.getValues().size());
@@ -193,8 +210,9 @@ public class GroupInternalServiceTest {
         partialDto.put("description", "description");
         partialDto.put("profileIds", Arrays.asList("id1", "id2"));
 
-        when(profileInternalService.getMany(any(), any()))
-        .thenReturn(Arrays.asList(buildProfileDto("id1", "app1"), buildProfileDto("id2", "app2")));
+        when(profileInternalService.getMany(any(), any())).thenReturn(
+            Arrays.asList(buildProfileDto("id1", "app1"), buildProfileDto("id2", "app2"))
+        );
         when(groupRepository.findById(any())).thenReturn(Optional.of(buildGroup()));
         when(groupRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(buildGroup()));
         when(internalSecurityService.isLevelAllowed(any())).thenCallRealMethod();
@@ -230,8 +248,11 @@ public class GroupInternalServiceTest {
         when(tenantRepository.findByIdentifier(1)).thenReturn(tenant1);
         when(tenantRepository.findByIdentifier(2)).thenReturn(tenant2);
 
-        final GroupDto groupDto = internalGroupService.getOne(group.getId(), Optional.empty(),
-                IamUtils.buildOptionalEmbedded(EmbeddedOptions.ALL));
+        final GroupDto groupDto = internalGroupService.getOne(
+            group.getId(),
+            Optional.empty(),
+            IamUtils.buildOptionalEmbedded(EmbeddedOptions.ALL)
+        );
 
         assertThat(groupDto).isNotNull();
         assertThat(groupDto.getId()).isEqualTo(group.getId());
@@ -293,14 +314,16 @@ public class GroupInternalServiceTest {
     }
 
     @Test
-    public void getLevels_whenProfilesExist_returnsLevels(){
+    public void getLevels_whenProfilesExist_returnsLevels() {
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document document = new Document("level", Arrays.asList("DEV", "TEST"));
         mappedResults.add(document);
         Document rawResults = new Document();
-        AggregationResults<Document> value = new AggregationResults<>(mappedResults,rawResults);
-        when(groupRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
+        AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
+        when(groupRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(
+            value
+        );
         List<String> levels = internalGroupService.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(2);
         assertThat(levels.get(0)).isEqualTo("DEV");
@@ -308,12 +331,14 @@ public class GroupInternalServiceTest {
     }
 
     @Test
-    public void getLevels_whenNoProfile_returnsEmptyList(){
+    public void getLevels_whenNoProfile_returnsEmptyList() {
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document rawResults = new Document();
-        AggregationResults<Document> value = new AggregationResults<>(mappedResults,rawResults);
-        when(groupRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
+        AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
+        when(groupRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(
+            value
+        );
         List<String> levels = internalGroupService.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(0);
     }
@@ -323,7 +348,7 @@ public class GroupInternalServiceTest {
         Set<String> newUnits = Set.of("units1", "units2");
         final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);
 
-        internalGroupService.checkUnitsExist(null, newUnits,"customerId", "");
+        internalGroupService.checkUnitsExist(null, newUnits, "customerId", "");
 
         Mockito.verify(groupRepository, times(2)).exists(criteriaCaptor.capture());
 
@@ -336,7 +361,7 @@ public class GroupInternalServiceTest {
 
     @Test
     public void checkUnitsExist_whenGroupIsCreatedWithZeroUnits_thenCheckZeroUnits() {
-        internalGroupService.checkUnitsExist(null, null,"customerId", "");
+        internalGroupService.checkUnitsExist(null, null, "customerId", "");
 
         Mockito.verify(groupRepository, times(0)).exists(ArgumentMatchers.any(List.class));
     }
@@ -347,7 +372,7 @@ public class GroupInternalServiceTest {
         Set<String> oldUnits = Set.of("units2");
         final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);
 
-        internalGroupService.checkUnitsExist(oldUnits, newUnits,"customerId", "");
+        internalGroupService.checkUnitsExist(oldUnits, newUnits, "customerId", "");
 
         Mockito.verify(groupRepository, times(1)).exists(criteriaCaptor.capture());
 

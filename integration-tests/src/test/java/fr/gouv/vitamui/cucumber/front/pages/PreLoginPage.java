@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.cucumber.front.pages;
 
-import org.openqa.selenium.By;
-
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
+import org.openqa.selenium.By;
 
 @DefaultUrl("/")
 public class PreLoginPage extends AbstractPage {
@@ -15,8 +14,11 @@ public class PreLoginPage extends AbstractPage {
     }
 
     public boolean isPreLoginPageDisplayed() {
-        return $("//div[@class='login-background']").isDisplayed() && $("//div[@class='login-box']").isDisplayed()
-                && $("//img[@class='vitam-logo']").isDisplayed();
+        return (
+            $("//div[@class='login-background']").isDisplayed() &&
+            $("//div[@class='login-box']").isDisplayed() &&
+            $("//img[@class='vitam-logo']").isDisplayed()
+        );
     }
 
     public void waitForTitleToAppear() {
@@ -30,5 +32,4 @@ public class PreLoginPage extends AbstractPage {
     public WebElementFacade getApplicationElement(String applicationId) {
         return find(By.id(applicationId));
     }
-
 }

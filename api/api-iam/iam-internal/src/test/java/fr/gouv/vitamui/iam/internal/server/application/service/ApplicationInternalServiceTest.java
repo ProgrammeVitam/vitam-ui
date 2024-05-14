@@ -1,24 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.application.service;
 
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.data.mongodb.core.query.Query;
-
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -35,6 +17,23 @@ import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ApplicationInternalServiceTest {
 
@@ -50,12 +49,19 @@ public class ApplicationInternalServiceTest {
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
-    private final ExternalIdentifierConfiguration externalIdentifierConfiguration = mock(ExternalIdentifierConfiguration.class);
+    private final ExternalIdentifierConfiguration externalIdentifierConfiguration = mock(
+        ExternalIdentifierConfiguration.class
+    );
 
     @Before
     public void setup() {
-        applicationService = new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter,
-            internalSecurityService, externalIdentifierConfiguration);
+        applicationService = new ApplicationInternalService(
+            sequenceGeneratorService,
+            applicationRepository,
+            applicationConverter,
+            internalSecurityService,
+            externalIdentifierConfiguration
+        );
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
@@ -121,8 +127,7 @@ public class ApplicationInternalServiceTest {
         try {
             applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
             fail("Should Throw Exception");
-        } catch (UnAuthorizedException e) {
-        }
+        } catch (UnAuthorizedException e) {}
     }
 
     @Test
@@ -143,8 +148,7 @@ public class ApplicationInternalServiceTest {
     private void wireInternalSecurityServerCalls(boolean withApplications) {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
-        if (withApplications)
-            user.setTenantsByApp(getTenantInformationByApp());
+        if (withApplications) user.setTenantsByApp(getTenantInformationByApp());
         else {
             user.setTenantsByApp(new ArrayList<>());
         }

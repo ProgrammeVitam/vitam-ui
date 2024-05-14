@@ -25,7 +25,6 @@
  * accept its terms.
  */
 
-
 package fr.gouv.vitamui.gateway.filters;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -62,22 +61,26 @@ public class X509CertificateFilter implements GlobalFilter {
         if (sslInfo != null) {
             X509Certificate[] certs = sslInfo.getPeerCertificates();
             if (certs != null && certs.length > 0) {
-                ServerHttpRequest request = exchange.getRequest().mutate()
+                ServerHttpRequest request = exchange
+                    .getRequest()
+                    .mutate()
                     .headers(httpHeaders -> {
                         X509Certificate certificate = certs[0];
                         try {
                             certificate.checkValidity();
                             String encodedCert = new String(Base64.encodeBase64(certificate.getEncoded()));
                             httpHeaders.set(clientCertificateHeaderName, encodedCert);
-                        } catch (CertificateEncodingException | CertificateExpiredException
-                            | CertificateNotYetValidException e) {
+                        } catch (
+                            CertificateEncodingException
+                            | CertificateExpiredException
+                            | CertificateNotYetValidException e
+                        ) {
                             logger.error("Certificate is invalid : {}", certificate, e);
                         }
-
-                    }).build();
+                    })
+                    .build();
                 return chain.filter(exchange.mutate().request(request).build());
             }
-
         }
         return chain.filter(exchange);
     }

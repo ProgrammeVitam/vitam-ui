@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.commons.vitam.api.xls;
 
-
 import fr.gouv.vitamui.commons.vitam.xls.ExcelUtils;
 import fr.gouv.vitamui.commons.vitam.xls.dto.SheetDto;
 import fr.gouv.vitamui.commons.vitam.xls.dto.Type;
@@ -35,51 +34,41 @@ class ExcelUtilsTest {
         sheet2.setName("Sheet 2");
         sheet2.setColumns(List.of(column1, column2));
         final List<Map<String, ValueDto>> lines2 = new ArrayList<>();
-        lines2.add(Map.of(column1, ValueDto.builder()
-                                           .value("Jean")
-                                           .type(Type.STRING)
-                                           .build(), column2, ValueDto.builder()
-                                                                      .value("XXXX")
-                                                                      .type(Type.STRING)
-                                                                      .build()));
-        lines2.add(Map.of(column1, ValueDto.builder()
-                                           .value("Pierre")
-                                           .type(Type.STRING)
-                                           .build(), column2, ValueDto.builder()
-                                                                      .value("XXXX")
-                                                                      .type(Type.STRING)
-                                                                      .build()));
+        lines2.add(
+            Map.of(
+                column1,
+                ValueDto.builder().value("Jean").type(Type.STRING).build(),
+                column2,
+                ValueDto.builder().value("XXXX").type(Type.STRING).build()
+            )
+        );
+        lines2.add(
+            Map.of(
+                column1,
+                ValueDto.builder().value("Pierre").type(Type.STRING).build(),
+                column2,
+                ValueDto.builder().value("XXXX").type(Type.STRING).build()
+            )
+        );
         sheet2.setLines(lines2);
         final SheetDto sheet3 = new SheetDto();
         sheet3.setName("Sheet 3");
         sheet3.setColumns(List.of(column3));
         final List<Map<String, ValueDto>> lines3 = new ArrayList<>();
-        lines3.add(Map.of(column3, ValueDto.builder()
-                                           .value(23)
-                                           .type(Type.DOUBLE)
-                                           .build()));
-        lines3.add(Map.of(column3, ValueDto.builder()
-                                           .value(27)
-                                           .type(Type.DOUBLE)
-                                           .build()));
+        lines3.add(Map.of(column3, ValueDto.builder().value(23).type(Type.DOUBLE).build()));
+        lines3.add(Map.of(column3, ValueDto.builder().value(27).type(Type.DOUBLE).build()));
         sheet3.setLines(lines3);
         // When
         final ByteArrayResource file = ExcelUtils.generateWorkbook(List.of(sheet1, sheet2, sheet3));
         final XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         // Then
         assertThat(workbook.getNumberOfSheets()).isEqualTo(3);
-        assertThat(workbook.getSheetAt(0)
-                           .getSheetName()).isEqualTo("Sheet 1");
-        assertThat(workbook.getSheetAt(0)
-                           .getPhysicalNumberOfRows()).isEqualTo(1);
-        assertThat(workbook.getSheetAt(1)
-                           .getSheetName()).isEqualTo("Sheet 2");
-        assertThat(workbook.getSheetAt(1)
-                           .getPhysicalNumberOfRows()).isEqualTo(3);
-        assertThat(workbook.getSheetAt(2)
-                           .getSheetName()).isEqualTo("Sheet 3");
-        assertThat(workbook.getSheetAt(2)
-                           .getPhysicalNumberOfRows()).isEqualTo(3);
+        assertThat(workbook.getSheetAt(0).getSheetName()).isEqualTo("Sheet 1");
+        assertThat(workbook.getSheetAt(0).getPhysicalNumberOfRows()).isEqualTo(1);
+        assertThat(workbook.getSheetAt(1).getSheetName()).isEqualTo("Sheet 2");
+        assertThat(workbook.getSheetAt(1).getPhysicalNumberOfRows()).isEqualTo(3);
+        assertThat(workbook.getSheetAt(2).getSheetName()).isEqualTo("Sheet 3");
+        assertThat(workbook.getSheetAt(2).getPhysicalNumberOfRows()).isEqualTo(3);
     }
 
     @Test
@@ -104,10 +93,8 @@ class ExcelUtilsTest {
         final XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         // Then
         assertThat(workbook.getNumberOfSheets()).isEqualTo(1);
-        assertThat(workbook.getSheetAt(0)
-                           .getSheetName()).isEqualTo("Sheet 1");
-        assertThat(workbook.getSheetAt(0)
-                           .getPhysicalNumberOfRows()).isEqualTo(1);
+        assertThat(workbook.getSheetAt(0).getSheetName()).isEqualTo("Sheet 1");
+        assertThat(workbook.getSheetAt(0).getPhysicalNumberOfRows()).isEqualTo(1);
     }
 
     @Test
@@ -118,11 +105,8 @@ class ExcelUtilsTest {
         final Row row = sheet.createRow(0);
         final Cell cell = row.createCell(0);
         // When
-        cell.setCellValue(Date.from(LocalDate.of(1999, 12, 31)
-                                             .atStartOfDay(ZoneId.systemDefault())
-                                             .toInstant()));
+        cell.setCellValue(Date.from(LocalDate.of(1999, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         // Then
         assertThat(ExcelUtils.getFrWithSlashFormatDate(cell)).isEqualTo("31/12/1999");
     }
-
 }

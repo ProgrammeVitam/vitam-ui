@@ -56,13 +56,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 public class ApiReferentialExternalRuleGetSteps extends CommonSteps {
+
     private List<RuleDto> ruleDtos;
 
     private RuleDto ruleDto;
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_recupere_toutes_les_regles_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
-    	ruleDtos = getRuleRestClient().getAll(getSystemTenantUserAdminContext());
+        ruleDtos = getRuleRestClient().getAll(getSystemTenantUserAdminContext());
     }
 
     @Then("^le serveur retourne toutes les regles")
@@ -73,9 +76,11 @@ public class ApiReferentialExternalRuleGetSteps extends CommonSteps {
         assertThat(size).isGreaterThanOrEqualTo(1);
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES recupere une regle par son identifiant en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES recupere une regle par son identifiant en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_recupere_une_regle_par_son_identifiant_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
-    	ruleDto = getRuleRestClient().getOne(getSystemTenantUserAdminContext(), "RuleTest", Optional.empty());
+        ruleDto = getRuleRestClient().getOne(getSystemTenantUserAdminContext(), "RuleTest", Optional.empty());
     }
 
     @Then("^le serveur retourne la regle avec cet identifiant$")
@@ -84,47 +89,63 @@ public class ApiReferentialExternalRuleGetSteps extends CommonSteps {
         assertThat(ruleDto.getRuleId()).isEqualTo("RuleTest");
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles par intitule en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles par intitule en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_recupere_toutes_les_regles_par_intitule_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
-        QueryDto criteria = QueryDto.criteria(
-        	"ruleValue", "Test rule value 1", CriterionOperator.EQUALS);
-        ruleDtos = getRuleRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
+        QueryDto criteria = QueryDto.criteria("ruleValue", "Test rule value 1", CriterionOperator.EQUALS);
+        ruleDtos = getRuleRestClient()
+            .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
     }
 
     @Then("^le serveur retourne toutes les regle avec cet intitule$")
     public void le_serveur_retourne_toutes_les_regles_avec_cet_intitule() {
         assertThat(ruleDtos).isNotNull().isNotEmpty();
-        assertThat(ruleDtos.stream().anyMatch(c ->
-        	(c.getRuleId().equals("RuleTest") && c.getRuleValue().equals("Test rule value 1")
-        ))).isTrue();
+        assertThat(
+            ruleDtos
+                .stream()
+                .anyMatch(c -> (c.getRuleId().equals("RuleTest") && c.getRuleValue().equals("Test rule value 1")))
+        ).isTrue();
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles par type en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES recupere toutes les regles par type en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_recupere_toutes_les_regles_par_type_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
-        QueryDto criteria = QueryDto.criteria(
-            "ruleType", "StorageRule", CriterionOperator.EQUALS);
-        ruleDtos = getRuleRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
+        QueryDto criteria = QueryDto.criteria("ruleType", "StorageRule", CriterionOperator.EQUALS);
+        ruleDtos = getRuleRestClient()
+            .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
     }
 
     @Then("^le serveur retourne toutes les regle avec ce type")
     public void le_serveur_retourne_toutes_les_regles_avec_ce_type() {
         assertThat(ruleDtos).isNotNull().isNotEmpty();
-        assertThat(ruleDtos.stream().anyMatch(c ->
-            (c.getRuleId().equals("RuleTest") && c.getRuleType().equals("StorageRule")
-            ))).isTrue();
+        assertThat(
+            ruleDtos.stream().anyMatch(c -> (c.getRuleId().equals("RuleTest") && c.getRuleType().equals("StorageRule")))
+        ).isTrue();
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_CONTEXTS recupere toutes les regles avec pagination en utilisant un certificat full access avec le role ROLE_GET_CONTEXTS$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_CONTEXTS recupere toutes les regles avec pagination en utilisant un certificat full access avec le role ROLE_GET_CONTEXTS$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_CONTEXTS_recupere_toutes_les_regles_avec_pagination_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_CONTEXTS() {
-    	final PaginatedValuesDto<RuleDto> paginatedRules = getRuleRestClient().getAllPaginated(
-    		getSystemTenantUserAdminContext(), 0, 10, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        final PaginatedValuesDto<RuleDto> paginatedRules = getRuleRestClient()
+            .getAllPaginated(
+                getSystemTenantUserAdminContext(),
+                0,
+                10,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+            );
 
         ruleDtos = new ArrayList<>(paginatedRules.getValues());
     }
 
     @Then("^le serveur retourne les regles paginees$")
     public void le_serveur_retourne_les_regles_paginees() {
-    	assertThat(ruleDtos).isNotNull().isNotEmpty();
+        assertThat(ruleDtos).isNotNull().isNotEmpty();
         assertThat(ruleDtos).size().isLessThanOrEqualTo(10);
     }
 }

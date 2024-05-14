@@ -1,18 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server;
 
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
@@ -21,10 +8,13 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
+import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
@@ -37,6 +27,14 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Swagger JSON Generation.
@@ -126,5 +124,4 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ExternalParamProfileInternalService externalParamProfileInternalService;
-
 }

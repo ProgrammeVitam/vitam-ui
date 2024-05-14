@@ -8,26 +8,24 @@ import java.util.regex.Pattern;
 
 public class SecurePathUtils {
 
-
-    private SecurePathUtils(){}
+    private SecurePathUtils() {}
 
     /**
      * regex to validate filename without path
      * alphanumeric chars, _, -," "and "." but no more than "." in sequence
      */
-    public final static String FILENAME_VALIDATION_REGEX = "^(?!.*(\\.)\\1+)([\\w\\- \\.])+$";
+    public static final String FILENAME_VALIDATION_REGEX = "^(?!.*(\\.)\\1+)([\\w\\- \\.])+$";
 
     /**
      * exception message
      */
-    public final static String DIRECTORY_TRAVERSAL_ATTEMPT = "Directory traversal attempt ? ";
+    public static final String DIRECTORY_TRAVERSAL_ATTEMPT = "Directory traversal attempt ? ";
 
     /**
      * check if there is a directory traversal attempt in the file path
      * @param fullFilePath file path to check
      */
-    public static void checkDirectoryTraversalVulnerability(String fullFilePath)
-    {
+    public static void checkDirectoryTraversalVulnerability(String fullFilePath) {
         File file = new File(fullFilePath);
 
         String pathUsingCanonical;
@@ -35,8 +33,7 @@ public class SecurePathUtils {
         try {
             pathUsingCanonical = file.getCanonicalPath();
             pathUsingAbsolute = file.getAbsolutePath();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new SecurityException(DIRECTORY_TRAVERSAL_ATTEMPT + fullFilePath, e);
         }
 
@@ -70,11 +67,13 @@ public class SecurePathUtils {
      * @return full secure path
      * @throws SecurityException when a threat is detected
      */
-    public static String buildFullSecuredFilePath(String trustedPartialBasePath,
-                                                  String untrustedPartialBasePath,
-                                                  String untrustedFilename) throws SecurityException {
+    public static String buildFullSecuredFilePath(
+        String trustedPartialBasePath,
+        String untrustedPartialBasePath,
+        String untrustedFilename
+    ) throws SecurityException {
         String untrustedFullBasePath;
-        try{
+        try {
             untrustedFullBasePath = Paths.get(trustedPartialBasePath, untrustedPartialBasePath).toString();
         } catch (InvalidPathException e) {
             throw new SecurityException(DIRECTORY_TRAVERSAL_ATTEMPT + untrustedPartialBasePath, e);
@@ -83,5 +82,4 @@ public class SecurePathUtils {
         checkDirectoryTraversalVulnerability(partiallyTrustedFullPath);
         return partiallyTrustedFullPath;
     }
-
 }

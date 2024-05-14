@@ -90,11 +90,35 @@ public class SanityChecker {
 
     // ISSUE with integration
     private static final Validator ESAPI = init();
-    private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
-        List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in", "$eq",
-            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
-            "$limit", "$orderby", "$eq", "$offset", "events.agIdExt.TransferringAgency",
-            "events.agIdExt.originatingAgency","events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq", "$gte", "$lte");
+    private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST = List.of(
+        "$action",
+        "$add",
+        "$pull",
+        "#unitups",
+        "#allunitups",
+        "#id",
+        "$in",
+        "$eq",
+        "$or",
+        "$exists",
+        "$projection",
+        "$query",
+        "$filter",
+        "$roots",
+        "$and",
+        "$fields",
+        "authorizationRequestReplyIdentifier",
+        "$limit",
+        "$orderby",
+        "$eq",
+        "$offset",
+        "events.agIdExt.TransferringAgency",
+        "events.agIdExt.originatingAgency",
+        "events.evDetData.ArchivalAgreement",
+        "events.evDetData.EvDetailReq",
+        "$gte",
+        "$lte"
+    );
 
     private SanityChecker() {
         // Empty constructor
@@ -181,7 +205,6 @@ public class SanityChecker {
         checkJsonSanity(JsonHandler.getFromString(json));
     }
 
-
     /**
      * checkParameter : Check sanity of String: no javascript/xml tag, neither html tag
      *
@@ -194,7 +217,6 @@ public class SanityChecker {
         }
     }
 
-
     /**
      * checkSecureParameter : Check sanity of String: no javascript/xml tag, neither html tag
      * check if the string is not infected or contains illegal characters
@@ -203,8 +225,7 @@ public class SanityChecker {
      * @throws PreconditionFailedException
      * @throws InvalidParseOperationException
      */
-    public static void checkSecureParameter(String... params)
-        throws PreconditionFailedException {
+    public static void checkSecureParameter(String... params) throws PreconditionFailedException {
         for (final String param : params) {
             if (param != null) {
                 checkSecureParam(param);
@@ -237,8 +258,7 @@ public class SanityChecker {
         });
     }
 
-    public static void sanitizeCriteria(Object query)
-        throws PreconditionFailedException {
+    public static void sanitizeCriteria(Object query) throws PreconditionFailedException {
         JsonNode jsonNode = JsonUtils.toJsonNode(query);
         try {
             SanityChecker.checkJsonAll(jsonNode);
@@ -260,8 +280,7 @@ public class SanityChecker {
         return !ESAPI.isValidInput(validator, value, validator, REQUEST_LIMIT, true);
     }
 
-    private static void checkSecureParam(String param)
-        throws PreconditionFailedException {
+    private static void checkSecureParam(String param) throws PreconditionFailedException {
         if (isValidParameter(param)) {
             try {
                 checkSanityTags(param, getLimitParamSize());
@@ -288,7 +307,6 @@ public class SanityChecker {
         checkSanityTags(param, getLimitParamSize());
         checkHtmlPattern(param);
     }
-
 
     /**
      * CheckXMLSanityTags : check invalid tag contains of a xml file
@@ -448,8 +466,7 @@ public class SanityChecker {
      */
     private static void checkJsonFileSize(String json) throws InvalidParseOperationException {
         if (json.length() > getLimitJsonSize()) {
-            throw new InvalidParseOperationException(
-                "Json size exceeds sanity check : " + getLimitJsonSize());
+            throw new InvalidParseOperationException("Json size exceeds sanity check : " + getLimitJsonSize());
         }
     }
 

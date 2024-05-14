@@ -38,7 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis;
 
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,7 @@ import org.springframework.core.env.Environment;
 public class PastisApplication implements CommandLineRunner {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisApplication.class);
+
     @Autowired
     private Environment env;
 
@@ -67,5 +67,4 @@ public class PastisApplication implements CommandLineRunner {
         LOGGER.debug("VITAMUI SpringBoot Application started:");
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
-
 }

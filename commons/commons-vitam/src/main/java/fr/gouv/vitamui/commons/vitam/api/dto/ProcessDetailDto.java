@@ -40,6 +40,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class ProcessDetailDto extends IdDto implements Serializable {
-    private VitamUIProcessDetailResponseDto operations;
 
+    private VitamUIProcessDetailResponseDto operations;
 }

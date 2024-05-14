@@ -58,5 +58,4 @@ public class RequestEntityTooLargeException extends VitamUIException {
     public RequestEntityTooLargeException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

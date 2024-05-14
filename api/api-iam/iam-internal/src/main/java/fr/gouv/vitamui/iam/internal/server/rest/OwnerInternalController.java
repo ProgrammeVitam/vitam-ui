@@ -86,7 +86,6 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
-
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("Check exists by criteria {}", criteria);
         final boolean exist = internalOwnerService.checkExist(criteria);
@@ -114,8 +113,8 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
      */
     @Override
     @PostMapping
-    public OwnerDto create(@Valid final @RequestBody OwnerDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public OwnerDto create(@Valid final @RequestBody OwnerDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return internalOwnerService.create(dto);
@@ -132,7 +131,10 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalOwnerService.update(dto);
     }
 
@@ -147,12 +149,16 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalOwnerService.patch(partialDto);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException, InvalidParseOperationException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for owner with id :{}", id);

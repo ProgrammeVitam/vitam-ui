@@ -26,10 +26,9 @@
  */
 package fr.gouv.vitamui.iam.external.server.domain.dto;
 
-
 public enum ProviderPatchType {
     JSON,
     IDPMETADATA,
     SPMETADATA,
-    KEYSTORE
+    KEYSTORE,
 }

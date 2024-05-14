@@ -73,14 +73,18 @@ public class IngestContractExternalService extends AbstractResourceClientService
     private IngestContractInternalWebClient ingestContractInternalWebClient;
 
     @Autowired
-    public IngestContractExternalService(ExternalSecurityService externalSecurityService, IngestContractInternalRestClient ingestContractInternalRestClient, IngestContractInternalWebClient ingestContractInternalWebClient) {
+    public IngestContractExternalService(
+        ExternalSecurityService externalSecurityService,
+        IngestContractInternalRestClient ingestContractInternalRestClient,
+        IngestContractInternalWebClient ingestContractInternalWebClient
+    ) {
         super(externalSecurityService);
         this.ingestContractInternalRestClient = ingestContractInternalRestClient;
         this.ingestContractInternalWebClient = ingestContractInternalWebClient;
     }
 
     public List<IngestContractDto> getAll(final Optional<String> criteria) {
-        return ingestContractInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return ingestContractInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     public IngestContractDto getOne(String id) {
@@ -105,21 +109,29 @@ public class IngestContractExternalService extends AbstractResourceClientService
         return Arrays.asList("name");
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<IngestContractDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<IngestContractDto, InternalHttpContext> getClient() {
         return ingestContractInternalRestClient;
     }
 
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         // Can't use DLab super.getAllPaginated because the criteria is updated for internal concerne.
         // TODO: Maybe needs a VITAM class for ResourceClientService ?
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<IngestContractDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<IngestContractDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     @Override

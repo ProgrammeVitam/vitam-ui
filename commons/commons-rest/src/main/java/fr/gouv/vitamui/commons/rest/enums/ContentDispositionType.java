@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.rest.enums;
 
 public enum ContentDispositionType {
-
     INLINE("inline"),
 
     ATTACHMENT("attachment");

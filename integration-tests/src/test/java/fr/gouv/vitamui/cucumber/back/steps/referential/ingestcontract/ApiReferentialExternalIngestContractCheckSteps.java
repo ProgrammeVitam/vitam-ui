@@ -53,9 +53,9 @@ public class ApiReferentialExternalIngestContractCheckSteps extends CommonSteps 
         try {
             final IngestContractDto ingestContractDto = new IngestContractDto();
             ingestContractDto.setIdentifier(TestConstants.INGEST_CONTRACT_NAME);
-            testContext.bResponse = getIngestContractRestClient().check(getSystemTenantUserAdminContext(), ingestContractDto);
-        }
-        catch (final RuntimeException e) {
+            testContext.bResponse = getIngestContractRestClient()
+                .check(getSystemTenantUserAdminContext(), ingestContractDto);
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

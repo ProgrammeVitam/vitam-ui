@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = ProfileController.class)
-public class ProfileControllerTest extends UIPastisRestControllerTest<ProfileDto>{
+public class ProfileControllerTest extends UIPastisRestControllerTest<ProfileDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileController.class);
 
@@ -36,9 +36,8 @@ public class ProfileControllerTest extends UIPastisRestControllerTest<ProfileDto
     public void testGetAllPaginatedManagementContract() {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(CommonConstants.X_TENANT_ID_HEADER, "1");
-        super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id" ));
+        super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"));
     }
-
 
     @Test
     public void testGetAll() {

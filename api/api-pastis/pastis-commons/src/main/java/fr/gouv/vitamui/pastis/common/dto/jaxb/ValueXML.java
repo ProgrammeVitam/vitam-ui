@@ -67,5 +67,4 @@ public class ValueXML {
     public String getDataType() {
         return dataType;
     }
-
 }

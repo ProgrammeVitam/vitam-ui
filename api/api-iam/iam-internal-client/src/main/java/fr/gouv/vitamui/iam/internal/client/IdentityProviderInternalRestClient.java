@@ -36,23 +36,23 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete an identity provider.
  *
  *
  */
-public class IdentityProviderInternalRestClient extends BasePaginatingAndSortingRestClient<IdentityProviderDto, InternalHttpContext> {
+public class IdentityProviderInternalRestClient
+    extends BasePaginatingAndSortingRestClient<IdentityProviderDto, InternalHttpContext> {
 
     public IdentityProviderInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -70,13 +70,11 @@ public class IdentityProviderInternalRestClient extends BasePaginatingAndSorting
 
     @Override
     protected ParameterizedTypeReference<List<IdentityProviderDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {
-        };
+        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<IdentityProviderDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<IdentityProviderDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<IdentityProviderDto>>() {};
     }
 }

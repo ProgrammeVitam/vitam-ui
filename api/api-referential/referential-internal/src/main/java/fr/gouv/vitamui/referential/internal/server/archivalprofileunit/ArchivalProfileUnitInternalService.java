@@ -47,8 +47,9 @@ import java.util.Optional;
 @Service
 public class ArchivalProfileUnitInternalService {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivalProfileUnitInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivalProfileUnitInternalService.class
+    );
 
     private ObjectMapper objectMapper;
 
@@ -61,8 +62,12 @@ public class ArchivalProfileUnitInternalService {
     private InternalSecurityService internalSecurityService;
 
     @Autowired
-    public ArchivalProfileUnitInternalService(ObjectMapper objectMapper, ArchivalProfileUnitConverter converter,
-        LogbookService logbookService, VitamArchivalProfileUnitService vitamArchivalProfileUnitService) {
+    public ArchivalProfileUnitInternalService(
+        ObjectMapper objectMapper,
+        ArchivalProfileUnitConverter converter,
+        LogbookService logbookService,
+        VitamArchivalProfileUnitService vitamArchivalProfileUnitService
+    ) {
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
@@ -74,8 +79,10 @@ public class ArchivalProfileUnitInternalService {
             LOGGER.info("Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             RequestResponse<ArchiveUnitProfileModel> requestResponse =
                 vitamArchivalProfileUnitService.findArchivalProfileById(vitamContext, identifier);
-            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ArchivalProfileUnitResponseDto.class);
+            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ArchivalProfileUnitResponseDto.class
+            );
             if (archivalProfileUnitResponseDto.getResults().size() == 0) {
                 return null;
             } else {
@@ -91,27 +98,35 @@ public class ArchivalProfileUnitInternalService {
         LOGGER.debug("Get ALL Archival Unit Profiles !");
         try {
             LOGGER.info("All Archival Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            requestResponse = vitamArchivalProfileUnitService
-                .findArchivalProfiles(vitamContext, new Select().getFinalSelect());
+            requestResponse = vitamArchivalProfileUnitService.findArchivalProfiles(
+                vitamContext,
+                new Select().getFinalSelect()
+            );
             LOGGER.debug("Response: {}", requestResponse);
-            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ArchivalProfileUnitResponseDto.class);
+            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ArchivalProfileUnitResponseDto.class
+            );
             return converter.convertVitamsToDtos(archivalProfileUnitResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find archival unit Profiles", e);
         }
     }
 
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
+    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         LOGGER.info("All Archival Unit Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -136,8 +151,10 @@ public class ArchivalProfileUnitInternalService {
             LOGGER.info("All Archival Unit Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = vitamArchivalProfileUnitService.findArchivalProfiles(vitamContext, query);
 
-            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ArchivalProfileUnitResponseDto.class);
+            final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ArchivalProfileUnitResponseDto.class
+            );
 
             LOGGER.debug("Archival Unit Profiles: {}", archivalProfileUnitResponseDto);
 
@@ -153,14 +170,15 @@ public class ArchivalProfileUnitInternalService {
         LOGGER.info("Archival Unit Profile Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             return !vitamArchivalProfileUnitService.checkAbilityToCreateArchivalProfileInVitam(
-                converter.convertDtosToVitams(archivalProfileUnitDtoList), vitamContext);
+                converter.convertDtosToVitams(archivalProfileUnitDtoList),
+                vitamContext
+            );
         } catch (ConflictException e) {
             return true;
         } catch (VitamUIException e) {
             throw new InternalServerException("Unable to check archival unit Profile", e);
         }
     }
-
 
     /**
      * PUA Update.
@@ -184,16 +202,23 @@ public class ArchivalProfileUnitInternalService {
         query.set("$action", actions);
 
         try {
-            RequestResponse<?> requestResponse =
-                vitamArchivalProfileUnitService.updateArchiveUnitProfile(vitamContext, id, query);
+            RequestResponse<?> requestResponse = vitamArchivalProfileUnitService.updateArchiveUnitProfile(
+                vitamContext,
+                id,
+                query
+            );
             LOGGER.info("Request RESPONSE ! {} ", requestResponse);
             if (requestResponse.getStatus() == 500) {
-                throw new InternalServerException("Can't update Archival Unit profile",
+                throw new InternalServerException(
+                    "Can't update Archival Unit profile",
                     ((VitamError<?>) requestResponse).getMessage(),
-                    List.of(requestResponse.getHeaderString("X-Request-Id")));
+                    List.of(requestResponse.getHeaderString("X-Request-Id"))
+                );
             }
-            final ArchiveUnitProfileModel archivalUnitProfileVitamDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ArchiveUnitProfileModel.class);
+            final ArchiveUnitProfileModel archivalUnitProfileVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ArchiveUnitProfileModel.class
+            );
             return converter.convertVitamToDto(archivalUnitProfileVitamDto);
         } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Can't update Archival Unit profile", e);
@@ -234,40 +259,50 @@ public class ArchivalProfileUnitInternalService {
         return propertiesToUpdate;
     }
 
-
     public ArchivalProfileUnitDto create(VitamContext context, ArchivalProfileUnitDto archivalProfileUnitDto) {
         LOGGER.debug("Try to create archival unit profile {} {}", archivalProfileUnitDto, context);
         try {
             LOGGER.info("Create Archival Unit Profile EvIdAppSession : {} ", context.getApplicationSessionId());
-            RequestResponse<?> requestResponse =
-                vitamArchivalProfileUnitService.create(context, converter.convertDtoToVitam(archivalProfileUnitDto));
+            RequestResponse<?> requestResponse = vitamArchivalProfileUnitService.create(
+                context,
+                converter.convertDtoToVitam(archivalProfileUnitDto)
+            );
             if (requestResponse.isOk()) {
-                final ArchiveUnitProfileModel archivalProfileVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode().get("$results").get(0), ArchiveUnitProfileModel.class);
+                final ArchiveUnitProfileModel archivalProfileVitamDto = objectMapper.treeToValue(
+                    requestResponse.toJsonNode().get("$results").get(0),
+                    ArchiveUnitProfileModel.class
+                );
                 return converter.convertVitamToDto(archivalProfileVitamDto);
             } else {
                 return null;
             }
-        } catch (InvalidParseOperationException | AccessExternalClientException |
-                 VitamClientException | IOException | JAXBException exception) {
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | VitamClientException
+            | IOException
+            | JAXBException exception
+        ) {
             LOGGER.error("Error while creating archive Profile", exception);
-
         }
         return archivalProfileUnitDto;
     }
 
-
     public ResponseEntity<JsonNode> importProfile(VitamContext vitamContext, String fileName, MultipartFile file) {
         try {
-            RequestResponse<?> response =
-                vitamArchivalProfileUnitService.importArchivalUnitProfileByFile(vitamContext, fileName, file);
+            RequestResponse<?> response = vitamArchivalProfileUnitService.importArchivalUnitProfileByFile(
+                vitamContext,
+                fileName,
+                file
+            );
             if (response.isOk()) {
                 return ResponseEntity.ok(response.toJsonNode());
             } else {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException |
-                 IOException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
             LOGGER.error("Unable to import archival unit profile by file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import archival unit profile by file " + fileName + " : ", e);
         }

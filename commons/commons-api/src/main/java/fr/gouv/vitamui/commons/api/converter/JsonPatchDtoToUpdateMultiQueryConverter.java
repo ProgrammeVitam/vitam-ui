@@ -44,14 +44,18 @@ import static java.util.Objects.nonNull;
 
 @Service
 public class JsonPatchDtoToUpdateMultiQueryConverter implements Converter<JsonPatchDto, UpdateMultiQuery> {
-    private static final VitamUILogger log =
-        VitamUILoggerFactory.getInstance(JsonPatchDtoToUpdateMultiQueryConverter.class);
+
+    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(
+        JsonPatchDtoToUpdateMultiQueryConverter.class
+    );
     private final JsonPatchToSetActionConverter jsonPatchToSetActionConverter;
     private final JsonPatchToUnsetActionConverter jsonPatchToUnsetActionConverter;
 
     @Autowired
-    public JsonPatchDtoToUpdateMultiQueryConverter(final JsonPatchToSetActionConverter jsonPatchToSetActionConverter,
-        JsonPatchToUnsetActionConverter jsonPatchToUnsetActionConverter) {
+    public JsonPatchDtoToUpdateMultiQueryConverter(
+        final JsonPatchToSetActionConverter jsonPatchToSetActionConverter,
+        JsonPatchToUnsetActionConverter jsonPatchToUnsetActionConverter
+    ) {
         this.jsonPatchToSetActionConverter = jsonPatchToSetActionConverter;
         this.jsonPatchToUnsetActionConverter = jsonPatchToUnsetActionConverter;
     }

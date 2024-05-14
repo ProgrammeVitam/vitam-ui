@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.domain;
 
-import java.util.Map;
-
-import org.hibernate.validator.constraints.Length;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Map;
 
 @Getter
 @Setter

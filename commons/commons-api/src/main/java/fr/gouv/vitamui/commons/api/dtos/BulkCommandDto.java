@@ -41,6 +41,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Data
 @JsonInclude(NON_NULL)
 public class BulkCommandDto {
+
     @NonNull
     @Size(min = 1, message = "Requires at least one command to play a bulk operation")
     @JsonProperty("queries")

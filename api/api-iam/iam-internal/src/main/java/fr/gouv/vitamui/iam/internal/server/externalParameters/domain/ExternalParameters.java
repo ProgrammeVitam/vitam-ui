@@ -62,6 +62,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class ExternalParameters extends CustomerIdDocument {
+
     @NotNull
     @Length(min = 1, max = 30)
     private String identifier;

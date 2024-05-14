@@ -63,5 +63,4 @@ public class AccessContractConverter {
     public List<AccessContractsDto> convertVitamsToDtos(final List<AccessContractsVitamDto> accessContracts) {
         return accessContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

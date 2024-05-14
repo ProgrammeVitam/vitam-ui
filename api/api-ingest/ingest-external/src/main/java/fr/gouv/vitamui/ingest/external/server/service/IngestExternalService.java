@@ -68,36 +68,42 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
 
     @Autowired
     private final IngestInternalWebClient ingestInternalWebClient;
+
     @Autowired
     private final IngestStreamingInternalRestClient ingestStreamingInternalRestClient;
 
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestInternalRestClient,
+    public IngestExternalService(
+        @Autowired IngestInternalRestClient ingestInternalRestClient,
         IngestInternalWebClient ingestInternalWebClient,
         final ExternalSecurityService externalSecurityService,
-        final IngestStreamingInternalRestClient ingestStreamingInternalRestClient) {
+        final IngestStreamingInternalRestClient ingestStreamingInternalRestClient
+    ) {
         super(externalSecurityService);
         this.ingestInternalRestClient = ingestInternalRestClient;
         this.ingestInternalWebClient = ingestInternalWebClient;
         this.ingestStreamingInternalRestClient = ingestStreamingInternalRestClient;
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size,
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
         final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<LogbookOperationDto> result =
-            getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<LogbookOperationDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(this::converterToExternalDto).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     public LogbookOperationDto getOne(final String id) {
         return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
-
     }
 
     public ResponseEntity<byte[]> generateODTReport(String id) {
@@ -109,14 +115,18 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
         return ingestInternalRestClient;
     }
 
-
-    public ResponseEntity<Void> streamingUpload(InputStream inputStream, final String originalFileName,
+    public ResponseEntity<Void> streamingUpload(
+        InputStream inputStream,
+        final String originalFileName,
         final String contextId,
-        final String action) {
-        return
-            ingestStreamingInternalRestClient
-                .streamingUpload(getInternalHttpContext(), originalFileName, inputStream, contextId,
-                    action);
+        final String action
+    ) {
+        return ingestStreamingInternalRestClient.streamingUpload(
+            getInternalHttpContext(),
+            originalFileName,
+            inputStream,
+            contextId,
+            action
+        );
     }
-
 }

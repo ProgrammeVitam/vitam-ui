@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 public class PasswordValidator {
 
     public boolean isEqualConfirmed(String password, String confirmedPassword) {
-        return (password != null && confirmedPassword !=null ) && (password.equals(confirmedPassword));
+        return (password != null && confirmedPassword != null) && (password.equals(confirmedPassword));
     }
 
     public boolean isValid(String regex, String password) {

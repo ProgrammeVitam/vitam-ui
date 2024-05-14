@@ -53,6 +53,7 @@ public class PastisApplicationPropertiesTest {
 
     @MockBean
     BuildProperties buildProperties;
+
     @Autowired
     private PastisApplicationProperties applicationProperties;
 

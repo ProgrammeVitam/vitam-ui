@@ -68,8 +68,12 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
      * @param context internl context
      * @return a mono<Response<Resourse>
      */
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
-        final InternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        final String usage,
+        Integer version,
+        final InternalHttpContext context
+    ) {
         return downloadObjectFromUnit(id, usage, version, context, null);
     }
 
@@ -83,15 +87,26 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
      * @param fileName the file's name
      * @return a mono<Response<Resourse>
      */
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
-        final InternalHttpContext context, final String fileName) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        final String usage,
+        Integer version,
+        final InternalHttpContext context,
+        final String fileName
+    ) {
         LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(
-                getUrl() + PROJECTS + OBJECT_GROUPS + DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
-                    "&version=" +
-                    version);
-
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() +
+            PROJECTS +
+            OBJECT_GROUPS +
+            DOWNLOAD_ARCHIVE_UNIT +
+            "/" +
+            id +
+            "?usage=" +
+            usage +
+            "&version=" +
+            version
+        );
 
         Flux<DataBuffer> dataBuffer = webClient
             .get()
@@ -100,17 +115,18 @@ public class CollectInternalWebClient extends BaseWebClient<InternalHttpContext>
             .retrieve()
             .bodyToFlux(DataBuffer.class);
 
-
         if (nonNull(fileName)) {
-            return Mono.just(ResponseEntity
-                .ok().header(CONTENT_DISPOSITION, "attachment;filename=" + fileName)
-                .cacheControl(CacheControl.noCache())
-                .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
+            return Mono.just(
+                ResponseEntity.ok()
+                    .header(CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                    .cacheControl(CacheControl.noCache())
+                    .body(convertDataBufferFileToInputStreamResponse(dataBuffer))
+            );
         }
-        return Mono.just(ResponseEntity
-            .ok().cacheControl(CacheControl.noCache())
-            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
-
+        return Mono.just(
+            ResponseEntity.ok()
+                .cacheControl(CacheControl.noCache())
+                .body(convertDataBufferFileToInputStreamResponse(dataBuffer))
+        );
     }
-
 }

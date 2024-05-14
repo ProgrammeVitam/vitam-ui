@@ -52,5 +52,4 @@ public class AnnotationXML extends BaliseXML {
     public DocumentationXML getDocumentationXML() {
         return documentationXML;
     }
-
 }

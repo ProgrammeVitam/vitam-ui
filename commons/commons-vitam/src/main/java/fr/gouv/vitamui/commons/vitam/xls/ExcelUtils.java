@@ -33,40 +33,44 @@ public final class ExcelUtils {
     private static final int SECOND_ELEMENT = 1;
     private static final int MAX_ROWS_IN_MEMORY = 500;
     public static final String DATE_FORMAT_FR_WITH_SLASH = "dd/MM/yyyy";
-    public static final DateTimeFormatter DATE_FORMATTER_FR_WITH_SLASH = DateTimeFormatter.ofPattern(DATE_FORMAT_FR_WITH_SLASH);
+    public static final DateTimeFormatter DATE_FORMATTER_FR_WITH_SLASH = DateTimeFormatter.ofPattern(
+        DATE_FORMAT_FR_WITH_SLASH
+    );
 
-    private ExcelUtils() {
-    }
+    private ExcelUtils() {}
 
     public static ByteArrayResource generateWorkbook(final List<SheetDto> sheets) throws IOException {
-
         LOGGER.info("Excel file generation generation process started");
-        try (final SXSSFWorkbook workbook = new SXSSFWorkbook(MAX_ROWS_IN_MEMORY); final ByteArrayOutputStream fos = new ByteArrayOutputStream()) {
+        try (
+            final SXSSFWorkbook workbook = new SXSSFWorkbook(MAX_ROWS_IN_MEMORY);
+            final ByteArrayOutputStream fos = new ByteArrayOutputStream()
+        ) {
             sheets.forEach(sheetDto -> {
                 final List<String> columns = sheetDto.getColumns();
                 final SXSSFSheet sheet = workbook.createSheet(sheetDto.getName());
                 sheet.trackAllColumnsForAutoSizing();
                 createHeaderSheet(sheet, columns, sheetDto.getColumnsFormat(), workbook);
                 final AtomicInteger counterRow = new AtomicInteger(SECOND_ELEMENT);
-                sheetDto.getLines()
-                        .forEach(line -> {
-                            final SXSSFRow row = sheet.createRow(counterRow.get());
-                            int currentMaxLineInRow = 1;
-                            for (int i = 0; i < columns.size(); i++) {
-                                final String column = columns.get(i);
-                                final ValueDto val = line.get(column);
-                                if (Objects.nonNull(val) && Objects.nonNull(val.getValue())) {
-                                    final SXSSFCell cell = row.createCell(i);
-                                    setValue(workbook, cell, val);
-                                    currentMaxLineInRow = getNumberOfLineInCell(sheetDto, currentMaxLineInRow, cell);
-                                }
+                sheetDto
+                    .getLines()
+                    .forEach(line -> {
+                        final SXSSFRow row = sheet.createRow(counterRow.get());
+                        int currentMaxLineInRow = 1;
+                        for (int i = 0; i < columns.size(); i++) {
+                            final String column = columns.get(i);
+                            final ValueDto val = line.get(column);
+                            if (Objects.nonNull(val) && Objects.nonNull(val.getValue())) {
+                                final SXSSFCell cell = row.createCell(i);
+                                setValue(workbook, cell, val);
+                                currentMaxLineInRow = getNumberOfLineInCell(sheetDto, currentMaxLineInRow, cell);
                             }
-                            // To autosize rows in sheet by calculating the maximum number of lines that a cell has in one row
-                            if (currentMaxLineInRow != 1) {
-                                row.setHeightInPoints((row.getHeightInPoints() * currentMaxLineInRow));
-                            }
-                            counterRow.getAndIncrement();
-                        });
+                        }
+                        // To autosize rows in sheet by calculating the maximum number of lines that a cell has in one row
+                        if (currentMaxLineInRow != 1) {
+                            row.setHeightInPoints((row.getHeightInPoints() * currentMaxLineInRow));
+                        }
+                        counterRow.getAndIncrement();
+                    });
                 autoSizeColumns(sheet, columns);
             });
 
@@ -76,7 +80,12 @@ public final class ExcelUtils {
         }
     }
 
-    private static void setDefaultColumnStyle(final SXSSFWorkbook workbook, final Sheet sheet, final int columnIndex, final String columnFormat) {
+    private static void setDefaultColumnStyle(
+        final SXSSFWorkbook workbook,
+        final Sheet sheet,
+        final int columnIndex,
+        final String columnFormat
+    ) {
         if (StringUtils.isNotBlank(columnFormat)) {
             final CellStyle cellStyle = workbook.createCellStyle();
             final DataFormat dataFormat = workbook.createDataFormat();
@@ -85,16 +94,16 @@ public final class ExcelUtils {
         }
     }
 
-    private static int getNumberOfLineInCell(final SheetDto sheetDto, final int currentMaxLineInRow, final SXSSFCell cell) {
+    private static int getNumberOfLineInCell(
+        final SheetDto sheetDto,
+        final int currentMaxLineInRow,
+        final SXSSFCell cell
+    ) {
         int numberOfLines = currentMaxLineInRow;
-        if (sheetDto.isAutoSizeRows() && cell.getCellType()
-                                             .equals(CellType.STRING)) {
-            numberOfLines = cell.getStringCellValue()
-                                .split("\n").length;
+        if (sheetDto.isAutoSizeRows() && cell.getCellType().equals(CellType.STRING)) {
+            numberOfLines = cell.getStringCellValue().split("\n").length;
             if (numberOfLines > 1) {
-                final CellStyle cellStyle = cell.getSheet()
-                                                .getWorkbook()
-                                                .createCellStyle();
+                final CellStyle cellStyle = cell.getSheet().getWorkbook().createCellStyle();
                 cellStyle.setWrapText(true);
                 cell.setCellStyle(cellStyle);
             }
@@ -102,8 +111,12 @@ public final class ExcelUtils {
         return Math.max(numberOfLines, currentMaxLineInRow);
     }
 
-    private static void createHeaderSheet(final Sheet sheet, final List<String> columns, final Map<String, String> columnsFormat,
-                                          final SXSSFWorkbook workbook) {
+    private static void createHeaderSheet(
+        final Sheet sheet,
+        final List<String> columns,
+        final Map<String, String> columnsFormat,
+        final SXSSFWorkbook workbook
+    ) {
         final CellStyle style = workbook.createCellStyle();
         final Font font = workbook.createFont();
         font.setBold(true);
@@ -117,7 +130,6 @@ public final class ExcelUtils {
             cell.setCellStyle(style);
             // Set default column style for all cells in the column
             setDefaultColumnStyle(workbook, sheet, i, columnFormat);
-
         }
     }
 
@@ -133,24 +145,28 @@ public final class ExcelUtils {
                 cell.setCellValue(String.valueOf(val.getValue()));
                 break;
             case DOUBLE:
-                cell.setCellValue(Double.parseDouble(val.getValue()
-                                                        .toString()));
+                cell.setCellValue(Double.parseDouble(val.getValue().toString()));
                 break;
-            case DATE: {
-                try {
-                    final CellStyle cellStyle = workbook.createCellStyle();
-                    final CreationHelper createHelper = workbook.getCreationHelper();
-                    cellStyle.setDataFormat(createHelper.createDataFormat()
-                                                        .getFormat(DATE_FORMAT_FR_WITH_SLASH));
-                    cell.setCellValue(LocalDate.parse(val.getValue()
-                                                         .toString()));
-                    cell.setCellStyle(cellStyle);
-                } catch (final DateTimeParseException dateTimeParseException) {
-                    LOGGER.warn(String.format("Cannot parse date %s. The raw value has been exported instead", val.getValue()), dateTimeParseException);
-                    cell.setCellValue(String.valueOf(val.getValue()));
+            case DATE:
+                {
+                    try {
+                        final CellStyle cellStyle = workbook.createCellStyle();
+                        final CreationHelper createHelper = workbook.getCreationHelper();
+                        cellStyle.setDataFormat(createHelper.createDataFormat().getFormat(DATE_FORMAT_FR_WITH_SLASH));
+                        cell.setCellValue(LocalDate.parse(val.getValue().toString()));
+                        cell.setCellStyle(cellStyle);
+                    } catch (final DateTimeParseException dateTimeParseException) {
+                        LOGGER.warn(
+                            String.format(
+                                "Cannot parse date %s. The raw value has been exported instead",
+                                val.getValue()
+                            ),
+                            dateTimeParseException
+                        );
+                        cell.setCellValue(String.valueOf(val.getValue()));
+                    }
                 }
-            }
-            break;
+                break;
         }
     }
 
@@ -162,8 +178,7 @@ public final class ExcelUtils {
         if (Objects.isNull(sheet) || Objects.isNull(sheet.getRow(0))) {
             return 0;
         } else {
-            return sheet.getRow(0)
-                        .getPhysicalNumberOfCells();
+            return sheet.getRow(0).getPhysicalNumberOfCells();
         }
     }
 
@@ -193,8 +208,7 @@ public final class ExcelUtils {
         }
 
         final boolean isBlankCell = cell.getCellType() == CellType.BLANK;
-        final boolean isValueEmpty = getStringValue(cell).replace('\u00A0', ' ')
-                                                         .isBlank();
+        final boolean isValueEmpty = getStringValue(cell).replace('\u00A0', ' ').isBlank();
         return isBlankCell || isValueEmpty;
     }
 
@@ -211,8 +225,6 @@ public final class ExcelUtils {
     }
 
     public static String getFrWithSlashFormatDate(final Cell cell) {
-        return cell.getLocalDateTimeCellValue()
-                   .format(DATE_FORMATTER_FR_WITH_SLASH);
+        return cell.getLocalDateTimeCellValue().format(DATE_FORMATTER_FR_WITH_SLASH);
     }
-
 }

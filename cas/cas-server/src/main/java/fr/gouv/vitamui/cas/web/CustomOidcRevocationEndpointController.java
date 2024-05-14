@@ -23,15 +23,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CustomOidcRevocationEndpointController extends OidcRevocationEndpointController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomOidcRevocationEndpointController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CustomOidcRevocationEndpointController.class
+    );
 
     public CustomOidcRevocationEndpointController(final OidcConfigurationContext configurationContext) {
         super(configurationContext);
     }
 
-    protected ModelAndView generateRevocationResponse(final String token,
-                                                      final String clientId,
-                                                      final HttpServletResponse response) throws Exception {
+    protected ModelAndView generateRevocationResponse(
+        final String token,
+        final String clientId,
+        final HttpServletResponse response
+    ) throws Exception {
         val registryToken = FunctionUtils.doAndHandle(() -> {
             val state = getConfigurationContext().getTicketRegistry().getTicket(token, OAuth20Token.class);
             return state == null || state.isExpired() ? null : state;
@@ -39,7 +43,6 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
         if (registryToken == null) {
             LOGGER.error("Provided token [{}] has not been found in the ticket registry", token);
         } else if (isRefreshToken(registryToken) || isAccessToken(registryToken)) {
-
             /*
             Custom : Don't check clientId to allow revoke token to all services (SSO)
             if (!StringUtils.equals(clientId, registryToken.getClientId())) {
@@ -75,5 +78,4 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
     private boolean isAccessToken(final OAuth20Token token) {
         return token instanceof OAuth20AccessToken;
     }
-
 }

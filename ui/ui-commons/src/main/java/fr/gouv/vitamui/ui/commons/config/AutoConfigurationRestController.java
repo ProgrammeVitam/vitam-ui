@@ -108,7 +108,9 @@ public class AutoConfigurationRestController {
 
     @Bean("externalParametersController")
     @DependsOn("externalParametersService")
-    public ExternalParametersController externalParametersController(final ExternalParametersService externalParametersService) {
+    public ExternalParametersController externalParametersController(
+        final ExternalParametersService externalParametersService
+    ) {
         return new ExternalParametersController(externalParametersService);
     }
 
@@ -128,7 +130,9 @@ public class AutoConfigurationRestController {
 
     @Bean("externalParamProfileController")
     @DependsOn("externalParamProfileService")
-    public ExternalParamProfileController externalParamProfileController(final ExternalParamProfileService externalParamProfileService) {
+    public ExternalParamProfileController externalParamProfileController(
+        final ExternalParamProfileService externalParamProfileService
+    ) {
         return new ExternalParamProfileController(externalParamProfileService);
     }
 

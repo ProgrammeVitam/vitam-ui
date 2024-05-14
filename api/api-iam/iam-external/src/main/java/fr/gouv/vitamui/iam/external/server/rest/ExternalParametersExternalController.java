@@ -36,25 +36,24 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
 import io.swagger.annotations.Api;
-import java.util.Collections;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -69,12 +68,16 @@ import java.util.stream.Collectors;
 @Api(tags = "externalParameters", value = "External Parameters Management")
 public class ExternalParametersExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersExternalController.class
+    );
 
     private ExternalParametersExternalService externalParametersExternalService;
 
     @Autowired
-    public ExternalParametersExternalController(final ExternalParametersExternalService externalParametersExternalService) {
+    public ExternalParametersExternalController(
+        final ExternalParametersExternalService externalParametersExternalService
+    ) {
         this.externalParametersExternalService = externalParametersExternalService;
     }
 
@@ -87,9 +90,11 @@ public class ExternalParametersExternalController {
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");
 
-        final ExternalParametersDto userParameters =  externalParametersExternalService.getMyExternalParameters();
-        if(userParameters != null && userParameters.getParameters() != null) {
-            return userParameters.getParameters().stream()
+        final ExternalParametersDto userParameters = externalParametersExternalService.getMyExternalParameters();
+        if (userParameters != null && userParameters.getParameters() != null) {
+            return userParameters
+                .getParameters()
+                .stream()
                 .collect(Collectors.toMap(ParameterDto::getKey, ParameterDto::getValue));
         }
         return Collections.emptyMap();

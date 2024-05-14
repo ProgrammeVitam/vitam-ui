@@ -59,6 +59,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.wildcard;
 
 public class VitamQueryHelper {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
     /* Operation types */
@@ -76,15 +77,26 @@ public class VitamQueryHelper {
     private static final String RULE_TYPE = "RuleType";
     private static final String EV_TYPE_PROC = "evTypeProc";
     private static final String STATUS = "Status";
-    private static final String EV_TYPE ="evType";
+    private static final String EV_TYPE = "evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
 
     public static final Collection<String> staticAcquisitionInformations = List.of(
-        "Versement", "Protocole", "Achat", "Copie", "Dation", "Dépôt", "Dévolution",
-        "Don", "Legs", "Réintégration", "Autres", VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
+        "Versement",
+        "Protocole",
+        "Achat",
+        "Copie",
+        "Dation",
+        "Dépôt",
+        "Dévolution",
+        "Don",
+        "Legs",
+        "Réintégration",
+        "Autres",
+        VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE
+    );
     public static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
 
     private VitamQueryHelper() {
@@ -99,10 +111,13 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction)
-            throws InvalidParseOperationException, InvalidCreateOperationException {
-
+    public static JsonNode createQueryDSL(
+        Map<String, Object> searchCriteriaMap,
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, InvalidCreateOperationException {
         final Select select = new Select();
         final BooleanQuery query = and();
         BooleanQuery queryOr = or();
@@ -142,7 +157,7 @@ public class VitamQueryHelper {
                     case ORIGINATING_AGENCY:
                         // string wildward operation
                         final String ruleId = (String) entry.getValue();
-                        queryOr.add(wildcard(searchKey, "*"+ruleId+"*"));
+                        queryOr.add(wildcard(searchKey, "*" + ruleId + "*"));
                         haveOrParameters = true;
                         break;
                     case RULE_VALUE:
@@ -159,7 +174,7 @@ public class VitamQueryHelper {
                             break;
                         }
                         // in list of string EvType
-                        if(entry.getValue() instanceof List){
+                        if (entry.getValue() instanceof List) {
                             final List<String> stringValues = (ArrayList<String>) entry.getValue();
                             query.add(in(searchKey, stringValues.stream().toArray(String[]::new)));
                             break;
@@ -190,7 +205,8 @@ public class VitamQueryHelper {
         return select.getFinalSelect();
     }
 
-    private static void manageFilters(Optional<String> orderBy, Optional<DirectionDto> direction, Select select) throws InvalidParseOperationException, InvalidCreateOperationException {
+    private static void manageFilters(Optional<String> orderBy, Optional<DirectionDto> direction, Select select)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
         // Manage Filters
         if (orderBy.isPresent()) {
             String order = orderBy.get();
@@ -202,19 +218,25 @@ public class VitamQueryHelper {
         }
     }
 
-    private static void setQuery(Select select, BooleanQuery query, BooleanQuery queryOr, boolean isEmpty,
-        boolean haveOrParameters) throws InvalidCreateOperationException {
+    private static void setQuery(
+        Select select,
+        BooleanQuery query,
+        BooleanQuery queryOr,
+        boolean isEmpty,
+        boolean haveOrParameters
+    ) throws InvalidCreateOperationException {
         if (!isEmpty) {
             if (haveOrParameters) {
                 query.add(queryOr);
             }
-            if(!query.getQueries().isEmpty()) {
+            if (!query.getQueries().isEmpty()) {
                 select.setQuery(query);
             }
         }
     }
 
-    public static JsonNode getLastOperationQuery(String operationType) throws InvalidCreateOperationException, InvalidParseOperationException {
+    public static JsonNode getLastOperationQuery(String operationType)
+        throws InvalidCreateOperationException, InvalidParseOperationException {
         Select select = new Select();
 
         BooleanQuery query = and();

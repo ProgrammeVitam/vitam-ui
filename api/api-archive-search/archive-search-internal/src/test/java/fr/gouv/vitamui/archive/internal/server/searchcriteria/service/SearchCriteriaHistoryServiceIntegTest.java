@@ -68,11 +68,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-
 @ExtendWith(SpringExtension.class)
-@Import({TestMongoConfig.class, ConverterConfig.class})
-@EnableMongoRepositories(basePackageClasses = {
-    SearchCriteriaHistoryRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@Import({ TestMongoConfig.class, ConverterConfig.class })
+@EnableMongoRepositories(
+    basePackageClasses = { SearchCriteriaHistoryRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class SearchCriteriaHistoryServiceIntegTest {
 
     private SearchCriteriaHistoryInternalService service;
@@ -83,8 +84,9 @@ public class SearchCriteriaHistoryServiceIntegTest {
     @Autowired
     private SearchCriteriaHistoryRepository rrepository;
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceIntegTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryServiceIntegTest.class
+    );
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
@@ -105,16 +107,17 @@ public class SearchCriteriaHistoryServiceIntegTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        service =
-            new SearchCriteriaHistoryInternalService(sequenceRepository, rrepository, searchCriteriaHistoryConverter,
-                internalSecurityService);
+        service = new SearchCriteriaHistoryInternalService(
+            sequenceRepository,
+            rrepository,
+            searchCriteriaHistoryConverter,
+            internalSecurityService
+        );
         rrepository.deleteAll();
-
 
         final AuthUserDto user = Utils.buildAuthUserDto();
 
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
-
     }
 
     @AfterEach
@@ -124,10 +127,10 @@ public class SearchCriteriaHistoryServiceIntegTest {
 
     @Test
     void testCreateSearchCriteria() {
-        final SearchCriteriaHistory searchCriteriaHistory =
-            Utils.buildSearchCriteriaHistory();
-        SearchCriteriaHistoryDto searchCriteriaHistoryDto =
-            searchCriteriaHistoryConverter.convertEntityToDto(searchCriteriaHistory);
+        final SearchCriteriaHistory searchCriteriaHistory = Utils.buildSearchCriteriaHistory();
+        SearchCriteriaHistoryDto searchCriteriaHistoryDto = searchCriteriaHistoryConverter.convertEntityToDto(
+            searchCriteriaHistory
+        );
 
         assertThat(searchCriteriaHistoryDto.getName()).isNotBlank();
         searchCriteriaHistory.setUserId("code");

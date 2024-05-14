@@ -63,13 +63,12 @@ import java.util.Optional;
 @Setter
 public class ExternalParametersInternalService extends VitamUICrudService<ExternalParametersDto, ExternalParameters> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ExternalParametersInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersInternalService.class
+    );
 
-    public static final String EXTERNAL_PARAMETER_IDENTIFIER_PREFIX =
-        "DEFAULT_EXT_PARAM_";
-    public static final String EXTERNAL_PARAMETER_NAME_PREFIX =
-        "Liste des paramétrages externes du tenant ";
+    public static final String EXTERNAL_PARAMETER_IDENTIFIER_PREFIX = "DEFAULT_EXT_PARAM_";
+    public static final String EXTERNAL_PARAMETER_NAME_PREFIX = "Liste des paramétrages externes du tenant ";
     public static final String EXTERNAL_PARAMS_PROFILE_NAME_PREFIX =
         "Profil pour la gestion des paramétrages externes du tenant ";
 
@@ -84,7 +83,8 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
         final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersConverter externalParametersConverter,
         final InternalSecurityService internalSecurityService,
-        final IamLogbookService iamLogbookService) {
+        final IamLogbookService iamLogbookService
+    ) {
         super(sequenceRepository);
         this.externalParametersRepository = externalParametersRepository;
         this.externalParametersConverter = externalParametersConverter;
@@ -113,11 +113,13 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
             return null;
         }
         Integer tenant = internalSecurityService.getTenantIdentifier();
-        final Optional<ProfileDto> optionalExternalParamsProfileDto =
-            authUserDto.getProfileGroup().getProfiles().stream()
-                .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
-                .filter(p -> tenant.equals(p.getTenantIdentifier()))
-                .findFirst();
+        final Optional<ProfileDto> optionalExternalParamsProfileDto = authUserDto
+            .getProfileGroup()
+            .getProfiles()
+            .stream()
+            .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
+            .filter(p -> tenant.equals(p.getTenantIdentifier()))
+            .findFirst();
         if (optionalExternalParamsProfileDto.isEmpty()) {
             LOGGER.warn("External parameter profile not found");
             return null;
@@ -182,10 +184,8 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
         return "externalParameters";
     }
 
-
     @Override
     protected Converter<ExternalParametersDto, ExternalParameters> getConverter() {
         return externalParametersConverter;
     }
-
 }

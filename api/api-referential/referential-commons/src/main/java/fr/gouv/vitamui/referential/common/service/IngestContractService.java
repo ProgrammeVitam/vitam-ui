@@ -77,7 +77,6 @@ public class IngestContractService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractService.class);
 
-
     private final AdminExternalClient adminExternalClient;
 
     @Autowired
@@ -92,27 +91,34 @@ public class IngestContractService {
         return adminExternalClient.updateIngestContract(vitamContext, id, jsonNode);
     }
 
-    public RequestResponse<IngestContractModel> findIngestContractById(final VitamContext vitamContext,
-        final String contractId) throws VitamClientException {
-
-        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContractById(vitamContext,
-            contractId);
+    public RequestResponse<IngestContractModel> findIngestContractById(
+        final VitamContext vitamContext,
+        final String contractId
+    ) throws VitamClientException {
+        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContractById(
+            vitamContext,
+            contractId
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
-    public RequestResponse<IngestContractModel> findIngestContracts(final VitamContext vitamContext,
-        final JsonNode query) throws VitamClientException {
-
-        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContracts(vitamContext,
-            query);
+    public RequestResponse<IngestContractModel> findIngestContracts(
+        final VitamContext vitamContext,
+        final JsonNode query
+    ) throws VitamClientException {
+        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContracts(
+            vitamContext,
+            query
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
     //TODO: Add attribute to fr.gouv.vitamui.commons.api.domain.IngestContractVitamDto
     private List<IngestContractModel> convertIngestContractsToModelOfCreation(
-        final List<IngestContractModel> ingestContractModels) {
+        final List<IngestContractModel> ingestContractModels
+    ) {
         final List<IngestContractModel> listOfAC = new ArrayList<>();
         for (final IngestContractModel acModel : ingestContractModels) {
             final IngestContractModel ac = new IngestContractModel();
@@ -161,27 +167,33 @@ public class IngestContractService {
         }
     }
 
-    public RequestResponse<?> createIngestContracts(final VitamContext vitamContext,
-        final List<IngestContractModel> ingestContracts)
-        throws InvalidParseOperationException, AccessExternalClientException, IOException {
+    public RequestResponse<?> createIngestContracts(
+        final VitamContext vitamContext,
+        final List<IngestContractModel> ingestContracts
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeIngestContracts(ingestContracts)) {
             LOGGER.info("Create Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<IngestContractModel> jsonResponse =
-                adminExternalClient.createIngestContracts(vitamContext, byteArrayInputStream);
+            RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.createIngestContracts(
+                vitamContext,
+                byteArrayInputStream
+            );
             VitamRestUtils.checkResponse(jsonResponse);
             return jsonResponse;
         }
     }
 
-    public Integer checkAbilityToCreateIngestContractInVitam(List<IngestContractModel> ingestContracts,
-        String applicationSessionId) {
+    public Integer checkAbilityToCreateIngestContractInVitam(
+        List<IngestContractModel> ingestContracts,
+        String applicationSessionId
+    ) {
         if (ingestContracts != null && !ingestContracts.isEmpty()) {
             // check if tenant is ok in the request body
             final Optional<IngestContractModel> ingestContract = ingestContracts.stream().findFirst();
             final Integer tenantIdentifier = ingestContract.isPresent() ? ingestContract.get().getTenant() : null;
             if (tenantIdentifier != null) {
-                final boolean sameTenant =
-                    ingestContracts.stream().allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
+                final boolean sameTenant = ingestContracts
+                    .stream()
+                    .allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
                 if (!sameTenant) {
                     final String msg = "All the ingest contracts must have the same tenant identifier";
                     LOGGER.error(msg);
@@ -195,8 +207,9 @@ public class IngestContractService {
 
             try {
                 // check if tenant exist in Vitam
-                final VitamContext vitamContext =
-                    new VitamContext(tenantIdentifier).setApplicationSessionId(applicationSessionId);
+                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
+                    applicationSessionId
+                );
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<IngestContractModel> response = findIngestContracts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
@@ -231,17 +244,26 @@ public class IngestContractService {
      * @param ingestContracts : ingest contract to verify existence
      * @param response : list of ingest contracts in vitam
      */
-    private void verifyIngestContractExistence(final List<IngestContractModel> ingestContracts,
-        final RequestResponse<IngestContractModel> response) {
+    private void verifyIngestContractExistence(
+        final List<IngestContractModel> ingestContracts,
+        final RequestResponse<IngestContractModel> response
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final IngestContractResponseDto ingestContractResponseDto =
-                objectMapper.treeToValue(response.toJsonNode(), IngestContractResponseDto.class);
-            final List<String> ingestContractsNames = ingestContracts.stream().map(AbstractContractModel::getName)
-                .filter(Objects::nonNull).map(String::strip)
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                response.toJsonNode(),
+                IngestContractResponseDto.class
+            );
+            final List<String> ingestContractsNames = ingestContracts
+                .stream()
+                .map(AbstractContractModel::getName)
+                .filter(Objects::nonNull)
+                .map(String::strip)
                 .collect(Collectors.toList());
-            boolean alreadyCreated = ingestContractResponseDto.getResults().stream()
+            boolean alreadyCreated = ingestContractResponseDto
+                .getResults()
+                .stream()
                 .anyMatch(ac -> ingestContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 final String msg = "Can't create ingest contract, a contract with the same name already exist in Vitam";
@@ -249,11 +271,15 @@ public class IngestContractService {
                 throw new ConflictException(msg);
             }
 
-            final List<String> ingestContractsIdentifiers =
-                ingestContracts.stream().map(AbstractContractModel::getIdentifier)
-                    .filter(Objects::nonNull).map(String::strip)
-                    .collect(Collectors.toList());
-            alreadyCreated = ingestContractResponseDto.getResults().stream()
+            final List<String> ingestContractsIdentifiers = ingestContracts
+                .stream()
+                .map(AbstractContractModel::getIdentifier)
+                .filter(Objects::nonNull)
+                .map(String::strip)
+                .collect(Collectors.toList());
+            alreadyCreated = ingestContractResponseDto
+                .getResults()
+                .stream()
                 .anyMatch(ac -> ingestContractsIdentifiers.contains(ac.getIdentifier()));
             if (alreadyCreated) {
                 final String msg =

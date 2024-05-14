@@ -59,9 +59,7 @@ class ResultsDtoTest {
     @Test
     void testSerializationWithAdditionalProperties() throws Exception {
         // Créer un objet ResultsDto avec des propriétés et des propriétés supplémentaires
-        ResultsDto resultsDto = new ResultsDto()
-            .setId("123")
-            .setTitle("Test");
+        ResultsDto resultsDto = new ResultsDto().setId("123").setTitle("Test");
         resultsDto.setAdditionalProperties("additionalProp1", "value1");
         resultsDto.setAdditionalProperties("additionalProp2", 42);
 
@@ -77,5 +75,4 @@ class ResultsDtoTest {
         assertThat(json).contains("\"additionalProp1\":\"value1\"");
         assertThat(json).contains("\"additionalProp2\":42");
     }
-
 }

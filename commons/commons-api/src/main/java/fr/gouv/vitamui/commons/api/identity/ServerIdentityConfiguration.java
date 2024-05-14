@@ -36,14 +36,12 @@
  */
 package fr.gouv.vitamui.commons.api.identity;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Defines minimal common configurations for server identity configuration properties.
@@ -83,8 +81,10 @@ public final class ServerIdentityConfiguration {
      * @return a new instance of ServerIdentityConfiguration
      */
     public static ServerIdentityConfiguration getInstance() {
-        if (StringUtils.isEmpty(serverIdentityConfiguration.getIdentityName())
-                || StringUtils.isEmpty(serverIdentityConfiguration.getIdentityRole())) {
+        if (
+            StringUtils.isEmpty(serverIdentityConfiguration.getIdentityName()) ||
+            StringUtils.isEmpty(serverIdentityConfiguration.getIdentityRole())
+        ) {
             throw new InternalServerException("ServerIdentityConfiguration is undefined.");
         }
         return serverIdentityConfiguration;
@@ -186,8 +186,8 @@ public final class ServerIdentityConfiguration {
      * Calculate GlobaPlatformId.
      */
     private final void calculateGlobalPlatformId() {
-        serverIdentityConfiguration.globalPlatformId = ((getIdentityServerId() & 0x0F) << 27)
-                + (getIdentityServerId() & 0x07FFFFFF);
+        serverIdentityConfiguration.globalPlatformId = ((getIdentityServerId() & 0x0F) << 27) +
+        (getIdentityServerId() & 0x07FFFFFF);
         initializeCommentFormat();
     }
 
@@ -196,9 +196,14 @@ public final class ServerIdentityConfiguration {
      */
     private void initializeCommentFormat() {
         serverIdentityConfiguration.preMessage.setLength(0);
-        serverIdentityConfiguration.preMessage.append('[').append(getIdentityName()).append(':')
-                .append(getIdentityRole()).append(':').append(getGlobalPlatformId()).append("] ");
+        serverIdentityConfiguration.preMessage
+            .append('[')
+            .append(getIdentityName())
+            .append(':')
+            .append(getIdentityRole())
+            .append(':')
+            .append(getGlobalPlatformId())
+            .append("] ");
         serverIdentityConfiguration.preMessageString = serverIdentityConfiguration.preMessage.toString();
     }
-
 }

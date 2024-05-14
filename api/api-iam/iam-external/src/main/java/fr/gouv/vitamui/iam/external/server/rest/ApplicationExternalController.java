@@ -80,15 +80,16 @@ public class ApplicationExternalController implements CrudController<Application
     private final ApplicationService applicationService;
 
     @Autowired
-    public ApplicationExternalController(final ApplicationExternalService applicationExternalService,
-                                         final ApplicationService applicationService) {
+    public ApplicationExternalController(
+        final ApplicationExternalService applicationExternalService,
+        final ApplicationService applicationService
+    ) {
         this.applicationExternalService = applicationExternalService;
         this.applicationService = applicationService;
     }
 
     @GetMapping
     public List<ApplicationDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -105,7 +106,9 @@ public class ApplicationExternalController implements CrudController<Application
 
     @GetMapping(path = "/{identifier:.+}/externalid")
     @ApiOperation(value = "Check if an application can have an external identifier")
-    public ResponseEntity<Boolean>  isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+    public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(
+        final @PathVariable("identifier") String identifier
+    ) {
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("isApplicationExternalIdentifierEnabled");
         return applicationService.isApplicationExternalIdentifierEnabled(identifier);
@@ -128,8 +131,10 @@ public class ApplicationExternalController implements CrudController<Application
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public ApplicationDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ApplicationDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         throw new UnsupportedOperationException("patch not implemented");
     }
-
 }

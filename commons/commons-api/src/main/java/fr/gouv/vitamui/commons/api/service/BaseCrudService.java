@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.commons.api.service;
 
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+
+import java.util.Map;
 
 /**
  * A service to read, create, update and delete an object with identifier.
@@ -47,7 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
  *
  */
 public interface BaseCrudService<D extends IdDto, E extends BaseIdDocument> extends BaseReadService<D, E> {
-
     /**
      * Create entity
      * @param dto
@@ -81,5 +80,4 @@ public interface BaseCrudService<D extends IdDto, E extends BaseIdDocument> exte
      * @return
      */
     String generateSuperId();
-
 }

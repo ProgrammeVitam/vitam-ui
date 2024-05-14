@@ -30,14 +30,17 @@ public class TestUri {
         uri.addParameter("test", OffsetDateTime.now().toString());
         try {
             LOGGER.info("Apache Builder toString " + uri.build().getRawQuery());
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             LOGGER.error("Error Building URL : ", e);
         }
 
         final InternalHttpContext context = new InternalHttpContext(0, "", "", "", "", "", "", "");
         System.out.println(AbstractHttpContext.urlNeedsTenantIdHeader("/swagger-ui.html"));
-        System.out.println(AbstractHttpContext.urlNeedsTenantIdHeader("/webjars/springfox-swagger-ui/favicon-16x16.png?v=2.8.0-SNAPSHOT"));
+        System.out.println(
+            AbstractHttpContext.urlNeedsTenantIdHeader(
+                "/webjars/springfox-swagger-ui/favicon-16x16.png?v=2.8.0-SNAPSHOT"
+            )
+        );
 
         String fileName = "test.json";
         LOGGER.info("Check content type " + Files.probeContentType(Paths.get(fileName)));

@@ -92,5 +92,4 @@ public abstract class VitamClientConfig {
         }
         return factory.getClient();
     }
-
 }

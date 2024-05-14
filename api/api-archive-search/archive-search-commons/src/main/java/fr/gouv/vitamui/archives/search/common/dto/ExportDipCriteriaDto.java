@@ -55,6 +55,7 @@ import java.util.Set;
 @Setter
 @Getter
 public class ExportDipCriteriaDto implements Serializable {
+
     private DipRequestParameters dipRequestParameters;
     private SearchCriteriaDto exportDIPSearchCriteria;
     private Map<DataObjectVersionType, Set<QualifierVersion>> dataObjectVersionsPatterns;

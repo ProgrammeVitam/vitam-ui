@@ -40,6 +40,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:group")
-public class GroupXML extends BaliseXML {
-
-}
+public class GroupXML extends BaliseXML {}

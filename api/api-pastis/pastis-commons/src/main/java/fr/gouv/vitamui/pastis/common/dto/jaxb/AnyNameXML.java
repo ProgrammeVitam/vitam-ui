@@ -41,6 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:anyName")
-public class AnyNameXML extends BaliseXML {
-
-}
+public class AnyNameXML extends BaliseXML {}

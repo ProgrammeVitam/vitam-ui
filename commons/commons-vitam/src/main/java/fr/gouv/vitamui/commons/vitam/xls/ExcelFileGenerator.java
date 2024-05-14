@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.xls;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -55,10 +47,20 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+
 public abstract class ExcelFileGenerator<D> {
 
     protected static final String DATE_FORMAT = "dd/MM/yyyy";
-    public static final DateTimeFormatter DATE_TIME_FORMATTER_ISO_WITH_MS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH_mm_ss.SSSSSS");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER_ISO_WITH_MS = DateTimeFormatter.ofPattern(
+        "yyyy-MM-dd'T'HH_mm_ss.SSSSSS"
+    );
 
     public abstract List<D> getData();
 
@@ -69,8 +71,10 @@ public abstract class ExcelFileGenerator<D> {
     public abstract String getFileName(String identificationElement);
 
     public byte[] createFile() throws IOException {
-        try (final Workbook workbook = new XSSFWorkbook(); final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-
+        try (
+            final Workbook workbook = new XSSFWorkbook();
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        ) {
             final Sheet sheet = workbook.createSheet(getSheetName());
 
             final CellStyle headerCellStyle = styleHeaderCells(workbook);
@@ -145,13 +149,13 @@ public abstract class ExcelFileGenerator<D> {
         }
     }
 
-    protected Cell cellValueOf(Row row, int at, String value){
+    protected Cell cellValueOf(Row row, int at, String value) {
         Cell cell = row.createCell(at);
         cell.setCellValue(value);
         return cell;
     }
 
-    protected Cell cellValueOf(Row row, int at, LocalDate value, Optional<CellStyle> opDateStyle){
+    protected Cell cellValueOf(Row row, int at, LocalDate value, Optional<CellStyle> opDateStyle) {
         Cell cell = row.createCell(at);
         opDateStyle.ifPresent(cell::setCellStyle);
         cell.setCellValue(value);

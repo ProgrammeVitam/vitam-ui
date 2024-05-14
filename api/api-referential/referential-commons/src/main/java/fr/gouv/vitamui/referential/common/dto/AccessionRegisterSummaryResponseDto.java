@@ -39,6 +39,4 @@ package fr.gouv.vitamui.referential.common.dto;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-public class AccessionRegisterSummaryResponseDto extends AbstractVitamUIResponseDto<AccessionRegisterSummaryModel> {
-
-}
+public class AccessionRegisterSummaryResponseDto extends AbstractVitamUIResponseDto<AccessionRegisterSummaryModel> {}

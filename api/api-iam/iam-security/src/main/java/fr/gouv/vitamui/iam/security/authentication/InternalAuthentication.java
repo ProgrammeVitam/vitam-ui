@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.iam.security.authentication;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 /**
  * The current internal authentification.

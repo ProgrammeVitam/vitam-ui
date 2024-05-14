@@ -1,15 +1,15 @@
 package fr.gouv.vitamui.commons.api.instance;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class InstanceServiceTest {
@@ -37,5 +37,4 @@ class InstanceServiceTest {
         given(environment.getProperty(anyString(), any(Class.class))).willReturn(false);
         assertThat(service.isPrimary()).isFalse();
     }
-
 }

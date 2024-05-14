@@ -89,13 +89,15 @@ public class IngestController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get entities paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws PreconditionFailedException,
-        InvalidParseOperationException, IOException {
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException, InvalidParseOperationException, IOException {
         SanityChecker.sanitizeCriteria(criteria);
         if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
@@ -104,19 +106,24 @@ public class IngestController extends AbstractUiRestController {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         if (criteria.isPresent()) {
-            SanityChecker.sanitizeCriteria(VitamUIUtils
-                .convertObjectFromJson(criteria.get(), Object.class));
+            SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(criteria.get(), Object.class));
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
-            orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return ingestService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get one ingest operation details")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookOperationDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public LogbookOperationDto getOne(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get Ingest={}", id);
@@ -132,9 +139,9 @@ public class IngestController extends AbstractUiRestController {
         LOGGER.debug("download ODT report for the ingest with id :{}", id);
         byte[] bytes = ingestService.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
             .body(bytes);
-
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -145,18 +152,26 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_ACTION) final String xAction,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = "fileName") final String fileName,
-        final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("The tenantId, xAction and contextId are mandatory parameters : ",
-                tenantId, xAction, contextId);
+        final InputStream inputStream
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The tenantId, xAction and contextId are mandatory parameters : ",
+            tenantId,
+            xAction,
+            contextId
+        );
         SafeFileChecker.checkSafeFilePath(fileName);
         SanityChecker.checkSecureParameter(tenantId, xAction, fileName, contextId, inputStream.toString());
         LOGGER.debug("Start uploading file ...{} ", fileName);
-        ResponseEntity<Void> response =
-            ingestService.streamingUpload(buildUiHttpContext(), fileName, inputStream, contextId, xAction);
+        ResponseEntity<Void> response = ingestService.streamingUpload(
+            buildUiHttpContext(),
+            fileName,
+            inputStream,
+            contextId,
+            xAction
+        );
 
         LOGGER.debug("The response in ui Ingest is {} ", response.toString());
         return response;
     }
-
 }

@@ -37,11 +37,15 @@ public class RequestAttributeX509CertificateExtractor implements X509Certificate
 
     public static final String REQUEST_X509_CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RequestAttributeX509CertificateExtractor.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        RequestAttributeX509CertificateExtractor.class
+    );
 
     @Override
     public X509Certificate extract(final HttpServletRequest request) {
-        final X509Certificate[] certificates = (X509Certificate[]) request.getAttribute(REQUEST_X509_CERTIFICATE_ATTRIBUTE);
+        final X509Certificate[] certificates = (X509Certificate[]) request.getAttribute(
+            REQUEST_X509_CERTIFICATE_ATTRIBUTE
+        );
         if (certificates != null && certificates.length > 0) {
             LOGGER.debug("X.509 client authentication certificate:" + certificates[0]);
             return certificates[0];

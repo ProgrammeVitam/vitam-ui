@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-import java.util.List;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
-
-import lombok.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Request Param Group Dto.
@@ -35,5 +34,4 @@ public class RequestParamGroupDto implements Serializable {
      * field on which we want the operator
      */
     private String fieldOperator;
-
 }

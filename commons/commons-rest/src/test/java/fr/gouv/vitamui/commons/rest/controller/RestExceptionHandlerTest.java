@@ -47,7 +47,16 @@ import static org.junit.Assert.assertNull;
  * Test Rest Exception Handler.
  */
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({ "javax.management.*", "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "com.sun.org.apache.xalan.*", "jdk.internal.reflect.*"})
+@PowerMockIgnore(
+    {
+        "javax.management.*",
+        "com.sun.org.apache.xerces.*",
+        "javax.xml.*",
+        "org.xml.*",
+        "com.sun.org.apache.xalan.*",
+        "jdk.internal.reflect.*",
+    }
+)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestTestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
@@ -71,8 +80,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testVitamUIException() throws ParseException {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.VITAMUI_EXCEPTION, new VitamUIError(), VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.VITAMUI_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         assertNotNull("Exception informations are empty.", result.getBody());
         assertNull("ExceptionKey should be correctly defined.", result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
@@ -90,12 +107,27 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
         PowerMockito.mockStatic(OffsetDateTime.class);
         PowerMockito.when(OffsetDateTime.now()).thenReturn(fixedDateTime);
 
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.APPLICATION_SERVER_EXCEPTION, VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.APPLICATION_SERVER_EXCEPTION,
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
-        assertEquals("Timestamp should be correctly defined.", String.valueOf(fixedDateTime.toEpochSecond()), result.getBody().getTimestamp());
-        assertEquals("Exception should be correctly defined.", ApplicationServerException.class.getName(), result.getBody().getException());
+        assertEquals(
+            "Timestamp should be correctly defined.",
+            String.valueOf(fixedDateTime.toEpochSecond()),
+            result.getBody().getTimestamp()
+        );
+        assertEquals(
+            "Exception should be correctly defined.",
+            ApplicationServerException.class.getName(),
+            result.getBody().getException()
+        );
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
     }
@@ -105,9 +137,15 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testApplicationServerExceptionWithMessageAndThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE,
-                VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE,
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -119,7 +157,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.BAD_REQUEST_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.BAD_REQUEST_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -132,7 +173,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestBindException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_BIND_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_BIND_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -145,7 +189,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestExceptionWithThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -160,7 +207,11 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
     public void testBadRequestHttpMessageNotReadableException() {
         final VitamUIError vitamuiDto = new VitamUIError();
         vitamuiDto.setArgs(Arrays.asList("msg"));
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_POST, vitamuiDto, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_POST,
+            vitamuiDto,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -173,8 +224,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestMediaTypeException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_POST_BAD_REQUEST_EXCEPTION, "", VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.UNSUPPORTED_MEDIA_TYPE, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_POST_BAD_REQUEST_EXCEPTION,
+            "",
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -186,8 +245,11 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestMediaTypeNotAcceptableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_POST_BAD_REQUEST_EXCEPTION, new VitamUIError(),
-                VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_POST_BAD_REQUEST_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.NOT_ACCEPTABLE, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -200,7 +262,11 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestMethodException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_BAD_REQUEST_EXCEPTION, "", VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_BAD_REQUEST_EXCEPTION,
+            "",
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.METHOD_NOT_ALLOWED, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -214,7 +280,11 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
     @Test
     public void testBadRequestMethodArgumentNotValidException() {
         final VitamUIError vitamuiError = new VitamUIError();
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_POST, vitamuiError, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_POST,
+            vitamuiError,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -227,7 +297,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestMissingServletRequestParameterException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_BAD_REQUEST_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_BAD_REQUEST_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -240,7 +313,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestMissingServletRequestPartException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -253,7 +329,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestParameterException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_BAD_REQUEST_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_BAD_REQUEST_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -266,7 +345,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestServletRequestBindingException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=1", VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=1",
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -279,7 +361,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testBadRequestTypeMismatchException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=name", VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=name",
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -292,7 +377,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testForbiddenException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.FORBIDDEN_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.FORBIDDEN_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.FORBIDDEN, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(ForbiddenException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -305,8 +393,15 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInternalServerException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.INTERNAL_SERVER_EXCEPTION, VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.INTERNAL_SERVER_EXCEPTION,
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -318,9 +413,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInternalServerExceptionAsyncRequestTimeoutException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_ASYNC_REQUEST_TIMEOUT_EXCEPTION, new VitamUIError(),
-                VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.SERVICE_UNAVAILABLE, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_ASYNC_REQUEST_TIMEOUT_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.SERVICE_UNAVAILABLE,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -332,9 +434,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInternalServerExceptionConversionNotSupportedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_CONVERSION_NOT_SUPPORTED_EXCEPTION, new VitamUIError(),
-                VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_CONVERSION_NOT_SUPPORTED_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -346,9 +455,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInternalServerExceptionHttpMessageNotWritableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION, new VitamUIError(),
-                VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -360,9 +476,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInternalServerExceptionMissingPathVariableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_MISSING_PATH_VARIABLE_EXCEPTION, new VitamUIError(),
-                VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
+            TestController.SPRING_MISSING_PATH_VARIABLE_EXCEPTION,
+            new VitamUIError(),
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -374,7 +497,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInvalidAuthenticationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.INVALID_AUTHENTICATION_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.INVALID_AUTHENTICATION_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.UNAUTHORIZED, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(InvalidAuthenticationException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -387,7 +513,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testInvalidFormatException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.INVALID_FORMAT_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.INVALID_FORMAT_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(InvalidFormatException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -400,7 +529,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testNoRightsException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.NO_RIGHTS_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.NO_RIGHTS_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.FORBIDDEN, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(NoRightsException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -413,8 +545,15 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testNotImplementedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.APPLICATION_SERVER_EXCEPTION, VitamUIError.class);
-        assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.APPLICATION_SERVER_EXCEPTION,
+            VitamUIError.class
+        );
+        assertEquals(
+            "Status code should be correctly defined.",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            result.getStatusCode()
+        );
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
@@ -426,7 +565,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testParseOperationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.PARSE_OPERATION_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.PARSE_OPERATION_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(ParseOperationException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -440,7 +582,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testParseOperationExceptionWithThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(ParseOperationException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -453,7 +598,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testRouteNotFoundException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.ROUTE_NOT_FOUND_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.ROUTE_NOT_FOUND_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.NOT_FOUND, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(RouteNotFoundException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -466,7 +614,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testUnAuthorizedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.UN_AUTHORIZED_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.UN_AUTHORIZED_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.UNAUTHORIZED, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(UnAuthorizedException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -479,7 +630,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testValidationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.VALIDATION_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.VALIDATION_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(ValidationException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -492,7 +646,10 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
      */
     @Test
     public void testIllegalArgumentException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.ILLEGAL_ARGUMENT_SERVER_EXCEPTION, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.ILLEGAL_ARGUMENT_SERVER_EXCEPTION,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
@@ -500,18 +657,19 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
     }
 
-
     /**
      * Test a RequestTimeOutException and the JSON object in response.
      */
     @Test
     public void testRequestTimeOutException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.REQUEST_TIMEOUT_ERROR, VitamUIError.class);
+        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
+            TestController.REQUEST_TIMEOUT_ERROR,
+            VitamUIError.class
+        );
         assertEquals("Status code should be correctly defined.", HttpStatus.REQUEST_TIMEOUT, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(RequestTimeOutException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
     }
-
 }

@@ -63,7 +63,8 @@ import java.util.Optional;
  *
  *
  */
-public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestClient<SubrogationDto, InternalHttpContext> {
+public class SubrogationInternalRestClient
+    extends BasePaginatingAndSortingRestClient<SubrogationDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalRestClient.class);
 
@@ -77,7 +78,12 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
         uriBuilder.path("/surrogate/accept");
         uriBuilder.path(CommonConstants.PATH_ID);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -88,14 +94,24 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
         uriBuilder.path("/surrogate/decline");
         uriBuilder.path(CommonConstants.PATH_ID);
         final HttpEntity request = new HttpEntity(buildHeaders(context));
-        final ResponseEntity<Void> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.DELETE,
+            request,
+            Void.class
+        );
     }
 
     public SubrogationDto getMySubrogationAsSurrogate(final InternalHttpContext context) {
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path("/me/surrogate");
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -103,14 +119,32 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
     public SubrogationDto getMySubrogationAsSuperuser(final InternalHttpContext context) {
         final HttpEntity request = new HttpEntity(buildHeaders(context));
         final URIBuilder uriBuilder = getUriBuilderFromPath("/me/superuser");
-        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(buildUriBuilder(uriBuilder), HttpMethod.GET, request, getDtoClass());
+        final ResponseEntity<SubrogationDto> response = restTemplate.exchange(
+            buildUriBuilder(uriBuilder),
+            HttpMethod.GET,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
 
-    public PaginatedValuesDto<UserDto> getUsers(final InternalHttpContext context, final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<UserDto> getUsers(
+        final InternalHttpContext context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "search page={}, size={}, criteria={}, orderBy={}, direction={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
 
         final URIBuilder builder = getUriBuilderFromPath("/users");
         builder.addParameter("page", page.toString());
@@ -120,8 +154,12 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
         direction.ifPresent(o -> builder.addParameter("direction", o.toString()));
 
         final HttpEntity<UserDto> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<PaginatedValuesDto<UserDto>> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
-                getUserDtoPaginatedClass());
+        final ResponseEntity<PaginatedValuesDto<UserDto>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getUserDtoPaginatedClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -132,7 +170,12 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
         final URIBuilder builder = getUriBuilderFromPath("/groups/" + id + "/");
         embedded.ifPresent(e -> builder.addParameter("embedded", e));
 
-        final ResponseEntity<GroupDto> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, GroupDto.class);
+        final ResponseEntity<GroupDto> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            GroupDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -149,18 +192,15 @@ public class SubrogationInternalRestClient extends BasePaginatingAndSortingRestC
 
     @Override
     protected ParameterizedTypeReference<List<SubrogationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<SubrogationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<SubrogationDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<SubrogationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<SubrogationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<SubrogationDto>>() {};
     }
 
     protected ParameterizedTypeReference<PaginatedValuesDto<UserDto>> getUserDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {};
     }
 }

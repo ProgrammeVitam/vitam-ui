@@ -13,7 +13,6 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
@@ -127,8 +126,18 @@ public class CustomerInternalServiceTest {
         CustomerConverter customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        internalCustomerService = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService, userInternalService,
-            internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+        internalCustomerService = new CustomerInternalService(
+            sequenceGeneratorService,
+            customerRepository,
+            internalOwnerService,
+            userInternalService,
+            internalSecurityService,
+            addressService,
+            initCustomerService,
+            iamLogbookService,
+            customerConverter,
+            logbookService
+        );
     }
 
     @Test
@@ -146,8 +155,13 @@ public class CustomerInternalServiceTest {
         final PaginatedValuesDto<Customer> data = new PaginatedValuesDto<>(Arrays.asList(customerCreated), 0, 5, false);
         when(customerRepository.getPaginatedValues(any(), any(), any(), any(), any())).thenReturn(data);
 
-        final PaginatedValuesDto<CustomerDto> result = internalCustomerService.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(),
-            Optional.empty(), Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<CustomerDto> result = internalCustomerService.getAllPaginated(
+            Integer.valueOf(0),
+            Integer.valueOf(5),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(DirectionDto.ASC)
+        );
         Assert.assertNotNull("Customers should be returned.", result);
         Assert.assertNotNull("Customers should be returned.", result.getValues());
         Assert.assertEquals("Customes size should be returned.", 1, result.getValues().size());
@@ -246,7 +260,11 @@ public class CustomerInternalServiceTest {
 
         final CustomerDto customerDtoUpdated = internalCustomerService.update(customerToUpdate);
         Assert.assertNotNull("Customer should be returned.", customerDtoUpdated);
-        Assert.assertEquals("Customer code should be returned.", customerToUpdate.getCode(), customerDtoUpdated.getCode());
+        Assert.assertEquals(
+            "Customer code should be returned.",
+            customerToUpdate.getCode(),
+            customerDtoUpdated.getCode()
+        );
         Assert.assertEquals("Customer id should be returned.", customerToUpdate.getId(), customerDtoUpdated.getId());
     }
 
@@ -254,7 +272,12 @@ public class CustomerInternalServiceTest {
     public void should_patch_customer_address_and_name_when_changes_occured() {
         // Given
         final Customer customer = new Customer();
-        final Customer anotherCustomer = IamServerUtilsTest.buildCustomer("id", "name", "0123456", List.of("julien@vitamui.com", "pierre@vitamui.com"));
+        final Customer anotherCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            List.of("julien@vitamui.com", "pierre@vitamui.com")
+        );
 
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(anotherCustomer);
         partialDto.put("address", TestUtils.getMapFromObject(anotherCustomer.getAddress()));
@@ -282,7 +305,12 @@ public class CustomerInternalServiceTest {
 
     @Test
     public void testCheckCodeExistingCustomerOk() {
-        final Customer customer = IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("@vitamui.com"));
+        final Customer customer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("@vitamui.com")
+        );
 
         when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(customer));
         internalCustomerService.checkCode(Optional.of("id"), "0123456");
@@ -290,7 +318,12 @@ public class CustomerInternalServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCheckCodeExistingCustomerKO() {
-        final Customer customer = IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("@vitamui.com"));
+        final Customer customer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("@vitamui.com")
+        );
 
         when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(customer));
         internalCustomerService.checkCode(Optional.of("diffId"), "0123456");
@@ -322,7 +355,7 @@ public class CustomerInternalServiceTest {
 
     @Test
     public void testCheckNotExistByDomainMail() {
-        when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(),any())).thenReturn(null);
+        when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(), any())).thenReturn(null);
 
         final boolean result = internalCustomerService.checkExist(null);
         Assert.assertFalse("Customers shouldn't be found.", result);
@@ -330,12 +363,10 @@ public class CustomerInternalServiceTest {
 
     @Test
     public void testCreateFailsAsDuplicatePatterns() {
-
-
         final CustomerDto customerDto = new CustomerDto();
         customerDto.setName("name");
         customerDto.setCode("0123456");
-        List<String> duplicatesDomains = List.of("@vitamui.com","@vitamui.com");
+        List<String> duplicatesDomains = List.of("@vitamui.com", "@vitamui.com");
         customerDto.setEmailDomains(duplicatesDomains);
 
         CustomerCreationFormData customerCreationFormData = new CustomerCreationFormData(customerDto);
@@ -345,8 +376,7 @@ public class CustomerInternalServiceTest {
         try {
             internalCustomerService.create(customerCreationFormData);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Duplicate email domain found @vitamui.com", e.getMessage());
         }
     }

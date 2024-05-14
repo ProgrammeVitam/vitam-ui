@@ -37,10 +37,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.apache.xerces.util.XMLCatalogResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -93,8 +93,7 @@ public class ManifestValidator {
     private Schema getSchema(File file) throws SAXException {
         SchemaFactory factory;
         if (file.getName().endsWith(RNG_SUFFIX)) {
-            System.setProperty(RNG_PROPERTY_KEY,
-                RNG_FACTORY);
+            System.setProperty(RNG_PROPERTY_KEY, RNG_FACTORY);
             factory = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI);
         } else {
             factory = SchemaFactory.newInstance(HTTP_WWW_W3_ORG_XML_XML_SCHEMA_V1_1);
@@ -102,7 +101,7 @@ public class ManifestValidator {
 
         // Load catalog to resolve external schemas even offline.
         final URL catalogUrl = ManifestValidator.class.getClassLoader().getResource(CATALOG_FILENAME);
-        factory.setResourceResolver(new XMLCatalogResolver(new String[] {catalogUrl.toString()}, false));
+        factory.setResourceResolver(new XMLCatalogResolver(new String[] { catalogUrl.toString() }, false));
 
         return factory.newSchema(file);
     }

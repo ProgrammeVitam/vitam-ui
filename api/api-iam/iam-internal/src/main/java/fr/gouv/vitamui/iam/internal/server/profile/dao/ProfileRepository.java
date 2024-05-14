@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.iam.internal.server.profile.dao;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * MongoDB repository for the profiles.
@@ -50,7 +50,6 @@ import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
  *
  */
 public interface ProfileRepository extends VitamUIRepository<Profile, String> {
-
     Optional<Profile> findByIdAndCustomerIdAndTenantIdentifier(String id, String customerId, Integer tenantIdentifier);
 
     Profile findByNameAndLevelAndTenantIdentifier(String name, String level, Integer tenantIdentifier);
@@ -64,5 +63,4 @@ public interface ProfileRepository extends VitamUIRepository<Profile, String> {
     List<Group> findByCustomerId(String customerId);
 
     List<Profile> findAllByIdIn(Collection<String> ids);
-
 }
