@@ -1,0 +1,7 @@
+---
+
+- name: Remove rsyslog configuration
+  file:
+    path: /etc/rsyslog.d/vitamui_transport.conf
+    state: absent
+  notify: "rsyslog - restart service"

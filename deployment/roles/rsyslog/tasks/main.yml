@@ -1,46 +1,7 @@
 ---
-# tasks file for rsyslog
 
-- name: ensure rsyslog package is installed
-  package:
-    name: rsyslog
-    state: latest
-  register: result
-  retries: "{{ packages_install_retries_number | default(2) }}"
-  until: result is succeeded
-  delay: "{{ packages_install_retries_delay | default(10) }}"
-  notify:
-    - restart rsyslog
+- include_tasks: install.yml
+  when: syslog.name | default('filebeat') == "rsyslog"
 
-- name: ensure service is started on boot && restart service
-  service:
-    name: rsyslog
-    enabled: true
-  notify:
-    - restart rsyslog
-
-- name: copy VITAMUI transport config file
-  template:
-    src: "vitamui_transport.conf.j2"
-    dest: /etc/rsyslog.d/vitamui_transport.conf
-    owner: root
-    mode: 0644
-  notify:
-    - restart rsyslog
-
-- name: copy rsyslog.conf
-  template:
-    src: "rsyslog.conf.j2"
-    dest: /etc/rsyslog.conf
-    owner: root
-    mode: 0644
-  notify:
-    - restart rsyslog
-
-- name: Ensure service is started + enabled at boot
-  service:
-    name: "rsyslog"
-    state: started
-    enabled: yes
-  tags:
-    - start
+- include_tasks: uninstall.yml
+  when: syslog.name | default('filebeat') != "rsyslog"
