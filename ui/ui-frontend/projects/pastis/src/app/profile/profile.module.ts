@@ -44,7 +44,7 @@ import { SharedModule } from './../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -77,6 +77,7 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     TranslateModule,
     NgxUiLoaderModule,
     ProfilePreviewModule,
+    ReactiveFormsModule,
   ],
   exports: [
     CreateNoticeChoiceComponent,
