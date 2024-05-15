@@ -52,6 +52,28 @@
   margin: -15px 15px 20px -15px;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 0 40px 30px;
+}
+
+.subtitle {
+  color: var(--vitamui-primary);
+  font-weight: 700;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  text-align: left;
+}
+
+.seda-options {
+  display: flex;
+  gap: 10px;
+}
+
 .gauche {
   margin: 10px 0px -20px 30px;
   float: left;
@@ -83,42 +105,8 @@
   color: #050c15;
 }
 
-.pastis-dialog-confirm-buttons {
-  position: relative;
-  margin-left: 5%;
-  margin-bottom: 10px;
-}
-
-.pastis-btn-oui-dialog-confirm {
-  background: var(--vitamui-primary) !important;
-
-  font-family: Mulish !important;
-  border-radius: 100px;
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 92px;
-  height: 50px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  @extend .pastis-btn-primary-enabled;
-}
-
-.pastis-btn-non-dialog-confirm {
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 92px;
-  height: 50px;
-  margin-left: 24px;
-  border: 0;
-  background-color: transparent;
-  color: var(--vitamui-grey-900);
-  font-family: Mulish;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 18px;
+.actions {
   display: flex;
-  align-items: center;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  gap: 1.5rem;
+  padding: 0 0 2rem 1.5rem;
 }

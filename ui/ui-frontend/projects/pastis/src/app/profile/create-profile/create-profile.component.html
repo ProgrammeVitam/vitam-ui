@@ -36,7 +36,7 @@
 
   <div class="container">
     <div class="subtitle">Version du SEDA souhaitée</div>
-    <mat-radio-group class="seda-options" formControlName="sedaOption">
+    <mat-radio-group class="seda-options" formControlName="sedaVersion">
       <mat-radio-button *ngFor="let option of sedaOptions" [value]="option">{{ option.label }}</mat-radio-button>
     </mat-radio-group>
   </div>
