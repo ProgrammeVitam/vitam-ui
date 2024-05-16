@@ -36,83 +36,47 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { SedaOption, sedaOptions } from './seda-version.model';
 
-const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.CHOICE';
-
-function constantToTranslate() {
-  this.firstChoice = this.translated('.FIRST_CHOICE');
-  this.secondChoice = this.translated('.SECOND_CHOICE');
-  this.title = this.translated('.TITLE');
+export interface CreateProfileFormResult {
+  profileType: ProfileType;
+  sedaOption: SedaOption;
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
   styleUrls: ['./create-profile.component.scss'],
 })
 export class CreateProfileComponent implements OnInit {
-  firstChoice: string;
-  secondChoice: string;
-  title: string;
-  profilPaChoice = true;
-  isStandalone: boolean = environment.standalone;
+  readonly ProfileType = ProfileType;
+  readonly sedaOptions = sedaOptions;
+  profileType: ProfileType = null;
+  form: FormGroup;
 
   constructor(
-    private dialogRef: MatDialogRef<CreateProfileComponent>,
-    private translateService: TranslateService,
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<CreateProfileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
   ) {}
 
-  ngOnInit() {
-    if (!this.isStandalone) {
-      constantToTranslate.call(this);
-      this.translatedOnChange();
-    } else if (this.isStandalone) {
-      this.firstChoice = ProfileType.PA;
-      this.secondChoice = ProfileType.PUA;
-      this.title = "Sélectionner un profil d'archivage :";
-    }
-  }
-
-  translatedOnChange(): void {
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
-      constantToTranslate.call(this);
-      console.log(event.lang);
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      profileType: [ProfileType.PA, Validators.required],
+      sedaOption: [null, Validators.required],
     });
   }
 
-  translated(nameOfFieldToTranslate: string): string {
-    return this.translateService.instant(POPUP_CREATION_CHOICE_PATH + nameOfFieldToTranslate);
-  }
+  validate() {
+    const result: CreateProfileFormResult = {
+      profileType: this.form.controls.profileType.value,
+      sedaOption: this.form.controls.sedaOption.value,
+    };
 
-  onNoClick() {
-    this.dialogRef.close();
-  }
-
-  onCancel() {
-    this.dialogRef.close();
-  }
-
-  changeChoiceCreateProfile($event: string) {
-    console.log($event);
-    if ($event === this.firstChoice) {
-      this.profilPaChoice = true;
-    } else {
-      this.profilPaChoice = false;
-    }
-  }
-
-  onYesClick() {
-    if (this.profilPaChoice) {
-      this.dialogRef.close({ success: true, action: ProfileType.PA });
-    } else if (!this.profilPaChoice) {
-      this.dialogRef.close({ success: true, action: ProfileType.PUA });
-    }
+    this.dialogRef.close(result);
   }
 }
