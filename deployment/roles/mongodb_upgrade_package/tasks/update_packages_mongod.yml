@@ -96,6 +96,9 @@
     no_log: "{{ hide_passwords_during_deploy }}"
     ignore_errors: true # To properly catch output on the next task
     register: output_node_state
+    retries: 20
+    delay: 5
+    until: output_node_state.rc == 0
 
   - name: Fail if node state is incorrect
     assert:

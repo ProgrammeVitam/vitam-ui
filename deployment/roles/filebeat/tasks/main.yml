@@ -1,7 +1,6 @@
 ---
 
-- include_tasks: 'uninstall.yml'
-  tags: [ 'never', 'uninstall' ]
+- include_tasks: uninstall.yml
   when: syslog.name | default('filebeat') != "filebeat"
 
 - include_tasks: install.yml

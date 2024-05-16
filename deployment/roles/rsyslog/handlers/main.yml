@@ -1,6 +1,7 @@
 ---
-# handlers file for vitamui-rsyslog
-- name: restart rsyslog
-  service:
+
+- name: "rsyslog - restart service"
+  systemd:
     name: rsyslog
     state: restarted
+    daemon_reload: yes

@@ -137,17 +137,6 @@ Exécutez le playbook suivant à partir de l'ansiblerie de la V7.1 :
 ansible-playbook -i environments/<inventaire> ansible-vitamui-migration/migration_mongodb_70.yml --ask-vault-pass
 ```
 
-### Migration de la gateway
-
-> Cette opération doit être effectuée AVANT la montée de version vers la V7.1.
-> Cette opération doit être effectuée avec les sources de déploiement de la V7.1 mais avec l'inventaire de l'ancienne version.
-
-Executez le script de migration vers l'API Gateway pour supprimer les anciens services UI Java et mettre à jour les certificats en base de données pour VitamUI.
-
-```sh
-ansible-playbook -i environments/<inventaire-version-precedente> ansible-vitamui-migration/migration_gateway.yml --ask-vault-pass
-```
-
 ### Arrêt complet de VitamUI
 
 > Cette opération doit être effectuée AVANT la montée de version vers la V7.1.
@@ -159,6 +148,18 @@ VitamUI doit être arrêté :
 ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/stop_vitamui.yml --ask-vault-pass
 ```
 
+### Playbook de migration vers la V7.1
+
+> Cette opération doit être effectuée AVANT la montée de version vers la V7.1.
+> Cette opération doit être effectuée avec les sources de déploiement de la V7.1 avec l'inventaire de l'ancienne version (si vous avez modifié la répartition des composants des groupes `[hosts_ui_*]` ou `[hosts_vitamui_reverseproxy]`), sinon vous pouvez utiliser votre inventaire V7.1.
+
+Exécutez le script de migration pour supprimer les anciens services UI Java, supprimer les anciens éléments du reverse et de vitamui-logstash.
+
+> Les éléments de configuration du reverse sur les machines `[hosts_vitamui_reverseproxy]` sera supprimé, n'oubliez pas de backuper vos configurations en cas de besoin.
+
+```sh
+ansible-playbook -i environments/<inventaire-version-precedente> ansible-vitamui-migration/migration_vitamui_71.yml --ask-vault-pass
+```
 
 ---
 

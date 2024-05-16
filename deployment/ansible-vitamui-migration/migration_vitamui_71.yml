@@ -1,0 +1,86 @@
+---
+# Migration to V7.1
+###################
+
+- hosts: localhost
+  any_errors_fatal: yes
+  gather_facts: no
+  vars_prompt:
+    name: "confirmation"
+    prompt: "This playbook will migrate your service UI and into gateway mode. It will also clean oldest reverse configuration and clean oldest vitamui-logstash package.\n> Please backup your reverse configurations !\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
+    default: "NO"
+    private: no
+  tasks:
+    - name: Check Confirmation
+      fail: msg="Playbook run confirmation failed"
+      when: confirmation|upper != "YES"
+
+################################################################################
+
+- hosts: hosts_ui_*
+  gather_facts: no
+  tasks:
+    - name: Remove all services UI packages currently in java
+      package:
+        name:
+          - "vitamui-ui-*"
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
+
+    - name: Find folders matching the pattern
+      find:
+        paths: "/vitamui"
+        patterns: "ui-*"
+        recurse: yes
+        file_type: directory
+      register: folders_to_remove
+
+    - name: Remove folders matching the pattern
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ folders_to_remove.files }}"
+
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
+    - name: Clean systemd
+      command: systemctl reset-failed
+
+################################################################################
+
+- hosts: hosts_vitamui_reverseproxy
+  tasks:
+    - name: Remove httpd reverse as we switch by default to nginx
+      package:
+        name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
+
+    - name: Remove files related to oldest reverse
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - "/etc/{{ 'apache2/sites-available' if ansible_os_family == 'Debian' else 'httpd/conf.d' }}/"
+        - /etc/nginx/conf.d/
+
+################################################################################
+
+- hosts: hosts_vitamui_logstash
+  gather_facts: no
+  tasks:
+    - name: Remove oldest vitamui-logstash package
+      package:
+        name: vitamui-logstash
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
