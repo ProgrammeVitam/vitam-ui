@@ -302,6 +302,7 @@ public class PastisService {
             InputSource inputSource = new InputSource(inputStream);
             XMLReader xmlReader = createXmlReader(handler);
             xmlReader.parse(inputSource);
+            LOGGER.info("Seda version: {}", handler.getSedaVersion());
             elementProperties = getJson.getJsonParsedTree(handler.getElementRNGRoot());
         } catch (SAXException | IOException e) {
             LOGGER.error(e.getMessage());
@@ -340,6 +341,7 @@ public class PastisService {
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
+                LOGGER.info("Seda version: {}", handler.getSedaVersion());
                 LOGGER.info("Starting editing Archive Profile from file : {}", resource.getFilename());
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
@@ -379,6 +381,7 @@ public class PastisService {
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
+                LOGGER.info("Seda version: {}", handler.getSedaVersion());
                 LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
