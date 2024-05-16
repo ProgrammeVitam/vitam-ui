@@ -43,12 +43,14 @@ import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class ProfileResponse extends IdDto {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-    String name;
-    transient ElementProperties profile;
-    Notice notice;
-    ProfileType type;
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ProfileResponse extends IdDto {
+    @NotBlank private String name;
+    @NotNull private ProfileType type;
+    private transient ElementProperties profile;
+    private Notice notice;
 }

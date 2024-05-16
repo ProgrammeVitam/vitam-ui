@@ -35,23 +35,28 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+
 package fr.gouv.vitamui.pastis.common.util;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
 import lombok.Getter;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class PastisSAX2Handler extends DefaultHandler {
 
+    private final Stack<ElementRNG> stackRNG = new Stack<>();
+    boolean isValue;
+
     @Getter
     private ElementRNG elementRNGRoot;
 
-    boolean isValue;
-    private Stack<ElementRNG> stackRNG = new Stack<>();
+    @Getter
+    private String sedaVersion;
+
     private boolean isInDocumentationTag;
     private StringBuilder documentationContent;
 
@@ -60,12 +65,13 @@ public class PastisSAX2Handler extends DefaultHandler {
      * This method is called everytime the parser gets an open tag
      * Identifies which tag has being opened at time by assiging a new flag
      */
-    public void startElement(String nameSpace, String localName, String qName, Attributes attr) {
+    @Override
+    public void startElement(String nameSpace, String localName, String qName, Attributes attributes) {
         //cette variable contient le nom du nœud qui a créé l'événement
         // If node not a grammar tag or start tag
         if (!("grammar".equals(localName) || "start".equals(localName))) {
             // If node is ArchiveTransfer
-            if (null != attr.getValue("name") && attr.getValue("name").equals("ArchiveTransfer")) {
+            if (null != attributes.getValue("name") && attributes.getValue("name").equals("ArchiveTransfer")) {
                 return;
             }
             //If node has documentation
@@ -74,9 +80,9 @@ public class PastisSAX2Handler extends DefaultHandler {
             }
             // Create a new rng tag element and add it to the stack
             ElementRNG elementRNG = new ElementRNG();
-            elementRNG.setName(attr.getValue("name"));
+            elementRNG.setName(attributes.getValue("name"));
             elementRNG.setType(localName);
-            elementRNG.setDataType(attr.getValue("type"));
+            elementRNG.setDataType(attributes.getValue("type"));
             if (!stackRNG.isEmpty()) {
                 ElementRNG e = stackRNG.lastElement();
                 elementRNG.setParent(e);
@@ -89,12 +95,33 @@ public class PastisSAX2Handler extends DefaultHandler {
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = true;
         }
+
+        if ("grammar".equals(localName)) {
+            final String defaultXmlNamespace = attributes.getValue("xmlns");
+            final String sedaXmlNamespace = attributes.getValue("xmlns:seda");
+            final String namespace = attributes.getValue("ns");
+
+            if (sedaVersion == null && defaultXmlNamespace != null) sedaVersion = Arrays.stream(
+                defaultXmlNamespace.split(":")
+            )
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (sedaVersion == null && sedaXmlNamespace != null) sedaVersion = Arrays.stream(
+                sedaXmlNamespace.split(":")
+            )
+                .reduce((first, second) -> second)
+                .orElse(null);
+            if (sedaVersion == null && namespace != null) sedaVersion = Arrays.stream(namespace.split(":"))
+                .reduce((first, second) -> second)
+                .orElse(null);
+        }
     }
 
     /**
      * Actions à réaliser lors de la détection de la fin d'un élément.
      */
-    public void endElement(String nameSpace, String localName, String qName) throws SAXException {
+    @Override
+    public void endElement(String uri, String localName, String qName) {
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = false;
         }
@@ -106,6 +133,7 @@ public class PastisSAX2Handler extends DefaultHandler {
     /**
      * Actions à réaliser au début du document.
      */
+    @Override
     public void startDocument() {
         elementRNGRoot = new ElementRNG();
         elementRNGRoot.setName("ArchiveTransfer");
@@ -117,13 +145,13 @@ public class PastisSAX2Handler extends DefaultHandler {
      * Actions to perform when tag content is reached (Data between '< />' )
      */
     @Override
-    public void characters(char[] caracteres, int start, int length) throws SAXException {
+    public void characters(char[] characters, int start, int length) {
         if (isInDocumentationTag) {
-            documentationContent.append(new String(caracteres, start, length));
+            documentationContent.append(new String(characters, start, length));
             stackRNG.lastElement().setValue(documentationContent.toString());
         }
         if (isValue) {
-            String valueContent = new String(caracteres, start, length);
+            String valueContent = new String(characters, start, length);
             stackRNG.lastElement().setValue(valueContent);
             this.isValue = false;
         }

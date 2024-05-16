@@ -51,7 +51,6 @@ import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
-import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
 import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
@@ -62,21 +61,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
 
 @Api(tags = "pastis")
-@RequestMapping(RestApi.PASTIS)
+@RequestMapping("/pastis")
 @RestController
 @ResponseBody
 class PastisController extends AbstractInternalClientService {
-
-    private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
-
     private final PastisService profileService;
-
     private final ProfileInternalRestClient profileInternalRestClient;
 
     public PastisController(
@@ -96,11 +97,7 @@ class PastisController extends AbstractInternalClientService {
 
     @ApiOperation(value = "Download Pa Profile rng file")
     @Secured(ServicesData.ROLE_GET_PROFILES)
-    @PostMapping(
-        value = RestApi.PASTIS_DOWNLOAD_PA,
-        consumes = APPLICATION_JSON_UTF8,
-        produces = MediaType.APPLICATION_XML_VALUE
-    )
+    @PostMapping(value = "/archiveprofile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(json);
@@ -114,11 +111,7 @@ class PastisController extends AbstractInternalClientService {
 
     @ApiOperation(value = "Download Pua Profile json file")
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    @PostMapping(
-        value = RestApi.PASTIS_DOWNLOAD_PUA,
-        consumes = APPLICATION_JSON_UTF8,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(value = "/getarchiveunitprofile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(json);
@@ -131,8 +124,8 @@ class PastisController extends AbstractInternalClientService {
     }
 
     @ApiOperation(value = "Retrieve json representation from PUA notice")
-    @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
-    @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
+    @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
+    @PostMapping(value = "/edit")
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(notice);
@@ -155,8 +148,8 @@ class PastisController extends AbstractInternalClientService {
     }
 
     @ApiOperation(value = "Retrieve json representation from input file")
-    @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
-    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, consumes = "multipart/form-data", produces = "application/json")
+    @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
+    @PostMapping(value = "/profile", consumes = "multipart/form-data", produces = "application/json")
     ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file)
         throws NoSuchAlgorithmException, TechnicalException, PreconditionFailedException {
         String fileName = file.getOriginalFilename();
@@ -170,12 +163,8 @@ class PastisController extends AbstractInternalClientService {
     }
 
     @ApiOperation(value = "Retrieve json representation from PA file")
-    @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
-    @PostMapping(
-        value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
-        consumes = "multipart/form-data",
-        produces = "application/json"
-    )
+    @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
+    @PostMapping(value = "/editpa", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ElementProperties> loadPA(@RequestParam("file") MultipartFile file) {
         ElementProperties elementProperties = profileService.loadProfilePA(file);
         if (elementProperties != null) {
@@ -186,8 +175,8 @@ class PastisController extends AbstractInternalClientService {
     }
 
     @ApiOperation(value = "Get template profile by type")
-    @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
-    @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
+    @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
+    @GetMapping(value = "/profile")
     ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
         throws NoSuchAlgorithmException, TechnicalException, InvalidParseOperationException {
         SanityChecker.checkSecureParameter(profileType);
