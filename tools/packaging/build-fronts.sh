@@ -1,6 +1,10 @@
 #!/bin/bash
-echo "$VERSION"
+
+MODULES="$1"
+VERSION="$2"
+
 echo "$MODULES"
+echo "$VERSION"
 
 
 # Check if VERSION and MODULES environment variables are set
@@ -9,26 +13,12 @@ if [ -z "$VERSION" ] || [ -z "$MODULES" ]; then
     exit 1
 fi
 
-# Split MODULES names into an array
-IFS=',' read -r -a MODULES_ARRAY <<< "$MODULES"
+# Split the modules list by comma into an array
+IFS=',' read -r -a modules_array <<< "$MODULES"
 
-
-# Determine the directory where the script resides
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
-# Check if the Makefile-fronts exists in the same directory as the script
-if [ ! -f "$SCRIPT_DIR/Makefile-fronts" ]; then
-    echo "ERROR: Makefile-fronts not found in the same directory as the script."
-    exit 1
-fi
-
-# Change directory to the script directory
-cd "$SCRIPT_DIR" || exit 1
-
-
-for MODULE in "${MODULES_ARRAY[@]}"; do
+for MODULE in "${modules_array[@]}"; do
     echo "Packaging module: $MODULE"
     # Call make passing module and version as parameters
-    make -f "Makefile-fronts" NAME="$MODULE" VERSION="$VERSION"
-    # If you want to pass additional parameters to the Makefile, add them after VERSION="$VERSION"
+    make -f "Makefile-fronts" NAME="$MODULE" VERSION="$VERSION" rpm
+
 done

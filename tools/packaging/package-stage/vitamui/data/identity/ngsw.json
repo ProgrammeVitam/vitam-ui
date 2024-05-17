@@ -1,0 +1,167 @@
+{
+  "configVersion": 1,
+  "timestamp": 1715591116889,
+  "index": "/identity/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/identity/1-es2015.1c125e646165efefa574.js",
+        "/identity/1-es5.1c125e646165efefa574.js",
+        "/identity/10-es2015.da35cca06f742b5c3775.js",
+        "/identity/10-es5.da35cca06f742b5c3775.js",
+        "/identity/11-es2015.3fe4a0c1674309c04dea.js",
+        "/identity/11-es5.3fe4a0c1674309c04dea.js",
+        "/identity/12-es2015.9dbacb02734a28ce8726.js",
+        "/identity/12-es5.9dbacb02734a28ce8726.js",
+        "/identity/13-es2015.5f994f507a75548da3a7.js",
+        "/identity/13-es5.5f994f507a75548da3a7.js",
+        "/identity/7-es2015.e9179807b06f3dbcf1b2.js",
+        "/identity/7-es5.e9179807b06f3dbcf1b2.js",
+        "/identity/8-es2015.29931313da1f316e4a7a.js",
+        "/identity/8-es5.29931313da1f316e4a7a.js",
+        "/identity/9-es2015.7b0beba2f36205e7bd8a.js",
+        "/identity/9-es5.7b0beba2f36205e7bd8a.js",
+        "/identity/common-es2015.12b3b701d448b9bb14bd.js",
+        "/identity/common-es5.12b3b701d448b9bb14bd.js",
+        "/identity/main-es2015.506d4bff689db1e0eb89.js",
+        "/identity/main-es5.506d4bff689db1e0eb89.js",
+        "/identity/polyfills-es2015.21b664eb3e98e6fcf324.js",
+        "/identity/polyfills-es5.3993d949783409e7f32d.js",
+        "/identity/runtime-es2015.ecfb2da1b06460e2c47a.js",
+        "/identity/runtime-es5.ecfb2da1b06460e2c47a.js",
+        "/identity/styles.5e7a66111078763de3bb.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/identity/MaterialIcons-Regular.4674f8ded773cb03e824.eot",
+        "/identity/MaterialIcons-Regular.5e7382c63da0098d634a.ttf",
+        "/identity/MaterialIcons-Regular.83bebaf37c09c7e1c3ee.woff",
+        "/identity/MaterialIcons-Regular.cff684e59ffb052d72cb.woff2",
+        "/identity/assets/account-header-bg.jpg",
+        "/identity/assets/avatar.svg",
+        "/identity/assets/bg-customer-select.svg",
+        "/identity/assets/bg-tenant-select.svg",
+        "/identity/assets/country/en.svg",
+        "/identity/assets/country/fr.svg",
+        "/identity/assets/footer-logo.svg",
+        "/identity/assets/logo.png",
+        "/identity/assets/logo.svg",
+        "/identity/assets/mini-logo-vitam.png",
+        "/identity/assets/my-account.svg",
+        "/identity/assets/shared-i18n/README.md",
+        "/identity/assets/user_icon.png",
+        "/identity/assets/vitam-logo.png",
+        "/identity/mulishFont200.1e3ade16373e5c750d4e.woff2",
+        "/identity/mulishFont700.82ca89e377b3519c3ceb.woff2",
+        "/identity/mulishFontsGoogleLatin.534216428c5bbca363fa.woff2",
+        "/identity/mulishFontsGoogleLatinExt.62f3e8b58b51d2b37d0c.woff2",
+        "/identity/vitamui-icon.2a51d773162de3ad9bac.woff",
+        "/identity/vitamui-icon.9c2630a33a9f51e9620d.eot",
+        "/identity/vitamui-icon.cb3e082e46c6addde29b.svg",
+        "/identity/vitamui-icon.f38dcafd580c19a9591e.ttf"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "assets",
+      "patterns": [
+        "\\/assets\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 1800000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/identity/1-es2015.1c125e646165efefa574.js": "a1017e3625e5dafdcdbe3c279afb7c9bd3994f8f",
+    "/identity/1-es5.1c125e646165efefa574.js": "3df380f08a080d58303a1e9ff8e4eb2205c44881",
+    "/identity/10-es2015.da35cca06f742b5c3775.js": "94cabf5bdefc9ae3afc5291ef6bcda24ec8b8958",
+    "/identity/10-es5.da35cca06f742b5c3775.js": "edae94a600086f96174bc20fd153b31880859137",
+    "/identity/11-es2015.3fe4a0c1674309c04dea.js": "30dca5d4db3e164f6aa84059e33d2446cccefb0a",
+    "/identity/11-es5.3fe4a0c1674309c04dea.js": "8b0b5527eab76be405e39836682b0a7785d6d04c",
+    "/identity/12-es2015.9dbacb02734a28ce8726.js": "533444afb8eb3b15ae31df7054073ad1d9fdc498",
+    "/identity/12-es5.9dbacb02734a28ce8726.js": "38fa540c5fafa4bf03f8dc2d04198c0fe5eccd79",
+    "/identity/13-es2015.5f994f507a75548da3a7.js": "ea4b930544039d7ce3c0eff26e3fb38e11abd641",
+    "/identity/13-es5.5f994f507a75548da3a7.js": "86e2a1df43ec92b09f693ade65bef8eb528ca0bc",
+    "/identity/7-es2015.e9179807b06f3dbcf1b2.js": "d960d3ad07e522491cecd2de121552bf7559af06",
+    "/identity/7-es5.e9179807b06f3dbcf1b2.js": "f1cf6b02c914dce053b0b1b414b8c73a2669e972",
+    "/identity/8-es2015.29931313da1f316e4a7a.js": "411471790ba761910a859461a5bf99ff01f61197",
+    "/identity/8-es5.29931313da1f316e4a7a.js": "1b22fa1e21387ab22ca844ffbcb0f18257890c36",
+    "/identity/9-es2015.7b0beba2f36205e7bd8a.js": "9ee2c8f45b349488c657e0d8586189eb6ef8e8d3",
+    "/identity/9-es5.7b0beba2f36205e7bd8a.js": "d5872f50f78dcc31ff961cf58967b93b5671468c",
+    "/identity/MaterialIcons-Regular.4674f8ded773cb03e824.eot": "26fb8cecb5512223277b4d290a24492a0f09ede1",
+    "/identity/MaterialIcons-Regular.5e7382c63da0098d634a.ttf": "fc05de31234e0090f7ddc28ce1b23af4026cb1da",
+    "/identity/MaterialIcons-Regular.83bebaf37c09c7e1c3ee.woff": "c6c953c2ccb2ca9abb21db8dbf473b5a435f0082",
+    "/identity/MaterialIcons-Regular.cff684e59ffb052d72cb.woff2": "09963592e8c953cc7e14e3fb0a5b05d5042e8435",
+    "/identity/assets/account-header-bg.jpg": "fdc25ee6846edde0c4d5d6991d970e621f1a0aa0",
+    "/identity/assets/avatar.svg": "9ff04f0651578b0dbfc9f97a27a89506101394bc",
+    "/identity/assets/bg-customer-select.svg": "0e9bc0fabae742969014b5fef803eee707922634",
+    "/identity/assets/bg-tenant-select.svg": "da489f784d433747fae9a8d873c7e8d658fbdf20",
+    "/identity/assets/country/en.svg": "2b5148a18b90f933e47bf895c26d61a52d21d9d8",
+    "/identity/assets/country/fr.svg": "e3deb99b897e85df223b6d5d63628ea6d9c762c1",
+    "/identity/assets/footer-logo.svg": "8d54e762125574e92769c3dfe308afc2307cce3b",
+    "/identity/assets/logo.png": "918f4351c803e4440d869b689744c3f77a263461",
+    "/identity/assets/logo.svg": "163806bb7a3e5505d7c2432965564eb8f851dc13",
+    "/identity/assets/mini-logo-vitam.png": "e9ac16ff7a717a1f2f8028cb19a95390422b4358",
+    "/identity/assets/my-account.svg": "6fd87f211c8f87de0e73b0e01c138eaf90239869",
+    "/identity/assets/shared-i18n/README.md": "8827078e00e335c7e108ee0a1e9976d6d24fb89f",
+    "/identity/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
+    "/identity/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
+    "/identity/common-es2015.12b3b701d448b9bb14bd.js": "34dc299360c9a47cae9f312253cd09d9bcb86d34",
+    "/identity/common-es5.12b3b701d448b9bb14bd.js": "fad57f0298d2f44102680b2cddb0a2fe275c4bf2",
+    "/identity/main-es2015.506d4bff689db1e0eb89.js": "d6baf56acc324d22e8fa8ed8f555f3b8031e2ff6",
+    "/identity/main-es5.506d4bff689db1e0eb89.js": "eb7b46a1ef4e9c00f239a2400328e11123274429",
+    "/identity/mulishFont200.1e3ade16373e5c750d4e.woff2": "c680d8d864f3c61fb790b73770307a845fe4c3b1",
+    "/identity/mulishFont700.82ca89e377b3519c3ceb.woff2": "dc1337f1da45164af176cf5b81f4d238c39d9694",
+    "/identity/mulishFontsGoogleLatin.534216428c5bbca363fa.woff2": "081111500e97a7663ff936f847e050fee6b8be2b",
+    "/identity/mulishFontsGoogleLatinExt.62f3e8b58b51d2b37d0c.woff2": "f690c11fe3c8ff360672da95dcfaf0073a8fdc37",
+    "/identity/polyfills-es2015.21b664eb3e98e6fcf324.js": "75d040e051aea666175d1dc2f728e30bc3b7e6ce",
+    "/identity/polyfills-es5.3993d949783409e7f32d.js": "69e71b3c99bba25290ce76dbfcb4291432a7a5b7",
+    "/identity/runtime-es2015.ecfb2da1b06460e2c47a.js": "88d7de9a1cfabf85a4e9c31006d2d32d5634db42",
+    "/identity/runtime-es5.ecfb2da1b06460e2c47a.js": "b290d0cd54aa7ffdbe3212e880d26ae2475c50c1",
+    "/identity/styles.5e7a66111078763de3bb.css": "522942122445a9397eba2db2c10c50320fe0b57e",
+    "/identity/vitamui-icon.2a51d773162de3ad9bac.woff": "5a40bbd5aa9d40283c46607cf2a7615ff51f2cd2",
+    "/identity/vitamui-icon.9c2630a33a9f51e9620d.eot": "e689afc7202e80a541cb97d9b0f64e9e16f3d55d",
+    "/identity/vitamui-icon.cb3e082e46c6addde29b.svg": "b2fafe263b4c04cf142ae4708615923f71e6643b",
+    "/identity/vitamui-icon.f38dcafd580c19a9591e.ttf": "96f3b4edae06f206efccb5d0acfc9462a39e7eff"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

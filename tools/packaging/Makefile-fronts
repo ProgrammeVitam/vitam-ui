@@ -27,7 +27,7 @@ FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-r
 
 # variable used to copy
 NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
-RESSOURCE_DIR_ORIGIN := $(abspath ../../ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/)
+RESSOURCE_DIR_ORIGIN := $(abspath ../../ui/ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/)
 RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/)
 
 clean:
@@ -55,10 +55,25 @@ template-files:
 	done
 
 install: clean stage vitamui-dirs template-files
+	@echo "meta: $(FPM_PACK_META)"
+	@echo "STAGING_ROOT: $(STAGING_ROOT)"
+	@echo "RPM_OUTPUT_PATH: $(RPM_OUTPUT_PATH)"
+	@echo "FPM_PACK_INSTALL_SCRIPTS: $(FPM_PACK_INSTALL_SCRIPTS)"
+	@echo "FPM_PACK_REMOVE_SCRIPTS: $(FPM_PACK_REMOVE_SCRIPTS)"
+
+
+
 	@echo "Ressources origin: $(RESSOURCE_DIR_ORIGIN)"
-	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST))"
+	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST)"
+
+
+
+
+
+
 	sudo mkdir   -p -m 750 $(RESSOURCE_DIR_DEST)
 	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
+
 
 rpm: install
 	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
