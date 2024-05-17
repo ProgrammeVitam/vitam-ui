@@ -5,6 +5,12 @@
   flex-direction: column;
 }
 
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .v-col {
   display: flex;
   flex: 1;
