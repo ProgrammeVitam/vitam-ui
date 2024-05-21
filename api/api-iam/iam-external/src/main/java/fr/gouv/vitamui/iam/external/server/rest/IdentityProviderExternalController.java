@@ -173,6 +173,9 @@ public class IdentityProviderExternalController implements CrudController<Identi
         throw new UnsupportedOperationException("checkExist not implemented");
     }
 
+    /**
+     * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
+     */
     @PostMapping
     @ApiIgnore
     @ApiOperation(
@@ -210,6 +213,9 @@ public class IdentityProviderExternalController implements CrudController<Identi
         throw new UnsupportedOperationException("update not implemented");
     }
 
+    /**
+     * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
+     */
     @Override
     @ApiOperation(value = "Update partially provider")
     @PatchMapping(CommonConstants.PATH_ID)
@@ -249,6 +255,9 @@ public class IdentityProviderExternalController implements CrudController<Identi
         );
     }
 
+    /**
+     * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
+     */
     @PatchMapping(value = "/{id}/idpMetadata")
     @ApiOperation(value = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
