@@ -134,7 +134,7 @@ public class IdentityProviderInternalController implements CrudController<Identi
     }
 
     /**
-     * {@inheritDoc}
+     * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @Override
     @PostMapping
@@ -154,7 +154,7 @@ public class IdentityProviderInternalController implements CrudController<Identi
     }
 
     /**
-     * {@inheritDoc}
+     * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
@@ -164,7 +164,6 @@ public class IdentityProviderInternalController implements CrudController<Identi
         LOGGER.debug("Patch {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
             "The DTO identifier must match the path identifier for update.");
         return internalIdentityProviderService.patch(partialDto);
