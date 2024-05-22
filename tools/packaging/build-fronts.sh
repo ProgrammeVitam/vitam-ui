@@ -19,6 +19,6 @@ IFS=',' read -r -a modules_array <<< "$MODULES"
 for MODULE in "${modules_array[@]}"; do
     echo "Packaging module: $MODULE"
     # Call make passing module and version as parameters
-    make -f "Makefile-fronts" rpm NAME="$MODULE" VERSION="$VERSION"
+    make -f "./tools/packaging/Makefile-fronts" rpm NAME="$MODULE" VERSION="$VERSION"
 
 done
