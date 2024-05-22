@@ -13,7 +13,7 @@ $arrow-size: 20px;
   border: 1px solid #e1f3f0;
   padding: 5px 20px;
   position: relative;
-  overflow: visible;
+  word-break: break-all;
 
   &:before {
     content: '';
