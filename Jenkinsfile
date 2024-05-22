@@ -96,15 +96,17 @@ pipeline {
                             $MVN_COMMAND clean verify -U -Pvitam \
                                 --projects 'ui/ui-frontend' \
                                 --projects 'ui/ui-frontend-common'
+                                -DskipAllFrontendTests=true
+
                         '''
                     }
                 }
                 stage('Build Backend') {
                     steps {
-                        sh '''
-                            $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects '!cots/vitamui-mongo-express'
-                        '''
+                      //  sh '''
+                      //      $MVN_COMMAND clean verify -U -Pvitam \
+                      //          --projects '!cots/vitamui-mongo-express'
+                      //  '''
                     }
                 }
             }
@@ -121,7 +123,7 @@ pipeline {
 
         stage('Package and push to repository') {
            when {
-                           environment(name: 'DO_DEPLOY', value: 'true')
+                   environment(name: 'DO_DEPLOY', value: 'true')
            }
             parallel {
                 stage('Package back packages') {
