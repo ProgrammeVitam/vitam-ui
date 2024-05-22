@@ -101,6 +101,14 @@ pipeline {
                         '''
                     }
                 }
+                stage('Build Backend') {
+                    steps {
+                        sh '''
+                            $MVN_COMMAND clean verify -U -Pvitam \
+                                --projects '!cots/vitamui-mongo-express'
+                        '''
+                    }
+                }
             }
             post {
                 always {
@@ -120,9 +128,7 @@ pipeline {
             parallel {
                 stage('Package back packages') {
                     steps {
-                         sh '''
-                            $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
-                         '''
+
                     }
                 }
                 stage('Package Frontend') {
