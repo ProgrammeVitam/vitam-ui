@@ -93,10 +93,10 @@ pipeline {
                 stage('Build Frontend') {
                     steps {
                         sh '''
-                            $MVN_COMMAND clean verify -U -Pvitam \
+                            $MVN_COMMAND clean verify -U -Pvitam -DskipAllFrontendTests=true \
                                 --projects 'ui/ui-frontend' \
                                 --projects 'ui/ui-frontend-common'
-                                -DskipAllFrontendTests=true
+
 
                         '''
                     }
