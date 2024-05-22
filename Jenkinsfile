@@ -103,17 +103,7 @@ pipeline {
                     steps {
                         sh '''
                             $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects '!cots/vitamui-mongo-express' \
-                                --projects '!ui/ui-archive-search' \
-                                --projects '!ui/ui-collect' \
-                                --projects '!ui/ui-commons' \
-                                --projects '!ui/ui-frontend' \
-                                --projects '!ui/ui-frontend-common' \
-                                --projects '!ui/ui-identity' \
-                                --projects '!ui/ui-ingest' \
-                                --projects '!ui/ui-pastis' \
-                                --projects '!ui/ui-portal' \
-                                --projects '!ui/ui-referential'
+                                --projects '!cots/vitamui-mongo-express'
                         '''
                     }
                 }
@@ -169,15 +159,7 @@ pipeline {
                 sh '''
                     $MVN_COMMAND install \
                         -D skipTests \
-                        -P vitam \
-                        --projects '!ui/ui-archive-search' \
-                        --projects '!ui/ui-collect' \
-                        --projects '!ui/ui-commons' \
-                        --projects '!ui/ui-identity' \
-                        --projects '!ui/ui-ingest' \
-                        --projects '!ui/ui-pastis' \
-                        --projects '!ui/ui-portal' \
-                        --projects '!ui/ui-referential'
+                        -P vitam
                 '''
                 sh '''
                     $MVN_COMMAND deploy \
