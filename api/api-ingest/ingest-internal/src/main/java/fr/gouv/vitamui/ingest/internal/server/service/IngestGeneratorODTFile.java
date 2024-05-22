@@ -40,10 +40,12 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.seda.LevelType;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.common.enums.Extension;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.style.Border;
@@ -384,23 +386,38 @@ public class IngestGeneratorODTFile {
 
     public List<ArchiveUnitDto> getValuesForDynamicTable(Document atr, Document manifest) {
         List<ArchiveUnitDto> archiveUnitDtoList = new ArrayList<>();
-        Map<String, String> map = getSystemIdValues(atr);
+        Map<String, String> systemIds = getSystemIdValues(atr);
         manifest.getDocumentElement().normalize();
-        NodeList contentNode = manifest.getDocumentElement().getElementsByTagName("Content");
-
-        for (int item = 0; item < contentNode.getLength(); item++) {
-            Node nNode = contentNode.item(item);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+        NodeList archiveUnitsNodes = manifest.getDocumentElement().getElementsByTagName("ArchiveUnit");
+        for (int item = 0; item < archiveUnitsNodes.getLength(); item++) {
+            Node archiveUnitNode = archiveUnitsNodes.item(item);
+            if (archiveUnitNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            Element archiveUnitElement = (Element) archiveUnitNode;
+            NodeList contentElements = archiveUnitElement.getElementsByTagName("Content");
+            if (contentElements.getLength() == 0) {
+                // no content
+                continue;
+            }
+            if (isAttachmentUnit(archiveUnitElement)) {
+                // no attachment unit in ODT Report
+                continue;
+            }
+            Element contentElement = (Element) contentElements.item(0);
+            if (
+                systemIds.get(((Element) contentElement.getParentNode()).getAttribute("id")) != null &&
+                !StringUtils.equals(getData(contentElement, "DescriptionLevel"), LevelType.SUBSERIES.value())
+            ) {
                 ArchiveUnitDto archiveUnitDto = new ArchiveUnitDto();
-                Element eElement = (Element) nNode;
-                if (map.get(((Element) eElement.getParentNode()).getAttribute("id")) != null) {
-                    archiveUnitDto.setId(((Element) eElement.getParentNode()).getAttribute("id"));
-                    archiveUnitDto.setTitle(getData(eElement, "Title"));
-                    archiveUnitDto.setEndDate(getData(eElement, "EndDate"));
-                    archiveUnitDto.setStartDate(getData(eElement, "StartDate"));
-                    archiveUnitDto.setSystemId(map.get(((Element) eElement.getParentNode()).getAttribute("id")));
-                    archiveUnitDtoList.add(archiveUnitDto);
-                }
+                archiveUnitDto.setId(((Element) contentElement.getParentNode()).getAttribute("id"));
+                archiveUnitDto.setTitle(getData(contentElement, "Title"));
+                archiveUnitDto.setEndDate(getData(contentElement, "EndDate"));
+                archiveUnitDto.setStartDate(getData(contentElement, "StartDate"));
+                archiveUnitDto.setSystemId(
+                    systemIds.get(((Element) contentElement.getParentNode()).getAttribute("id"))
+                );
+                archiveUnitDtoList.add(archiveUnitDto);
             }
         }
         return archiveUnitDtoList;
@@ -445,7 +462,6 @@ public class IngestGeneratorODTFile {
         Map<String, String> map = new HashMap<>();
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("ArchiveUnit");
-
         for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -549,5 +565,12 @@ public class IngestGeneratorODTFile {
 
     private String manageDateFormat(String date) {
         return (date.contains("T")) ? date.substring(0, date.indexOf("T")) : date;
+    }
+
+    private boolean isAttachmentUnit(Element archiveUnitElement) {
+        return (
+            archiveUnitElement.getElementsByTagName("Management").getLength() > 0 &&
+            archiveUnitElement.getElementsByTagName("UpdateOperation").getLength() > 0
+        );
     }
 }
