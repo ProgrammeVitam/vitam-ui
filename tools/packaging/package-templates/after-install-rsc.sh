@@ -1,3 +1,3 @@
 
-chown vitamui:vitamui  -R   /vitamui/data/identity/
+chown vitamui:vitamui  -R   /vitamui/data/collect/
 

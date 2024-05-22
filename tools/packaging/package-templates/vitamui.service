@@ -1,13 +1,13 @@
 [Unit]
-Description=vitamui-identity service
+Description=vitamui-collect service
 After=network.target
 After=syslog.target
 After=vitam-consul.service
 
 [Service]
 Type=simple
-EnvironmentFile=/vitamui/conf/identity/sysconfig/java_opts
-EnvironmentFile=/vitamui/conf/identity/sysconfig/cmd_line_args
+EnvironmentFile=/vitamui/conf/collect/sysconfig/java_opts
+EnvironmentFile=/vitamui/conf/collect/sysconfig/cmd_line_args
 ExecStart=/usr/bin/env java $JAVA_OPTS $CMD_LINE_ARGS
 User=vitamui
 Group=vitamui

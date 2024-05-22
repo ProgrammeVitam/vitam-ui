@@ -229,7 +229,7 @@
         <itCoverageAgent></itCoverageAgent>
 
 
-        <modules>ui-portal,ui-referential,ui-pastis</modules>
+        <modules>portal,referential,pastis,identity</modules>
     </properties>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -2112,46 +2112,6 @@
                                     </arguments>
                                 </configuration>
                             </execution>
-                            <!--<execution>
-                                <id>rpm-package-front</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>make</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm_rsc.skip}</skip>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>${main.basedir}/tools/packaging/Makefile-fronts</argument>
-                                        <argument>rpm</argument>
-                                        <argument>MODULES=ui-portal,ui-archive-search,ui-pastis</argument>
-                                        <argument>VERSION=${project.version}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>-->
-                            <execution>
-                            <id>rpm-package-front-new</id>
-                            <phase>install</phase>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <configuration>
-                                <executable>/bin/bash</executable>
-                                <workingDirectory>target</workingDirectory>
-                                <skip>${rpm_rsc.skip}</skip>
-                                <arguments>
-                                    <argument>${main.basedir}/tools/packaging/build-fronts.sh</argument>
-                                    <argument>-f</argument>
-                                </arguments>
-                                <environmentVariables>
-                                    <MODULES>${modules}</MODULES>
-                                    <VERSION>project.version</VERSION>
-                                    <type>rpm</type> <!--FIXEME handle rpm -->
-                                </environmentVariables>
-                            </configuration>
-                        </execution>
                         </executions>
                     </plugin>
 

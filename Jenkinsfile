@@ -126,6 +126,30 @@ pipeline {
             }
         }
 
+
+
+
+        stage('Package and push to repository') {
+           when {
+                           environment(name: 'DO_DEPLOY', value: 'true')
+           }
+            parallel {
+                stage('Package back packages') {
+                    steps {
+                         sh '''
+                            $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
+                         '''
+                    }
+                }
+                stage('Package Frontend') {
+                    steps {
+                       sh './tools/packaging/build-fronts.sh identity,archive-search,portal,pastis,collect,referential 1.11 '
+                    }
+                }
+            }
+        }
+
+
         stage('Deploy to Nexus') {
             when {
                 environment(name: 'DO_DEPLOY', value: 'true')

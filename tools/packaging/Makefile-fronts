@@ -60,18 +60,14 @@ install: clean stage vitamui-dirs template-files
 	@echo "RPM_OUTPUT_PATH: $(RPM_OUTPUT_PATH)"
 	@echo "FPM_PACK_INSTALL_SCRIPTS: $(FPM_PACK_INSTALL_SCRIPTS)"
 	@echo "FPM_PACK_REMOVE_SCRIPTS: $(FPM_PACK_REMOVE_SCRIPTS)"
+	@echo "FPM_PACK_ARGS: $(FPM_PACK_ARGS)"
 
 
 
 	@echo "Ressources origin: $(RESSOURCE_DIR_ORIGIN)"
 	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST)"
 
-
-
-
-
-
-	sudo mkdir   -p -m 750 $(RESSOURCE_DIR_DEST)
+	sudo mkdir -p -m 750 $(RESSOURCE_DIR_DEST)
 	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
 
 

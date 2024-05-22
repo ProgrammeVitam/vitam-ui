@@ -1,1 +1,1 @@
-rm -R /vitamui/data/identity/
+rm -R /vitamui/data/collect/
