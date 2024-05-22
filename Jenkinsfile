@@ -101,14 +101,6 @@ pipeline {
                         '''
                     }
                 }
-                stage('Build Backend') {
-                    steps {
-                      //  sh '''
-                      //      $MVN_COMMAND clean verify -U -Pvitam \
-                      //          --projects '!cots/vitamui-mongo-express'
-                      //  '''
-                    }
-                }
             }
             post {
                 always {
