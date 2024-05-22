@@ -93,11 +93,9 @@ pipeline {
                 stage('Build Frontend') {
                     steps {
                         sh '''
-                            $MVN_COMMAND clean verify -U -Pvitam -DskipAllFrontendTests=true \
+                            $MVN_COMMAND clean verify -U -Pvitam -DskipAllFrontendTests=true\
                                 --projects 'ui/ui-frontend' \
                                 --projects 'ui/ui-frontend-common'
-
-
                         '''
                     }
                 }
@@ -118,9 +116,6 @@ pipeline {
             }
         }
 
-
-
-
         stage('Package and push to repository') {
            when {
                    environment(name: 'DO_DEPLOY', value: 'true')
@@ -128,7 +123,9 @@ pipeline {
             parallel {
                 stage('Package back packages') {
                     steps {
-
+                        sh '''
+                           echo test
+                        '''
                     }
                 }
                 stage('Package Frontend') {
