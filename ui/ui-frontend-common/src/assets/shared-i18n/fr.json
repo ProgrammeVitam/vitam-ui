@@ -299,12 +299,12 @@
       "TOOLTIP": "Consulter, créer et modifier des règles de gestion",
       "MESSAGES": {
         "RULE_CREATION_SUCCESS": "La règle de gestion {{ name }} a bien été créée",
-        "RULE_CREATION_FAILED": "La règle de gestion {{ name }} n'a pu être créée",
+        "RULE_CREATION_FAILED": "La règle de gestion {{ name }} n'a pas pu être créée",
         "DELETION": "Suppression de la règle de gestion ",
         "RULE_UPDATE_SUCCESS": "La règle de gestion {{ name }} a bien été mise à jour.",
         "RULE_UPDATE_FAILED": "La règle de gestion {{ name }} a bien été mise à jour.",
         "RULE_DELETION_SUCCESS": "La règle de gestion {{ name }} a bien été supprimée.",
-        "RULE_DELETION_FAILED": "La règle de gestion {{ name }} n'a pu être supprimée.",
+        "RULE_DELETION_FAILED": "La règle de gestion {{ name }} n'a pas pu être supprimée.",
         "OPERATION_IN_PROGRESS": "en cours...",
         "EXPORT_IN_PROGRESS": "Export des règles de gestion en cours..."
       }
