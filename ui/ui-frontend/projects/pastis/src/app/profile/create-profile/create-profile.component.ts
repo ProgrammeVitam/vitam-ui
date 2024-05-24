@@ -36,11 +36,16 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { sedaOptions } from './seda-version.model';
+import { SedaOption, sedaOptions } from './seda-version.model';
+
+export interface CreateProfileFormResult {
+  profileType: ProfileType;
+  sedaOption: SedaOption;
+}
 
 @Component({
   selector: 'pastis-create-profile',
@@ -50,26 +55,28 @@ import { sedaOptions } from './seda-version.model';
 export class CreateProfileComponent implements OnInit {
   readonly ProfileType = ProfileType;
   readonly sedaOptions = sedaOptions;
-
-  sedaVersion = new FormControl(null, Validators.required);
   profileType: ProfileType = null;
-
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
     public dialogRef: MatDialogRef<CreateProfileComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
       profileType: [ProfileType.PA, Validators.required],
-      sedaVersion: [null, Validators.required],
+      sedaOption: [null, Validators.required],
     });
   }
 
   validate() {
-    this.dialogRef.close({ success: true, action: this.form.controls.profileType.value });
+    const result: CreateProfileFormResult = {
+      profileType: this.form.controls.profileType.value,
+      sedaOption: this.form.controls.sedaOption.value,
+    };
+
+    this.dialogRef.close(result);
   }
 }

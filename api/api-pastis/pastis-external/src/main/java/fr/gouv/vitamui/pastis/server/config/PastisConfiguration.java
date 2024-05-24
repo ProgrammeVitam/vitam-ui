@@ -38,5 +38,7 @@ import javax.validation.constraints.NotNull;
 @Component
 @ConfigurationProperties(prefix = "pastis")
 public class PastisConfiguration {
-    @NotNull private Seda seda;
+
+    @NotNull
+    private Seda seda;
 }

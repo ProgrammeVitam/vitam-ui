@@ -1030,6 +1030,62 @@
                   "Collection": "Arborescence",
                   "Children": [
                   ]
+                },
+                {
+                  "Name": "LinkingAgentIdentifier",
+                  "Element": "Complex",
+                  "Cardinality": "0-1",
+                  "Type": "null",
+                  "Choice": "no",
+                  "Extensible": "no",
+                  "Enumeration": [
+                  ],
+                  "Definition": "Agent.",
+                  "Collection": "Arborescence",
+                  "Children": [
+                    {
+                      "Name": "LinkingAgentIdentifierType",
+                      "Element": "Simple",
+                      "Cardinality": "0-1",
+                      "Type": "token",
+                      "Choice": "no",
+                      "Extensible": "no",
+                      "Enumeration": [
+                      ],
+                      "Definition": "Identifiant.",
+                      "Collection": "Arborescence",
+                      "Children": [
+                      ]
+                    },
+                    {
+                      "Name": "LinkingAgentIdentifierValue",
+                      "Element": "Simple",
+                      "Cardinality": "0-1",
+                      "Type": "token",
+                      "Choice": "no",
+                      "Extensible": "no",
+                      "Enumeration": [
+                      ],
+                      "Definition": "Valeur.",
+                      "Collection": "Arborescence",
+                      "Children": [
+                      ]
+                    },
+                    {
+                      "Name": "LinkingAgentRole",
+                      "Element": "Simple",
+                      "Cardinality": "0-1",
+                      "Type": "token",
+                      "Choice": "no",
+                      "Extensible": "no",
+                      "Enumeration": [
+                      ],
+                      "Definition": "Rôle.",
+                      "Collection": "Arborescence",
+                      "Children": [
+                      ]
+                    }
+                  ]
                 }
               ]
             }

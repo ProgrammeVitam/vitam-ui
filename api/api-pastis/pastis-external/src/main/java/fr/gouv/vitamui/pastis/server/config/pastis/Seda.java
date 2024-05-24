@@ -33,5 +33,6 @@ import java.util.List;
 
 @Data
 public class Seda {
+
     private List<SedaOption> options;
 }

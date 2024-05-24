@@ -33,5 +33,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class ArchiveProfile {
-    @NotBlank private String template;
+
+    @NotBlank
+    private String template;
 }

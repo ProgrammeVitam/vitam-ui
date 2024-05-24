@@ -34,8 +34,16 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class SedaOption {
-    @NotBlank String version;
-    @NotBlank String label;
-    @NotNull ArchiveProfile archiveProfile;
-    @NotNull ArchiveUnitProfile archiveUnitProfile;
+
+    @NotBlank
+    String version;
+
+    @NotBlank
+    String label;
+
+    @NotNull
+    ArchiveProfile archiveProfile;
+
+    @NotNull
+    ArchiveUnitProfile archiveUnitProfile;
 }

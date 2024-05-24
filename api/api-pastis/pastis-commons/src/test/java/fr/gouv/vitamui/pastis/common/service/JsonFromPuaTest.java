@@ -65,7 +65,7 @@ public class JsonFromPuaTest {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK.json");
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -81,7 +81,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -101,7 +101,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -115,7 +115,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -129,7 +129,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -143,7 +143,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson, null); // TODO
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);

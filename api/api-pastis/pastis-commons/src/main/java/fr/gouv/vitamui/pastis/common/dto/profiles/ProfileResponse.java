@@ -49,8 +49,16 @@ import javax.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProfileResponse extends IdDto {
-    @NotBlank private String name;
-    @NotNull private ProfileType type;
+
+    @NotBlank
+    private String name;
+
+    @NotNull
+    private ProfileType type;
+
+    @NotNull
+    private String sedaVersion;
+
     private transient ElementProperties profile;
     private Notice notice;
 }

@@ -30,5 +30,7 @@ management:
 swagger:
   layer: api-external
   file-path: file:../../../tools/swagger/docs/api-external/pastis-external/swagger.json
-cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
+
+cors:
+  allowed-origins: https://dev.vitamui.com:4251,https://localhost
 

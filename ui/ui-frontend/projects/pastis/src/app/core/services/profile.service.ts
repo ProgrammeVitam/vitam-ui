@@ -276,8 +276,8 @@ export class ProfileService implements OnDestroy {
     return this.paService.check(profile, headers);
   }
 
-  createProfile(path: string, type: string): Observable<ProfileResponse> {
-    const params = new HttpParams().set('type', type);
+  createProfile(path: string, type: string, sedaVersion: string): Observable<ProfileResponse> {
+    const params = new HttpParams().set('type', type).set('sedaVersion', sedaVersion);
     return this.apiService.get<ProfileResponse>(path, { params });
   }
 

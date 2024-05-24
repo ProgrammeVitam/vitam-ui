@@ -279,7 +279,9 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       .afterClosed()
       .pipe(
         filter<CreateProfileFormResult>((result) => Boolean(result)),
-        switchMap((result) => this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.profileType)),
+        switchMap((result) =>
+          this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.profileType, result.sedaOption.version),
+        ),
         filter<ProfileResponse>((profileResponse) => Boolean(profileResponse)),
       )
       .subscribe((profileResponse) =>

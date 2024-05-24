@@ -1,0 +1,40 @@
+pastis.seda.options:
+  - version: v2.1
+    label: SEDA 2.1
+    archive-profile:
+      template: seda/v2.1/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.1/archive-unit-profile.json
+      schema: seda/v2.1/archive-unit-schema.json
+  - version: v2.2
+    label: SEDA 2.2
+    archive-profile:
+      template: seda/v2.2/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.2/archive-unit-profile.json
+      schema: seda/v2.2/archive-unit-schema.json
+  - version: v2.3
+    label: SEDA 2.3
+    archive-profile:
+      template: seda/v2.3/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.3/archive-unit-profile.json
+      schema: seda/v2.3/archive-unit-schema.json
+
+rng:
+  base:
+    directory: rng/
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: pastis-standalone
+  identityServerId: 1
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender.host: localhost
+    udp-sender.port: 6831

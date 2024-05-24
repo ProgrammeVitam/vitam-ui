@@ -33,6 +33,10 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class ArchiveUnitProfile {
-    @NotBlank private String template;
-    @NotBlank private String schema;
+
+    @NotBlank
+    private String template;
+
+    @NotBlank
+    private String schema;
 }

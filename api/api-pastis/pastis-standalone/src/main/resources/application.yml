@@ -27,13 +27,28 @@ springdoc:
     path: /open-api.html
     model-and-view-allowed: false
 
-# Pastis Rest APi
-rng.base.file: profiles_new/Profil_seda_pastis_mvp.rng
-rng.base.directory: rng/
-json.base.file: profiles_new/ProfileJson.json
-pua.definitions.file: pua_validation/ProfileJson.json
-json.template.fileStandalone: profiles_new/AUP_default_PASTIS.json
-json.template.fileVitam: profiles_new/AUP_default_VITAM.json
+pastis.seda.options:
+  - version: v2.1
+    label: SEDA 2.1
+    archive-profile:
+      template: seda/v2.1/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.1/archive-unit-profile.json
+      schema: seda/v2.1/archive-unit-schema.json
+  - version: v2.2
+    label: SEDA 2.2
+    archive-profile:
+      template: seda/v2.2/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.2/archive-unit-profile.json
+      schema: seda/v2.2/archive-unit-schema.json
+  - version: v2.3
+    label: SEDA 2.3
+    archive-profile:
+      template: seda/v2.3/archive-profile.rng
+    archive-unit-profile:
+      template: seda/v2.3/archive-unit-profile.json
+      schema: seda/v2.3/archive-unit-schema.json
 
 #PORT
 server.port: 8096
@@ -53,4 +68,6 @@ management:
       show-details: always
     prometheus:
       enabled: true
-cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost,http://localhost:8096,http://localhost:8097
+
+cors:
+  allowed-origins: https://dev.vitamui.com:4251,https://localhost,http://localhost:8096,http://localhost:8097
