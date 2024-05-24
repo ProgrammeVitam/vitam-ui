@@ -19,4 +19,5 @@ export interface FileFormat extends Id {
   comment: string;
   extensions: string[];
   createdDate: string;
+  updateDate: string;
 }

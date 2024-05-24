@@ -477,7 +477,7 @@
     "HOME": {
       "TITLE": "Files formats referential",
       "SEARCH_PLACEHOLDER": "Name, ID",
-      "CREATE_FILE_FORMATS": "Create file format",
+      "CREATE_FILE_FORMATS": "Create external file format",
       "FILE_FORMAT": "file format",
       "IMPORT": "Import",
       "ARRAY": {
@@ -488,7 +488,7 @@
     },
     "CREATE_DIALOG": {
       "TITLE": "Information",
-      "SUBTITLE": "Create file format",
+      "SUBTITLE": "Create external file format",
       "IDENTIFIER": "PUID",
       "NAME": "Name",
       "MIME_TYPE": "MIME type",
@@ -501,12 +501,18 @@
     },
     "TAB": {
       "INFORMATION": {
+        "PUID": "PUID",
+        "PUID_EXTERNAL": "External PUID",
         "TITLE": "Information",
         "NAME": "Name",
         "MIME_TYPE": "MIME type",
-        "VERSION_PRONOM": "VersionPronom",
-        "VERSION": "Version",
-        "EXTENSION": "Extension(s)"
+        "VERSION_PRONOM": "Pronom version",
+        "VERSION": "Format version",
+        "EXTENSION": "Extension(s)",
+        "HAS_PRIORITY_OVER_FILE_FORMAT_ID": "Priority over previous versions",
+        "HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH": "Search for PUID or format name",
+        "CREATED_DATE": "Creation date",
+        "MODIFIED_DATE": "Last modification date"
       },
       "HISTORY": {
         "TITLE": "History"
