@@ -25,7 +25,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   actionList: Action[] = [];
 
   readonly DisplayObjectType = DisplayObjectType;
-  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px' };
+  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px', autoFocus: false };
   private subscription: Subscription;
 
   constructor(

@@ -28,7 +28,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   editObject: EditObject;
 
   private readonly subscriptions = new Subscription();
-  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px' };
+  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px', autoFocus: false };
   private readonly snackBarConfig: MatSnackBarConfig = {
     panelClass: 'vitamui-snack-bar',
     data: {

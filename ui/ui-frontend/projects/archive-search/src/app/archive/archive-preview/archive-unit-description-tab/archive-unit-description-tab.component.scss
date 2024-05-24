@@ -1,3 +1,9 @@
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 button {
   &.save {
     background-color: white;
