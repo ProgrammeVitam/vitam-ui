@@ -17,7 +17,7 @@
     <properties>
         <angular.base.href>/pastis/</angular.base.href>
         <angular.build.project>pastis</angular.build.project>
-        <rpm.skip>false</rpm.skip>
+        <rpm.skip>true</rpm.skip>
         <sonar.sources>src/main/java</sonar.sources>
         <swagger.dir>ui</swagger.dir>
         <swagger.skip>false</swagger.skip>

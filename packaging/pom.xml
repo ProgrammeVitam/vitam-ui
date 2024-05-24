@@ -29,6 +29,7 @@
 								<phase>package</phase>
 								<configuration>
 									<appendAssemblyId>true</appendAssemblyId>
+									<tarLongFileMode>posix</tarLongFileMode>
 									<descriptors>
 										<descriptor>${basedir}/assembly-deb.xml</descriptor>
 										<descriptor>${basedir}/assembly-rpm.xml</descriptor>
