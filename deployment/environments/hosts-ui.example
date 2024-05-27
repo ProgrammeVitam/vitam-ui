@@ -37,6 +37,7 @@ hosts_ui_archive_search
 hosts_ui_collect
 hosts_ui_referential
 hosts_ui_pastis
+hosts_ui_design_system
 
 [hosts_ui_identity]
 # EDIT: Mandatory
@@ -61,6 +62,9 @@ hosts_ui_pastis
 
 [hosts_ui_pastis]
 # EDIT: Mandatory
+
+[hosts_ui_design_system]
+# EDIT: Optional. Set an host only if you want to deploy the design system
 
 ################################################################################
 # ZONE ADMIN

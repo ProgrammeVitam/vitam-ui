@@ -482,31 +482,31 @@
         }
       }
     },
-    "starter-kit": {
-      "root": "projects/starter-kit/",
-      "sourceRoot": "projects/starter-kit/src",
+    "design-system": {
+      "root": "projects/design-system/",
+      "sourceRoot": "projects/design-system/src",
       "projectType": "application",
-      "prefix": "starter-kit",
+      "prefix": "design-system",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/starter-kit",
-            "index": "projects/starter-kit/src/index.html",
-            "main": "projects/starter-kit/src/main.ts",
-            "tsConfig": "projects/starter-kit/tsconfig.app.json",
-            "polyfills": "projects/starter-kit/src/polyfills.ts",
+            "outputPath": "dist/design-system",
+            "index": "projects/design-system/src/index.html",
+            "main": "projects/design-system/src/main.ts",
+            "tsConfig": "projects/design-system/tsconfig.app.json",
+            "polyfills": "projects/design-system/src/polyfills.ts",
             "rebaseRootRelativeCssUrls": true,
             "assets": [
-              "projects/starter-kit/src/assets",
-              "projects/starter-kit/src/favicon.ico",
+              "projects/design-system/src/assets",
+              "projects/design-system/src/favicon.ico",
               {
                 "glob": "**/*",
                 "input": "node_modules/ui-frontend-common/assets",
                 "output": "/assets"
               }
             ],
-            "styles": ["projects/starter-kit/src/sass/styles.scss"],
+            "styles": ["projects/design-system/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["projects/commons/src/sass"]
             },
@@ -525,47 +525,47 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "projects/starter-kit/src/environments/environment.ts",
-                  "with": "projects/starter-kit/src/environments/environment.prod.ts"
+                  "replace": "projects/design-system/src/environments/environment.ts",
+                  "with": "projects/design-system/src/environments/environment.prod.ts"
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "projects/starter-kit/ngsw-config.json"
+              "ngswConfigPath": "projects/design-system/ngsw-config.json"
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "starter-kit:build",
+            "browserTarget": "design-system:build",
             "host": "dev.vitamui.com",
             "port": 4201
           },
           "configurations": {
             "production": {
-              "browserTarget": "starter-kit:build:production"
+              "browserTarget": "design-system:build:production"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/starter-kit/src/test.ts",
+            "main": "projects/design-system/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/starter-kit/src/polyfills.ts",
-            "tsConfig": "projects/starter-kit/tsconfig.spec.json",
+            "polyfills": "projects/design-system/src/polyfills.ts",
+            "tsConfig": "projects/design-system/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["projects/starter-kit/src/sass/styles.scss"],
+            "styles": ["projects/design-system/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["projects/commons/src/sass"]
             },
-            "assets": ["projects/starter-kit/src/assets", "projects/starter-kit/src/favicon.ico"]
+            "assets": ["projects/design-system/src/assets", "projects/design-system/src/favicon.ico"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["projects/starter-kit/tsconfig.app.json", "projects/starter-kit/tsconfig.spec.json"],
+            "tsConfig": ["projects/design-system/tsconfig.app.json", "projects/design-system/tsconfig.spec.json"],
             "exclude": ["**/node_modules/**"]
           }
         }

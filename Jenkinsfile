@@ -133,7 +133,7 @@ pipeline {
                          script {
                                 sh '''
                                    POM_VERSION=$(xpath -e '/project/version/text()' pom.xml 2>/dev/null)
-                                  ./tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-starter-kit ${POM_VERSION}
+                                  ./tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-design-system ${POM_VERSION}
                                   '''
                                }
                     }

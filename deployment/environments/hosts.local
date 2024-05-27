@@ -38,6 +38,7 @@ hosts_ui_archive_search
 hosts_ui_collect
 hosts_ui_referential
 hosts_ui_pastis
+hosts_ui_design_system
 
 [hosts_ui_identity]
 # EDIT: Mandatory
@@ -69,6 +70,10 @@ localhost
 
 [hosts_ui_pastis]
 # EDIT: Mandatory
+localhost
+
+[hosts_ui_design_system]
+# EDIT: Only if you want to deploy the design system
 localhost
 
 ################################################################################

@@ -48,6 +48,7 @@ function generateCerts {
     generateHostCertAndStorePassphrase   ui-archive-search       hosts_ui_archive_search
     generateHostCertAndStorePassphrase   ui-collect              hosts_ui_collect
     generateHostCertAndStorePassphrase   ui-pastis               hosts_ui_pastis
+    generateHostCertAndStorePassphrase   ui-design-system        hosts_ui_design_system
 
     #Reverse
     generateHostCertAndStorePassphrase   reverse                 hosts_vitamui_reverseproxy
