@@ -19,7 +19,6 @@
             "main": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
             "polyfills": "projects/identity/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
@@ -131,7 +130,6 @@
             "main": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
             "polyfills": "projects/portal/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
@@ -506,7 +504,6 @@
             "main": "projects/design-system/src/main.ts",
             "tsConfig": "projects/design-system/tsconfig.app.json",
             "polyfills": "projects/design-system/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/design-system/src/assets",
               "projects/design-system/src/favicon.ico",
@@ -694,7 +691,6 @@
             "main": "projects/archive-search/src/main.ts",
             "tsConfig": "projects/archive-search/tsconfig.app.json",
             "polyfills": "projects/archive-search/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
@@ -791,7 +787,6 @@
             "main": "projects/collect/src/main.ts",
             "tsConfig": "projects/collect/tsconfig.app.json",
             "polyfills": "projects/collect/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/collect/src/assets",
               "projects/collect/src/favicon.ico",
@@ -889,7 +884,6 @@
             "main": "projects/pastis/src/main.ts",
             "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.app.json",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/pastis/src/assets",
               "projects/pastis/src/favicon.ico",

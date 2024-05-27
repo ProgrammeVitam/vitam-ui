@@ -25,7 +25,7 @@
  * accept its terms.
  *
  */
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { getUnitI18nAttribute } from '../../pipes/unitI18n.pipe';
 import { ResultFacet } from '../criteria/search-criteria.interface';
 import { DescriptionLevel } from '../units/description-level.enum';

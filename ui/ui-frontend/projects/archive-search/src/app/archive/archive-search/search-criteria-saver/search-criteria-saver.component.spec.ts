@@ -57,7 +57,7 @@ import {
 } from 'vitamui-library';
 import { environment } from '../../../../environments/environment.prod';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 

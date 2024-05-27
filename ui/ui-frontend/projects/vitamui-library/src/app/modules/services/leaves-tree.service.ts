@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode } from '../models';

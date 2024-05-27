@@ -37,7 +37,7 @@
 
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { SearchCriteriaDto } from 'vitamui-library';

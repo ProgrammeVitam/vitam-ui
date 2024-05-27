@@ -18,5 +18,5 @@ Dans ce fichier, nous expliquerons l'architecture de VITAM-UI en tant qu'applica
 
 ### Les Applications FrontEnd :
 
-- **Modules Front :**  <br/>Ces services sont placés dans le projet (ui/ui-frontend/projects), c’est un multi-project Angular qui contient l’ensemble des applications Front de VITAM-UI (Applications : Portal, Identity, Ingest, Referential).
-- **Projet ui-frontend-common :**  <br/> C’est la bibliothèque Angular utilisé par l’ensemble des applications Front de VITAM-UI. En local, il peut être packagé en tar pour mettre à jour ce dernière en dépendances du ui-frontend. Sinon, il est publié sur Nexus.
+- **Modules Front :** ces services sont placés dans le projet (ui/ui-frontend/projects), c’est un multi-project Angular qui contient l’ensemble des applications Front de VITAM-UI (Applications : Portal, Identity, Ingest, Referential).
+- **Projet vitamui-library :** c'est la bibliothèque Angular utilisée par l’ensemble des applications Front de VITAM-UI.

@@ -38,7 +38,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'vitamui-library';
-import { PortalComponent } from './portal';
+import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [
   {

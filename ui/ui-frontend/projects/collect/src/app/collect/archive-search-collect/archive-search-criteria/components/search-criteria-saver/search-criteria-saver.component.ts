@@ -41,7 +41,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Direction, CriteriaSearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 

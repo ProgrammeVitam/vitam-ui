@@ -70,8 +70,6 @@ This profile is used to build the entire project for prod purposes, backend/fron
 ### npm-publish
 This profile is used to build, test & push npm packages to the npm repository.
 
-It should be used in ui/ui-frontend-common to push the npm package of the common UI library.
-
 ### rpm
 This profile is used to build rpm packages.
 
@@ -125,12 +123,6 @@ This profile should be used to launch API Security integration tests in our deve
 This profile should be used to launch UI integration tests in our development environment. The configuration used for the tests is available in `integration-tests/src/test/resources/application-dev.yml`
 
 # Build
-## Build (first build) // DEPRECATED?
-Publish ui-frontend-common package. It's needed for angular projects ui-portal & ui-identity to compile.
-Execute this command to build the project with unit tests and without building our angular projects:
-
-    cd ui/ui-frontend-common;
-    mvn clean install -Pnpm-publish
 
 ## Build (only Java)
 Execute this command to build the project with unit tests and without building our angular projects:

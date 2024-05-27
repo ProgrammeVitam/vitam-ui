@@ -55,7 +55,7 @@ import {
   SearchCriteriaEltements,
   SearchCriteriaHistory,
 } from 'vitamui-library';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';

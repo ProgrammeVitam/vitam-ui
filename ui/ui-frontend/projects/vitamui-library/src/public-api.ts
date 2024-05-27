@@ -165,3 +165,5 @@ export * from './app/modules/components/vitamui-repeatable-input/vitamui-repeata
 export * from './app/modules/components/vitamui-repeatable-input/vitamui-repeatable-input.component';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.component';
+export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.module';
+export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component';

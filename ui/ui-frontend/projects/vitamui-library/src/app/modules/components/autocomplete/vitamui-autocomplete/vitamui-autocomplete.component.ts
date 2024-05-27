@@ -48,7 +48,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Option } from '../utils/option.interface';

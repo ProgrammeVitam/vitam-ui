@@ -234,7 +234,7 @@ export class IdentityProviderDetailsComponent {
   }
 
   /**
-   * The ui-frontend-common diff method causes problem with the customparams attribute, because it's a
+   * The diff method from diff.util.ts causes problem with the customparams attribute, because it's a
    * recursive method. this method will compare the json keys and it'll do the same for inner json.
    * in our case, we need to do only first level comparaison
    */

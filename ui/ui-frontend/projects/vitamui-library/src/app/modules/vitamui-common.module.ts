@@ -270,6 +270,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIFieldErrorModule,
     VitamUIListInputModule,
     VitamUIMenuTileModule,
+    VitamUISnackBarModule,
     VitamUITenantSelectModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,

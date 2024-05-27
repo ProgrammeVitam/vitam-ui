@@ -87,7 +87,7 @@ Run the import script: `./tools/import-icon.sh path/to/exported/icomoon-folder` 
 Manual Method :
 Now extract the archive you just downloaded and copy the content of the `fonts` folder and put it in the `src/sass/icons/fonts` folder of the project.
 
-Update the `icomoon-selection.json` file : copy the `selection.json` file from the archive and rename it to replace the `icomoon-selection.json` file in the `ui/ui-frontend-common` folder of this project.
+Update the `icomoon-selection.json` file : copy the `selection.json` file from the archive and rename it to replace the `icomoon-selection.json` file in the `ui/ui-frontend/projects/vitamui-library` folder of this project.
 
 You also need to update the `vitamui-icons.css` file. Open the `style.css` from your downloaded archive and copy everything from line `27` to the end of the file. Now open `src/sass/icons/vitamui-icons.css` and replace the same portion of code.
 

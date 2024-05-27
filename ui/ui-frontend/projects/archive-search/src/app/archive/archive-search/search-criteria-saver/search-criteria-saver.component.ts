@@ -43,7 +43,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Direction, CriteriaSearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 
 @Component({

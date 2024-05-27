@@ -49,7 +49,7 @@ import {
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
 } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveSharedDataService } from './archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
