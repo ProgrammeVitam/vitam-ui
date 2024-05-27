@@ -11,7 +11,6 @@
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
-      i18n="@@ingestPreviewDownloadManifest"
       (click)="downloadManifest()"
       [disabled]="
         getIngestStatus(ingest) === IngestStatus.KO ||
@@ -21,17 +20,11 @@
     >
       {{ 'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate }}
     </button>
-    <button
-      mat-menu-item
-      i18n="@@ingestPreviewDownloadATR"
-      (click)="downloadATR()"
-      [disabled]="getIngestStatus(ingest) === IngestStatus.IN_PROGRESS"
-    >
+    <button mat-menu-item (click)="downloadATR()" [disabled]="getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
       {{ 'INGEST_DETAIL.DOWNLOAD_ATR' | translate }}
     </button>
     <button
       mat-menu-item
-      i18n="@@ingestPreviewGenerateDocX"
       (click)="generateODTreport()"
       matTooltip="{{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}"
       matTooltipClass="vitamui-tooltip"

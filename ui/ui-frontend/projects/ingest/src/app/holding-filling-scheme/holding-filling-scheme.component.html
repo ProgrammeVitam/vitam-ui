@@ -7,10 +7,7 @@
         {{ 'APPLICATION.HOLDING_FILLING_SCHEME_APP.NAME' | translate }}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner
-        [searchbarPlaceholder]="'FILLING_HOLDING_SCHEME.SEARCH' | translate"
-        i18n-placeholder="@@treePlanSearchPlaceholder"
-      >
+      <vitamui-common-banner [searchbarPlaceholder]="'FILLING_HOLDING_SCHEME.SEARCH' | translate">
         <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup(IngestType.HOLDING_SCHEME)">
           <span>{{ 'FILLING_HOLDING_SCHEME.IMPORT_HOLDING' | translate }}</span>
         </button>

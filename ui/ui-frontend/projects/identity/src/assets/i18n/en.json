@@ -129,6 +129,13 @@
       "VALIDATIONS_TOOLTIP": "In order to be able to activate the two-step validation you must first enter the mobile number",
       "VALIDATIONS": "Two-step validation",
       "DOMAINS": "Domains",
+      "ALERT_ON_INACTIVE_USERS": "Alert on inactive users",
+      "ALERT_DURATION_ON_INACTIVE_USERS": {
+        "LABEL": "Alert duration on inactive users (months)",
+        "REQUIRED": "Mandatory field and should be a positive value",
+        "WRONG_FORMAT": "Incorrect format",
+        "MIN_VALUE": "It should be a positive value"
+      },
       "CODE_ALREADY_EXIST": "Code already exists",
       "PWD_REVOCATION_THREE": "3 months",
       "PWD_REVOCATION_SIX": "6 months",
@@ -152,6 +159,11 @@
         "OTP_DISABLED": "OTP deactivate",
         "OTP_OPTIONAL": "OTP optional",
         "OTP_MANDATORY": "OTP mandatory"
+      },
+      "ALERTING": {
+        "TEXT": "You are about to disable alerts for inactive users whose personal data has expired in this organization. Do you want to continue?",
+        "CONFIRM": "Confirm",
+        "CANCEL": "Cancel"
       }
     },
     "SSO": {
@@ -366,8 +378,10 @@
     "OTHER_ACTION": {
       "ACTIVATE": "Activate",
       "DESACTIVATE": "Desactivate",
+      "DELETE_PERSONAL_DATA": "Delete personal data",
       "DESACTIVATE_MESSAGE": "Are you sure you want to deactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
-      "REACTIVATE_MESSAGE": "Are you sure you want to reactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?"
+      "REACTIVATE_MESSAGE": "Are you sure you want to reactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
+      "DELETE_MESSAGE": "You are about to delete the personal data of the user {{ firstname }} {{ lastname }}. This action cannot be undone, do you want to confirm?"
     }
   },
   "USER_PROFILE": {

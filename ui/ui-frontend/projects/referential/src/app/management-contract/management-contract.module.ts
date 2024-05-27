@@ -35,7 +35,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../shared/shared.module';
 import { ManagementContractCreateModule } from './management-contract-create/management-contract-create.module';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
@@ -50,7 +49,6 @@ import { ManagementContractComponent } from './management-contract.component';
     FormsModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    SharedModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

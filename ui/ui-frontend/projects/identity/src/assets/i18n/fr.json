@@ -127,6 +127,13 @@
       "PASSWORD_DURATION_2": "(depuis le dernier changement)",
       "VALIDATIONS": "Validation en deux étapes",
       "DOMAINS": "Domaines",
+      "ALERT_ON_INACTIVE_USERS": "Alerte sur les utilisateurs inactifs",
+      "ALERT_DURATION_ON_INACTIVE_USERS": {
+        "LABEL": "Durée d'alerte sur les utilisateurs inactifs (mois)",
+        "REQUIRED": "Champ obligatoire et il faut une valeur supérieure à 0",
+        "WRONG_FORMAT": "Format incorrecte",
+        "MIN_VALUE": "Il faut une valeur supérieure à 0"
+      },
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "PWD_REVOCATION_THREE": "3 mois",
       "PWD_REVOCATION_SIX": "6 mois",
@@ -150,6 +157,11 @@
         "OTP_DISABLED": "Désactivé",
         "OTP_OPTIONAL": "Optionnelle",
         "OTP_MANDATORY": "Obligatoire"
+      },
+      "ALERTING": {
+        "TEXT": "Vous êtes sur le point de désactiver les alertes sur utilisateurs inactifs dont les données personnelles sont arrivées à échéance dans cette organisation. Voulez-vous continuer ?",
+        "CONFIRM": "Confirmer",
+        "CANCEL": "Annuler"
       }
     },
     "SSO": {
@@ -363,8 +375,10 @@
     "OTHER_ACTION": {
       "ACTIVATE": "Activer",
       "DESACTIVATE": "Désactiver",
+      "DELETE_PERSONAL_DATA": "Supprimer les données personnelles",
       "DESACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
-      "REACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?"
+      "REACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
+      "DELETE_MESSAGE": "Vous allez procéder à l'effacement des données personnelles de l'utilisateur {{ firstname }} {{ lastname }}. Cette action ne peut pas être annulée, voulez-vous confirmer ?"
     }
   },
   "USER_PROFILE": {

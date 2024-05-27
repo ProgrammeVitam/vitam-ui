@@ -44,7 +44,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
 import { FileFormatCreateModule } from './file-format-create';
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
 import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
@@ -67,7 +66,6 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    SharedModule,
     TableFilterModule,
   ],
   declarations: [FileFormatComponent, FileFormatListComponent],

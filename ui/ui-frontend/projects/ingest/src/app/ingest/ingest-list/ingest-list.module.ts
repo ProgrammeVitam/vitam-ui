@@ -40,10 +40,11 @@ import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestListComponent } from './ingest-list.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [IngestListComponent],
-  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule, TranslateModule],
   exports: [IngestListComponent],
 })
 export class IngestListModule {}

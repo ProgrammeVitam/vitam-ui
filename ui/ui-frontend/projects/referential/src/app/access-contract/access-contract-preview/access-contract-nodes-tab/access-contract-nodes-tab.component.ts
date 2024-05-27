@@ -37,7 +37,6 @@
 
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessContract, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'ui-frontend-common';
 import { SearchUnitApiService } from 'vitamui-library';

@@ -14,11 +14,10 @@
     </button>
     <button
       mat-menu-item
-      i18n="@@userPreviewDeleted"
       (click)="deleteUser(user, 'REMOVED')"
       [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'"
     >
-      Supprimer les données personnelles
+      {{ 'USER.OTHER_ACTION.DELETE_PERSONAL_DATA' | translate }}
     </button>
   </vitamui-common-menu-button>
 </vitamui-common-sidenav-header>
@@ -82,9 +81,8 @@
 
 <ng-template #confirmdeleteUserDialog>
   <mat-dialog-content>
-    <p i18n="@@disabledUserConfirm">
-      Vous allez procéder à l'effacement des données personnelles de l'utilisateur {{ user?.firstname }} {{ user?.lastname }}. Cette action
-      ne peut pas être annulée, voulez-vous confirmer ?
+    <p>
+      {{ 'USER.OTHER_ACTION.DELETE_MESSAGE' | translate: { firstname: user?.firstname, lastname: user?.lastname } }}
     </p>
   </mat-dialog-content>
 

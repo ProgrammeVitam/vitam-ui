@@ -17,7 +17,19 @@
     "BASIC_WITH_DOUBLE_LINES_TITLE": "Basic array with double lines",
     "FILTER_TITLE": "Array with filters",
     "SUBTABLE_TITLE": "Array with subtable",
-    "DIALOG_TITLE": "Dialog array"
+    "DIALOG_TITLE": "Dialog array",
+    "COLUMN": {
+      "ADMIN_PROFILE_NAME": "Admin profile name",
+      "ID": "Id",
+      "DESCRIPTION": "Description",
+      "LEVEL": "Level",
+      "GROUP_NAME": "Group name",
+      "STATUS": {
+        "ENABLED": "Enabled",
+        "DISABLED": "Disabled"
+      }
+    },
+    "ADD_OWNER": "Add an owner"
   },
   "BUTTON": {
     "Primary": "Primary default",

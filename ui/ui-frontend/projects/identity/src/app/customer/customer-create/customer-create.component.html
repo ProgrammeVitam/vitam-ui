@@ -119,12 +119,7 @@
           <label for="alerte" class="inline-label label-alerte">
             Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br />
           </label>
-          <vitamui-common-slide-toggle
-            formControlName="gdprAlert"
-            i18n="client create alerte account@@AlertedAccount"
-            [disabled]="gdprReadOnlyStatus"
-          >
-          </vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"> </vitamui-common-slide-toggle>
           <label for="duréealerte" class="inline-label label-alertDelay">
             Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
           </label>
@@ -137,13 +132,11 @@
           >
             <vitamui-common-input-error
               *ngIf="form.get('gdprAlert').value && form.get('gdprAlertDelay')?.touched && !!form.get('gdprAlertDelay')?.errors?.required"
-              i18n="Required field error hint@@formErrorRequiredField"
-              >Champ requis
+            >
+              {{ 'COMMON.ERROR.REQUIRED' | translate }}
             </vitamui-common-input-error>
-            <vitamui-common-input-error
-              *ngIf="form.get('gdprAlert').value && !!form.get('gdprAlertDelay')?.errors?.min"
-              i18n="Required field error hint@@formErrorRequiredField"
-              >Il faut une valeur supérieure à 0
+            <vitamui-common-input-error *ngIf="form.get('gdprAlert').value && !!form.get('gdprAlertDelay')?.errors?.min">
+              {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.MIN_VALUE' | translate }}
             </vitamui-common-input-error>
           </vitamui-common-input>
         </div>

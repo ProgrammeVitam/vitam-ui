@@ -55,7 +55,6 @@ import { RouterModule } from '@angular/router';
 import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
-import { SharedModule } from '../shared/shared.module';
 // tslint:disable-next-line:max-line-length
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
@@ -77,7 +76,6 @@ import { AccessionRegisterComponent } from './accession-register.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    SharedModule,
     TableFilterModule,
     VitamUILibraryModule,
     AccessionRegisterRoutingModule,

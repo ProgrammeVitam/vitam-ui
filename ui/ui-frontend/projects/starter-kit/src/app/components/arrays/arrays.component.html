@@ -5,10 +5,10 @@
       <div class="col-2">
         <i class="vitamui-icon vitamui-icon-gestion-de-profil"></i>
       </div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
-      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
-      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+      <div class="col-3">{{ 'ARRAY.COLUMN.ADMIN_PROFILE_NAME' | translate }}</div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.ID' | translate }}</div>
+      <div class="col-3">{{ 'ARRAY.COLUMN.DESCRIPTION' | translate }}</div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.LEVEL' | translate }}</div>
     </div>
 
     <div class="vitamui-table-body">
@@ -37,10 +37,10 @@
       <div class="col-2">
         <i class="vitamui-icon vitamui-icon-gestion-de-profil"></i>
       </div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
-      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
-      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+      <div class="col-3">{{ 'ARRAY.COLUMN.ADMIN_PROFILE_NAME' | translate }}</div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.ID' | translate }}</div>
+      <div class="col-3">{{ 'ARRAY.COLUMN.DESCRIPTION' | translate }}</div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.LEVEL' | translate }}</div>
     </div>
 
     <div class="vitamui-table-body">
@@ -77,13 +77,13 @@
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusEnabled">
-                <span class="badge-state">Actif</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{ 'ARRAY.COLUMN.STATUS.ENABLED' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusDisabled">
-                <span class="badge-state">Désactivé</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{ 'ARRAY.COLUMN.STATUS.DISABLED' | translate }}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -95,7 +95,7 @@
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span i18n="Group name@@profileGroupListHeaderName">Nom du groupe</span>
+        <span>{{ 'ARRAY.COLUMN.GROUP_NAME' | translate }}</span>
         <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-common-order-by-button>
       </div>
 
@@ -106,7 +106,7 @@
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span i18n="Description@@profileGroupListHeaderDescription">Description</span>
+        <span>{{ 'ARRAY.COLUMN.DESCRIPTION' | translate }}</span>
         <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
@@ -128,12 +128,11 @@
             (filterChange)="onFilterChange('level', $event)"
             (filterClose)="levelFilterTrigger?.close()"
             emptyValueOption="-Niveau vide-"
-            i18n-emptyValueOption="@@groupsListLevelFilterEmpty"
           >
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
+        <span>{{ 'ARRAY.COLUMN.LEVEL' | translate }}Niveau</span>
         <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
@@ -160,10 +159,12 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
-      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
-      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+      <div class="col-3">
+        {{ 'ARRAY.COLUMN.ADMIN_PROFILE_NAME' | translate }}
+      </div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.ID' | translate }}</div>
+      <div class="col-3">{{ 'ARRAY.COLUMN.DESCRIPTION' | translate }}</div>
+      <div class="col-2">{{ 'ARRAY.COLUMN.LEVEL' | translate }}</div>
     </div>
 
     <div class="vitamui-table-body">
@@ -256,7 +257,7 @@
       </div>
 
       <div class="footer-action">
-        <span class="clickable" i18n="Add owner@@OwnerListAddOwnerButton"> Ajouter un propriétaire </span>
+        <span class="clickable">{{ 'ARRAY.ADD_OWNER' | translate }}</span>
       </div>
     </div>
   </div>
