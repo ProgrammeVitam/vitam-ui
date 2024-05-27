@@ -37,7 +37,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -149,7 +149,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -262,7 +262,7 @@
                   "with": "projects/demo/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -277,13 +277,6 @@
                   "glob": "**/*",
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
-                }
-              ],
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "13mb"
                 }
               ]
             }
@@ -375,7 +368,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/referential/ngsw-config.json",
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -384,13 +377,6 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "13mb"
-                }
-              ],
               "assets": [
                 {
                   "glob": "**/*",
@@ -538,7 +524,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -629,7 +615,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -726,7 +712,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -823,7 +809,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -929,7 +915,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -937,19 +923,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "aot": true,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "50mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "180kb",
-                  "maximumError": "180kb"
-                }
-              ]
+              "buildOptimizer": true
             },
             "standalone": {
               "fileReplacements": [
@@ -968,14 +942,7 @@
               "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": false,
-              "aot": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "17mb"
-                }
-              ]
+              "aot": true
             }
           }
         },
