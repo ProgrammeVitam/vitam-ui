@@ -488,8 +488,8 @@
     },
     "CREATE_DIALOG": {
       "TITLE": "Information",
-      "SUBTITLE": "Create external file format",
-      "IDENTIFIER": "PUID",
+      "SUBTITLE": "Create file format",
+      "IDENTIFIER": "External PUID",
       "NAME": "Name",
       "MIME_TYPE": "MIME type",
       "VERSION": "Version",
