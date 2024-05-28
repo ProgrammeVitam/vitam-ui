@@ -150,7 +150,7 @@
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
                   ' : ' +
-                  criteriaVal.values[0].label
+                  criteriaVal.values[0].value.value
                 "
                 matTooltipClass="vitamui-tooltip"
                 [matTooltipShowDelay]="300"
@@ -167,7 +167,7 @@
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
                     ' : ' +
-                    criteriaVal.values[criteriaVal.values.length - 1].label
+                    criteriaVal.values[criteriaVal.values.length - 1].value.value
                 }}
               </div>
             </ng-container>
@@ -240,7 +240,9 @@
                   criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                       | translate)
-                    : criteriaValue.label
+                    : criteriaVal.key === 'ALL_ARCHIVE_UNIT_TYPES'
+                      ? criteriaValue.label
+                      : criteriaValue.value.value
                 }}"
                 matTooltipClass="vitamui-tooltip"
                 [matTooltipShowDelay]="300"
@@ -264,7 +266,7 @@
                   criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                       | translate)
-                    : (criteriaValue.label | truncate: 50)
+                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
                 }}
               </div>
               <div

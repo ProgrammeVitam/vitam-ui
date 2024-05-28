@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-frontend-common';
+import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-criteria-search',
@@ -31,5 +31,9 @@ export class CriteriaSearchComponent implements OnInit {
     this.criteriaVal.values.forEach((value) => {
       this.removeCriteria(keyElt, value.value);
     });
+  }
+
+  getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    return key === 'ALL_ARCHIVE_UNIT_TYPES' ? criteriaValue.label : criteriaValue.value.value;
   }
 }
