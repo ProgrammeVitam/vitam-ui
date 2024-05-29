@@ -63,6 +63,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
+import { NoAuthenticationModule } from './standalone/no-authentication.module';
 import { StandaloneStartupService } from './standalone/standalone-startup.service';
 import { StandaloneThemeService } from './standalone/standalone-theme.service';
 
@@ -81,11 +82,12 @@ registerLocaleData(localeFr, 'fr');
 
 const startupServiceClass = environment.standalone ? StandaloneStartupService : StartupService;
 const themeServiceClass = environment.standalone ? StandaloneThemeService : ThemeService;
+const authenticationModuleClass = environment.standalone ? NoAuthenticationModule : AuthenticationModule.forRoot();
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AuthenticationModule.forRoot(),
+    authenticationModuleClass,
     InjectorModule,
     LoggerModule.forRoot(),
     BrowserAnimationsModule,
