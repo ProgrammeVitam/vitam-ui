@@ -178,7 +178,7 @@ export class FileFormatInformationTabComponent {
     const patchData = diff(this.form.getRawValue(), previousValue);
 
     // The extensions property must be an array of string, not a string
-    if (patchData.extensions) patchData.formData.extensions.replace(/\s/g, '').split(',');
+    if (patchData.extensions) patchData.extensions = patchData.extensions.replace(/\s/g, '').split(',');
 
     return of(patchData).pipe(
       filter((data) => !isEmpty(data)),
@@ -207,14 +207,11 @@ export class FileFormatInformationTabComponent {
   }
 
   resetForm(fileFormat: FileFormat) {
-    this.form.reset(
-      {
-        ...fileFormat,
-        createdDate: fileFormat.createdDate ? formatDate(fileFormat.createdDate, this._dateFormat, this.locale) : undefined,
-        updateDate: fileFormat.updateDate ? formatDate(fileFormat.updateDate, this._dateFormat, this.locale) : undefined,
-      },
-      { emitEvent: false },
-    );
+    this.form.reset({
+      ...fileFormat,
+      createdDate: fileFormat.createdDate ? formatDate(fileFormat.createdDate, this._dateFormat, this.locale) : undefined,
+      updateDate: fileFormat.updateDate ? formatDate(fileFormat.updateDate, this._dateFormat, this.locale) : undefined,
+    });
 
     if (this.isInternal.value) return;
 
