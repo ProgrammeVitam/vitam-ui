@@ -436,9 +436,9 @@ Une compilation avec `-Pwebpack` a été effectuée.
 ## 17 - Se connecter sur la page de réception des mails smtp4dev via :
 - http://localhost:3000/
 
-## 18 - Lancer l'application 'starter-kit' contenant des exemples de composants graphiques du design system
+## 18 - Lancer l'application 'design-system' contenant des exemples de composants graphiques du design system
 
 ```
 └── ui
-    ├── ui-frontend: 'npm run start:starter-kit'
+    ├── ui-frontend: 'npm run start:design-system'
 ```

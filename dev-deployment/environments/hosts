@@ -77,6 +77,7 @@ hosts_ui_ingest
 hosts_ui_archive_search
 hosts_ui_pastis
 hosts_ui_collect
+hosts_ui_design_system
 
 [hosts_ui_identity]
 # We deploy only ui_identity_admin on dev - same certificat is used for these apps.
@@ -99,6 +100,9 @@ localhost
 [hosts_ui_collect]
 localhost
 
+[hosts_ui_design_system]
+localhost
+
 ########################################################
 # ZONE ADMIN
 ########################################################
@@ -114,7 +118,7 @@ localhost
 ########################################################
 
 [zone_vitamui_cas:children]
-hosts_cas_server    
+hosts_cas_server
 
 [hosts_cas_server]
 localhost   vitamui_site_name=dev   consul_domain=consul

@@ -83,6 +83,9 @@ vitamui:
   pastis:
     vitamui_component: ui-pastis
     port_service: 9015
+  design_system:
+    vitamui_component: ui-design-system
+    port_service: 9016
 
   # Applications
   api_gateway:

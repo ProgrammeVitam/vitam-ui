@@ -29,5 +29,13 @@
                   {% endfor %}
                 </div>
               </p>
+              {% if groups.get('hosts_ui_design_system', [])|length > 0 %}
+              <p class="row" style="vertical-align: middle">
+                <div class="col-md-3">Design system</div>
+                <div class="col-md-9">
+                  <a href="{{ url_prefix }}/design-system/" class="btn btn-primary btn-xs" target="_blank">Design system</a>
+                </div>
+              </p>
+              {% endif %}
             </div>
           </div>
