@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
 import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
 import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';
 import { ProbativeValueRoutingModule } from './probative-value-routing.module';
@@ -78,7 +77,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule,
     MatFormFieldModule,
     MatInputModule,
     PipesModule,

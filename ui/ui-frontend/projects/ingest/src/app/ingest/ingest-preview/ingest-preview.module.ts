@@ -54,6 +54,7 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestPreviewComponent } from './ingest-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { IngestPreviewComponent } from './ingest-preview.component';
     MatTabsModule,
     MatTooltipModule,
     MatTreeModule,
+    TranslateModule,
   ],
   exports: [IngestPreviewComponent, IngestInformationTabComponent, IngestEventDetailComponent, EventDisplayComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

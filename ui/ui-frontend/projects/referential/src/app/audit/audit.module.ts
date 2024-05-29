@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { PipesModule } from '../shared/pipes/pipes.module';
-import { SharedModule } from '../shared/shared.module';
 import { AuditCreateModule } from './audit-create/audit-create.module';
 import { AuditPreviewModule } from './audit-preview/audit-preview.module';
 import { AuditRoutingModule } from './audit-routing.module';
@@ -77,7 +76,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule,
     MatFormFieldModule,
     MatInputModule,
     PipesModule,

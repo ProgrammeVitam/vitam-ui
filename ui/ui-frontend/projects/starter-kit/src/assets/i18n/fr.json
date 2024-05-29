@@ -17,7 +17,19 @@
     "BASIC_WITH_DOUBLE_LINES_TITLE": "Tableau simple avec double lignes",
     "FILTER_TITLE": "Tableau avec filtres",
     "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
-    "DIALOG_TITLE": "Tableau avec détail"
+    "DIALOG_TITLE": "Tableau avec détail",
+    "COLUMN": {
+      "ADMIN_PROFILE_NAME": "Nom du profil administrateur",
+      "ID": "Identifiant",
+      "DESCRIPTION": "Description",
+      "LEVEL": "Niveau",
+      "GROUP_NAME": "Nom du groupe",
+      "STATUS": {
+        "ENABLED": "Actif",
+        "DISABLED": "Désactivé"
+      }
+    },
+    "ADD_OWNER": "Ajouter un propriétaire"
   },
   "BUTTON": {
     "PRIMARY": "Primaire par défaut",

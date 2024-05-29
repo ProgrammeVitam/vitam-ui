@@ -14,16 +14,11 @@
       <vitamui-common-title-breadcrumb>
         {{ 'APPLICATION.INGEST_MANAGEMENT_APP.NAME' | translate }}
       </vitamui-common-title-breadcrumb>
-      <vitamui-common-banner
-        [searchbarPlaceholder]="'INGEST_ACTION.SEARCH' | translate"
-        i18n-placeholder="@@ingestSearchPlaceholder"
-        (search)="onSearchSubmit($event)"
-      >
+      <vitamui-common-banner [searchbarPlaceholder]="'INGEST_ACTION.SEARCH' | translate" (search)="onSearchSubmit($event)">
         <button
           class="btn secondary"
           (click)="refresh()"
           matTooltip="{{ 'INGEST_ACTION.ToolTip_Refresh' | translate }}"
-          i18n-matTooltip="Proof safe info hint@@proofSafeInfo"
           matTooltipClass="vitamui-tooltip"
           [ngStyle]="{ 'margin-right': '10px' }"
         >
@@ -35,7 +30,6 @@
           class="btn primary"
           (click)="openImportSipDialog(IngestType.DEFAULT_WORKFLOW)"
           matTooltip="{{ 'INGEST_ACTION.ToolTip_New_Ingest' | translate }}"
-          i18n-matTooltip="Proof safe info hint@@proofSafeInfo"
           matTooltipClass="vitamui-tooltip"
           [ngStyle]="{ 'margin-right': '10px' }"
         >
@@ -54,12 +48,9 @@
         <form [formGroup]="dateRangeFilterForm">
           <div class="date-filter-container">
             <div class="date-filter">
-              <span
-                *ngIf="!dateRangeFilterForm.get('startDate').value; else showStartDate"
-                (click)="pickerStart.open()"
-                i18n="@@apiSupervisionStartDate"
-                >{{ 'INGEST_ACTION.START_DATE' | translate }}</span
-              >
+              <span *ngIf="!dateRangeFilterForm.get('startDate').value; else showStartDate" (click)="pickerStart.open()">{{
+                'INGEST_ACTION.START_DATE' | translate
+              }}</span>
               <ng-template #showStartDate>
                 <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
                 <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
@@ -74,12 +65,9 @@
               <mat-datepicker #pickerStart></mat-datepicker>
             </div>
             <div class="date-filter">
-              <span
-                *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate"
-                (click)="pickerEnd.open()"
-                i18n="@@apiSupervisionEndDate"
-                >{{ 'INGEST_ACTION.END_DATE' | translate }}</span
-              >
+              <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()">{{
+                'INGEST_ACTION.END_DATE' | translate
+              }}</span>
               <ng-template #showEndDate
                 ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
                 <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i>

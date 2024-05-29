@@ -57,7 +57,6 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -78,7 +77,6 @@ registerLocaleData(localeFr, 'fr');
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
     MatNativeDateModule,
-    SharedModule,
     QuicklinkModule,
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },

@@ -43,7 +43,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../shared/shared.module';
 import { SecurityProfileCreateModule } from './security-profile-create';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';
@@ -63,7 +62,6 @@ import { SecurityProfileComponent } from './security-profile.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    SharedModule,
     TableFilterModule,
   ],
   declarations: [SecurityProfileComponent, SecurityProfileListComponent],

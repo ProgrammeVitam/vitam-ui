@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { UpdatedApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { CardGroupModule } from './components/card-group/card-group.module';
 import { CardSelectModule } from './components/card-select/card-select.module';
 import { CardModule } from './components/card/card.module';
@@ -20,7 +19,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
-    UpdatedApplicationSelectContentModule,
     UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,
@@ -33,7 +31,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
-    UpdatedApplicationSelectContentModule,
     UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,

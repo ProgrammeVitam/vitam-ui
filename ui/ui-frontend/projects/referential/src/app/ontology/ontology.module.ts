@@ -45,7 +45,6 @@ import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
-import { SharedModule } from '../shared/shared.module';
 import { OntologyCreateModule } from './ontology-create/ontology-create.module';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
@@ -68,7 +67,6 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    SharedModule,
     TableFilterModule,
   ],
   declarations: [OntologyComponent, OntologyListComponent],

@@ -5,8 +5,6 @@
 /* API SERVICES */
 export * from './lib/api/metadata-api.service';
 export * from './lib/api/search-unit-api.service';
-export * from './lib/components/application-select-content/application-select-content.component';
-export * from './lib/components/application-select-content/application-select-content.module';
 export * from './lib/components/card-group/card-group.component';
 export * from './lib/components/card-group/card-group.module';
 /* COMPONENTS */

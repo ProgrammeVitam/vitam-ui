@@ -46,14 +46,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
-import { SharedModule } from '../../shared/shared.module';
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
 
 @NgModule({
   declarations: [ProbativeValueCreateComponent],
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,

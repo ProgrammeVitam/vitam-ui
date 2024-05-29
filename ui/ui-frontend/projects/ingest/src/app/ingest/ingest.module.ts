@@ -52,6 +52,7 @@ import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestComponent } from './ingest.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { IngestComponent } from './ingest.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    TranslateModule,
   ],
   declarations: [IngestComponent],
 })

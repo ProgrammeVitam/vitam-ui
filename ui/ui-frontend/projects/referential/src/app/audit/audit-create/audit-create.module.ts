@@ -46,14 +46,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { VitamUILibraryModule } from 'vitamui-library';
 
-import { SharedModule } from '../../shared/shared.module';
 import { AuditCreateComponent } from './audit-create.component';
 
 @NgModule({
   declarations: [AuditCreateComponent],
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,

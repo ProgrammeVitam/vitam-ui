@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { CustomerAlertingComponent } from './customer-alerting.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('CustomerAlertingComponent', () => {
   let component: CustomerAlertingComponent;
@@ -9,7 +10,7 @@ describe('CustomerAlertingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule],
+      imports: [MatDialogModule, TranslateModule.forRoot()],
       declarations: [CustomerAlertingComponent],
     }).compileComponents();
   }));

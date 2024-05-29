@@ -49,6 +49,7 @@ import { UploadModule } from '../core/common/upload.module';
 import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
 import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     MatProgressBarModule,
     UploadModule,
     UploadTrackingModule,
+    TranslateModule,
   ],
   declarations: [HoldingFillingSchemeComponent],
 })

@@ -52,7 +52,6 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
-import { SharedModule } from '../shared/shared.module';
 import { SecurisationListModule } from './securisation-list/securisation-list.module';
 import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
 import { SecurisationRoutingModule } from './securisation-routing.module';
@@ -75,7 +74,6 @@ import { SecurisationComponent } from './securisation.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule,
     MatFormFieldModule,
     MatInputModule,
     MatMomentDateModule,

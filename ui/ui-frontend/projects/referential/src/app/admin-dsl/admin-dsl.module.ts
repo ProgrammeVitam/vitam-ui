@@ -48,7 +48,6 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { MatInputModule } from '@angular/material/input';
-import { SharedModule } from '../shared/shared.module';
 import { AdminDslRoutingModule } from './admin-dsl-routing.module';
 import { AdminDslComponent } from './admin-dsl.component';
 
@@ -67,7 +66,6 @@ import { AdminDslComponent } from './admin-dsl.component';
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatSelectModule,
-    SharedModule,
     MatInputModule,
   ],
   declarations: [AdminDslComponent],

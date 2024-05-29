@@ -44,7 +44,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
 import { ContextCreateModule } from './context-create';
 import { ContextEditModule } from './context-edit/context-edit.module';
 import { ContextListComponent } from './context-list/context-list.component';
@@ -66,7 +65,6 @@ import { ContextComponent } from './context.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    SharedModule,
     TableFilterModule,
   ],
   declarations: [ContextComponent, ContextListComponent],

@@ -68,13 +68,6 @@
                   "output": "/assets"
                 }
               ]
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/identity/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -88,9 +81,6 @@
           "configurations": {
             "production": {
               "browserTarget": "identity:build:production"
-            },
-            "en": {
-              "browserTarget": "identity:build:en"
             }
           }
         },
@@ -190,13 +180,6 @@
                   "output": "/assets"
                 }
               ]
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/portal/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -548,13 +531,6 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/starter-kit/ngsw-config.json"
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/starter-kit/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -646,13 +622,6 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/ingest/ngsw-config.json"
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/ingest/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -666,9 +635,6 @@
           "configurations": {
             "production": {
               "browserTarget": "ingest:build:production"
-            },
-            "en": {
-              "browserTarget": "ingest:build:en"
             }
           }
         },
@@ -753,13 +719,6 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/archive-search/ngsw-config.json"
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/archive-search/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -773,9 +732,6 @@
           "configurations": {
             "production": {
               "browserTarget": "archive-search:build:production"
-            },
-            "en": {
-              "browserTarget": "archive-search:build:en"
             }
           }
         },
@@ -860,13 +816,6 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/collect/ngsw-config.json"
-            },
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/collect/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
             }
           }
         },
@@ -880,9 +829,6 @@
           "configurations": {
             "production": {
               "browserTarget": "collect:build:production"
-            },
-            "en": {
-              "browserTarget": "collect:build:en"
             }
           }
         },
@@ -950,13 +896,6 @@
             "scripts": []
           },
           "configurations": {
-            "en": {
-              "aot": true,
-              "i18nFile": "projects/pastis/src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "warning"
-            },
             "production": {
               "fileReplacements": [
                 {
@@ -1024,9 +963,6 @@
             "port": 4251
           },
           "configurations": {
-            "en": {
-              "browserTarget": "pastis:build:en"
-            },
             "production": {
               "browserTarget": "pastis:build:production"
             },

@@ -48,7 +48,6 @@ import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
-import { SharedModule } from '../shared/shared.module';
 import { AccessContractCreateModule } from './access-contract-create';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { AccessContractPreviewModule } from './access-contract-preview/access-contract-preview.module';
@@ -62,7 +61,6 @@ import { AccessContractComponent } from './access-contract.component';
     FormsModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    SharedModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
