@@ -56,7 +56,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -90,6 +94,10 @@ class PastisController {
     @Autowired
     public PastisController(final PastisService profileService) {
         this.profileService = profileService;
+    }
+
+    private static boolean isInvalidFilename(String fileName) {
+        return VitamUIStringUtils.HTML_PATTERN.matcher(fileName).find();
     }
 
     @Operation(
@@ -215,10 +223,6 @@ class PastisController {
         } else {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private static boolean isInvalidFilename(String fileName) {
-        return VitamUIStringUtils.HTML_PATTERN.matcher(fileName).find();
     }
 
     enum ErrorMessage {
