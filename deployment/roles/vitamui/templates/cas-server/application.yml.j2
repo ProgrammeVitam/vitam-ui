@@ -5,7 +5,9 @@ spring:
       host: {{ hostvars[inventory_hostname][consul.network] if (inventory_hostname in groups['hosts_vitamui_consul_server'] or inventory_hostname in groups['hosts_consul_server']) else 'localhost' }}
       discovery:
         preferIpAddress: true
+        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: {{ consul_tags }}
+
 spring.application.name: cas-server
 
 server:

@@ -7,6 +7,7 @@ spring:
       discovery:
         serviceName: vitamui-{{ vitamui_struct.vitamui_component }}
         preferIpAddress: true
+        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: {{ consul_tags }}
         instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
   data:
