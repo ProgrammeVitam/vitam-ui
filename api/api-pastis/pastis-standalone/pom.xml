@@ -1,399 +1,419 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>api-pastis</artifactId>
-    <groupId>fr.gouv.vitamui</groupId>
-    <version>8.0.0-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>api-pastis</artifactId>
+        <groupId>fr.gouv.vitamui</groupId>
+        <version>8.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>pastis-standalone</artifactId>
-  <description>Pastis Standalone Version</description>
-  <name>VITAMUI Pastis Standalone API</name>
+    <artifactId>pastis-standalone</artifactId>
+    <description>Pastis Standalone Version</description>
+    <name>VITAMUI Pastis Standalone API</name>
 
-  <properties>
-    <maven.compile.target>11</maven.compile.target>
-    <maven.compile.source>11</maven.compile.source>
-    <java.version>11</java.version>
-    <angular.base.href>/</angular.base.href>
-    <angular.build.project>pastis</angular.build.project>
-    <rpm.skip>false</rpm.skip>
-    <sonar.sources>src/main/java</sonar.sources>
-    <swagger.dir>ui</swagger.dir>
-    <swagger.skip>false</swagger.skip>
-    <webpack.skip>false</webpack.skip>
-    <webpack.test.skip>false</webpack.test.skip>
-    <skipAllFrontend>false</skipAllFrontend>
-    <skipAllFrontendTests>false</skipAllFrontendTests>
-    <main.basedir>${project.parent.parent.parent.basedir}</main.basedir> <!--le plugin directory-maven-plugin du pom principale ne se lance jamais avant -->
-  </properties>
+    <properties>
+        <maven.compile.target>11</maven.compile.target>
+        <maven.compile.source>11</maven.compile.source>
+        <java.version>11</java.version>
+        <angular.base.href>/</angular.base.href>
+        <angular.build.project>pastis</angular.build.project>
+        <rpm.skip>false</rpm.skip>
+        <sonar.sources>src/main/java</sonar.sources>
+        <swagger.dir>ui</swagger.dir>
+        <swagger.skip>false</swagger.skip>
+        <webpack.skip>false</webpack.skip>
+        <webpack.test.skip>false</webpack.test.skip>
+        <skipAllFrontend>false</skipAllFrontend>
+        <skipAllFrontendTests>false</skipAllFrontendTests>
+        <main.basedir>${project.parent.parent.parent.basedir}
+        </main.basedir> <!--le plugin directory-maven-plugin du pom principale ne se lance jamais avant -->
+    </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>fr.gouv.vitam</groupId>
-      <artifactId>common-public</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>fr.gouv.vitamui</groupId>
-      <artifactId>pastis-external</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>pastis-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui.commons</groupId>
-          <artifactId>commons-rest</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui.commons</groupId>
-          <artifactId>commons-vitam</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>security-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>iam-internal-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>referential-internal-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>iam-security</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-webflux</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-actuator</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-configuration-processor</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpcore</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-security</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-test</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>iam-commons</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>iam-external-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>fr.gouv.vitamui.commons</groupId>
-          <artifactId>commons-test</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.skyscreamer</groupId>
-      <artifactId>jsonassert</artifactId>
-      <version>${jsonassert.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <!--        Dans Java SE 9 et 10, la classe JAXB n'est plus présente dans la variable "classpath" par
-    défaut.
-                A partir de la version 11, elle a complètement disparu de Java en édition standard.
-                Obliger de préciser une version antérieur pour éviter un NoClassDefFoundError à ce niveau-->
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>2.3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-    </dependency>
-
-    <!-- Documentation -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>build-info</id>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>true</executable>
-          <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-          <mainClass>fr.gouv.vitamui.pastis.standalone.ApiPastisStandaloneApplication</mainClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>standalone</id>
-
-      <properties>
-        <!-- On vient juste positionner la variable angular.build.profile dans le profile maven afin
-        de lancer un build en mode standalone. -->
-        <angular.build.profile>:pastis-standalone</angular.build.profile>
-      </properties>
-
-      <dependencies>
+    <dependencies>
         <dependency>
-          <groupId>fr.gouv.vitamui</groupId>
-          <artifactId>ui-frontend</artifactId>
-          <scope>provided</scope>
-          <type>pom</type>
-          <version>${project.version}</version>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>common-public</artifactId>
         </dependency>
-      </dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>pastis-external</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>pastis-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui.commons</groupId>
+                    <artifactId>commons-rest</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui.commons</groupId>
+                    <artifactId>commons-vitam</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>security-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>iam-internal-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>referential-internal-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>iam-security</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-webflux</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.security</groupId>
+                    <artifactId>spring-security-test</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>iam-commons</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>iam-external-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>fr.gouv.vitamui.commons</groupId>
+                    <artifactId>commons-test</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--        Dans Java SE 9 et 10, la classe JAXB n'est plus présente dans la variable "classpath" par
+        défaut.
+                    A partir de la version 11, elle a complètement disparu de Java en édition standard.
+                    Obliger de préciser une version antérieur pour éviter un NoClassDefFoundError à ce niveau-->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
 
-      <build>
-        <resources>
-          <resource>
-            <directory>target/www/</directory>
-            <targetPath>static/</targetPath>
-          </resource>
-          <resource>
-            <directory>src/main/resources</directory>
-          </resource>
-        </resources>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources</directory>
-            <filtering>true</filtering>
-          </testResource>
-        </testResources>
+        <!-- Documentation -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
         <plugins>
-          <!-- Ce plugin vient déclencher un build de ui-frontend depuis la racine des modules -->
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <!-- download openjdk -->
-              <execution>
-                <id>download-jdk</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-info</id>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                  <target>
-                    <get
-                      src="https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip"
-                      dest="${project.build.directory}/jdk11.zip"
-                      verbose="false"
-                      usetimestamp="true" />
-                  </target>
+                    <executable>true</executable>
+                    <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
+                    <mainClass>fr.gouv.vitamui.pastis.standalone.ApiPastisStandaloneApplication</mainClass>
                 </configuration>
-              </execution>
-
-              <!-- unzip jdk -->
-              <execution>
-                <id>unzip-jdk</id>
-                <phase>package</phase>
-                <configuration>
-                  <tasks>
-                    <echo message="unzipping file" />
-                    <unzip src="${project.build.directory}/jdk11.zip"
-                      dest="${project.build.directory}/jdk11/" />
-                  </tasks>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <!-- Generate pastis exe from jar -->
-          <plugin>
-            <groupId>com.akathist.maven.plugins.launch4j</groupId>
-            <artifactId>launch4j-maven-plugin</artifactId>
-            <version>${launch4j-maven-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>l4j-clui</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>launch4j</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <headerType>console</headerType>
-              <jar>${project.build.directory}/${project.build.finalName}.${project.packaging}</jar>
-              <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
-              <errTitle>Erreur</errTitle>
-              <jre>
-                <minVersion>11</minVersion>
-                <path>./jdk11/jdk-11</path>
-                <requires64Bit />
-                <requiresJdk />
-              </jre>
-              <versionInfo>
-                <fileVersion>1.0.0.0</fileVersion>
-                <txtFileVersion>1.0.0.0</txtFileVersion>
-                <fileDescription>${project.build.finalName}</fileDescription>
-                <productName>${project.build.finalName}</productName>
-                <productVersion>1.0.0.0</productVersion>
-                <companyName>Programme Vitam</companyName>
-                <internalName>pastis</internalName>
-              </versionInfo>
-            </configuration>
-          </plugin>
-          <!-- maven plugin resources-->
-          <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-resources-jre</id>
-                <!-- here the phase you need -->
-                <phase>package</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${basedir}/target/win32/java</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${java.home}</directory>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <!-- Assembling all file required to start pastis exe with portable java included -->
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>${project.basedir}/src/main/assembly/packaging-zip.xml</descriptor>
-                  </descriptors>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+            </plugin>
         </plugins>
-      </build>
+    </build>
 
-      <distributionManagement>
-        <repository>
-          <id>releases</id>
-          <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-          <id>snapshots</id>
-          <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <site>
-          <id>${project.artifactId}-site</id>
-          <url>${project.baseUri}</url>
-        </site>
-      </distributionManagement>
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <profiles>
+                                <profile>dev</profile>
+                            </profiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>standalone</id>
 
-      <repositories>
-        <repository>
-          <id>vitam</id>
-          <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
-        </repository>
-      </repositories>
+            <properties>
+                <!-- On vient juste positionner la variable angular.build.profile dans le profile maven afin
+                de lancer un build en mode standalone. -->
+                <angular.build.profile>:pastis-standalone</angular.build.profile>
+            </properties>
 
-      <!-- Maven plugins repositories -->
-      <pluginRepositories>
-        <pluginRepository>
-          <id>vitam</id>
-          <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </pluginRepository>
-      </pluginRepositories>
+            <dependencies>
+                <dependency>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>ui-frontend</artifactId>
+                    <scope>provided</scope>
+                    <type>pom</type>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
 
-    </profile>
-  </profiles>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>target/www/</directory>
+                        <targetPath>static/</targetPath>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                        <filtering>true</filtering>
+                    </testResource>
+                </testResources>
+                <plugins>
+                    <!-- Ce plugin vient déclencher un build de ui-frontend depuis la racine des modules -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <!-- download openjdk -->
+                            <execution>
+                                <id>download-jdk</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <get
+                                                src="https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip"
+                                                dest="${project.build.directory}/jdk11.zip"
+                                                verbose="false"
+                                                usetimestamp="true"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+
+                            <!-- unzip jdk -->
+                            <execution>
+                                <id>unzip-jdk</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo message="unzipping file"/>
+                                        <unzip src="${project.build.directory}/jdk11.zip"
+                                               dest="${project.build.directory}/jdk11/"/>
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Generate pastis exe from jar -->
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>${launch4j-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>l4j-clui</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>launch4j</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <jar>${project.build.directory}/${project.build.finalName}.${project.packaging}</jar>
+                            <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
+                            <errTitle>Erreur</errTitle>
+                            <jre>
+                                <minVersion>11</minVersion>
+                                <path>./jdk11/jdk-11</path>
+                                <requires64Bit/>
+                                <requiresJdk/>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>1.0.0.0</txtFileVersion>
+                                <fileDescription>${project.build.finalName}</fileDescription>
+                                <productName>${project.build.finalName}</productName>
+                                <productVersion>1.0.0.0</productVersion>
+                                <companyName>Programme Vitam</companyName>
+                                <internalName>pastis</internalName>
+                            </versionInfo>
+                        </configuration>
+                    </plugin>
+                    <!-- maven plugin resources-->
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-resources-jre</id>
+                                <!-- here the phase you need -->
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/win32/java</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${java.home}</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Assembling all file required to start pastis exe with portable java included -->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>${project.basedir}/src/main/assembly/packaging-zip.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </snapshotRepository>
+                <site>
+                    <id>${project.artifactId}-site</id>
+                    <url>${project.baseUri}</url>
+                </site>
+            </distributionManagement>
+
+            <repositories>
+                <repository>
+                    <id>vitam</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                </repository>
+            </repositories>
+
+            <!-- Maven plugins repositories -->
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>vitam</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+
+        </profile>
+    </profiles>
 </project>

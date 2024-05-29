@@ -67,7 +67,7 @@ export class StandaloneStartupService {
     @Inject(WINDOW_LOCATION) private location: any,
   ) {}
 
-  load(): any {
+  load(): Observable<StandaloneConfiguration> {
     this.configurationData = null;
 
     let appConf: StandaloneConfiguration = {
@@ -81,7 +81,7 @@ export class StandaloneStartupService {
     };
     this.configurationData = appConf;
     this.themeService.init(this.configurationData as AppConfiguration, this.configurationData.THEME_COLORS);
-    return appConf;
+    return of(appConf);
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {

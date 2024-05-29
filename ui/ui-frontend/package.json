@@ -21,6 +21,7 @@
     "start:pastis": "ng serve pastis --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "start:pastis:gateway": "npm run start:pastis -- --proxy-config proxy-gateway.conf.js",
     "start:pastis:gateway-next": "npm run start:pastis -- --proxy-config proxy-gateway-next.conf.js",
+    "start:pastis:standalone": "ng serve pastis --configuration standalone --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "start:referential": "ng serve referential --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "start:referential:gateway": "npm run start:referential -- --proxy-config proxy-gateway.conf.js",
     "start:referential:gateway-next": "npm run start:referential -- --proxy-config proxy-gateway-next.conf.js",

@@ -35,21 +35,18 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+
 package fr.gouv.vitamui.pastis.standalone.config;
 
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -58,20 +55,8 @@ import static org.springframework.http.HttpStatus.OK;
 @Configuration
 public class PastisConfiguration {
 
-    private ResourceLoader resourceLoader;
-
-    @Value("${cors.allowed-origins}")
-    private String origins;
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(@NotNull CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins(origins.split(",")).allowCredentials(true);
-            }
-        };
-    }
+    @Value("${pastis.client.url}")
+    public String url;
 
     @Bean
     public ErrorViewResolver customErrorViewResolver() {
@@ -91,7 +76,7 @@ public class PastisConfiguration {
 
     @Bean
     public PastisService pastisService() {
-        return new PastisService(this.resourceLoader, puaPastisValidator(), jsonFromPUA(), puaFromJSON());
+        return new PastisService(null, puaPastisValidator(), jsonFromPUA(), puaFromJSON());
     }
 
     @Bean
