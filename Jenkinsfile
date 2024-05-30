@@ -1,6 +1,15 @@
+def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches() || env.TAG_NAME != null
+
 pipeline {
     agent {
         label 'contrib'
+    }
+
+    parameters {
+        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test')
+        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus')
+        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone')
+        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.')
     }
 
     environment {
@@ -30,43 +39,12 @@ pipeline {
     }
 
     stages {
-        stage('Set variables for automatic run') {
-            agent none
+        stage('Show options') {
             steps {
-                script {
-                    env.DO_BUILD_AND_TEST = 'true'
-                    env.DO_DEPLOY = 'true'
-                    env.DO_DEPLOY_PASTIS_STANDALONE = 'true'
-                    env.DO_PUBLISH = 'true'
-                }
-            }
-        }
-
-        stage('Ask for build execution') {
-            agent none
-            when {
-                not {
-                    anyOf {
-                        branch "develop*"
-                        branch "master_*"
-                        tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
-                    }
-                }
-            }
-            steps {
-                script {
-                    INPUT_PARAMS = input message: 'Check boxes to select what you want to execute ?',
-                    parameters: [
-                        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test'),
-                        booleanParam(name: 'DO_DEPLOY', defaultValue: false, description: 'Run Stage Deploy to Nexus'),
-                        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: false, description: 'Run build stage Deploy PASTIS standalone'),
-                        booleanParam(name: 'DO_PUBLISH', defaultValue: false, description: 'Run Stage Publish to repository.'),
-                    ]
-                    env.DO_BUILD_AND_TEST = INPUT_PARAMS.DO_BUILD_AND_TEST
-                    env.DO_DEPLOY = INPUT_PARAMS.DO_DEPLOY
-                    env.DO_DEPLOY_PASTIS_STANDALONE = INPUT_PARAMS.DO_DEPLOY_PASTIS_STANDALONE
-                    env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
-                }
+                echo "DO_BUILD_AND_TEST = ${env.DO_BUILD_AND_TEST}"
+                echo "DO_DEPLOY = ${env.DO_DEPLOY}"
+                echo "DO_DEPLOY_PASTIS_STANDALONE = ${env.DO_DEPLOY_PASTIS_STANDALONE}"
+                echo "DO_PUBLISH = ${env.DO_PUBLISH}"
             }
         }
 
