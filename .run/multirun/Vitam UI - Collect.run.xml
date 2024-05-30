@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vitam UI - Collect" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Collect - API - External" type="Maven" />
+    <runConfiguration name="Collect - API - Internal" type="Maven" />
+    <runConfiguration name="Collect - UI - Frontend" type="Shell Script" />
+    <method v="2" />
+  </configuration>
+</component>

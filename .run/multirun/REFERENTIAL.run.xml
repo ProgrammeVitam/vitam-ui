@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="REFERENTIAL" type="Multirun" separateTabs="false" reuseTabsWithFailures="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Vitam UI - Core" type="Multirun" />
+    <runConfiguration name="Gateway - API" type="Application" />
+    <runConfiguration name="Vitam UI - Library" type="Shell Script" />
+    <runConfiguration name="Portal - UI - Frontend" type="Shell Script" />
+    <runConfiguration name="Vitam UI - Referential" type="Multirun" />
+    <method v="2" />
+  </configuration>
+</component>

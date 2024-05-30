@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="VItam UI - Archive Search" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Archive Search - API - Internal" type="Maven" />
+    <runConfiguration name="Archive Search - API - External" type="Maven" />
+    <runConfiguration name="Archive Search - UI - Frontend" type="Shell Script" />
+    <method v="2" />
+  </configuration>
+</component>
