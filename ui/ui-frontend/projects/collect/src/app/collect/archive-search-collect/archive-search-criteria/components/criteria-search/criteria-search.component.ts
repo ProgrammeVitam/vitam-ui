@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, CriteriaSearchCriteria, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',

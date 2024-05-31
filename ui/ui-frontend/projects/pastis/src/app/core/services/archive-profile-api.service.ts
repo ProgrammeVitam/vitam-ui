@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { Profile } from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 

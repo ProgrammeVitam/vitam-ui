@@ -37,8 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';

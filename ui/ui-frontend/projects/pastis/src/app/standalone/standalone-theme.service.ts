@@ -41,11 +41,11 @@ import {
   AppConfiguration,
   AuthUser,
   Color,
-  ThemeColorType,
   convertLighten,
   getColorFromMaps,
   hexToRgb,
   hexToRgbString,
+  ThemeColorType,
 } from 'vitamui-library';
 
 export interface Theme {

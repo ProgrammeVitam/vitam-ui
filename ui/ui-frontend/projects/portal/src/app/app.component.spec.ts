@@ -39,16 +39,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { BASE_URL } from 'vitamui-library';
+import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
 const translations: any = { TEST: 'This is a test' };

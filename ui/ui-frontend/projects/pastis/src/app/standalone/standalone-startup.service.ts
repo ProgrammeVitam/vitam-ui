@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
 import { StandaloneThemeService } from './standalone-theme.service';
 

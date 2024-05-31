@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -37,7 +37,6 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';

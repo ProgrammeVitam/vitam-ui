@@ -39,11 +39,14 @@ import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AlertAnalytics, Application, ApplicationService, Category, UserAlertsService, UserInfo } from 'vitamui-library';
 import {
+  AlertAnalytics,
+  Application,
   ApplicationId,
+  ApplicationService,
   AuthService,
   BasicCustomer,
+  Category,
   FullLangString,
   GlobalEventService,
   LanguageService,
@@ -51,6 +54,8 @@ import {
   StartupService,
   ThemeDataType,
   ThemeService,
+  UserAlertsService,
+  UserInfo,
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';

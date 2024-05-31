@@ -27,8 +27,7 @@
  *
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { OnDestroy, OnInit } from '@angular/core';
-import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';

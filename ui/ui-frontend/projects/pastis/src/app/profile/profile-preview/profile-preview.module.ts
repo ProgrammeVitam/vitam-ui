@@ -11,8 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfilePreviewComponent } from './profile-preview.component';
 

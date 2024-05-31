@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FileService } from 'projects/pastis/src/app/core/services/file.service';
 import { PopupService } from 'projects/pastis/src/app/core/services/popup.service';

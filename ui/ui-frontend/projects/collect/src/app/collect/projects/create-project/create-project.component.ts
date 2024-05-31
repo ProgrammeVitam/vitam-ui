@@ -35,10 +35,12 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   ExternalParameters,
   ExternalParametersService,
+  FilingPlanMode,
   FlowType,
+  IOntology,
   Logger,
   MetadataUnitUp,
-  IOntology,
+  oneIncludedNodeRequired,
   OntologyService,
   Project,
   ProjectStatus,
@@ -46,8 +48,6 @@ import {
   TransactionStatus,
   Workflow,
 } from 'vitamui-library';
-
-import { FilingPlanMode, oneIncludedNodeRequired } from 'vitamui-library';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';

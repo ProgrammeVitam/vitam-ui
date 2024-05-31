@@ -1,4 +1,3 @@
-import { OnDestroy } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -36,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';

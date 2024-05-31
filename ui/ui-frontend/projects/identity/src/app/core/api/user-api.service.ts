@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, CriteriaSearchQuery, User } from 'vitamui-library';
+import { BASE_URL, BaseHttpClient, CriteriaSearchQuery, PageRequest, PaginatedResponse, User } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

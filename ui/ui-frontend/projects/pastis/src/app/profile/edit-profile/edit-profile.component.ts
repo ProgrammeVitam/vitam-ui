@@ -1,4 +1,4 @@
-import { AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -36,9 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';

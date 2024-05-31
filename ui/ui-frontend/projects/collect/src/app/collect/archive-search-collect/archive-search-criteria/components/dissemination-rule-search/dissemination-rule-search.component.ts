@@ -37,18 +37,18 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, merge } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
+  diff,
+  ManagementRuleValidators,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  diff,
 } from 'vitamui-library';
-import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
