@@ -49,8 +49,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -1178,9 +1176,10 @@ public final class MetadataSearchCriteriaUtils {
         LOGGER.debug("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
-                ZonedDateTime searchDate = ZonedDateTime.parse(value).withZoneSameInstant(ZoneId.systemDefault());
+                LocalDateTime searchDate = LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER)
+                    .withHour(0).withMinute(0).withSecond(0).withNano(0);
                 subQueryOr.add(VitamQueryHelper.buildSubQueryByOperator(criteria,
-                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate), operator));
+                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
             }
             subQueryAnd.add(subQueryOr);
         }
@@ -1302,7 +1301,7 @@ public final class MetadataSearchCriteriaUtils {
                 ArchiveSearchConsts.CriteriaOperators.LT,
                 mappedCriteriaName, List.of(theNextDay));
             queryToFill.add(andQuery);
-        } else if (!isADate(searchCriteria)) {
+        } else {
             VitamQueryHelper.addParameterCriteria(queryToFill,
                 ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
                 mappedCriteriaName, stringValues);
