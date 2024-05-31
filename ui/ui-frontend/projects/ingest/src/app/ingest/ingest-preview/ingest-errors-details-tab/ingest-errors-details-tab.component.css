@@ -3,9 +3,9 @@
 }
 
 .tree-ingest-errors-details-invisible {
-    display: none;    
+    display: none;
   }
-  
+
 .tree-ingest-errors-details ul, li {
     margin-top: 0;
     margin-bottom: 0;
@@ -16,7 +16,7 @@
 .ingest-error-tree-node {
   border-bottom: 1px solid rgba(151, 151, 151, 0.3);
 }
-  
+
 .ko-icon {
   color: red;
   right: 5px;
@@ -50,4 +50,8 @@
     display: block;
     font-family: Mulish;
     visibility: visible;
+}
+
+.ev-det-tech-data{
+  font-size: 12px;
 }

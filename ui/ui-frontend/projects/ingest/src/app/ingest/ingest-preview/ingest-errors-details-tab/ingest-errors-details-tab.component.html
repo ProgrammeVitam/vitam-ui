@@ -46,15 +46,18 @@
             <ng-container [ngSwitch]="getEventStatus(node)">
               <div *ngSwitchCase="'OK'">
                 <span class="ingest-message-text" [ngStyle]="{ color: 'black' }">{{ node.eventData.outMessg }}</span>
+                <span class="ev-det-tech-data" [ngStyle]="{ color: 'black' }">{{ getEvDetData(node) }}</span>
               </div>
               <div *ngSwitchCase="'KO'">
                 <span class="ingest-message-text" [ngStyle]="{ color: 'red' }">{{ node.eventData.outMessg }}</span>
+                <span class="ev-det-tech-data" [ngStyle]="{ color: 'red' }">{{ getEvDetData(node) }}</span>
               </div>
               <div *ngSwitchCase="'FATAL'">
                 <span class="ingest-message-text" [ngStyle]="{ color: 'grey' }">{{ node.eventData.outMessg }}</span>
               </div>
               <div *ngSwitchCase="'WARNING'">
                 <span class="ingest-message-text" [ngStyle]="{ color: 'orange' }">{{ node.eventData.outMessg }}</span>
+                <span class="ev-det-tech-data" [ngStyle]="{ color: 'orange' }">{{ getEvDetData(node) }}</span>
               </div>
             </ng-container>
           </div>
