@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { VitamUISnackBarService } from 'ui-frontend-common';
+import { VitamUISnackBarService } from 'vitamui-library';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
 import { ReferentialImportService } from './referential-import.service';
 

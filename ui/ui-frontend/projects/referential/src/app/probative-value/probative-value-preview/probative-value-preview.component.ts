@@ -40,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({

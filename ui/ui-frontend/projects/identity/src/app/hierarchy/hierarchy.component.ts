@@ -37,7 +37,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
 

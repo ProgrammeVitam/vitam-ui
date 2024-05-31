@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AccessContract, Status } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyService } from '../../../agency/agency.service';
 import { AccessContractService } from '../../access-contract.service';
 import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab.component';

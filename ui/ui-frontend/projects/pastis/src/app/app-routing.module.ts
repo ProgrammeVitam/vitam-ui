@@ -37,7 +37,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
-import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'ui-frontend-common';
+import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 

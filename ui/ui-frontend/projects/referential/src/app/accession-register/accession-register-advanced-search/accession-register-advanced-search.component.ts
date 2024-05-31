@@ -2,7 +2,7 @@ import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, OnDestroy
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { OjectUtils } from 'ui-frontend-common';
+import { OjectUtils } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
 
 @Component({

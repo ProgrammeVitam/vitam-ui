@@ -43,7 +43,7 @@ import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookSearchService } from '../logbook-search.service';
 import { LogbookOperationListComponent } from './logbook-operation-list.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { TableFilterDirective } from 'ui-frontend-common';
+import { TableFilterDirective } from 'vitamui-library';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';

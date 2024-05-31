@@ -10,8 +10,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PaginatedResponse, Project, ProjectStatus, Transaction, TransactionStatus } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { PaginatedResponse, Project, ProjectStatus, Transaction, TransactionStatus } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';
 

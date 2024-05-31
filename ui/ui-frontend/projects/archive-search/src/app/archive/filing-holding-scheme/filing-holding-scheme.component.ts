@@ -40,7 +40,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   Unit,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { NodeData } from '../models/nodedata.interface';

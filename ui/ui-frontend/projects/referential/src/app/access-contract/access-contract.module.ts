@@ -45,7 +45,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 import { AccessContractCreateModule } from './access-contract-create';

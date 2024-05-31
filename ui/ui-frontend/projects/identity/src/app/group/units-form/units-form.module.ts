@@ -41,7 +41,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { UnitsFormComponent } from './units-form.component';
 
 @NgModule({

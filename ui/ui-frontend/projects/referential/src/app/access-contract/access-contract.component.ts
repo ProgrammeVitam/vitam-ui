@@ -40,7 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
-import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 

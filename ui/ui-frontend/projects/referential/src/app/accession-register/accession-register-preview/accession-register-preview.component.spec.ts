@@ -44,7 +44,7 @@ import {
   LoggerModule,
   StartupService,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';

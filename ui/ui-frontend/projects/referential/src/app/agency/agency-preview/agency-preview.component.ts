@@ -39,7 +39,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { Agency } from 'ui-frontend-common';
+import { Agency } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { AgencyService } from '../agency.service';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';

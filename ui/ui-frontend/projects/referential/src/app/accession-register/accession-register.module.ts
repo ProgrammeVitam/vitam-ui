@@ -52,7 +52,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 // tslint:disable-next-line:max-line-length

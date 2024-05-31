@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { PastisPopupOptionComponent } from './pastis-popup-option.component';

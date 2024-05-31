@@ -52,7 +52,7 @@ import {
   Unit,
   UnitType,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 

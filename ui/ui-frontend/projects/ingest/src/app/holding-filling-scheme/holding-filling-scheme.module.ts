@@ -43,7 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 
 import { UploadModule } from '../core/common/upload.module';
 import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';

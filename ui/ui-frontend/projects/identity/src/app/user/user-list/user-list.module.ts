@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';

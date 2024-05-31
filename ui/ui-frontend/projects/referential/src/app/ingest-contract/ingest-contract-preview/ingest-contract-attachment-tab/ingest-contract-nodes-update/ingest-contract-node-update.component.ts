@@ -38,7 +38,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IngestContract } from 'ui-frontend-common';
+import { IngestContract } from 'vitamui-library';
 import { FilingPlanMode } from 'vitamui-library';
 import { IngestContractService } from '../../../ingest-contract.service';
 

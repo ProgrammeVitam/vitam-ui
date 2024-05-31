@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { Group } from 'ui-frontend-common';
+import { Group } from 'vitamui-library';
 import { GroupService } from './group.service';
 
 @Injectable({

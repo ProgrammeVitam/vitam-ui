@@ -43,8 +43,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ExternalParametersService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ConfirmDialogService, ExternalParametersService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';

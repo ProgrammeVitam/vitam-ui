@@ -43,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { EditablePatternsComponent } from './editable-patterns.component';
 
 @Component({

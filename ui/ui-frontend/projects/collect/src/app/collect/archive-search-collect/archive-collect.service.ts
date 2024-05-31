@@ -37,29 +37,29 @@
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { saveAs } from 'file-saver';
-import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { saveAs } from 'file-saver-es';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContract,
   AccessContractApiService,
   ApiUnitObject,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   getUnitI18nAttribute,
-  Ontology,
+  IAccessContract,
+  IOntology,
   PagedResult,
   SearchArchiveUnitsInterface,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchResponse,
   SearchService,
+  SearchUnitApiService,
   SecurityService,
   Transaction,
   Unit,
-} from 'ui-frontend-common';
-import { SearchUnitApiService } from 'vitamui-library';
+} from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 
@@ -155,7 +155,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return title.substring(0, 218);
   }
 
-  getAccessContractById(accessContract: string): Observable<AccessContract> {
+  getAccessContractById(accessContract: string): Observable<IAccessContract> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);
@@ -300,7 +300,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
   }
 
-  getExternalOntologiesList(): Observable<Ontology[]> {
+  getExternalOntologiesList(): Observable<IOntology[]> {
     return this.transactionApiService.getExternalOntologiesList();
   }
 

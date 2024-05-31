@@ -37,17 +37,9 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  Transaction,
-  TransactionStatus,
-  WINDOW_LOCATION,
-} from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';

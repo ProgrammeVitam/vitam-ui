@@ -42,8 +42,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteModule } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
 

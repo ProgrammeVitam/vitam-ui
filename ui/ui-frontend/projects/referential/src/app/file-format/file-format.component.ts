@@ -40,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'ui-frontend-common';
+import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { FileFormat, FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';

@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, AppGuard, AuthGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { ActiveTenantGuard, AppGuard, AuthGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'vitamui-library';
 import { OntologyComponent } from './ontology.component';
 
 const routes: Route[] = [

@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseUserInfoApiService, SearchService, User, UserInfo, VitamUISnackBarService } from 'ui-frontend-common';
+import { BaseUserInfoApiService, SearchService, User, UserInfo, VitamUISnackBarService } from 'vitamui-library';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {

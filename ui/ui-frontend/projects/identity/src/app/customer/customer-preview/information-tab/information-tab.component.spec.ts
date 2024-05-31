@@ -41,8 +41,8 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY } from 'rxjs';
 import { of } from 'rxjs';
-import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';

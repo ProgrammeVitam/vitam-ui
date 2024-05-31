@@ -36,8 +36,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
+import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUISnackBar } from '../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';

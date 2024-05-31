@@ -40,7 +40,7 @@ import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Profile } from 'ui-frontend-common';
+import { AuthService, buildValidators, diff, Profile } from 'vitamui-library';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 

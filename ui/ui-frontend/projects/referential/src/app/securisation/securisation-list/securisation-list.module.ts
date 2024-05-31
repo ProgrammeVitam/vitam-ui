@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { SecurisationListComponent } from './securisation-list.component';
 

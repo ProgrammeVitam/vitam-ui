@@ -37,8 +37,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AuthService } from 'ui-frontend-common';
-import { ErrorDialogComponent } from 'ui-frontend-common';
+import { AuthService, ErrorDialogComponent } from 'vitamui-library';
 
 @Component({
   selector: 'demo-root',

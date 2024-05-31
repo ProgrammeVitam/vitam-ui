@@ -40,7 +40,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Profile, Role } from 'ui-frontend-common';
+import { AuthService, buildValidators, diff, Profile, Role } from 'vitamui-library';
 
 import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';

@@ -38,11 +38,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
-import { IngestContract } from 'ui-frontend-common';
+import { IngestContract } from 'vitamui-library';
 
 describe('IngestContractFormatTabComponent', () => {
   let component: IngestContractFormatTabComponent;

@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { BASE_URL, SearchResponse } from 'ui-frontend-common';
+import { BASE_URL, SearchResponse } from '../../app/modules';
 
 @Injectable({
   providedIn: 'root',

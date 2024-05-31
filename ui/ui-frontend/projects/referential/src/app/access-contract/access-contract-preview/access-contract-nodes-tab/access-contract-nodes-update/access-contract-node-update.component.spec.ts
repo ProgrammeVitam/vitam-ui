@@ -38,8 +38,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { AccessContractService } from '../../../access-contract.service';

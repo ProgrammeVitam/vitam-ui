@@ -42,7 +42,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule } from 'vitamui-library';
 import { SearchUnitApiService, Status } from 'vitamui-library';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
 

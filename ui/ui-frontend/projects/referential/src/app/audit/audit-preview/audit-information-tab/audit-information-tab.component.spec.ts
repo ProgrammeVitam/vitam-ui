@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditInformationTabComponent } from './audit-information-tab.component';
 
 describe('AuditInformationTabComponent', () => {

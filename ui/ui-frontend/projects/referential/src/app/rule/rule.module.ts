@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';

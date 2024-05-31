@@ -39,7 +39,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ContextPermission } from 'ui-frontend-common';
+import { ConfirmDialogService, ContextPermission } from 'vitamui-library';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
 
 @Component({

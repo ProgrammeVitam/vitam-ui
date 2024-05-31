@@ -1,4 +1,4 @@
-import { Id } from 'ui-frontend-common';
+import { Id } from '../../app/modules';
 import { FileType } from './file-type.enum';
 
 export interface Node extends Id {

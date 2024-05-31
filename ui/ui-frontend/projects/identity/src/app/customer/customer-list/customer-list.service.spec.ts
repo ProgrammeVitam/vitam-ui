@@ -38,8 +38,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ENVIRONMENT } from 'ui-frontend-common';
-import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } from 'ui-frontend-common';
+import { ENVIRONMENT } from 'vitamui-library';
+import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
 

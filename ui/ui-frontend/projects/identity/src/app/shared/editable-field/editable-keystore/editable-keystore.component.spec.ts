@@ -42,8 +42,8 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError as observableThrowError } from 'rxjs';
 
-import { AuthnRequestBindingEnum, IdentityProvider, newFile } from 'ui-frontend-common';
-import { input, VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile } from 'vitamui-library';
+import { input, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { EditableKeystoreComponent } from './editable-keystore.component';
 

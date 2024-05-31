@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { Ontology } from 'vitamui-library';
 import { OntologyService } from '../../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';

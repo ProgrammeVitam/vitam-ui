@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { Event } from 'ui-frontend-common';
+import { Event } from 'vitamui-library';
 
 @Component({
   selector: 'app-audit-information-tab',

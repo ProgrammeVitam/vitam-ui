@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractService } from '../../access-contract.service';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
 

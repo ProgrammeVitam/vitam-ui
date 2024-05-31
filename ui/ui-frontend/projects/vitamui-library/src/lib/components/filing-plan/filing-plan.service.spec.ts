@@ -3,9 +3,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
-import { BASE_URL, DescriptionLevel, FileType, UnitType } from 'ui-frontend-common';
 import { Node } from 'vitamui-library';
 import { FilingPlanService } from './filing-plan.service';
+import { BASE_URL, FileType, UnitType } from '../../../app/modules';
+import { DescriptionLevel } from '../../models/description-level.enum';
 
 describe('FilingPlanService', () => {
   let httpTestingController: HttpTestingController;

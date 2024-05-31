@@ -29,7 +29,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
-import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'ui-frontend-common';
+import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 
 @Component({

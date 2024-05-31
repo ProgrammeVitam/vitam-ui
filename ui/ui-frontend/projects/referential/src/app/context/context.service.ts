@@ -38,7 +38,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Context, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Context, SearchService, VitamUISnackBarService } from 'vitamui-library';
 
 import { ContextApiService } from '../core/api/context-api.service';
 

@@ -1,4 +1,4 @@
-import { AlertAnalytics, Application } from 'ui-frontend-common';
+import { AlertAnalytics, Application } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 
 export interface Content {

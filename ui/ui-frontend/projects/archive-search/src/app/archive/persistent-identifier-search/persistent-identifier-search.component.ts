@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'ui-frontend-common';
+import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../core/api/persistent-identifier-response-dto.interface';
 import { PERMANENT_IDENTIFIER } from '../archive-search/archive-search.component';
 import { PersistentIdentifierService } from '../persistent-identifier.service';

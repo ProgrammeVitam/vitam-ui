@@ -28,11 +28,11 @@
 import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';

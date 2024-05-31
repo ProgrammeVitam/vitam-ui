@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SearchQuery, User } from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, CriteriaSearchQuery, PageRequest, PaginatedResponse, User } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -72,7 +72,7 @@ export class UserApiService extends BaseHttpClient<User> {
     return super.patch(userPartial, headers);
   }
 
-  getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
+  getLevels(query?: CriteriaSearchQuery, headers?: HttpHeaders): Observable<string[]> {
     let params = new HttpParams();
     if (query) {
       params = params.set('criteria', JSON.stringify(query));

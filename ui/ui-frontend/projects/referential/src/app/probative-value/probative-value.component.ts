@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { Event } from 'vitamui-library';
 import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';

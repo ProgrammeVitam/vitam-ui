@@ -35,8 +35,8 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';
 

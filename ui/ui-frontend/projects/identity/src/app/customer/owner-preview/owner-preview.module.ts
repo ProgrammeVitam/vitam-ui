@@ -43,7 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';

@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, diff, OtpState, StartupService } from 'ui-frontend-common';
+import { CountryOption, CountryService, Customer, diff, OtpState, StartupService } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 
 import { CustomerService } from '../../../core/customer.service';

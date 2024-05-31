@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-frontend-common';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
@@ -49,7 +49,7 @@ export class CriteriaSearchComponent implements OnInit {
   criteriaKey: string;
 
   @Input()
-  criteriaVal: SearchCriteria;
+  criteriaVal: CriteriaSearchCriteria;
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 

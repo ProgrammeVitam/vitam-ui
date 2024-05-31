@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { SearchService } from 'ui-frontend-common';
+import { SearchService } from 'vitamui-library';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 

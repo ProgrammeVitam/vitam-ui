@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { ElevationComponent } from './elevations.component';
 
 @NgModule({

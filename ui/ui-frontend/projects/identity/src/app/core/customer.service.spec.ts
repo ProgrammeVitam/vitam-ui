@@ -41,9 +41,9 @@ import {
   LoggerModule,
   Operators,
   OtpState,
-  SearchQuery,
+  CriteriaSearchQuery,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -158,7 +158,7 @@ describe('CustomerService', () => {
     customerService.exists({ code: '015000' }).subscribe((found) => expect(found).toBeTruthy(), fail);
 
     const criterionArray: any[] = [{ key: 'code', value: '015000', operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
@@ -168,7 +168,7 @@ describe('CustomerService', () => {
     customerService.exists({ code: '123456' }).subscribe((found) => expect(found).toBeFalsy(), fail);
 
     const criterionArray: any[] = [{ key: 'code', value: '123456', operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('', { status: 204, statusText: 'No Content' });
@@ -178,7 +178,7 @@ describe('CustomerService', () => {
     customerService.exists({ domain: 'test.com' }).subscribe((found) => expect(found).toBeTruthy(), fail);
 
     const criterionArray: any[] = [{ key: 'emailDomains', value: 'test.com', operator: Operators.equalsIgnoreCase }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');
@@ -188,7 +188,7 @@ describe('CustomerService', () => {
     customerService.exists({ domain: 'test.com' }).subscribe((found) => expect(found).toBeFalsy(), fail);
 
     const criterionArray: any[] = [{ key: 'emailDomains', value: 'test.com', operator: Operators.equalsIgnoreCase }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/customers/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('', { status: 204, statusText: 'No Content' });

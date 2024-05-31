@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
-import { diff, Rule, RuleService, SecurityService, VitamuiRoles } from 'ui-frontend-common';
+import { diff, Rule, RuleService, SecurityService, VitamuiRoles } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 

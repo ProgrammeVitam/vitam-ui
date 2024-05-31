@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Option } from 'ui-frontend-common';
+import { Option } from 'vitamui-library';
 
 export const RULE_TYPES: Option[] = [
   { key: 'StorageRule', label: 'Durée d’utilité courante', info: '' },

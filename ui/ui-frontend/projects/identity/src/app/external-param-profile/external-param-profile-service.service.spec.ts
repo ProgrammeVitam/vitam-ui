@@ -36,7 +36,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, LoggerModule, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
 describe('ExternalParamProfileService', () => {

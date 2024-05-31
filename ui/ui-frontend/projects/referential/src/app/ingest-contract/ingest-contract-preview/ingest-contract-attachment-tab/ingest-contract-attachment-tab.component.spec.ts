@@ -41,7 +41,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, IngestContract, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, ExternalParameters, ExternalParametersService, IngestContract, LoggerModule } from 'vitamui-library';
 import { SearchUnitApiService } from 'vitamui-library';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 

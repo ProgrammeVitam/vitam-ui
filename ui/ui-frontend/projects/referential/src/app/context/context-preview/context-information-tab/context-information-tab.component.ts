@@ -39,7 +39,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { Context, diff, Option } from 'ui-frontend-common';
+import { Context, diff, Option } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';

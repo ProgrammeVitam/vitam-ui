@@ -47,10 +47,10 @@ import {
   Colors,
   ExternalParameters,
   ExternalParametersService,
+  FacetDetails,
   SearchService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+} from 'vitamui-library';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
 
 @Injectable({

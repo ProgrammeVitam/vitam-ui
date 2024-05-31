@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { Logger, StartupService } from 'ui-frontend-common';
+import { Logger, StartupService } from 'vitamui-library';
 
 @Component({
   selector: 'app-root',

@@ -49,7 +49,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { CreateNoticeChoiceComponent } from './create-notice-choice/create-notice-choice.component';

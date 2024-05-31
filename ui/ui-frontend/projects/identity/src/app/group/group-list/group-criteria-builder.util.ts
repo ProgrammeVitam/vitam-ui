@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { buildCriteriaFromFilters, Criterion, Operators, SearchQuery } from 'ui-frontend-common';
+import { buildCriteriaFromFilters, CriteriaSearchQuery, Criterion, Operators } from 'vitamui-library';
 
-const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }> = {
+const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | CriteriaSearchQuery> }> = {
   status: (statusList: string[]): Criterion[] => {
     if (statusList.length === 0) {
       return [];
@@ -68,6 +68,6 @@ const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array
   },
 };
 
-export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }): Array<Criterion | SearchQuery> {
+export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }): Array<Criterion | CriteriaSearchQuery> {
   return buildCriteriaFromFilters(filterMap, GROUP_FILTER_CONVERTER);
 }

@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { SecurityProfileCreateModule } from './security-profile-create';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';

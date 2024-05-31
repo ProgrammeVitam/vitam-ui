@@ -41,14 +41,14 @@ import { map, tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
   AuthUser,
+  CriteriaSearchQuery,
   Criterion,
   Operators,
   Profile,
-  SearchQuery,
   SearchService,
   User,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
@@ -91,7 +91,7 @@ export class UserService extends SearchService<User> {
   exists(email: string): Observable<any> {
     const criterionArray: Criterion[] = [];
     criterionArray.push({ key: 'email', value: email, operator: Operators.equalsIgnoreCase });
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
@@ -138,7 +138,7 @@ export class UserService extends SearchService<User> {
     return userInfo;
   }
 
-  getLevelsNoEmpty(query?: SearchQuery): Observable<string[]> {
+  getLevelsNoEmpty(query?: CriteriaSearchQuery): Observable<string[]> {
     return this.userApi.getLevels(query).pipe(map((levels) => levels.filter((l) => !!l)));
   }
 

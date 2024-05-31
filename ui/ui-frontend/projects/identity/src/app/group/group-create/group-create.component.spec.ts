@@ -36,8 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

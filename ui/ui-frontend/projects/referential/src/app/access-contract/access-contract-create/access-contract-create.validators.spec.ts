@@ -39,7 +39,7 @@ import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angul
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, Observable, of } from 'rxjs';
-import { AccessContract } from 'ui-frontend-common';
+import { AccessContract } from 'vitamui-library';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 function toObservable(r: any): Observable<any> {

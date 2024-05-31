@@ -39,7 +39,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContract, diff, Option } from 'ui-frontend-common';
+import { AccessContract, diff, Option } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';

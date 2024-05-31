@@ -45,11 +45,11 @@ import {
   CriteriaOperator,
   CriteriaValue,
   diff,
-  Ontology,
+  IOntology,
   OntologyService,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
@@ -70,7 +70,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   otherCriteriaValueEnabled = false;
   otherCriteriaValueType = 'DATE';
   selectedValueOntolonogy: any;
-  ontologies: Ontology[] = [];
+  ontologies: IOntology[] = [];
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   previousSimpleCriteriaValue: {

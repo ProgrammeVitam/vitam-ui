@@ -38,7 +38,7 @@
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { switchMap, tap } from 'rxjs/operators';
-import { Application, ApplicationApiService, Option, Profile, ProfileService, VitamUIAutocompleteComponent } from 'ui-frontend-common';
+import { Application, ApplicationApiService, Option, Profile, ProfileService, VitamUIAutocompleteComponent } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { OptionTree } from './option-tree.interface';

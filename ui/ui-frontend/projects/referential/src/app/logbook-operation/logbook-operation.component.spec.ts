@@ -42,7 +42,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'ui-frontend-common';
+import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';

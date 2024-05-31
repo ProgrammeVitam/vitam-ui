@@ -39,7 +39,7 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { AfterContentInit, Component, ContentChildren, forwardRef, Input, QueryList } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { VitamUIFieldErrorComponent } from 'ui-frontend-common';
+import { VitamUIFieldErrorComponent } from 'vitamui-library';
 /*eslint no-use-before-define: "error"*/
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

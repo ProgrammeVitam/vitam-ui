@@ -31,7 +31,7 @@ import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@a
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { BytesPipe, Logger, StartupService } from 'ui-frontend-common';
+import { BytesPipe, Logger, StartupService } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 
 declare const require: any;

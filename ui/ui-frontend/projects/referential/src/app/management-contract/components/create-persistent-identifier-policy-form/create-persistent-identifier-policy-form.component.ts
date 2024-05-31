@@ -26,7 +26,7 @@
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PersistentIdentifierPolicyTypeEnum } from 'ui-frontend-common';
+import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
 
 interface PersistentIdentifierPolicyTypeOption {

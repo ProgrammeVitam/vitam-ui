@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { FacetDetails } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
 
 @Component({

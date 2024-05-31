@@ -27,7 +27,7 @@
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
-import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'ui-frontend-common';
+import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'vitamui-library';
 import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
 import { AccessionRegistersService } from '../accession-register.service';
 

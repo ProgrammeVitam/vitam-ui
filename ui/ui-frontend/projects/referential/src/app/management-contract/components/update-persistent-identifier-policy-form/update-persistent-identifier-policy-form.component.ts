@@ -30,7 +30,7 @@ import {
   ManagementContractValidationErrors,
   ManagementContractValidators,
 } from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
-import { PersistentIdentifierPolicyTypeEnum } from 'ui-frontend-common';
+import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
 
 interface PersistentIdentifierPolicyTypeOption {
   label: string;

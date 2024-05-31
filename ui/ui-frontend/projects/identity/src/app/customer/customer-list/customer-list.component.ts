@@ -50,7 +50,7 @@ import {
   PageRequest,
   rotateAnimation,
   Tenant,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';

@@ -39,15 +39,15 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
+  CriteriaSearchQuery,
   Criterion,
   Operators,
   Profile,
   ProfileApiService,
   Role,
-  SearchQuery,
   SearchService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -73,7 +73,7 @@ export class ProfileService extends SearchService<Profile> {
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
     const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 

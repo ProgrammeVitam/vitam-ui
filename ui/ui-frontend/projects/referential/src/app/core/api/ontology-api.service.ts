@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;

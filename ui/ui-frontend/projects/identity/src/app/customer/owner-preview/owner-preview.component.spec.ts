@@ -43,8 +43,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMPTY } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, LoggerModule, VitamUISnackBarService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, ENVIRONMENT, LoggerModule, VitamUISnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';
 import { OwnerPreviewComponent } from './owner-preview.component';

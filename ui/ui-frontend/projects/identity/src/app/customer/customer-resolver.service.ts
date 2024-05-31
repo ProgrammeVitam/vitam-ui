@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { Customer } from 'ui-frontend-common';
+import { Customer } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 
 @Injectable({

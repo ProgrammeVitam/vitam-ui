@@ -50,7 +50,7 @@ import {
   Rule,
   RuleService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { TranslateService } from '@ngx-translate/core';

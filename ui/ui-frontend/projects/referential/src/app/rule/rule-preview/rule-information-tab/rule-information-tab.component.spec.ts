@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
 import { TranslateModule } from '@ngx-translate/core';
 

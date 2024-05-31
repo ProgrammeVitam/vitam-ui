@@ -39,9 +39,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory } from 'ui-frontend-common';
+import { Direction, SearchCriteriaHistory } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 

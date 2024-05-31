@@ -41,11 +41,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { FileFormat } from 'vitamui-library';
+import { FileFormat, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;

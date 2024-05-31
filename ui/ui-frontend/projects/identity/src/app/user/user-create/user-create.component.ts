@@ -52,7 +52,7 @@ import {
   StartupService,
   UserInfo,
   isRootLevel,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
 

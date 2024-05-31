@@ -39,7 +39,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { BASE_URL, ProfileService } from 'ui-frontend-common';
+import { BASE_URL, ProfileService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { UserActionUploadProfileComponent } from './upload-profile.component';

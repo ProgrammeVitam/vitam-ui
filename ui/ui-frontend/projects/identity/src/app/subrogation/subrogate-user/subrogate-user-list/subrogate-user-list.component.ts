@@ -40,6 +40,7 @@ import {
   AuthService,
   AuthUser,
   buildCriteriaFromSearch,
+  CriteriaSearchQuery,
   Criterion,
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -48,10 +49,9 @@ import {
   Operators,
   PageRequest,
   Profile,
-  SearchQuery,
   SubrogationModalService,
   SubrogationUser,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -182,7 +182,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
   private _onSearchChange(): void {
     this.searchChange.subscribe(() => {
-      const query: SearchQuery = {
+      const query: CriteriaSearchQuery = {
         criteria: [...this._getCriterionArrayToCustomer(), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
       };
 
@@ -190,7 +190,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     });
   }
 
-  private _search(query: SearchQuery): void {
+  private _search(query: CriteriaSearchQuery): void {
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT, JSON.stringify(query)));
   }
 

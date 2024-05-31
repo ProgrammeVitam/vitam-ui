@@ -36,18 +36,18 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import {
   AuthService,
   buildValidators,
   collapseAnimation,
   ConfirmDialogService,
+  CriteriaSearchQuery,
   Operators,
   Profile,
   rotateAnimation,
-  SearchQuery,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({
@@ -102,7 +102,7 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
 
     const form = this.form.getRawValue();
     const observables: Observable<Profile>[] = [];
-    const query: SearchQuery = { criteria: [{ key: 'id', value: form.profileIds, operator: Operators.in }] };
+    const query: CriteriaSearchQuery = { criteria: [{ key: 'id', value: form.profileIds, operator: Operators.in }] };
 
     this.hierarchyService.getAllByParams(query).subscribe((profiles: Profile[]) => {
       profiles.forEach((profile: Profile) => {

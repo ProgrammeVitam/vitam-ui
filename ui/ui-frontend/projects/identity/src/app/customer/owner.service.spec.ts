@@ -39,7 +39,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, Owner, VitamUISnackBarService } from 'vitamui-library';
 import { OwnerService } from './owner.service';
 
 import { TranslateService } from '@ngx-translate/core';

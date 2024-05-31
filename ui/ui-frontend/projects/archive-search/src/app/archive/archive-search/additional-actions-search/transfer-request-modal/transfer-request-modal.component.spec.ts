@@ -42,7 +42,7 @@ import {
   ObjectQualifierTypeList,
   UsageVersionEnum,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
 

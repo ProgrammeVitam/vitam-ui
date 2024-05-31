@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TenantSelectionService } from 'ui-frontend-common';
+import { TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';

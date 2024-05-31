@@ -19,7 +19,7 @@ import {
   Transaction,
   TransactionStatus,
   Workflow,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
 

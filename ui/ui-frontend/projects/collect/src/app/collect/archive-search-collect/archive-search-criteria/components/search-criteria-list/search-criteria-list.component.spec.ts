@@ -50,8 +50,8 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
-} from 'ui-frontend-common';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+} from 'vitamui-library';
+import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';

@@ -48,7 +48,7 @@ import { PastisMaterialModule } from '../../../material.module';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { EditableFieldModule, VitamUICommonModule } from 'ui-frontend-common';
+import { EditableFieldModule, VitamUICommonModule } from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
 import { PastisDialogConfirmComponent } from '../../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';

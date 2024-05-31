@@ -38,7 +38,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -49,7 +49,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerComponent } from './customer.component';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../core/customer.service';
 
 let component: CustomerComponent;

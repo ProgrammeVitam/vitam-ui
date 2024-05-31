@@ -40,7 +40,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { CriteriaOperator, CriteriaValue, InjectorModule } from 'ui-frontend-common';
+import { CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search.component';
 

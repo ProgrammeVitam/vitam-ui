@@ -40,8 +40,8 @@ import { of } from 'rxjs';
 import { Event } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { TableFilterModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
+import { TableFilterModule } from 'vitamui-library';
 
 describe('AuditListComponent', () => {
   let component: AuditListComponent;

@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import { VitamuiMissingTranslationHandler } from 'vitamui-library';
 import {
   ObjectPurgedPersistentOperationType,
   UnitPurgedPersistentOperationType,

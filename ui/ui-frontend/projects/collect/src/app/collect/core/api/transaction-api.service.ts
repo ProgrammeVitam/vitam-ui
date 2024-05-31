@@ -39,16 +39,16 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ApiUnitObject,
-  BaseHttpClient,
   BASE_URL,
-  Ontology,
+  BaseHttpClient,
+  IOntology,
   PageRequest,
   PaginatedResponse,
   SearchCriteriaDto,
   SearchResponse,
   Transaction,
   Unit,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -121,8 +121,8 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
     return this.http.get<ApiUnitObject>(this.apiUrl + '/objects/' + objectId, { headers, responseType: 'json' });
   }
 
-  getExternalOntologiesList(): Observable<Ontology[]> {
-    return this.http.get<Ontology[]>(`${this.apiUrl}/external-ontologies`);
+  getExternalOntologiesList(): Observable<IOntology[]> {
+    return this.http.get<IOntology[]>(`${this.apiUrl}/external-ontologies`);
   }
 
   selectUnitWithInheritedRules(tranasctionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {

@@ -38,7 +38,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'ui-frontend-common';
+import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 

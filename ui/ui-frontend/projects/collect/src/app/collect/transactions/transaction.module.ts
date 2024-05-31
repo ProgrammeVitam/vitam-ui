@@ -42,7 +42,7 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
 import { TransactionResolver } from './transaction-resolver.service';
 import { TransactionRoutingModule } from './transaction-routing.module';

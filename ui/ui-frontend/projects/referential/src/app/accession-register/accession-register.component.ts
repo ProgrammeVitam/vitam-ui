@@ -28,7 +28,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage } from 'ui-frontend-common';
+import { AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage } from 'vitamui-library';
 import { AccessionRegistersService } from './accession-register.service';
 
 @Component({

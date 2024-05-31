@@ -26,7 +26,7 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
-import { RegisterValueEventModel, RegisterValueEventType } from 'ui-frontend-common';
+import { RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 
 @Component({
   selector: 'app-accession-register-operation',

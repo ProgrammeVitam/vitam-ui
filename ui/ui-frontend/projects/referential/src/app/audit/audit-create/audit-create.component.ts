@@ -47,7 +47,7 @@ import {
   ExternalParametersService,
   StartupService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { FilingPlanMode } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditAction, AuditType } from '../../models/audit.interface';

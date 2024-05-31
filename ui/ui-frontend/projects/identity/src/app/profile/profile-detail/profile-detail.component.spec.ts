@@ -37,7 +37,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { EMPTY, of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
@@ -48,7 +48,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileService } from '../profile.service';
 import { ProfileDetailComponent } from './profile-detail.component';
 

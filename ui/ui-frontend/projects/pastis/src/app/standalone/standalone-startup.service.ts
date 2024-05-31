@@ -35,10 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
-// import { tap } from 'rxjs/operators';
-import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'ui-frontend-common';
-// import { SecurityApiService } from 'ui-frontend-common/app/modules/api/security-api.service';
+import { Observable, of, Subject } from 'rxjs';
+import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
 import { StandaloneThemeService } from './standalone-theme.service';
 
 const WARNING_DURATION = 2000;
@@ -62,7 +60,6 @@ export class StandaloneStartupService {
   constructor(
     private logger: Logger,
     private authService: AuthService,
-    // private securityApi: SecurityApiService,
     private themeService: StandaloneThemeService,
     @Inject(WINDOW_LOCATION) private location: any,
   ) {}

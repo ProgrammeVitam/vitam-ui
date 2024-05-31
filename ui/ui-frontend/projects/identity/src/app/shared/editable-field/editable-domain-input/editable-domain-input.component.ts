@@ -38,7 +38,7 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { EditableFieldComponent } from 'ui-frontend-common';
+import { EditableFieldComponent } from 'vitamui-library';
 /*eslint no-use-before-define: "error"*/
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

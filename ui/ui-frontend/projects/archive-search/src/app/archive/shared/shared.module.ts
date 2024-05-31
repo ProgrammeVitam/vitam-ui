@@ -38,7 +38,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ConfirmActionModule } from '../archive-search/search-criteria-list/confirm-action/confirm-action.module';
-import { VitamUISnackBarModule } from './vitamui-snack-bar';
+import { VitamUISnackBarModule } from './vitamui-snack-bar/vitamui-snack-bar.module';
 
 @NgModule({
   imports: [CommonModule, VitamUISnackBarModule, ConfirmActionModule],

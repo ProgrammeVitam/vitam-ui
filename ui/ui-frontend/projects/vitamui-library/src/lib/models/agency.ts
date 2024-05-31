@@ -1,4 +1,4 @@
-import { Id } from 'ui-frontend-common';
+import { Id } from '../../app/modules';
 
 export interface Agency extends Id {
   tenant: number;

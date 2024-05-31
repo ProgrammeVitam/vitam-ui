@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from 'ui-frontend-common';
+import { Id } from '../../app/modules';
 
 export interface Rule extends Id {
   id: string;

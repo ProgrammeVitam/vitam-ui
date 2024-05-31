@@ -41,9 +41,10 @@ import {
   Event,
   ExternalParameters,
   ExternalParametersService,
+  IEvent,
   LogbookApiService,
   VitamUISnackBarService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 
 @Component({
@@ -55,7 +56,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;
   @Input() securisation: Event;
 
-  events: Event[] = [];
+  events: IEvent[] = [];
   display = false;
 
   accessContractId: string;

@@ -41,7 +41,7 @@ import {
   SearchCriteriaTypeEnum,
   StartupService,
   Unit,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';

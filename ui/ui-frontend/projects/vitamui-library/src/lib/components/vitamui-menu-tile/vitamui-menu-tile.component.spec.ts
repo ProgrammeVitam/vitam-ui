@@ -37,8 +37,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUBROGRATION_REFRESH_RATE_MS } from 'ui-frontend-common';
 import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
+import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUBROGRATION_REFRESH_RATE_MS } from '../../../app/modules';
 
 @Directive({
   selector: '[libVitamuiCommonTooltip]',

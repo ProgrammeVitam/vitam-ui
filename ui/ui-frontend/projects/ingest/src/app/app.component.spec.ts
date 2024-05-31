@@ -43,7 +43,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { AuthService, StartupService } from 'ui-frontend-common';
+import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })

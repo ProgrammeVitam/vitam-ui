@@ -36,7 +36,7 @@
  */
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { Owner } from 'ui-frontend-common';
+import { Owner } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';

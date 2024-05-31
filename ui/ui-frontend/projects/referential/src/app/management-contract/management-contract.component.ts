@@ -29,7 +29,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'ui-frontend-common';
+import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 

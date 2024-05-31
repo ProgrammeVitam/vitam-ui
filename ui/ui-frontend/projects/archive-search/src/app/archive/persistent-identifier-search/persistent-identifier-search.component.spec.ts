@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
 

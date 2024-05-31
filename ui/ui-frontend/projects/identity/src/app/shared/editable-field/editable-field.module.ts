@@ -42,8 +42,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { LevelInputModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
+import { LevelInputModule } from 'vitamui-library';
 import { CustomParamsModule } from '../custom-params/custom-params.module';
 import { DomainsInputModule } from '../domains-input';
 import { PatternModule } from '../pattern';

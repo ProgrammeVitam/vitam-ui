@@ -36,12 +36,12 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, LoggerModule, StartupService } from 'ui-frontend-common';
+import { ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';

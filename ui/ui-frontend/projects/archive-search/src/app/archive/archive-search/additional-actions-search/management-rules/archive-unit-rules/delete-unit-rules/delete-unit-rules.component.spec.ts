@@ -47,8 +47,8 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+} from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { DeleteUnitRulesComponent } from './delete-unit-rules.component';
 

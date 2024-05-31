@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { collapseAnimation, Direction, Group, rotateAnimation } from 'ui-frontend-common';
+import { collapseAnimation, Direction, Group, rotateAnimation } from 'vitamui-library';
 import { SampleDialogComponent } from '../miscellaneous/sample-dialog/sample-dialog.component';
 
 @Component({

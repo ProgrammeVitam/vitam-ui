@@ -56,7 +56,7 @@ import {
   Unit,
   UnitType,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';

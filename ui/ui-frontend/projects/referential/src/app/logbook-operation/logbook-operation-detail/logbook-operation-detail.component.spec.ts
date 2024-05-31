@@ -42,8 +42,8 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 import { TranslateModule } from '@ngx-translate/core';

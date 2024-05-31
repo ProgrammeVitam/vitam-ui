@@ -31,7 +31,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
-import { JsonPatchDto, MultiJsonPatchDto, ArchiveUnit } from 'ui-frontend-common';
+import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

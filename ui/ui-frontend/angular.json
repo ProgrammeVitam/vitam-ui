@@ -19,25 +19,24 @@
             "main": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
             "polyfills": "projects/identity/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/identity/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -64,7 +63,7 @@
                 "projects/identity/src/favicon.ico",
                 {
                   "glob": "**/*",
-                  "input": "node_modules/ui-frontend-common/assets",
+                  "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
               ]
@@ -100,7 +99,7 @@
             "scripts": [],
             "styles": ["projects/identity/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "assets": ["projects/identity/src/assets", "projects/identity/src/favicon.ico"]
           }
@@ -131,25 +130,24 @@
             "main": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
             "polyfills": "projects/portal/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/portal/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -176,7 +174,7 @@
                 "projects/portal/src/favicon.ico",
                 {
                   "glob": "**/*",
-                  "input": "node_modules/ui-frontend-common/assets",
+                  "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
               ]
@@ -206,7 +204,7 @@
             "scripts": [],
             "styles": ["projects/portal/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "assets": ["projects/portal/src/assets", "projects/portal/src/favicon.ico"]
           }
@@ -240,8 +238,18 @@
             "polyfills": "projects/demo/src/polyfills.ts",
             "tsConfig": "projects/demo/tsconfig.app.json",
             "aot": false,
-            "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
+            "assets": [
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/vitamui-library/src/assets",
+                "output": "/assets"
+              }],
             "styles": ["projects/demo/src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/vitamui-library/src/sass"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -252,7 +260,7 @@
                   "with": "projects/demo/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -261,11 +269,12 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
+              "assets": [
+                "projects/demo/src/favicon.ico",
                 {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "13mb"
+                  "glob": "**/*",
+                  "input": "projects/vitamui-library/src/assets",
+                  "output": "/assets"
                 }
               ]
             }
@@ -337,11 +346,14 @@
               "projects/referential/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/referential/src/sass/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/vitamui-library/src/sass"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -354,7 +366,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/referential/ngsw-config.json",
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -363,13 +375,6 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "13mb"
-                }
-              ],
               "assets": [
                 {
                   "glob": "**/*",
@@ -380,7 +385,7 @@
                 "projects/referential/src/favicon.ico",
                 {
                   "glob": "**/*",
-                  "input": "node_modules/ui-frontend-common/assets",
+                  "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
               ]
@@ -415,6 +420,9 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": ["projects/referential/src/favicon.ico", "projects/referential/src/assets"],
             "styles": ["projects/referential/src/sass/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/vitamui-library/src/sass"]
+            },
             "scripts": []
           }
         },
@@ -496,25 +504,24 @@
             "main": "projects/design-system/src/main.ts",
             "tsConfig": "projects/design-system/tsconfig.app.json",
             "polyfills": "projects/design-system/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/design-system/src/assets",
               "projects/design-system/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/design-system/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -557,7 +564,7 @@
             "scripts": [],
             "styles": ["projects/design-system/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "assets": ["projects/design-system/src/assets", "projects/design-system/src/favicon.ico"]
           }
@@ -593,19 +600,19 @@
               "projects/ingest/src/assets",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/ingest/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -654,7 +661,7 @@
             "assets": ["projects/ingest/src/favicon.ico", "projects/ingest/src/assets"],
             "styles": ["projects/ingest/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           }
@@ -684,25 +691,24 @@
             "main": "projects/archive-search/src/main.ts",
             "tsConfig": "projects/archive-search/tsconfig.app.json",
             "polyfills": "projects/archive-search/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/archive-search/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -751,7 +757,7 @@
             "scripts": [],
             "styles": ["projects/archive-search/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "assets": ["projects/archive-search/src/assets", "projects/archive-search/src/favicon.ico"]
           }
@@ -781,25 +787,24 @@
             "main": "projects/collect/src/main.ts",
             "tsConfig": "projects/collect/tsconfig.app.json",
             "polyfills": "projects/collect/src/polyfills.ts",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/collect/src/assets",
               "projects/collect/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/collect/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -848,7 +853,7 @@
             "scripts": [],
             "styles": ["projects/collect/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "assets": ["projects/collect/src/assets", "projects/collect/src/favicon.ico"]
           }
@@ -879,19 +884,18 @@
             "main": "projects/pastis/src/main.ts",
             "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.app.json",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/pastis/src/assets",
               "projects/pastis/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "node_modules/ui-frontend-common/assets",
+                "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
               }
             ],
             "styles": ["projects/pastis/src/sass/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/commons/src/sass"]
+              "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": []
           },
@@ -905,7 +909,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -913,19 +917,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "aot": true,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "50mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "180kb",
-                  "maximumError": "180kb"
-                }
-              ]
+              "buildOptimizer": true
             },
             "standalone": {
               "fileReplacements": [
@@ -944,14 +936,7 @@
               "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": false,
-              "aot": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "17mb"
-                }
-              ]
+              "aot": true
             }
           }
         },
@@ -988,6 +973,9 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": ["projects/pastis/src/favicon.ico", "projects/pastis/src/assets"],
             "styles": ["projects/pastis/src/sass/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/vitamui-library/src/sass"]
+            },
             "scripts": []
           }
         },

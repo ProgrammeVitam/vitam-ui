@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Event, ExternalParamProfile } from 'ui-frontend-common';
+import { Event, ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
 

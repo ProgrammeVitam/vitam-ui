@@ -33,8 +33,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilterModule } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterListComponent } from './accession-register-list.component';
 

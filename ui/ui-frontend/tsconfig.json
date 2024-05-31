@@ -29,4 +29,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
   },
+  // FIXME: uncomment to improve code quality
+//  "angularCompilerOptions": {
+//    "fullTemplateTypeCheck": true,
+//    "strictInjectionParameters": true
+//  }
 }

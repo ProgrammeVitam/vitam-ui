@@ -40,9 +40,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
-import { AuthService, Profile } from 'ui-frontend-common';
-import { CountryService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthService, Profile } from 'vitamui-library';
+import { CountryService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';

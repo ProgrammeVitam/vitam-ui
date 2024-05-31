@@ -52,7 +52,7 @@ import {
   LoggerModule,
   VitamUICommonModule,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppGuardDemoComponent } from './demo/app-guard-demo/app-guard-demo.component';

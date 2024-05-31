@@ -30,7 +30,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;

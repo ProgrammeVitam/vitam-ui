@@ -40,6 +40,7 @@ import { debounceTime, startWith } from 'rxjs/operators';
 import {
   ApplicationId,
   buildCriteriaFromSearch,
+  CriteriaSearchQuery,
   Criterion,
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -47,8 +48,7 @@ import {
   Operators,
   PageRequest,
   Profile,
-  SearchQuery,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ProfileService } from '../profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -119,7 +119,7 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
 
   search() {
     const defaultCriterion: Criterion = { key: 'applicationName', value: ApplicationId.USERS_APP, operator: Operators.equals };
-    const query: SearchQuery = {
+    const query: CriteriaSearchQuery = {
       criteria: [defaultCriterion, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
     };
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));

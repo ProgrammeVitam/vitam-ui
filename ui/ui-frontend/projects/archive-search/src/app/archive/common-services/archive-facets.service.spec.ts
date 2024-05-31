@@ -36,7 +36,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ResultFacet, ResultFacetList } from 'ui-frontend-common';
+import { ResultFacet, ResultFacetList } from 'vitamui-library';
 import { ArchiveFacetsService } from './archive-facets.service';
 
 describe('ArchiveFacetsService', () => {

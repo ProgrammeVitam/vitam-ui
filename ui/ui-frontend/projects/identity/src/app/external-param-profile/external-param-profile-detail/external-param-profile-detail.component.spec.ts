@@ -42,7 +42,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
 import { ExternalParamProfileService } from '../external-param-profile.service';

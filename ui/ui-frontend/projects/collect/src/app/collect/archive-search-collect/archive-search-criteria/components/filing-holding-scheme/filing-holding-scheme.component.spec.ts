@@ -35,7 +35,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment.prod';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

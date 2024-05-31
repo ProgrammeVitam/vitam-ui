@@ -17,40 +17,21 @@ jobs:
           node-version: '14.15.1'
           cache: 'npm'
           cache-dependency-path: |
-            ui/ui-frontend-common/package-lock.json
             ui/ui-frontend/package-lock.json
       - name: Install correct version of NPM (the one shipped with node is not the expected one)
         run: npm install -g npm@7.17.0
-      - name: Install ui-frontend-common dependencies
-        working-directory: ui/ui-frontend-common
-        run: npm install
-      - name: Build ui-frontend-common
-        working-directory: ui/ui-frontend-common
-        run: npm run build:prod
-      - name: Package ui-frontend-common
-        working-directory: ui/ui-frontend-common
-        run: npm run packagr:tar
-      - name: Run tests on ui-frontend-common
-        working-directory: ui/ui-frontend-common
-        run: npm run test:conf-ci
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
-        run: npm install ui-frontend-common --legacy-peer-deps --loglevel warn
+        run: npm ci
       - name: Build vitamui-library
         working-directory: ui/ui-frontend
         run: npm run build:vitamui-library
-      - name: Copy vitamui-library SCSS
-        working-directory: ui/ui-frontend
-        run: npm run copy-scss:vitamui-library
       - name: Build ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run build:allModules
       - name: Run tests on ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run ci:test
-      - name: Package ui-frontend apps
-        working-directory: ui/ui-frontend
-        run: npm run package:all
       - name: Save JUnit report as artifact
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # always run even if the previous step fails
@@ -87,7 +68,6 @@ jobs:
               --projects '!cots/vitamui-mongo-express'
               --projects '!ui'
               --projects '!ui/ui-frontend'
-              --projects '!ui/ui-frontend-common'
               verify
         env:
           SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}

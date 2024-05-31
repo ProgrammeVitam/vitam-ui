@@ -44,8 +44,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
 

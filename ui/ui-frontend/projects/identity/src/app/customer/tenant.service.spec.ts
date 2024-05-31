@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, Operators, Owner, SearchQuery, Tenant, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, Operators, Owner, CriteriaSearchQuery, Tenant, VitamUISnackBarService } from 'vitamui-library';
 
 import { EMPTY } from 'rxjs';
 
@@ -158,7 +158,7 @@ describe('TenantService', () => {
     tenantService.getTenantsByCustomerIds(['42']).subscribe((response) => expect(response).toEqual(expectedTenants), fail);
 
     const criterionArray: any[] = [{ key: 'customerId', value: ['42'], operator: Operators.in }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/tenants?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('GET');
     req.flush(expectedTenants);
@@ -201,7 +201,7 @@ describe('TenantService', () => {
     }, fail);
 
     const criterionArray: any[] = [{ key: 'name', value: 'tenantName', operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/tenants/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
     req.flush('');

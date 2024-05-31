@@ -27,7 +27,7 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'ui-frontend-common';
+import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 
 @Component({
   selector: 'app-accession-register-operations-list',

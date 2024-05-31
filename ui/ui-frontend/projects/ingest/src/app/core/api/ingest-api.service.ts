@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@an
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
 const tenantKey = 'X-Tenant-Id';

@@ -29,7 +29,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { ManagementContract, StorageStrategy, diff } from 'ui-frontend-common';
+import { ManagementContract, StorageStrategy, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { ManagementContractService } from '../../management-contract.service';
 

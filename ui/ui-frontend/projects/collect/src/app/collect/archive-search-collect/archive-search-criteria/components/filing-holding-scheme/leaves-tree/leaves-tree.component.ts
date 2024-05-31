@@ -39,7 +39,7 @@ import {
   ResultFacet,
   SearchCriteriaDto,
   UnitType,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
 import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';

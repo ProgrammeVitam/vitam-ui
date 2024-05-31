@@ -31,7 +31,7 @@ import {
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
   PersistentIdentifierUsage,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ManagementContractValidators } from '../validators/management-contract-validators';
 import { Converter } from './converter';
 

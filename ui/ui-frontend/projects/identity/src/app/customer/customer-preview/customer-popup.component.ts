@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer } from 'ui-frontend-common';
+import { Customer } from 'vitamui-library';
 
 @Component({
   selector: 'app-customer-popup',

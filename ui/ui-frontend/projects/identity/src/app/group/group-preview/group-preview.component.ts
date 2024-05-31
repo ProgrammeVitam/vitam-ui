@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Group, isLevelAllowed, StartupService } from 'ui-frontend-common';
+import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 

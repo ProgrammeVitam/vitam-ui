@@ -32,8 +32,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
 
 describe('ManagementContractPreviewComponent', () => {

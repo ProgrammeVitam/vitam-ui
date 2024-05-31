@@ -42,7 +42,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
 import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';

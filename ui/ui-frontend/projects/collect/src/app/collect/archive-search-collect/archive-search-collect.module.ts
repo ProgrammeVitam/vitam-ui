@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -76,6 +76,7 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 
 @NgModule({
   imports: [
@@ -92,6 +93,7 @@ import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-un
     MatDialogModule,
     ConfirmActionModule,
     MatTreeModule,
+    VitamUISnackBarModule,
   ],
   declarations: [
     AccessRuleSearchComponent,

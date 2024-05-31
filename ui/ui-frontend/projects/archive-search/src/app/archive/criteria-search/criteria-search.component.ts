@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'ui-frontend-common';
+import { CriteriaValue, CriteriaSearchCriteria, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
@@ -13,7 +13,7 @@ export class CriteriaSearchComponent implements OnInit {
   criteriaKey: string;
 
   @Input()
-  criteriaVal: SearchCriteria;
+  criteriaVal: CriteriaSearchCriteria;
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 

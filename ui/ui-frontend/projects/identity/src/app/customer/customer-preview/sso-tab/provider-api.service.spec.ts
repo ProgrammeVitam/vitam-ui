@@ -37,7 +37,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { BASE_URL } from 'ui-frontend-common';
+import { BASE_URL } from 'vitamui-library';
 import { ProviderApiService } from './provider-api.service';
 
 describe('ProviderApiService', () => {

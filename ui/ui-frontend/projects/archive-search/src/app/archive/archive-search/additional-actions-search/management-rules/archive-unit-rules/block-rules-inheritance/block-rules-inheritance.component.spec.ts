@@ -37,8 +37,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { BlockRulesInheritanceComponent } from './block-rules-inheritance.component';
 

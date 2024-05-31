@@ -16,9 +16,6 @@ jobs:
       - name: Install Prettier
         working-directory: ui/ui-frontend
         run: npm i -g prettier@$(jq -r '.devDependencies.prettier' package.json)
-      - name: Lint ui-frontend-common
-        working-directory: ui/ui-frontend-common
-        run: npm run prettier:ci
       - name: Lint ui-frontend
         working-directory: ui/ui-frontend
         run: npm run prettier:ci

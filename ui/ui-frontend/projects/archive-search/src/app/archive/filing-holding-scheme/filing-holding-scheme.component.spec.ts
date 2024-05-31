@@ -33,7 +33,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveApiService } from '../../core/api/archive-api.service';

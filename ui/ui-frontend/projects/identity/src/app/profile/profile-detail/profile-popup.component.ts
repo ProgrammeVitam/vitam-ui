@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Profile } from 'ui-frontend-common';
+import { Profile } from 'vitamui-library';
 
 @Component({
   selector: 'app-profile-popup',

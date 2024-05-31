@@ -37,7 +37,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
-import { ApplicationId } from 'ui-frontend-common';
+import { ApplicationId } from 'vitamui-library';
 import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';

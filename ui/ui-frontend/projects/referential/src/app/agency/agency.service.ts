@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Agency, DownloadUtils, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { Agency, DownloadUtils, SearchService, VitamUISnackBarService } from 'vitamui-library';
 
 import { AgencyApiService } from '../core/api/agency-api.service';
 

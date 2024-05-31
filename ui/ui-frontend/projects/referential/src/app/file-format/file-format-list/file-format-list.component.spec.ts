@@ -39,7 +39,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'ui-frontend-common';
+import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
 

@@ -6,7 +6,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import { BASE_URL, VitamuiMissingTranslationHandler } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {

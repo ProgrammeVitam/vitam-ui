@@ -42,7 +42,7 @@ import {
   PagedResult,
   ResultFacet,
   UnitType,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';

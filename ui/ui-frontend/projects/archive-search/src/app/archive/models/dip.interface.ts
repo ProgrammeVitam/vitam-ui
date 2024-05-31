@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { ObjectQualifierTypeType, SearchCriteriaEltDto } from 'ui-frontend-common';
+import { ObjectQualifierTypeType, SearchCriteriaEltDto } from 'vitamui-library';
 
 type DIPSedaVersion = '2.1' | '2.2';
 

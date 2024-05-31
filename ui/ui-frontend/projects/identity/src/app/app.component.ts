@@ -36,7 +36,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { StartupService } from 'ui-frontend-common';
+import { StartupService } from 'vitamui-library';
 
 @Component({
   selector: 'app-root',

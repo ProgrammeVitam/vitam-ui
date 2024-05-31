@@ -39,7 +39,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadUtils, GlobalEventService, Group, SidenavPage, VitamUISnackBarService } from 'ui-frontend-common';
+import { DownloadUtils, GlobalEventService, Group, SidenavPage, VitamUISnackBarService } from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';

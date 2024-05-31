@@ -73,7 +73,7 @@ Bellow, an example to manage code format for Visual studio code using `settings.
 
 Go to [icomoon.io](https://icomoon.io/app/#/select).
 
-Click on `Import icons` and select the `icomoon-selection.json` file located in the `ui/ui-frontend-common/icomoon-selection.json` folder. And then, click on `Yes` when asked if you would you like to load all the settings stored in your selection file.
+Click on `Import icons` and select the `icomoon-selection.json` file located in the `ui/ui-frontend/projects/vitamui-library/icomoon-selection.json` folder. And then, click on `Yes` when asked if you would you like to load all the settings stored in your selection file.
 
 A `vitamui-icon` icon set should appear on the screen. From here you can select/deselect icons, rename, delete or add new icons.
 
@@ -82,13 +82,12 @@ Drag and drop your icon that you want to add, then select them and remove the co
 Once you made the desired modifications, you can generate the font by clicking `Generate Font` at the bottom right corner of the screen. It will show a preview of the icons. Click again at the bottom right of the screen, on the `Download` button.
 
 Automatic Method :
-Go to commons project's directory: `cd ui/ui-frontend-common`
-Run the import script: `./import-icon.sh path/to/exported/icomoon-folder`
+Run the import script: `./tools/import-icon.sh path/to/exported/icomoon-folder` with zip file (or unzipped directory) in parameter
 
 Manual Method :
 Now extract the archive you just downloaded and copy the content of the `fonts` folder and put it in the `src/sass/icons/fonts` folder of the project.
 
-Update the `icomoon-selection.json` file : copy the `selection.json` file from the archive and rename it to replace the `icomoon-selection.json` file in the `ui/ui-frontend-common` folder of this project.
+Update the `icomoon-selection.json` file : copy the `selection.json` file from the archive and rename it to replace the `icomoon-selection.json` file in the `ui/ui-frontend/projects/vitamui-library` folder of this project.
 
 You also need to update the `vitamui-icons.css` file. Open the `style.css` from your downloaded archive and copy everything from line `27` to the end of the file. Now open `src/sass/icons/vitamui-icons.css` and replace the same portion of code.
 

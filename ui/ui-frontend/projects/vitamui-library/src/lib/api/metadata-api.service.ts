@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../../app/modules';
 
-import { BASE_URL } from 'ui-frontend-common';
 import { Metadata } from '../models/metadata.interface';
 
 @Injectable({

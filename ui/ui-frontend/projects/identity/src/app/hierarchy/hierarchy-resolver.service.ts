@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { Profile } from 'ui-frontend-common';
+import { Profile } from 'vitamui-library';
 import { HierarchyService } from './hierarchy.service';
 
 @Injectable({

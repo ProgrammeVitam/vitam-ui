@@ -48,7 +48,7 @@ import {
   SearchCriteriaEltDto,
   StartupService,
   UsageVersionEnum,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import * as uuid from 'uuid';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';

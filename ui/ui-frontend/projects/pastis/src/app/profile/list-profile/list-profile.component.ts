@@ -42,7 +42,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Subscription } from 'rxjs';
-import { Direction, GlobalEventService, SidenavPage, StartupService } from 'ui-frontend-common';
+import { Direction, GlobalEventService, SidenavPage, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { NoticeService } from '../../core/services/notice.service';

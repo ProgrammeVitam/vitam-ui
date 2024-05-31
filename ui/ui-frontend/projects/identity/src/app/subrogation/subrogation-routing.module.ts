@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { VitamUICustomerSelectComponent } from 'ui-frontend-common';
+import { VitamUICustomerSelectComponent } from 'vitamui-library';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationResolver } from './subrogation-resolver.service';
 

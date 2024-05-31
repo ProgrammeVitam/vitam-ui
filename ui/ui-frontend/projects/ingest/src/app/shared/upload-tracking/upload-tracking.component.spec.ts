@@ -42,7 +42,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { LoggerModule } from 'ui-frontend-common';
+import { LoggerModule } from 'vitamui-library';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
 import { UploadTrackingComponent } from './upload-tracking.component';

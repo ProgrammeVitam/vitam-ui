@@ -42,8 +42,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, LevelInputModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { AuthService, ConfirmDialogService, LevelInputModule } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
 

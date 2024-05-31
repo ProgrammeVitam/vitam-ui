@@ -49,7 +49,7 @@ import {
   Option,
   SearchResponse,
   SigningRoleType,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 

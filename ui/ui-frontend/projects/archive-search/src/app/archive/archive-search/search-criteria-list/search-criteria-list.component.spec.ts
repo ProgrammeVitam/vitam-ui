@@ -49,10 +49,10 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 

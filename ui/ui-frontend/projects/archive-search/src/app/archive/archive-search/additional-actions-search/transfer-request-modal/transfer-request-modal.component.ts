@@ -37,7 +37,7 @@ import {
   SearchCriteriaEltDto,
   StartupService,
   UsageVersionEnum,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
 

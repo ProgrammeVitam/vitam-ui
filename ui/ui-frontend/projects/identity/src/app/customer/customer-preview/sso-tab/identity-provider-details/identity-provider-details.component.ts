@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'vitamui-library';
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
@@ -234,7 +234,7 @@ export class IdentityProviderDetailsComponent {
   }
 
   /**
-   * The ui-frontend-common diff method causes problem with the customparams attribute, because it's a
+   * The diff method from diff.util.ts causes problem with the customparams attribute, because it's a
    * recursive method. this method will compare the json keys and it'll do the same for inner json.
    * in our case, we need to do only first level comparaison
    */

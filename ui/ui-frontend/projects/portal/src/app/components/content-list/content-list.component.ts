@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
-import { Category } from 'ui-frontend-common';
+import { Category } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';
 

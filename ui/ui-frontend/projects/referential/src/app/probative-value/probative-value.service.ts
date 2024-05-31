@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { SearchService, VitamUISnackBarService } from 'vitamui-library';
 import { Event } from 'vitamui-library';
 import { OperationApiService } from '../core/api/operation-api.service';
 

@@ -46,7 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { SecurisationCheckTabComponent } from './securisation-check-tab/securisation-check-tab.component';
 import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';

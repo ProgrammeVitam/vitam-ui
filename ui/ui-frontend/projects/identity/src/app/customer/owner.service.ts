@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, Owner, SearchQuery, VitamUISnackBarService } from 'ui-frontend-common';
+import { CriteriaSearchQuery, Criterion, Operators, Owner, VitamUISnackBarService } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
@@ -78,7 +78,7 @@ export class OwnerService {
     const criterionArray = [];
     const criterionCode: Criterion = { key: 'code', value: code, operator: Operators.equals };
     criterionArray.push(criterionCode);
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.ownerApi.checkExistsByParam(params);

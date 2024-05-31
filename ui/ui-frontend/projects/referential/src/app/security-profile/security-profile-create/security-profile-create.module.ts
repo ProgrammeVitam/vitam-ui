@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
 import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';

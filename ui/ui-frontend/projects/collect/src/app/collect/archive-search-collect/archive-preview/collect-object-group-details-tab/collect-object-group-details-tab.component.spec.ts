@@ -49,7 +49,7 @@ import {
   UnitType,
   VersionWithQualifierDto,
   WINDOW_LOCATION,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
 

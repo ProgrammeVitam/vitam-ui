@@ -40,9 +40,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ENVIRONMENT } from 'ui-frontend-common';
-import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ENVIRONMENT } from 'vitamui-library';
+import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { Component } from '@angular/core';

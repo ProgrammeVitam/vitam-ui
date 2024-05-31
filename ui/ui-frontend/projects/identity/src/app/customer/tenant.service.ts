@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, SearchQuery, Tenant, VitamUISnackBarService } from 'ui-frontend-common';
+import { Criterion, Operators, CriteriaSearchQuery, Tenant, VitamUISnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -65,7 +65,7 @@ export class TenantService {
   getTenantsByCustomerIds(customerIds: string[]) {
     const criterionArray: any[] = [];
     criterionArray.push({ key: 'customerId', value: customerIds, operator: Operators.in });
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const params = new HttpParams().set('criteria', JSON.stringify(query));
 
     return this.tenantApi.getAllByParams(params);
@@ -119,7 +119,7 @@ export class TenantService {
     const criterionArray = [];
     const criterionCode: Criterion = { key: 'name', value: name, operator: Operators.equals };
     criterionArray.push(criterionCode);
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.tenantApi.checkExistsByParam(params);

@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Owner, Tenant } from 'ui-frontend-common';
+import { Owner, Tenant } from 'vitamui-library';
 import { OwnerService } from '../owner.service';
 
 @Component({

@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SubrogateUserComponent } from './subrogate-user.component';
 
 describe('SubrogateUserComponent', () => {

@@ -37,7 +37,7 @@
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { ConfirmDialogService, Group } from 'ui-frontend-common';
+import { ConfirmDialogService, Group } from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';

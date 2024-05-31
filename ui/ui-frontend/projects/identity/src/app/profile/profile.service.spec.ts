@@ -38,7 +38,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Profile, VitamUISnackBarService } from 'ui-frontend-common';
+import { BASE_URL, Profile, VitamUISnackBarService } from 'vitamui-library';
 import { ProfileService } from './profile.service';
 
 describe('ProfileService', () => {

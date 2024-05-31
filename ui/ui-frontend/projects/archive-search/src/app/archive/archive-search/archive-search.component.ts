@@ -56,7 +56,7 @@ import {
   Logger,
   ORPHANS_NODE_ID,
   PagedResult,
-  SearchCriteria,
+  CriteriaSearchCriteria,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -69,7 +69,7 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -117,7 +117,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   @Output() archiveUnitClick = new EventEmitter<any>();
 
   tenantIdentifier: number;
-  searchCriterias: Map<string, SearchCriteria>;
+  searchCriterias: Map<string, CriteriaSearchCriteria>;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<string>();
 
@@ -678,7 +678,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   mapSearchCriteriaHistory() {
     let searchCriteriaHistoryObject: SearchCriteriaHistory;
     const criteriaListObject: SearchCriteriaEltements[] = [];
-    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+    this.searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       const strValues: CriteriaValue[] = [];
       criteria.values.forEach((elt) => {
         strValues.push(elt.value);

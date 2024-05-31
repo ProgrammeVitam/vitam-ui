@@ -36,7 +36,7 @@
  */
 import { Observable, Subject, zip } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService, VitamUISnackBarService } from 'ui-frontend-common';
+import { CriteriaSearchQuery, Criterion, Customer, Logo, Operators, ThemeService, VitamUISnackBarService } from 'vitamui-library';
 
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -76,7 +76,7 @@ export class CustomerService {
     if (properties.domain) {
       criterionArray.push({ key: 'emailDomains', value: properties.domain, operator: Operators.equalsIgnoreCase });
     }
-    const query: SearchQuery = { criteria: criterionArray };
+    const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
@@ -132,13 +132,10 @@ export class CustomerService {
           switch (type) {
             case AttachmentType.Header:
               return this.themeService.defaultTheme.headerUrl;
-              break;
             case AttachmentType.Footer:
               return this.themeService.defaultTheme.footerUrl;
-              break;
             case AttachmentType.Portal:
               return this.themeService.defaultTheme.portalUrl;
-              break;
           }
           return null;
         }

@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, SidenavPage } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 import { FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';

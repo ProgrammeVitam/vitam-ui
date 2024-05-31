@@ -45,8 +45,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Customer, OtpState, Owner, Tenant } from 'ui-frontend-common';
-import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { Customer, OtpState, Owner, Tenant } from 'vitamui-library';
+import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';

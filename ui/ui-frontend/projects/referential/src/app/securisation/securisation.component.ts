@@ -38,7 +38,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { Event } from 'vitamui-library';
 
 import * as moment from 'moment';

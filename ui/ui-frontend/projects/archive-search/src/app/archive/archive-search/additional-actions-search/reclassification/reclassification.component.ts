@@ -33,7 +33,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { intersection } from 'lodash';
+import { intersection } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
@@ -45,7 +45,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   StartupService,
-} from 'ui-frontend-common';
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import {

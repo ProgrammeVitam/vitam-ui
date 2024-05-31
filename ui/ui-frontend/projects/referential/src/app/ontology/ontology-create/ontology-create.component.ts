@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'ui-frontend-common';
+import { ConfirmDialogService, Option } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 

@@ -39,7 +39,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import { Customer, DownloadUtils, IdentityProvider } from 'ui-frontend-common';
+import { Customer, DownloadUtils, IdentityProvider } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';

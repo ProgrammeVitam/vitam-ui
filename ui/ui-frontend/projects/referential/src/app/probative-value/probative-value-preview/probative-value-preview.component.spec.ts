@@ -4,7 +4,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';

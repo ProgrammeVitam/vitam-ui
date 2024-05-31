@@ -27,7 +27,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon } from 'ui-frontend-common';
+import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon } from 'vitamui-library';
 
 @Component({
   selector: 'app-classification-tree',

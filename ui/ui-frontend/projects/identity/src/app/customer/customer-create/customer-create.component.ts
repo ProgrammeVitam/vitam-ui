@@ -40,7 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'ui-frontend-common';
+import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';

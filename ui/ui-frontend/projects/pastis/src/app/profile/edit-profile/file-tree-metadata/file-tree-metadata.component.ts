@@ -27,8 +27,7 @@
  *
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { OnDestroy, OnInit } from '@angular/core';
-import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
@@ -36,7 +35,7 @@ import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
-import { StartupService } from 'ui-frontend-common';
+import { StartupService } from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ProfileService } from '../../../core/services/profile.service';

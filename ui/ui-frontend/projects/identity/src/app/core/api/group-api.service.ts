@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BaseHttpClient, BASE_URL, Group, PageRequest, PaginatedResponse, SearchQuery } from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, CriteriaSearchQuery, Group, PageRequest, PaginatedResponse } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +76,7 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.patch(groupPartial, headers);
   }
 
-  getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
+  getLevels(query?: CriteriaSearchQuery, headers?: HttpHeaders): Observable<string[]> {
     let params = new HttpParams();
     if (query) {
       params = params.set('criteria', JSON.stringify(query));

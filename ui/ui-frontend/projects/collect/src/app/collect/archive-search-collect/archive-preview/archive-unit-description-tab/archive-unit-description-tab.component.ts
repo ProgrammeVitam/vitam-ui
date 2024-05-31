@@ -3,9 +3,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch } from 'ui-frontend-common';
-import { EditObject } from 'ui-frontend-common/app/modules/object-editor/models/edit-object.model';
-import { SpinnerOverlayService } from 'vitamui-library';
+import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, SpinnerOverlayService } from 'vitamui-library';
+import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({

@@ -40,7 +40,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService } from 'ui-frontend-common';
+import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService } from 'vitamui-library';
 import { AccessContractService } from '../access-contract/access-contract.service';
 import { AdminDslService } from './admin-dsl.service';
 

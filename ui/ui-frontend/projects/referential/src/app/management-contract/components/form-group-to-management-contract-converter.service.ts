@@ -26,7 +26,7 @@
  */
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage, VersionRetentionPolicy } from 'ui-frontend-common';
+import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage, VersionRetentionPolicy } from 'vitamui-library';
 import { Converter } from './converter';
 
 @Injectable({

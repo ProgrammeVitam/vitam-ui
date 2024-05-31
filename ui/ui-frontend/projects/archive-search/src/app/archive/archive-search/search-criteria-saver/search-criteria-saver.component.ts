@@ -41,9 +41,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Direction, SearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'ui-frontend-common';
+import { ConfirmDialogService, Direction, CriteriaSearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   searchCriteriaForm: FormGroup;
   criteria: string;
   searchCriteriaHistory: SearchCriteriaHistory;
-  searchCriterias: Map<string, SearchCriteria>;
+  searchCriterias: Map<string, CriteriaSearchCriteria>;
   nbCriterias = 0;
   nameControl: string;
   ToUpdate = true;
@@ -253,7 +253,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
    * @param searchCriteriaMap The search criteria map.
    * @returns A list search criteria values of display.
    */
-  private computeSearchCriterias(searchCriteriaMap: Map<string, SearchCriteria>): DisplaySearchCriteria[] {
+  private computeSearchCriterias(searchCriteriaMap: Map<string, CriteriaSearchCriteria>): DisplaySearchCriteria[] {
     if (!searchCriteriaMap) {
       return [];
     }

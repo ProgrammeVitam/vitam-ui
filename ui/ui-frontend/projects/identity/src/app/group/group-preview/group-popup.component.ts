@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Group } from 'ui-frontend-common';
+import { Group } from 'vitamui-library';
 
 @Component({
   selector: 'app-group-popup',

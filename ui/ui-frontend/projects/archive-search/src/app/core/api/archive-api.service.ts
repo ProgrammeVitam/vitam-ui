@@ -40,18 +40,19 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
   ApiUnitObject,
+  ArchiveUnit,
   BASE_URL,
   BaseHttpClient,
-  Ontology,
+  IOntology,
+  JsonPatchDto,
+  MultiJsonPatchDto,
   PageRequest,
   PaginatedResponse,
   SearchCriteriaDto,
   SearchCriteriaHistory,
   SearchResponse,
   Unit,
-} from 'ui-frontend-common';
-import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive-unit/models/archive-unit';
-import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive-unit/models/json-patch';
+} from 'vitamui-library';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
@@ -189,12 +190,12 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getExternalOntologiesList(): Observable<Ontology[]> {
-    return this.http.get<Ontology[]>(`${this.apiUrl}/external-ontologies`);
+  getExternalOntologiesList(): Observable<IOntology[]> {
+    return this.http.get<IOntology[]>(`${this.apiUrl}/external-ontologies`);
   }
 
-  getInternalOntologiesList(): Observable<Ontology[]> {
-    return this.http.get<Ontology[]>(`${this.apiUrl}/internal-ontologies`);
+  getInternalOntologiesList(): Observable<IOntology[]> {
+    return this.http.get<IOntology[]>(`${this.apiUrl}/internal-ontologies`);
   }
 
   /**

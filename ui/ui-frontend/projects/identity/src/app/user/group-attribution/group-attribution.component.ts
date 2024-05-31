@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Group, User } from 'ui-frontend-common';
+import { Group, User } from 'vitamui-library';
 
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';

@@ -41,7 +41,7 @@ import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/t
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { PatternComponent } from './pattern.component';
 
