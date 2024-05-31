@@ -38,19 +38,28 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.standalone;
 
+import fr.gouv.vitamui.pastis.standalone.config.PastisConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.event.EventListener;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @SpringBootApplication
 public class ApiPastisStandaloneApplication extends SpringBootServletInitializer {
+
+    private final PastisConfiguration pastisConfiguration;
+
+    @Autowired
+    public ApiPastisStandaloneApplication(final PastisConfiguration pastisConfiguration) {
+        this.pastisConfiguration = pastisConfiguration;
+    }
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(ApiPastisStandaloneApplication.class).headless(false).run(args);
@@ -63,6 +72,6 @@ public class ApiPastisStandaloneApplication extends SpringBootServletInitializer
 
     @EventListener(ApplicationReadyEvent.class)
     public void openBrowserAfterStartup() throws IOException, URISyntaxException {
-        Desktop.getDesktop().browse(new URI(("http://localhost:8096")));
+        Desktop.getDesktop().browse(new URI(pastisConfiguration.url));
     }
 }

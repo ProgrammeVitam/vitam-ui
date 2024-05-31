@@ -56,6 +56,7 @@ export * from './archive-unit/index';
 export * from './auth.guard';
 export * from './auth.service';
 export { AuthenticationModule } from './authentication/authentication.module';
+export * from './authentication/services/authenticator.service';
 export * from './country.service';
 export * from './error-dialog/error-dialog.component';
 export * from './global-event.service';

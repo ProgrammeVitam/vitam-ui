@@ -1,0 +1,15 @@
+pastis.client.url: https://localhost:8097
+
+cors:
+  allowed-origins: >
+    http://localhost:8096,
+    https://localhost:8097
+  allowed-methods: >
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600

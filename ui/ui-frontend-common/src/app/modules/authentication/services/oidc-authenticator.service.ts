@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
-import { from, Observable, zip } from 'rxjs';
-import { AuthenticatorService } from './authenticator.service';
+import { Observable, from, zip } from 'rxjs';
 import { map, skipWhile, take, tap } from 'rxjs/operators';
+import { AuthenticatorService } from './authenticator.service';
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(

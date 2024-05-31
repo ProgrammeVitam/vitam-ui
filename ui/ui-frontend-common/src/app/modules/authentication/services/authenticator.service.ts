@@ -36,10 +36,10 @@
  */
 import { Observable } from 'rxjs';
 
-export interface AuthenticatorService {
-  login(): Observable<boolean>;
-  logout(): void;
-  logoutSubrogationAndRedirectToLoginPage(username: string): void;
-  initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): void;
-  redirectToLoginPage(): void;
+export abstract class AuthenticatorService {
+  abstract login(): Observable<boolean>;
+  abstract logout(): void;
+  abstract logoutSubrogationAndRedirectToLoginPage(username: string): void;
+  abstract initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): void;
+  abstract redirectToLoginPage(): void;
 }
