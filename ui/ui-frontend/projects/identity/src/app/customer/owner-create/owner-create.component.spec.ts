@@ -41,7 +41,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Owner } from 'vitamui-library';
+import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -159,7 +159,7 @@ describe('OwnerCreateComponent', () => {
     component.tenantForm.setValue(tenant);
     component.onTenantSubmit();
     expect(tenantService.create).toHaveBeenCalledWith(
-      { name: tenant.name, ownerId: tenant.ownerId, customerId: tenant.customerId, enabled: tenant.enabled },
+      { name: tenant.name, ownerId: tenant.ownerId, customerId: tenant.customerId, enabled: tenant.enabled } as Tenant,
       owner.name,
     );
     expect(matDialogRef.close).toHaveBeenCalledTimes(1);
