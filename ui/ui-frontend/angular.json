@@ -467,7 +467,7 @@
       "prefix": "vitamui",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/vitamui-library/tsconfig.lib.json",
             "project": "projects/vitamui-library/ng-package.json"
