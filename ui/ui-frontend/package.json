@@ -194,7 +194,6 @@
     "lint-staged": "13.2.3",
     "moment-locales-webpack-plugin": "^1.2.0",
     "ng-packagr": "^11.2.4",
-    "ngx-markdown": "10.1.1",
     "prettier": "3.2.4",
     "protractor": "^7.0.0",
     "puppeteer": "~19.6.3",
