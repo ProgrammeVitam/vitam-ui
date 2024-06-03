@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -52,7 +52,7 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
     TestBed.configureTestingModule({
       imports: [MatSidenavModule, NoopAnimationsModule],
@@ -65,14 +65,14 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', async(() => {
+  it('should create the app', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     // console.log('Create App: ', app);
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'Pastis Application'`, async(() => {
+  it(`should have as title 'Pastis Application'`, waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     // console.log('Title App: ', app);

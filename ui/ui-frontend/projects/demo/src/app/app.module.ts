@@ -84,34 +84,37 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     IconDemoModule,
     AppGuardDemoModule,
     LoggerModule.forRoot(),
-    RouterModule.forRoot([
-      { path: 'subrogation-demo', component: SubrogationDemoComponent },
-      {
-        path: 'components-demo',
-        component: ComponentDemoComponent,
-        children: [
-          { path: 'angular', component: ComponentsComponent },
-          { path: 'angular/tenant/:tenantIdentifier', component: ComponentsComponent },
-          { path: 'angular/customer/:customerId', component: ComponentsComponent },
-          { path: 'css', component: CssComponent },
-          { path: '', redirectTo: 'angular', pathMatch: 'full' },
-        ],
-      },
-      { path: 'icons-demo', component: IconDemoComponent },
-      {
-        path: 'app-guard-demo',
-        component: AppGuardDemoComponent,
-        children: [
-          { path: 'account', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
-          { path: 'subrogation', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'SUBROGATIONS_APP' } },
-          { path: 'customers', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'CUSTOMERS_APP' } },
-          { path: 'fake-app', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'DOES_NOT_EXIST_APP' } },
-        ],
-      },
-      { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
-      { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
-      { path: '**', redirectTo: '' },
-    ]),
+    RouterModule.forRoot(
+      [
+        { path: 'subrogation-demo', component: SubrogationDemoComponent },
+        {
+          path: 'components-demo',
+          component: ComponentDemoComponent,
+          children: [
+            { path: 'angular', component: ComponentsComponent },
+            { path: 'angular/tenant/:tenantIdentifier', component: ComponentsComponent },
+            { path: 'angular/customer/:customerId', component: ComponentsComponent },
+            { path: 'css', component: CssComponent },
+            { path: '', redirectTo: 'angular', pathMatch: 'full' },
+          ],
+        },
+        { path: 'icons-demo', component: IconDemoComponent },
+        {
+          path: 'app-guard-demo',
+          component: AppGuardDemoComponent,
+          children: [
+            { path: 'account', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
+            { path: 'subrogation', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'SUBROGATIONS_APP' } },
+            { path: 'customers', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'CUSTOMERS_APP' } },
+            { path: 'fake-app', component: GuardedPageComponent, canActivate: [AppGuard], data: { appId: 'DOES_NOT_EXIST_APP' } },
+          ],
+        },
+        { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
+        { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
+        { path: '**', redirectTo: '' },
+      ],
+      { relativeLinkResolution: 'legacy' },
+    ),
   ],
   providers: [
     { provide: BASE_URL, useValue: '/identity-api' },
