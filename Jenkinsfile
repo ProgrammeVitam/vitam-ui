@@ -5,13 +5,6 @@ pipeline {
         label 'contrib'
     }
 
-    parameters {
-        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test')
-        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus')
-        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone')
-        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.')
-    }
-
     environment {
         MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
@@ -38,9 +31,37 @@ pipeline {
         )
     }
 
+    parameters {
+        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test')
+        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus')
+        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone')
+        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.')
+    }
+
     stages {
+        stage('Ask for build execution (when parameters are not defined)') {
+            agent none
+            when { expression { env.DO_BUILD_AND_TEST == null } }
+            steps {
+                script {
+                    INPUT_PARAMS = input message: 'Check boxes to select what you want to execute ?',
+                    parameters: [
+                        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test'),
+                        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus'),
+                        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone'),
+                        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.'),
+                    ]
+                    env.DO_BUILD_AND_TEST = INPUT_PARAMS.DO_BUILD_AND_TEST
+                    env.DO_DEPLOY = INPUT_PARAMS.DO_DEPLOY
+                    env.DO_DEPLOY_PASTIS_STANDALONE = INPUT_PARAMS.DO_DEPLOY_PASTIS_STANDALONE
+                    env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
+                }
+            }
+        }
+
         stage('Show options') {
             steps {
+                echo "IMPORTANT_BRANCH_OR_TAG = ${IMPORTANT_BRANCH_OR_TAG}"
                 echo "DO_BUILD_AND_TEST = ${env.DO_BUILD_AND_TEST}"
                 echo "DO_DEPLOY = ${env.DO_DEPLOY}"
                 echo "DO_DEPLOY_PASTIS_STANDALONE = ${env.DO_DEPLOY_PASTIS_STANDALONE}"
