@@ -2474,11 +2474,13 @@
             <!-- Dépôts Maven privés -->
             <distributionManagement>
                 <repository>
-                    <id>releases</id>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
                 </repository>
                 <snapshotRepository>
-                    <id>snapshots</id>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </snapshotRepository>
                 <site>
@@ -2487,33 +2489,27 @@
                 </site>
             </distributionManagement>
 
-
             <repositories>
                 <repository>
-                    <id>vitam</id>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <repository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <releases><enabled>false</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </repository>
             </repositories>
-
-            <!-- Maven plugins repositories -->
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>vitam</id>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </pluginRepository>
-            </pluginRepositories>
 
             <properties>
                 <serverId>vitam</serverId>
                 <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
             </properties>
-
         </profile>
 
         <profile>
@@ -2522,19 +2518,13 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <!-- Dépôts Maven privés -->
-            <distributionManagement>
-                <repository>
-                    <id>releases</id>
-                    <url>http://download.programmevitam.fr/vitam_repository/${vitam.version}/mvn_repo/</url>
-                </repository>
-            </distributionManagement>
-
-
+            <!-- Dépôts publics de releases -->
             <repositories>
                 <repository>
-                    <id>vitam</id>
+                    <id>public-vitam-releases</id>
                     <url>http://download.programmevitam.fr/vitam_repository/${vitam.version}/mvn_repo/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
                 </repository>
             </repositories>
 

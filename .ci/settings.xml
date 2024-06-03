@@ -19,12 +19,12 @@
 			<password>${env.CI_PSW}</password>
 		</server>
 		<server>
-			<id>snapshots</id>
+			<id>vitam-snapshots</id>
 			<username>${env.CI_USR}</username>
 			<password>${env.CI_PSW}</password>
 		</server>
 		<server>
-			<id>releases</id>
+			<id>vitam-releases</id>
 			<username>${env.CI_USR}</username>
 			<password>${env.CI_PSW}</password>
 		</server>
