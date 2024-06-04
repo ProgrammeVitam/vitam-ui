@@ -82,15 +82,9 @@ export class TypeService {
   }
 
   public isConsistent(value: any): boolean {
-    if (this.isPrimitive(value)) {
-      return Boolean(value) && value !== '';
-    }
-    if (this.isList(value)) {
-      return value.some((item: any) => this.isConsistent(item));
-    }
-    if (!value) {
-      return false;
-    }
+    if (value === null || value === undefined) return false;
+    if (this.isPrimitive(value)) return value !== '';
+    if (this.isList(value)) return value.some((item: any) => this.isConsistent(item));
 
     return Object.values(value).some((v: any) => this.isConsistent(v));
   }
