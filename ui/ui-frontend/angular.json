@@ -517,11 +517,17 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
-              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -538,7 +544,8 @@
               "serviceWorker": true,
               "ngswConfigPath": "projects/design-system/ngsw-config.json"
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
