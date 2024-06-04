@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { VitamUICommonModule } from 'vitamui-library';
 import { InputsComponent } from './inputs.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { EditableFieldModule } from '../../../../../identity/src/app/shared/editable-field';
 
 @NgModule({
   declarations: [InputsComponent],
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInputModule,
     MatNativeDateModule,
     TranslateModule,
+    EditableFieldModule,
   ],
   exports: [InputsComponent],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],

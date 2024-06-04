@@ -36,11 +36,12 @@
  */
 /* tslint:disable: no-use-before-declare */
 
-import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { DOCUMENT } from '@angular/common';
 
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,7 +58,11 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
 export class EditableEmailInputComponent extends EditableFieldComponent {
   @ViewChild('select') select: MatSelect;
 
-  constructor(formBuilder: FormBuilder, elementRef: ElementRef) {
+  constructor(
+    formBuilder: FormBuilder,
+    elementRef: ElementRef,
+    @Inject(DOCUMENT) private document: Document,
+  ) {
     super(elementRef);
 
     this.formEmail = formBuilder.group({
@@ -91,12 +96,12 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
 
-    const selectOverlayRef = this.select.overlayDir.overlayRef;
+    // Overlay has same id as the "select" element, suffixed by "-panel"
+    const selectOverlay = this.document.querySelector(`#${this.select.id}-panel`) as HTMLElement;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||
-      this.isInside(target, selectOverlayRef ? selectOverlayRef.overlayElement : null) ||
-      this.isInside(target, selectOverlayRef ? selectOverlayRef.backdropElement : null)
+      this.isInside(target, selectOverlay ? selectOverlay : null)
     ) {
       return;
     }
