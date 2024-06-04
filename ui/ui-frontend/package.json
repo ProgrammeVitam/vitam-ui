@@ -126,6 +126,7 @@
     "core-js": "3.6.5",
     "d3": "^3.5.17",
     "d3-svg-legend": "^1.13.0",
+    "fast-xml-parser": "^4.4.0",
     "file-saver-es": "^2.0.5",
     "flag-icon-css": "^3.5.0",
     "generate-schema": "^2.6.0",
@@ -148,7 +149,6 @@
     "tslib": "^2.0.0",
     "underscore": "^1.13.1",
     "uuid": "^7.0.2",
-    "xml2js": "^0.4.23",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -168,7 +168,6 @@
     "@types/node": "~8.9.1",
     "@types/underscore": "^1.11.2",
     "@types/uuid": "^7.0.0",
-    "@types/xml2js": "^0.4.3",
     "codelyzer": "^6.0.0",
     "concurrently": "^8.2.2",
     "husky": "8.0.3",
