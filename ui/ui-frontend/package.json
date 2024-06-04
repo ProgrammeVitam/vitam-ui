@@ -114,7 +114,7 @@
     "@angular/material-moment-adapter": "^12.2.13",
     "@angular/platform-browser": "12.2.17",
     "@angular/platform-browser-dynamic": "12.2.17",
-    "@angular/pwa": "^0.1200.0-next.0",
+    "@angular/pwa": "^12.2.18",
     "@angular/router": "12.2.17",
     "@angular/service-worker": "12.2.17",
     "@babel/compat-data": "^7.8.0",
