@@ -36,7 +36,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -146,7 +146,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -257,7 +257,7 @@
                   "with": "projects/demo/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -361,7 +361,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/referential/ngsw-config.json",
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -516,7 +516,7 @@
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": true,
-            "optimization": false,
+            "optimization": true,
             "namedChunks": true
           },
           "configurations": {
@@ -610,7 +610,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -705,7 +705,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -800,7 +800,7 @@
           },
           "configurations": {
             "production": {
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -904,7 +904,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -922,7 +922,7 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": false,
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
