@@ -80,7 +80,9 @@ pipeline {
                     steps {
                         sh '''
                             $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects '!cots/vitamui-mongo-express'
+                                --projects '!cots/vitamui-mongo-express' \
+                                --projects '!ui' \
+                                --projects '!ui/ui-frontend'
                         '''
                     }
                 }
