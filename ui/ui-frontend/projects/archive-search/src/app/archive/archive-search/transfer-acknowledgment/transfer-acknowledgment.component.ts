@@ -33,9 +33,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { BytesPipe, Logger, StartupService } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
+import { XMLParser } from 'fast-xml-parser';
 
-declare const require: any;
-const xml2js = require('xml2js');
 const FILE_MAX_SIZE = 10737418240;
 const ATR_EXTENSION = '.xml';
 
@@ -89,32 +88,32 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
   ) {}
 
-  async parseXmlToTransferDetails(xmlFileContent: any) {
+  async parseXmlToTransferDetails(xmlFileContent: string) {
     this.isLoadingData = true;
-    return await xml2js.parseStringPromise(xmlFileContent, { explicitArray: false }).then(
-      (response: { ArchiveTransferReply: any }) => {
-        if (response.ArchiveTransferReply === undefined || response.ArchiveTransferReply === null) {
-          this.isAtrNotValid = true;
-          this.isLoadingData = false;
-        } else {
-          this.transfertDetails.messageRequestIdentifier = response.ArchiveTransferReply?.MessageRequestIdentifier;
-          this.transfertDetails.date = response.ArchiveTransferReply?.Date;
-          this.transfertDetails.archivalAgreement = response.ArchiveTransferReply?.ArchivalAgreement;
-          this.transfertDetails.archivalAgency = response.ArchiveTransferReply.ArchivalAgency?.Identifier;
-          this.transfertDetails.transferringAgency = response.ArchiveTransferReply.TransferringAgency?.Identifier;
-          this.transfertDetails.archiveTransferReply = response.ArchiveTransferReply.ReplyCode;
-          this.isAtrNotValid = false;
-          this.stepIndex = this.stepIndex + 1;
-          this.isLoadingData = false;
-        }
-      },
-      (error: any) => {
-        this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
-        this.hasError = true;
+
+    const parser = new XMLParser();
+    try {
+      const parsedXml: { ArchiveTransferReply: any } = parser.parse(xmlFileContent, true);
+      if (parsedXml.ArchiveTransferReply === undefined || parsedXml.ArchiveTransferReply === null) {
+        this.isAtrNotValid = true;
         this.isLoadingData = false;
-        this.logger.error('Error with parsing the xml file :', error);
-      },
-    );
+      } else {
+        this.transfertDetails.messageRequestIdentifier = parsedXml.ArchiveTransferReply?.MessageRequestIdentifier;
+        this.transfertDetails.date = parsedXml.ArchiveTransferReply?.Date;
+        this.transfertDetails.archivalAgreement = parsedXml.ArchiveTransferReply?.ArchivalAgreement;
+        this.transfertDetails.archivalAgency = parsedXml.ArchiveTransferReply.ArchivalAgency?.Identifier;
+        this.transfertDetails.transferringAgency = parsedXml.ArchiveTransferReply.TransferringAgency?.Identifier;
+        this.transfertDetails.archiveTransferReply = parsedXml.ArchiveTransferReply.ReplyCode;
+        this.isAtrNotValid = false;
+        this.stepIndex = this.stepIndex + 1;
+        this.isLoadingData = false;
+      }
+    } catch (error: any) {
+      this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
+      this.hasError = true;
+      this.isLoadingData = false;
+      this.logger.error('Error with parsing the xml file :', error);
+    }
   }
 
   ngOnInit(): void {

@@ -195,6 +195,50 @@ describe('TransferAcknowledgmentComponent', () => {
     expect(component.transfertDetailsCode).toEqual('KO');
   });
 
+  it('should parseXmlToTransferDetails for valid XML', async () => {
+    const xmlOK = `<?xml version="1.0" encoding="UTF-8"?>
+<ArchiveTransferReply xmlns="fr:gouv:culture:archivesdefrance:seda:v2.2"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="fr:gouv:culture:archivesdefrance:seda:v2.2 seda-2.2/seda-2.2-main.xsd">
+    <Date>2024-06-04T12:56:58.824Z</Date>
+    <ArchivalAgreement>IC-000001</ArchivalAgreement>
+    <ReplyCode>OK</ReplyCode>
+    <MessageRequestIdentifier>SIP SEDA de test</MessageRequestIdentifier>
+    <ArchivalAgency>
+        <Identifier>Identifier4</Identifier>
+    </ArchivalAgency>
+    <TransferringAgency>
+        <Identifier>Identifier5</Identifier>
+    </TransferringAgency>
+</ArchiveTransferReply>`;
+
+    await component.parseXmlToTransferDetails(xmlOK);
+    expect(component.isAtrNotValid).toBeFalse();
+    expect(component.transfertDetails).toEqual({
+      messageRequestIdentifier: 'SIP SEDA de test',
+      date: '2024-06-04T12:56:58.824Z',
+      archivalAgreement: 'IC-000001',
+      archivalAgency: 'Identifier4',
+      transferringAgency: 'Identifier5',
+      archiveTransferReply: 'OK',
+    });
+  });
+
+  it('should parseXmlToTransferDetails for XML without ArchiveTransferReply', async () => {
+    const xmlNoArchiveTransferReply = '<toto></toto>';
+
+    await component.parseXmlToTransferDetails(xmlNoArchiveTransferReply);
+    expect(component.isAtrNotValid).toBeTrue();
+  });
+
+  it('should parseXmlToTransferDetails for invalid XML', async () => {
+    const xmlBadFormat = 'This is not XML';
+
+    await component.parseXmlToTransferDetails(xmlBadFormat);
+    expect(component.hasError).toBeTrue();
+    expect(component.message).toBeTruthy();
+  });
+
   describe('DOM', () => {
     it('should have 7 lines in the second step', () => {
       const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.detail-text');

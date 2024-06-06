@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -105,7 +105,7 @@ describe('TenantCreateComponent', () => {
         customerId: tenant.customerId,
         ownerId: tenant.ownerId,
         enabled: tenant.enabled,
-      },
+      } as Tenant,
       'OwnerName',
     );
   });

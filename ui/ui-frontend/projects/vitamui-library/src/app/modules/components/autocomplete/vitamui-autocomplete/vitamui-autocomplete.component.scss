@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../../../../sass/variables/colors';
 @import '../../../../../sass/mixins/elevation';
 
@@ -37,11 +38,10 @@ $animation-time: 150ms;
     width: 100%;
     padding: 10px 40px 10px 29px;
     transition: padding $animation-time ease-out;
-    margin-top: 0px;
+    margin-top: 0;
     @include input-elevation-dark;
     &:focus {
       outline: none;
-      border: solid 1px var(--vitamui-primary);
       border: solid 1px var(--vitamui-primary);
     }
   }
@@ -90,7 +90,7 @@ $animation-time: 150ms;
 
   &.label-up {
     .input-label {
-      transform: scale((12/14)) translateY(-15px);
+      transform: scale(math.div(12, 14)) translateY(-15px);
     }
 
     > input {

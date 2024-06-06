@@ -91,7 +91,7 @@ describe('FileTreeMetadataComponent', () => {
           positionClass: 'toast-bottom-right',
         }),
         MatSnackBarModule,
-        RouterModule.forRoot([]),
+        RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
         LoggerModule.forRoot(),
         TranslateModule.forRoot({}),
       ],

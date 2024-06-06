@@ -58,7 +58,7 @@ export class TestHostComponent {
   filter: any;
   showSearchBar = false;
 
-  onSearch() {}
+  onSearch(_value: string) {}
   onClose() {}
 }
 

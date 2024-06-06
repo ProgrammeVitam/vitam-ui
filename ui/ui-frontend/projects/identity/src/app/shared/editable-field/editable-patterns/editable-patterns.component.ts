@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
 import { PatternComponent } from '../../pattern/pattern.component';
+import { DOCUMENT } from '@angular/common';
 /*eslint no-use-before-define: "error"*/
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -58,7 +59,10 @@ export class EditablePatternsComponent extends EditableFieldComponent {
 
   private patternClicked = false;
 
-  constructor(elementRef: ElementRef) {
+  constructor(
+    elementRef: ElementRef,
+    @Inject(DOCUMENT) private document: Document,
+  ) {
     super(elementRef);
   }
 
@@ -72,12 +76,12 @@ export class EditablePatternsComponent extends EditableFieldComponent {
       return;
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
-    const selectOverlayRef = this.pattern.select.overlayDir.overlayRef;
+    // Overlay has same id as the "select" element, suffixed by "-panel"
+    const selectOverlay = this.document.querySelector(`#${this.pattern.select.id}-panel`) as HTMLElement;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||
-      this.isInside(target, selectOverlayRef ? selectOverlayRef.overlayElement : null) ||
-      this.isInside(target, selectOverlayRef ? selectOverlayRef.backdropElement : null)
+      this.isInside(target, selectOverlay ? selectOverlay : null)
     ) {
       return;
     }

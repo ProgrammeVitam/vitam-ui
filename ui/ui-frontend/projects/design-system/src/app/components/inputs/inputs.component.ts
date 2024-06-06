@@ -64,6 +64,12 @@ export class InputsComponent implements OnInit, OnDestroy {
   public autoCompleteSelectDisabled = new FormControl();
   public autoCompleteMultiSelect = new FormControl();
 
+  public editablePatterns = new FormControl();
+  public editablePatternsOptions = [
+    { value: 'value 1', disabled: false },
+    { value: 'value 2', disabled: false },
+  ];
+
   private readonly destroyer$ = new Subject();
 
   constructor(
