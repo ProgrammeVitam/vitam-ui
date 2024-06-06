@@ -59,7 +59,7 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   events: IEvent[] = [];
   loading = false;
 
-  private isDestroyed$ = new Subject();
+  private isDestroyed$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,

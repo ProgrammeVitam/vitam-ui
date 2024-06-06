@@ -32,7 +32,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
   private language: string;
   private portalTitles: { [language: string]: string } = {};
   private portalMessages: { [language: string]: string } = {};
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<HomepageMessageComponent>,

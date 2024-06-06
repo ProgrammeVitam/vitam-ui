@@ -81,7 +81,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   direction = Direction.ASCENDANT;
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   private readonly searchChange = new Subject<string>();
 
   levelFilterOptions: Array<{ value: string; label: string }> = [];

@@ -71,7 +71,9 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(this.inputProfile);
+      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(
+        this.inputProfile,
+      ) as Observable<ProfileDescription>;
 
       submitProfileUpdate.subscribe(() => {});
     } else {
@@ -142,10 +144,6 @@ export class ProfilePreviewComponent implements AfterViewInit {
   downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
     const typeFile = typeProfile === ProfileType.PA ? 'application/xml' : 'application/json';
     const newBlob = new Blob([dataFile], { type: typeFile });
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
-      return;
-    }
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;

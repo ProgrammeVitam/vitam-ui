@@ -39,8 +39,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Direction, SearchCriteriaHistory } from 'vitamui-library';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
@@ -55,7 +55,7 @@ export class SearchCriteriaListComponent implements OnInit {
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
   searchCriteriaHistory: SearchCriteriaHistory[];
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   direction: Direction = Direction.ASCENDANT;
 
   subscriptionSearchCriteriaHistory: Subscription;

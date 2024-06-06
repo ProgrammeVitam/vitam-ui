@@ -51,7 +51,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private firstResult: any;
   private firstResultFocused = false;
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
   private ngxAppArray: NgxTranslateApp[] = []; // Translated apps array from en / fr json files
 
   @ViewChild('searchBar', { static: true }) searchBar: SearchBarComponent;

@@ -87,7 +87,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     roles: [Role.ROLE_GENERIC_USERS],
   };
 
-  readonly orderChange = new Subject<string>();
+  readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
 
@@ -101,7 +101,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
-  private readonly destroyer$ = new Subject();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor(
     public agencyService: AgencyService,

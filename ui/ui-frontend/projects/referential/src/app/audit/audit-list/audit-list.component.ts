@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
-import { AuditService } from '../audit.service';
 import { AuditOperation } from '../../models/audit.interface';
+import { AuditService } from '../audit.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -80,7 +80,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   public filterMap: { [key: string]: any[] } = { type: null };
 
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<any>();
 
   constructor(public auditService: AuditService) {

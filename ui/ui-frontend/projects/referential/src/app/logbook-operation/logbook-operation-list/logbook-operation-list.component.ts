@@ -88,7 +88,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   public orderByDate = false;
   public filterMap: { [key: string]: any[] } = { operationCategories: null };
   public orderDirection = Direction.ASCENDANT;
-  public readonly orderChange = new Subject<string>();
+  public readonly orderChange = new Subject<void>();
   public readonly LOGBOOK_OPERATION = LogbookOperation;
   public readonly DIRECTION = Direction;
 

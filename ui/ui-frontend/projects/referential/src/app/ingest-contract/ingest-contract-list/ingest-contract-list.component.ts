@@ -36,7 +36,7 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestContract, PageRequest } from 'vitamui-library';
 
@@ -61,7 +61,7 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
   private searchCriteriaSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  public readonly orderChange = new Subject<string>();
+  public readonly orderChange = new Subject<void>();
 
   @Input('search')
   set searchText(searchText: string) {

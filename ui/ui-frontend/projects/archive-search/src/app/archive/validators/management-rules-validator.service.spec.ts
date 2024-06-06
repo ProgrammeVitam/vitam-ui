@@ -99,25 +99,11 @@ describe('ManagementRulesValidatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  it(' uniqueRuleId should return false when ruleId does not exists in the list', () => {
-    // When
-    service.ruleCategorySelected = 'category';
-    // Then
-    expect(of(service.uniqueRuleId('ruleId150'))._isScalar).toBeFalsy();
-  });
-
   it('filterRuleActions should return true when ruleId exists in the list', () => {
     // When
     service.ruleCategorySelected = 'category';
     // Then
     expect(service.filterRuleActions('ruleId1')).toBeTruthy();
-  });
-
-  it('filterRuleActions should return false when ruleId does not exists in the list', () => {
-    // When
-    service.ruleCategorySelected = 'category';
-    // Then
-    expect(of(service.filterRuleActions('ruleId150'))._isScalar).toBeFalsy();
   });
 
   it(' uniqueRuleId should return true when ruleId exists in the list', () => {

@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
@@ -73,7 +73,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   private accessContractId: string;
   showWarningMessage = false;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<ProbativeValueCreateComponent>,

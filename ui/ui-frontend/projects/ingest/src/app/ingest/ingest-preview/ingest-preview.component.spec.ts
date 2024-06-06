@@ -12,7 +12,7 @@ import { IngestPreviewComponent } from './ingest-preview.component';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
-  transform(value: number): number {
+  transform(value: string): string {
     return value;
   }
 }
@@ -20,12 +20,8 @@ class MockTruncatePipe implements PipeTransform {
 describe('IngestPreviewComponent test:', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
+  const logbookOperation: LogbookOperation = { id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq', agIdExt: {}, events: [{}] };
 
-  const logbookOperation: LogbookOperation = {
-    id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
-    agIdExt: {},
-    events: [{}],
-  };
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
@@ -35,7 +31,7 @@ describe('IngestPreviewComponent test:', () => {
         {
           provide: IngestService,
           useValue: {
-            getIngestOperation: () => of(logbookOperation),
+            getIngestOperation: (_id: string) => of(logbookOperation),
             logbookOperationsReloaded: of([logbookOperation]),
           },
         },
@@ -54,5 +50,9 @@ describe('IngestPreviewComponent test:', () => {
 
   it('should be truthy', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have ingestFromParent defined', () => {
+    expect(component.ingestFromParent).toEqual(logbookOperation);
   });
 });

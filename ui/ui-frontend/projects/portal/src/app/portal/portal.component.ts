@@ -75,7 +75,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   public loading = true;
   public showAlerts = false;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     private translateService: TranslateService,

@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'vitamui-library';
@@ -12,7 +12,7 @@ import { CustomerService } from '../../../../core/customer.service';
   styleUrls: ['./homepage-message-update.component.scss'],
 })
 export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
 
   // tslint:disable-next-line: variable-name
   private _customForm: FormGroup;

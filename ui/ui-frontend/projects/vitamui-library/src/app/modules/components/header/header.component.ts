@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, Observable, Subject, Subscription, zip } from 'rxjs';
+import { Observable, Subject, Subscription, forkJoin, zip } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public hasMoreAlerts = false;
 
   private currentAppId: ApplicationId;
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     private subrogationService: SubrogationService,

@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Customer, Logo } from 'vitamui-library';
@@ -49,7 +49,7 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
   styleUrls: ['./graphic-identity-update.component.scss'],
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
   private _customForm: FormGroup;
   public get customForm(): FormGroup {
     return this._customForm;

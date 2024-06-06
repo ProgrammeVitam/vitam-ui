@@ -130,6 +130,7 @@ describe('CreateProjectComponent', () => {
       uploadZip: of(of({})).toPromise(), // FIXME: Maybe change promise of observable chain call...
       getUploadingFiles: of([]),
       getZipFile: of({} as CollectZippedUploadFile),
+      reinitializeZip: null,
     });
 
     TestBed.configureTestingModule({

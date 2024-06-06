@@ -39,8 +39,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
-import { diff, Rule, RuleService, SecurityService, VitamuiRoles } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { Rule, RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 
 const RULES_APP = 'RULES_APP';
@@ -140,7 +140,7 @@ export class RuleInformationTabComponent implements OnInit {
     );
   }
 
-  prepareSubmit(): Observable<Rule> {
+  prepareSubmit(): Observable<Boolean> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId }, formData)),

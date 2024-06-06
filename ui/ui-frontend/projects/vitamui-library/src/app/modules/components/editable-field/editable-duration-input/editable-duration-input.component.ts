@@ -37,10 +37,8 @@
 /* tslint:disable: no-use-before-declare */
 import { Component, ElementRef, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment_ from 'moment';
+import moment from 'moment';
 import { EditableFieldComponent } from '../editable-field.component';
-
-const moment = moment_;
 
 export const EDITABLE_DURATION_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

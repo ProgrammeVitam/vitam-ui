@@ -37,14 +37,14 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { merge, Observable, Subject } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable, Subject, merge } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
-import { ALPHA_NUMERIC_REGEX, CustomerCreateValidators, CUSTOMER_CODE_MAX_LENGTH } from './customer-create.validators';
+import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
 
 interface CustomerInfo {
   code: string;
@@ -88,7 +88,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this._homepageMessageForm = form;
   }
   gdprReadOnlyStatus: boolean;
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
   // tslint:disable-next-line: variable-name
   private _homepageMessageForm: FormGroup;
   // tslint:disable-next-line: variable-name

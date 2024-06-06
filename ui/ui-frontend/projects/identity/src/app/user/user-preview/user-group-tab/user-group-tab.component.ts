@@ -99,7 +99,7 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
   showUpdateButton: boolean;
   public groupProfiles: Profile[] = [];
 
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
 
   constructor(
     public groupAttrDialog: MatDialog,

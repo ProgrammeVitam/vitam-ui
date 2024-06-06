@@ -77,7 +77,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   }
 
   submit(): void {
-    const subscription = this.prepareSubmit()
+    const subscription: Subscription = this.prepareSubmit()
       .pipe(tap((managementContract) => (this.managementContract = managementContract)))
       .subscribe(() => subscription.unsubscribe());
   }

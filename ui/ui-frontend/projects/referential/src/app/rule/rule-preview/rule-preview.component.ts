@@ -37,9 +37,8 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { Observable } from 'rxjs';
-import { Rule, RuleService } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { switchMap } from 'rxjs';
+import { ConfirmActionComponent, Rule, RuleService } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 
 @Component({
@@ -82,13 +81,12 @@ export class RulePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitAccessContractUpdate: Observable<Rule> = this.infoTab.prepareSubmit();
-
-      submitAccessContractUpdate.subscribe(() => {
-        this.ruleService.get(this.rule.ruleId).subscribe((response) => {
+      this.infoTab
+        .prepareSubmit()
+        .pipe(switchMap(() => this.ruleService.get(this.rule.ruleId)))
+        .subscribe((response) => {
           this.rule = response;
         });
-      });
     } else {
       this.infoTab.resetForm(this.rule);
     }

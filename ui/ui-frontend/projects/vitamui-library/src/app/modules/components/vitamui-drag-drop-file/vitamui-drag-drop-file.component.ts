@@ -89,7 +89,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
   public file = new EventEmitter<File>();
 
   @Output()
-  public delete = new EventEmitter();
+  public delete = new EventEmitter<void>();
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 

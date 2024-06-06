@@ -36,12 +36,14 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
   AuthService,
+  ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
@@ -51,9 +53,7 @@ import {
   RuleService,
   VitamUISnackBarService,
 } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
-import { TranslateService } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -97,7 +97,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
 
   @Input()
   get connectedUserInfo(): AdminUserProfile {

@@ -68,7 +68,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   }
 
   private _readonly: boolean;
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
 

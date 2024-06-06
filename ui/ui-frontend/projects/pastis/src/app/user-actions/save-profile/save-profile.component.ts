@@ -430,10 +430,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       download = this.profileService.profileMode === ProfileType.PA ? 'pastis_profile.rng' : 'pastis.json';
     }
     const newBlob = new Blob([dataFile], { type: typeFile });
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
-      return;
-    }
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;

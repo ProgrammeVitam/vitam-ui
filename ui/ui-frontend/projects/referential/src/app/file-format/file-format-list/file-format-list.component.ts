@@ -41,15 +41,17 @@ import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import {
   AdminUserProfile,
+  ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
   InfiniteScrollTable,
   PageRequest,
   StartupService,
   User,
   VitamUISnackBarService,
 } from 'vitamui-library';
-import { ConfirmActionComponent, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -83,7 +85,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   private groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   private destroy$ = new Subject<void>();
 
   @Input()
