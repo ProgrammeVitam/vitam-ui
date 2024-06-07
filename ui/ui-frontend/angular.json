@@ -940,6 +940,7 @@
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
             "scripts": [],
+            "optimization": false,
             "buildOptimizer": false,
             "sourceMap": true
           },
