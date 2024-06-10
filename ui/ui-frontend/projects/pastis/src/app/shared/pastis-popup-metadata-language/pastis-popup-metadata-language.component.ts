@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
 
 @Component({
@@ -47,8 +47,6 @@ import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-lang
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
   sedaLanguage: boolean;
-  @Input()
-  docPath: string;
 
   constructor(private metadataLanguageService: PastisPopupMetadataLanguageService) {}
 
@@ -67,8 +65,5 @@ export class PastisPopupMetadataLanguageComponent implements OnInit {
       this.sedaLanguage = sedaLanguage;
       this.metadataLanguageService.sedaLanguage.next(this.sedaLanguage);
     }
-  }
-  downloadDocumentation() {
-    window.open(this.docPath);
   }
 }
