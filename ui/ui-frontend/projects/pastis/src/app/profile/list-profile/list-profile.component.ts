@@ -114,10 +114,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   newProfileUrl: string = this.pastisConfig.pastisNewProfile;
 
-  docPath = this.isStandalone
-    ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf'
-    : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
-
   subscription1$: Subscription;
   subscription2$: Subscription;
   _uploadProfileSub: Subscription;

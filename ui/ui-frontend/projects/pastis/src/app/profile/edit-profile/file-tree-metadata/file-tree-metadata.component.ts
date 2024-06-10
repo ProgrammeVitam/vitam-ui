@@ -205,8 +205,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
   sedaLanguage: boolean;
 
-  docPath: string;
-
   languagePopup: boolean;
 
   metadatadaValueFormControl = new FormControl('', [Validators.required, Validators.pattern(this.regexPattern)]);
@@ -262,9 +260,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     }
 
     this.additionalPropertiesMetadonnee = false;
-    this.docPath = this.isStandalone
-      ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf'
-      : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
     this._sedalanguageSub = this.metadataLanguageService.sedaLanguage.subscribe(
       (value: boolean) => {
