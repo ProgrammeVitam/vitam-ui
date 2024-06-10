@@ -47,6 +47,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { AuthenticationModule, BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, InjectorModule } from '../../../vitamui-library/src/app/modules';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,8 +65,9 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AuthenticationModule.forRoot(),
     CoreModule,
+    AuthenticationModule.forRoot(),
+    InjectorModule,
     BrowserAnimationsModule,
     BrowserModule,
     VitamUICommonModule.forRoot(),
@@ -86,6 +88,8 @@ registerLocaleData(localeFr, 'fr');
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: BASE_URL, useValue: './referential-api' },
+    { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
