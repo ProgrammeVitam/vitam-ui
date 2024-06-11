@@ -36,11 +36,17 @@
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ConfirmDialogService, Option, StartupService, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
-import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  Option,
+  StartupService,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
 

@@ -38,10 +38,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;

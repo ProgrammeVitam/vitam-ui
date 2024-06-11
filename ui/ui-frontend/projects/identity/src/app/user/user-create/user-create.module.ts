@@ -61,6 +61,5 @@ import { UserCreateComponent } from './user-create.component';
     VitamUICommonModule,
   ],
   declarations: [UserCreateComponent],
-  entryComponents: [UserCreateComponent],
 })
 export class UserCreateModule {}

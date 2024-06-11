@@ -76,7 +76,6 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     TranslateModule,
     VitamUICommonModule,
   ],
-  entryComponents: [PastisDialogConfirmComponent, PastisUnderConstructionComponent],
   exports: [
     PastisUnderConstructionComponent,
     MatTooltipModule,

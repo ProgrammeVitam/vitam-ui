@@ -38,9 +38,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, IngestContract, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
-import { FileFormat } from 'vitamui-library';
+import { FileFormat, IngestContract, VitamuiAutocompleteMultiselectOptions, diff } from 'vitamui-library';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 

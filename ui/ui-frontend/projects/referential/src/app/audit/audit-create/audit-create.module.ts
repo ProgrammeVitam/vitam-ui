@@ -62,6 +62,5 @@ import { AuditCreateComponent } from './audit-create.component';
     VitamUICommonModule,
     VitamUILibraryModule,
   ],
-  entryComponents: [AuditCreateComponent],
 })
 export class AuditCreateModule {}

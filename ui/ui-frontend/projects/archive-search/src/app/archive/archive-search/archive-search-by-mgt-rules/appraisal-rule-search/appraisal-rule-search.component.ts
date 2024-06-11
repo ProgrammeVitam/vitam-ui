@@ -8,11 +8,11 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
+  ManagementRuleValidators,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
 } from 'vitamui-library';
-import { ManagementRuleValidators } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleValidator } from '../../rule.validator';

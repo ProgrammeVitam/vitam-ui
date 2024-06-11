@@ -67,6 +67,5 @@ import { ContextCreateComponent } from './context-create.component';
     ContextEditPermissionModule,
   ],
   declarations: [ContextCreateComponent],
-  entryComponents: [ContextCreateComponent],
 })
 export class ContextCreateModule {}

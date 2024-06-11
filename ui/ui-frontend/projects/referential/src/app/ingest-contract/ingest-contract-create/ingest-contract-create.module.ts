@@ -68,6 +68,5 @@ import { IngestContractCreateComponent } from './ingest-contract-create.componen
     VitamUILibraryModule,
   ],
   declarations: [IngestContractCreateComponent],
-  entryComponents: [IngestContractCreateComponent],
 })
 export class IngestContractCreateModule {}

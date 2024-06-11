@@ -37,15 +37,15 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import {
   AuthService,
-  buildValidators,
-  collapseAnimation,
   ConfirmDialogService,
   CriteriaSearchQuery,
   Operators,
   Profile,
+  buildValidators,
+  collapseAnimation,
   rotateAnimation,
 } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';

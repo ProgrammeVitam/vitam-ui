@@ -103,6 +103,5 @@ import { TranslateModule } from '@ngx-translate/core';
     HomepageMessageTranslationComponent,
   ],
   exports: [CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
-  entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
 })
 export class CustomerPreviewModule {}

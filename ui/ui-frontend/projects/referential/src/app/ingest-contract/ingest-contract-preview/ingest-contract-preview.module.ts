@@ -72,7 +72,6 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
     IngestContractNodeUpdateComponent,
     IngestContractHeritageTabComponent,
   ],
-  entryComponents: [IngestContractNodeUpdateComponent],
   imports: [
     CommonModule,
     RouterModule,

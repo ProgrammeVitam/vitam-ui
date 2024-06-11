@@ -64,6 +64,5 @@ import { RuleCreateComponent } from './rule-create.component';
     VitamUICommonModule,
   ],
   declarations: [RuleCreateComponent],
-  entryComponents: [RuleCreateComponent],
 })
 export class RuleCreateModule {}

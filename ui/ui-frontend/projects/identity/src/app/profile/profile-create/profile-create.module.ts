@@ -66,6 +66,5 @@ import { ProfileCreateComponent } from './profile-create.component';
     RoleToggleModule,
   ],
   declarations: [ProfileCreateComponent],
-  entryComponents: [ProfileCreateComponent],
 })
 export class ProfileCreateModule {}

@@ -37,11 +37,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Direction, CriteriaSearchCriteria, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { ConfirmDialogService, CriteriaSearchCriteria, Direction, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';

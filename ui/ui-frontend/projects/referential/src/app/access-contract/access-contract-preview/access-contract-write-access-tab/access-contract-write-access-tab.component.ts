@@ -38,8 +38,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContract, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { AccessContract, diff } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract.service';
 
 @Component({

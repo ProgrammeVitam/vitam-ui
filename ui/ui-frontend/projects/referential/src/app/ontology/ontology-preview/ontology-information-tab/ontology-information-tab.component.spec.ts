@@ -1,15 +1,15 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { Ontology } from 'vitamui-library';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyService } from '../../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;

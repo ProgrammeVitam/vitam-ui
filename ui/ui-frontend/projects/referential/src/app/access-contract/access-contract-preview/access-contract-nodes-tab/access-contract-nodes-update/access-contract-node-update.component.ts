@@ -37,8 +37,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AccessContract } from 'vitamui-library';
-import { FilingPlanMode } from 'vitamui-library';
+import { AccessContract, FilingPlanMode } from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract.service';
 
 @Component({

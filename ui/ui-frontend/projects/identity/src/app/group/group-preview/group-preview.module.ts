@@ -75,6 +75,5 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     UnitsEditComponent,
   ],
   exports: [GroupPreviewComponent],
-  entryComponents: [ProfilesEditComponent],
 })
 export class GroupPreviewModule {}

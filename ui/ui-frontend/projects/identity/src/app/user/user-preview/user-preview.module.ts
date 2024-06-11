@@ -46,7 +46,6 @@ import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
-import { GroupAttributionComponent } from '../group-attribution/group-attribution.component';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
 import { UserPopupComponent } from './user-popup.component';
@@ -67,6 +66,5 @@ import { UserPreviewComponent } from './user-preview.component';
   ],
   declarations: [UserPopupComponent, UserPreviewComponent, UserInfoTabComponent, UserGroupTabComponent],
   exports: [UserPreviewComponent],
-  entryComponents: [GroupAttributionComponent],
 })
 export class UserPreviewModule {}

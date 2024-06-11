@@ -43,8 +43,16 @@ import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'vitamui-library';
-import { ManagementRuleValidators } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  diff,
+} from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';

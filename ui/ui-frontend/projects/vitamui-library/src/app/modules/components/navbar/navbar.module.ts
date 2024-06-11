@@ -65,6 +65,5 @@ import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
   ],
   declarations: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],
   exports: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],
-  entryComponents: [CommonMenuComponent],
 })
 export class NavbarModule {}

@@ -39,8 +39,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { IngestContract, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { IngestContract, diff } from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';

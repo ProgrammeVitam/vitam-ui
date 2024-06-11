@@ -85,7 +85,6 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
     AccessContractNodesTabComponent,
     AccessContractNodeUpdateComponent,
   ],
-  entryComponents: [AccessContractNodeUpdateComponent],
   exports: [AccessContractPreviewComponent],
 })
 export class AccessContractPreviewModule {}

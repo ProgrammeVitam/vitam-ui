@@ -50,7 +50,6 @@ import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditableFieldModule, VitamUICommonModule } from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
-import { PastisDialogConfirmComponent } from '../../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
 import { FileTreeComponent } from './file-tree.component';
@@ -74,6 +73,5 @@ import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
   exports: [FileTreeComponent, FileTreeMetadataComponent],
   providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } }],
   declarations: [FileTreeMetadataComponent, FileTreeComponent, FiletreeFilterPipe, AttributesPopupComponent],
-  entryComponents: [FileTreeComponent, FileTreeMetadataComponent, PastisDialogConfirmComponent, AttributesPopupComponent],
 })
 export class FileTreeModule {}

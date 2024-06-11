@@ -65,6 +65,5 @@ import { AccessContractCreateComponent } from './access-contract-create.componen
     VitamUIAutocompleteMultiSelectModule,
   ],
   declarations: [AccessContractCreateComponent],
-  entryComponents: [AccessContractCreateComponent],
 })
 export class AccessContractCreateModule {}

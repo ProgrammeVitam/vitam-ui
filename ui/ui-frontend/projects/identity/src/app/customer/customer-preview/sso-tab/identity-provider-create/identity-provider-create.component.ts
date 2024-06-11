@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';

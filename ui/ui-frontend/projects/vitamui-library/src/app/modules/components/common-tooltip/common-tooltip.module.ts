@@ -44,6 +44,5 @@ import { CommonTooltipDirective } from './common-tooltip.directive';
   imports: [CommonModule, MatTooltipModule],
   declarations: [CommonTooltipComponent, CommonTooltipDirective],
   exports: [CommonTooltipComponent, CommonTooltipDirective, MatTooltipModule],
-  entryComponents: [CommonTooltipComponent],
 })
 export class CommonTooltipModule {}

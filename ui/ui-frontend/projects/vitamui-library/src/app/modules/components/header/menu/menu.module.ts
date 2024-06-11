@@ -31,7 +31,6 @@ import { MenuComponent } from './menu.component';
     TranslateModule,
     ItemSelectModule,
   ],
-  entryComponents: [MenuComponent],
   providers: [MenuOverlayService],
   exports: [MenuComponent, MenuApplicationTileComponent],
 })

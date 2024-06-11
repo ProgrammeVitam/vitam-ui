@@ -39,8 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { Agency, ApplicationId, diff, Role, SecurityService } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { Agency, ApplicationId, Role, SecurityService, diff } from 'vitamui-library';
 import { AgencyService } from '../../agency.service';
 
 @Component({

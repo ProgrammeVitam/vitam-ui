@@ -42,7 +42,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { CountryOption, CountryService, Customer, StartupService } from 'vitamui-library';
 
 import { Owner } from 'vitamui-library';
-import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from './owner-form.validators';
+import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from './owner-form.validators';
 
 /*eslint no-use-before-define: "error"*/
 export const OWNER_FORM_VALUE_ACCESSOR: any = {

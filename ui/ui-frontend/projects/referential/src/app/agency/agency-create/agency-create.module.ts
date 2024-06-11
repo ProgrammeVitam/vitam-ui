@@ -64,6 +64,5 @@ import { AgencyCreateComponent } from './agency-create.component';
     MatProgressSpinnerModule,
   ],
   declarations: [AgencyCreateComponent],
-  entryComponents: [AgencyCreateComponent],
 })
 export class AgencyCreateModule {}

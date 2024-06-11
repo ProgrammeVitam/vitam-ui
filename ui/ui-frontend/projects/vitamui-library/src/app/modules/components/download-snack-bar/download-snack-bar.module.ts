@@ -45,6 +45,5 @@ import { DownloadSnackBarComponent } from '../download-snack-bar/download-snack-
   imports: [CommonModule, MatDialogModule, MatProgressBarModule, TranslateModule],
   declarations: [DownloadSnackBarComponent],
   exports: [DownloadSnackBarComponent],
-  entryComponents: [DownloadSnackBarComponent],
 })
 export class DownloadSnackBarModule {}
