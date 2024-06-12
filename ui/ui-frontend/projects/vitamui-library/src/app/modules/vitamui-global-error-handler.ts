@@ -36,7 +36,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 import { ENVIRONMENT } from './injection-tokens';
 import { StartupService } from './startup.service';

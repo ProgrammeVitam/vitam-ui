@@ -35,7 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import {
+  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
+  MatLegacySnackBarRef as MatSnackBarRef,
+} from '@angular/material/legacy-snack-bar';
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
 

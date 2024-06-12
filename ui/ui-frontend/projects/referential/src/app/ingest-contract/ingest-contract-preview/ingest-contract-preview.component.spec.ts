@@ -36,7 +36,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { IngestContract } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';

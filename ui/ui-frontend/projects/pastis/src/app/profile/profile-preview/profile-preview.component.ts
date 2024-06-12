@@ -1,6 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyTab as MatTab,
+  MatLegacyTabGroup as MatTabGroup,
+  MatLegacyTabHeader as MatTabHeader,
+} from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ConfirmActionComponent } from 'vitamui-library';

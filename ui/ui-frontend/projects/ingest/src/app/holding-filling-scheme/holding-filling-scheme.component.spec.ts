@@ -43,8 +43,8 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';

@@ -37,7 +37,7 @@
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Observable, Subscription } from 'rxjs';
 import { AccessContract, ApplicationId, ConfirmDialogService, ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';

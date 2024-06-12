@@ -2,7 +2,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { PipesModule } from '../../pipes/pipes.module';
 import { EditableFieldModule } from '../editable-field/editable-field.module';
 import { VitamuiMultiInputsComponent } from './vitamui-multi-inputs.component';

@@ -36,7 +36,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { EMPTY, of } from 'rxjs';
 
 import { VitamUICommonTestModule } from '../../../../../testing/src';

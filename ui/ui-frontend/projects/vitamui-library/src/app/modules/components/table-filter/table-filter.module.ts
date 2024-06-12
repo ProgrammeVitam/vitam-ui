@@ -38,7 +38,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';

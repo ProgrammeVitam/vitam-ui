@@ -38,8 +38,8 @@ import { VitamUICommonModule } from 'vitamui-library';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../shared/shared.module';

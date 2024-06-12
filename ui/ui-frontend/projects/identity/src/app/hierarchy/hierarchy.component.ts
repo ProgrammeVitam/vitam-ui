@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';

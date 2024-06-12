@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';

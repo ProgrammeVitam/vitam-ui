@@ -36,8 +36,8 @@
  */
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -113,7 +113,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
         { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
         { path: '**', redirectTo: '' },
       ],
-      { relativeLinkResolution: 'legacy' },
+      {},
     ),
   ],
   providers: [

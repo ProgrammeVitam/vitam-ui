@@ -36,7 +36,7 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { RuleService } from 'vitamui-library';
 import { RulePreviewComponent } from './rule-preview.component';
 import { TranslateModule } from '@ngx-translate/core';

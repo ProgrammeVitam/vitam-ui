@@ -36,7 +36,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBarService } from 'vitamui-library';
 import { RuleListComponent } from './rule-list.component';

@@ -1,6 +1,6 @@
 import { FlexibleConnectedPositionStrategy, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
-import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuPanel as MatMenuPanel, MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

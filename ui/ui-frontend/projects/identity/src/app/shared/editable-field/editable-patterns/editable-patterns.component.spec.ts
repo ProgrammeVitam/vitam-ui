@@ -39,8 +39,8 @@ import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelect } from '@angular/material/select';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';

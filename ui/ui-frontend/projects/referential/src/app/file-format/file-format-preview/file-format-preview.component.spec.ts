@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatPreviewComponent } from './file-format-preview.component';
 import { TranslateModule } from '@ngx-translate/core';

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';

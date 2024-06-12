@@ -37,7 +37,7 @@
 /* tslint:disable: no-use-before-declare */
 import { Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, TemplateRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { filter } from 'rxjs/operators';
 
 import { EditableFieldComponent } from '../editable-field.component';

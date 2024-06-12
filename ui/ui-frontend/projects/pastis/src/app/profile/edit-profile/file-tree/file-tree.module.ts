@@ -42,7 +42,7 @@ import { DpDatePickerModule } from 'ng2-date-picker';
 import { SharedModule } from '../../../shared/shared.module';
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';

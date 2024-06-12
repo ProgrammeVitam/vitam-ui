@@ -39,7 +39,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EMPTY, of } from 'rxjs';
 import { AuthService, BASE_URL, Group, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { CountryService } from 'vitamui-library';

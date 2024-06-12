@@ -12,22 +12,42 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "noImplicitAny": true,
     "paths": {
-      "vitamui-demo": ["./projects/demo/src"],
-      "vitamui-identity": ["./projects/identity/src/app/"],
-      "vitamui-portal": ["./projects/portal/src/app/"],
-      "vitamui-referential": ["./projects/referential/src/app/"],
-      "vitamui-collect": ["./projects/collect/src/app/"],
-      "vitamui-library": ["dist/vitamui-library"],
-      "vitamui-library/*": ["dist/vitamui-library/*"],
+      "vitamui-demo": [
+        "./projects/demo/src"
+      ],
+      "vitamui-identity": [
+        "./projects/identity/src/app/"
+      ],
+      "vitamui-portal": [
+        "./projects/portal/src/app/"
+      ],
+      "vitamui-referential": [
+        "./projects/referential/src/app/"
+      ],
+      "vitamui-collect": [
+        "./projects/collect/src/app/"
+      ],
+      "vitamui-library": [
+        "dist/vitamui-library"
+      ],
+      "vitamui-library/*": [
+        "dist/vitamui-library/*"
+      ]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "useDefineForClassFields": false
   },
   // FIXME: uncomment to improve code quality
 //  "angularCompilerOptions": {

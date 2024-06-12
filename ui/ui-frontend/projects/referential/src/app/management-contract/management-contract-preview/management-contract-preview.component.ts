@@ -35,8 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyTab as MatTab,
+  MatLegacyTabGroup as MatTabGroup,
+  MatLegacyTabHeader as MatTabHeader,
+} from '@angular/material/legacy-tabs';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ManagementContract } from 'vitamui-library';

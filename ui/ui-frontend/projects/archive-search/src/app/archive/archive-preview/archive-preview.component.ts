@@ -36,7 +36,12 @@
  */
 
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import {
+  MatLegacyTab as MatTab,
+  MatLegacyTabChangeEvent as MatTabChangeEvent,
+  MatLegacyTabGroup as MatTabGroup,
+  MatLegacyTabHeader as MatTabHeader,
+} from '@angular/material/legacy-tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'vitamui-library';
