@@ -37,7 +37,7 @@
 import { Inject, Injectable } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -50,7 +50,7 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 @Injectable({
   providedIn: 'root',
 })
-export class AppGuard implements CanActivate {
+export class AppGuard {
   constructor(
     private authService: AuthService,
     private startupService: StartupService,

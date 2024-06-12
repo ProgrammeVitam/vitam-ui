@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -45,7 +45,7 @@ import { ProfileService } from './profile.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ProfileResolver implements Resolve<Profile> {
+export class ProfileResolver {
   constructor(
     private rngProfileService: ProfileService,
     private router: Router,

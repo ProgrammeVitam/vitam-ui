@@ -16,6 +16,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -132,6 +135,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -242,6 +248,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -346,6 +355,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -517,6 +529,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "outputPath": "dist/design-system",
             "index": "projects/design-system/src/index.html",
             "main": "projects/design-system/src/main.ts",
@@ -614,6 +629,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -715,6 +733,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -816,6 +837,10 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment",
+              "jszip"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js"
             },
@@ -917,6 +942,15 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment",
+              "dayjs",
+              "dayjs/plugin/customParseFormat",
+              "dayjs/plugin/isBetween",
+              "dayjs/plugin/isSameOrAfter",
+              "dayjs/plugin/isSameOrBefore",
+              "dayjs/plugin/isoWeek"
+            ],
             "customWebpackConfig": {
               "path": "./extra-webpack.config.js",
               "preserveSymlinks": true

@@ -35,21 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { OntologyCreateValidators } from './ontology-create.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Ontology Create Validators', () => {
   describe('uniqueCode', () => {
@@ -57,7 +47,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(false));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
 
@@ -70,7 +60,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
         expect(result).toEqual({ idExists: true });
@@ -84,7 +74,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ idExists: true });
       });
 
@@ -96,7 +86,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
         expect(result).toEqual({ idExists: true });
@@ -113,7 +103,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(false));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
 
@@ -126,7 +116,7 @@ describe('Ontology Create Validators', () => {
       const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
       ontologyServiceSpy.exists.and.returnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
-      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
+      from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
         expect(result).toEqual({ idExists: true });

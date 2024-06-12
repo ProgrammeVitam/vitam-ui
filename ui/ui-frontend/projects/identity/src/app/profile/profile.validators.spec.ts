@@ -35,28 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { ProfileValidators } from './profile.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('ProfileValidators', () => {
   it('should return null', fakeAsync(() => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
     profileServiceSpy.exists.and.returnValue(of(false));
     const profileValidators = new ProfileValidators(profileServiceSpy);
-    toObservable(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
+    from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
     tick(400);
@@ -67,7 +57,7 @@ describe('ProfileValidators', () => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
     profileServiceSpy.exists.and.returnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
-    toObservable(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
+    from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
     tick(400);
@@ -78,7 +68,7 @@ describe('ProfileValidators', () => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
     profileServiceSpy.exists.and.returnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
-    toObservable(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
+    from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
     tick(400);
@@ -89,7 +79,7 @@ describe('ProfileValidators', () => {
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
     profileServiceSpy.exists.and.returnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
-    toObservable(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
+    from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
     tick(400);

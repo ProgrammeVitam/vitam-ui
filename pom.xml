@@ -163,8 +163,8 @@
         <snakeyaml.version>1.32</snakeyaml.version>
 
         <!-- Web Pack -->
-        <node.version>v16.20.2</node.version>
-        <npm.version>8.19.4</npm.version>
+        <node.version>v18.20.3</node.version>
+        <npm.version>10.7.0</npm.version>
 
         <!--Plugins
         version -->

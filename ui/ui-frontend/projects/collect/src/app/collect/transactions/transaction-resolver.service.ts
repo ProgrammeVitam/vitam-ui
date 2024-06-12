@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -35,7 +35,7 @@ import { TransactionsService } from './transactions.service';
 @Injectable({
   providedIn: 'root',
 })
-export class TransactionResolver implements Resolve<boolean> {
+export class TransactionResolver {
   constructor(
     private transactionsService: TransactionsService,
     private projectService: ProjectsService,

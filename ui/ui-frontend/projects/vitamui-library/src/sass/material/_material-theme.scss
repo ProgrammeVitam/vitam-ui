@@ -81,7 +81,15 @@ $app-accent: mat.define-palette($vitamui-secondary);
 $app-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$app-theme: mat.define-light-theme($app-primary, $app-accent, $app-warn);
+$app-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -110,14 +118,5 @@ $custom-typography: mat.define-legacy-typography-config(
 
 @include mat.legacy-typography-hierarchy($custom-typography);
 @include mat.legacy-checkbox-typography($custom-typography);
-@include mat.all-legacy-component-typographies($custom-typography);
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy($custom-typography);`
 @include mat.all-legacy-component-typographies($custom-typography);
 @include mat.legacy-core();

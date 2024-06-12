@@ -35,20 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { AgencyCreateValidators } from './agency-create.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Agency Create Validators', () => {
   describe('uniqueCode', () => {
@@ -56,7 +46,7 @@ describe('Agency Create Validators', () => {
       const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
       agencyServiceSpy.existsProperties.and.returnValue(of(false));
       const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
-      toObservable(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
 
@@ -69,7 +59,7 @@ describe('Agency Create Validators', () => {
       const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
       agencyServiceSpy.existsProperties.and.returnValue(of(true));
       const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
-      toObservable(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
         expect(result).toEqual({ nameExists: true });
@@ -84,7 +74,7 @@ describe('Agency Create Validators', () => {
       const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
       agencyServiceSpy.existsProperties.and.returnValue(of(true));
       const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
-      toObservable(agencyCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
+      from(agencyCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
 
@@ -96,7 +86,7 @@ describe('Agency Create Validators', () => {
       const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
       agencyServiceSpy.existsProperties.and.returnValue(of(true));
       const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
-      toObservable(agencyCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
+      from(agencyCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
         expect(result).toEqual({ nameExists: true });
