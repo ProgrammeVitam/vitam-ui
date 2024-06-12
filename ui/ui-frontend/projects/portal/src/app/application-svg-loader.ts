@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
+
 import { SvgHttpLoader, SvgLoader } from 'angular-svg-icon';
 import { Observable, of, Subscriber } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { makeStateKey, StateKey, TransferState } from '@angular/core';
 
 const UNKNOW_APP_FILE_NAME = 'UNKNOWN_APP';
 

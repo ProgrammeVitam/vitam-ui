@@ -87,7 +87,7 @@
               [matTooltipShowDelay]="0"
               [ngClass]="{
                 'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
-                'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])
+                'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
               }"
               matTooltip="{{ getSedaDefinition(element.nomDuChamp) }}"
               matTooltipClass="pastis-matTooltipClass"
@@ -206,7 +206,7 @@
               [center-mat-menu]="menuTrigger"
               [ngClass]="{
                 'pastis-btn-metadata-options-active': isButtonClicked(element.id, matDataSource.data[rowIndex]),
-                'pastis-btn-metadata-options': !isButtonClicked(element.id, matDataSource.data[rowIndex])
+                'pastis-btn-metadata-options': !isButtonClicked(element.id, matDataSource.data[rowIndex]),
               }"
               disableRipple="true"
               id="menuBtn"
@@ -215,7 +215,7 @@
               <mat-icon
                 [ngClass]="{
                   'pastis-ico-menu-active': isButtonClicked(element.id, matDataSource.data[rowIndex]),
-                  'pastis-ico-menu-inactive': !isButtonClicked(element.id, matDataSource.data[rowIndex])
+                  'pastis-ico-menu-inactive': !isButtonClicked(element.id, matDataSource.data[rowIndex]),
                 }"
               >
                 {{ isButtonClicked(element.id, matDataSource.data[rowIndex]) ? 'close' : 'more_horiz' }}

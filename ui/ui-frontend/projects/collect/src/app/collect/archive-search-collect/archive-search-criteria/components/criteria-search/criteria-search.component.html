@@ -21,7 +21,7 @@
               [matTooltipShowDelay]="300"
               [ngClass]="[
                 isFirst ? 'left-arround' : 'left-not-arround',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
               class="button-content right-button"
             >
@@ -40,7 +40,7 @@
               (click)="removeCriteria(criteriaKey, criteriaValue.value)"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
@@ -51,7 +51,7 @@
               class="vitamui-remove-search-criteria"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
@@ -82,7 +82,7 @@
               [matTooltipShowDelay]="300"
               [ngClass]="[
                 isFirst ? 'left-arround' : 'left-not-arround',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
               class="button-content right-button"
             >
@@ -110,7 +110,7 @@
               (click)="removeCriteria(criteriaKey, criteriaValue.value)"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
@@ -121,7 +121,7 @@
               class="vitamui-remove-search-criteria"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
-                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
@@ -157,7 +157,7 @@
                   isFirst ? 'left-arround' : 'left-not-arround',
                   criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
-                    : 'before-search-launched-button'
+                    : 'before-search-launched-button',
                 ]"
                 class="button-content right-button"
               >
@@ -186,7 +186,7 @@
                   isFirst ? 'left-arround' : 'left-not-arround',
                   criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
-                    : 'before-search-launched-button'
+                    : 'before-search-launched-button',
                 ]"
                 class="button-content right-button"
               >
@@ -208,7 +208,7 @@
                 isLast ? 'right-arround' : 'right-button',
                 criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
                   ? 'after-search-launched-button'
-                  : 'before-search-launched-button'
+                  : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
@@ -221,7 +221,7 @@
                 isLast ? 'right-arround' : 'right-button',
                 criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
                   ? 'after-search-launched-button'
-                  : 'before-search-launched-button'
+                  : 'before-search-launched-button',
               ]"
             >
               <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
@@ -244,7 +244,7 @@
                 [matTooltipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
-                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
                 ]"
               >
                 <ng-container *ngIf="isFirst">
@@ -268,7 +268,7 @@
                 (click)="removeCriteria(criteriaKey, criteriaValue.value)"
                 [ngClass]="[
                   isLast ? 'right-arround' : 'right-button',
-                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
                 ]"
               >
                 <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
@@ -278,7 +278,7 @@
                 *ngIf="criteriaValue.status === 'IN_PROGRESS'"
                 [ngClass]="[
                   isLast ? 'right-arround' : 'right-button',
-                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
+                  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
                 ]"
               >
                 <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>

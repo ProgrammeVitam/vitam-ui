@@ -57,7 +57,7 @@
               *ngIf="isElementComplexAndHasChildren(node)"
               [ngClass]="{
                 'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
-                'pastis-chevron-icon-selected': fileTreeService.nestedTreeControl.isExpanded(node)
+                'pastis-chevron-icon-selected': fileTreeService.nestedTreeControl.isExpanded(node),
               }"
             >
               <mat-icon>{{ fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }} </mat-icon>

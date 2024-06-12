@@ -20,7 +20,7 @@ jobs:
             ui/ui-frontend/package-lock.json
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
-        run: npm ci
+        run: npm ci --force
       - name: Build vitamui-library
         working-directory: ui/ui-frontend
         run: npm run build:vitamui-library

@@ -94,7 +94,7 @@
             'text-green': operationStatus(operation) === 'OK',
             'text-red': operationStatus(operation) === 'KO',
             'text-orange': operationStatus(operation) === 'WARNING',
-            'text-red-fatal': operationStatus(operation) === 'FATAL'
+            'text-red-fatal': operationStatus(operation) === 'FATAL',
           }"
         >
           <strong>{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</strong>

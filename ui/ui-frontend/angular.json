@@ -94,7 +94,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "identity:build"
+            "buildTarget": "identity:build"
           }
         },
         "test": {
@@ -317,7 +317,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demo:build"
+            "buildTarget": "demo:build"
           }
         },
         "lint": {
@@ -433,7 +433,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "referential:build"
+            "buildTarget": "referential:build"
           }
         },
         "test": {
@@ -581,13 +581,13 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "design-system:build",
             "host": "dev.vitamui.com",
-            "port": 4201
+            "port": 4201,
+            "buildTarget": "design-system:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "design-system:build:production"
+              "buildTarget": "design-system:build:production"
             }
           }
         },
@@ -693,7 +693,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ingest:build"
+            "buildTarget": "ingest:build"
           }
         },
         "test": {
@@ -797,7 +797,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "archive-search:build"
+            "buildTarget": "archive-search:build"
           }
         },
         "test": {
@@ -902,7 +902,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "collect:build"
+            "buildTarget": "collect:build"
           }
         },
         "test": {
@@ -1037,7 +1037,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pastis:build"
+            "buildTarget": "pastis:build"
           }
         },
         "test": {
