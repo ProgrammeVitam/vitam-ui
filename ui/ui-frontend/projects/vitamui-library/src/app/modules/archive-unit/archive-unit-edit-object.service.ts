@@ -132,6 +132,16 @@ export class ArchiveUnitEditObjectService {
     displayObject.children.forEach((child) => this.hideLabellessDisplayObjects(child));
   }
 
+  public hideSpsFieldWithOneValue(displayObject: DisplayObject): void {
+    const hasOneValue = displayObject.displayRule.ui.Path === '#originating_agencies' && displayObject.value.length === 1;
+
+    if (hasOneValue) {
+      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
+    }
+
+    displayObject.children.forEach((child) => this.hideSpsFieldWithOneValue(child));
+  }
+
   public displayExternals(displayObject: DisplayObject, schemaByApiPath: SchemaElementByApiPath) {
     if (displayObject.displayRule.Path) {
       const dataPath = displayObject.displayRule.Path;
