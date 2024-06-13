@@ -50,6 +50,8 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.OntologyModel;
 import fr.gouv.vitam.common.model.administration.OntologyOrigin;
 import fr.gouv.vitam.common.model.administration.OntologyType;
+import fr.gouv.vitam.common.model.administration.StringSize;
+import fr.gouv.vitam.common.model.administration.TypeDetail;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
@@ -64,14 +66,12 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -241,60 +241,49 @@ public class OntologyInternalService {
     }
 
     public OntologyDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
-        final OntologyDto ontologyDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
-        partialDto.forEach((key, value) -> {
-            if ("type".equals(key)) {
-                ontologyDto.setType(OntologyType.valueOf((String) value));
-            } else if (!"id".equals(key)) {
-                try {
-                    BeanUtilsBean.getInstance().copyProperty(ontologyDto, key, value);
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    throw new InternalServerException("Unable to copy properties to DTO", e);
-                }
-            }
-        });
-
         try {
-            updateOntology(vitamContext, (String) partialDto.get("id"), ontologyDto);
+            if (vitamContext != null) {
+                LOGGER.info("Update Ontology EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            }
+            final List<OntologyDto> ontologies = getAll(vitamContext);
+
+            final OntologyDto ontologyDto = ontologies
+                .stream()
+                .filter(ontology -> partialDto.get("id").equals(ontology.getId()))
+                .findFirst()
+                .orElseThrow(() -> new InternalServerException("No ontology matched for update"));
+
+            this.patchFields(ontologyDto, partialDto);
+
+            ontologyService.importOntologies(vitamContext, converter.convertDtosToVitams(ontologies));
             return ontologyDto;
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Unable to patch agency", e);
         }
     }
 
-    private RequestResponse<?> updateOntology(
-        final VitamContext vitamContext,
-        final String id,
-        OntologyDto patchOntology
-    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        if (vitamContext != null) {
-            LOGGER.info("Update Ontology EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+    private void patchFields(OntologyDto ontologyToPatch, Map<String, Object> fieldsToApply) {
+        if (fieldsToApply.containsKey("shortName")) {
+            ontologyToPatch.setShortName((String) fieldsToApply.get("shortName"));
         }
-        final List<OntologyDto> ontologies = getAll(vitamContext);
-
-        ontologies
-            .stream()
-            .filter(ontology -> id.equals(ontology.getId()))
-            .forEach(ontology -> this.patchFields(ontology, patchOntology));
-
-        return ontologyService.importOntologies(vitamContext, converter.convertDtosToVitams(ontologies));
-    }
-
-    private void patchFields(OntologyDto ontologyToPatch, OntologyDto fieldsToApply) {
-        if (fieldsToApply.getShortName() != null) {
-            ontologyToPatch.setShortName(fieldsToApply.getShortName());
+        if (fieldsToApply.containsKey("description")) {
+            ontologyToPatch.setDescription((String) fieldsToApply.get("description"));
         }
-
-        if (fieldsToApply.getDescription() != null) {
-            ontologyToPatch.setDescription(fieldsToApply.getDescription());
+        if (fieldsToApply.containsKey("type")) {
+            ontologyToPatch.setType(OntologyType.valueOf((String) fieldsToApply.get("type")));
         }
-
-        if (fieldsToApply.getType() != null) {
-            ontologyToPatch.setType(fieldsToApply.getType());
+        if (fieldsToApply.containsKey("typeDetail")) {
+            ontologyToPatch.setTypeDetail(TypeDetail.valueOf((String) fieldsToApply.get("typeDetail")));
         }
-
-        if (fieldsToApply.getCollections() != null) {
-            ontologyToPatch.setCollections(fieldsToApply.getCollections());
+        if (fieldsToApply.containsKey("stringSize")) {
+            ontologyToPatch.setStringSize(
+                Optional.ofNullable(fieldsToApply.get("stringSize"))
+                    .map(v -> StringSize.valueOf((String) v))
+                    .orElse(null)
+            );
+        }
+        if (fieldsToApply.containsKey("collections")) {
+            ontologyToPatch.setCollections((List<String>) fieldsToApply.get("collections"));
         }
     }
 

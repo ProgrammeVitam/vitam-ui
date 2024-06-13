@@ -34,6 +34,8 @@ describe('OntologyInformationTabComponent', () => {
     type: 'EXTERNAL',
     collections: [''],
     description: 'Mon Ontologie',
+    typeDetail: 'string',
+    stringSize: 'MEDIUM',
   };
 
   beforeEach(waitForAsync(() => {

@@ -619,12 +619,18 @@
       "SUBTITLE": "Informations",
       "IDENTIFIER": "Identifiant",
       "NAME": "Nom",
-      "TYPE": "Type",
+      "INDEXING_MODE": "Mode d'indexation",
+      "FIELD_SIZE": "Taille du champ",
       "COLLECTION": "Collection",
       "DESCRIPTION": "Description",
+      "SHORT": "Court",
+      "MEDIUM": "Moyen",
+      "LONG": "Long",
       "IDENTIFIER_TOOLTIP": "Pour les vocabulaires externes, cet identifiant correspond au nom de la métadonnée telle qu'elle est nommée dans le bordereau de transfert ou dans un profil d'unité archivistique",
-      "TYPE_TOOLTIP": "Type d'indexation du vocabulaire, correspondant à un type attendu par le moteur Elastic Search",
+      "INDEXING_MODE_TOOLTIP": "Type d'indexation du vocabulaire, correspondant à un type attendu par le moteur Elastic Search",
       "COLLECTION_TOOLTIP": "Collection de la base Mongo DB qui utilise le vocabulaire",
+      "NAME_TOOLTIP": "Label du champ tel qu'il s’affichera en recherche et consultation de cette métadonnée",
+      "SIZE_TOOLTIP": "La valeur attendue pour cette métadonnée correspond pour \"Court\" à quelques mots ; pour \"Moyen\" à une phrase et pour \"Long\" à un paragraphe",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
       "IDENTIFIER_NO_COMPLIANT": "Identifiant non conforme"
@@ -632,8 +638,10 @@
     "TAB": {
       "INFORMATION": {
         "TITLE": "Informations",
+        "IDENTIFIER": "Identifiant",
         "NAME": "Nom",
         "TYPE": "Type",
+        "FIELD_SIZE": "Taille du champ",
         "COLLECTION": "Collection",
         "DESCRIPTION": "Description",
         "CREATION_DATE": "Date de création"

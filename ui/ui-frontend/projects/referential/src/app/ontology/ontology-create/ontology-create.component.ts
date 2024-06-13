@@ -41,6 +41,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Option } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
+import { setTypeDetailAndStringSize } from '../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 
 @Component({
   selector: 'app-ontology-create',
@@ -54,6 +55,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   hasError = true;
   message: string;
   isDisabledButton = false;
+  sizeFieldVisible = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -78,6 +80,12 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
     { key: 'ObjectGroup', label: "Groupe d'objet", info: '' },
   ];
 
+  sizes: Option[] = [
+    { key: 'SHORT', label: 'Court', info: '' },
+    { key: 'MEDIUM', label: 'Moyen', info: '' },
+    { key: 'LARGE', label: 'Long', info: '' },
+  ];
+
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
@@ -91,10 +99,12 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      shortName: [null],
+      shortName: [null, Validators.required],
       identifier: [null, [Validators.required, this.ontologyCreateValidator.patternID()], this.ontologyCreateValidator.uniqueID()],
       type: [null, Validators.required],
-      collections: [null],
+      typeDetail: [null],
+      stringSize: [null],
+      collections: [null, Validators.required],
       description: [null],
       origin: ['INTERNAL'],
     });
@@ -112,6 +122,11 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
     } else {
       this.dialogRef.close();
     }
+  }
+
+  onIndexingModeChange(key: string) {
+    this.sizeFieldVisible = key === 'TEXT';
+    setTypeDetailAndStringSize(key, this.form);
   }
 
   onSubmit() {

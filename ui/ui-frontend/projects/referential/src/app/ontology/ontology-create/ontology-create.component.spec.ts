@@ -60,6 +60,8 @@ const expectedOntology = {
   collections: ['ObjectGroup'],
   description: 'Mon Ontologie',
   origin: 'INTERNAL',
+  typeDetail: 'STRING',
+  stringSize: 'MEDIUM',
 };
 
 let component: OntologyCreateComponent;

@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { Option, diff } from 'vitamui-library';
-import { extend, isEmpty } from 'underscore';
-import { Ontology } from 'vitamui-library';
-import { OntologyService } from '../../ontology.service';
+import { catchError, switchMap } from 'rxjs/operators';
+import { diff, Ontology, Option } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
+import { OntologyService } from '../../ontology.service';
+import { setTypeDetailAndStringSize } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -20,6 +19,8 @@ export class OntologyInformationTabComponent implements OnInit {
   isInternal = true;
 
   submited = false;
+
+  sizeFieldVisible = false;
 
   // FIXME: Get list from common var ?
   types: Option[] = [
@@ -39,6 +40,12 @@ export class OntologyInformationTabComponent implements OnInit {
     { key: 'ObjectGroup', label: "Groupe d'objet", info: '' },
   ];
 
+  sizes: Option[] = [
+    { key: 'SHORT', label: 'Court', info: '' },
+    { key: 'MEDIUM', label: 'Moyen', info: '' },
+    { key: 'LARGE', label: 'Long', info: '' },
+  ];
+
   @Input()
   set inputOntology(ontology: Ontology) {
     this._inputOntology = ontology;
@@ -52,6 +59,8 @@ export class OntologyInformationTabComponent implements OnInit {
     if (!ontology.collections) {
       this._inputOntology.collections = [];
     }
+
+    this.sizeFieldVisible = this._inputOntology.type === 'TEXT';
 
     this.resetForm(this.inputOntology);
     this.updated.emit(false);
@@ -86,7 +95,9 @@ export class OntologyInformationTabComponent implements OnInit {
       identifier: [null, Validators.required],
       shortName: [{ value: null, disabled: true }, Validators.required],
       type: [null, Validators.required],
-      collections: [null],
+      typeDetail: [null],
+      stringSize: [null],
+      collections: [null, Validators.required],
       description: [null],
       creationDate: [{ value: null, disabled: true }],
     });
@@ -104,12 +115,22 @@ export class OntologyInformationTabComponent implements OnInit {
     return unchanged;
   }
 
+  onIndexingModeChange(key: string) {
+    if (!this.isInternal) {
+      this.sizeFieldVisible = key === 'TEXT';
+    }
+
+    setTypeDetailAndStringSize(key, this.form);
+  }
+
   prepareSubmit(): Observable<Ontology> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))),
-    );
+    const payload = {
+      id: this.previousValue().id,
+      identifier: this.previousValue().identifier,
+      ...this.form.value,
+    };
+
+    return of(payload).pipe(switchMap((formData: any) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {

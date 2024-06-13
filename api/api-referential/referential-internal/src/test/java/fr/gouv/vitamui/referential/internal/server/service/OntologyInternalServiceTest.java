@@ -46,6 +46,9 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.OntologyModel;
+import fr.gouv.vitam.common.model.administration.OntologyType;
+import fr.gouv.vitam.common.model.administration.StringSize;
+import fr.gouv.vitam.common.model.administration.TypeDetail;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -57,23 +60,30 @@ import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.mock;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ServerIdentityConfiguration.class })
 public class OntologyInternalServiceTest {
 
@@ -563,6 +573,71 @@ public class OntologyInternalServiceTest {
         assertThatCode(() -> {
             ontologyInternalService.delete(vitamContext, identifier);
         }).isInstanceOf(InternalServerException.class);
+    }
+
+    @Test
+    public void updateOntology_should_return_ok_when_some_fields_are_modifyed()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
+        VitamContext vitamContext = new VitamContext(0);
+
+        OntologyModel model = new OntologyModel();
+        model.setId("1");
+        model.setIdentifier("identifier");
+        model.setShortName("vocab");
+        model.setType(OntologyType.TEXT);
+        model.setTypeDetail(TypeDetail.STRING);
+        model.setStringSize(StringSize.LARGE);
+
+        OntologyModel model2 = new OntologyModel();
+        model2.setId("2");
+        model2.setIdentifier("2");
+        model2.setShortName("vocbool");
+        model2.setType(OntologyType.BOOLEAN);
+        model2.setTypeDetail(TypeDetail.BOOLEAN);
+
+        List<OntologyModel> ontologies = new ArrayList<>();
+        ontologies.add(model);
+        ontologies.add(model2);
+
+        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK<OntologyModel>().addAllResults(ontologies).setHttpCode(200)
+        );
+
+        Map<String, Object> partialDto = new HashMap<>();
+
+        partialDto.put("id", "1");
+        partialDto.put("identifier", "identifier");
+        partialDto.put("shortName", "vocabtext");
+        partialDto.put("type", OntologyType.TEXT.toString());
+        partialDto.put("typeDetail", TypeDetail.STRING.toString());
+        partialDto.put("stringSize", StringSize.SHORT.toString());
+
+        Capture<List<OntologyModel>> capturedOntologies = Capture.newInstance();
+        expect(ontologyService.importOntologies(isA(VitamContext.class), capture(capturedOntologies))).andReturn(null);
+
+        EasyMock.replay(ontologyService);
+
+        final OntologyDto patchedOntology = ontologyInternalService.patch(vitamContext, partialDto);
+
+        assertThat(capturedOntologies.getValue().size()).isEqualTo(2);
+
+        assertThat(capturedOntologies.getValue().get(0).getIdentifier()).isEqualTo("identifier");
+        assertThat(capturedOntologies.getValue().get(0).getShortName()).isEqualTo("vocabtext");
+        assertThat(capturedOntologies.getValue().get(0).getType()).isEqualTo(OntologyType.TEXT);
+        assertThat(capturedOntologies.getValue().get(0).getTypeDetail()).isEqualTo(TypeDetail.STRING);
+        assertThat(capturedOntologies.getValue().get(0).getStringSize()).isEqualTo(StringSize.SHORT);
+
+        assertThat(capturedOntologies.getValue().get(1).getIdentifier()).isEqualTo("2");
+        assertThat(capturedOntologies.getValue().get(1).getShortName()).isEqualTo("vocbool");
+        assertThat(capturedOntologies.getValue().get(1).getType()).isEqualTo(OntologyType.BOOLEAN);
+        assertThat(capturedOntologies.getValue().get(1).getTypeDetail()).isEqualTo(TypeDetail.BOOLEAN);
+
+        assertThat(patchedOntology.getIdentifier()).isEqualTo("identifier");
+        assertThat(patchedOntology.getId()).isEqualTo("1");
+        assertThat(patchedOntology.getShortName()).isEqualTo("vocabtext");
+        assertThat(patchedOntology.getType()).isEqualTo(OntologyType.TEXT);
+        assertThat(patchedOntology.getTypeDetail()).isEqualTo(TypeDetail.STRING);
+        assertThat(patchedOntology.getStringSize()).isEqualTo(StringSize.SHORT);
     }
 
     @Test

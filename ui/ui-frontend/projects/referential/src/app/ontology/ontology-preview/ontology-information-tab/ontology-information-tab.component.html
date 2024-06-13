@@ -1,14 +1,40 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="d-flex mt-3">
-    <vitamui-common-input formControlName="shortName" [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate" disabled>
+    <vitamui-common-input formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate" disabled>
+    </vitamui-common-input>
+  </div>
+
+  <div class="d-flex mt-3">
+    <vitamui-common-input formControlName="shortName" [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate" [disabled]="isInternal">
     </vitamui-common-input>
   </div>
 
   <div class="d-flex">
     <mat-form-field class="vitamui-mat-select w-100">
-      <mat-select formControlName="type" [disabled]="isInternal" [placeholder]="'ONTOLOGY.TAB.INFORMATION.TYPE' | translate">
+      <mat-select
+        formControlName="type"
+        [disabled]="isInternal"
+        [placeholder]="'ONTOLOGY.TAB.INFORMATION.TYPE' | translate"
+        (selectionChange)="onIndexingModeChange($event.value)"
+      >
         <mat-option *ngFor="let type of types" [value]="type.key">
           {{ type.label }}
+        </mat-option>
+      </mat-select>
+      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="sizeFieldVisible" class="d-flex mt-4">
+    <mat-form-field class="vitamui-mat-select w-100">
+      <mat-select
+        formControlName="stringSize"
+        [disabled]="isInternal"
+        [placeholder]="'ONTOLOGY.TAB.INFORMATION.FIELD_SIZE' | translate"
+        [required]="sizeFieldVisible"
+      >
+        <mat-option *ngFor="let size of sizes" [value]="size.key">
+          {{ size.label }}
         </mat-option>
       </mat-select>
       <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
@@ -57,7 +83,7 @@
   </mat-form-field>
 
   <div class="actions mt-5">
-    <button type="submit" class="btn primary" [disabled]="unchanged() || submited">
+    <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submited">
       {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
