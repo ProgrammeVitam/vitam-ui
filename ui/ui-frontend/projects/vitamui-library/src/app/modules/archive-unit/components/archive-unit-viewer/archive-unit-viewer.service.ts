@@ -99,6 +99,7 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
     this.archiveUnitEditObjectService.hideInconsistentDisplayObjects(displayObject);
     // Attention display Other MetaData doit être après hideInconsistentDisplayObjects
     this.archiveUnitEditObjectService.displayOtherMetadata(displayObject);
+    this.archiveUnitEditObjectService.hideSpsFieldWithOneValue(displayObject);
 
     return displayObject;
   }
