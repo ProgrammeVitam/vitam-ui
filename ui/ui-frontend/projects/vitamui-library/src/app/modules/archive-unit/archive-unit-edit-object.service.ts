@@ -133,7 +133,7 @@ export class ArchiveUnitEditObjectService {
   }
 
   public hideSpsFieldWithOneValue(displayObject: DisplayObject): void {
-    const hasOneValue = displayObject.displayRule.ui.Path === '#originating_agencies' && displayObject.value.length === 1;
+    const hasOneValue = Boolean(displayObject.displayRule.ui.Path === '#originating_agencies' && displayObject.value.length === 1);
 
     if (hasOneValue) {
       displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
