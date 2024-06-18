@@ -16,8 +16,8 @@ jobs:
       - name: Install Prettier
         working-directory: ui/ui-frontend
         run: npm i -g prettier@$(jq -r '.devDependencies.prettier' package.json)
-      - name: Lint ui-frontend
-        working-directory: ui/ui-frontend
+      - name: Lint ui-frontend with Prettier
+        working-directory: ui/ui-frontend # We only run Prettier linting and not ESLint in that GitHub Action because it would require to install project's dependencies. ESLint is run in "build-and-test" GitHub Action
         run: npm run prettier:ci
   lint-backend:
     name: Lint Backend
