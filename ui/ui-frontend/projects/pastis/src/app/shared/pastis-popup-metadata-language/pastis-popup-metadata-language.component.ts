@@ -40,7 +40,7 @@ import { Component, OnInit } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
   styleUrls: ['./pastis-popup-metadata-language.component.scss'],

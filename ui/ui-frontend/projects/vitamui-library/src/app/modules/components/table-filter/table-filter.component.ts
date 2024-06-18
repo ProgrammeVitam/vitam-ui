@@ -63,7 +63,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   set filter(values: any[]) {
     this._filter = values || [];
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _filter: any[];
 
   @Input() showSearchBar = false;

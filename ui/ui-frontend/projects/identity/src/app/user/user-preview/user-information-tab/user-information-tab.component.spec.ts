@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: max-file-line-count max-classes-per-file */
+/* eslint-disable max-lines, max-classes-per-file */
 import { EMPTY, of } from 'rxjs';
 import {
   AdminUserProfile,
@@ -157,7 +157,7 @@ let expectedAdminUserProfile: AdminUserProfile = {
   ],
 };
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -166,7 +166,7 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-  // tslint:disable-next-line: max-line-length
+  // eslint-disable-next-line max-len
   template: `<app-user-info-tab
     [user]="user"
     [customer]="customer"

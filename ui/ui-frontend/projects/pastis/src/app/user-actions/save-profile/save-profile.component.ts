@@ -91,7 +91,7 @@ function constantToTranslate(edit: boolean) {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss'],
@@ -124,7 +124,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   isSlaveMode: boolean;
   fileRng: File;
 
-  // tslint:disable-next-line:no-output-native
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter();
 
   constructor(
@@ -290,20 +290,20 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
               }
             });
         } else if (result.action === 'rattachement') {
-          // tslint:disable-next-line:no-shadowed-variable
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
           dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
           dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           dataToSendToPopUp.profileMode = this.profileService.profileMode;
-          // tslint:disable-next-line:no-shadowed-variable
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           const selectNoticeDialog = this.dialog.open(SelectNoticeComponent, {
             width: '800px',
             panelClass: 'pastis-popup-modal-box',
             data: dataToSendToPopUp,
           });
-          // tslint:disable-next-line:no-shadowed-variable
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           this.subscriptions.add(
             selectNoticeDialog.afterClosed().subscribe((selectNoticeResult) => {
               this.toggleService.showPending();
@@ -313,7 +313,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                 if (selectNoticeResult.mode === ProfileType.PUA) {
                   this.subscriptions.add(
                     this.profileService.uploadFile(this.data, profileDescription, selectNoticeResult.mode).subscribe((retrievedData) => {
-                      // tslint:disable-next-line:no-shadowed-variable
+                      // eslint-disable-next-line @typescript-eslint/no-shadow
                       retrievedData.text().then((result) => {
                         const jsonObject = JSON.parse(result);
                         this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;

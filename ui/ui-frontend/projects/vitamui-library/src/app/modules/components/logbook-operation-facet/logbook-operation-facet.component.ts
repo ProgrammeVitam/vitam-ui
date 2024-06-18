@@ -29,7 +29,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FacetDetails } from '../../models';
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-logbook-operation-facet',
   templateUrl: './logbook-operation-facet.component.html',
   styleUrls: ['./logbook-operation-facet.component.scss'],

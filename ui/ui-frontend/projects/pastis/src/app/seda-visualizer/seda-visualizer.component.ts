@@ -48,7 +48,7 @@ interface ExtendedHierachyNode<T> extends d3.HierarchyNode<T> {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-seda-visualizer',
   templateUrl: './seda-visualizer.component.html',
   styleUrls: ['./seda-visualizer.component.scss'],
@@ -295,7 +295,7 @@ export class SedaVisualizerComponent implements OnInit {
   initLegend(): void {
     // Legend
     // select the svg area
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     const svg_legend = d3.select('#seda_legend');
     // Nodes
     svg_legend
@@ -372,7 +372,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', '#2A9DF4')
       .style('stroke-width', '2.5');
-    // tslint:disable-next-line:max-line-length
+    // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '190').attr('dy', '70').text('1-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     svg_legend
@@ -383,7 +383,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', '#555555')
       .style('stroke-width', '2.5');
-    // tslint:disable-next-line:max-line-length
+    // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '280').attr('dy', '70').text('0-1').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     svg_legend
@@ -394,7 +394,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', '#adb7bd')
       .style('stroke-width', '2.5');
-    // tslint:disable-next-line:max-line-length
+    // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '360').attr('dy', '70').text('0-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     // Legend text

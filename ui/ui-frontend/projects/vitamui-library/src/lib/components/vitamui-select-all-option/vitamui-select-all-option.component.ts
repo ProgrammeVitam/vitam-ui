@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 import {
   ChangeDetectorRef,
   Component,

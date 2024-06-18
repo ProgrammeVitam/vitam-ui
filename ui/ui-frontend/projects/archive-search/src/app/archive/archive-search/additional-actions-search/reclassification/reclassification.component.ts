@@ -59,7 +59,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 const PULL = 'PULL';
 const REPLACE = 'REPLACE';
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'reclassification',
   templateUrl: './reclassification.component.html',
   styleUrls: ['./reclassification.component.scss'],

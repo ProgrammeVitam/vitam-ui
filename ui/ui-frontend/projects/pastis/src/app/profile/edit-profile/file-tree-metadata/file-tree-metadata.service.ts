@@ -58,7 +58,7 @@ export class FileTreeMetadataService {
   }
 
   initCardinalityValues() {
-    // tslint:disable-next-line:forin
+    // eslint-disable-next-line guard-for-in
     for (const key in CardinalityConstants) {
       const cardinality: CardinalityValues = { value: CardinalityConstants[key as keyof typeof CardinalityConstants], viewValue: key };
       this.cardinalityValues.push(cardinality);
@@ -76,7 +76,7 @@ export class FileTreeMetadataService {
 
   fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude: string[], childrenToExclude: string[]): MetadataHeaders[] {
     const data: MetadataHeaders[] = [];
-    // tslint:disable-next-line:prefer-const
+    // eslint-disable-next-line prefer-const
     let allowedCardList: string[][];
     if (clickedNode.children.length > 0) {
       for (const child of clickedNode.children) {

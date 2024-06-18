@@ -18,7 +18,7 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   get customer(): Customer {
     return this._customer;
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _customer: Customer;
 
   @Input()
@@ -29,7 +29,7 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
     return this._readonly;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _readonly: boolean;
   private destroy = new Subject<void>();
 

@@ -47,14 +47,14 @@ import { OntologyComponent } from './ontology.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-ontology-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-ontology-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {}
 
 describe('OntologyComponent', () => {

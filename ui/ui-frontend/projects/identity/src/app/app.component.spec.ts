@@ -44,11 +44,11 @@ import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
-// tslint:disable-next-line:component-selector
+// eslint-disable-next-line @angular-eslint/component-selector
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent {}
 
-// tslint:disable-next-line:component-selector
+// eslint-disable-next-line @angular-eslint/component-selector
 @Component({ selector: 'vitamui-common-subrogation-banner', template: '' })
 class SubrogationBannerStubComponent {}
 

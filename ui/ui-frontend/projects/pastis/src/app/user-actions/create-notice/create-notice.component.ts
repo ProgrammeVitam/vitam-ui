@@ -29,7 +29,7 @@ function constantToTranslate() {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
   styleUrls: ['./create-notice.component.scss'],
@@ -162,7 +162,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  // tslint:disable-next-line:use-lifecycle-interface
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

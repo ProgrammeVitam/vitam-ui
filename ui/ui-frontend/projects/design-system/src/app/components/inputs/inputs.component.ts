@@ -7,7 +7,7 @@ import { extend } from 'underscore';
 import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-inputs',
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss'],

@@ -48,7 +48,7 @@ import { User } from './../../../models/user/user.interface';
 })
 /** @deprecated: use tenant-selection.service */
 export class TenantMenuService {
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _tenants: Tenant[] = [];
   activeTenantIdentifier: number;
   private selectedTenantSubject = new Subject<number>();

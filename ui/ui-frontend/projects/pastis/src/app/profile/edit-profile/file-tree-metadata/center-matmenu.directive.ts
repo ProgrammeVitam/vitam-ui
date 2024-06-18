@@ -3,7 +3,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 import { MatLegacyMenuPanel as MatMenuPanel, MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[center-mat-menu]',
 })
 export class CenterMatmenuDirective {
@@ -46,11 +46,11 @@ export class CenterMatmenuDirective {
   }
 
   private _setVariables() {
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     const config = this.menuTrigger['_getOverlayConfig']();
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_overlayRef'] = this.menuTrigger['_overlay'].create(config);
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.overlayRef = this.menuTrigger['_overlayRef'];
     this.overlayConf = this.overlayRef.getConfig();
     this.overlayRef.keydownEvents().subscribe();
@@ -68,14 +68,14 @@ export class CenterMatmenuDirective {
   private _overrideMatMenu() {
     console.log(this.overlayConf);
     const strat = this.overlayConf.positionStrategy as FlexibleConnectedPositionStrategy;
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_setPosition'](strat);
     strat.positionChanges.subscribe(() => {
       this._setButtonVars();
       this._setOverlayPosition(this.dropDown, this.overlayPositionBox);
     });
     this.overlayConf.hasBackdrop = this.menu.hasBackdrop == null ? !this.menuTrigger.triggersSubmenu() : this.menu.hasBackdrop;
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.overlayRef.attach(this.menuTrigger['_getPortal']());
 
     if (this.menu.lazyContent) {
@@ -83,14 +83,14 @@ export class CenterMatmenuDirective {
     }
 
     // @ts-ignore
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_closeSubscription'] = this.menuTrigger['_menuClosingActions']().subscribe(() => {
       this.menuTrigger.closeMenu();
       setTimeout(() => {
         this._renderer.removeChild(this.button, this.arrowDiv);
       }, 75);
     });
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_initMenu']();
   }
 
@@ -112,7 +112,7 @@ export class CenterMatmenuDirective {
 
   private _openMenu() {
     // @ts-ignore
-    // tslint:disable-next-line:no-string-literal
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger.menu['_startAnimation']();
   }
 }

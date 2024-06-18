@@ -14,7 +14,7 @@ import { CustomerService } from '../../../../core/customer.service';
 export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   private destroy = new Subject<void>();
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _customForm: FormGroup;
   public get customForm(): FormGroup {
     return this._customForm;

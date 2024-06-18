@@ -170,7 +170,7 @@ export class FileService implements OnDestroy {
    * Update the children of a node, based on given list of nodes
    */
   updateNodeChildren(parentNode: FileNode, newChildrenNodes: FileNode[]) {
-    // tslint:disable-next-line:forin
+    // eslint-disable-next-line guard-for-in
     for (const idx in parentNode.children) {
       const childFromNewChildren = newChildrenNodes.find((newChild) => newChild.id === parentNode.children[idx].id);
       if (childFromNewChildren) {
@@ -415,7 +415,7 @@ export class FileService implements OnDestroy {
     // console.error("notice profile :" + JSON.stringify(noticeProfile))
     // set notice editable from notice profile
     if (!inverse) {
-      // tslint:disable-next-line:no-shadowed-variable
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const notice: Notice = {
         identifier: noticeProfile.identifier,
         status: noticeProfile.status,

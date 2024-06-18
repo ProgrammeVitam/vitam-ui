@@ -41,7 +41,7 @@ import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
   styleUrls: ['./pastis-breadcrumb.component.scss'],

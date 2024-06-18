@@ -72,7 +72,7 @@ export class AccessContractInformationTabComponent {
   public rules: Option[] = RULE_TYPES;
   public ruleFilter = new FormControl(false);
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
 
   previousValue = (): AccessContract => {

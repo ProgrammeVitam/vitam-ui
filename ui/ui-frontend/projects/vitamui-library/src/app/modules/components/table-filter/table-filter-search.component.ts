@@ -48,7 +48,7 @@ export class TableFilterSearchComponent implements OnInit {
     this._options = options;
     this.optionDisplayMap = this._options.map(() => true);
   }
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   _options: Array<{ label: string; value: any }>;
   @Input() emptyValueOption: string;
 

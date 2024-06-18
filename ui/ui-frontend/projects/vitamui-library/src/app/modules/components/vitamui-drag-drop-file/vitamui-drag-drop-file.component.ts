@@ -51,7 +51,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
   public hasError = true;
   public message: string;
 
-  // tslint:disable-next-line: variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _imageUrl: string | SafeResourceUrl;
   public get imageUrl(): string | SafeResourceUrl {
     return this._imageUrl;
@@ -120,7 +120,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // tslint:disable-next-line: max-line-length
+          // eslint-disable-next-line max-len
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
             width: this.logoSize.width,
             height: this.logoSize.height,
@@ -174,7 +174,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // tslint:disable-next-line: max-line-length
+          // eslint-disable-next-line max-len
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
             width: this.logoSize.width,
             height: this.logoSize.height,

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-use-before-declare component-selector */
+/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -66,7 +66,7 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
     this._required = coerceBooleanProperty(value);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _required = false;
 
   @Input()
@@ -78,7 +78,7 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
     this._disabled = coerceBooleanProperty(value);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _disabled = false;
   @ViewChild('input', { static: false }) private input: ElementRef<HTMLInputElement>;
 

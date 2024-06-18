@@ -99,7 +99,7 @@ describe('VitamuiTreeNodeComponent', () => {
     expect(component.checkboxClick.emit).not.toHaveBeenCalled();
   });
 
-  // tslint:disable-next-line: max-line-length
+  // eslint-disable-next-line max-len
   it('should emit labelClick event and node should be checked when property labelIsLinkedToCheckbox is set to true and label is clicked', () => {
     // Link label and checkbox
     component.labelIsLinkedToCheckbox = true;

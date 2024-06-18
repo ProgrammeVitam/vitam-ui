@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationId } from 'vitamui-library';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-colors',
   templateUrl: './colors.component.html',
   styleUrls: ['./colors.component.scss'],

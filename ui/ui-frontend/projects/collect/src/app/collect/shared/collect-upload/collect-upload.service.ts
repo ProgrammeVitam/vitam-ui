@@ -51,7 +51,7 @@ export class CollectUploadService {
 
   private static uploadFilesInfo(files: any) {
     let size = 0;
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
     }
@@ -153,7 +153,7 @@ export class CollectUploadService {
       return;
     }
     this.uploadInfo(CollectUploadService.uploadFilesInfo(files));
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i];
       this.zipFile.file(item.webkitRelativePath, item);
@@ -189,7 +189,7 @@ export class CollectUploadService {
   }
 
   private async buildAsyncZip(files: any) {
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
       if (item) {
@@ -201,7 +201,7 @@ export class CollectUploadService {
   private async dragAndDropUploadFilesInfo(files: any) {
     const name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
     let size = 0;
-    // tslint:disable-next-line:prefer-for-of
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
       if (item) {

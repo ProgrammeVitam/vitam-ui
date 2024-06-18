@@ -68,13 +68,13 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let component: ArchiveUnitRulesInformationsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesInformationsTabComponent>;
 
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   @Directive({ selector: '[app-VitamuiCommonCollapseTriggerFor]' })
   class CollapseTriggerForStubDirective {
     @Input() vitamuiCommonCollapseTriggerFor: any;
   }
 
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   @Directive({ selector: '[app-vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
   class CollapseStubDirective {
     @Input() vitamuiCommonCollapse: any;
@@ -247,7 +247,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       AccessRule: null,
       UpdateOperation: null,
     };
-    // tslint:disable-next-line:no-shadowed-variable
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const archiveUnit2: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],

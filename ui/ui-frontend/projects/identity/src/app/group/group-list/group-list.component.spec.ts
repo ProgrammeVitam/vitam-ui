@@ -50,13 +50,13 @@ import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-li
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCollapseTriggerFor]' })
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCollapseTriggerFor: any;
 }
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCollapse]', exportAs: 'vitamuiCollapse' })
 class CollapseStubDirective {
   @Input() vitamuiCollapse: any;

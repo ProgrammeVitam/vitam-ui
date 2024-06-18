@@ -59,14 +59,14 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./security-profile-list.component.scss'],
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<SecurityProfile>();
@@ -101,7 +101,7 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(

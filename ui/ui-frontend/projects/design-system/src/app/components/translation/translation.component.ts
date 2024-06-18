@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],

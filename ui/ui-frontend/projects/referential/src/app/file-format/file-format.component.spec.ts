@@ -47,14 +47,14 @@ import { FileFormatComponent } from './file-format.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-file-format-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-file-format-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
 describe('FileFormatComponent', () => {

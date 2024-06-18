@@ -49,7 +49,7 @@ describe('SecurityProfileInformationTabComponent', () => {
   let fixture: ComponentFixture<SecurityProfileInformationTabComponent>;
 
   const securityProfileServiceMock = {
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     patch: (_data: any) => of(null),
   };
 
