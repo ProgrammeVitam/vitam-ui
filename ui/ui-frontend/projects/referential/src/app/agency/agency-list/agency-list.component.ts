@@ -68,7 +68,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() agencyClick = new EventEmitter<Agency>();
@@ -99,7 +98,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     this._connectedUserInfo = userInfo;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
   private readonly destroyer$ = new Subject<void>();
 

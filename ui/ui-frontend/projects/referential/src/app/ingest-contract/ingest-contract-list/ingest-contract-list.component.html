@@ -49,7 +49,7 @@
           <div class="col-1">
             <i
               class="vitamui-icon vitamui-icon-contrat"
-              [ngClass]="accessContract?.status == 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"
+              [ngClass]="accessContract?.status === 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"
             ></i>
           </div>
           <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.identifier }}</div>

@@ -36,7 +36,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
@@ -47,7 +47,7 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   templateUrl: './search-appraisal-rules-facets.component.html',
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
 })
-export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
+export class SearchAppraisalRulesFacetsComponent implements OnChanges {
   constructor(
     private facetsService: ArchiveFacetsService,
     private translateService: TranslateService,
@@ -69,8 +69,6 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
   finalActionFacetDetails: FacetDetails[] = [];
   archiveUnitsCountFacetDetails: FacetDetails[] = [];
   finalActionsFacetsValues: Map<string, number>;
-
-  ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.finalActionsFacetsValues = new Map();

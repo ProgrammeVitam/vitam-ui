@@ -34,8 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-import { AfterContentChecked, AfterContentInit, Component, ContentChildren, forwardRef, OnInit, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, forwardRef, QueryList } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -54,7 +53,7 @@ export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   styleUrls: ['./role-toggle.component.scss'],
   providers: [ROLE_TOGGLE_VALUE_ACCESSOR],
 })
-export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterContentChecked, AfterContentInit {
+export class RoleToggleComponent implements ControlValueAccessor, AfterContentInit {
   @ContentChildren(RoleComponent, { descendants: true }) roleComponents: QueryList<RoleComponent>;
 
   onChange: (_: any) => void;
@@ -84,10 +83,6 @@ export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterC
     });
   }
 
-  ngAfterContentChecked(): void {
-    // TODO
-  }
-
   writeValue(roles: Array<{ name: string; value: boolean }>): void {
     this.roles = roles || [];
     if (this.roleComponents) {
@@ -110,8 +105,4 @@ export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterC
       });
     }
   }
-
-  constructor() {}
-
-  ngOnInit() {}
 }

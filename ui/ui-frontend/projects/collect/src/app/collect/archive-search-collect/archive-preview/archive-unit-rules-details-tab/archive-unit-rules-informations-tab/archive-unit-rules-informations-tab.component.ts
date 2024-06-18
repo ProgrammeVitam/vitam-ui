@@ -36,7 +36,7 @@
  */
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
 
@@ -53,7 +53,7 @@ import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } fr
     ]),
   ],
 })
-export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChanges {
+export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   @Input()
   archiveUnitRules: Unit;
   @Input()
@@ -91,8 +91,6 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
       return this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.CATEGORY_NAME.' + ruleCategoryId.toUpperCase());
     }
   }
-
-  ngOnInit(): void {}
 
   getRuleStatus(ruleDUA: UnitRuleDto): string {
     if (ruleDUA && ruleDUA.status && ruleDUA.status === 'BLOCKED') {

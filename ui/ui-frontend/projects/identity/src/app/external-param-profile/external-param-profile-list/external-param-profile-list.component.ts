@@ -67,7 +67,7 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
   private readonly filterDebounceTimeMs = 400;
 
   @Output() externalParamProfileClick = new EventEmitter<ExternalParamProfile>();
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);

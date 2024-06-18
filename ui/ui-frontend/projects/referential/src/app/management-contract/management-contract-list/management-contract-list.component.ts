@@ -52,7 +52,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
   readonly searchChange = new Subject<string>();
   readonly orderChange = new Subject<void>();
 
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);

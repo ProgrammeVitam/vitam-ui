@@ -60,7 +60,7 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
     this.searchChange.next(searchText);
   }
 
-  @Input('filters') set filters(filters: TraceabilityFilter) {
+  @Input() set filters(filters: TraceabilityFilter) {
     this.currentFilters = filters;
     this.filterChange.next(filters);
   }
@@ -80,7 +80,6 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   private readonly filterChange = new Subject<TraceabilityFilter | void>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _searchText: string;
 
   constructor(public securisationService: SecurisationService) {

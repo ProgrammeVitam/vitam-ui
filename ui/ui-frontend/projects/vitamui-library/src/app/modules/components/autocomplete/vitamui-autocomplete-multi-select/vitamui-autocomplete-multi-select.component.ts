@@ -105,11 +105,8 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   private initialHeightInSelectedItemsView = 105;
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _enableSelectAll = true;
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _enableDisplaySelected = true;
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _enableSearch = true;
 
   @ViewChild('searchBar') searchBar: SearchBarComponent;
@@ -117,7 +114,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
   @ViewChild('matSelect') matSelect: MatSelect;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _required = false;
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
@@ -187,7 +183,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
@@ -282,7 +277,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   validate(_control: AbstractControl): ValidationErrors | null {
     if (this.required && this.selectedOptions.length === 0) {
       return { required: true };

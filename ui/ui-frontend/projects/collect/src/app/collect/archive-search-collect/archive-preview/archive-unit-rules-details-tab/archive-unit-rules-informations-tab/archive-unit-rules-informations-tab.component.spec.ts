@@ -247,7 +247,6 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       AccessRule: null,
       UpdateOperation: null,
     };
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     const archiveUnit2: Unit = {
       '#management': unitManagementRules,
       '#allunitups': [],

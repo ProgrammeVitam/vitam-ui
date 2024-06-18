@@ -72,13 +72,9 @@ export class ApplicationService {
   set categories(categories: Category[]) {
     this._categories = categories;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _categories: Category[];
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _applications: Application[];
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _applications$ = new BehaviorSubject<Application[]>(null);
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _applicationsAnalytics: ApplicationAnalytics[];
   private appMap$ = new BehaviorSubject(null);
 

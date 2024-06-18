@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
@@ -48,7 +48,7 @@ import { LogbookManagementOperationListComponent } from './logbook-management-op
   templateUrl: './logbook-management-operation.component.html',
   styleUrls: ['./logbook-management-operation.component.scss'],
 })
-export class LogbookManagementOperationComponent implements OnInit {
+export class LogbookManagementOperationComponent {
   tenantIdentifier: number;
   dateRangeFilterForm: FormGroup;
   showStartDateMax = false;
@@ -98,8 +98,6 @@ export class LogbookManagementOperationComponent implements OnInit {
       this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
     }
   }
-
-  ngOnInit(): void {}
 
   showIntervalDate(value: boolean) {
     this.showStartDateMax = value;

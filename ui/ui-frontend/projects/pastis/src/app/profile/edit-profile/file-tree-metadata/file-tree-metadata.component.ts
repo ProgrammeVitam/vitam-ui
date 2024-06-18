@@ -984,7 +984,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
     if (this.editedEnumControl.includes(element)) {
       indexOfElement = this.editedEnumControl.indexOf(element);
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.editedEnumControl.splice(indexOfElement, 1)[0];
     }
     if (this.enumsControlSeleted.length === 0) {

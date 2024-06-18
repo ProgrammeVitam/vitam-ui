@@ -290,20 +290,17 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
               }
             });
         } else if (result.action === 'rattachement') {
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveSelectNoticeTitleDialog;
           dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
           dataToSendToPopUp.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           dataToSendToPopUp.profileMode = this.profileService.profileMode;
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           const selectNoticeDialog = this.dialog.open(SelectNoticeComponent, {
             width: '800px',
             panelClass: 'pastis-popup-modal-box',
             data: dataToSendToPopUp,
           });
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           this.subscriptions.add(
             selectNoticeDialog.afterClosed().subscribe((selectNoticeResult) => {
               this.toggleService.showPending();
@@ -313,7 +310,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                 if (selectNoticeResult.mode === ProfileType.PUA) {
                   this.subscriptions.add(
                     this.profileService.uploadFile(this.data, profileDescription, selectNoticeResult.mode).subscribe((retrievedData) => {
-                      // eslint-disable-next-line @typescript-eslint/no-shadow
                       retrievedData.text().then((result) => {
                         const jsonObject = JSON.parse(result);
                         this.archivalProfileUnit = jsonObject as unknown as ArchivalProfileUnit;

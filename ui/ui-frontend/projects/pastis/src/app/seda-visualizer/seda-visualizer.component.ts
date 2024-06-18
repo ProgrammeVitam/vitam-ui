@@ -295,7 +295,6 @@ export class SedaVisualizerComponent implements OnInit {
   initLegend(): void {
     // Legend
     // select the svg area
-    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     const svg_legend = d3.select('#seda_legend');
     // Nodes
     svg_legend

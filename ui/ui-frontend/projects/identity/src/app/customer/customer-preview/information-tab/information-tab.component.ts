@@ -84,9 +84,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   get customer(): Customer {
     return this._customer;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _customer: Customer;
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _gdprReadOnlyStatus: boolean;
   get gdprReadOnlyStatus(): boolean {
     return this._gdprReadOnlyStatus;
@@ -106,7 +104,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   @Input()
   set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean) {
     this._gdprReadOnlyStatus = gdprReadOnlyStatus;

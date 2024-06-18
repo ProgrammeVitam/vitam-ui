@@ -65,7 +65,6 @@ export class ArchiveUnitEliminationService {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen, {
         panelClass: 'vitamui-dialog',
       });

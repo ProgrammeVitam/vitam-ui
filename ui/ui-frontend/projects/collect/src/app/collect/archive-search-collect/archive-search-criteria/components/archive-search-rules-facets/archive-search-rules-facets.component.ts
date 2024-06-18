@@ -34,7 +34,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RuleFacets } from 'vitamui-library';
 
 @Component({
@@ -42,7 +42,7 @@ import { RuleFacets } from 'vitamui-library';
   templateUrl: './archive-search-rules-facets.component.html',
   styleUrls: ['./archive-search-rules-facets.component.css'],
 })
-export class ArchiveSearchRulesFacetsComponent implements OnInit {
+export class ArchiveSearchRulesFacetsComponent {
   @Input()
   totalResults: number;
 
@@ -80,8 +80,4 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
   showHideFacets(show: boolean) {
     this.facetsVisibles = show;
   }
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Profile } from 'vitamui-library';
@@ -43,14 +43,12 @@ import { Profile } from 'vitamui-library';
   selector: 'app-hierarchy-popup',
   template: '<app-hierarchy-detail (previewClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-hierarchy-detail>',
 })
-export class HierarchyPopupComponent implements OnInit {
+export class HierarchyPopupComponent {
   profile: Profile;
 
   constructor(private route: ActivatedRoute) {
     this.profile = this.route.snapshot.data.profile;
   }
-
-  ngOnInit() {}
 
   closePopup() {
     window.close();

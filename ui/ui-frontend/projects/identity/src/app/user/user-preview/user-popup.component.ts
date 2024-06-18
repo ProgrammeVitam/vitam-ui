@@ -36,7 +36,7 @@
  */
 import { Customer, User } from 'vitamui-library';
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustomerService } from '../../core/customer.service';
@@ -45,7 +45,7 @@ import { CustomerService } from '../../core/customer.service';
   selector: 'app-profile-group-popup',
   template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
 })
-export class UserPopupComponent implements OnInit {
+export class UserPopupComponent {
   user: User;
   customer: Customer;
 
@@ -56,8 +56,6 @@ export class UserPopupComponent implements OnInit {
     this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
     this.user = this.route.snapshot.data.user;
   }
-
-  ngOnInit() {}
 
   closePopup() {
     window.close();

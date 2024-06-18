@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CriteriaValue, CriteriaSearchCriteria, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
-export class CriteriaSearchComponent implements OnInit {
+export class CriteriaSearchComponent {
   constructor() {}
 
   @Input()
@@ -16,8 +16,6 @@ export class CriteriaSearchComponent implements OnInit {
   criteriaVal: CriteriaSearchCriteria;
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
-
-  ngOnInit(): void {}
 
   removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
     this.criteriaRemoveEvent.emit({ keyElt, valueElt });

@@ -69,7 +69,6 @@ export class IngestContractInformationTabComponent implements OnInit {
   managementContracts: any[];
   archiveProfiles: any[];
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
   previousValue = (): IngestContract => {

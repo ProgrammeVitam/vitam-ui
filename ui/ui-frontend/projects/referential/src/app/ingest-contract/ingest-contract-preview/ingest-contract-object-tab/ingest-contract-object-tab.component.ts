@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -48,13 +48,12 @@ import { IngestContractService } from '../../ingest-contract.service';
   templateUrl: './ingest-contract-object-tab.component.html',
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
 })
-export class IngestContractObjectTabComponent implements OnInit {
+export class IngestContractObjectTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
   submited = false;
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
   // FIXME: Get list from common var ?
@@ -122,8 +121,6 @@ export class IngestContractObjectTabComponent implements OnInit {
       }
     });
   }
-
-  ngOnInit() {}
 
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';

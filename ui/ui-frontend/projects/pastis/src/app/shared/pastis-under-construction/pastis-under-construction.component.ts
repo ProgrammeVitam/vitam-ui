@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -43,8 +43,4 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './pastis-under-construction.component.html',
   styleUrls: ['./pastis-under-construction.component.scss'],
 })
-export class PastisUnderConstructionComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class PastisUnderConstructionComponent {}

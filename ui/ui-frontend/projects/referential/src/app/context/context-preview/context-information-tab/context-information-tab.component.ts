@@ -61,7 +61,6 @@ export class ContextInformationTabComponent {
 
   securityProfiles: Option[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _context: Context;
 
   rules: Option[] = RULE_TYPES;
@@ -71,7 +70,6 @@ export class ContextInformationTabComponent {
   };
 
   @Input()
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   set context(Context: Context) {
     this._context = Context;
     this.resetForm(this.context);

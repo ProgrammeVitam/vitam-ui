@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -42,15 +42,12 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Pastis Application';
-  subrogating = false;
   isStandalone: boolean = environment.standalone;
   public sedaviewRoute: boolean;
 
   constructor() {
     this.sedaviewRoute = document.URL.substring(document.URL.lastIndexOf('/'), document.URL.length) === '/sedaview';
   }
-
-  ngOnInit() {}
 }

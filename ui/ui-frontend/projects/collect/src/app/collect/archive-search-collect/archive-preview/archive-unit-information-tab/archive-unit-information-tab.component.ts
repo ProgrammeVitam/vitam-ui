@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Unit } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
@@ -45,7 +45,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
 })
-export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
+export class ArchiveUnitInformationTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;
 
   @Output() showNormalPanel = new EventEmitter<any>();
@@ -54,11 +54,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   fullPath = false;
 
   constructor(private archiveService: ArchiveCollectService) {}
-
-  ngOnInit() {
-    // TODO : Créer Web service de création du chemin d'archive
-    // this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit?.currentValue['#id']) {

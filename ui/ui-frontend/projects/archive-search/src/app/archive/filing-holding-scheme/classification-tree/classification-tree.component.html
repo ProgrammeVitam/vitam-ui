@@ -25,7 +25,7 @@
             >
             </vitamui-tree-node>
           </div>
-          <span *ngIf="hasMatchesInSearch && node?.count != null && node?.count > 0" class="badge badge-secondary pad">{{
+          <span *ngIf="hasMatchesInSearch && node?.count !== null && node?.count > 0" class="badge badge-secondary pad">{{
             node?.count | number: '1.0'
           }}</span>
         </div>
@@ -42,7 +42,7 @@
             (labelClick)="onShowNodeDetails(node.id)"
           >
           </vitamui-tree-node>
-          <span *ngIf="hasMatchesInSearch && node?.count != null && node?.count > 0" class="badge badge-secondary pad">
+          <span *ngIf="hasMatchesInSearch && node?.count !== null && node?.count > 0" class="badge badge-secondary pad">
             {{ node?.count | number: '1.0' }}
           </span>
         </div>

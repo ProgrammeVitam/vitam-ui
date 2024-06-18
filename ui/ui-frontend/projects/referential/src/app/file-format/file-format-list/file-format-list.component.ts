@@ -69,7 +69,6 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() fileFormatClick = new EventEmitter<FileFormat>();
@@ -97,7 +96,6 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this._connectedUserInfo = userInfo;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(

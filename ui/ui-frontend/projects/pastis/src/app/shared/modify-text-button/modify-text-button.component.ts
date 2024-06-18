@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FileNode } from '../../models/file-node';
 
 @Component({
@@ -7,7 +7,7 @@ import { FileNode } from '../../models/file-node';
   templateUrl: './modify-text-button.component.html',
   styleUrls: ['./modify-text-button.component.css'],
 })
-export class ModifyTextButtonComponent implements OnInit {
+export class ModifyTextButtonComponent {
   @Input()
   node: FileNode;
 
@@ -17,8 +17,6 @@ export class ModifyTextButtonComponent implements OnInit {
   editmode = false;
   editText = '';
   constructor() {}
-
-  ngOnInit(): void {}
 
   edit() {
     this.editmode = true;

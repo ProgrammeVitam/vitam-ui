@@ -54,7 +54,6 @@ import { UserService } from '../user.service';
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   _user: User;
 
   get user(): User {
@@ -111,7 +110,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     return this.startupService.isVitamEnabled();
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
   constructor(
@@ -222,7 +220,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             siteCode,
             internalCode,
           })
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

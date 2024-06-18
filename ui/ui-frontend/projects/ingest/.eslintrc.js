@@ -13,7 +13,6 @@ module.exports = {
           'error',
           {
             type: 'attribute',
-            prefix: 'ingest',
             style: 'camelCase',
           },
         ],
@@ -21,7 +20,6 @@ module.exports = {
           'error',
           {
             type: 'element',
-            prefix: 'ingest',
             style: 'kebab-case',
           },
         ],

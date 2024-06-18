@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Direction } from '../../vitamui-table';
 
@@ -43,7 +43,7 @@ import { Direction } from '../../vitamui-table';
   templateUrl: './order-by-button.component.html',
   styleUrls: ['./order-by-button.component.scss'],
 })
-export class OrderByButtonComponent implements OnInit {
+export class OrderByButtonComponent {
   @Input() orderByKey: string;
   @Input() orderBy: string;
   @Input() direction: Direction;
@@ -51,10 +51,6 @@ export class OrderByButtonComponent implements OnInit {
   @Output() readonly orderChange = new EventEmitter<string>();
   @Output() readonly orderByChange = new EventEmitter<string>();
   @Output() readonly directionChange = new EventEmitter<Direction>();
-
-  constructor() {}
-
-  ngOnInit() {}
 
   toggleOrder() {
     if (this.orderBy === this.orderByKey) {

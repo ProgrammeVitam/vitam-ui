@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/*eslint no-use-before-define: "error"*/
 import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -44,9 +43,9 @@ import { CountryOption, CountryService, Customer, StartupService } from 'vitamui
 import { Owner } from 'vitamui-library';
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from './owner-form.validators';
 
-/*eslint no-use-before-define: "error"*/
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => OwnerFormComponent),
   multi: true,
 };
@@ -78,7 +77,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     return this._customerId;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _customerId: string;
 
   @Input()
@@ -96,7 +94,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   get customerInfo() {
     return this._customerInfo;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _customerInfo: any;
 
   constructor(

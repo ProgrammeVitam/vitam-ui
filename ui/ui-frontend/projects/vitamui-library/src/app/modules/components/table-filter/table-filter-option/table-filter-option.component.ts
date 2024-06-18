@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-table-filter-option',
   templateUrl: './table-filter-option.component.html',
   styleUrls: ['./table-filter-option.component.scss'],
 })
-export class TableFilterOptionComponent implements OnInit {
+export class TableFilterOptionComponent {
   @Input() value: any;
   @Input()
   set separator(separator: boolean) {
@@ -60,12 +60,7 @@ export class TableFilterOptionComponent implements OnInit {
     return this._selected;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _selected = false;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   select() {
     if (this._selected) {

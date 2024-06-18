@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, CriteriaValue, SearchCriteriaTypeEnum, diff } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 
@@ -49,7 +49,7 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
   selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
 })
-export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
+export class TitleAndDescriptionCriteriaSearchComponent {
   quickSearchCriteriaForm: FormGroup;
 
   previousTitleDescriptionCriteriaValue: {
@@ -107,8 +107,6 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
   private resetSimpleCriteriaForm() {
     this.quickSearchCriteriaForm.reset(this.emptyTitleDescriptionCriteriaForm);
   }
-
-  ngOnInit() {}
 
   addCriteria(keyElt: string, valueElt: CriteriaValue, labelElt: string, translated: boolean, operator: string, valueTranslated: boolean) {
     if (keyElt && valueElt) {

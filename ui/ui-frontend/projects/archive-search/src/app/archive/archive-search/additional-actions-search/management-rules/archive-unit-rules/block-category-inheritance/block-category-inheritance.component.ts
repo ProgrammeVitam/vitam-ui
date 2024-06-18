@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
@@ -37,7 +37,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   templateUrl: './block-category-inheritance.component.html',
   styleUrls: ['./block-category-inheritance.component.css'],
 })
-export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
+export class BlockCategoryInheritanceComponent implements OnDestroy {
   @Input()
   ruleCategory: string;
   ruleActions: ActionsRules[];
@@ -55,8 +55,6 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private dialog: MatDialog,
   ) {}
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.managementRulesSubscription?.unsubscribe();

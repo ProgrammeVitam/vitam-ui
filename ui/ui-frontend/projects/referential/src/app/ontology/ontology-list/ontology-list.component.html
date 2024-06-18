@@ -48,7 +48,7 @@
           <div class="col-3">{{ ontology?.description }}</div>
           <div class="col-2">{{ ontology?.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
           <div class="col-1 actions">
-            <div *ngIf="ontology.origin == 'EXTERNAL'">
+            <div *ngIf="ontology.origin === 'EXTERNAL'">
               <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deleteOntologyDialog(ontology)">
                 <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
               </button>

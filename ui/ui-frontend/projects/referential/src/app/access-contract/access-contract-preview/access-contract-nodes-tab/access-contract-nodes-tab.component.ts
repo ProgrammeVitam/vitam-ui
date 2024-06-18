@@ -68,7 +68,6 @@ export class AccessContractNodesTabComponent {
 
   public searchAccessContractId: string;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
   rootUnitsTitles: string[] = [];
   excludedRootUnitsTitles: string[] = [];

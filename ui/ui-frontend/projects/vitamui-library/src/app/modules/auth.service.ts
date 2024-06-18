@@ -69,9 +69,7 @@ export class AuthService implements OnDestroy {
 
   private authenticatorService: AuthenticatorService;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _user: AuthUser;
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _userInfo: UserInfo;
   private userInfo$ = new BehaviorSubject<UserInfo>(null);
 

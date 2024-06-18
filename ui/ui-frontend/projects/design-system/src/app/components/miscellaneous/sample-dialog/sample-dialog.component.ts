@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 @Component({
-  selector: 'app-sample-dialog',
+  selector: 'design-system-sample-dialog',
   templateUrl: './sample-dialog.component.html',
   styleUrls: ['./sample-dialog.component.scss'],
 })
-export class SampleDialogComponent implements OnInit {
+export class SampleDialogComponent {
   public stepIndex = 0;
   public stepCount = 2;
 
   constructor(public dialogRef: MatDialogRef<SampleDialogComponent>) {}
-
-  ngOnInit() {}
 
   cancel() {
     this.dialogRef.close();

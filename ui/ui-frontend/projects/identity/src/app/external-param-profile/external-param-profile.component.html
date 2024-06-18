@@ -25,7 +25,10 @@
     </div>
 
     <div class="vitamui-content">
-      <app-external-param-profile-list [search]="search" (externalParamProfileClick)="openPanel($event)"></app-external-param-profile-list>
+      <app-external-param-profile-list
+        [searchText]="search"
+        (externalParamProfileClick)="openPanel($event)"
+      ></app-external-param-profile-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

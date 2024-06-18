@@ -74,7 +74,6 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _searchText: string;
 
   private readonly destroyer$ = new Subject<void>();

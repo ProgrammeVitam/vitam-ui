@@ -415,7 +415,6 @@ export class FileService implements OnDestroy {
     // console.error("notice profile :" + JSON.stringify(noticeProfile))
     // set notice editable from notice profile
     if (!inverse) {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       const notice: Notice = {
         identifier: noticeProfile.identifier,
         status: noticeProfile.status,

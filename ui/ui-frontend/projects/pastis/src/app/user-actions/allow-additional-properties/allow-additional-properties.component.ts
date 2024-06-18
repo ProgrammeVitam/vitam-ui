@@ -20,7 +20,6 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
     this.text1 = 'Métadonnées supplémentaires';
     this.text = ' non autorisées';
   }
-  // eslint-disable-next-line @typescript-eslint/member-ordering
 
   changed() {
     if (this.checked) {

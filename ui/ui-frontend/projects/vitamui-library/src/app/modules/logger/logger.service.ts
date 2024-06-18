@@ -39,23 +39,19 @@ import { Logger } from './logger';
 
 @Injectable()
 export class LoggerService implements Logger {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public info(parentClass: Object, ...msg: any) {
     const className = parentClass.constructor.name;
     // eslint-disable-next-line no-console
     console.info('%c' + new Date().toLocaleString() + ' %c' + className, 'color: red', 'color: blue', ...msg);
   }
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public log(parentClass: Object, ...msg: any) {
     const className = parentClass.constructor.name;
     console.log('%c' + new Date().toLocaleString() + ' %c' + className, 'color: red', 'color: blue', ...msg);
   }
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public warn(parentClass: Object, ...msg: any) {
     const className = parentClass.constructor.name;
     console.warn('%c' + new Date().toLocaleString() + ' %c' + className, 'color: red', 'color: blue', ...msg);
   }
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public error(parentClass: Object, ...msg: any) {
     const className = parentClass.constructor.name;
     console.error('%c' + new Date().toLocaleString() + ' %c' + className, 'color: red', 'color: blue', ...msg);

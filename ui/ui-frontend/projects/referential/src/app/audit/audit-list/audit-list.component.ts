@@ -61,15 +61,13 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
-  @Input('filters') set filters(filters: AuditFilters) {
+  @Input() set filters(filters: AuditFilters) {
     this._filters = filters;
     this.filterChange.next(filters);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _filters: AuditFilters;
 
   @Output() auditClick = new EventEmitter<any>();

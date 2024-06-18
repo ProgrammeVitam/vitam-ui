@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ENTER } from '@angular/cdk/keycodes';
@@ -76,7 +75,6 @@ export class VitamUIListInputComponent implements AfterContentInit, ControlValue
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _required = false;
 
   @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;

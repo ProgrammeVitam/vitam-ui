@@ -58,7 +58,6 @@ export class ApplicationSelectContentComponent {
   get applications(): Application[] {
     return this._applications;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _applications: Application[];
 
   @Input()
@@ -71,7 +70,6 @@ export class ApplicationSelectContentComponent {
   get categories(): Category[] {
     return this._categories;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _categories: Category[];
 
   @Output() applicationSelected = new EventEmitter<string>();

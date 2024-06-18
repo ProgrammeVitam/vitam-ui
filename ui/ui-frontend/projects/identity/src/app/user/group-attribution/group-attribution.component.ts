@@ -43,9 +43,9 @@ import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALO
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
-/*eslint no-use-before-define: "error"*/
 export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => GroupAttributionComponent),
   multi: true,
 };

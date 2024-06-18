@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Group } from 'vitamui-library';
@@ -43,14 +43,12 @@ import { Group } from 'vitamui-library';
   selector: 'app-group-popup',
   template: '<app-group-preview (previewClose)="closePopup()" [group]="group" [isPopup]="true"></app-group-preview>',
 })
-export class GroupPopupComponent implements OnInit {
+export class GroupPopupComponent {
   group: Group;
 
   constructor(private route: ActivatedRoute) {
     this.group = this.route.snapshot.data.group;
   }
-
-  ngOnInit() {}
 
   closePopup() {
     window.close();

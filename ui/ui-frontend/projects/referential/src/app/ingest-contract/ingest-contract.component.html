@@ -5,7 +5,7 @@
       (previewClose)="closePanel()"
       [ingestContract]="openedItem"
       [tenantIdentifier]="tenantId"
-      [readOnly]="!(hasUpdateIngestRole$ | async)"
+      [readOnly]="(hasUpdateIngestRole$ | async) === false"
     >
     </app-ingest-contract-preview>
   </mat-sidenav>
@@ -20,12 +20,12 @@
         [searchbarPlaceholder]="'INGEST_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate"
         (search)="onSearchSubmit($event)"
       >
-        <button class="btn primary mr-3" (click)="openCreateIngestcontractDialog()" [disabled]="!(hasUpdateIngestRole$ | async)">
+        <button class="btn primary mr-3" (click)="openCreateIngestcontractDialog()" [disabled]="(hasUpdateIngestRole$ | async) === false">
           <span>{{ 'INGEST_CONTRACT.HOME.CREATE_INGEST_CONTRACT' | translate }}</span>
         </button>
 
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="openImport()" [disabled]="!(hasUpdateIngestRole$ | async)">
+          <button mat-menu-item (click)="openImport()" [disabled]="(hasUpdateIngestRole$ | async) === false">
             {{ 'INGEST_CONTRACT.HOME.IMPORT' | translate }}
           </button>
           <button mat-menu-item (click)="export()">{{ 'INGEST_CONTRACT.HOME.EXPORT' | translate }}</button>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="vitamui-content">
-      <app-ingest-contract-list (ingestContractClick)="showIngestContract($event)" [search]="search"></app-ingest-contract-list>
+      <app-ingest-contract-list (ingestContractClick)="showIngestContract($event)" [searchText]="search"></app-ingest-contract-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

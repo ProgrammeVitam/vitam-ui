@@ -34,15 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'demo-icon-demo',
   templateUrl: './icon-demo.component.html',
   styleUrls: ['./icon-demo.component.scss'],
 })
-export class IconDemoComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class IconDemoComponent {}

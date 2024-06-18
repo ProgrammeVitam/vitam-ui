@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
@@ -46,7 +46,7 @@ import { ProfileService } from '../../core/services/profile.service';
   templateUrl: './upload-profile.component.html',
   styleUrls: ['./upload-profile.component.scss'],
 })
-export class UserActionUploadProfileComponent implements OnInit {
+export class UserActionUploadProfileComponent {
   @Input()
   uploader: FileUploader = new FileUploader({ url: '' });
   fileToUpload: File = null;
@@ -55,8 +55,6 @@ export class UserActionUploadProfileComponent implements OnInit {
     private profileService: ProfileService,
     private fileService: FileService,
   ) {}
-
-  ngOnInit() {}
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);

@@ -34,15 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'demo-css',
   templateUrl: './css.component.html',
   styleUrls: ['./css.component.scss'],
 })
-export class CssComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class CssComponent {}

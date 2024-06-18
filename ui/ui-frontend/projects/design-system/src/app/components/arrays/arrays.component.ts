@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { collapseAnimation, Direction, Group, rotateAnimation } from 'vitamui-library';
 import { SampleDialogComponent } from '../miscellaneous/sample-dialog/sample-dialog.component';
 
 @Component({
-  selector: 'app-arrays',
+  selector: 'design-system-arrays',
   templateUrl: './arrays.component.html',
   styleUrls: ['./arrays.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
 })
-export class ArraysComponent implements OnInit {
+export class ArraysComponent {
   public orderBy = 'name';
   public direction = Direction.ASCENDANT;
   public levelFilterOptions: Array<{ value: string; label: string }> = [];
@@ -30,8 +30,6 @@ export class ArraysComponent implements OnInit {
   ] as Group[];
 
   constructor(private dialog: MatDialog) {}
-
-  ngOnInit() {}
 
   public onFilterChange(key: string, values: any[]): void {
     this.filterMap[key] = values;

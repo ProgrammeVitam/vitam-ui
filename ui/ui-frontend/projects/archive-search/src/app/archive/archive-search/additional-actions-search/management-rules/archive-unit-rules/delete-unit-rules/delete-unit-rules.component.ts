@@ -35,23 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { Subscription, merge } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  diff,
   ManagementRuleValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  diff,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -67,7 +67,7 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   templateUrl: './delete-unit-rules.component.html',
   styleUrls: ['./delete-unit-rules.component.css'],
 })
-export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
+export class DeleteUnitRulesComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -167,8 +167,6 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.managementRulesSubscription?.unsubscribe();

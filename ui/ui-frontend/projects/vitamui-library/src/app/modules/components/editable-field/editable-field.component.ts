@@ -67,7 +67,6 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   get disabled(): boolean {
     return this._disabled;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _disabled: boolean;
 
   @Input()

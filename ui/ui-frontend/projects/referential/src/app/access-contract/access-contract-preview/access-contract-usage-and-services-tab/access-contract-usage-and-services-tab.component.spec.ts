@@ -85,7 +85,6 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     getAll: () => of([]),
   };
   const accessContractServiceMock = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     patch: (_data: any) => of(null),
   };
 

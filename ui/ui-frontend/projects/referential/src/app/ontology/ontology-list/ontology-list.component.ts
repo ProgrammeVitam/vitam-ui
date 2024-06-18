@@ -59,7 +59,6 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _searchText: string;
 
   @Output() ontologyClick = new EventEmitter<Ontology>();

@@ -27,7 +27,7 @@
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
   DescriptionLevel,
@@ -52,7 +52,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
     ]),
   ],
 })
-export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges {
+export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
@@ -61,8 +61,6 @@ export class CollectObjectGroupDetailsTabComponent implements OnInit, OnChanges 
     private archiveCollectService: ArchiveCollectService,
     private clipboard: Clipboard,
   ) {}
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {

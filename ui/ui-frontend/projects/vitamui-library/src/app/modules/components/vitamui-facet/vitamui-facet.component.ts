@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FacetDetails } from '../../models/operation/facet-details.interface';
 
 @Component({
@@ -34,7 +34,7 @@ import { FacetDetails } from '../../models/operation/facet-details.interface';
   templateUrl: './vitamui-facet.component.html',
   styleUrls: ['./vitamui-facet.component.scss'],
 })
-export class VitamuiFacetComponent implements OnInit {
+export class VitamuiFacetComponent {
   /**
    * The title of the component that contains a list of Facet
    * It can be in English or in French
@@ -65,10 +65,6 @@ export class VitamuiFacetComponent implements OnInit {
    */
   @Input()
   facetDetails: FacetDetails[];
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   onFilter(facet: FacetDetails) {
     if (facet.clickable) {

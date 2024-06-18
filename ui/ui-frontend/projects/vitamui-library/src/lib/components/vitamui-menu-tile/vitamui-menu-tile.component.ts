@@ -60,7 +60,6 @@ export class UpdatedVitamUIMenuTileComponent implements OnInit {
     return this._application;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _application: Application;
 
   @Output() appSelect = new EventEmitter<string>();

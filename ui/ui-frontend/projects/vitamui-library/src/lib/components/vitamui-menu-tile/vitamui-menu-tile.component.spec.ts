@@ -41,6 +41,7 @@ import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUBROGRATION_REFRESH_RATE_MS } from '../../../app/modules';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[libVitamuiCommonTooltip]',
 })
 class TooltipStubDirective {

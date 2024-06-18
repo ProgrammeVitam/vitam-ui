@@ -46,11 +46,8 @@ export class CenterMatmenuDirective {
   }
 
   private _setVariables() {
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     const config = this.menuTrigger['_getOverlayConfig']();
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_overlayRef'] = this.menuTrigger['_overlay'].create(config);
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.overlayRef = this.menuTrigger['_overlayRef'];
     this.overlayConf = this.overlayRef.getConfig();
     this.overlayRef.keydownEvents().subscribe();
@@ -68,14 +65,12 @@ export class CenterMatmenuDirective {
   private _overrideMatMenu() {
     console.log(this.overlayConf);
     const strat = this.overlayConf.positionStrategy as FlexibleConnectedPositionStrategy;
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_setPosition'](strat);
     strat.positionChanges.subscribe(() => {
       this._setButtonVars();
       this._setOverlayPosition(this.dropDown, this.overlayPositionBox);
     });
     this.overlayConf.hasBackdrop = this.menu.hasBackdrop == null ? !this.menuTrigger.triggersSubmenu() : this.menu.hasBackdrop;
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.overlayRef.attach(this.menuTrigger['_getPortal']());
 
     if (this.menu.lazyContent) {
@@ -83,14 +78,12 @@ export class CenterMatmenuDirective {
     }
 
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_closeSubscription'] = this.menuTrigger['_menuClosingActions']().subscribe(() => {
       this.menuTrigger.closeMenu();
       setTimeout(() => {
         this._renderer.removeChild(this.button, this.arrowDiv);
       }, 75);
     });
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger['_initMenu']();
   }
 
@@ -112,7 +105,6 @@ export class CenterMatmenuDirective {
 
   private _openMenu() {
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     this.menuTrigger.menu['_startAnimation']();
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define, @angular-eslint/component-selector */
 import { AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 

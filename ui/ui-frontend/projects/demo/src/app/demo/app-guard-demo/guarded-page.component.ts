@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -42,12 +42,10 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './guarded-page.component.html',
   styleUrls: ['./guarded-page.component.scss'],
 })
-export class GuardedPageComponent implements OnInit {
+export class GuardedPageComponent {
   appId: string;
 
   constructor(route: ActivatedRoute) {
     this.appId = route.snapshot.data.appId;
   }
-
-  ngOnInit() {}
 }

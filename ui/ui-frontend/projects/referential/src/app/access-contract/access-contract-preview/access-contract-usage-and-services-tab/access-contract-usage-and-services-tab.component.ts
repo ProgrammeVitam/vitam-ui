@@ -77,7 +77,6 @@ export class AccessContractUsageAndServicesTabComponent {
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
 
   previousValue = (): AccessContract => {

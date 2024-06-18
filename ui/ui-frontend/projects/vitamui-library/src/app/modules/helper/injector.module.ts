@@ -45,7 +45,6 @@ This module must be loaded in AppModule only
   declarations: [],
 })
 export class InjectorModule {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   constructor(injector: Injector, @Optional() @SkipSelf() injectorModule: InjectorModule) {
     throwIfAlreadyLoaded(injectorModule, this.constructor.name);
     InjectorHelper.injector = injector;

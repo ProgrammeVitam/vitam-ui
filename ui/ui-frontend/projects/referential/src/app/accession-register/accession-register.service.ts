@@ -146,11 +146,9 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   getStats(): Observable<FacetDetails[]> {
     return this.optionalValues.asObservable().pipe(
       map((m: any) => {
-        // eslint-disable-next-line @typescript-eslint/dot-notation
         if (m === undefined || m['stats'] === undefined) {
           return [];
         }
-        // eslint-disable-next-line @typescript-eslint/dot-notation
         const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
         return this.fetchFacetDetails(accessionRegisterStats);
       }),

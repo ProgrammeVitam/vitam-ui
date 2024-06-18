@@ -77,7 +77,6 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _searchText: string;
 
   private groups: Array<{ id: string; group: any }> = [];

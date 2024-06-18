@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
@@ -11,10 +11,9 @@ import { CustomerService } from '../../../../core/customer.service';
   templateUrl: './homepage-message-update.component.html',
   styleUrls: ['./homepage-message-update.component.scss'],
 })
-export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
+export class HomepageMessageUpdateComponent implements OnDestroy {
   private destroy = new Subject<void>();
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _customForm: FormGroup;
   public get customForm(): FormGroup {
     return this._customForm;
@@ -44,7 +43,6 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
   }
-  ngOnInit() {}
 
   onCancel() {
     if (this.customForm.dirty) {

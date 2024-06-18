@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
@@ -63,7 +62,6 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   set isEditableComponent(value: boolean) {
     this._isEditableComponent = coerceBooleanProperty(value);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _isEditableComponent = false;
 
   @Input()
@@ -73,7 +71,6 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _required = false;
 
   @Input()
@@ -83,7 +80,6 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _disabled = false;
 
   @ViewChild('vitamUILevelInput') private input: ElementRef;

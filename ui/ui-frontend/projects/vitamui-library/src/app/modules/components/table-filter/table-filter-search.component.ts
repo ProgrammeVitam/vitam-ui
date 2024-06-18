@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
   styleUrls: ['./table-filter-search.component.scss'],
 })
-export class TableFilterSearchComponent implements OnInit {
+export class TableFilterSearchComponent {
   @Input() filter: any[];
   @Input()
   set options(options: Array<{ label: string; value: any }>) {
     this._options = options;
     this.optionDisplayMap = this._options.map(() => true);
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   _options: Array<{ label: string; value: any }>;
   @Input() emptyValueOption: string;
 
@@ -57,10 +56,6 @@ export class TableFilterSearchComponent implements OnInit {
 
   optionDisplayMap: Array<boolean>;
   hideEmptyValueOption = false;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   searchOptions(search: string) {
     if (!search) {

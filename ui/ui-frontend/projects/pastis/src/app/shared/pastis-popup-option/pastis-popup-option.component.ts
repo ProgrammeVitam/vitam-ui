@@ -141,14 +141,12 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     const subscription1 = createNoticeChoiceDialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         if (result.action === ProfileType.PA || result.action === ProfileType.PUA) {
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           const createNoticeData = {} as PastisDialogDataCreate;
           createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
           createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
           createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           createNoticeData.profileMode = result.action;
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
             width: '800px',
             panelClass: 'pastis-popup-modal-box',

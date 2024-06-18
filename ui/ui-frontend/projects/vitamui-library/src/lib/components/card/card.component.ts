@@ -1,12 +1,12 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'vitamui-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
   @Input()
   value: string;
 
@@ -15,10 +15,6 @@ export class CardComponent implements OnInit {
 
   @Output()
   buttonClick = new EventEmitter<any>();
-
-  constructor() {}
-
-  ngOnInit() {}
 
   buttonClicked() {
     this.buttonClick.emit();

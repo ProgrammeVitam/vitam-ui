@@ -73,7 +73,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<Context>();
@@ -106,7 +105,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this._connectedUserInfo = userInfo;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(

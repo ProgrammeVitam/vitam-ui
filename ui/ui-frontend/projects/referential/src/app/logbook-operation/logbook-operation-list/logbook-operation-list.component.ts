@@ -70,12 +70,12 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
 export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;
 
-  @Input('search') set searchText(searchText: string) {
+  @Input() set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  @Input('filters') set searchFilters(searchFilters: Readonly<EventFilter>) {
+  @Input() set filters(searchFilters: Readonly<EventFilter>) {
     this._searchFilters = searchFilters;
     this.searchFiltersChange.next(searchFilters);
   }

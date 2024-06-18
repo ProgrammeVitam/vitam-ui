@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -42,19 +42,14 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './role.component.html',
   styleUrls: ['./role.component.scss'],
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent {
   @Input() checked: boolean;
   @Input() name: string;
   @Input() disabled: boolean;
 
   forceDisabled: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   readonly _checkedChange = new Subject<boolean>();
-
-  constructor() {}
-
-  ngOnInit() {}
 
   get checkedChange(): Observable<boolean> {
     return this._checkedChange.asObservable();

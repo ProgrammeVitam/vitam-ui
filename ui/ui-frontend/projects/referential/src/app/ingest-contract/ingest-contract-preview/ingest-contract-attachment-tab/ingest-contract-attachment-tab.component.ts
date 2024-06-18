@@ -34,12 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable quote-props, @typescript-eslint/quotes */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { ExternalParameters, ExternalParametersService, IngestContract, VitamUISnackBarService } from 'vitamui-library';
-import { SearchUnitApiService } from 'vitamui-library';
+import {
+  ExternalParameters,
+  ExternalParametersService,
+  IngestContract,
+  SearchUnitApiService,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({
@@ -47,7 +51,7 @@ import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-updat
   templateUrl: './ingest-contract-attachment-tab.component.html',
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
 })
-export class IngestContractAttachmentTabComponent implements OnInit {
+export class IngestContractAttachmentTabComponent {
   @Input() tenantIdentifier: number;
   @Input() readOnly: boolean;
   @Input() set ingestContract(ingestContract: IngestContract) {
@@ -66,7 +70,6 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   linkParentIdTitle: string;
   checkParentIdTitles: string[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _ingestContract: IngestContract;
 
   constructor(
@@ -75,8 +78,6 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     private dialog: MatDialog,
     private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
-
-  ngOnInit() {}
 
   private initSearchAccessContractIdAndTitles(): void {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

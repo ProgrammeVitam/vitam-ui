@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
-/*eslint no-use-before-define: "error"*/
+
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => EditableCustomParamsComponent),
   multi: true,
 };
@@ -14,7 +15,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
 })
-export class EditableCustomParamsComponent extends EditableFieldComponent implements OnInit {
+export class EditableCustomParamsComponent extends EditableFieldComponent {
   array: any[] = [];
 
   selected: string;
@@ -37,7 +38,6 @@ export class EditableCustomParamsComponent extends EditableFieldComponent implem
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }
-  ngOnInit(): void {}
 
   getList(obj: any) {
     const map = new Map<string, string>();

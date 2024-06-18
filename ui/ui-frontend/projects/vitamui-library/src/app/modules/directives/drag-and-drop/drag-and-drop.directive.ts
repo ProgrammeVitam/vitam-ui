@@ -127,7 +127,6 @@ export class DragAndDropDirective {
     // Use BFS to traverse entire directory/file structure
     const queue = [];
     // Unfortunately dataTransferItemList is not iterable i.e. no forEach
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < dataTransferItemList.length; i++) {
       // Note webkitGetAsEntry a non-standard feature and may change
       // Usage is necessary for handling directories

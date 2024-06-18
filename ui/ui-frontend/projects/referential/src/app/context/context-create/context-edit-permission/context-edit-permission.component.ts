@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -76,7 +75,6 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   customers: Customer[] = [];
   accessContracts: Map<string, Option[]> = new Map();
   ingestContracts: Map<string, Option[]> = new Map();
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   onChange = (_x: any) => {};
   onTouched = () => {};
 

@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
@@ -45,7 +45,7 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   templateUrl: './unlock-category-inheritance.component.html',
   styleUrls: ['./unlock-category-inheritance.component.css'],
 })
-export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
+export class UnlockCategoryInheritanceComponent implements OnDestroy {
   @Input()
   ruleCategory: string;
   @Input()
@@ -84,8 +84,6 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.managementRulesSubscription?.unsubscribe();

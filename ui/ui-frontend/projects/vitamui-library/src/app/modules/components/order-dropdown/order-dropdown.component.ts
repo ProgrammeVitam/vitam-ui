@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, Component, ContentChildren, Input, OnChanges, OnInit, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, OnChanges, QueryList } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { Direction } from '../../vitamui-table';
@@ -45,7 +45,7 @@ import { OrderOptionComponent } from './order-option/order-option.component';
   templateUrl: './order-dropdown.component.html',
   styleUrls: ['./order-dropdown.component.scss'],
 })
-export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChanges {
+export class OrderDropdownComponent implements AfterContentInit, OnChanges {
   @Input() orderBy: string;
   @Input() direction: Direction;
 
@@ -53,10 +53,6 @@ export class OrderDropdownComponent implements AfterContentInit, OnInit, OnChang
 
   dropdownOpen = false;
   active = false;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   ngAfterContentInit() {
     this.options.changes.pipe(startWith(null)).subscribe(() => {

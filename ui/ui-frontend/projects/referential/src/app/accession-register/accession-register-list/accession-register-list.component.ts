@@ -39,7 +39,7 @@ import { AccessionRegistersService } from '../accession-register.service';
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
 
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this.textToSearch = searchText;
     this.searchChange.next(searchText);

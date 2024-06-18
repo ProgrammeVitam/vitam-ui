@@ -34,17 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-event-type-label',
   templateUrl: './event-type-label.component.html',
   styleUrls: ['./event-type-label.component.scss'],
 })
-export class EventTypeLabelComponent implements OnInit {
+export class EventTypeLabelComponent {
   @Input() key: string;
-
-  constructor() {}
-
-  ngOnInit() {}
 }

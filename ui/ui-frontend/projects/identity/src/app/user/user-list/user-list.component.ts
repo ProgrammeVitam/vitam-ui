@@ -81,7 +81,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   animations: [collapseAnimation, rotateAnimation],
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
@@ -122,7 +122,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
@@ -140,7 +139,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _groups: Group[];
 
   constructor(

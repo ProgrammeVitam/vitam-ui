@@ -74,7 +74,6 @@ export class StandaloneThemeService {
     [ThemeColorType.VITAMUI_BACKGROUND]: 'Couleur background',
   };
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _defaultTheme: Theme = {
     colors: {},
   };
@@ -101,7 +100,6 @@ export class StandaloneThemeService {
   // Theme for current app configuration
   applicationColorMap: { [colorId: string]: string };
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _backgroundChoice: Color[] = [
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
@@ -163,7 +161,6 @@ export class StandaloneThemeService {
   }
 
   private add10Declinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
-    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     const map: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
     const rgbValue = hexToRgb(map[key]);
     // consider hs-L from color key as 500

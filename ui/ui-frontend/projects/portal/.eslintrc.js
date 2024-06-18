@@ -13,7 +13,6 @@ module.exports = {
           'error',
           {
             type: 'attribute',
-            prefix: 'portal',
             style: 'camelCase',
           },
         ],
@@ -21,7 +20,6 @@ module.exports = {
           'error',
           {
             type: 'element',
-            prefix: 'portal',
             style: 'kebab-case',
           },
         ],

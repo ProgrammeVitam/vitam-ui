@@ -1,12 +1,12 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'vitamui-card-group',
   templateUrl: './card-group.component.html',
   styleUrls: ['./card-group.component.scss'],
 })
-export class CardGroupComponent implements OnInit {
+export class CardGroupComponent {
   constructor() {}
 
   @Input()
@@ -17,8 +17,6 @@ export class CardGroupComponent implements OnInit {
 
   @Output()
   valuesChange = new EventEmitter<Set<string>>();
-
-  ngOnInit() {}
 
   remove($event: string) {
     this.values.delete($event);

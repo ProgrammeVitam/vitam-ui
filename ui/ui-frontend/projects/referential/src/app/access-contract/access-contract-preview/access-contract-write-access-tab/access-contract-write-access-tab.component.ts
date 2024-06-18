@@ -70,7 +70,6 @@ export class AccessContractWriteAccessTabComponent {
   public form: FormGroup;
   public submited = false;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _accessContract: AccessContract;
 
   previousValue = (): AccessContract => {

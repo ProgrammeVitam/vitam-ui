@@ -3,7 +3,7 @@
     formControlName="enabled"
     [matTooltip]="'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
     matTooltipClass="vitamui-tooltip"
-    [matTooltipDisabled]="profile?.groupsCount == 0"
+    [matTooltipDisabled]="profile?.groupsCount === 0"
   >
     <span *ngIf="!form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
     <span *ngIf="form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
@@ -50,7 +50,7 @@
       class="col-6"
       [matTooltip]="'USER_PROFILE.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
       matTooltipClass="vitamui-tooltip"
-      [matTooltipDisabled]="profile?.groupsCount == 0"
+      [matTooltipDisabled]="profile?.groupsCount === 0"
     >
       <vitamui-common-editable-level-input
         formControlName="level"

@@ -47,7 +47,6 @@ describe('RuleListComponent', () => {
   let fixture: ComponentFixture<RuleListComponent>;
 
   const ruleServiceMock = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     delete: (_rule: Rule) => of(null),
     search: () => of(null),
   };

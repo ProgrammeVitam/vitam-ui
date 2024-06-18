@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -52,7 +52,7 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
   templateUrl: './file-format.component.html',
   styleUrls: ['./file-format.component.scss'],
 })
-export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit {
+export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   search = '';
   tenantIdentifier: number;
   tenantIdentifierSubscription: Subscription;

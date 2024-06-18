@@ -36,7 +36,7 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
@@ -50,7 +50,7 @@ import { StartupService } from '../../../startup.service';
   templateUrl: './vitamui-title-breadcrumb.component.html',
   styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
 })
-export class VitamuiTitleBreadcrumbComponent implements OnInit {
+export class VitamuiTitleBreadcrumbComponent {
   @Input()
   public data?: BreadCrumbData[];
 
@@ -61,8 +61,6 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private startupService: StartupService,
     private logger: Logger,
   ) {}
-
-  ngOnInit() {}
 
   public navigateTo(data: BreadCrumbData): void {
     if (data.redirectUrl) {

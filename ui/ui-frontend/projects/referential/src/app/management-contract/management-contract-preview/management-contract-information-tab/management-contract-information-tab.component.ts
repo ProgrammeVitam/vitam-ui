@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -38,7 +38,7 @@ import { ManagementContractService } from '../../management-contract.service';
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
 })
-export class ManagementContractInformationTabComponent implements OnInit {
+export class ManagementContractInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -73,8 +73,6 @@ export class ManagementContractInformationTabComponent implements OnInit {
       status: [null],
     });
   }
-
-  ngOnInit(): void {}
 
   previousValue = (): any => {
     return { ...this._inputManagementContract, status: this._inputManagementContract.status === 'ACTIVE' };

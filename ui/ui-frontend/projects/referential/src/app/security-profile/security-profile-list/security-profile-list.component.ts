@@ -66,7 +66,6 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<SecurityProfile>();
@@ -101,7 +100,6 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     this._connectedUserInfo = userInfo;
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(

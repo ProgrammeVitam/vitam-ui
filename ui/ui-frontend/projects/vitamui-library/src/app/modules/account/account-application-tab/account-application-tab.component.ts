@@ -34,15 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-account-application-tab',
   templateUrl: './account-application-tab.component.html',
   styleUrls: ['./account-application-tab.component.scss'],
 })
-export class AccountApplicationTabComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class AccountApplicationTabComponent {}

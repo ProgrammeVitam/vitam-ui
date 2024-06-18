@@ -21,7 +21,6 @@ export class ItemSelectComponent {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   public _selectedItem: string;
 
   constructor() {}

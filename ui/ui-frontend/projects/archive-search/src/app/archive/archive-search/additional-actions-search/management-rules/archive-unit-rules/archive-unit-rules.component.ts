@@ -36,7 +36,7 @@
  */
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
@@ -55,7 +55,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
     ]),
   ],
 })
-export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
+export class ArchiveUnitRulesComponent implements OnDestroy {
   @Input()
   accessContract: string;
   @Input()
@@ -88,8 +88,6 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
     this.ruleActionsSubscription?.unsubscribe();
     this.managementRulesSubscription?.unsubscribe();
   }
-
-  ngOnInit() {}
 
   confirmStep(id: number) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {

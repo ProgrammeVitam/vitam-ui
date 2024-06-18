@@ -70,7 +70,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.searchChange.next(searchText);
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _searchText: string;
 
   ruleTypes = RULE_TYPES;
@@ -79,7 +78,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     ruleType: this.ruleTypes.map((value) => value.label),
   };
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _filters: string;
 
   ruleMeasurements = RULE_MEASUREMENTS;

@@ -57,7 +57,6 @@ export class SecurityProfilePermissionsTabComponent {
 
   ruleFilter = new FormControl();
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _SecurityProfile: SecurityProfile;
 
   // FIXME: Get list from common var ?
@@ -75,7 +74,6 @@ export class SecurityProfilePermissionsTabComponent {
   };
 
   @Input()
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   set SecurityProfile(SecurityProfile: SecurityProfile) {
     if (!SecurityProfile.permissions) {
       SecurityProfile.permissions = [];
@@ -101,7 +99,6 @@ export class SecurityProfilePermissionsTabComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     private SecurityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
@@ -124,7 +121,6 @@ export class SecurityProfilePermissionsTabComponent {
         unchanged = false;
       } else {
         const previousPermissions = this.previousValue().permissions;
-        // eslint-disable-next-line @typescript-eslint/no-shadow
         const diff = this.form.getRawValue().permissions.filter((permission: string) => {
           return previousPermissions.indexOf(permission) === -1;
         });
@@ -175,7 +171,6 @@ export class SecurityProfilePermissionsTabComponent {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   resetForm(SecurityProfile: SecurityProfile) {
     this.form.reset(SecurityProfile, { emitEvent: false });
   }

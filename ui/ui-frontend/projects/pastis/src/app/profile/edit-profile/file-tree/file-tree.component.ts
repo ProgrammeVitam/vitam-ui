@@ -264,7 +264,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   async addNewItem(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     dataToSendToPopUp.titleDialog = this.popupAddTitleDialog;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     (dataToSendToPopUp.subTitleDialog = `${this.popupAddSubTitleDialog} ${node.name}`), node.name;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.width = '800px';
@@ -779,7 +778,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   filterExpandedChildren(node: FileNode, isExpanded: boolean) {
     if (this.viewChild && this.viewChild.length > 0) {
       this.viewChild.forEach((e: FileNode) => {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
         const abstractFunctionCondition = (isExpanded: boolean): boolean => {
           return isExpanded
             ? e.id !== node.id && e.level >= node.level
@@ -789,7 +787,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
           if (this.fileTreeService.nestedTreeControl.isExpanded(e)) {
             document.getElementById('child' + e.id).click();
           }
-          // eslint-disable-next-line @typescript-eslint/no-shadow
           this.viewChild = isExpanded ? this.viewChild.filter((e) => e.id === node.id) : this.viewChild.filter((e) => e.id !== node.id);
         }
       });

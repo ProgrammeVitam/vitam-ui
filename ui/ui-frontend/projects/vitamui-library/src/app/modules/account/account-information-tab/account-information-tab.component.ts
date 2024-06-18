@@ -61,7 +61,6 @@ export class AccountInformationTabComponent implements OnInit {
   get account(): Account {
     return this._account;
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _account: Account;
 
   constructor(

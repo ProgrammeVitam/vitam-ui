@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { slideDownAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
@@ -44,10 +44,6 @@ import { slideDownAnimation } from '../../animations/vitamui-common-animations';
   styleUrls: ['./vitamui-input-error.component.scss'],
   animations: [slideDownAnimation],
 })
-export class VitamUIInputErrorComponent implements OnInit {
+export class VitamUIInputErrorComponent {
   @HostBinding('@slideDownAnimation') slideDownAnimation = true;
-
-  constructor() {}
-
-  ngOnInit() {}
 }

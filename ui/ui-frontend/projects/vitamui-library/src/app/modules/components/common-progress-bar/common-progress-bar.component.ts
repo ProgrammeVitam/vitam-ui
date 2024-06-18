@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -44,7 +44,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   templateUrl: './common-progress-bar.component.html',
   styleUrls: ['./common-progress-bar.component.scss'],
 })
-export class CommonProgressBarComponent implements OnInit {
+export class CommonProgressBarComponent {
   @Input() hideCounter = false;
 
   @Input() set index(val: number) {
@@ -66,14 +66,8 @@ export class CommonProgressBarComponent implements OnInit {
 
   public progressValue: number;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   private _count: number;
-  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _index: number;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   getProgressValue(index: number, count: number): number {
     return (index / count) * PROGRESS_BAR_MULTIPLICATOR;

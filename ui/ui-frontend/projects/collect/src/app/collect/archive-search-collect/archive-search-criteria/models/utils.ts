@@ -41,12 +41,9 @@
  * on the wanted types!
  */
 export class Pair {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   key: Object;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   value: Object;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   constructor(key: Object, value: Object) {
     this.key = key;
     this.value = value;

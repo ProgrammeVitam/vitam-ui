@@ -10,7 +10,7 @@
 
     <div class="col-6 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.TYPE' | translate }}</label>
-      <div *ngIf="inputProfile.type == 'PA'; else pua">
+      <div *ngIf="inputProfile.type === 'PA'; else pua">
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_ARCHIVAGE' | translate }}
       </div>
       <ng-template #pua class="read_only">
