@@ -35,8 +35,8 @@ spring:
               /portal-api/userinfos/me,
               /portal-api/ui/applications/**,
               /portal-api/users/analytics,
-              /portal-api/subrogations/me/surrogate,
-
+              /portal-api/subrogations/**,
+              
               /identity-api/security,
               /identity-api/userinfos/**,
               /identity-api/ui/applications/**,
@@ -50,7 +50,7 @@ spring:
               /identity-api/profiles/**,
               /identity-api/accesscontracts/**,
               /identity-api/externalparamprofile/**,
-
+              
               /referential-api/security$,
               /referential-api/security/**,
               /referential-api/userinfos/**,
@@ -62,45 +62,45 @@ spring:
               /referential-api/accesscontracts/**,
               /referential-api/profiles/**,
               /referential-api/externalparameters/**,
-
-
+              /referential-api/customers/**,
+              
               /archive-search-api/ui/applications/**,
               /archive-search-api/externalparameters/**,
               /archive-search-api/security,
               /archive-search-api/tenants/**,
               /archive-search-api/userinfos/**,
+              /archive-search-api/subrogations/**,
               /archive-search-api/users/analytics,
               /archive-search-api/logbooks/operations/**,
               /archive-search-api/accesscontracts/**,
-              /archive-search-api/subrogations/**,
-
+              
               /pastis-api/ui/**,
               /pastis-api/security,
               /pastis-api/userinfos/**,
+              /pastis-api/subrogations/**,
               /pastis-api/users/analytics,
               /pastis-api/logbooks/operations/**,
               /pastis-api/accesscontracts/**,
-              /pastis-api/subrogations/**,
-
+              
               /collect-api/ui/applications/**,
               /collect-api/externalparameters/**,
               /collect-api/security,
               /collect-api/tenants/**,
               /collect-api/userinfos/**,
+              /collect-api/subrogations/**,
               /collect-api/users/analytics,
               /collect-api/logbooks/operations/**,
               /collect-api/accesscontracts/**,
-              /collect-api/subrogations/**,
-
+              
               /ingest-api/ui/applications/**,
               /ingest-api/externalparameters/**,
               /ingest-api/security,
               /ingest-api/tenants/**,
               /ingest-api/userinfos/**,
+              /ingest-api/subrogations/**,
               /ingest-api/users/analytics,
               /ingest-api/logbooks/operations/**,
-              /ingest-api/accesscontracts/**,
-              /ingest-api/subrogations/**
+              /ingest-api/accesscontracts/**
 
           filters:
             # Portal IAM API
@@ -117,6 +117,7 @@ spring:
             - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
             - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
 
             # Archive Search IAM API
@@ -126,6 +127,7 @@ spring:
             - RewritePath=/archive-search-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/archive-search-api/(?<segment>.*),/v1/$\{segment}
 
             # Pastis IAM API
@@ -133,6 +135,7 @@ spring:
             - RewritePath=/pastis-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/pastis-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/pastis-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/pastis-api/(?<segment>.*),/v1/$\{segment}
 
             # Collect IAM API
@@ -141,7 +144,9 @@ spring:
             - RewritePath=/collect-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/collect-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
+
 
             # Ingest IAM API
             - RewritePath=/ingest-api/ui/(?<segment>.*),/iam/v1/$\{segment}
@@ -150,7 +155,8 @@ spring:
             - RewritePath=/ingest-api/security(?<segment>.*),/iam/v1/security$\{segment},
             - RewritePath=/ingest-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
             - RewritePath=/ingest-api/users(?<segment>.*),/iam/v1/users$\{segment},
-            - RewritePath=/ingest-api/(?<segment>.*),/iam/v1/$\{segment}
+            - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+            - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
         - id: referential-external-service
           uri: https://localhost:8087 # URL REFERENTIAL EXTERNAL
@@ -159,7 +165,7 @@ spring:
               Path=
               /referential-api/accesscontract/**,
               /referential-api/ingestcontract/**,
-              /referential-api/managementcontract/**,
+              /referential-api/management-contract/**,
               /referential-api/agency/**,
               /referential-api/fileformat/**,
               /referential-api/operation/**,
@@ -171,21 +177,20 @@ spring:
               /referential-api/ontology/**,
               /referential-api/profile/**,
               /referential-api/search/**,
+              /referential-api/static/**,
               /referential-api/rules/**,
               /referential-api/rule/**,
-              /referential-api/customers/**,
-              /referential-api/static/**
-
+              
               /archive-search-api/security-profile/**,
               /archive-search-api/ontology/**,
               /archive-search-api/rules/**,
               /archive-search-api/schemas,
-
+              
               /pastis-api/archival-profile$,
               /pastis-api/archival-profile/**,
               /pastis-api/profile$,
               /pastis-api/profile/**,
-
+              
               /collect-api/ontology/**,
               /collect-api/search/**,
               /collect-api/rules/**,
@@ -194,11 +199,10 @@ spring:
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
             - RewritePath=/referential-api/operation(?<segment>.*),/referential/v1/operations$\{segment}
-            - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/referential-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/referential-api/search/units(?<segment>.*),/units$\{segment}
-            - RewritePath=/referential-api/static(?<segment>.*), $\{segment}
             - RewritePath=/referential-api/rule/(?<segment>.*),/referential/v1/rules/$\{segment}
+            - RewritePath=/referential-api/static(?<segment>.*),$\{segment}
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
             # Archive Search Referential API
@@ -206,8 +210,8 @@ spring:
             - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
 
             # Pastis to Referential API
-            - RewritePath=/pastis-api/archival-profile,/referential/v1/archival-profile
-            - RewritePath=/pastis-api/profile,/referential/v1/profile
+            - RewritePath=/pastis-api/archival-profile(?<segment>.*),/referential/v1/archival-profile$\{segment}
+            - RewritePath=/pastis-api/profile(?<segment>.*),/referential/v1/profile$\{segment}
 
             # Collect Referential API
             - RewritePath=/collect-api/schemas,/schemas
@@ -223,6 +227,7 @@ spring:
               /archive-search-api/archive-search/**,
               /archive-search-api/archive-units/**,
           filters:
+            # Archive search API
             - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
             - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
@@ -261,15 +266,16 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
+
         - id: ingest-external-service
           uri: https://localhost:8088 # URL INGEST EXTERNAL
           predicates:
             - >
               Path=
-              /ingest-api/ingest/**
+              /ingest-api/**
 
           filters:
             # Ingest API
-            - RewritePath=/ingest-api/ingest/(?<segment>.*),/ingest/v1/$\{segment}
+            - RewritePath=/ingest-api/,/v1/
     discovery:
       enabled: false
