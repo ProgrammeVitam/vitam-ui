@@ -200,9 +200,15 @@
     "webpack-bundle-analyzer": "^3.8.0"
   },
   "overrides": {
-    "colors": "1.4.0",
     "ng2-date-picker": {
-      "@angular/common": "$@angular/common"
+      "@angular/core": "$@angular/core",
+      "@angular/common": "$@angular/common",
+      "@angular/cdk": "$@angular/cdk"
+    },
+    "ng2-file-upload": {
+      "@angular/core": "$@angular/core",
+      "@angular/common": "$@angular/common",
+      "@angular/cdk": "$@angular/cdk"
     }
   },
   "lint-staged": {

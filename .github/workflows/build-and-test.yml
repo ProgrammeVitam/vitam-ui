@@ -20,7 +20,7 @@ jobs:
             ui/ui-frontend/package-lock.json
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
-        run: npm ci --force
+        run: npm ci
       - name: Lint ui-frontend with ESLint # We run ESLint in that GitHub Action because it requires to install project's dependencies (Prettier is run in "lint" GitHub Action)
         working-directory: ui/ui-frontend
         run: npm run lint
