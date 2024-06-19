@@ -36,13 +36,12 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { FilingPlanModule } from 'vitamui-library';
 import { environment } from './../../../../../environments/environment';
 
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
@@ -52,10 +51,10 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
   let component: IngestContractNodeUpdateComponent;
   let fixture: ComponentFixture<IngestContractNodeUpdateComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
@@ -78,7 +77,7 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractNodeUpdateComponent);

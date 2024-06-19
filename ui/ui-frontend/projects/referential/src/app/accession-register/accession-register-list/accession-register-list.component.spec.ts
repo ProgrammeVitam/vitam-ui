@@ -29,7 +29,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -49,7 +49,7 @@ describe('AccessionRegisterListComponent', () => {
   };
   let searchService: { search: () => Observable<{}> };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     accessionRegistersService = {
       getAccessionRegisterStatus: () => of({}),
       getDateIntervalChanges: () => new BehaviorSubject<any>({}),
@@ -59,7 +59,7 @@ describe('AccessionRegisterListComponent', () => {
       search: () => of({}),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AccessionRegisterListComponent],
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
       providers: [
@@ -70,7 +70,7 @@ describe('AccessionRegisterListComponent', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(AccessionRegisterListComponent);
     component = fixture.componentInstance;
-  }));
+  });
 
   describe('searchRequest', () => {
     it('searchRequest should work', () => {

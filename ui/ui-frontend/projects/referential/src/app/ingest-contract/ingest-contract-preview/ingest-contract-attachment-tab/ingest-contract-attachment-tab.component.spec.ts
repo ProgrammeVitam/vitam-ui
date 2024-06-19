@@ -36,13 +36,19 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, IngestContract, LoggerModule } from 'vitamui-library';
-import { SearchUnitApiService } from 'vitamui-library';
+import {
+  BASE_URL,
+  ExternalParameters,
+  ExternalParametersService,
+  IngestContract,
+  LoggerModule,
+  SearchUnitApiService,
+} from 'vitamui-library';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 
 describe('IngestContractAttachmentTabComponent', () => {
@@ -76,7 +82,7 @@ describe('IngestContractAttachmentTabComponent', () => {
     signaturePolicy: undefined,
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
     parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
     const externalParametersServiceMock = {
@@ -87,7 +93,7 @@ describe('IngestContractAttachmentTabComponent', () => {
       getByDsl: () => of({}),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [IngestContractAttachmentTabComponent],
       imports: [MatSnackBarModule, TranslateModule.forRoot(), HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
@@ -98,7 +104,7 @@ describe('IngestContractAttachmentTabComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractAttachmentTabComponent);

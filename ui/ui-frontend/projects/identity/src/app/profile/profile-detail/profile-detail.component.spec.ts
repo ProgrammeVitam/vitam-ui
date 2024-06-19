@@ -41,7 +41,7 @@ import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCAT
 import { environment } from './../../../environments/environment';
 
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -121,8 +121,8 @@ describe('ProfileDetailComponent', () => {
     readonly: false,
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatTabsModule,
@@ -149,7 +149,7 @@ describe('ProfileDetailComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

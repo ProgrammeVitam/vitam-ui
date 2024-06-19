@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -67,13 +67,13 @@ function getInputs() {
 }
 
 describe('VitamuiRepeatableInputComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, TranslateModule.forRoot(), CommonTooltipModule],
       declarations: [VitamuiRepeatableInputComponent],
       providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamuiRepeatableInputComponent);

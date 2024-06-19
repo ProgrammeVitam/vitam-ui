@@ -64,13 +64,13 @@ describe('RoleToggleComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
       declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

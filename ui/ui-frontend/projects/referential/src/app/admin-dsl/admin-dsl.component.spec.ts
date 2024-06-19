@@ -36,7 +36,7 @@
  */
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +61,7 @@ describe('AdminDslComponent', () => {
     response: {},
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const adminDslServiceMock = {
       getByDsl: () => of({}),
     };
@@ -73,7 +73,7 @@ describe('AdminDslComponent', () => {
       data: of({ appId: 'DSL_APP' }),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule,
@@ -93,7 +93,7 @@ describe('AdminDslComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminDslComponent);

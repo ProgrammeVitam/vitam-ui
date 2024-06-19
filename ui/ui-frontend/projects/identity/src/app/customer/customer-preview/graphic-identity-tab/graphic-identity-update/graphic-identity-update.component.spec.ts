@@ -35,17 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { forwardRef, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { ENVIRONMENT } from 'vitamui-library';
-import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
-
-import { Component } from '@angular/core';
 
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update.component';
 
@@ -117,10 +113,10 @@ describe('GraphicIdentityUpdateComponent', () => {
   let component: GraphicIdentityUpdateComponent;
   let fixture: ComponentFixture<GraphicIdentityUpdateComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
       providers: [
@@ -131,7 +127,7 @@ describe('GraphicIdentityUpdateComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphicIdentityUpdateComponent);

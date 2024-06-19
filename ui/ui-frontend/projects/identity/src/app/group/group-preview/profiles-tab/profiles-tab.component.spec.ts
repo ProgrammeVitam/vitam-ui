@@ -36,7 +36,7 @@
  */
 
 import { Component, Directive, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { of, Subject } from 'rxjs';
@@ -162,8 +162,8 @@ describe('ProfilesTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
       declarations: [ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
@@ -172,7 +172,7 @@ describe('ProfilesTabComponent', () => {
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

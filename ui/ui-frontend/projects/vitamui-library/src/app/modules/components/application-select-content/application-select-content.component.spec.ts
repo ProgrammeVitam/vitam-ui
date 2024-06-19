@@ -36,7 +36,7 @@
  */
 /* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuthService } from '../../auth.service';
 import { WINDOW_LOCATION } from '../../injection-tokens';
@@ -55,15 +55,15 @@ describe('ApplicationSelectContentComponent', () => {
   let component: ApplicationSelectContentComponent;
   let fixture: ComponentFixture<ApplicationSelectContentComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ApplicationSelectContentComponent, VitamUIMenuTileStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AuthService, useValue: {} },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationSelectContentComponent);

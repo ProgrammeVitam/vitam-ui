@@ -37,14 +37,13 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, CountryService, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
-import { Owner } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
@@ -61,13 +60,13 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('OwnerFormComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
       uniqueCode: () => timer(10).pipe(map(() => null)),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatSelectModule,
         ReactiveFormsModule,
@@ -87,7 +86,7 @@ describe('OwnerFormComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

@@ -36,7 +36,7 @@
  */
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
@@ -52,10 +52,10 @@ describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule, TranslateModule.forRoot()],
       declarations: [LogbookOperationComponent, SearchBarComponent],
       providers: [
@@ -68,7 +68,7 @@ describe('LogbookOperationComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationComponent);

@@ -58,13 +58,13 @@ let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
 describe('VitamUIListInputComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule, TranslateModule.forRoot()],
       declarations: [TestHostComponent, VitamUIListInputComponent],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

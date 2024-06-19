@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -54,7 +54,7 @@ describe('AuditPreviewComponent', () => {
   let component: AuditPreviewComponent;
   let fixture: ComponentFixture<AuditPreviewComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
     parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
     const externalParametersServiceMock = {
@@ -62,7 +62,7 @@ describe('AuditPreviewComponent', () => {
     };
     const snackBarSpy = jasmine.createSpyObj(['open']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AuditPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: AuditService, useValue: {} },
@@ -72,7 +72,7 @@ describe('AuditPreviewComponent', () => {
       imports: [PipesModule, TranslateModule.forRoot()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditPreviewComponent);

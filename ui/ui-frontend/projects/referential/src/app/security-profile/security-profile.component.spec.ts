@@ -36,7 +36,7 @@
  */
 /* eslint-disable @angular-eslint/component-selector */
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -67,8 +67,8 @@ describe('SecurityProfileComponent', () => {
     isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [SecurityProfileComponent, SecurityProfileListStub, SecurityProfilePreviewStub],
       imports: [
         VitamUICommonTestModule,
@@ -82,7 +82,7 @@ describe('SecurityProfileComponent', () => {
       providers: [{ provide: ApplicationService, useValue: applicationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfileComponent);

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
@@ -47,8 +47,8 @@ describe('CustomerMenuComponent', () => {
   let component: CustomerMenuComponent;
   let fixture: ComponentFixture<CustomerMenuComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatDialogModule, VitamUICommonTestModule],
       declarations: [CustomerMenuComponent],
       providers: [
@@ -56,7 +56,7 @@ describe('CustomerMenuComponent', () => {
         { provide: CustomerSelectionService, useValue: { getSelectedCustomerId$: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerMenuComponent);

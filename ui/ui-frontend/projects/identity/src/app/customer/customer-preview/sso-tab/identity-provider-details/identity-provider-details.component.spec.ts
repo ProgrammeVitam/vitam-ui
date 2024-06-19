@@ -131,13 +131,13 @@ xdescribe('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
       declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
       providers: [{ provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -271,6 +271,8 @@ xdescribe('IdentityProviderDetailsComponent', () => {
   });
 
   describe('DOM', () => {
-    // TODO
+    it('TODO', () => {
+      // TODO
+    });
   });
 });

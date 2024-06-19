@@ -36,12 +36,11 @@
  */
 
 import { Component, Directive, forwardRef, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
-import { AuthService, Profile } from 'vitamui-library';
-import { CountryService } from 'vitamui-library';
+import { AuthService, CountryService, Profile } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
@@ -116,12 +115,12 @@ describe('Hierarchy InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const hierarchyServiceMock = { update: of({}), updated: new Subject() };
     const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
     const authServiceMock = { user: { level: '' } };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent, MatTooltipStubDirective],
       providers: [
@@ -131,7 +130,7 @@ describe('Hierarchy InformationTabComponent', () => {
         { provide: CountryService, useValue: {} },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -162,6 +161,8 @@ describe('Hierarchy InformationTabComponent', () => {
   });
 
   describe('Component', () => {
-    // TODO
+    it('TODO', () => {
+      // TODO
+    });
   });
 });

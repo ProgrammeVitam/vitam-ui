@@ -38,7 +38,7 @@
 /* eslint-disable max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, HostListener, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacySnackBarModule as MatSnackBarModule, MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -108,11 +108,11 @@ describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const authServiceStub = { logout: () => {} };
     const startupServiceStub = { getPortalUrl: () => {}, getLogo: () => {}, getAppLogoURL: () => {}, getCustomerLogoURL: () => {} };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         NoopAnimationsModule,
@@ -142,7 +142,7 @@ describe('NavbarComponent', () => {
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);

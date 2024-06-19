@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -58,7 +58,7 @@ describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
   let fixture: ComponentFixture<IngestContractCreateComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
       uniqueName: () => of(null),
       uniqueIdentifier: () => of(null),
@@ -85,7 +85,7 @@ describe('IngestContractCreateComponent', () => {
       getAllByParams: (_params: any) => of(null),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         VitamUICommonTestModule,
         MatSnackBarModule,
@@ -111,7 +111,7 @@ describe('IngestContractCreateComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractCreateComponent);

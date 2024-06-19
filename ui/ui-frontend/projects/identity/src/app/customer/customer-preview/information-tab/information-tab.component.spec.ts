@@ -36,11 +36,10 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EMPTY } from 'rxjs';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
@@ -133,7 +132,7 @@ describe('Customer InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     expectedCustomer = {
       id: '11',
       identifier: '11',
@@ -169,7 +168,7 @@ describe('Customer InformationTabComponent', () => {
       uniqueDomain: () => of(null),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
       declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
       providers: [
@@ -181,7 +180,7 @@ describe('Customer InformationTabComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

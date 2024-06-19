@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
@@ -55,8 +55,8 @@ describe('AccountInformationTabComponent', () => {
     getMyAccount: () => of({}),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, EditableFieldModule, SlideToggleModule, TranslateModule.forRoot(), NoopAnimationsModule],
       declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent, NavbarStubComponent],
       providers: [
@@ -64,7 +64,7 @@ describe('AccountInformationTabComponent', () => {
         { provide: AccountService, useValue: accountServiceSpy },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountInformationTabComponent);

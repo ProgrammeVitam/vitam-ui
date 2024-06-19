@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -14,12 +14,12 @@ xdescribe('ContextInformationTabComponent', () => {
   let component: ContextInformationTabComponent;
   let fixture: ComponentFixture<ContextInformationTabComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const securityProfileServiceMock = {
       getAll: () => of([]),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule, MatSelectModule],
       declarations: [ContextInformationTabComponent],
       providers: [
@@ -29,7 +29,7 @@ xdescribe('ContextInformationTabComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextInformationTabComponent);

@@ -37,12 +37,11 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, Group, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
-import { CountryService } from 'vitamui-library';
+import { AuthService, BASE_URL, CountryService, Group, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';
@@ -77,7 +76,7 @@ describe('Profile Group InformationTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     expectedGroup = {
       id: '42',
       enabled: true,
@@ -93,7 +92,7 @@ describe('Profile Group InformationTabComponent', () => {
       readonly: false,
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
       declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
@@ -106,7 +105,7 @@ describe('Profile Group InformationTabComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

@@ -35,30 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { Event } from 'vitamui-library';
+import { Event, TableFilterModule } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { TableFilterModule } from 'vitamui-library';
 
 describe('AuditListComponent', () => {
   let component: AuditListComponent;
   let fixture: ComponentFixture<AuditListComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const auditServiceMock = {
       search: () => of(null),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AuditListComponent],
       imports: [VitamUICommonTestModule, TableFilterModule],
       providers: [{ provide: AuditService, useValue: auditServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditListComponent);

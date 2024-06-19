@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ describe('ProbativeValuePreviewComponent', () => {
   let component: ProbativeValuePreviewComponent;
   let fixture: ComponentFixture<ProbativeValuePreviewComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
     };
@@ -30,7 +30,7 @@ describe('ProbativeValuePreviewComponent', () => {
       getUserExternalParameters: () => of(parameters),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
       imports: [MatSnackBarModule, TranslateModule.forRoot()],
       providers: [
@@ -40,7 +40,7 @@ describe('ProbativeValuePreviewComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProbativeValuePreviewComponent);

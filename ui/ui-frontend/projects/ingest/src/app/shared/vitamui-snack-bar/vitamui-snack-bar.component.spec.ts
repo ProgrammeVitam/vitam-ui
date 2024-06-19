@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
   MatLegacySnackBarRef as MatSnackBarRef,
@@ -46,15 +46,15 @@ describe('VitamUISnackbarComponent', () => {
   let component: VitamUISnackBarComponent;
   let fixture: ComponentFixture<VitamUISnackBarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [VitamUISnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamUISnackBarComponent);

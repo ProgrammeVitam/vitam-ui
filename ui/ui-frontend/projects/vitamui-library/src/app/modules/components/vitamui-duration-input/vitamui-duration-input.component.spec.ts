@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
@@ -44,12 +44,12 @@ describe('VitamUIDurationInputComponent', () => {
   let component: VitamUIDurationInputComponent;
   let fixture: ComponentFixture<VitamUIDurationInputComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [VitamUIDurationInputComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamUIDurationInputComponent);

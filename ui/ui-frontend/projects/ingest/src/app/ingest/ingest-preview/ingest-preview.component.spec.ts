@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -22,8 +22,8 @@ describe('IngestPreviewComponent test:', () => {
   let fixture: ComponentFixture<IngestPreviewComponent>;
   const logbookOperation: LogbookOperation = { id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq', agIdExt: {}, events: [{}] };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
       imports: [HttpClientTestingModule, MatMenuModule, TranslateModule.forRoot()],
       providers: [
@@ -39,7 +39,7 @@ describe('IngestPreviewComponent test:', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestPreviewComponent);

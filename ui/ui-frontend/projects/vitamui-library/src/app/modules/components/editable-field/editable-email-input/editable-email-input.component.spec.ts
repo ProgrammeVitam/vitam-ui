@@ -43,7 +43,7 @@
 //   let fixture: ComponentFixture<EditableEmailInputComponent>;
 
 //   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
+//     await TestBed.configureTestingModule({
 //       declarations: [ EditableEmailInputComponent ]
 //     })
 //     .compileComponents();

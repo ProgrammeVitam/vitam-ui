@@ -63,11 +63,15 @@ describe('SearchService', () => {
   });
 
   describe('search', () => {
-    // TODO
+    it('TODO', () => {
+      // TODO
+    });
   });
 
   describe('loadMore', () => {
-    // TODO
+    it('TODO', () => {
+      // TODO
+    });
   });
 
   describe('canLoadMore', () => {

@@ -37,7 +37,7 @@
 /* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -61,7 +61,7 @@ class FakeLoader implements TranslateLoader {
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
@@ -71,7 +71,7 @@ describe('AppComponent', () => {
       getConfigStringValue: () => '',
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
@@ -93,7 +93,7 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app Portal', () => {
     const fixture = TestBed.createComponent(AppComponent);

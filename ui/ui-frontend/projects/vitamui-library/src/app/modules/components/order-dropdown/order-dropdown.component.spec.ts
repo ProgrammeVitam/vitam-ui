@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrderDropdownComponent } from './order-dropdown.component';
 
@@ -43,12 +43,12 @@ describe('OrderDropdownComponent', () => {
   let component: OrderDropdownComponent;
   let fixture: ComponentFixture<OrderDropdownComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [OverlayModule],
       declarations: [OrderDropdownComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderDropdownComponent);

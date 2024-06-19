@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = function (config) {
-  const projectPath = config.buildWebpack.webpackConfig.context;
+  const projectPath = config.buildWebpack.webpackConfig.resolve.roots[0];
   const projectName = path.basename(projectPath);
 
   config.set({

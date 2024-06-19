@@ -37,7 +37,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -57,13 +57,13 @@ let fixture: ComponentFixture<TesthostComponent>;
 let testhost: TesthostComponent;
 
 describe('SlideToggleComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
       declarations: [TesthostComponent, SlideToggleComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

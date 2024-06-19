@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
@@ -107,13 +107,13 @@ describe('SecurisationPreviewComponent', () => {
 
   const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatSnackBarModule, TranslateModule.forRoot()],
       declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
       providers: [
@@ -123,7 +123,7 @@ describe('SecurisationPreviewComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationPreviewComponent);

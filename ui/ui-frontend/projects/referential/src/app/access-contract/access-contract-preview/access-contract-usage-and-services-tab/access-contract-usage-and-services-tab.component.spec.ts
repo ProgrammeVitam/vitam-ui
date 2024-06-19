@@ -36,7 +36,7 @@
  */
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AccessContract, Status } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
@@ -88,8 +88,8 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     patch: (_data: any) => of(null),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [AccessContractUsageAndServicesTabComponent],
       providers: [
@@ -99,7 +99,7 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractUsageAndServicesTabComponent);

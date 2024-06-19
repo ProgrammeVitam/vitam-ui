@@ -52,8 +52,8 @@ describe('TableFilterDirective', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [OverlayModule],
       declarations: [TesthostComponent, TableFilterDirective],
     }).compileComponents();

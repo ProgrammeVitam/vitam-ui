@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
@@ -53,12 +53,12 @@ describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
   let fixture: ComponentFixture<ProbativeValueComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'PROBATIVE_VALUE_APP' }),
     };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatInputModule,
         ReactiveFormsModule,
@@ -78,7 +78,7 @@ describe('ProbativeValueComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProbativeValueComponent);

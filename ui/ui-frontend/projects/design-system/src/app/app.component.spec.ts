@@ -52,7 +52,7 @@ import { AppComponent } from './app.component';
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
@@ -61,7 +61,7 @@ describe('AppComponent', () => {
       getPortalUrl: () => '',
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
@@ -78,7 +78,7 @@ describe('AppComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app Design-system', () => {
     const fixture = TestBed.createComponent(AppComponent);

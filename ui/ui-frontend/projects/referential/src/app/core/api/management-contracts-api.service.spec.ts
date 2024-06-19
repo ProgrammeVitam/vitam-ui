@@ -38,17 +38,17 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { ManagementContractsApiService } from './management-contracts-api.service';
 
 describe('ManagementContractsApiService', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot(), HttpClientTestingModule],
       providers: [{ provide: BASE_URL, useValue: '' }],
     }).compileComponents();
-  }));
+  });
 
   it('should be created', () => {
     const service: ManagementContractsApiService = TestBed.inject(ManagementContractsApiService);

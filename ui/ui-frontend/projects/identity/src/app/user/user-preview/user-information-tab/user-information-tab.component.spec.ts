@@ -40,6 +40,7 @@ import {
   AdminUserProfile,
   AuthService,
   BASE_URL,
+  CountryService,
   Customer,
   LoggerModule,
   OtpState,
@@ -51,11 +52,10 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CountryService } from 'vitamui-library';
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
@@ -188,7 +188,7 @@ describe('UserInfoTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     expectedUser = {
       id: 'idUser',
       identifier: '8',
@@ -288,7 +288,7 @@ describe('UserInfoTabComponent', () => {
 
     const userCreateValidatorsSpy = jasmine.createSpyObj('userCreateValidators', { uniqueEmail: () => of(null) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         NoopAnimationsModule,
@@ -308,7 +308,7 @@ describe('UserInfoTabComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

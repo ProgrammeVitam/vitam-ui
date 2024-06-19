@@ -69,8 +69,8 @@ describe('FileTreeMetadataComponent', () => {
     'NeedReassessingAuthorization',
   ];
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [FileTreeMetadataComponent],
       providers: [
         FileTreeMetadataService,

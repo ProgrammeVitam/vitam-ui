@@ -36,7 +36,7 @@
  */
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
@@ -61,13 +61,13 @@ describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
   let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
       imports: [
         MatSnackBarModule,
@@ -91,7 +91,7 @@ describe('LogbookOperationDetailComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationDetailComponent);

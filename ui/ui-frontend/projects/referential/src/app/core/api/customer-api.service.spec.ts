@@ -34,21 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import { LoggerModule } from 'vitamui-library';
+import { BASE_URL, LoggerModule } from 'vitamui-library';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL } from 'vitamui-library';
 import { CustomerApiService } from './customer-api.service';
 
 describe('CustomerApiService', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot(), HttpClientTestingModule],
       providers: [{ provide: BASE_URL, useValue: '' }],
     }).compileComponents();
-  }));
+  });
 
   it('should be created', () => {
     const service: CustomerApiService = TestBed.inject(CustomerApiService);

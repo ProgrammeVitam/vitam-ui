@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -52,9 +52,9 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatSidenavModule, NoopAnimationsModule],
       declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
@@ -63,7 +63,7 @@ describe('AppComponent', () => {
         { provide: Router, useValue: { navigate: () => {} } },
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

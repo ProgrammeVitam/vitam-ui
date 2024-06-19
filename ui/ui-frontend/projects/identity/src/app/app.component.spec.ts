@@ -53,9 +53,9 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatSidenavModule, NoopAnimationsModule],
       declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
@@ -65,7 +65,7 @@ describe('AppComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);

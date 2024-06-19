@@ -36,7 +36,7 @@
  */
 /* eslint-disable max-classes-per-file */
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -69,8 +69,8 @@ describe('CommonMenuComponent', () => {
   let component: CommonMenuComponent;
   let fixture: ComponentFixture<CommonMenuComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, MatDialogModule],
       declarations: [
         CommonMenuComponent,
@@ -83,7 +83,7 @@ describe('CommonMenuComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { items: [], menuType: null } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CommonMenuComponent);

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
@@ -8,13 +8,13 @@ describe('ScrollTopComponent', () => {
   let component: ScrollTopComponent;
   let fixture: ComponentFixture<ScrollTopComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ScrollTopComponent],
       imports: [MatIconModule],
       providers: [{ provide: Router, useValue: { events: EMPTY } }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScrollTopComponent);

@@ -37,7 +37,7 @@
 /* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
 import { EMPTY, of } from 'rxjs';
@@ -64,8 +64,8 @@ describe('FilingPlanComponent', () => {
     loadTree: () => of([]),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatTreeModule, MatProgressSpinnerModule],
       declarations: [FilingPlanComponent, NodeStubComponent],
       providers: [
@@ -74,7 +74,7 @@ describe('FilingPlanComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilingPlanComponent);

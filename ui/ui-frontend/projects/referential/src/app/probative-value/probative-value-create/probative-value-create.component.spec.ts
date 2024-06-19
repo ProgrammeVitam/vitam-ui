@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
@@ -56,13 +56,13 @@ describe('ProbativeValueCreateComponent', () => {
   let component: ProbativeValueCreateComponent;
   let fixture: ComponentFixture<ProbativeValueCreateComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         MatSelectModule,
@@ -86,7 +86,7 @@ describe('ProbativeValueCreateComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProbativeValueCreateComponent);

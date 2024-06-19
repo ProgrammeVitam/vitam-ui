@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -53,7 +53,7 @@ describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
   let fixture: ComponentFixture<IngestContractComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'INGEST_CONTRACT_APP' }),
@@ -64,7 +64,7 @@ describe('IngestContractComponent', () => {
       isApplicationExternalIdentifierEnabled: () => of(true),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         VitamUICommonTestModule,
@@ -87,7 +87,7 @@ describe('IngestContractComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractComponent);
