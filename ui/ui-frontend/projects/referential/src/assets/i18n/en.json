@@ -619,12 +619,18 @@
       "SUBTITLE": "Information",
       "IDENTIFIER": "Identifier",
       "NAME": "Name",
-      "TYPE": "Type",
+      "INDEXING_MODE": "Indexing mode",
+      "FIELD_SIZE": "Field size",
       "COLLECTION": "Collection",
       "DESCRIPTION": "Description",
+      "SHORT": "Short",
+      "MEDIUM": "Medium",
+      "LONG": "Long",
       "IDENTIFIER_TOOLTIP": "For external vocabularies, this identifier corresponds to the name of the metadata as it is named in the transfer slip or in an archival unit profile",
-      "TYPE_TOOLTIP": "Vocabulary indexing type, corresponding to a type expected by the Elastic Search engine",
+      "INDEXING_MODE_TOOLTIP": "Vocabulary indexing type, corresponding to a type expected by the Elastic Search engine",
       "COLLECTION_TOOLTIP": "Mongo DB collection that uses the vocabulary",
+      "NAME_TOOLTIP": "Field label as it will display in search and consultation of this metadata",
+      "SIZE_TOOLTIP": "The expected value for this metadata corresponds to \"Short\" for few words, to \"Medium\" for a sentence and \"Long\" for a paragraph",
       "NAME_ALREADY_EXISTS": "Name already in use",
       "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
       "IDENTIFIER_NO_COMPLIANT": "Non-compliant identifier"
@@ -632,8 +638,10 @@
     "TAB": {
       "INFORMATION": {
         "TITLE": "Information",
+        "IDENTIFIER": "Identifier",
         "NAME": "Name",
         "TYPE": "Type",
+        "FIELD_SIZE": "Field size",
         "COLLECTION": "Collection",
         "DESCRIPTION": "Description",
         "CREATION_DATE": "Creation date"

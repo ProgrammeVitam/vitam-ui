@@ -13,5 +13,7 @@ export interface Ontology extends Id {
   apiField: string;
   type: string;
   origin: string;
+  typeDetail: string;
+  stringSize: string;
   collections: Array<string>;
 }

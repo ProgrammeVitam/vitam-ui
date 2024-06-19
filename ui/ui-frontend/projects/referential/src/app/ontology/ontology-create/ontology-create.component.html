@@ -30,12 +30,13 @@
       ></i>
     </div>
 
-    <div class="d-flex">
+    <div class="d-flex align-items-center">
       <vitamui-common-input
         class="w-100"
         formControlName="shortName"
         minlength="2"
         maxlength="100"
+        required
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.NAME' | translate"
       >
         <ng-container *ngIf="form.get('shortName')?.touched">
@@ -47,11 +48,20 @@
           </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.NAME_TOOLTIP' | translate }}"
+      ></i>
     </div>
 
     <div class="d-flex align-items-center pb-4">
       <mat-form-field class="vitamui-mat-select w-100 pb-0">
-        <mat-select formControlName="type" [placeholder]="'ONTOLOGY.CREATE_DIALOG.TYPE' | translate" required>
+        <mat-select
+          formControlName="type"
+          [placeholder]="'ONTOLOGY.CREATE_DIALOG.INDEXING_MODE' | translate"
+          (selectionChange)="onIndexingModeChange($event.value)"
+          required
+        >
           <mat-option *ngFor="let type of types" [value]="type.key">
             {{ type.label }}
           </mat-option>
@@ -60,14 +70,29 @@
       </mat-form-field>
       <i
         class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
-        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.TYPE_TOOLTIP' | translate }}"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.INDEXING_MODE_TOOLTIP' | translate }}"
       >
       </i>
     </div>
 
+    <div *ngIf="sizeFieldVisible" class="d-flex align-items-center pb-4">
+      <mat-form-field class="vitamui-mat-select w-100 pb-0">
+        <mat-select formControlName="stringSize" [placeholder]="'ONTOLOGY.CREATE_DIALOG.FIELD_SIZE' | translate">
+          <mat-option *ngFor="let size of sizes" [value]="size.key">
+            {{ size.label }}
+          </mat-option>
+        </mat-select>
+        <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
+      </mat-form-field>
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+        vitamuiCommonToolTip="{{ 'ONTOLOGY.CREATE_DIALOG.SIZE_TOOLTIP' | translate }}"
+      ></i>
+    </div>
+
     <div class="d-flex align-items-center pb-4">
       <mat-form-field class="vitamui-mat-select w-100 pb-0">
-        <mat-select formControlName="collections" [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate" multiple>
+        <mat-select formControlName="collections" [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate" multiple required>
           <mat-option *ngFor="let collection of collections" [value]="collection.key">
             {{ collection.label }}
           </mat-option>
