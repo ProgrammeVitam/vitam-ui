@@ -206,6 +206,9 @@
     }
   },
   "lint-staged": {
-    "*": "prettier --write --ignore-unknown"
+    "*": "prettier --write --ignore-unknown",
+    "*.{ts,html}": [
+      "eslint --cache"
+    ]
   }
 }
