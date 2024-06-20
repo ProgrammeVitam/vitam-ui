@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "ng-high-memory": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng",
-    "start": "ng serve --disable-host-check --ssl --ssl-key ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.key --ssl-cert ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.crt",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve --disable-host-check --ssl --ssl-key ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.key --ssl-cert ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.crt",
     "start:demo": "npm run start -- demo --proxy-config proxy.conf.json",
     "start:portal": "npm run start -- portal --proxy-config proxy.conf.json",
     "start:portal:gateway": "npm run start -- portal --proxy-config proxy-gateway.conf.js",
