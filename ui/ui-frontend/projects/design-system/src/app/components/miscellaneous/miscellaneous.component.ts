@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;

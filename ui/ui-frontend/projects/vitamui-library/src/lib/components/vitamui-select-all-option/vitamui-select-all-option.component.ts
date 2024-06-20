@@ -14,13 +14,13 @@ import {
   Output,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { MatPseudoCheckboxState } from '@angular/material/core';
 import {
-  MAT_OPTION_PARENT_COMPONENT,
-  MatOptgroup,
-  MatOption,
-  MatOptionParentComponent,
-  MatPseudoCheckboxState,
-} from '@angular/material/core';
+  MatLegacyOptgroup as MatOptgroup,
+  MatLegacyOption as MatOption,
+  MatLegacyOptionParentComponent as MatOptionParentComponent,
+  MAT_LEGACY_OPTION_PARENT_COMPONENT as MAT_OPTION_PARENT_COMPONENT,
+} from '@angular/material/legacy-core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

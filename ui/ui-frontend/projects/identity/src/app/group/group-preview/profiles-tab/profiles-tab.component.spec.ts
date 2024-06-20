@@ -37,7 +37,7 @@
 
 import { Component, Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { of, Subject } from 'rxjs';
 import { ApplicationService, Group } from 'vitamui-library';

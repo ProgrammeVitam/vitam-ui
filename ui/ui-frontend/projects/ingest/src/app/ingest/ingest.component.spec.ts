@@ -45,8 +45,8 @@ import { of } from 'rxjs';
 import { IngestComponent } from './ingest.component';
 
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { InjectorModule, LoggerModule, SearchBarModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';

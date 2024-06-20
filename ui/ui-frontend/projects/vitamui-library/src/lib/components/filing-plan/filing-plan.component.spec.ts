@@ -38,7 +38,7 @@
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
 import { EMPTY, of } from 'rxjs';
 import { Node } from '../../models/node.interface';

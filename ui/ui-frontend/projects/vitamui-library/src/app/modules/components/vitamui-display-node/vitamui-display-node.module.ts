@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
 

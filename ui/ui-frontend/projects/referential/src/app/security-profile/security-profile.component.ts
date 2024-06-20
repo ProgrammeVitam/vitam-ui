@@ -36,7 +36,7 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatCard } from '@angular/material/card';
+import { MatLegacyCard as MatCard } from '@angular/material/legacy-card';
 
 import { CardComponent } from './card.component';
 

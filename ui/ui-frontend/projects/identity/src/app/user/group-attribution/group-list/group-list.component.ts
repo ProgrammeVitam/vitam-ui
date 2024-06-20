@@ -37,7 +37,7 @@
 /* tslint:disable: no-use-before-declare */
 
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
 @Component({

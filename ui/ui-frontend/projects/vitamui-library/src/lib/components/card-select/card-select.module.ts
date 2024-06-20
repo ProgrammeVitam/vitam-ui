@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { VitamUICommonModule } from '../../../app/modules';
 
 import { CardGroupModule } from '../card-group/card-group.module';

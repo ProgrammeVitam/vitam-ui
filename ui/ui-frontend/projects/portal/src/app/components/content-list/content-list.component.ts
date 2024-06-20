@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { MatTabGroup } from '@angular/material/tabs';
+import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { Category } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';

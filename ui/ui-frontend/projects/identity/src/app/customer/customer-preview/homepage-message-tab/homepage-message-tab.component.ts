@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { Customer, StartupService } from 'vitamui-library';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';

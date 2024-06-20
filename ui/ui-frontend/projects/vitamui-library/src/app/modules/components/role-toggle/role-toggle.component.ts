@@ -104,9 +104,11 @@ export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterC
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.roleComponents.forEach((roleComponent) => {
-      roleComponent.forceDisabled = isDisabled;
-    });
+    if (this.roleComponents) {
+      this.roleComponents.forEach((roleComponent) => {
+        roleComponent.forceDisabled = isDisabled;
+      });
+    }
   }
 
   constructor() {}

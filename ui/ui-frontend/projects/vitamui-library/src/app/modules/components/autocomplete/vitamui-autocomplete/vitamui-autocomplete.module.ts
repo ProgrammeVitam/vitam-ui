@@ -37,10 +37,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 
-import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { AutocompletePositionDirectiveModule } from '../../../directives/autocomplete-position/autocomplete-position.directive.module';
 import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.directive.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';

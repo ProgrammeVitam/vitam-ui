@@ -8,7 +8,7 @@ import { SampleDialogModule } from '../miscellaneous/sample-dialog/sample-dialog
 import { ArraysComponent } from './arrays.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'vitamui-library';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 
 @NgModule({
   declarations: [ArraysComponent],

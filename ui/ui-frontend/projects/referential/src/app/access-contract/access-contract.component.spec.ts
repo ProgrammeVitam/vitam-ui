@@ -36,7 +36,7 @@
  */
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
@@ -48,7 +48,7 @@ import { AccessContractService } from './access-contract.service';
 
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
 // tslint:disable-next-line:component-class-suffix

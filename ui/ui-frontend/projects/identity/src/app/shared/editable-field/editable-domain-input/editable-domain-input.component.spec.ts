@@ -40,7 +40,7 @@ import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerCreateValidators } from '../../../customer/customer-create/customer-create.validators';
 import { EditableDomainInputComponent } from './editable-domain-input.component';

@@ -36,8 +36,8 @@
  */
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
 
 import { interval, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, last, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';

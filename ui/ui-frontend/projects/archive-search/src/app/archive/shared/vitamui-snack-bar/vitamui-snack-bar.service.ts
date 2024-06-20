@@ -52,7 +52,13 @@ import {
   SkipSelf,
   TemplateRef,
 } from '@angular/core';
-import { MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, MAT_SNACK_BAR_DATA, SimpleSnackBar } from '@angular/material/snack-bar';
+import {
+  MatLegacySnackBarConfig as MatSnackBarConfig,
+  MatLegacySnackBarContainer as MatSnackBarContainer,
+  MatLegacySnackBarRef as MatSnackBarRef,
+  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
+  LegacySimpleSnackBar as SimpleSnackBar,
+} from '@angular/material/legacy-snack-bar';
 import { take, takeUntil } from 'rxjs/operators';
 
 /** Injection token that can be used to specify default snack bar. */

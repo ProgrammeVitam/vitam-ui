@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
