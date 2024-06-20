@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,7 +18,7 @@ export class ImportDialogComponent implements OnDestroy {
   public hasWrongFormat = false;
   public isLoading = false;
   public errorsDuringImport: ImportError[] = [];
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogParams: ImportDialogParam,

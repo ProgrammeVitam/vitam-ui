@@ -49,7 +49,7 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
   private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
   public graphicIdentityForm: FormGroup;
 
   @Input()

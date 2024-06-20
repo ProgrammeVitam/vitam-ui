@@ -72,7 +72,7 @@ export class ProfileInformationTabComponent {
   private _inputProfile: ProfileDescription;
   pending = false;
 
-  updateProfile(inputProfile: ProfileDescription): Observable<ProfileDescription> {
+  updateProfile(inputProfile: ProfileDescription): Observable<Profile | ArchivalProfileUnit | ProfileDescription> {
     const profileDescription = { ...inputProfile, ...this.form.value };
     if (inputProfile.type === ProfileType.PA) {
       return this.profileService.updateProfilePa(profileDescription as Profile).pipe(catchError(() => of(null)));

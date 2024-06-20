@@ -59,7 +59,7 @@ export class ConfigService implements OnDestroy {
       const getConfigs = configUrls.map((url) => this.http.get<AppConfiguration>(url));
       return forkJoin(getConfigs).pipe(
         map((configs: AppConfiguration[]) => {
-          return configs.reduce((mergedConfig, currentConfig) => Object.assign(mergedConfig, currentConfig), {});
+          return configs.reduce((mergedConfig, currentConfig) => Object.assign(mergedConfig, currentConfig), {} as AppConfiguration);
         }),
         catchError((error) => {
           this.logger.error(this, error);

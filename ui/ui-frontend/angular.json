@@ -7,6 +7,11 @@
       "root": "projects/identity/",
       "sourceRoot": "projects/identity/src",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -32,14 +37,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -117,6 +123,11 @@
       "sourceRoot": "projects/portal/src",
       "projectType": "application",
       "prefix": "portal",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -142,14 +153,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -217,11 +229,15 @@
       }
     },
     "demo": {
-      "projectType": "application",
-      "schematics": {},
       "root": "projects/demo",
       "sourceRoot": "projects/demo/src",
+      "projectType": "application",
       "prefix": "demo",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -242,12 +258,15 @@
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
                 "output": "/assets"
-              }],
+              }
+            ],
             "styles": ["projects/demo/src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -260,7 +279,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -315,15 +333,15 @@
       }
     },
     "referential": {
+      "root": "projects/referential",
+      "sourceRoot": "projects/referential/src",
       "projectType": "application",
+      "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/referential",
-      "sourceRoot": "projects/referential/src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -349,7 +367,9 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -364,7 +384,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -450,7 +469,7 @@
       "schematics": {
         "@schematics/angular:component": {
           "prefix": "vitamui",
-          "styleext": "scss"
+          "style": "scss"
         },
         "@schematics/angular:directive": {
           "prefix": "vitamui"
@@ -489,6 +508,11 @@
       "sourceRoot": "projects/design-system/src",
       "projectType": "application",
       "prefix": "design-system",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -581,6 +605,11 @@
       "root": "projects/ingest/",
       "sourceRoot": "projects/ingest/src",
       "prefix": "ingest",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -606,14 +635,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -676,6 +706,11 @@
       "root": "projects/archive-search/",
       "sourceRoot": "projects/archive-search/src",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -701,14 +736,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -771,6 +807,11 @@
       "root": "projects/collect/",
       "sourceRoot": "projects/collect/src",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -796,14 +837,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -866,6 +908,11 @@
       "root": "projects/pastis/",
       "sourceRoot": "projects/pastis/src",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -892,7 +939,10 @@
             "stylePreprocessorOptions": {
               "includePaths": ["projects/vitamui-library/src/sass"]
             },
-            "scripts": []
+            "scripts": [],
+            "optimization": false,
+            "buildOptimizer": false,
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -907,7 +957,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -925,7 +974,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": true,
               "extractLicenses": true,
               "vendorChunk": true,

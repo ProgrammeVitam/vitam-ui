@@ -44,19 +44,19 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ArchiveSearchResultFacets,
   CriteriaDataType,
   CriteriaOperator,
+  CriteriaSearchCriteria,
   CriteriaValue,
   Direction,
   FilingHoldingSchemeNode,
   Logger,
   ORPHANS_NODE_ID,
   PagedResult,
-  CriteriaSearchCriteria,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -119,7 +119,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   tenantIdentifier: number;
   searchCriterias: Map<string, CriteriaSearchCriteria>;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
 
   orderBy = 'Title';
   isIndeterminate: boolean;

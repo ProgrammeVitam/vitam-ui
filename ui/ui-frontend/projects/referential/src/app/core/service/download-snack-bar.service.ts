@@ -11,7 +11,7 @@ export class DownloadSnackBarService {
   private overlayRef: OverlayRef;
   private downloadBarRef: any;
 
-  public cancelDownload = new Subject();
+  public cancelDownload = new Subject<void>();
 
   constructor(
     private overlay: Overlay,

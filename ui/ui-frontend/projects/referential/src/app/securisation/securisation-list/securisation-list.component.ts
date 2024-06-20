@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
@@ -77,9 +77,9 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
     'STP_STORAGE_SECURISATION',
   ];
 
-  private readonly filterChange = new Subject<TraceabilityFilter>();
+  private readonly filterChange = new Subject<TraceabilityFilter | void>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 

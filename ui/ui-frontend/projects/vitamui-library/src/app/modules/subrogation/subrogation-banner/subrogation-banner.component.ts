@@ -35,14 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import * as moment_ from 'moment';
+import moment from 'moment';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../auth.service';
 import { AuthUser, Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
-
-const moment = moment_;
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',

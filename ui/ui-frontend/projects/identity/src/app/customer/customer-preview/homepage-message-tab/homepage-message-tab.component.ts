@@ -31,7 +31,7 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:variable-name
   private _readonly: boolean;
-  private destroy = new Subject();
+  private destroy = new Subject<void>();
 
   public portalTitle: string;
   public portalMessage: string;

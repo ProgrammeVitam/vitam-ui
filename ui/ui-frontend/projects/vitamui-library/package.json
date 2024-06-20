@@ -1,11 +1,4 @@
 {
   "name": "vitamui-library",
-  "version": "0.0.1",
-  "scripts": {
-    "postinstall": "ngcc"
-  },
-  "peerDependencies": {
-    "@angular/common": "^10.1.3",
-    "@angular/core": "^10.1.3"
-  }
+  "version": "0.0.1"
 }

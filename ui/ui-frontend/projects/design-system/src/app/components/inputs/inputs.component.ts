@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
-import { extend } from 'underscore';
 import { TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { extend } from 'underscore';
+import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -70,7 +70,7 @@ export class InputsComponent implements OnInit, OnDestroy {
     { value: 'value 2', disabled: false },
   ];
 
-  private readonly destroyer$ = new Subject();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor(
     private countryService: CountryService,

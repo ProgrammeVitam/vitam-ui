@@ -31,8 +31,9 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
+import { isEmpty } from 'underscore';
 import {
   AccessContract,
   ArchiveSearchResultFacets,
@@ -60,7 +61,6 @@ import {
   Unit,
   UnitType,
 } from 'vitamui-library';
-import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
@@ -152,7 +152,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   rulesFacetsCanBeComputed = false;
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   isNotReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 

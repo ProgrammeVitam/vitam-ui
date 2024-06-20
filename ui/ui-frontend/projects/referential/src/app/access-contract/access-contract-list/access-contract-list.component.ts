@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   AccessContract,
-  collapseAnimation,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
+  collapseAnimation,
   rotateAnimation,
 } from 'vitamui-library';
 
@@ -69,7 +69,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   public orderBy = 'Name';
   public direction = Direction.ASCENDANT;
   public filterMap: { [key: string]: any[] } = { status: ['ACTIVE', 'INACTIVE'] };
-  public readonly orderChange = new Subject<string>();
+  public readonly orderChange = new Subject<void>();
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
@@ -77,7 +77,7 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
-  private readonly destroyer$ = new Subject();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor(public accessContractService: AccessContractService) {
     super(accessContractService);

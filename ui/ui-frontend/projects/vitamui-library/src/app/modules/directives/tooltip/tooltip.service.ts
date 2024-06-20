@@ -59,7 +59,7 @@ const DEFAULT_CONFIG: TooltipOverlayConfig = {
   providedIn: 'root',
 })
 export class TooltipService {
-  private closeTooltip = new Subject<any>();
+  private closeTooltip = new Subject<void>();
   public Information: string;
 
   constructor(

@@ -56,7 +56,7 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
   searchCriteriaHistory: SearchCriteriaHistory[];
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   direction: Direction = Direction.ASCENDANT;
 
   subscriptionSearchCriteriaHistoryShared: Subscription;

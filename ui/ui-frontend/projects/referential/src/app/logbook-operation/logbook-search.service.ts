@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { IEvent, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'vitamui-library';
 
 @Injectable({

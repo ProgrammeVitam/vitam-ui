@@ -56,7 +56,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
 
   private accessContract: string;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     private probativeValueService: ProbativeValueService,

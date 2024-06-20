@@ -37,21 +37,21 @@
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
   AuthService,
-  collapseAnimation,
   Context,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
   Role,
-  rotateAnimation,
   User,
+  collapseAnimation,
+  rotateAnimation,
 } from 'vitamui-library';
 import { ContextService } from '../context.service';
 
@@ -95,7 +95,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   private groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
 
   @Input()
   get connectedUserInfo(): AdminUserProfile {

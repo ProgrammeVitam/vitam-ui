@@ -14,12 +14,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '14.15.1'
-          cache: 'npm'
+          node-version: "16.20.2"
+          cache: "npm"
           cache-dependency-path: |
             ui/ui-frontend/package-lock.json
-      - name: Install correct version of NPM (the one shipped with node is not the expected one)
-        run: npm install -g npm@7.17.0
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
         run: npm ci
@@ -54,21 +52,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
-          cache: 'maven'
+          distribution: "temurin"
+          java-version: "11"
+          cache: "maven"
       - uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
       - name: Build and test
-        run: mvn --settings .ci/settings.xml
-              -Pvitam,no-cve-proxy
-              -Dspotless.check.skip=true
-              --batch-mode --errors -U
-              --projects '!cots/vitamui-mongo-express'
-              --projects '!ui'
-              --projects '!ui/ui-frontend'
-              verify
+        run: >
+          mvn --settings .ci/settings.xml
+          -Pvitam,no-cve-proxy
+          -Dspotless.check.skip=true
+          --batch-mode --errors -U
+          --projects '!cots/vitamui-mongo-express'
+          --projects '!ui'
+          --projects '!ui/ui-frontend'
+          verify
         env:
           SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}
           CI_USR: ${{ secrets.CI_USR }}

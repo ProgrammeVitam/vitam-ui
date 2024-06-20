@@ -53,7 +53,7 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
   providedIn: 'root',
 })
 export class SubrogationService {
-  subrogationCancel = new Subject();
+  subrogationCancel = new Subject<void>();
 
   private subrogationSnackBarComponent: MatSnackBarRef<SubrogationSnackBarComponent>;
 
@@ -150,7 +150,7 @@ export class SubrogationService {
       duration: 50000,
     });
     this.logger.log(this, callCount);
-    const subrogationAccepted = new Subject();
+    const subrogationAccepted = new Subject<void>();
     interval(this.subrogationRefreshRateMs)
       .pipe(
         startWith(),

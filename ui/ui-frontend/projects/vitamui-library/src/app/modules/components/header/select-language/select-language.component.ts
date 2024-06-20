@@ -22,7 +22,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   public currentLang = '';
   public minLangString = MinLangString;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     private translateService: TranslateService,

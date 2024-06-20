@@ -59,7 +59,7 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
   public customers: MenuOption[];
   public search: string;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     public dialog: MatDialog,

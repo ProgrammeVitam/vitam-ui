@@ -36,7 +36,7 @@
  */
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -90,7 +90,7 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
 
   @Input()
   get connectedUserInfo(): AdminUserProfile {

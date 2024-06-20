@@ -37,7 +37,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import * as moment_ from 'moment';
+import moment from 'moment';
 import { Observable, throwError } from 'rxjs';
 
 import { catchError, tap, timeoutWith } from 'rxjs/operators';
@@ -51,8 +51,6 @@ import { Logger } from './logger/logger';
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';
 import { StartupService } from './startup.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
-
-const moment = moment_;
 
 const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest'];
 // @ts-ignore

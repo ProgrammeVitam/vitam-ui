@@ -26,7 +26,7 @@
  */
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as JSZip from 'jszip';
+import JSZip from 'jszip';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-file';

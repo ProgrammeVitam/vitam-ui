@@ -62,7 +62,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
-  private readonly destroyer$ = new Subject();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor(
     public globalEventService: GlobalEventService,

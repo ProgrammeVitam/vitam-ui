@@ -49,7 +49,7 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
   public customers: MenuOption[];
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     private router: Router,

@@ -112,7 +112,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   private readonly searchKeys = ['firstname', 'lastname', 'email', 'mobile', 'phone', 'identifier'];
 
   @Input()

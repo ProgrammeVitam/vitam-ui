@@ -50,7 +50,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
   searchCriteriaSub: Subscription;
   readonly filterChange = new Subject<{ [key: string]: any[] }>();
   readonly searchChange = new Subject<string>();
-  readonly orderChange = new Subject<string>();
+  readonly orderChange = new Subject<void>();
 
   @Input('search')
   set searchText(searchText: string) {

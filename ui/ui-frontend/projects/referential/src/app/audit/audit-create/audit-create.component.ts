@@ -45,10 +45,10 @@ import {
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
+  FilingPlanMode,
   StartupService,
   VitamUISnackBarService,
 } from 'vitamui-library';
-import { FilingPlanMode } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditAction, AuditType } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
@@ -74,7 +74,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public isDisabledButton = false;
   public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
-  private destroyer$ = new Subject();
+  private destroyer$ = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<AuditCreateComponent>,

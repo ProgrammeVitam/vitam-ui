@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { of, Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
@@ -56,7 +56,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
   computeLayout() {
@@ -94,7 +94,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
       handler: () => {
         if (!predicate()) return handler();
 
-        const subscription = this.matDialog
+        const subscription: Subscription = this.matDialog
           .open(this.removeDialog, this.dialogConfig)
           .afterClosed()
           .pipe(

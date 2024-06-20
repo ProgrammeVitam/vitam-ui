@@ -4,14 +4,6 @@
   "assets": ["./src/sass"],
   "lib": {
     "entryFile": "src/public-api.ts",
-    "cssUrl": "inline",
-    "umdModuleIds": {
-      "@ngx-translate/core": "@ngx-translate/core",
-      "angular-oauth2-oidc": "angular-oauth2-oidc",
-      "lodash": "lodash",
-      "moment": "moment",
-      "underscore": "underscore",
-      "uuid": "uuid"
-    }
+    "cssUrl": "inline"
   }
 }

@@ -15,11 +15,11 @@ import {
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import {
+  MAT_OPTION_PARENT_COMPONENT,
   MatOptgroup,
   MatOption,
   MatOptionParentComponent,
   MatPseudoCheckboxState,
-  MAT_OPTION_PARENT_COMPONENT,
 } from '@angular/material/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -38,7 +38,7 @@ export class VitamUISelectAllOptionComponent extends MatOption implements OnInit
   @Input() values: any[] = [];
   @Input() title: string;
 
-  protected unsubscribe: Subject<any>;
+  protected unsubscribe: Subject<void>;
   @Output() toggleSelection: EventEmitter<any[]> = new EventEmitter();
 
   @HostBinding('class') cssClass = 'mat-option';

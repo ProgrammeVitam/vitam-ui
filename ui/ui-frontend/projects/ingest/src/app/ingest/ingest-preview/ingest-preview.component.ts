@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { LogbookService } from 'vitamui-library';
-import { IngestStatus, ingestStatus, ingestStatusVisualColor, LogbookOperation } from '../../models/logbook-event.interface';
+import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 
 @Component({
@@ -45,11 +45,12 @@ import { IngestService } from '../ingest.service';
   templateUrl: './ingest-preview.component.html',
   styleUrls: ['./ingest-preview.component.scss'],
 })
-export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
+export class IngestPreviewComponent implements OnInit, OnChanges {
   IngestStatus = IngestStatus;
 
-  @Input() ingestFromParent: LogbookOperation;
   ingest: LogbookOperation;
+
+  @Input() ingestFromParent: LogbookOperation;
   @Output() previewClose = new EventEmitter();
   @Output() ingestHasChanged = new EventEmitter<LogbookOperation>();
 
@@ -68,10 +69,6 @@ export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
     this.ingestService.logbookOperationsReloaded.subscribe((logbookOperations) =>
       this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations),
     );
-  }
-
-  ngOnDestroy() {
-    this.ingestService.logbookOperationsReloaded.unsubscribe();
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {

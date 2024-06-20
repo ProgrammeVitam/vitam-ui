@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
-import { IngestStatus, ingestStatus, ingestStatusVisualColor, LogbookOperation } from '../../models/logbook-event.interface';
+import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -91,7 +91,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
   direction = Direction.ASCENDANT;
 
   private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
+  private readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<any>();
 
   constructor(public ingestService: IngestService) {
