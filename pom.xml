@@ -1798,7 +1798,7 @@
                             <phase>generate-sources</phase>
                             <configuration>
                                 <skip>${skipAllFrontend}</skip>
-                                <arguments>ci</arguments>
+                                <arguments>ci --force</arguments>
                             </configuration>
                         </execution>
                         <execution>

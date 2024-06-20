@@ -51,13 +51,13 @@
         (click)="changeType('ALL')"
         [ngClass]="{
           'pa-pua-card': filterType == 'PA' || filterType == 'PUA',
-          'total-profile-card': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+          'total-profile-card': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
         }"
       >
         <p
           [ngClass]="{
             'pa-pua-label': filterType == 'PA' || filterType == 'PUA',
-            'total-profile-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+            'total-profile-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
           }"
         >
           {{ 'PROFILE.LIST_PROFILE.TOUS_LES_PROFILS' | translate }}
@@ -65,7 +65,7 @@
         <p
           [ngClass]="{
             'pa-pua-num-label': filterType == 'PA' || filterType == 'PUA' || !filterType,
-            'total-profilenum-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA')
+            'total-profilenum-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
           }"
         >
           {{ totalProfileNum }}

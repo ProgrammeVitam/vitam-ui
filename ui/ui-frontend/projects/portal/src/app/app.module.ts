@@ -37,10 +37,10 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, TransferState } from '@angular/core';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { BrowserModule, Title, TransferState } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
