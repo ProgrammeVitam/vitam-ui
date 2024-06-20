@@ -66,6 +66,5 @@ import { SecurityProfileEditPermissionModule } from './security-profile-edit-per
     SecurityProfileEditPermissionModule,
   ],
   declarations: [SecurityProfileCreateComponent],
-  entryComponents: [SecurityProfileCreateComponent],
 })
 export class SecurityProfileCreateModule {}

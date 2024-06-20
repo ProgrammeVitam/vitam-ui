@@ -49,9 +49,9 @@ import {
   FileNode,
   FileNodeInsertAttributeParams,
   FileNodeInsertParams,
-  nodeNameToLabel,
   TypeConstants,
   ValueOrDataConstants,
+  nodeNameToLabel,
 } from '../../../models/file-node';
 import { CardinalityValues, MetadataHeaders } from '../../../models/models';
 import { ProfileType } from '../../../models/profile-type.enum';

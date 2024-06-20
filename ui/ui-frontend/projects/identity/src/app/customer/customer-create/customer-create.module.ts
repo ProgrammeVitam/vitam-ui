@@ -72,6 +72,5 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
   declarations: [CustomerCreateComponent, CustomerAlertingComponent],
-  entryComponents: [CustomerCreateComponent, CustomerAlertingComponent],
 })
 export class CustomerCreateModule {}

@@ -64,6 +64,5 @@ import { OntologyCreateComponent } from './ontology-create.component';
     VitamUICommonModule,
   ],
   declarations: [OntologyCreateComponent],
-  entryComponents: [OntologyCreateComponent],
 })
 export class OntologyCreateModule {}

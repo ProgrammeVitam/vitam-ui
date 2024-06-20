@@ -216,7 +216,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
   ],
-  entryComponents: [ErrorDialogComponent],
   exports: [
     AccordionModule,
     AccountModule,

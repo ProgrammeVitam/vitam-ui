@@ -29,6 +29,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import * as uuid from 'uuid';
 import {
   ConfirmDialogService,
   Logger,
@@ -36,7 +37,6 @@ import {
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
 } from 'vitamui-library';
-import * as uuid from 'uuid';
 import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';

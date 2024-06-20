@@ -37,8 +37,8 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ExternalParamProfile, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { ExternalParamProfile, diff } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 
 @Component({

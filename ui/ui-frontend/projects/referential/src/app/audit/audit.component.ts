@@ -39,8 +39,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
-import { GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
-import { Event } from 'vitamui-library';
+import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
 

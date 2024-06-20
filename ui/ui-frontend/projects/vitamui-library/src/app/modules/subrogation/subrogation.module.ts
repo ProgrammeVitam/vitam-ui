@@ -72,7 +72,6 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
     PipesModule,
   ],
   declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
-  entryComponents: [NotificationSnackBarComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],
   providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
 })

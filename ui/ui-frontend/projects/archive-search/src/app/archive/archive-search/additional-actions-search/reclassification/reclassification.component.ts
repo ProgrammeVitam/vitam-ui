@@ -31,7 +31,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { intersection } from 'lodash-es';
 import { Subscription } from 'rxjs';
@@ -62,7 +62,7 @@ const REPLACE = 'REPLACE';
   // tslint:disable-next-line:component-selector
   selector: 'reclassification',
   templateUrl: './reclassification.component.html',
-  styleUrls: ['./reclassification.component.css'],
+  styleUrls: ['./reclassification.component.scss'],
 })
 export class ReclassificationComponent implements OnInit, OnDestroy {
   form: FormGroup;

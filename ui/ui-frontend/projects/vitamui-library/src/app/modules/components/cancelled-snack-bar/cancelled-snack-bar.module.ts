@@ -44,6 +44,5 @@ import { CancelledSnackBarComponent } from './cancelled-snack-bar.component';
   imports: [CommonModule, MatDialogModule, TranslateModule],
   declarations: [CancelledSnackBarComponent],
   exports: [CancelledSnackBarComponent],
-  entryComponents: [CancelledSnackBarComponent],
 })
 export class CancelledSnackBarModule {}

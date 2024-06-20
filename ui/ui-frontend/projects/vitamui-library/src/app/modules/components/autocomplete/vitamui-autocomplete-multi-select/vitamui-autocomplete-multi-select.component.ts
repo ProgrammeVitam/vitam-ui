@@ -42,12 +42,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  forwardRef,
   HostListener,
   Input,
   QueryList,
   ViewChild,
   ViewChildren,
+  forwardRef,
 } from '@angular/core';
 import {
   AbstractControl,

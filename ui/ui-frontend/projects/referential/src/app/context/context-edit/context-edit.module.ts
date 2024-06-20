@@ -67,6 +67,5 @@ import { ContextEditComponent } from './context-edit.component';
     ContextEditPermissionModule,
   ],
   declarations: [ContextEditComponent],
-  entryComponents: [ContextEditComponent],
 })
 export class ContextEditModule {}

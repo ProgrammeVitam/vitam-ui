@@ -35,12 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
-import { ConnectedPosition } from '@angular/cdk/overlay/position/flexible-connected-position-strategy';
+import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonTooltipComponent } from './common-tooltip.component';
 import { TooltipPosition } from './TooltipPosition.enum';
+import { CommonTooltipComponent } from './common-tooltip.component';
 
 const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
   TOP: {

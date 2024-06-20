@@ -62,6 +62,5 @@ import { ProbativeValueCreateComponent } from './probative-value-create.componen
     VitamUICommonModule,
     VitamUILibraryModule,
   ],
-  entryComponents: [ProbativeValueCreateComponent],
 })
 export class ProbativeValueCreateModule {}

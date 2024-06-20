@@ -44,11 +44,11 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  diff,
   IOntology,
   OntologyService,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  diff,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';

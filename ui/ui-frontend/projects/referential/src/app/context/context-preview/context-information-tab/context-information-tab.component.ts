@@ -39,11 +39,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { Context, diff, Option } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { Context, Option, diff } from 'vitamui-library';
+import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
-import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-context-information-tab',

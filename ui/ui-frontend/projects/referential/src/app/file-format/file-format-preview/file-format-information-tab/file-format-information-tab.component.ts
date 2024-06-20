@@ -40,9 +40,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { ApplicationId, Role, SecurityService, VitamuiAutocompleteMultiselectOptions, diff } from 'vitamui-library';
 import { extend, isEmpty, omit } from 'underscore';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
+import {
+  ApplicationId,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  Role,
+  SecurityService,
+  VitamuiAutocompleteMultiselectOptions,
+  diff,
+} from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 
 @Component({

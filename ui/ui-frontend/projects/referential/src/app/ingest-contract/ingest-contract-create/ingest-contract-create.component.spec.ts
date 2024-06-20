@@ -36,11 +36,13 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService, ExternalParameters, ExternalParametersService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -51,8 +53,6 @@ import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;

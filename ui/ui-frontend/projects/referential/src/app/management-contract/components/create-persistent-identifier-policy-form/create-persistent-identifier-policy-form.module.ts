@@ -43,7 +43,6 @@ import { CreatePersistentIdentifierPolicyFormComponent } from './create-persiste
 
 @NgModule({
   declarations: [CreatePersistentIdentifierPolicyFormComponent],
-  entryComponents: [CreatePersistentIdentifierPolicyFormComponent],
   imports: [
     CommonModule,
     SharedModule,

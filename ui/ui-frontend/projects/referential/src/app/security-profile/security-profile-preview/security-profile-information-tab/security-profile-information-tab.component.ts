@@ -39,8 +39,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option, SecurityProfile } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { Option, SecurityProfile, diff } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
 
 @Component({

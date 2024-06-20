@@ -66,6 +66,5 @@ import { GroupCreateComponent } from './group-create.component';
     UnitsFormModule,
   ],
   declarations: [GroupCreateComponent],
-  entryComponents: [GroupCreateComponent],
 })
 export class GroupCreateModule {}

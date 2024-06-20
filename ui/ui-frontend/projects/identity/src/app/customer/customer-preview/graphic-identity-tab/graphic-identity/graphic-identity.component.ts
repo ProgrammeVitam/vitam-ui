@@ -41,6 +41,14 @@ import { Subject } from 'rxjs';
 import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
+interface ThemeColorGroup {
+  [ThemeColorType.VITAMUI_PRIMARY]: FormControl<string>;
+  [ThemeColorType.VITAMUI_SECONDARY]: FormControl<string>;
+  [ThemeColorType.VITAMUI_TERTIARY]: FormControl<string>;
+  [ThemeColorType.VITAMUI_HEADER_FOOTER]: FormControl<string>;
+  [ThemeColorType.VITAMUI_BACKGROUND]: FormControl<string>;
+}
+
 @Component({
   selector: 'app-graphic-identity',
   templateUrl: './graphic-identity.component.html',
@@ -89,7 +97,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     this.graphicIdentityForm = this.formBuilder.group({
       id: null,
       hasCustomGraphicIdentity: false,
-      themeColors: this.formBuilder.group({
+      themeColors: this.formBuilder.group<ThemeColorGroup>({
         [ThemeColorType.VITAMUI_PRIMARY]: new FormControl('', [this.hexValidator, Validators.required]),
         [ThemeColorType.VITAMUI_SECONDARY]: new FormControl('', [this.hexValidator, Validators.required]),
         [ThemeColorType.VITAMUI_TERTIARY]: new FormControl('', this.hexValidator),
@@ -157,7 +165,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   }
 
   private setTheme(theme: Theme): FormGroup {
-    let newTheme = this.formBuilder.group(this.graphicIdentityForm.get('themeColors').value);
+    let newTheme = this.formBuilder.group<ThemeColorGroup>(this.graphicIdentityForm.get('themeColors').value);
 
     if (theme.colors) {
       newTheme = new FormGroup({
@@ -186,8 +194,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     this.graphicIdentityForm.get('portalUrl').setValue(theme.portalUrl);
 
     // do not use this.graphicIdentityForm.controls (and new FormGroup)
-    const newForm = this.formBuilder.group(this.graphicIdentityForm.value);
-    newForm.controls.themeColors = newTheme;
-    return newForm;
+    return this.formBuilder.group({ ...this.graphicIdentityForm.value, themeColors: newTheme });
   }
 }

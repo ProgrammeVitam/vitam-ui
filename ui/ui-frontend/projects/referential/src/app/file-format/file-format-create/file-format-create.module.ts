@@ -64,6 +64,5 @@ import { FileFormatCreateComponent } from './file-format-create.component';
     VitamUICommonModule,
   ],
   declarations: [FileFormatCreateComponent],
-  entryComponents: [FileFormatCreateComponent],
 })
 export class FileFormatCreateModule {}

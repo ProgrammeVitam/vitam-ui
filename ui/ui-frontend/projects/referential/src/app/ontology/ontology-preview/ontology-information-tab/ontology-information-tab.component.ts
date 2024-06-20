@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { diff, Ontology, Option } from 'vitamui-library';
+import { Ontology, Option, diff } from 'vitamui-library';
+import { setTypeDetailAndStringSize } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { OntologyService } from '../../ontology.service';
-import { setTypeDetailAndStringSize } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 
 @Component({
   selector: 'app-ontology-information-tab',

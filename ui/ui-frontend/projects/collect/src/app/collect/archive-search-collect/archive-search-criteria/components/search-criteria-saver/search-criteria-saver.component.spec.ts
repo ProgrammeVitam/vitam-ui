@@ -42,6 +42,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -60,7 +61,6 @@ import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {

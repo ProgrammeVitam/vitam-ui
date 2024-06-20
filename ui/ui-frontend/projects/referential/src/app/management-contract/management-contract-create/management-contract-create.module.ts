@@ -46,7 +46,6 @@ import { ManagementContractCreateComponent } from './management-contract-create.
 
 @NgModule({
   declarations: [ManagementContractCreateComponent],
-  entryComponents: [ManagementContractCreateComponent],
   imports: [
     CommonModule,
     SharedModule,

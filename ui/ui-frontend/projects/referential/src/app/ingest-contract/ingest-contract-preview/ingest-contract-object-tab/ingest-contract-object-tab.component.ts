@@ -38,8 +38,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, IngestContract, Option } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { IngestContract, Option, diff } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
 

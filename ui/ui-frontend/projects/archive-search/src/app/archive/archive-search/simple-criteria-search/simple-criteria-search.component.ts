@@ -45,11 +45,11 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  diff,
   IOntology,
   OntologyService,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  diff,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';

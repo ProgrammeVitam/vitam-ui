@@ -44,6 +44,5 @@ import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
   imports: [CommonModule, TranslateModule],
   declarations: [VitamUISnackBarComponent],
   exports: [VitamUISnackBarComponent],
-  entryComponents: [VitamUISnackBarComponent],
 })
 export class VitamUISnackBarModule {}

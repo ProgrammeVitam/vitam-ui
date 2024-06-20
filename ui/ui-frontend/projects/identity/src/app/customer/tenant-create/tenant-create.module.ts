@@ -45,6 +45,5 @@ import { TenantCreateComponent } from './tenant-create.component';
 @NgModule({
   imports: [CommonModule, MatProgressBarModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [TenantCreateComponent],
-  entryComponents: [TenantCreateComponent],
 })
 export class TenantCreateModule {}

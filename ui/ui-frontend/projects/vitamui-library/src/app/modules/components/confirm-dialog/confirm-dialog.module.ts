@@ -46,6 +46,5 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
   declarations: [ConfirmDialogComponent, ClosePopupDialogComponent],
   imports: [CommonModule, MatDialogModule, TranslateModule],
   exports: [ConfirmDialogComponent, ClosePopupDialogComponent],
-  entryComponents: [ClosePopupDialogComponent],
 })
 export class ConfirmDialogModule {}

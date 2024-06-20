@@ -34,8 +34,16 @@ import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'vitamui-library';
-import { ManagementRuleValidators } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  diff,
+} from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';

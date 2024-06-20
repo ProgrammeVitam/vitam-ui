@@ -63,6 +63,5 @@ import { UploadComponent } from './upload.component';
     MatProgressBarModule,
   ],
   declarations: [UploadComponent],
-  entryComponents: [UploadComponent],
 })
 export class UploadModule {}

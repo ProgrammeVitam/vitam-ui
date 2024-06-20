@@ -40,8 +40,8 @@ import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@an
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 
-import { EditableFieldComponent } from '../editable-field.component';
 import { DOCUMENT } from '@angular/common';
+import { EditableFieldComponent } from '../editable-field.component';
 
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

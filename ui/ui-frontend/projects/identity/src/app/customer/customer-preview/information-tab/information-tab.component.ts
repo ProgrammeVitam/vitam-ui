@@ -36,14 +36,13 @@
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { merge, of } from 'rxjs';
+import { Subscription, merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, diff, OtpState, StartupService } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
+import { CountryOption, CountryService, Customer, OtpState, StartupService, diff } from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
-import { ALPHA_NUMERIC_REGEX, CustomerCreateValidators, CUSTOMER_CODE_MAX_LENGTH } from '../../customer-create/customer-create.validators';
+import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 

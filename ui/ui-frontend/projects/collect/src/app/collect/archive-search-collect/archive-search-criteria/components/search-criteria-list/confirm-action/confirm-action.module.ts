@@ -44,6 +44,5 @@ import { ConfirmActionComponent } from './confirm-action.component';
   declarations: [ConfirmActionComponent],
   imports: [CommonModule, MatDialogModule, ConfirmDialogModule, TranslateModule, VitamUICommonModule],
   exports: [ConfirmActionComponent],
-  entryComponents: [ConfirmActionComponent],
 })
 export class ConfirmActionModule {}

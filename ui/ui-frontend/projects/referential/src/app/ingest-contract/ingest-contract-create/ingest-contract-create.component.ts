@@ -43,6 +43,7 @@ import {
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
+  FilingPlanMode,
   IngestContract,
   Option,
   SignaturePolicy,
@@ -50,7 +51,6 @@ import {
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
 } from 'vitamui-library';
-import { FilingPlanMode } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
@@ -182,7 +182,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -302,9 +302,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   signedDocumentPolicyIsDisabled(): boolean {
-    if (this.signaturePolicy.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
-      return true;
-    }
-    return null;
+    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 }
