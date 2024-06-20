@@ -39,14 +39,14 @@ import { map } from 'rxjs/operators';
 import { MenuOption } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
-import { Resolve, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { CustomerSelectService } from './customer-select.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SubrogationResolver implements Resolve<MenuOption[]> {
+export class SubrogationResolver {
   constructor(
     private customerSearchService: CustomerSelectService,
     private router: Router,

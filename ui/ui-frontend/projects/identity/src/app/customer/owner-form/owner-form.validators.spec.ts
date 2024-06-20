@@ -35,28 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { OwnerFormValidators } from './owner-form.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Owner Form Validators', () => {
   it('should return null', fakeAsync(() => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
     ownerServiceSpy.exists.and.returnValue(of(false));
     const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
-    toObservable(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
+    from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
     tick(400);
@@ -67,7 +57,7 @@ describe('Owner Form Validators', () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
     ownerServiceSpy.exists.and.returnValue(of(true));
     const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
-    toObservable(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
+    from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });
     tick(400);
@@ -78,7 +68,7 @@ describe('Owner Form Validators', () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
     ownerServiceSpy.exists.and.returnValue(of(true));
     const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
-    toObservable(ownerFormValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
+    from(ownerFormValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
     tick(400);
@@ -89,7 +79,7 @@ describe('Owner Form Validators', () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
     ownerServiceSpy.exists.and.returnValue(of(true));
     const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
-    toObservable(ownerFormValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
+    from(ownerFormValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });
     tick(400);

@@ -40,7 +40,7 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { BrowserModule, BrowserTransferStateModule, Title, TransferState } from '@angular/platform-browser';
+import { BrowserModule, Title, TransferState } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -107,7 +107,6 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
         deps: [HttpBackend, TransferState],
       },
     }),
-    BrowserTransferStateModule,
   ],
   providers: [
     Title,

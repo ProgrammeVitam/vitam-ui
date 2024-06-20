@@ -35,20 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:no-magic-numbers */
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { RuleCreateValidators } from './rule-create.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Rule Create Validators', () => {
   describe('uniqueRuleId', () => {
@@ -56,7 +46,7 @@ describe('Rule Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(false));
       const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
+      from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
@@ -67,7 +57,7 @@ describe('Rule Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
+      from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
       tick(400);
@@ -78,7 +68,7 @@ describe('Rule Create Validators', () => {
       const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       ruleServiceSpy.existsProperties.and.returnValue(of(true));
       const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      toObservable(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
+      from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
       tick(400);
@@ -89,7 +79,7 @@ describe('Rule Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
+      from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
       tick(400);

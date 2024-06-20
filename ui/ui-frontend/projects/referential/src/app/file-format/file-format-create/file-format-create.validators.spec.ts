@@ -35,20 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:no-magic-numbers */
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { FileFormatCreateValidators } from './file-format-create.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('FileFormat Create Validators', () => {
   describe('uniqueName', () => {
@@ -56,7 +46,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(false));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
@@ -67,7 +57,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
@@ -78,7 +68,7 @@ describe('FileFormat Create Validators', () => {
       const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       fileFormatServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
       tick(400);
@@ -89,7 +79,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
@@ -102,7 +92,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(false));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
@@ -113,7 +103,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });
       tick(400);
@@ -124,7 +114,7 @@ describe('FileFormat Create Validators', () => {
       const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       fileFormatServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
       tick(400);
@@ -135,7 +125,7 @@ describe('FileFormat Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
       const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
+      from(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });
       tick(400);

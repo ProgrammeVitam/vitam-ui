@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
@@ -46,7 +46,7 @@ import { StartupService } from './startup.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ActiveTenantGuard implements CanActivate, CanActivateChild {
+export class ActiveTenantGuard {
   constructor(
     private authService: AuthService,
     private startupService: StartupService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
 import { ApplicationService } from './application.service';
@@ -10,7 +10,7 @@ import { TenantSelectionService } from './tenant-selection.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AnalyticsResolver implements Resolve<any> {
+export class AnalyticsResolver {
   private currentApplicationId: string;
 
   constructor(

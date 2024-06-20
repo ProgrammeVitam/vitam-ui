@@ -35,28 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { TenantFormValidators } from './tenant-form.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Tenant Form Validators', () => {
   it('should return null', fakeAsync(() => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
     tenantServiceSpy.exists.and.returnValue(of(false));
     const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
-    toObservable(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
+    from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toBeNull();
     });
     tick(400);
@@ -67,7 +57,7 @@ describe('Tenant Form Validators', () => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
     tenantServiceSpy.exists.and.returnValue(of(true));
     const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
-    toObservable(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
+    from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
     tick(400);
@@ -78,7 +68,7 @@ describe('Tenant Form Validators', () => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
     tenantServiceSpy.exists.and.returnValue(of(true));
     const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
-    toObservable(tenantFormValidators.uniqueName('name')(new FormControl('name'))).subscribe((result) => {
+    from(tenantFormValidators.uniqueName('name')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
     tick(400);
@@ -89,7 +79,7 @@ describe('Tenant Form Validators', () => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
     tenantServiceSpy.exists.and.returnValue(of(true));
     const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
-    toObservable(tenantFormValidators.uniqueName('tenantName')(new FormControl('name'))).subscribe((result) => {
+    from(tenantFormValidators.uniqueName('tenantName')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
     tick(400);

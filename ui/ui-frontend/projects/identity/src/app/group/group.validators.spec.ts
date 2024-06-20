@@ -35,28 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { GroupValidators } from './group.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('ProfileGroupValidators nameExist', () => {
   it('should return null', fakeAsync(() => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
     groupServiceSpy.exists.and.returnValue(of(false));
     const groupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(groupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
+    from(groupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
     tick(400);
@@ -67,7 +57,7 @@ describe('ProfileGroupValidators nameExist', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
     groupServiceSpy.exists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
+    from(profileGroupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
     tick(400);
@@ -78,7 +68,7 @@ describe('ProfileGroupValidators nameExist', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
     groupServiceSpy.exists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.nameExists('42', '123456')(new FormControl('123456'))).subscribe((result) => {
+    from(profileGroupValidators.nameExists('42', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
     tick(400);
@@ -89,7 +79,7 @@ describe('ProfileGroupValidators nameExist', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
     groupServiceSpy.exists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.nameExists('42', '123456')(new FormControl('111111'))).subscribe((result) => {
+    from(profileGroupValidators.nameExists('42', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
     tick(400);
@@ -102,7 +92,7 @@ describe('ProfileGroupValidators unitExists', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
     groupServiceSpy.unitExists.and.returnValue(of(false));
     const groupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
+    from(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toBeNull();
     });
     tick(400);
@@ -113,7 +103,7 @@ describe('ProfileGroupValidators unitExists', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
     groupServiceSpy.unitExists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
+    from(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });
     });
     tick(400);
@@ -124,7 +114,7 @@ describe('ProfileGroupValidators unitExists', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
     groupServiceSpy.unitExists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
+    from(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
     tick(400);
@@ -135,7 +125,7 @@ describe('ProfileGroupValidators unitExists', () => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
     groupServiceSpy.unitExists.and.returnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
-    toObservable(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
+    from(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });
     });
     tick(400);

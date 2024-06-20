@@ -39,7 +39,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
-import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
@@ -59,7 +58,6 @@ import { PortalComponent } from './portal.component';
     WelcomeMessageModule,
     ContentListModule,
     MatProgressSpinnerModule,
-    BrowserTransferStateModule,
   ],
   declarations: [PortalComponent],
 })

@@ -39,14 +39,14 @@ import { map, take } from 'rxjs/operators';
 import { Owner } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { OwnerService } from './owner.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OwnerResolver implements Resolve<Owner> {
+export class OwnerResolver {
   constructor(
     private ownerService: OwnerService,
     private router: Router,

@@ -34,21 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import { CustomerCreateValidators } from './customer-create.validators';
-
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
-  if (!isObservable(obs)) {
-    throw new Error(`Expected validator to return Promise or Observable.`);
-  }
-
-  return obs;
-}
 
 describe('Customer Create Validators', () => {
   describe('uniqueCode', () => {
@@ -56,7 +46,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(false));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
@@ -67,7 +57,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
       tick(400);
@@ -78,7 +68,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
       tick(400);
@@ -89,7 +79,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
       tick(400);
@@ -102,7 +92,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(false));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
@@ -113,7 +103,7 @@ describe('Customer Create Validators', () => {
       const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
+      from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toEqual({ uniqueDomain: true });
       });
       tick(400);

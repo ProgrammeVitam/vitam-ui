@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '14.15.1'
+          node-version: '18.20.3'
       - name: Check missing icon in icomoon
         run: ./tools/check_icomoon.sh
       # Only install prettier globally (with same version as in package.json)

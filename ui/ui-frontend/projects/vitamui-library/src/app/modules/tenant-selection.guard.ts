@@ -36,7 +36,7 @@
  */
 import { Inject, Injectable } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -47,7 +47,7 @@ import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './tenant
 @Injectable({
   providedIn: 'root',
 })
-export class TenantSelectionGuard implements CanActivate, CanActivateChild {
+export class TenantSelectionGuard {
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
