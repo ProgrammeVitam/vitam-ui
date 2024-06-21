@@ -54,13 +54,13 @@ export class TraceabilityFilter {
   styleUrls: ['./securisation-list.component.scss'],
 })
 export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  @Input('filters') set filters(filters: TraceabilityFilter) {
+  @Input() set filters(filters: TraceabilityFilter) {
     this.currentFilters = filters;
     this.filterChange.next(filters);
   }
@@ -80,7 +80,6 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   private readonly filterChange = new Subject<TraceabilityFilter | void>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   constructor(public securisationService: SecurisationService) {

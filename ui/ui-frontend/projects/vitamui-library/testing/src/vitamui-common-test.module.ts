@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// tslint:disable:max-classes-per-file
+/* eslint-disable max-classes-per-file */
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
@@ -187,7 +187,7 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 // Editable fields
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;

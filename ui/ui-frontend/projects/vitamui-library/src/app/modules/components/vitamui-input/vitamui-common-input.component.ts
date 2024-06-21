@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AfterViewInit, Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -66,7 +65,6 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
   set autoFocus(value: boolean) {
     this._autoFocus = coerceBooleanProperty(value);
   }
-  // tslint:disable-next-line:variable-name
   private _autoFocus = false;
 
   @Input()
@@ -76,7 +74,6 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
   }
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
   @Input()
   get required(): boolean {
@@ -85,7 +82,6 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
-  // tslint:disable-next-line:variable-name
   private _required = false;
   @ViewChild('vitamUIInput') private input: ElementRef;
 

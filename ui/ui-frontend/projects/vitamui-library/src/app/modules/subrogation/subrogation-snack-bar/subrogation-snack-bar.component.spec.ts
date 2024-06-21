@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
   MatLegacySnackBarModule as MatSnackBarModule,
@@ -55,8 +55,8 @@ describe('SubrogationSnackBarComponent', () => {
   let component: SubrogationSnackBarComponent;
   let fixture: ComponentFixture<SubrogationSnackBarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
       declarations: [SubrogationSnackBarComponent],
       providers: [
@@ -70,7 +70,7 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubrogationSnackBarComponent);

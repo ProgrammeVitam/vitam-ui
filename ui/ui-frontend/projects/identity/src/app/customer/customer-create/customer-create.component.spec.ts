@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: max-classes-per-file directive-selector */
+/* eslint-disable max-classes-per-file, @angular-eslint/directive-selector */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
 } from '@angular/material/legacy-dialog';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
@@ -51,8 +51,7 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CountryService } from 'vitamui-library';
-import { BASE_URL, ConfirmDialogService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -175,7 +174,7 @@ class Page {
 let page: Page;
 
 describe('CustomerCreateComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
@@ -188,7 +187,7 @@ describe('CustomerCreateComponent', () => {
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null),
     });
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -220,7 +219,7 @@ describe('CustomerCreateComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerCreateComponent);

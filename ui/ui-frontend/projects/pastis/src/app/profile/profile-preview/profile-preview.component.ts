@@ -18,7 +18,7 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
   styleUrls: ['./profile-preview.component.scss'],

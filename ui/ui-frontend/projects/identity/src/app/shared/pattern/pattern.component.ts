@@ -38,9 +38,9 @@
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
-/*eslint no-use-before-define: "error"*/
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => PatternComponent),
   multi: true,
 };

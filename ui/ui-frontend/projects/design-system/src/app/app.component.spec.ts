@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:component-selector max-classes-per-file */
+/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
@@ -52,7 +52,7 @@ import { AppComponent } from './app.component';
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
@@ -61,7 +61,7 @@ describe('AppComponent', () => {
       getPortalUrl: () => '',
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
         HttpClientTestingModule,
@@ -78,7 +78,7 @@ describe('AppComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app Design-system', () => {
     const fixture = TestBed.createComponent(AppComponent);

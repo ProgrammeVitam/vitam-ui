@@ -59,7 +59,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./profile-list.component.scss'],
 })
 export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);

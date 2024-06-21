@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -42,14 +42,14 @@ describe('IngestListComponent', () => {
     getAllPaginated: () => of([]),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [IngestListComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestListComponent);

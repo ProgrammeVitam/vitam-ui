@@ -36,7 +36,6 @@
  */
 
 import { Component, Directive, Input } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
@@ -54,13 +53,13 @@ import { TenantService } from '../tenant.service';
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCommonCollapseTriggerFor]' })
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCommonCollapseTriggerFor: any;
 }
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
 class CollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
@@ -100,7 +99,7 @@ let customers: Customer[];
 let tenants: Tenant[];
 
 describe('CustomerListComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     customers = [
       {
         id: '11',
@@ -259,7 +258,7 @@ describe('CustomerListComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
       declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
@@ -280,7 +279,7 @@ describe('CustomerListComponent', () => {
     spyOn(customerDataService, 'addTenants').and.callThrough();
     spyOn(customerDataService, 'updateTenant').and.callThrough();
     spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerListComponent);

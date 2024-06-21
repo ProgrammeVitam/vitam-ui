@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -49,7 +49,7 @@ import { ProbativeValueListComponent } from './probative-value-list/probative-va
   templateUrl: './probative-value.component.html',
   styleUrls: ['./probative-value.component.scss'],
 })
-export class ProbativeValueComponent extends SidenavPage<Event> implements OnInit, OnDestroy {
+export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
   search: string;
   dateRangeFilterForm: FormGroup;
   filters: any = {};
@@ -84,8 +84,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
       this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
     });
   }
-
-  ngOnInit() {}
 
   openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {

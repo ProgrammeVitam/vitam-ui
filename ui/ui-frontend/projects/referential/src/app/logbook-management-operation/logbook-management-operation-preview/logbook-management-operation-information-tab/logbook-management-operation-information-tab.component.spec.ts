@@ -26,7 +26,7 @@
  */
 
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { LogbookService } from 'vitamui-library';
 import { OperationDetails } from '../../../models/operation-response.interface';
@@ -47,7 +47,7 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
   let logbookInformationComponent: TestLogbookInformationComponent;
   let fixture: ComponentFixture<TestLogbookInformationComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     expectedOperation = {
       globalState: 'PAUSE',
       nextStep: 'nextStep',
@@ -58,13 +58,13 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
       stepByStep: true,
       stepStatus: 'KO',
     };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: LogbookService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestLogbookInformationComponent);

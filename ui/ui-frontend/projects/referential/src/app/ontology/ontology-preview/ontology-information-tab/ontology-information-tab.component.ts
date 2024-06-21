@@ -70,7 +70,6 @@ export class OntologyInformationTabComponent implements OnInit {
     return this._inputOntology;
   }
 
-  // tslint:disable-next-line:variable-name
   private _inputOntology: Ontology;
 
   @Input()

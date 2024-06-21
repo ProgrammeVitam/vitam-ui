@@ -32,11 +32,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 #### Recommended Extensions for VSCode
 
-- "ms-vscode.vscode-typescript-tslint-plugin" : for more information: // TsLinst, https://marketplace.visualstudio.com/items?itemName=ms-vscode.
+- "dbaeumer.vscode-eslint" : for more information: // ESLint, https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint.
 - "esbenp.prettier-vscode" : for more information: // Code formater Prettier, https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 - "sibiraj-s.vscode-scss-formatter" : for more information: // SCSS Formatter, https://marketplace.visualstudio.com/items?itemName=sibiraj-s.vscode-scss-formatter
-- "msjsdiag.debugger-for-chrome": for more information: // Debbuger for Chrome, https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
-- "firefox-devtools.vscode-firefox-debug" : for more information: // Debbuger for Firefox, https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+- "msjsdiag.debugger-for-chrome": for more information: // Debugger for Chrome, https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+- "firefox-devtools.vscode-firefox-debug" : for more information: // Debugger for Firefox, https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
 
 #### VSCode settings
 
@@ -47,7 +47,7 @@ Bellow, an example to manage code format for Visual studio code using `settings.
   "editor.formatOnSave": true,
   "[typescript]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.tslint": true,
+      "source.fixall.eslint": "explicit",
       "source.organizeImports": true
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",

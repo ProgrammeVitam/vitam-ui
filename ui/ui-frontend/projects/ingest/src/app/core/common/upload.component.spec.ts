@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
@@ -55,8 +55,8 @@ describe('UploadComponent', () => {
 
   const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}) });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       declarations: [UploadComponent],
       providers: [
@@ -68,7 +68,7 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
@@ -78,12 +78,6 @@ describe('UploadComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('initContextIdentifier', () => {
-    beforeEach(() => {
-      spyOn(console, 'error');
-    });
   });
 
   describe('checkFileExtension', () => {

@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: max-file-line-count max-classes-per-file */
+/* eslint-disable max-lines, max-classes-per-file */
 import { EMPTY, of } from 'rxjs';
 import {
   AdminUserProfile,
   AuthService,
   BASE_URL,
+  CountryService,
   Customer,
   LoggerModule,
   OtpState,
@@ -51,11 +52,10 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CountryService } from 'vitamui-library';
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
@@ -157,7 +157,7 @@ let expectedAdminUserProfile: AdminUserProfile = {
   ],
 };
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -166,7 +166,7 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-  // tslint:disable-next-line: max-line-length
+  // eslint-disable-next-line max-len
   template: `<app-user-info-tab
     [user]="user"
     [customer]="customer"
@@ -188,7 +188,7 @@ describe('UserInfoTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     expectedUser = {
       id: 'idUser',
       identifier: '8',
@@ -288,7 +288,7 @@ describe('UserInfoTabComponent', () => {
 
     const userCreateValidatorsSpy = jasmine.createSpyObj('userCreateValidators', { uniqueEmail: () => of(null) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         NoopAnimationsModule,
@@ -308,7 +308,7 @@ describe('UserInfoTabComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

@@ -36,7 +36,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -54,13 +54,13 @@ describe('SecurisationComponent', () => {
   let component: SecurisationComponent;
   let fixture: ComponentFixture<SecurisationComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'SECURISATION_APP' }),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatSidenavModule,
         MatDatepickerModule,
@@ -81,7 +81,7 @@ describe('SecurisationComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationComponent);

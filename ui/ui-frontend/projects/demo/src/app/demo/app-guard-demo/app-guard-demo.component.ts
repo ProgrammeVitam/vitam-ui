@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AppGuard } from 'vitamui-library';
 import { CssComponent } from '../component-demo/css/css.component';
@@ -44,14 +44,10 @@ import { CssComponent } from '../component-demo/css/css.component';
   templateUrl: './app-guard-demo.component.html',
   styleUrls: ['./app-guard-demo.component.scss'],
 })
-export class AppGuardDemoComponent implements OnInit {
+export class AppGuardDemoComponent {
   routeCodeExample = [
     { path: 'account', component: CssComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
     { path: 'subrogation', component: CssComponent, canActivate: [AppGuard], data: { appId: 'SUBROGATIONS_APP' } },
     { path: 'customers', component: CssComponent, canActivate: [AppGuard], data: { appId: 'CUSTOMERS_APP' } },
   ];
-
-  constructor() {}
-
-  ngOnInit() {}
 }

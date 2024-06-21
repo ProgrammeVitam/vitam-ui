@@ -41,12 +41,9 @@
  * on the wanted types!
  */
 export class Pair {
-  // tslint:disable-next-line:ban-types
   key: Object;
-  // tslint:disable-next-line:ban-types
   value: Object;
 
-  // tslint:disable-next-line:ban-types
   constructor(key: Object, value: Object) {
     this.key = key;
     this.value = value;

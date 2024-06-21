@@ -26,17 +26,17 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from './logbook-management-operation-api.service';
 
 describe('LogbookManagementOperationApiService', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot(), HttpClientTestingModule],
       providers: [{ provide: BASE_URL, useValue: '' }],
     }).compileComponents();
-  }));
+  });
 
   it('should be created', () => {
     const service: LogbookManagementOperationApiService = TestBed.inject(LogbookManagementOperationApiService);

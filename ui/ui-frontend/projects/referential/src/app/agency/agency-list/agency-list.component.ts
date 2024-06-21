@@ -62,13 +62,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./agency-list.component.scss'],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() agencyClick = new EventEmitter<Agency>();
@@ -99,7 +98,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
   private readonly destroyer$ = new Subject<void>();
 

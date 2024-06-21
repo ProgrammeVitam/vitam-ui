@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
@@ -84,7 +84,7 @@ describe('RuleComponent', () => {
   let component: RuleComponent;
   let fixture: ComponentFixture<RuleComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
@@ -107,7 +107,7 @@ describe('RuleComponent', () => {
       hasRole: () => of(true),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
         HttpClientTestingModule,
@@ -136,7 +136,7 @@ describe('RuleComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleComponent);

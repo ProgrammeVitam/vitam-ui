@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ApplicationId } from '../application-id.enum';
@@ -43,7 +43,7 @@ import { SecurityService } from './security.service';
 @Directive({
   selector: '[vitamuiCommonHasAnyRole]',
 })
-export class HasAnyRoleDirective implements OnInit, OnDestroy {
+export class HasAnyRoleDirective implements OnDestroy {
   roleSubscription: Subscription;
 
   private viewEmbedded = false;
@@ -53,8 +53,6 @@ export class HasAnyRoleDirective implements OnInit, OnDestroy {
     private viewContainer: ViewContainerRef,
     private securityService: SecurityService,
   ) {}
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     if (this.roleSubscription) {

@@ -28,7 +28,7 @@
  */
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { ContextService } from '../context.service';
@@ -39,8 +39,8 @@ describe('ContextPreviewComponent', () => {
   let component: ContextPreviewComponent;
   let fixture: ComponentFixture<ContextPreviewComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ContextPreviewComponent],
       providers: [
@@ -49,7 +49,7 @@ describe('ContextPreviewComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPreviewComponent);

@@ -69,7 +69,6 @@ export class IngestContractInformationTabComponent implements OnInit {
   managementContracts: any[];
   archiveProfiles: any[];
 
-  // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
 
   previousValue = (): IngestContract => {

@@ -3,7 +3,7 @@ import { DataGeneriquePopupService } from '../data-generique-popup.service';
 import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-generic-popup',
   templateUrl: './pastis-generic-popup.component.html',
   styleUrls: ['./pastis-generic-popup.component.scss'],

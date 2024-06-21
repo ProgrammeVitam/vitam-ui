@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
+import { BASE_URL, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL, VitamUISnackBarService } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('SecurisationCheckTabComponent', () => {
@@ -100,12 +99,12 @@ describe('SecurisationCheckTabComponent', () => {
 
   const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const accessContractServiceMock = {
       getAllForTenant: () => of([]),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       declarations: [SecurisationCheckTabComponent],
       providers: [
@@ -125,7 +124,7 @@ describe('SecurisationCheckTabComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationCheckTabComponent);

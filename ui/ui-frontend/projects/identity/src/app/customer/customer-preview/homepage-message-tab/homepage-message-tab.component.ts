@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { Customer, StartupService } from 'vitamui-library';
@@ -9,7 +9,7 @@ import { HomepageMessageUpdateComponent } from './homepage-message-update/homepa
   templateUrl: './homepage-message-tab.component.html',
   styleUrls: ['./homepage-message-tab.component.scss'],
 })
-export class HomepageMessageTabComponent implements OnInit, OnDestroy {
+export class HomepageMessageTabComponent implements OnDestroy {
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
@@ -18,7 +18,6 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   get customer(): Customer {
     return this._customer;
   }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
 
   @Input()
@@ -29,7 +28,6 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
     return this._readonly;
   }
 
-  // tslint:disable-next-line:variable-name
   private _readonly: boolean;
   private destroy = new Subject<void>();
 
@@ -53,8 +51,6 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
   }
-
-  ngOnInit() {}
 
   private resetTab(customer: Customer): void {
     const title = this.startupService.getConfigStringValue('PORTAL_TITLE');

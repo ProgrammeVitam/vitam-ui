@@ -36,7 +36,7 @@
  */
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
@@ -57,7 +57,7 @@ const CURRENT_PAGE = 0;
     ]),
   ],
 })
-export class ArchiveUnitRulesDetailsTabComponent {
+export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
   @Input()
   archiveUnit: Unit;
   archiveUnitRules: Unit;
@@ -74,8 +74,6 @@ export class ArchiveUnitRulesDetailsTabComponent {
       this.selectUnitWithInheritedRules(changes.archiveUnit.currentValue);
     }
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy() {
     this.selectUnitWithInheritedRulesSubscription?.unsubscribe();

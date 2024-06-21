@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-magic-numbers max-classes-per-file */
+/* eslint-disable no-magic-numbers, max-classes-per-file */
 
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { RowCollapseContainerDirective } from './row-collapse-container.directive';
@@ -79,12 +79,12 @@ class Page {
 let page: Page;
 
 describe('CollapseContainerDirective', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TesthostComponent, RowCollapseContainerDirective, RowCollapseTriggerForDirective, RowCollapseDirective],
       providers: [],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

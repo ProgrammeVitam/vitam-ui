@@ -69,9 +69,7 @@ export class AuthService implements OnDestroy {
 
   private authenticatorService: AuthenticatorService;
 
-  // tslint:disable-next-line:variable-name
   private _user: AuthUser;
-  // tslint:disable-next-line:variable-name
   private _userInfo: UserInfo;
   private userInfo$ = new BehaviorSubject<UserInfo>(null);
 

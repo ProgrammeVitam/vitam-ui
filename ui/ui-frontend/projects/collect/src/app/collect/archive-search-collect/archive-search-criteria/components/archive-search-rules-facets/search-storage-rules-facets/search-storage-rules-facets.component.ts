@@ -35,7 +35,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -46,7 +46,7 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   templateUrl: './search-storage-rules-facets.component.html',
   styleUrls: ['./search-storage-rules-facets.component.scss'],
 })
-export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
+export class SearchStorageRulesFacetsComponent implements OnChanges {
   constructor(
     private facetsService: ArchiveFacetsService,
     private translateService: TranslateService,
@@ -68,8 +68,6 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
   finalActionFacetDetails: FacetDetails[] = [];
   archiveUnitsCountFacetDetails: FacetDetails[] = [];
   finalActionsFacetsValues: Map<string, number>;
-
-  ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.finalActionsFacetsValues = new Map();

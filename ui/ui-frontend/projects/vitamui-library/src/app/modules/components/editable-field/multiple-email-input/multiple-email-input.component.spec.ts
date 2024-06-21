@@ -36,7 +36,7 @@
  */
 // import { of } from 'rxjs';
 
-/* tslint:disable:no-magic-numbers */
+/* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
@@ -67,13 +67,13 @@ describe('MultipleEmailInputComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     // const flowValidatorsSpy = jasmine.createSpyObj(
     //   'FlowValidators',
     //   { nameExists: () => of(null), uniqueName: of(null)}
     // );
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         OverlayModule,
         FormsModule,
@@ -94,7 +94,7 @@ describe('MultipleEmailInputComponent', () => {
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     })();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

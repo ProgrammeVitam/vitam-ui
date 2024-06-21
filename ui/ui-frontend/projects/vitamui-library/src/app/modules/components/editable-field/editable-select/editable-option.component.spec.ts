@@ -43,7 +43,7 @@
 //   let fixture: ComponentFixture<EditableOptionComponent>;
 
 //   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
+//     await TestBed.configureTestingModule({
 //       declarations: [ EditableOptionComponent ]
 //     })
 //     .compileComponents();

@@ -72,13 +72,9 @@ export class ApplicationService {
   set categories(categories: Category[]) {
     this._categories = categories;
   }
-  // tslint:disable-next-line:variable-name
   private _categories: Category[];
-  // tslint:disable-next-line:variable-name
   private _applications: Application[];
-  // tslint:disable-next-line:variable-name
   private _applications$ = new BehaviorSubject<Application[]>(null);
-  // tslint:disable-next-line:variable-name
   private _applicationsAnalytics: ApplicationAnalytics[];
   private appMap$ = new BehaviorSubject(null);
 

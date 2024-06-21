@@ -84,9 +84,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   get customer(): Customer {
     return this._customer;
   }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
-  // tslint:disable-next-line:variable-name
   private _gdprReadOnlyStatus: boolean;
   get gdprReadOnlyStatus(): boolean {
     return this._gdprReadOnlyStatus;
@@ -106,7 +104,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  // tslint:disable-next-line:adjacent-overload-signatures
   @Input()
   set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean) {
     this._gdprReadOnlyStatus = gdprReadOnlyStatus;

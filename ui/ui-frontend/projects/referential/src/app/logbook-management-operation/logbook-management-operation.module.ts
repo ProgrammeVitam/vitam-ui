@@ -47,9 +47,9 @@ import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-t
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-preview/logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
 import { LogbookManagementOperationRoutingModule } from './logbook-management-operation-routing.module';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';

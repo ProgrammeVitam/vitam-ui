@@ -36,10 +36,10 @@
  */
 
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacySelect as MatSelect, MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -77,13 +77,13 @@ describe('IdentityProviderCreateComponent', () => {
   let keystore: File;
   let idpMetadata: File;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const identityProviderServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     keystore = newFile(['keystore content'], 'test.jks');
     idpMetadata = newFile(['metadata content'], 'test.jks');
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,
         ReactiveFormsModule,
@@ -100,7 +100,7 @@ describe('IdentityProviderCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IdentityProviderCreateComponent);

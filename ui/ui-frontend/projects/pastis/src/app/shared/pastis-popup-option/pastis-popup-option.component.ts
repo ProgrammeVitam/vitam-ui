@@ -38,7 +38,7 @@ function constantToTranslate(edit: boolean) {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
   styleUrls: ['./pastis-popup-option.component.scss'],
@@ -141,14 +141,12 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     const subscription1 = createNoticeChoiceDialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         if (result.action === ProfileType.PA || result.action === ProfileType.PUA) {
-          // tslint:disable-next-line:no-shadowed-variable
           const createNoticeData = {} as PastisDialogDataCreate;
           createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
           createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
           createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
           createNoticeData.profileMode = result.action;
-          // tslint:disable-next-line:no-shadowed-variable
           const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
             width: '800px',
             panelClass: 'pastis-popup-modal-box',

@@ -42,8 +42,8 @@ import { ManagementRuleValidators } from './management-rule.validators';
 describe('ManagementRuleValidators', () => {
   let formBuilder: FormBuilder;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
     }).compileComponents();
 

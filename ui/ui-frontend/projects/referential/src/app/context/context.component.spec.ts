@@ -1,5 +1,5 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,14 +13,14 @@ import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
 
 @Component({ selector: 'app-agency-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-agency-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextListStub {}
 
 describe('ContextComponent', () => {
@@ -32,8 +32,8 @@ describe('ContextComponent', () => {
     isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceMock },
@@ -52,7 +52,7 @@ describe('ContextComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextComponent);

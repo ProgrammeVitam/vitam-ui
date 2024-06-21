@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -75,11 +75,11 @@ describe('IngestContractFormatTabComponent', () => {
     signaturePolicy: undefined,
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const fileFormatServiceMock = {
       getAllForTenant: () => of([]),
     };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [IngestContractFormatTabComponent],
       providers: [
@@ -88,7 +88,7 @@ describe('IngestContractFormatTabComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractFormatTabComponent);

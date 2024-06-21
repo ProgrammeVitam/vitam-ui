@@ -54,7 +54,6 @@ import { UserService } from '../user.service';
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;
 
-  // tslint:disable-next-line:variable-name
   _user: User;
 
   get user(): User {
@@ -111,7 +110,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     return this.startupService.isVitamEnabled();
   }
 
-  // tslint:disable-next-line:variable-name
   private _groups: Group[];
 
   constructor(
@@ -222,7 +220,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             siteCode,
             internalCode,
           })
-          // tslint:disable-next-line:no-shadowed-variable
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

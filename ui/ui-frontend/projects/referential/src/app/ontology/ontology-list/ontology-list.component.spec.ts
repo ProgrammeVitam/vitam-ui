@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL } from 'vitamui-library';
-import { Ontology } from 'vitamui-library';
+import { AuthService, BASE_URL, Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyListComponent } from './ontology-list.component';
 
@@ -57,14 +56,13 @@ describe('OntologyListComponent', () => {
   let fixture: ComponentFixture<OntologyListComponent>;
 
   const ontologyServiceMock = {
-    // tslint:disable-next-line:variable-name
     delete: (_item: Ontology) => of(null),
     search: () => of(null),
     updated: EMPTY,
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [OntologyListComponent],
       imports: [
         TranslateModule.forRoot({
@@ -79,7 +77,7 @@ describe('OntologyListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OntologyListComponent);

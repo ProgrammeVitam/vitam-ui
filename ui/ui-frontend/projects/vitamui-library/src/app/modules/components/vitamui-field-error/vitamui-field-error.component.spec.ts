@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VitamUIFieldErrorComponent } from './vitamui-field-error.component';
 
@@ -42,11 +42,11 @@ describe('VitamUIFieldErrorComponent', () => {
   let component: VitamUIFieldErrorComponent;
   let fixture: ComponentFixture<VitamUIFieldErrorComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [VitamUIFieldErrorComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamUIFieldErrorComponent);

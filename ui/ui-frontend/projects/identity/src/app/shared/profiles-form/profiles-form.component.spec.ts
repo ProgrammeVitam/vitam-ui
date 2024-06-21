@@ -140,7 +140,7 @@ const expectedApp = {
   CATEGORY_CONFIGURATION: {},
 };
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -161,8 +161,8 @@ describe('ProfilesFormComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -180,7 +180,7 @@ describe('ProfilesFormComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

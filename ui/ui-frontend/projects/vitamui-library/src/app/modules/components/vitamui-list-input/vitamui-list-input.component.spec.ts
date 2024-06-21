@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-magic-numbers */
+/* eslint-disable no-magic-numbers */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
@@ -58,13 +58,13 @@ let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
 describe('VitamUIListInputComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule, TranslateModule.forRoot()],
       declarations: [TestHostComponent, VitamUIListInputComponent],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupService } from '../../../core/services/popup.service';
@@ -46,12 +46,12 @@ import { PastisDialogData } from '../classes/pastis-dialog-data';
 const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
   styleUrls: ['./pastis-dialog-confirm.component.scss'],
 })
-export class PastisDialogConfirmComponent implements OnInit, OnDestroy {
+export class PastisDialogConfirmComponent implements OnInit {
   portal: ComponentPortal<any>;
 
   dataBeforeClose: any;
@@ -111,6 +111,4 @@ export class PastisDialogConfirmComponent implements OnInit, OnDestroy {
   translated(nameOfFieldToTranslate: string): string {
     return this.translateService.instant(PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
-
-  ngOnDestroy() {}
 }

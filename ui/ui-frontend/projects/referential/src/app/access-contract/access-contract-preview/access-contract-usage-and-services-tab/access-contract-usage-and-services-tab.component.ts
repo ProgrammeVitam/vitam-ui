@@ -77,7 +77,6 @@ export class AccessContractUsageAndServicesTabComponent {
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
-  // tslint:disable-next-line:variable-name
   private _accessContract: AccessContract;
 
   previousValue = (): AccessContract => {

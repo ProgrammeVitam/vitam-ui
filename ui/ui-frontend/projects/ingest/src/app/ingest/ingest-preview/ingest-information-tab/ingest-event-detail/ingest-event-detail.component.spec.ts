@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -53,8 +53,8 @@ describe('IngestEventDetailComponent', () => {
     initEvents: of([]),
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [IngestEventDetailComponent],
       imports: [MatMenuModule, BrowserAnimationsModule],
       providers: [
@@ -66,7 +66,7 @@ describe('IngestEventDetailComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestEventDetailComponent);

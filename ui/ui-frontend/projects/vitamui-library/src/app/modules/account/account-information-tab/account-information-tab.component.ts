@@ -61,7 +61,6 @@ export class AccountInformationTabComponent implements OnInit {
   get account(): Account {
     return this._account;
   }
-  // tslint:disable-next-line:variable-name
   private _account: Account;
 
   constructor(

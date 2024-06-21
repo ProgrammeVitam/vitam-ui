@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { SearchBarComponent } from './search-bar.component';
@@ -43,22 +43,18 @@ import { SearchBarComponent } from './search-bar.component';
 @Component({
   template: `<vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
 })
-export class TestHostComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class TestHostComponent {}
 
 describe('SearchBarComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule],
       declarations: [TestHostComponent, SearchBarComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

@@ -72,7 +72,6 @@ export class AccessContractInformationTabComponent {
   public rules: Option[] = RULE_TYPES;
   public ruleFilter = new FormControl(false);
 
-  // tslint:disable-next-line:variable-name
   private _accessContract: AccessContract;
 
   previousValue = (): AccessContract => {

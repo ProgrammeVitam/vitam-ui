@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -44,7 +44,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './download-snack-bar.component.html',
   styleUrls: ['./download-snack-bar.component.scss'],
 })
-export class DownloadSnackBarComponent implements OnInit {
+export class DownloadSnackBarComponent {
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 
   progressionValue: number;
@@ -63,7 +63,6 @@ export class DownloadSnackBarComponent implements OnInit {
     other: 'DOWNLOAD.FILE_PREPARATION_TOTAL.PLURAL',
   };
 
-  // tslint:disable-next-line:variable-name
   private readonly _cancel = new Subject<void>();
 
   constructor(private matDialog: MatDialog) {}
@@ -74,8 +73,6 @@ export class DownloadSnackBarComponent implements OnInit {
     this.isCompressed = isCompressed;
     this.notDownloadable = total - count;
   }
-
-  ngOnInit() {}
 
   confirmClose() {
     const dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'vitamui-dialog' });

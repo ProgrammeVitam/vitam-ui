@@ -37,7 +37,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
@@ -84,7 +84,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     }).compileComponents();
   });
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ArchiveUnitRulesDetailsTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -98,7 +98,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

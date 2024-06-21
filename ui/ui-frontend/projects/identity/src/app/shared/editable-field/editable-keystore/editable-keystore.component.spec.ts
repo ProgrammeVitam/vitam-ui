@@ -79,8 +79,8 @@ describe('EditableKeystoreComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, OverlayModule, VitamUICommonTestModule, NoopAnimationsModule],
       declarations: [TesthostComponent, EditableKeystoreComponent],
       providers: [{ provide: IdentityProviderService, useValue: { updateKeystore: () => of(null) } }],
@@ -89,7 +89,7 @@ describe('EditableKeystoreComponent', () => {
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     })();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

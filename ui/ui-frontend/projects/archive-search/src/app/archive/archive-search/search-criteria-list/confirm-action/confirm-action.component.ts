@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,13 +35,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
 })
-export class ConfirmActionComponent implements OnInit {
+export class ConfirmActionComponent {
   // delete or changeTab
   @Input() dialogType = 'delete';
 
@@ -49,8 +49,4 @@ export class ConfirmActionComponent implements OnInit {
   @Input() objectName: string;
   @Input() objectType: string;
   @Input() objectDate: string;
-
-  constructor() {}
-
-  ngOnInit() {}
 }

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -62,7 +61,6 @@ export class VitamUITextareaComponent implements ControlValueAccessor {
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
-  // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
@@ -72,7 +70,6 @@ export class VitamUITextareaComponent implements ControlValueAccessor {
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
   }
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
   @ViewChild('textarea', { static: true }) private textarea: ElementRef;
 

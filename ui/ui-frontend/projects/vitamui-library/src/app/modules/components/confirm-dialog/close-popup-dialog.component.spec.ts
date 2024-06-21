@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
@@ -44,14 +44,14 @@ describe('ClosePopupDialogComponent', () => {
   let component: ClosePopupDialogComponent;
   let fixture: ComponentFixture<ClosePopupDialogComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
       declarations: [ClosePopupDialogComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ClosePopupDialogComponent);

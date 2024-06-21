@@ -61,7 +61,6 @@ export class ContextInformationTabComponent {
 
   securityProfiles: Option[] = [];
 
-  // tslint:disable-next-line:variable-name
   private _context: Context;
 
   rules: Option[] = RULE_TYPES;
@@ -71,7 +70,6 @@ export class ContextInformationTabComponent {
   };
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
   set context(Context: Context) {
     this._context = Context;
     this.resetForm(this.context);

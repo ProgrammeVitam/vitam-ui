@@ -119,7 +119,6 @@ import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
-  // tslint:disable-next-line: semicolon whitespace
   const p = () => configService.load(environment.configUrls).toPromise();
 
   return p;
@@ -137,7 +136,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
           switchMap(() => startupService.load()),
         )
         .subscribe(() => resolve(true));
-      // tslint:disable-next-line: semicolon whitespace
     });
 
   return p;

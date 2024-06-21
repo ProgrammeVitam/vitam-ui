@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -38,7 +38,7 @@ import { ManagementContractService } from '../../management-contract.service';
   templateUrl: './management-contract-storage-tab.component.html',
   styleUrls: ['./management-contract-storage-tab.component.scss'],
 })
-export class ManagementContractStorageTabComponent implements OnInit, OnDestroy {
+export class ManagementContractStorageTabComponent implements OnDestroy {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
   submited = false;
@@ -93,8 +93,6 @@ export class ManagementContractStorageTabComponent implements OnInit, OnDestroy 
       objectStrategy: [null, Validators.required],
     });
   }
-
-  ngOnInit(): void {}
 
   unchanged(): boolean {
     // if (this.previousValue() !== undefined) {

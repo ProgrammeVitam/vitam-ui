@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-use-before-declare */
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, forwardRef, Input } from '@angular/core';

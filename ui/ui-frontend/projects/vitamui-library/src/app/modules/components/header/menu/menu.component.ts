@@ -191,7 +191,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tabSelectedIndex = value.index; // when clicking
     }
     setTimeout(() => {
-      // tslint:disable-next-line: variable-name
       const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex);
       if (firstElem && firstElem.options && firstElem.options.first) {
         firstElem.options.first.focus();

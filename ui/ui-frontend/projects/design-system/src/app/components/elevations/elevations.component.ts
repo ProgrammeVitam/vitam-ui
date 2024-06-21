@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-elevations',
+  selector: 'design-system-elevations',
   templateUrl: './elevations.component.html',
   styleUrls: ['./elevations.component.scss'],
 })
-export class ElevationComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class ElevationComponent {}

@@ -39,9 +39,9 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
-/*eslint no-use-before-define: "error"*/
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => EditableDomainInputComponent),
   multi: true,
 };

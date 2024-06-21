@@ -63,12 +63,11 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
   private updatedGroupSub: Subscription;
 
-  @Input('search')
+  @Input()
   set searchText(text: string) {
     this._search = text;
     this.searchChange.next(text);
   }
-  // tslint:disable-next-line:variable-name
   private _search: string;
   private readonly searchKeys = ['identifier', 'name', 'level', 'description', 'units'];
 

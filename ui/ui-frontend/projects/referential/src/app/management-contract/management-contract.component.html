@@ -27,7 +27,7 @@
 
     <div class="vitamui-content">
       <h5 class="mt-0 mb-4">{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CONTRACTS_LIST' | translate }}</h5>
-      <app-management-contract-list (managementContractClick)="showManagementContract($event)" [search]="search">
+      <app-management-contract-list (managementContractClick)="showManagementContract($event)" [searchText]="search">
       </app-management-contract-list>
     </div>
   </mat-sidenav-content>

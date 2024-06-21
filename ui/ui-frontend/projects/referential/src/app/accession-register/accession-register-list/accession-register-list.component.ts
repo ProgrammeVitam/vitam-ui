@@ -39,14 +39,14 @@ import { AccessionRegistersService } from '../accession-register.service';
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
 
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this.textToSearch = searchText;
     this.searchChange.next(searchText);
     this.accessionRegistersService.notifySearchChange(searchText);
   }
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('accessContract')
   accessContract: string;
   direction = Direction.DESCENDANT;

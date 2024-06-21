@@ -38,12 +38,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export abstract class Logger {
-  // tslint:disable-next-line:ban-types
   public abstract info(parentClass: Object, ...msg: any): void;
-  // tslint:disable-next-line:ban-types
   public abstract log(parentClass: Object, ...msg: any): void;
-  // tslint:disable-next-line:ban-types
   public abstract warn(parentClass: Object, ...msg: any): void;
-  // tslint:disable-next-line:ban-types
   public abstract error(parentClass: Object, ...msg: any): void;
 }

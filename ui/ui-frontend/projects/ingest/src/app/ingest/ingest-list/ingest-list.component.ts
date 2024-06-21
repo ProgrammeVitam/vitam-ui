@@ -56,22 +56,21 @@ export class IngestFilters {
 export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   IngestStatus = IngestStatus;
 
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line: variable-name
   private _searchText: string;
 
-  @Input('filters')
+  @Input()
   set filters(filters: IngestFilters) {
     this._filters = filters;
     this.filterChange.next(filters);
   }
 
-  @Input('ingestThatHasChanged')
+  @Input()
   set ingestThatHasChanged(ingest: LogbookOperation) {
     if (!this.dataSource) {
       return;
@@ -80,7 +79,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this.dataSource[index] = ingest;
   }
 
-  // tslint:disable-next-line: variable-name
   private _filters: IngestFilters;
 
   @Output() ingestClick = new EventEmitter<any>();

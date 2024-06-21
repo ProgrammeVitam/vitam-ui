@@ -81,7 +81,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   animations: [collapseAnimation, rotateAnimation],
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
@@ -122,7 +122,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   @Input()
@@ -140,7 +139,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
-  // tslint:disable-next-line:variable-name
   private _groups: Group[];
 
   constructor(

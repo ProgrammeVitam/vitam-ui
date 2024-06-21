@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, forwardRef, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
@@ -70,11 +70,11 @@ let fixture: ComponentFixture<HierarchyCreateComponent>;
 let component: HierarchyCreateComponent;
 
 describe('HierarchyCreateComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const hierarchyServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,
         ReactiveFormsModule,
@@ -93,7 +93,7 @@ describe('HierarchyCreateComponent', () => {
       ],
       schemas: [],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HierarchyCreateComponent);

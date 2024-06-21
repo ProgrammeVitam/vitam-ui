@@ -36,7 +36,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../environments/environment';
@@ -90,11 +90,11 @@ describe('CustomerComponent', () => {
     getGdprReadOnlySettingStatus: () => of(true),
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
       providers: [
@@ -104,7 +104,7 @@ describe('CustomerComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerComponent);

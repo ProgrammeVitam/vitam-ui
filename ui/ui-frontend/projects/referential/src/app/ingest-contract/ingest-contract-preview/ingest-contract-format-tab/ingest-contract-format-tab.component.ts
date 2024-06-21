@@ -84,7 +84,6 @@ export class IngestContractFormatTabComponent implements OnInit {
   formatTypeList: FileFormat[];
   formatOptions: VitamuiAutocompleteMultiselectOptions;
 
-  // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
 
   previousValue = (): IngestContract => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { IEvent } from '../../../models';
 
@@ -43,12 +43,8 @@ import { IEvent } from '../../../models';
   templateUrl: './history-events.component.html',
   styleUrls: ['./history-events.component.scss'],
 })
-export class HistoryEventsComponent implements OnInit {
+export class HistoryEventsComponent {
   @Input() events: IEvent[];
-
-  constructor() {}
-
-  ngOnInit() {}
 
   checkEventData(event: IEvent): boolean {
     if (event) {

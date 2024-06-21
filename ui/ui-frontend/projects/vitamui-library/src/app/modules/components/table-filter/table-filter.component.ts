@@ -63,7 +63,6 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   set filter(values: any[]) {
     this._filter = values || [];
   }
-  // tslint:disable-next-line:variable-name
   private _filter: any[];
 
   @Input() showSearchBar = false;

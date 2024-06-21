@@ -25,7 +25,7 @@
  * accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -53,7 +53,7 @@ import { ArchiveSharedDataService } from '../../services/archive-shared-data.ser
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
+export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
   @Input() searchRequestTotalResults: number;
@@ -101,8 +101,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
     this.loadFilingHoldingSchemeTree();
     this.loadAttachementUnits();
   }
-
-  ngOnChanges(_: SimpleChanges): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

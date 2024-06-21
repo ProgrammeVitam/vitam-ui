@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Customer } from 'vitamui-library';
@@ -43,14 +43,12 @@ import { Customer } from 'vitamui-library';
   selector: 'app-customer-popup',
   template: '<app-customer-preview (previewClose)="closePopup()" [customer]="customer" [isPopup]="true"></app-customer-preview>',
 })
-export class CustomerPopupComponent implements OnInit {
+export class CustomerPopupComponent {
   customer: Customer;
 
   constructor(private route: ActivatedRoute) {
     this.customer = this.route.snapshot.data.customer;
   }
-
-  ngOnInit() {}
 
   closePopup() {
     window.close();

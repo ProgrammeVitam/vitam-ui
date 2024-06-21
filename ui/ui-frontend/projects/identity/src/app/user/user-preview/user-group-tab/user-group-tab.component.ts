@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
@@ -50,7 +50,7 @@ import { UserService } from '../../user.service';
   templateUrl: './user-group-tab.component.html',
   styleUrls: ['./user-group-tab.component.scss'],
 })
-export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
+export class UserGroupTabComponent implements OnChanges, OnDestroy {
   @Input()
   set user(user: User) {
     this._user = user;
@@ -90,7 +90,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     this._groups = groupList;
   }
 
-  // tslint:disable-next-line:variable-name
   private _groups: Group[];
 
   form: FormGroup;
@@ -111,8 +110,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
   }
-
-  ngOnInit() {}
 
   ngOnChanges() {
     this.getUserProfileDetail();

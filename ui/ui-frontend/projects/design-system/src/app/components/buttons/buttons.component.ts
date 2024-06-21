@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-buttons',
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.scss'],
 })
-export class ButtonsComponent implements OnInit {
+export class ButtonsComponent {
   public control = new FormControl();
-
-  constructor() {}
-
-  ngOnInit() {}
 
   public onClick(): void {
     console.log('[onClick]');

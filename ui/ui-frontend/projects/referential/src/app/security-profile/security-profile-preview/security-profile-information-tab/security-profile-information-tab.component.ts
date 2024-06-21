@@ -69,7 +69,6 @@ export class SecurityProfileInformationTabComponent {
 
   ruleFilter = new FormControl();
 
-  // tslint:disable-next-line:variable-name
   private _securityProfile: SecurityProfile;
 
   previousValue = (): SecurityProfile => {
@@ -77,7 +76,6 @@ export class SecurityProfileInformationTabComponent {
   };
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
   set securityProfile(SecurityProfile: SecurityProfile) {
     this._securityProfile = SecurityProfile;
     this.resetForm(this.securityProfile);
@@ -152,7 +150,6 @@ export class SecurityProfileInformationTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
   resetForm(SecurityProfile: SecurityProfile) {
     this.form.reset(SecurityProfile, { emitEvent: false });
   }

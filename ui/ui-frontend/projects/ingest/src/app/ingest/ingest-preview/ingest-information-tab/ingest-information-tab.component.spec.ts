@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
@@ -45,13 +45,13 @@ describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
   let fixture: ComponentFixture<IngestInformationTabComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestInformationTabComponent);

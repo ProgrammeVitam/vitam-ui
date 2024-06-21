@@ -55,21 +55,19 @@ export class AuditFilters {
   styleUrls: ['./audit-list.component.scss'],
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
-  @Input('filters') set filters(filters: AuditFilters) {
+  @Input() set filters(filters: AuditFilters) {
     this._filters = filters;
     this.filterChange.next(filters);
   }
 
-  // tslint:disable-next-line:variable-name
   private _filters: AuditFilters;
 
   @Output() auditClick = new EventEmitter<any>();

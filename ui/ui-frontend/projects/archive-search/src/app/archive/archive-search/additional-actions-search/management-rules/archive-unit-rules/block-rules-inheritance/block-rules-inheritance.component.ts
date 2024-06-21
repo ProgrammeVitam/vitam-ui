@@ -25,13 +25,13 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { Subscription, merge } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto, diff } from 'vitamui-library';
+import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
@@ -41,7 +41,7 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
   templateUrl: './block-rules-inheritance.component.html',
   styleUrls: ['./block-rules-inheritance.component.css'],
 })
-export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
+export class BlockRulesInheritanceComponent implements OnDestroy {
   @Input()
   ruleCategory: string;
   @Output() delete = new EventEmitter<any>();
@@ -132,8 +132,6 @@ export class BlockRulesInheritanceComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-
-  ngOnInit() {}
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteBlockBlocRuleDialog;

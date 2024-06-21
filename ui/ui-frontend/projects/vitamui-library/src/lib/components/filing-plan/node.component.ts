@@ -1,5 +1,5 @@
-/* tslint:disable:component-selector */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+/* eslint-disable @angular-eslint/component-selector */
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Node } from '../../models/node.interface';
 
@@ -8,7 +8,7 @@ import { Node } from '../../models/node.interface';
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss'],
 })
-export class NodeComponent implements OnInit {
+export class NodeComponent {
   @Input() tenantIdentifier: number;
   @Input() node: Node;
   @Input() expanded: boolean;
@@ -16,8 +16,4 @@ export class NodeComponent implements OnInit {
 
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() labelClick = new EventEmitter<void>();
-
-  constructor() {}
-
-  ngOnInit() {}
 }

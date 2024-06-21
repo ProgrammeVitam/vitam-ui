@@ -21,7 +21,6 @@ export class ItemSelectComponent {
     }
   }
 
-  // tslint:disable-next-line: variable-name
   public _selectedItem: string;
 
   constructor() {}

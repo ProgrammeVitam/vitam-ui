@@ -37,7 +37,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
@@ -79,7 +79,7 @@ describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const customerServiceSpy = {
       updated: new Subject(),
     };
@@ -87,7 +87,7 @@ describe('CustomerPreviewComponent', () => {
       getPortalUrl: () => 'https://dev.vitamui.com',
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatTabsModule,
@@ -112,7 +112,7 @@ describe('CustomerPreviewComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

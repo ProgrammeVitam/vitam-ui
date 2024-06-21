@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -51,14 +51,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
 @Component({ selector: 'app-access-contract-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-access-contract-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
 
 describe('AccessContractComponent', () => {
@@ -73,8 +73,8 @@ describe('AccessContractComponent', () => {
     isApplicationExternalIdentifierEnabled: () => of(true),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
       imports: [
         VitamUICommonTestModule,
@@ -94,7 +94,7 @@ describe('AccessContractComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractComponent);

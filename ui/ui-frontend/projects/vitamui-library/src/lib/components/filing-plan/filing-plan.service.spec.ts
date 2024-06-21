@@ -1,4 +1,4 @@
-/* tslint:disable:no-magic-numbers max-file-line-count */
+/* eslint-disable no-magic-numbers, max-lines */
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';

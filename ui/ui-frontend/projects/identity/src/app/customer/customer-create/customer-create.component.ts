@@ -93,9 +93,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
   gdprReadOnlyStatus: boolean;
   private destroy = new Subject<void>();
-  // tslint:disable-next-line: variable-name
   private _homepageMessageForm: FormGroup;
-  // tslint:disable-next-line: variable-name
   private _customerForm: FormGroup;
 
   customer: Customer;

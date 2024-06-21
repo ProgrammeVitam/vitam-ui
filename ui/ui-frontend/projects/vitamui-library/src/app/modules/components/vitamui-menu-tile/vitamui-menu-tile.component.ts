@@ -59,7 +59,6 @@ export class VitamUIMenuTileComponent implements OnInit {
   get application(): Application {
     return this._application;
   }
-  // tslint:disable-next-line:variable-name
   private _application: Application;
 
   @Output() appSelect = new EventEmitter<string>();

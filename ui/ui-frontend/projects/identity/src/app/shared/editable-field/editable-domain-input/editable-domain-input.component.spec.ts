@@ -85,13 +85,13 @@ describe('EditableDomainInputComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
       uniqueCode: () => of(null),
       uniqueDomain: () => of(null),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
       declarations: [TesthostComponent, EditableDomainInputComponent, DomainInputStubComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
@@ -101,7 +101,7 @@ describe('EditableDomainInputComponent', () => {
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     })();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -71,10 +71,10 @@ describe('IngestComponent test:', () => {
   };
   const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}), filesStatus: of([]) });
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,
         MatNativeDateModule,
@@ -103,7 +103,7 @@ describe('IngestComponent test:', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestComponent);

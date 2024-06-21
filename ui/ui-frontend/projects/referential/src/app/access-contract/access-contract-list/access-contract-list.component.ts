@@ -58,7 +58,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   animations: [collapseAnimation, rotateAnimation],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
@@ -74,7 +74,6 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   private readonly destroyer$ = new Subject<void>();

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -46,8 +46,8 @@ describe('SecurityProfilePreviewComponent', () => {
   let component: SecurityProfilePreviewComponent;
   let fixture: ComponentFixture<SecurityProfilePreviewComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [SecurityProfilePreviewComponent],
       providers: [
@@ -56,7 +56,7 @@ describe('SecurityProfilePreviewComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfilePreviewComponent);

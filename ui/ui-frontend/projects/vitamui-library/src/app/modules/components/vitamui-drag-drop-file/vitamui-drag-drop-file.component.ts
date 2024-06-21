@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -43,7 +43,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './vitamui-drag-drop-file.component.html',
   styleUrls: ['./vitamui-drag-drop-file.component.scss'],
 })
-export class VitamuiDragDropFileComponent implements OnInit {
+export class VitamuiDragDropFileComponent {
   private IMAGE_TYPE_PREFIX = 'image';
   public hasDropZoneOver = false;
   private imageToUpload: File = null;
@@ -51,7 +51,6 @@ export class VitamuiDragDropFileComponent implements OnInit {
   public hasError = true;
   public message: string;
 
-  // tslint:disable-next-line: variable-name
   private _imageUrl: string | SafeResourceUrl;
   public get imageUrl(): string | SafeResourceUrl {
     return this._imageUrl;
@@ -95,8 +94,6 @@ export class VitamuiDragDropFileComponent implements OnInit {
 
   constructor(private translateService: TranslateService) {}
 
-  ngOnInit() {}
-
   public onImageDropped(files: File[]): void {
     this.hasDropZoneOver = false;
     this.handleImage(files);
@@ -120,7 +117,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // tslint:disable-next-line: max-line-length
+          // eslint-disable-next-line max-len
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
             width: this.logoSize.width,
             height: this.logoSize.height,
@@ -174,7 +171,7 @@ export class VitamuiDragDropFileComponent implements OnInit {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // tslint:disable-next-line: max-line-length
+          // eslint-disable-next-line max-len
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
             width: this.logoSize.width,
             height: this.logoSize.height,

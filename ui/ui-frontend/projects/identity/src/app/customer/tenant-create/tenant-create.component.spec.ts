@@ -38,9 +38,9 @@ import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -52,14 +52,14 @@ describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
   let fixture: ComponentFixture<TenantCreateComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [TenantCreateComponent],
       providers: [
@@ -70,7 +70,7 @@ describe('TenantCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TenantCreateComponent);

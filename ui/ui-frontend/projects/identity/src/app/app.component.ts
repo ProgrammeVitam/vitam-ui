@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { StartupService } from 'vitamui-library';
 
@@ -43,13 +43,11 @@ import { StartupService } from 'vitamui-library';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Identity App';
   subrogating = false;
 
   constructor(titleService: Title, startupService: StartupService) {
     titleService.setTitle(startupService.getPlatformName());
   }
-
-  ngOnInit() {}
 }

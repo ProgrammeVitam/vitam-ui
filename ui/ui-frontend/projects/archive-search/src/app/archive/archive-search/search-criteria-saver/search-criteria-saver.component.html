@@ -97,7 +97,7 @@
         type="submit"
         class="btn primary"
         (click)="createNewCriteria()"
-        [disabled]="criteriaId !== '' || searchCriteriaHistories.length == 10"
+        [disabled]="criteriaId !== '' || searchCriteriaHistories.length === 10"
       >
         {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_BUTTON' | translate }}
       </button>
@@ -133,7 +133,7 @@
       </div>
     </div>
 
-    <div *ngIf="searchCriteriaHistories.length == 0" class="no-results-center search-criterias" (click)="onCancel()">
+    <div *ngIf="searchCriteriaHistories.length === 0" class="no-results-center search-criterias" (click)="onCancel()">
       {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
     </div>
     <mat-dialog-actions class="pad-actions">

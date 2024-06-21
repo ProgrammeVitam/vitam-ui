@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -72,8 +72,8 @@ describe('UserActionOpenProfileComponent', () => {
     getReferentialUrl: () => '',
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [UserActionSaveProfileComponent],
       imports: [
         HttpClientTestingModule,
@@ -99,7 +99,7 @@ describe('UserActionOpenProfileComponent', () => {
         { provide: PopupService, useValue: popupServiceMock },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserActionSaveProfileComponent);

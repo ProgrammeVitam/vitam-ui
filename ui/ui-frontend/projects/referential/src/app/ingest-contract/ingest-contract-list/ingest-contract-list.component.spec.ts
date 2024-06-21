@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractListComponent } from './ingest-contract-list.component';
@@ -52,12 +52,12 @@ describe('IngestContractListComponent', () => {
     updated: new Subject(),
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const ingestContractServiceMock = {
       search: () => of(null),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [IngestContractListComponent],
       providers: [
@@ -66,7 +66,7 @@ describe('IngestContractListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractListComponent);

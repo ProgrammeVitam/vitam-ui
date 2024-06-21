@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { fadeInOutAnimation } from '../../animations';
 
 @Component({
@@ -43,13 +43,9 @@ import { fadeInOutAnimation } from '../../animations';
   styleUrls: ['./common-tooltip.component.scss'],
   animations: [fadeInOutAnimation],
 })
-export class CommonTooltipComponent implements OnInit {
-  constructor() {}
-
+export class CommonTooltipComponent {
   public text = '';
   public position: string;
   public outline: boolean;
   public className: string;
-
-  ngOnInit() {}
 }

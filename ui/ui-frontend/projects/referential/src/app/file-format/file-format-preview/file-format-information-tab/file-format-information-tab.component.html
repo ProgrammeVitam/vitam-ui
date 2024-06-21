@@ -41,7 +41,7 @@
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
     ></vitamui-common-input>
     <vitamui-common-autocomplete-multi-select
-      *ngIf="!(isInternal$ | async)"
+      *ngIf="(isInternal$ | async) === false"
       class="w-100"
       formControlName="hasPriorityOverFileFormatIDs"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"

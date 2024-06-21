@@ -37,7 +37,7 @@
 import { EMPTY, of } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookSearchService } from '../logbook-search.service';
@@ -53,8 +53,8 @@ describe('LogbookOperationListComponent', () => {
   let component: LogbookOperationListComponent;
   let fixture: ComponentFixture<LogbookOperationListComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), OverlayModule],
       declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe, TableFilterDirective],
       providers: [
@@ -63,7 +63,7 @@ describe('LogbookOperationListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationListComponent);

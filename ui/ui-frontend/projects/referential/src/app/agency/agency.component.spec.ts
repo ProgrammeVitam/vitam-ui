@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -51,14 +51,14 @@ import { AgencyService } from './agency.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-agency-preview', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
 @Component({ selector: 'app-agency-list', template: '' })
-// tslint:disable-next-line:component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
 const securityServiceMock = {
@@ -69,8 +69,8 @@ describe('AgencyComponent', () => {
   let component: AgencyComponent;
   let fixture: ComponentFixture<AgencyComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [AgencyComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
@@ -93,7 +93,7 @@ describe('AgencyComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AgencyComponent);

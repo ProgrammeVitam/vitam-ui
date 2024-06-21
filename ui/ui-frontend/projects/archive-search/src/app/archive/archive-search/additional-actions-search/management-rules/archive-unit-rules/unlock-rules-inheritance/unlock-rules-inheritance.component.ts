@@ -25,24 +25,24 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { Subscription, merge } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  diff,
   ManagementRuleValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  diff,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
@@ -58,7 +58,7 @@ const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
   templateUrl: './unlock-rules-inheritance.component.html',
   styleUrls: ['./unlock-rules-inheritance.component.css'],
 })
-export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
+export class UnlockRulesInheritanceComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -208,8 +208,6 @@ export class UnlockRulesInheritanceComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuerySuscription?.unsubscribe();
     this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
-
-  ngOnInit() {}
 
   initDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {

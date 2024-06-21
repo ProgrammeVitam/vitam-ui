@@ -85,13 +85,13 @@ describe('ProjectPreviewComponent', () => {
     ],
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const projectApiServiceMock = {
       getTransactionsByProjectId: () => of(transactionPaginatedResponse),
       updateTransaction: () => of(transaction),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ProjectPreviewComponent],
       imports: [MatDialogModule, VitamUICommonTestModule, MatSnackBarModule, BrowserModule, BrowserAnimationsModule, MatButtonToggleModule],
       providers: [
@@ -109,13 +109,13 @@ describe('ProjectPreviewComponent', () => {
         { provide: Router, useValue: {} },
       ],
     }).compileComponents();
-  }));
+  });
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ProjectPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

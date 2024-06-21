@@ -71,13 +71,12 @@ const MAXIMUM_CRITICALITY = 2;
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   @Input() emailDomains: string[];
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   private groups: Array<{ id: string; group: any }> = [];

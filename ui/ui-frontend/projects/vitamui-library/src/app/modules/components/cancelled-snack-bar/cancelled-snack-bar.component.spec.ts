@@ -36,7 +36,7 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../injection-tokens';
@@ -46,8 +46,8 @@ describe('CancelledSnackBarComponent', () => {
   let component: CancelledSnackBarComponent;
   let fixture: ComponentFixture<CancelledSnackBarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CancelledSnackBarComponent],
       imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
@@ -55,7 +55,7 @@ describe('CancelledSnackBarComponent', () => {
         { provide: MatSnackBarRef, useValue: { close: () => {} } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CancelledSnackBarComponent);

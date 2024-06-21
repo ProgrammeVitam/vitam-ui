@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { OntologyService } from '../ontology.service';
@@ -46,8 +46,8 @@ xdescribe('OntologyPreviewComponent', () => {
   let component: OntologyPreviewComponent;
   let fixture: ComponentFixture<OntologyPreviewComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [OntologyPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
@@ -55,7 +55,7 @@ xdescribe('OntologyPreviewComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OntologyPreviewComponent);

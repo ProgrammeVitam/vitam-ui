@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Subrogation, SubrogationModalService } from 'vitamui-library';
 
@@ -43,14 +43,12 @@ import { Subrogation, SubrogationModalService } from 'vitamui-library';
   templateUrl: './subrogation-demo.component.html',
   styleUrls: ['./subrogation-demo.component.scss'],
 })
-export class SubrogationDemoComponent implements OnInit {
+export class SubrogationDemoComponent {
   surrogateUser = 'julien@vitamui.com';
   surrogateCustomerId = 'customer_id';
   subrogation: Subrogation;
 
   constructor(private subrogationModalService: SubrogationModalService) {}
-
-  ngOnInit() {}
 
   createSubrogation(email?: string) {
     if (email) {

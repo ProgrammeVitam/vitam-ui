@@ -75,7 +75,6 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_BACKGROUND]: 'COLOR.BACKGROUND',
   };
 
-  // tslint:disable-next-line: variable-name
   private _defaultTheme = new BehaviorSubject<Theme>(null);
 
   // Default theme
@@ -100,7 +99,6 @@ export class ThemeService {
   // Theme for current app configuration
   applicationColorMap: { [colorId: string]: string };
 
-  // tslint:disable-next-line: variable-name
   private _backgroundChoice: Color[] = [
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
@@ -200,7 +198,6 @@ export class ThemeService {
   }
 
   private add10Declinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
-    // tslint:disable-next-line: variable-name
     const mergedMap: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
     const rgbValue = hexToRgb(mergedMap[key]);
     // consider hs-L from color key as 500

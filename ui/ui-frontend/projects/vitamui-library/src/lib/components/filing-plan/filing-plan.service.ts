@@ -56,7 +56,6 @@ export enum FilingPlanMode {
   providedIn: 'root',
 })
 export class FilingPlanService {
-  // tslint:disable-next-line:variable-name
   private _pending = 0;
 
   constructor(

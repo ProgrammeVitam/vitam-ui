@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
@@ -79,7 +79,7 @@ describe('ArchivePreviewComponent', () => {
     }
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
@@ -91,7 +91,7 @@ describe('ArchivePreviewComponent', () => {
       receiveDownloadProgressSubject: () => of(true),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatTreeModule,
@@ -121,7 +121,7 @@ describe('ArchivePreviewComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);

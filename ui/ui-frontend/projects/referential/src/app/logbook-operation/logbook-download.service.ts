@@ -124,7 +124,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
         if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
           return DOWNLOAD_TYPE_BATCH_REPORT;
         }
-      // tslint:disable-next-line:no-switch-case-fall-through
+      // eslint-disable-next-line no-fallthrough
       case 'DATA_MIGRATION':
         return DOWNLOAD_TYPE_REPORT;
       case 'TRANSFER_REPLY':
@@ -151,7 +151,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
           case 'HOLDINGSCHEME':
             return DOWNLOAD_TYPE_OBJECT;
         }
-      // tslint:disable-next-line:no-switch-case-fall-through
+      // eslint-disable-next-line no-fallthrough
       case 'INTERNAL_OPERATING_OP':
         if (eventType === 'INGEST_CLEANUP') {
           return DOWNLOAD_TYPE_BATCH_REPORT;

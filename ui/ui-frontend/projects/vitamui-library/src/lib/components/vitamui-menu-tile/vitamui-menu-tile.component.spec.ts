@@ -36,11 +36,12 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUBROGRATION_REFRESH_RATE_MS } from '../../../app/modules';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[libVitamuiCommonTooltip]',
 })
 class TooltipStubDirective {
@@ -51,12 +52,12 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
   let component: UpdatedVitamUIMenuTileComponent;
   let fixture: ComponentFixture<UpdatedVitamUIMenuTileComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = {
       getPortalUrl: () => 'https://dev.vitamui.com',
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       declarations: [UpdatedVitamUIMenuTileComponent, TooltipStubDirective],
       providers: [
@@ -66,7 +67,7 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdatedVitamUIMenuTileComponent);

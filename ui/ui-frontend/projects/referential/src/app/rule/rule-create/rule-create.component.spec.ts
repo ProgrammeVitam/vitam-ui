@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: max-classes-per-file directive-selector */
+/* eslint-disable max-classes-per-file, @angular-eslint/directive-selector */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
@@ -50,9 +50,8 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, RuleService } from 'vitamui-library';
+import { ConfirmDialogService, ManagementRuleValidators, RuleService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { ManagementRuleValidators } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
 import { RuleCreateValidators } from './rule-create.validators';
@@ -91,7 +90,7 @@ class Page {
 let page: Page;
 
 describe('RuleCreateComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
       create: of({}),
@@ -102,7 +101,7 @@ describe('RuleCreateComponent', () => {
       ruleIdPattern: ManagementRuleValidators.ruleIdPattern,
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [RuleCreateComponent],
       imports: [
         ReactiveFormsModule,
@@ -124,7 +123,7 @@ describe('RuleCreateComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleCreateComponent);

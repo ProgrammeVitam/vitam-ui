@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare component-selector */
 import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 

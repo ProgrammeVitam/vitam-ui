@@ -57,16 +57,16 @@ let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
 describe('DomainsInputComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', { uniqueDomain: of(null) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
       declarations: [TestHostComponent, DomainsInputComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

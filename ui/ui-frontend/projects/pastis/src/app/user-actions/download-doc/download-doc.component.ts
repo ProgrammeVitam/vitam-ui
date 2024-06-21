@@ -35,16 +35,12 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-download-doc',
   templateUrl: './download-doc.component.html',
   styleUrls: ['./download-doc.component.scss'],
 })
-export class UserActionsDownloadDocComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class UserActionsDownloadDocComponent {}

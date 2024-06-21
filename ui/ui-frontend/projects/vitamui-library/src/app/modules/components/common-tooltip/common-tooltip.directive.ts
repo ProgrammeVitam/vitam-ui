@@ -95,7 +95,6 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     }
   }
 
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
   private overlayRef: OverlayRef;
 

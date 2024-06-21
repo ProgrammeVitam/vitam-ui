@@ -54,23 +54,21 @@ export class ProbativeValueFilters {
   styleUrls: ['./probative-value-list.component.scss'],
 })
 export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
-  @Input('filters')
+  @Input()
   set filters(filters: ProbativeValueFilters) {
     this._filters = filters;
     this.filterChange.next(filters);
   }
 
-  // tslint:disable-next-line:variable-name
   private _filters: ProbativeValueFilters;
 
   loaded = false;

@@ -36,7 +36,7 @@
  */
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { of, Subject } from 'rxjs';
 
@@ -54,7 +54,7 @@ class IdentityProviderDetailsStubComponent {
   @Input() readOnly: boolean;
 }
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -101,7 +101,7 @@ describe('SsoTabComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let providers: any[];
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     providers = [
       {
         id: '5ad5f14c894e6a414edc7b60c5397d744f4b4ed8bd86934d0a8e8311add40f3f',
@@ -147,7 +147,7 @@ describe('SsoTabComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule, HttpClientTestingModule],
       declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
@@ -164,7 +164,7 @@ describe('SsoTabComponent', () => {
         },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

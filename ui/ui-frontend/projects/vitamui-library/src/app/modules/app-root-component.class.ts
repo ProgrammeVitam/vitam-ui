@@ -39,7 +39,6 @@ import { InjectorHelper } from './helper/injector-helper';
 import { Logger } from './logger/logger';
 
 export class AppRootComponent {
-  // tslint:disable-next-line:variable-name
   private _appId: string;
 
   public logger: Logger;

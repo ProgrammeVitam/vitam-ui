@@ -89,8 +89,8 @@ describe('EditablePatternsComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
       declarations: [TesthostComponent, EditablePatternsComponent, PatternStubComponent],
     }).compileComponents();
@@ -98,7 +98,7 @@ describe('EditablePatternsComponent', () => {
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainerElement = oc.getContainerElement();
     })();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

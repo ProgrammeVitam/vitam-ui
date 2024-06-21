@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -46,13 +46,13 @@ xdescribe('AccessContractWriteAccessTabComponent', () => {
   let component: AccessContractWriteAccessTabComponent;
   let fixture: ComponentFixture<AccessContractWriteAccessTabComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [AccessContractWriteAccessTabComponent],
       providers: [FormBuilder, { provide: AccessContractService, useValue: {} }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractWriteAccessTabComponent);

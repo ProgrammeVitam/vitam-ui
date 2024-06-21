@@ -68,7 +68,6 @@ export class AccessContractNodesTabComponent {
 
   public searchAccessContractId: string;
 
-  // tslint:disable-next-line:variable-name
   private _accessContract: AccessContract;
   rootUnitsTitles: string[] = [];
   excludedRootUnitsTitles: string[] = [];

@@ -25,16 +25,16 @@
  * accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FacetDetails } from '../../models';
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-logbook-operation-facet',
   templateUrl: './logbook-operation-facet.component.html',
   styleUrls: ['./logbook-operation-facet.component.scss'],
 })
-export class LogbookOperationFacetComponent implements OnInit {
+export class LogbookOperationFacetComponent {
   /**
    * The title of the component that contains a list of Facet
    * It can be in English or in French
@@ -62,10 +62,6 @@ export class LogbookOperationFacetComponent implements OnInit {
    */
   @Input()
   facetDetails: FacetDetails[];
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   onFilter(facet: FacetDetails) {
     if (facet.clickable) {

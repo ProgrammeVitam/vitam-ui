@@ -27,7 +27,7 @@
  *
  */
 
-import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
@@ -48,7 +48,7 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   templateUrl: './update-units-metadata.component.html',
   styleUrls: ['./update-units-metadata.component.scss'],
 })
-export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
+export class UpdateUnitsaMetadataComponent implements OnDestroy {
   public stepIndex = 0;
   public stepCount = 1;
 
@@ -93,8 +93,6 @@ export class UpdateUnitsaMetadataComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
   }
-
-  ngOnInit(): void {}
 
   updateUAMetadatas() {
     this.stepIndex = this.stepIndex + 1;

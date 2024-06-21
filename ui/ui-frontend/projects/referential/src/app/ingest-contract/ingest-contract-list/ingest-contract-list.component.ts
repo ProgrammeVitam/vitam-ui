@@ -63,7 +63,7 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
   private readonly searchChange = new Subject<string>();
   public readonly orderChange = new Subject<void>();
 
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);

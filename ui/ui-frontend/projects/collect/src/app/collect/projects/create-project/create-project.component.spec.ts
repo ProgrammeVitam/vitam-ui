@@ -29,7 +29,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
@@ -120,7 +120,7 @@ describe('CreateProjectComponent', () => {
   let transactionServiceMock: SpyObj<TransactionsService>;
   let uploadServiceMock: SpyObj<CollectUploadService>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     projectsServiceMock = jasmine.createSpyObj<ProjectsService>('ProjectsService', {
       create: of(defaultProject),
       updateProject: of(defaultProject),
@@ -137,7 +137,7 @@ describe('CreateProjectComponent', () => {
       reinitializeZip: null,
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         InjectorModule,
@@ -162,7 +162,7 @@ describe('CreateProjectComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateProjectComponent);
@@ -192,7 +192,7 @@ describe('CreateProjectComponent', () => {
     expect(matDialogSpyTest.close).toHaveBeenCalled();
   });
 
-  it('should call "create" with project having unitUp and no automatic ingest', () => {
+  it('should call "create" with project having unitUp and no automatic ingest', fakeAsync(() => {
     // Given
     const form = {
       messageIdentifier: 'abcd',
@@ -217,7 +217,9 @@ describe('CreateProjectComponent', () => {
     expect(arg.unitUp).toBe(form.linkParentIdControl.included[0]);
     expect(arg.unitUps).toBeUndefined();
     expect(arg.automaticIngest).toBeFalsy();
-  });
+
+    flush();
+  }));
 
   it('should call "create" with project having no unitUp and automatic ingest', () => {
     // Given

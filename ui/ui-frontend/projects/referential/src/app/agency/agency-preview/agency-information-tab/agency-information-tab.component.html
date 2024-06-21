@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <vitamui-common-input
-    [disabled]="!(checkUpdateRole | async)"
+    [disabled]="(checkUpdateRole | async) === false"
     class="w-100"
     formControlName="name"
     placeholder="{{ 'AGENCY.TAB.NAME' | translate }}"
@@ -13,7 +13,7 @@
   </vitamui-common-input>
 
   <vitamui-common-input
-    [disabled]="!(checkUpdateRole | async)"
+    [disabled]="(checkUpdateRole | async) === false"
     class="w-100"
     formControlName="description"
     placeholder="{{ 'AGENCY.TAB.DESCRIPTION' | translate }}"

@@ -9,7 +9,7 @@
         <div class="text large bold">{{ 'RECLASSIFICATION.FIRST_STEP.TITLE' | translate }}</div>
         <br />
         {{ itemSelected }} {{ 'RECLASSIFICATION.FIRST_STEP.SELECTED_UNIT' | translate }}
-        <div *ngIf="totalChilds !== null && totalChilds == 10000 && !waitingForLoadExactTotalTrackHits && !precided">
+        <div *ngIf="totalChilds !== null && totalChilds === 10000 && !waitingForLoadExactTotalTrackHits && !precided">
           <a
             class="link-without-underline"
             (click)="loadExactCount()"
@@ -169,7 +169,7 @@
                       *ngFor="let parent of allunitupsControl; let i = index"
                     >
                       <label class="criteria-checkbox-choice align-checkbox-label">
-                        <input type="checkbox" [value]="archiveUnitFetchedParents[i].id" [formControlName]="i" [checked]="i == 0" />
+                        <input type="checkbox" [value]="archiveUnitFetchedParents[i].id" [formControlName]="i" [checked]="i === 0" />
                         <span>{{ archiveUnitFetchedParents[i].title }}</span>
                       </label>
                       <br />

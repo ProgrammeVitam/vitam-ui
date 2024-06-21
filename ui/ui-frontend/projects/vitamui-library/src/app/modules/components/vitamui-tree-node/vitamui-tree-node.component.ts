@@ -28,7 +28,7 @@ import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input,
 import { FilingHoldingSchemeNode } from '../../models/nodes';
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],

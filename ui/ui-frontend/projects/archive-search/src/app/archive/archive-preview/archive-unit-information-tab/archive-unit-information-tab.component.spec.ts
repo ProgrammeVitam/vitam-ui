@@ -28,7 +28,7 @@
  */
 
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -107,8 +107,8 @@ describe('ArchiveUnitInformationTabComponent', () => {
     getReferentialUrl: () => '',
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatTreeModule,
@@ -134,7 +134,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitInformationTabComponent);

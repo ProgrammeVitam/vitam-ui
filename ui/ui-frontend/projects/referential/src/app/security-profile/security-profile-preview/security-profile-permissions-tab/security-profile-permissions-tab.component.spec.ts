@@ -36,7 +36,7 @@
  */
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -49,7 +49,6 @@ describe('SecurityProfilePermissionsTabComponent', () => {
   let fixture: ComponentFixture<SecurityProfilePermissionsTabComponent>;
 
   const securityProfileServiceMock = {
-    // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null),
   };
 
@@ -66,14 +65,14 @@ describe('SecurityProfilePermissionsTabComponent', () => {
     permissions: [],
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [SecurityProfilePermissionsTabComponent],
       providers: [FormBuilder, { provide: SecurityProfileService, useValue: securityProfileServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfilePermissionsTabComponent);

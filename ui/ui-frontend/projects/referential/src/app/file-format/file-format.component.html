@@ -10,11 +10,11 @@
       </vitamui-common-title-breadcrumb>
 
       <vitamui-common-banner [searchbarPlaceholder]="'FILE_FORMATS.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-        <button class="btn primary ml-3 mr-3" (click)="openCreateFileFormatDialog()" [disabled]="!(hasCreateRole | async)">
+        <button class="btn primary ml-3 mr-3" (click)="openCreateFileFormatDialog()" [disabled]="(hasCreateRole | async) === false">
           <span>{{ 'FILE_FORMATS.HOME.CREATE_FILE_FORMATS' | translate }}</span>
         </button>
 
-        <button class="btn secondary" (click)="openFileFormatImportDialog()" [disabled]="!(hasImportRole | async)">
+        <button class="btn secondary" (click)="openFileFormatImportDialog()" [disabled]="(hasImportRole | async) === false">
           <span>{{ 'FILE_FORMATS.HOME.IMPORT' | translate }}</span>
         </button>
       </vitamui-common-banner>

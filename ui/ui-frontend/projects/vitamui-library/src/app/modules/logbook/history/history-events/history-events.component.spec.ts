@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IEvent } from '../../../models';
 import { HistoryEventsComponent } from './history-events.component';
 
@@ -48,11 +48,11 @@ describe('HistoryEventsComponent', () => {
   let component: HistoryEventsComponent;
   let fixture: ComponentFixture<HistoryEventsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HistoryEventsComponent, EventTypeLabelStubComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HistoryEventsComponent);

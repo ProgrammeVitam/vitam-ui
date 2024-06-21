@@ -27,7 +27,7 @@
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
@@ -42,8 +42,8 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
   const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['downloadObjectFromUnit', 'getObjectById']);
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
@@ -52,7 +52,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitObjectsDetailsTabComponent);

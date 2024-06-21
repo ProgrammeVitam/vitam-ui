@@ -58,7 +58,6 @@ export class ApplicationSelectContentComponent {
   get applications(): Application[] {
     return this._applications;
   }
-  // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
   @Input()
@@ -71,7 +70,6 @@ export class ApplicationSelectContentComponent {
   get categories(): Category[] {
     return this._categories;
   }
-  // tslint:disable-next-line:variable-name
   private _categories: Category[];
 
   @Output() applicationSelected = new EventEmitter<string>();

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of, Subject } from 'rxjs';
@@ -82,7 +82,7 @@ describe('HierarchyListComponent', () => {
   let component: HierarchyListComponent;
   let fixture: ComponentFixture<HierarchyListComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const hierarchyListServiceSpy = {
       search: () => of([]),
       canLoadMore: true,
@@ -91,7 +91,7 @@ describe('HierarchyListComponent', () => {
     };
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
       declarations: [HierarchyListComponent],
       providers: [
@@ -101,7 +101,7 @@ describe('HierarchyListComponent', () => {
         { provide: ApplicationService, useValue: { applications: expectedApp } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HierarchyListComponent);

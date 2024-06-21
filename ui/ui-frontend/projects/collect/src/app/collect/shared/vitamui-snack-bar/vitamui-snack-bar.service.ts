@@ -78,7 +78,6 @@ export class VitamUISnackBar {
    * If there is a parent snack-bar service, all operations should delegate to that parent
    * via `_openedSnackBarRef`.
    */
-  // tslint:disable-next-line:variable-name
   private _snackBarRefAtThisLevel: MatSnackBarRef<any> | null = null;
 
   /** Reference to the currently opened snackbar at *any* level. */
@@ -97,17 +96,11 @@ export class VitamUISnackBar {
   }
 
   constructor(
-    // tslint:disable-next-line:variable-name
     private _overlay: Overlay,
-    // tslint:disable-next-line:variable-name
     private _live: LiveAnnouncer,
-    // tslint:disable-next-line:variable-name
     private _injector: Injector,
-    // tslint:disable-next-line:variable-name
     private _breakpointObserver: BreakpointObserver,
-    // tslint:disable-next-line:variable-name
     @Optional() @SkipSelf() private _parentSnackBar: VitamUISnackBar,
-    // tslint:disable-next-line:variable-name
     @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig,
   ) {}
 

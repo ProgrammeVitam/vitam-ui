@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Owner, Tenant } from 'vitamui-library';
@@ -44,7 +44,7 @@ import { OwnerService } from '../owner.service';
   selector: 'app-owner-popup',
   template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
 })
-export class OwnerPopupComponent implements OnInit {
+export class OwnerPopupComponent {
   owner: Owner;
   tenant: Tenant;
 
@@ -62,8 +62,6 @@ export class OwnerPopupComponent implements OnInit {
       this.owner = this.route.snapshot.data.owner;
     }
   }
-
-  ngOnInit() {}
 
   closePopup() {
     window.close();

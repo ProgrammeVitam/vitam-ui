@@ -40,15 +40,11 @@ import { Logger } from './logger';
 @Injectable()
 export class NoLogService extends Logger {
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
   info(parentClass: Object, ...msg: any) {}
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
   log(parentClass: Object, ...msg: any) {}
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
   warn(parentClass: Object, ...msg: any) {}
   // @ts-ignore
-  // tslint:disable-next-line:ban-types
   error(parentClass: Object, ...msg: any) {}
 }

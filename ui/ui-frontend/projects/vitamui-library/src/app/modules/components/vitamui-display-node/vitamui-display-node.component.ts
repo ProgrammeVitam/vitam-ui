@@ -34,17 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-display-node',
   templateUrl: './vitamui-display-node.component.html',
   styleUrls: ['./vitamui-display-node.component.scss'],
 })
-export class VitamUIDisplayNodeComponent implements OnInit {
+export class VitamUIDisplayNodeComponent {
   @Input() node: any;
-
-  constructor() {}
-
-  ngOnInit() {}
 }

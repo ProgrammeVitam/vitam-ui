@@ -52,14 +52,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./ontology-list.component.scss'],
 })
 export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() ontologyClick = new EventEmitter<Ontology>();

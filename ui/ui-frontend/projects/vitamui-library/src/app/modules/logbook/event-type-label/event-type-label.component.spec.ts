@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
@@ -43,12 +43,12 @@ describe('EventTypeLabelComponent', () => {
   let component: EventTypeLabelComponent;
   let fixture: ComponentFixture<EventTypeLabelComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
       declarations: [EventTypeLabelComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EventTypeLabelComponent);

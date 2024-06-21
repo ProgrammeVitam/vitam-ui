@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBarService } from 'vitamui-library';
@@ -47,13 +47,12 @@ describe('RuleListComponent', () => {
   let fixture: ComponentFixture<RuleListComponent>;
 
   const ruleServiceMock = {
-    // tslint:disable-next-line:variable-name
     delete: (_rule: Rule) => of(null),
     search: () => of(null),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [RuleListComponent],
       providers: [
@@ -65,7 +64,7 @@ describe('RuleListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleListComponent);

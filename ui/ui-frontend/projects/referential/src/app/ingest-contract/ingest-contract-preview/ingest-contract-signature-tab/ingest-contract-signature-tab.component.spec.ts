@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { of } from 'rxjs';
@@ -49,14 +49,14 @@ describe('IngestContractSignatureTabComponent', () => {
   let fixture: ComponentFixture<IngestContractSignatureTabComponent>;
   const ingestContractServiceSpy = jasmine.createSpyObj('IngestContractService', { patch: of() });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule, MatButtonToggleModule],
       declarations: [IngestContractSignatureTabComponent],
       providers: [FormBuilder, { provide: IngestContractService, useValue: ingestContractServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractSignatureTabComponent);

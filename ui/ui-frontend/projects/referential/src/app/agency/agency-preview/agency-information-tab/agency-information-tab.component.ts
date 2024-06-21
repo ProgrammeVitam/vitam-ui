@@ -55,7 +55,6 @@ export class AgencyInformationTabComponent {
   submited = false;
   checkUpdateRole = new Observable<boolean>();
 
-  // tslint:disable-next-line:variable-name
   private _agency: Agency;
 
   form: FormGroup;
@@ -142,7 +141,6 @@ export class AgencyInformationTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
   resetForm(Agency: Agency) {
     this.form.reset(Agency, { emitEvent: false });
   }

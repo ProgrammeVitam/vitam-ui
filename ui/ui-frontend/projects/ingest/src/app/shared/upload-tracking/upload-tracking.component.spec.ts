@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -53,14 +53,14 @@ describe('UploadTrackingComponent', () => {
 
   const UploadServiceSpy = jasmine.createSpyObj('UploadService', { filesStatus: of(new IngestList()) });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       declarations: [UploadTrackingComponent],
       providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadTrackingComponent);

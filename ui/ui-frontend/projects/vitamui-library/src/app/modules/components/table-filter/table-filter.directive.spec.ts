@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableFilterDirective } from './table-filter.directive';
@@ -46,18 +46,14 @@ import { TableFilterDirective } from './table-filter.directive';
     <ng-template #filterTemplate> Overlay content </ng-template>
   `,
 })
-export class TesthostComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class TesthostComponent {}
 
 describe('TableFilterDirective', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [OverlayModule],
       declarations: [TesthostComponent, TableFilterDirective],
     }).compileComponents();

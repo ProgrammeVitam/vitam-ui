@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
@@ -45,7 +45,7 @@ import { Logger } from '../../../logger/logger';
   templateUrl: './archive-unit-count.component.html',
   styleUrls: ['./archive-unit-count.component.scss'],
 })
-export class ArchiveUnitCountComponent implements OnInit, OnChanges {
+export class ArchiveUnitCountComponent implements OnChanges {
   @Input() search: Observable<number>;
   @Input() archiveUnitCount = 0;
   @Input() selectedArchiveUnitCount = 0;
@@ -63,8 +63,6 @@ export class ArchiveUnitCountComponent implements OnInit, OnChanges {
   private subscriptions = new Subscription();
 
   constructor(private logger: Logger) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { selectedArchiveUnitCount, archiveUnitCount, threshold, search } = changes;

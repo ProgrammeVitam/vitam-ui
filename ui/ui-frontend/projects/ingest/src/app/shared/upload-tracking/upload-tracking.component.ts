@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
 
@@ -51,7 +51,7 @@ import { UploadService } from '../../core/common/upload.service';
     ]),
   ],
 })
-export class UploadTrackingComponent implements OnInit {
+export class UploadTrackingComponent {
   ingestList: IngestList;
   displayTracking = false;
 
@@ -64,9 +64,7 @@ export class UploadTrackingComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
-  toogleTracking() {
+  toggleTracking() {
     this.displayTracking = !this.displayTracking;
   }
 }

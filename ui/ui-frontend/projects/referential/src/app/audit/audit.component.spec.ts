@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -54,7 +54,7 @@ describe('AuditComponent', () => {
   let component: AuditComponent;
   let fixture: ComponentFixture<AuditComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['afterClosed', 'open']);
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
@@ -62,7 +62,7 @@ describe('AuditComponent', () => {
     };
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule,
@@ -85,7 +85,7 @@ describe('AuditComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditComponent);

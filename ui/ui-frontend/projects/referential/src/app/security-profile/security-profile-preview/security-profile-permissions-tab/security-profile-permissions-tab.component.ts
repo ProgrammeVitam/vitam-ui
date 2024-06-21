@@ -57,7 +57,6 @@ export class SecurityProfilePermissionsTabComponent {
 
   ruleFilter = new FormControl();
 
-  // tslint:disable-next-line:variable-name
   private _SecurityProfile: SecurityProfile;
 
   // FIXME: Get list from common var ?
@@ -75,7 +74,6 @@ export class SecurityProfilePermissionsTabComponent {
   };
 
   @Input()
-  // tslint:disable-next-line:no-shadowed-variable
   set SecurityProfile(SecurityProfile: SecurityProfile) {
     if (!SecurityProfile.permissions) {
       SecurityProfile.permissions = [];
@@ -101,7 +99,6 @@ export class SecurityProfilePermissionsTabComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    // tslint:disable-next-line:no-shadowed-variable
     private SecurityProfileService: SecurityProfileService,
   ) {
     this.form = this.formBuilder.group({
@@ -124,7 +121,6 @@ export class SecurityProfilePermissionsTabComponent {
         unchanged = false;
       } else {
         const previousPermissions = this.previousValue().permissions;
-        // tslint:disable-next-line:no-shadowed-variable
         const diff = this.form.getRawValue().permissions.filter((permission: string) => {
           return previousPermissions.indexOf(permission) === -1;
         });
@@ -175,7 +171,6 @@ export class SecurityProfilePermissionsTabComponent {
     );
   }
 
-  // tslint:disable-next-line:no-shadowed-variable
   resetForm(SecurityProfile: SecurityProfile) {
     this.form.reset(SecurityProfile, { emitEvent: false });
   }

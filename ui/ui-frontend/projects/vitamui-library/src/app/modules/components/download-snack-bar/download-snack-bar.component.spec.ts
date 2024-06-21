@@ -50,7 +50,7 @@
 //   let fixture: ComponentFixture<DownloadSnackBarComponent>;
 
 //   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
+//     await TestBed.configureTestingModule({
 //       imports: [MatProgressBarModule],
 //       declarations: [ DownloadSnackBarComponent ],
 //       providers: [

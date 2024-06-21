@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:component-selector max-classes-per-file */
+/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
@@ -53,9 +53,9 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatSidenavModule, NoopAnimationsModule],
       declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
@@ -65,7 +65,7 @@ describe('AppComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);

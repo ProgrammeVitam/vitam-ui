@@ -36,7 +36,7 @@
  */
 
 import { Component, Directive, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { of, Subject } from 'rxjs';
@@ -46,7 +46,7 @@ import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -162,8 +162,8 @@ describe('ProfilesTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
       declarations: [ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
@@ -172,7 +172,7 @@ describe('ProfilesTabComponent', () => {
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TesthostComponent);

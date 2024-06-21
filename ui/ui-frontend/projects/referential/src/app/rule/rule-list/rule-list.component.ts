@@ -63,14 +63,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./rule-list.component.scss'],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
 
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   ruleTypes = RULE_TYPES;
@@ -79,7 +78,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     ruleType: this.ruleTypes.map((value) => value.label),
   };
 
-  // tslint:disable-next-line:variable-name
   private _filters: string;
 
   ruleMeasurements = RULE_MEASUREMENTS;

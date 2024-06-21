@@ -36,13 +36,21 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, Subject } from 'rxjs';
-import { BASE_URL, CountryService, LoggerModule, StartupService, VitamUISnackBarService, WINDOW_LOCATION } from 'vitamui-library';
-import { Owner, Tenant } from 'vitamui-library';
+import {
+  BASE_URL,
+  CountryService,
+  LoggerModule,
+  Owner,
+  StartupService,
+  Tenant,
+  VitamUISnackBarService,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
@@ -114,7 +122,7 @@ describe('Owner InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     const ownerServiceSpy = {
       get: () => of(owner),
       patch: () => of(owner),
@@ -125,7 +133,7 @@ describe('Owner InformationTabComponent', () => {
       uniqueName: () => of(null),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         MatDividerModule,
@@ -147,7 +155,7 @@ describe('Owner InformationTabComponent', () => {
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);

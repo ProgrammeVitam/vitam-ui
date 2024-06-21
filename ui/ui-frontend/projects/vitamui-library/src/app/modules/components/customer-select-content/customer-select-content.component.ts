@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { MenuOption } from '../navbar';
@@ -45,7 +45,7 @@ import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.servi
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss'],
 })
-export class CustomerSelectContentComponent implements OnInit, OnDestroy {
+export class CustomerSelectContentComponent implements OnInit {
   @Input() customers: MenuOption[];
   @Input() isModalMenu: boolean;
 
@@ -64,8 +64,6 @@ export class CustomerSelectContentComponent implements OnInit, OnDestroy {
       this.customerSelectionService.setCustomers(this.customers);
     }
   }
-
-  ngOnDestroy(): void {}
 
   public selectCustomerId(customerId: string): void {
     if (customerId) {

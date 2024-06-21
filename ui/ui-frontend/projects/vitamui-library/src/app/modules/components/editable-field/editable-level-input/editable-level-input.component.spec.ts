@@ -36,7 +36,7 @@
  */
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
@@ -48,8 +48,8 @@ describe('EditableLevelInputComponent', () => {
   let component: EditableLevelInputComponent;
   let fixture: ComponentFixture<EditableLevelInputComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         OverlayModule,
@@ -61,7 +61,7 @@ describe('EditableLevelInputComponent', () => {
       declarations: [EditableLevelInputComponent, SubLevelPipe],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditableLevelInputComponent);

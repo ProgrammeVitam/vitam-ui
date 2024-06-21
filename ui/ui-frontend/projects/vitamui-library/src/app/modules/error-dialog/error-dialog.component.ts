@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { StartupService } from './../startup.service';
@@ -44,7 +44,7 @@ import { StartupService } from './../startup.service';
   templateUrl: './error-dialog.component.html',
   styleUrls: ['./error-dialog.component.scss'],
 })
-export class ErrorDialogComponent implements OnInit {
+export class ErrorDialogComponent {
   trustedAppLogoUrl: SafeUrl;
 
   constructor(
@@ -56,8 +56,6 @@ export class ErrorDialogComponent implements OnInit {
       ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL())
       : null;
   }
-
-  ngOnInit() {}
 
   goBack() {
     this.matDialogRef.close();

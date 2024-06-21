@@ -50,35 +50,35 @@
       <div
         (click)="changeType('ALL')"
         [ngClass]="{
-          'pa-pua-card': filterType == 'PA' || filterType == 'PUA',
-          'total-profile-card': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
+          'pa-pua-card': filterType === 'PA' || filterType === 'PUA',
+          'total-profile-card': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
         }"
       >
         <p
           [ngClass]="{
-            'pa-pua-label': filterType == 'PA' || filterType == 'PUA',
-            'total-profile-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
+            'pa-pua-label': filterType === 'PA' || filterType === 'PUA',
+            'total-profile-label': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
           }"
         >
           {{ 'PROFILE.LIST_PROFILE.TOUS_LES_PROFILS' | translate }}
         </p>
         <p
           [ngClass]="{
-            'pa-pua-num-label': filterType == 'PA' || filterType == 'PUA' || !filterType,
-            'total-profilenum-label': filterType == 'ALL' || (filterType != 'PUA' && filterType != 'PA'),
+            'pa-pua-num-label': filterType === 'PA' || filterType === 'PUA' || !filterType,
+            'total-profilenum-label': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
           }"
         >
           {{ totalProfileNum }}
         </p>
       </div>
 
-      <div (click)="changeType('PA')" [ngClass]="{ 'pa-pua-card': filterType != 'PA', 'total-profile-card': filterType == 'PA' }">
-        <p [ngClass]="{ 'pa-pua-label': filterType != 'PA', 'total-profile-label': filterType == 'PA' }">PA</p>
-        <p [ngClass]="{ 'pa-pua-num-label': filterType != 'PA', 'total-profilenum-label': filterType == 'PA' }">{{ numPA }}</p>
+      <div (click)="changeType('PA')" [ngClass]="{ 'pa-pua-card': filterType !== 'PA', 'total-profile-card': filterType === 'PA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType !== 'PA', 'total-profile-label': filterType === 'PA' }">PA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType !== 'PA', 'total-profilenum-label': filterType === 'PA' }">{{ numPA }}</p>
       </div>
-      <div (click)="changeType('PUA')" [ngClass]="{ 'pa-pua-card': filterType != 'PUA', 'total-profile-card': filterType == 'PUA' }">
-        <p [ngClass]="{ 'pa-pua-label': filterType != 'PUA', 'total-profile-label': filterType == 'PUA' }">PUA</p>
-        <p [ngClass]="{ 'pa-pua-num-label': filterType != 'PUA', 'total-profilenum-label': filterType == 'PUA' }">
+      <div (click)="changeType('PUA')" [ngClass]="{ 'pa-pua-card': filterType !== 'PUA', 'total-profile-card': filterType === 'PUA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType !== 'PUA', 'total-profile-label': filterType === 'PUA' }">PUA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType !== 'PUA', 'total-profilenum-label': filterType === 'PUA' }">
           {{ numPUA }}
         </p>
       </div>
@@ -131,8 +131,8 @@
                 <div (click)="showProfile(element)" class="col-2 clickable">
                   {{ element.type }}
                   <div *ngIf="!isStandalone">
-                    <i *ngIf="element.status == 'ACTIVE'" class="status-badge-green ml-3"></i>
-                    <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
+                    <i *ngIf="element.status === 'ACTIVE'" class="status-badge-green ml-3"></i>
+                    <i *ngIf="element.status === 'INACTIVE'" class="status-badge-red ml-3"></i>
                   </div>
                 </div>
                 <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word">{{ element.identifier }}</div>

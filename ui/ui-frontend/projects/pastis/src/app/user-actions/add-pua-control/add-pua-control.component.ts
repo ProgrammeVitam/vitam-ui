@@ -55,7 +55,7 @@ function constantToTranslate() {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
   styleUrls: ['./add-pua-control.component.scss'],

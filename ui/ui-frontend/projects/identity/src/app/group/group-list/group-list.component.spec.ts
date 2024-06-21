@@ -36,7 +36,7 @@
  */
 
 import { Component, Directive, Input } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -44,19 +44,18 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Group, TableFilterModule } from 'vitamui-library';
-import { OrderByButtonModule } from 'vitamui-library';
+import { Group, OrderByButtonModule, TableFilterModule } from 'vitamui-library';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCollapseTriggerFor]' })
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCollapseTriggerFor: any;
 }
 
-// tslint:disable-next-line:directive-selector
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[vitamuiCollapse]', exportAs: 'vitamuiCollapse' })
 class CollapseStubDirective {
   @Input() vitamuiCollapse: any;
@@ -95,7 +94,7 @@ let groups: Group[];
 const levels: string[] = ['level1', 'level2'];
 
 describe('GroupListComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     groups = [
       {
         id: '1',
@@ -135,7 +134,7 @@ describe('GroupListComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, TableFilterModule, OrderByButtonModule],
       declarations: [GroupListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
@@ -148,7 +147,7 @@ describe('GroupListComponent', () => {
     const groupService = TestBed.inject(GroupService);
     spyOn(groupService, 'search').and.callThrough();
     spyOn(groupService, 'loadMore').and.callThrough();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupListComponent);

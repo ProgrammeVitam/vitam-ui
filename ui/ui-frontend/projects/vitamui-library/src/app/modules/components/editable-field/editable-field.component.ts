@@ -53,10 +53,10 @@ import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
 })
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
   @Input() label: string;
   @Input()
@@ -67,7 +67,6 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   get disabled(): boolean {
     return this._disabled;
   }
-  // tslint:disable-next-line:variable-name
   private _disabled: boolean;
 
   @Input()

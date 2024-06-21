@@ -70,7 +70,7 @@ function constantToTranslate() {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],

@@ -36,7 +36,7 @@
  */
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, SecurityProfile } from 'vitamui-library';
@@ -48,13 +48,12 @@ describe('SecurityProfileListComponent', () => {
   let fixture: ComponentFixture<SecurityProfileListComponent>;
 
   const securityProfileServiceMock = {
-    // tslint:disable-next-line:variable-name
     delete: (_item: SecurityProfile) => of(null),
     search: () => of(null),
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [SecurityProfileListComponent],
       imports: [TranslateModule.forRoot()],
       providers: [
@@ -64,7 +63,7 @@ describe('SecurityProfileListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfileListComponent);

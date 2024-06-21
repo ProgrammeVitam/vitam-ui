@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
 import { WINDOW_LOCATION } from '../../injection-tokens';
@@ -45,8 +45,8 @@ describe('LoginRedirectComponent', () => {
   let component: LoginRedirectComponent;
   let fixture: ComponentFixture<LoginRedirectComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [LoginRedirectComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
@@ -54,7 +54,7 @@ describe('LoginRedirectComponent', () => {
         { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: { get: (): any => null } } } },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginRedirectComponent);
